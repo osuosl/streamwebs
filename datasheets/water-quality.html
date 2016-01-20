@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Create Data: Water Quality</title>
+  <link type="text/css" rel="stylesheet" href="datasheets.css" />
+</head>
+<body>
+  <h1>Create Data: Water Quality</h1>
+  <form action="" method="POST">
+    <table>
+      <tr>
+        <td>
+          Stream/Site name:<br/>
+          <select name="Stream/Site name" required>
+            <option value="A">A</option>
+            <option value="B">B</option>
+          </select>
+          <br/><br/>
+          Date:<br/>
+          <input type="date" name="date">
+        </td>
+        <td>
+          DEQ Data Quality Level:
+          <select name="DEQ Data Quality Level" required>
+            <option value="none">- None -</option>
+            <option value="Level A">Level A</option>
+            <option value="Level B">Level B</option>
+            <option value="Level C">Level C</option>
+            <option value="Level D">Level D</option>
+            <option value="Level E">Level E</option>
+          </select>
+          <br/><br/>
+          Latitude:<br/>
+          <input type="text" name="latitude">
+          <br/><br/>
+          Longitude:<br/>
+          <input type="text" name="longitude">
+        </td>
+      </tr>
+      <tr>
+        Any fish present?
+        <input type="radio" name="fish" value="yes" checked>Yes
+        <input type="radio" name="fish" value="no">No
+        | Number of live fish:
+        <input type="text" name="number-live-fish" maxlength="10" size="10" value="0">
+        | Number of dead fish:
+        <input type="text" name="number-live-fish" maxlength="10" size="10" value="0">
+      </tr>
+    </table>
+    <table>
+      <tr>
+        <th></th>
+        <th>Sample 1</th>
+        <th>Sample 2</th>
+        <th>Sample 3</th>
+        <th>Sample 4</th>
+      </tr>
+      <tr>
+        <td>Water Temperature: </td>
+        <td><input type="text" name="water-temp-1"></td>
+        <td><input type="text" name="water-temp-2"></td>
+        <td><input type="text" name="water-temp-3"></td>
+        <td><input type="text" name="water-temp-4"></td>
+      </tr>
+      <tr>
+        <td>Air Temperature: </td>
+        <td><input type="text" name="air-temp-1"></td>
+        <td><input type="text" name="air-temp-2"></td>
+        <td><input type="text" name="air-temp-3"></td>
+        <td><input type="text" name="air-temp-4"></td>
+      </tr>
+      <tr>
+        <td>Dissolved Oxygen (mg/L): </td>
+        <td><input type="text" name="dissolved-oxygen-1"></td>
+        <td><input type="text" name="dissolved-oxygen-2"></td>
+        <td><input type="text" name="dissolved-oxygen-3"></td>
+        <td><input type="text" name="dissolved-oxygen-4"></td>
+      </tr>
+      <tr>
+        <td>pH: </td>
+        <td><input type="text" name="ph-1"></td>
+        <td><input type="text" name="ph-2"></td>
+        <td><input type="text" name="ph-3"></td>
+        <td><input type="text" name="ph-4"></td>
+      </tr>
+      <tr>
+        <td>Turbidity (NTU): </td>
+        <td><input type="text" name="turbidity-1"></td>
+        <td><input type="text" name="turbidity-2"></td>
+        <td><input type="text" name="turbidity-3"></td>
+        <td><input type="text" name="turbidity-4"></td>
+      </tr>
+      <tr>
+        <td>Salinity (PSU) PPT: </td>
+        <td><input type="text" name="salinity-1"></td>
+        <td><input type="text" name="salinity-2"></td>
+        <td><input type="text" name="salinity-3"></td>
+        <td><input type="text" name="salinity-4"></td>
+      </tr>
+      <!-- Additional Parameters -->
+      <tr>
+        <td>Conductivity (µS/cm): </td>
+        <td><input type="text" name="conductivity-1"></td>
+        <td><input type="text" name="conductivity-2"></td>
+        <td><input type="text" name="conductivity-3"></td>
+        <td><input type="text" name="conductivity-4"></td>
+      </tr>
+      <tr>
+        <td>Total Solids (mg/L): </td>
+        <td><input type="text" name="total-solids-1"></td>
+        <td><input type="text" name="total-solids-2"></td>
+        <td><input type="text" name="total-solids-3"></td>
+        <td><input type="text" name="total-solids-4"></td>
+      </tr>
+      <tr>
+        <td>BOD (mg/L): </td>
+        <td><input type="text" name="bod-1"></td>
+        <td><input type="text" name="bod-2"></td>
+        <td><input type="text" name="bod-3"></td>
+        <td><input type="text" name="bod-4"></td>
+      </tr>
+      <tr>
+        <td>Ammonia (mg/L): </td>
+        <td><input type="text" name="ammonia-1"></td>
+        <td><input type="text" name="ammonia-2"></td>
+        <td><input type="text" name="ammonia-3"></td>
+        <td><input type="text" name="ammonia-4"></td>
+      </tr>
+      <tr>
+        <td>Nitrite (mg/L): </td>
+        <td><input type="text" name="nitrite-1"></td>
+        <td><input type="text" name="nitrite-2"></td>
+        <td><input type="text" name="nitrite-3"></td>
+        <td><input type="text" name="nitrite-4"></td>
+      </tr>
+      <tr>
+        <td>Nitrate (mg/L): </td>
+        <td><input type="text" name="nitrate-1"></td>
+        <td><input type="text" name="nitrate-2"></td>
+        <td><input type="text" name="nitrate-3"></td>
+        <td><input type="text" name="nitrate-4"></td>
+      </tr>
+      <tr>
+        <td>Phosphates (mg/L): </td>
+        <td><input type="text" name="phosphates-1"></td>
+        <td><input type="text" name="phosphates-2"></td>
+        <td><input type="text" name="phosphates-3"></td>
+        <td><input type="text" name="phosphates-4"></td>
+      </tr>
+      <tr>
+        <td>Fecal Coliform (CFU/100mL): </td>
+        <td><input type="text" name="fecal-coliform-1"></td>
+        <td><input type="text" name="fecal-coliform-2"></td>
+        <td><input type="text" name="fecal-coliform-3"></td>
+        <td><input type="text" name="fecal-coliform-4"></td>
+      </tr>
+    </table>
+    <br/>Field Notes: <br/>
+    <textarea cols="60" rows="20" name="body"></textarea><br/></br>
+    <input type="submit" value="Submit">
+  </form>
+</body>
