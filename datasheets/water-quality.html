@@ -5,22 +5,22 @@
   <link type="text/css" rel="stylesheet" href="datasheets.css" />
 </head>
 <body>
-  <h1>Create Data: Water Quality</h1>
+  <h1 class="datasheet-title">Create Data: Water Quality</h1>
   <form action="" method="POST">
     <table>
       <tr>
-        <td>
-          Stream/Site name:<br/>
+        <td class="form-cell">
+          <label for="Stream/Site name" class="field-label">Stream/Site name:</label>
           <select name="Stream/Site name" required>
             <option value="A">A</option>
             <option value="B">B</option>
           </select>
           <br/><br/>
-          Date:<br/>
+          <label for="date" class="field-label">Date:</label>
           <input type="date" name="date">
         </td>
-        <td>
-          DEQ Data Quality Level:
+        <td class="form-cell">
+          <label for="DEQ Data Quality Level" class="field-label">DEQ Data Quality Level:</label>
           <select name="DEQ Data Quality Level" required>
             <option value="none">- None -</option>
             <option value="Level A">Level A</option>
@@ -30,24 +30,28 @@
             <option value="Level E">Level E</option>
           </select>
           <br/><br/>
-          Latitude:<br/>
+          <label for="latitude" class="field-label">Latitude:</label>
           <input type="text" name="latitude">
           <br/><br/>
-          Longitude:<br/>
+          <label for="longitude" class="field-label">Longitude:</label>
           <input type="text" name="longitude">
         </td>
       </tr>
+    </table>
+    <br/>
+    <table>
       <tr>
-        Any fish present?
+        <label for="fish" class="field-label">Any fish present?</label>
         <input type="radio" name="fish" value="yes" checked>Yes
         <input type="radio" name="fish" value="no">No
-        | Number of live fish:
+        | <label for="number-live-fish" class="field-label">Number of live fish:</label>
         <input type="text" name="number-live-fish" maxlength="10" size="10" value="0">
-        | Number of dead fish:
-        <input type="text" name="number-live-fish" maxlength="10" size="10" value="0">
+        | <label for="number-dead-fish" class="field-label">Number of dead fish:</label>
+        <input type="text" name="number-dead-fish" maxlength="10" size="10" value="0">
       </tr>
     </table>
-    <table>
+    <br/>
+    <table class="data-table">
       <tr>
         <th></th>
         <th>Sample 1</th>
@@ -61,6 +65,9 @@
         <td><input type="text" name="water-temp-2"></td>
         <td><input type="text" name="water-temp-3"></td>
         <td><input type="text" name="water-temp-4"></td>
+        <label for="water-temp-units" class="field-label">Water Temperature Units</label>
+        <input type="radio" name="water-temp-units" value="F">Fahrenheit
+        <input type="radio" name="water-temp-units" value="C">Celsius
       </tr>
       <tr>
         <td>Air Temperature: </td>
@@ -68,6 +75,9 @@
         <td><input type="text" name="air-temp-2"></td>
         <td><input type="text" name="air-temp-3"></td>
         <td><input type="text" name="air-temp-4"></td>
+        <label for="air-temp-units" class="field-label">Air Temperature Units</label>
+        <input type="radio" name="air-temp-units" value="F">Fahrenheit
+        <input type="radio" name="air-temp-units" value="C">Celsius
       </tr>
       <tr>
         <td>Dissolved Oxygen (mg/L): </td>
@@ -155,8 +165,9 @@
         <td><input type="text" name="fecal-coliform-4"></td>
       </tr>
     </table>
-    <br/>Field Notes: <br/>
-    <textarea cols="60" rows="20" name="body"></textarea><br/></br>
+    <br/>
+    <label for="field-notes" class="field-label">Field Notes: </br></label>
+    <textarea cols="60" rows="20" name="field-notes"></textarea><br/></br>
     <input type="submit" value="Submit">
   </form>
 </body>
