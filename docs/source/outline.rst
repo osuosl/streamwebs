@@ -24,8 +24,8 @@ After login, the user will be taken to a central ``Sites`` page.
 
 .. note::
 
-  Alongside **Users**, basic CRUD will need to be implemented for **Resources**
-  and **Map/Sites** as well.
+    Alongside **Users**, basic CRUD will need to be implemented for **Resources**
+    and **Map/Sites** as well.
 
 Analyze/Learn
 -------------
@@ -35,20 +35,21 @@ The Analyze/Learn page will also redirect the user to ``Sites``.
 Resources
 ---------
 
-Resources will contain all of StreamWebs data sheets along with
+Resources will contain all of StreamWebs' data sheets along with
 external/internal links to supplementary information.
 
 Sites
 -----
+
 If the user has been authenticated, alongside viewing site data, they are
 allowed to ``create`` (a site) and ``record``. Otherwise, they will only
 be able to view current site data.
 
 .. note::
 
-  Currently, the ``create`` option will only ask for the new site's location
-  and type. Before they can start to ``record``, the user will need to select
-  the site as well as a data sheet template.
+    Currently, the ``create`` option will only ask for the new site's location
+    and type. Before they can start to ``record``, the user will need to select
+    the site as well as a data sheet template.
 
 After selecting a specific site, the page will display its site name, an image
 of its location, and a list of different data models (e.g. Water Quality,
@@ -68,5 +69,6 @@ site's data.
 
 .. note:: 
   
-  This is allowable for only one data model at a time. In other words, a user
-  can't compare a site's Water Quality, Riparian, and Canopy Cover all at once.
+    This is allowable for only one data model at a time. In other words, a user
+    can't compare a site's Water Quality, Riparian, and Canopy Cover all at
+    once.
