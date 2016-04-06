@@ -24,13 +24,13 @@ After login, the user will be taken to a central ``Sites`` page.
 
 .. note::
 
-    Alongside **Users**, basic CRUD will need to be implemented for **Resources**
-    and **Map/Sites** as well.
+    Alongside **Users**, basic CRUD will need to be implemented for
+    **Resources** and **Map/Sites** as well.
 
 Analyze/Learn
 -------------
 
-The Analyze/Learn page will also redirect the user to ``Sites``.
+The ``Analyze/Learn`` page will also redirect the user to ``Sites``.
 
 Resources
 ---------
@@ -40,6 +40,14 @@ external/internal links to supplementary information.
 
 Sites
 -----
+
+**Preliminary**
+
+Specific sites should be searchable by name. Alongside that, there should also
+be a map display with markers denoting site locations. Users should be able to
+navigate to a specific site's page by clicking on its marker on the map.
+
+**After Selecting a Site**
 
 If the user has been authenticated, alongside viewing site data, they are
 allowed to ``create`` (a site) and ``record``. Otherwise, they will only
