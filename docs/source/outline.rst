@@ -41,7 +41,7 @@ external/internal links to supplementary information.
 Sites
 -----
 
-**Preliminary**
+**Default**
 
 Specific sites should be searchable by name. Alongside that, there should also
 be a map display with markers denoting site locations. Users should be able to
@@ -50,7 +50,7 @@ navigate to a specific site's page by clicking on its marker on the map.
 **After Selecting a Site**
 
 If the user has been authenticated, alongside viewing site data, they are
-allowed to ``create`` (a site) and ``record``. Otherwise, they will only
+allowed to ``create`` (a site) and ``record`` data. If not, they will only
 be able to view current site data.
 
 .. note::
@@ -77,6 +77,6 @@ site's data.
 
 .. note:: 
   
-    This is allowable for only one data model at a time. In other words, a user
-    can't compare a site's Water Quality, Riparian, and Canopy Cover all at
-    once.
+    ``compare`` is allowable for only one data model at a time. In other words,
+    a user can't compare a site's Water Quality, Riparian, and Canopy Cover all
+    at once.
