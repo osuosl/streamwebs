@@ -58,7 +58,8 @@ about the site in a pop-up (for now, this will be the site name and a small
 image). The user should be able to navigate to the selected site's page by
 clicking on the view button displayed in the pop-up.
 
-For a rough visual representation on how the default display will look, 
+For a rough visual representation on how the default display will look, refer
+to ``sites_default_041116.jpg`` in the ``_static`` directory. 
 
 .. note::
 
