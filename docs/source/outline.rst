@@ -94,11 +94,15 @@ Once the user has selected the format in which they'd like to view the data,
 they will be redirected to a new page showing either data tables or graphs of
 the chosen templates.
 
-Additionally, there will be an option to ``compare`` site data between
-StreamWebs and other resources. Doing so will bring the user to a new page in
-which they can select where this outside data will come from. Once they hit
-compare again, they'll be met with a page displaying multiple graphs of the
-site's data.
+Additionally, there will be an option to ``compare`` data between StreamWebs'
+sites. Eventually, functionality will be added so that users can compare
+StreamWebs site data to other (outside) resources.
+
+So moving on to how ``compare`` function itself works. When the option is
+selected, the user will be brought to a new page in which they can choose the
+available sites to compare against. Once they hit the ``compare`` button again,
+they'll be met with a page displaying multiple graphs of the chosen sites'
+data.
 
 .. note:: 
   
