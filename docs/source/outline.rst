@@ -7,22 +7,22 @@ Project Outline
 Current plan for the StreamWebs rewrite. For a visual representation, 
 refer to `this`_.
 
-For now, the site's homepage will act as a static intro page that contains a
-brief description about what StreamWebs is. Make sure the page is editable for
+For now, the site's homepage will be a static intro that contains a brief
+description about what StreamWebs is. Make sure the page is editable for
 later renditions of the site.
 
 On ``Home``, the user will be able to navigate to one of the
 following pages:
 
-* Login
+* Create Account/Login
 * Sites
 * Resources
 
 .. _this: http://i.imgur.com/XqOmLQn.jpg
 
 
-Login
------
+Create Account/Login
+--------------------
 
 After login, the user will be taken to the central ``Sites`` page.
 
@@ -43,10 +43,22 @@ Sites
 
 **Default Display**
 
-Specific sites should be searchable by name. Alongside that, there should also
-be a map display with markers denoting site locations. Users should be able to
-navigate to a specific site's page by clicking on its marker on the map. 
-Underneath the map, there should be pull down menu listing all the site names.
+There will be three ways in which a user will be able to navigate to a specific
+site.
+
+  #) By name
+  #) Via location marker on the map
+  #) Through a pull down menu
+
+Modes 1 and 3 are self-explanatory. Here's how the 2nd option will work:
+
+The center of the sites page will contain a map display with markers denoting
+site locations. Selecting a marker on the map should display additional info
+about the site in a pop-up (for now, this will be the site name and a small
+image). The user should be able to navigate to the selected site's page by
+clicking on the view button displayed in the pop-up.
+
+For a rough visual representation on how the default display will look, 
 
 .. note::
 
@@ -69,7 +81,7 @@ be able to view current site data.
 **After Selecting a Site**
 
 The page will display the site's name, type, and description alongside an image
-of its location.
+of the location.
 
 Beneath ``Data`` will be a series of checkboxes corresponding to the available
 data templates/sheets (e.g. Water Quality, Canopy Cover, etc) for the site.
