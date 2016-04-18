@@ -22,6 +22,7 @@ following pages:
 
     There are several things that may later be added to the site, so keep the
     following in mind while working on the build/structure of StreamWebs:
+    
     * A built-in internationalization template (for multiple languages)
     * Methods for reporting/tracking user activity
     * A database table containing school names - so that a user can select
