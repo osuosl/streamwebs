@@ -1,4 +1,11 @@
+# Distribution / packaging
 *.pyc
 db.sqlite3
 __pycache__/
 venv/
+
+# Django stuff
+*.log
+
+# NFS write temps
+.nfs*
