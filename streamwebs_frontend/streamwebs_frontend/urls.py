@@ -17,6 +17,6 @@ from django.conf.urls import include, url
 from django.contrib import admin
 
 urlpatterns = [
-    url(r'^streamwebs_api/', include('streamwebs_api.urls')),
+    url(r'^streamwebs/', include('streamwebs.urls')),
     url(r'^admin/', admin.site.urls),
 ]

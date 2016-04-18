@@ -4,4 +4,4 @@ from django.apps import AppConfig
 
 
 class StreamwebsApiConfig(AppConfig):
-    name = 'streamwebs_api'
+    name = 'streamwebs'

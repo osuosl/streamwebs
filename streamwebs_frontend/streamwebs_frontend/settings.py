@@ -50,7 +50,7 @@ MIDDLEWARE_CLASSES = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'streamwebs.urls'
+ROOT_URLCONF = 'streamwebs_frontend.urls'
 
 TEMPLATES = [
     {
@@ -68,7 +68,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'streamwebs.wsgi.application'
+WSGI_APPLICATION = 'streamwebs_frontend.wsgi.application'
 
 
 # Database
