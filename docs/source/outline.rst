@@ -72,8 +72,8 @@ If the user has been authenticated, alongside viewing site data, they are
 allowed to ``create`` (a site) and ``record`` data. If not, they will only
 be able to view current site data.
 
-* ``create`` will require the user to enter the new site's location, type, and
-  a brief description.
+* ``create`` will require the user to enter the new site's name, location,
+  type, and a brief description.
 
 * To ``record`` data, the user will need to select the school (they represent/
   are from), the site they visited, and a data sheet template.
