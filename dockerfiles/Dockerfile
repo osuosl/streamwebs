@@ -3,7 +3,14 @@ RUN yum -y update
 
 RUN yum -y install epel-release
 RUN yum -y groupinstall "Development Tools"
-RUN yum -y install python-pip python34 postgresql-devel python-devel  
+RUN yum -y install gdal-python\
+                   geos-python\
+                   proj\
+                   proj-nad\
+                   postgresql-devel\
+                   python-pip\
+                   python34\
+                   python-devel
 
 COPY ./requirements.txt /opt/requirements.txt
 
