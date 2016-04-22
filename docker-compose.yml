@@ -6,8 +6,11 @@ services:
     build:
       context: .
       dockerfile: ./dockerfiles/Dockerfile
-    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/opt/streamwebs/data
+    working_dir: /opt/streamwebs
+    command: python /opt/streamwebs/manage.py runserver 0.0.0.0:8000
     ports:
       - "8000:8000"
-    depends_on:
+    links:
       - db
