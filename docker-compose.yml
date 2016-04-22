@@ -7,7 +7,7 @@ services:
       context: .
       dockerfile: ./dockerfiles/Dockerfile
     volumes:
-      - .:/opt/streamwebs/data
+      - .:/opt/streamwebs
     working_dir: /opt/streamwebs
     command: python /opt/streamwebs/manage.py runserver 0.0.0.0:8000
     ports:

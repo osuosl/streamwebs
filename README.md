@@ -6,6 +6,6 @@ application.
 
 To set up a dev instance of StreamWebs, run the following:
 ```
-$ docker-compose build
-$ docker-compose run web
+$ sudo docker-compose build
+$ sudo docker-compose run web
 ```
