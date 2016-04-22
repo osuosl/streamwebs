@@ -1,0 +1,22 @@
+@charset "UTF-8";
+
+.datasheet-title {
+  color: rgb(16, 66, 87);
+}
+
+.field-label {
+  font-weight: bold;
+}
+
+.data-table {
+  border: 1px solid black;
+  background-color: rgb(231, 241, 243);
+}
+
+.data-table td {
+  font-weight: bold;
+}
+
+.form-cell {
+  min-width: 300px;
+}
