@@ -5,8 +5,8 @@ RUN yum -y install gdal-python\
                    geos-python\
                    proj\
                    proj-nad\
-                   postgresql-devel\
+                   postgresql-devel
 
-COPY ./requirements.txt /opt/requirements.txt
+COPY ./requirements.txt /opt/
 
 RUN pip install -r /opt/requirements.txt
