@@ -11,7 +11,10 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
-
+   about
+   usage
+   outline
+   dev_docs
 
 Indices and tables
 ==================
