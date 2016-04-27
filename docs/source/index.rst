@@ -13,8 +13,8 @@ Contents:
 
    about
    usage
-   outline
    dev_docs
+   outline
 
 Indices and tables
 ==================
