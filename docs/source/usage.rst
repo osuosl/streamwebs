@@ -15,12 +15,16 @@ Sites
 -----
 
 1. Viewing a site
+^^^^^^^^^^^^^^^^^
 
 2. Creating a new site
+^^^^^^^^^^^^^^^^^^^^^^
 
 3. Recording site data 
+^^^^^^^^^^^^^^^^^^^^^^
 
 Resources
 ---------
 
-Datasheets 
+Datasheets
+^^^^^^^^^^
