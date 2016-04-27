@@ -10,3 +10,5 @@ RUN yum -y install gdal-python\
 COPY ./requirements.txt /opt/
 
 RUN pip install -r /opt/requirements.txt
+
+RUN echo 'source /opt/streamwebs/dockerfiles/startup.sh' >> /root/.bashrc
