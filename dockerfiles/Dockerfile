@@ -7,7 +7,7 @@ RUN yum -y install gdal-python\
                    proj-nad\
                    postgresql-devel
 
-COPY ./requirements.txt /opt/
+COPY requirements.txt /opt/
 
 RUN pip install -r /opt/requirements.txt
 

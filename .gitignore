@@ -9,3 +9,5 @@ venv/
 
 # NFS write temps
 .nfs*
+
+Dockerfile.env

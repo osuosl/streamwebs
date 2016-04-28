@@ -6,7 +6,7 @@ services:
   web:
     build:
       context: .
-      dockerfile: ./dockerfiles/Dockerfile
+      dockerfile: dockerfiles/Dockerfile
     volumes:
       - .:/opt/streamwebs
     working_dir: /opt/streamwebs
