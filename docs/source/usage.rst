@@ -53,6 +53,27 @@ contribute to them as well.
 1. Viewing a Site
 ^^^^^^^^^^^^^^^^^
 
+To browse sites, navigate to the "Sites" tab at the top of the homepage. You
+can find a specific site by:
+
+1. Typing the site name into the search bar
+2. Clicking a location marker on the map 
+3. Selecting the site from the pull down menu
+
+Upon selection, you'll be taken to that site's page, where you can view its 
+details (name, type, description, images, etc.). Under "Data" is a series of 
+checkboxes generated from the site's available data sheets. When you select 
+one of these fields, you can:
+
+* View the site's compiled data in a table, or
+* View the site's compiled data as a graph, or
+* Export the data as CSV file. 
+
+Compare
+"""""""
+You can also use the compare feature once you've selected one of these 
+options.
+
 2. Creating a New Site
 ^^^^^^^^^^^^^^^^^^^^^^
 
