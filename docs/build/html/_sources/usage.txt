@@ -4,12 +4,13 @@
 Using StreamWebs
 ================
 
+StreamWebs allows you to log and browse data for various watershed sites. 
+You don't need an account to view data, but in order to add a new site or 
+record your own data on StreamWebs, you do need to register. 
+Here's how to create an account and get started interacting with StreamWebs. 
+
 Create Account/Login
 --------------------
-
-It is not necessary to create an account on StreamWebs in order to view sites and data collected from those sites-- however, in order to create new sites and record your own data, you must be a registered user. 
-
-1. 
 
 Sites
 -----

@@ -7,7 +7,7 @@ Project Outline
 Current plan for the StreamWebs rewrite. For a visual representation, 
 refer to `this`_.
 
-For now, the site's homepage will be a static intro that contains a brief
+For now, the site's homepage will be a static intro that contains a brief 
 description about what StreamWebs is. Make sure the page is editable for
 later renditions of the site.
 
