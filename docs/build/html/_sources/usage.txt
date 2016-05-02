@@ -71,6 +71,8 @@ one of these fields, you can:
 
 Compare
 """""""
+You can also use the compare feature once you've selected one of these 
+options.
 
 2. Creating a New Site
 ^^^^^^^^^^^^^^^^^^^^^^
