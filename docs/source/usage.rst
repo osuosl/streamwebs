@@ -75,14 +75,14 @@ one of these fields, you can:
 
 The Compare Feature
 """""""""""""""""""
+The "Compare" button on each site's page allows you to compare specific 
+categories of data across multiple sites, or with outside resources online. 
 
-The "Compare" button on each site's page allows you to compare your current 
-site with either other sites on StreamWebs, or with outside resources online. 
-
-1. Click "Compare" on your desired site. You will be taken to another page in 
-   which you can select another site from a list to compare data with.
-2. When you have selected your other site, hit "Compare" again to generate
-   graphs from each site on the same screen.
+1. In the "Compare" section of your current site's page, indicate which type 
+   of data you'd like to examine. Then click "Compare." 
+2. This takes you to a new page with a list of sites that have the category of
+   data you want. Select the sites you'd like to compare your data with. 
+3. Hit "Compare" again to generate graphs from each site on the same screen.
 
 2. Creating a New Site
 ^^^^^^^^^^^^^^^^^^^^^^
