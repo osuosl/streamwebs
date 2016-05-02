@@ -69,12 +69,13 @@ checkboxes generated from the site's available data sheets (for more on data
 sheets, see the "Resources" section of this document). When you select 
 one of these fields, you can:
 
-* View the site's compiled data in a table, or
-* View the site's compiled data as a graph, or
-* Export the data as CSV file. 
+1. View the site's compiled data in a table, or
+2. View the site's compiled data as a graph, or
+3. Export the data as CSV file, or
+4. Compare data between multiple sites.
 
-The Compare Feature
-"""""""""""""""""""
+Comparing Data 
+""""""""""""""
 The "Compare" button on each site's page allows you to compare specific 
 categories of data across multiple sites, or with outside resources online. 
 
@@ -83,6 +84,14 @@ categories of data across multiple sites, or with outside resources online.
 2. This takes you to a new page with a list of sites that have the category of
    data you want. Select the sites you'd like to compare your data with. 
 3. Hit "Compare" again to generate graphs from each site on the same screen.
+
+Site Stewards
+"""""""""""""
+Clicking "Site Stewards" on a site's page will display a list of the schools 
+that have contributed to that site's data record. To filter site data by
+school, select your desired school and type of data. Then you click "Graph,"
+"Table", or "Export" to graph that school's data, table that school's data,
+or export that school's data into a downloadable file, respectively. 
 
 2. Creating a New Site
 ^^^^^^^^^^^^^^^^^^^^^^
