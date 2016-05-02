@@ -56,8 +56,9 @@ contribute to them as well.
 1. Viewing a Site
 ^^^^^^^^^^^^^^^^^
 
-To browse sites, navigate to the "Sites" tab at the top of the homepage. You
-can find a specific site by:
+To browse sites, navigate to the "Sites" tab at the top of the homepage (after
+logging in, you will be taken here automatically). You can find a specific 
+site by:
 
 1. Typing the site name into the search bar
 2. Clicking a location marker on the map 
@@ -95,9 +96,15 @@ or export that school's data into a downloadable file, respectively.
 
 2. Creating a New Site
 ^^^^^^^^^^^^^^^^^^^^^^
+From the central Sites page, you can click "Create" (note that you must be 
+logged in). This takes you to a form where you can enter your site's location,
+type, and description. Submit the form to add your new site to StreamWebs. 
 
 3. Recording Site Data 
 ^^^^^^^^^^^^^^^^^^^^^^
+To start entering data, click "Record" from the central Sites page. You will 
+be asked to select the school you're from, the site you visited, and the data
+sheet template that suits your needs. 
 
 Resources
 ---------
