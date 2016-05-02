@@ -1,0 +1,19 @@
+version: '2'
+services:
+  postgres_host:
+    image: mdillon/postgis
+    env_file: dockerfiles/Dockerfile.env
+  web:
+    build:
+      context: .
+      dockerfile: dockerfiles/Dockerfile
+    volumes:
+      - .:/opt/streamwebs
+    working_dir: /opt/streamwebs
+    command: python /opt/streamwebs/streamwebs_frontend/manage.py runserver 0.0.0.0:8000
+    ports:
+      - "8000:8000"
+    links:
+      - postgres_host
+    env_file:
+      - dockerfiles/Dockerfile.env
