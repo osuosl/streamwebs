@@ -113,6 +113,7 @@ they'll be met with a page displaying multiple graphs of the chosen sites'
 data.
 
 **Future**
+
 The current StreamWebs site allows an authenticated user to upload pictures,
 excel datasheets, and word documents. This functionality is open to all users.
 While not high priority as of now, the ability to upload is something to
