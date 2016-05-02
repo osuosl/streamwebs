@@ -12,7 +12,7 @@ $ sudo docker-compose up
 ```
 
 ``sudo docker-compose build`` will build the necessary containers while
-``sudo docker-compose up`` will run the application.
+``sudo docker-compose up`` runs the application.
 
 If you run into this error:
 ```
