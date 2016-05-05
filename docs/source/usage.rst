@@ -47,8 +47,8 @@ username (or, alternatively, your email address). If you've forgotten your
 password, you can get a new one by clicking the "Request New Password" link. 
 An email will be sent to you with instructions on how to reset your password.
 
-Sites
------
+Project Sites
+-------------
 
 Now that you're logged in, you can not only view data for sites, but 
 contribute to them as well. 
@@ -56,11 +56,11 @@ contribute to them as well.
 1. Viewing a Site
 ^^^^^^^^^^^^^^^^^
 
-To browse sites, navigate to the "Sites" tab at the top of the homepage (after
-logging in, you will be taken here automatically). You can find a specific 
-site by:
+To browse sites, navigate to the "Project Sites" tab at the top of the homepage
+(after logging in, you will be taken here automatically). You can find a
+specific site by:
 
-1. Typing the site name into the search bar
+1. Typing all or part of the site's name into the search bar
 2. Clicking a location marker on the map 
 3. Selecting the site from the pull down menu
 
@@ -102,9 +102,10 @@ type, and description. Submit the form to add your new site to StreamWebs.
 
 3. Recording Site Data 
 ^^^^^^^^^^^^^^^^^^^^^^
-To start entering data, click "Record" from the central Sites page. You will 
-be asked to select the school you're from, the site you visited, and the data
-sheet template that suits your needs. 
+To start entering data, click "Add Data" from the central Sites page. You will 
+be asked to select the school you're from, the class you're in, the site you
+visited, the date you visited the site, and the data sheet template that suits
+your needs. 
 
 Resources
 ---------
