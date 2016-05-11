@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from streamwebs_frontend.streamwebs.models import Site
+from streamwebs.models import Site
 from django.contrib.gis.db import models
 
 
@@ -25,7 +25,7 @@ class SiteTestCase(TestCase):
         model = model.get_model('streamwebs', 'site')
         for field, field_type in self.expected_fields.items():
             self.assertEqual(
-                field_type, type(model._meta.get_field_by_name(field[0]))
+                field_type, type(model._meta.get_field_by_name(field[0])))
 
     def test_no_extra_fields(self):
         fields = Site._meta.get_all_field_names()
@@ -33,7 +33,7 @@ class SiteTestCase(TestCase):
 
     def test_optional_fields(self):
         models.get_model('streamwebs', 'site')
-        for field is self.optional_fields:
+        for field in self.optional_fields:
             self.assertEqual(
                 Site._meta.get_field_by_name(field)[0].blank, True)
 
