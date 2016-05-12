@@ -11,3 +11,5 @@ venv/
 .nfs*
 
 Dockerfile.env
+
+docs/build
