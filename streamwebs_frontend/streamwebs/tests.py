@@ -1,12 +1,17 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
 
-from streamwebs.models import UserProfile
+#from streamwebs.models import UserProfile
 
 # Create your tests here.
 
 class UserTestCase(TestCase):
 
+    def test_UserProfile_objs_exist(self):
+        profile = UserProfile.objects.create('School', birthdate=date(1999, 4,
+            1))
+        self.assertEqual(('profile' in locals()), True)
+        
     def test_User_UserProfile_OneToOne(self):
         django_user = User.objects.create_user('djangoUser',
                 'djangouser@gmail.com', 'imgeneric')
@@ -26,5 +31,4 @@ class UserTestCase(TestCase):
         self.assertEqual(custom_user.last_name, 'User')
         
         self.assertEqual(django_user.school, 'Custom School')
-        self.assertEqual(django_user.birthdate, date(1990, 5, 12))
-
+        self.assertEqual(django_user.birthdate, date(1990, 5, 12)) 
