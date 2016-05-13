@@ -28,4 +28,15 @@ fixes issue #xx
 2. Do Y.
 3. See Z.
 
+### Expected Output.
+<!--
+  Please insert either a description of what should happen when testing
+  your PR or a code-block with terminal output.
+-->
+
+```
+$ make test
+[... test output ...]
+```
+
 @osuosl/devs
