@@ -8,7 +8,7 @@ fixes issue #xx
 
 ## Changes in this PR.
 <!--
-  Please include a lsit of all things this PR will accomplish
+  Please include a list of all things this PR will accomplish
   Use the checkbox syntax to show what is done and what is yet to be completed.
   This gives context to the diff.
 -->
