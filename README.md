@@ -29,3 +29,13 @@ standard "django app is running" output. Just know that it is.
 
 You can check that this is true by going to ``localhost:8000/streamwebs`` in
 your browser.
+
+
+If you'd like to access the Django admin panel, the username and password to do
+so is:
+
+* username -- streamwebs
+* password -- SWpassword
+
+You can login to the admin panel at ``localhost:8000/admin``; make sure to run
+``docker-compose up`` before doing so!
