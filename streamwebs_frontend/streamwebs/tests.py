@@ -37,13 +37,13 @@ class UserTestCase(TestCase):
 
     def test_younger_than_13(self):
         now = datetime.datetime.now()
-        bad_year_date = datetime.date(now.year - 12, now.month, now.day)
+        bad_year_date = datetime.date(now.year-12, now.month, now.day)
         self.assertEqual(is_valid_birthdate(bad_year_date), False)
 
-        bad_month_date = datetime.date(now.year - 13, now.month + 1, now.day)
+        bad_month_date = datetime.date(now.year-13, now.month + 1, now.day)
         self.assertEqual(is_valid_birthdate(bad_month_date), False)
 
-        bad_day_date = datetime.date(now.year - 13, now.month, now.day+1)
+        bad_day_date = datetime.date(now.year-13, now.month, now.day+1)
         self.assertEqual(is_valid_birthdate(bad_day_date), False)
 
     def test_13_or_older(self):
@@ -51,5 +51,5 @@ class UserTestCase(TestCase):
         thirteen_today = datetime.date(now.year-13, now.month, now.day)
         self.assertEqual(is_valid_birthdate(thirteen_today), True)
 
-        older_than_13 = datetime.date(now.year - 14, now.month, now.day)
+        older_than_13 = datetime.date(now.year-14, now.month, now.day)
         self.assertEqual(is_valid_birthdate(older_than_13), True)
