@@ -1,0 +1,131 @@
+{% extends "streamwebs/base.html" %}
+
+{% block title %}Sites - Streamwebs{% endblock %}
+
+{% block scripts %}
+<script src="http://maps.google.com/maps/api/js"></script>
+<script type="application/javascript">
+    var dropdownShown = 0;
+    function search() {
+        console.log('Searched!');
+        var search_value = $('#search_bar').val().toLowerCase();
+        var stewards = $('#steward_box').prop('checked');
+        var salmon = $('#salmon_box').prop('checked');
+        var available = $('#available_box').prop('checked');
+        var none = !stewards && !salmon && !available;
+        dropdownShown = 0;
+        $('.search_item').each(function() {
+            var name = $(this).children().first().text().toLowerCase();
+            var search_point = $('#search_bar').offset().top + parseInt($('#search_bar').css('height'));
+            if ((none ||
+                (stewards && $(this).hasClass('steward')) ||
+                (salmon && $(this).hasClass('salmon')) ||
+                (available && $(this).hasClass('available'))) &&
+            search_value && name.includes(search_value)) {
+                $(this).show();
+                $(this).css("top", search_point + (dropdownShown * 40));
+                $(this).css("left", $('#search_bar').offset().left);
+                dropdownShown += 1;
+            } else {
+                $(this).hide();
+            }
+        });
+    }
+
+    function submit_search(ptag) {
+        var site = $(ptag).attr('name');
+        console.log('Going to site ' + site);
+    }
+
+    function submit_map(site) {
+        console.log('Going to site ' + site);
+    }
+
+    function submit_select() {
+        var site = $('#site_list').val();
+        console.log('Going to site ' + site);
+    }
+
+    var map, sites = [];
+    {% for site in sites %}
+    sites.push({
+        slug: "{{site.slug}}",
+        name: "{{site.name}}",
+        lat: {{site.location.y}},
+        lng: {{site.location.x}},
+    });
+    {% endfor %}
+
+    function initialize() {
+        map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 7,
+            center: new google.maps.LatLng(44, -122),
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+        });
+
+        var latSum = 0, lngSum = 0;
+
+        for (let site of sites) {
+            site.marker = new google.maps.Marker({
+                map: map,
+                position: new google.maps.LatLng(site.lat, site.lng),
+                title: site.name,
+            });
+            site.infoWindow = new google.maps.InfoWindow({
+                content: '<p><a href="javascript:submit_map(\'' + site.slug + '\')">' + site.name + '</a></p>',
+            });
+            site.marker.addListener('click', () => {
+                for (let otherSite of sites) {
+                    otherSite.infoWindow.close();
+                }
+                site.infoWindow.open(map, site.marker);
+            });
+
+            latSum += site.lat;
+            lngSum += site.lng;
+        }
+
+        map.setCenter(new google.maps.LatLng(latSum / sites.length,
+                                             lngSum / sites.length));
+    }
+
+    $(document).ready(function () {
+        initialize();
+    });
+</script>
+{% endblock %}
+
+{% block body_title %}Sites{% endblock %}
+
+{% block content %}
+    <div id="site_search">
+        <label for="search_bar">Search sites: </label>
+        <input type="search" id="search_bar" name="search" oninput="search()" />
+        <label for="steward_box">Student Stewardship Project</label>
+        <input type="checkbox" id="steward_box" name="stewardship" value="steward" onchange="search()" />
+        <label for="salmon_box">Salmon Watch</label>
+        <input type="checkbox" id="salmon_box" name="salmon_watch" value="salmon" onchange="search()" />
+        <label for="available_box">Available Project</label>
+        <input type="checkbox" id="available_box" name="available" value="available" onchange="search()" />
+        <div id="search_dropdown">
+        {% for site in sites %}
+            <div name="{{site.slug}}" class="search_item {{site.site_type}}" style="display: none">
+                <p name="{{site.slug}}" onclick="submit_search(this)">{{site.name}}</p>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+
+    <div id="site_map">
+        <div id="map"></div>
+    </div>
+
+    <div id="site_select">
+        <select id="site_list" name="site" required="true">
+        {% for site in sites %}
+            <option value="{{site.slug}}">{{site.name}}</option>
+        {% endfor %}
+        </select>
+        <input type="submit" name="Submit" class="Submit" value="Select" onclick="submit_select()" />
+    </div>
+{% endblock %}
