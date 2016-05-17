@@ -1,5 +1,7 @@
 {% extends "streamwebs/base.html" %}
 
+{% load staticfiles %}
+
 {% block title %}Sites - Streamwebs{% endblock %}
 
 {% block scripts %}
@@ -51,10 +53,53 @@
     sites.push({
         slug: "{{site.slug}}",
         name: "{{site.name}}",
+        type: "{{site.site_type}}",
         lat: {{site.location.y}},
         lng: {{site.location.x}},
     });
     {% endfor %}
+
+    /*var icons = {
+        steward: {
+            url: "{% static 'streamwebs/images/steward.png' %}",
+            scaledSize: new google.maps.Size(20, 31),
+            size: new google.maps.Size(39, 61),
+        },
+        salmon: {
+            url: "{% static 'streamwebs/images/salmon.png' %}",
+            scaledSize: new google.maps.Size(20, 31),
+            size: new google.maps.Size(39, 61),
+        },
+        available: {
+            url: "{% static 'streamwebs/images/available.png' %}",
+            scaledSize: new google.maps.Size(20, 31),
+            size: new google.maps.Size(39, 61),
+        },
+    };*/
+    var markers = {
+        steward: {
+            path: "m 0,0 c -7.08163,-14.59707 -5.50487,-20.97294 5.18667,-20.97294 10.69154,0 12.2683,6.37587 5.18667,20.97294 -2.4156,4.97919 -4.74961,9.05306 -5.18667,9.05306 -0.43706,0 -2.77107,-4.07387 -5.18667,-9.05306 z",
+            anchor: google.maps.Point(0,0),
+            fillColor: "#0000FF",
+            fillOpacity: 1,
+            strokeColor: "#000000",
+            strokeWeight: 2,
+        },
+        salmon: {
+            path: "m 0,0 c -7.08163,-14.59707 -5.50487,-20.97294 5.18667,-20.97294 10.69154,0 12.2683,6.37587 5.18667,20.97294 -2.4156,4.97919 -4.74961,9.05306 -5.18667,9.05306 -0.43706,0 -2.77107,-4.07387 -5.18667,-9.05306 z",
+            fillColor: "#FF7F00",
+            fillOpacity: 1,
+            strokeColor: "#000000",
+            strokeWeight: 2,
+        },
+        available: {
+            path: "m 0,0 c -7.08163,-14.59707 -5.50487,-20.97294 5.18667,-20.97294 10.69154,0 12.2683,6.37587 5.18667,20.97294 -2.4156,4.97919 -4.74961,9.05306 -5.18667,9.05306 -0.43706,0 -2.77107,-4.07387 -5.18667,-9.05306 z",
+            fillColor: "#FF0000",
+            fillOpacity: 1,
+            strokeColor: "#000000",
+            strokeWeight: 2,
+        },
+    }
 
     function initialize() {
         map = new google.maps.Map(document.getElementById('map'), {
@@ -70,6 +115,8 @@
                 map: map,
                 position: new google.maps.LatLng(site.lat, site.lng),
                 title: site.name,
+                //icon: icons[site.type],
+                icon: markers[site.type],
             });
             site.infoWindow = new google.maps.InfoWindow({
                 content: '<p><a href="javascript:submit_map(\'' + site.slug + '\')">' + site.name + '</a></p>',
