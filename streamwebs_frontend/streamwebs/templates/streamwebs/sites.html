@@ -34,18 +34,22 @@
         });
     }
 
+    function goto(slug) {
+        console.log('Going to site ' + slug);
+    }
+
     function submit_search(ptag) {
         var site = $(ptag).attr('name');
-        console.log('Going to site ' + site);
+        goto(site);
     }
 
     function submit_map(site) {
-        console.log('Going to site ' + site);
+        goto(site);
     }
 
     function submit_select() {
         var site = $('#site_list').val();
-        console.log('Going to site ' + site);
+        goto(site);
     }
 
     var map, sites = [];
