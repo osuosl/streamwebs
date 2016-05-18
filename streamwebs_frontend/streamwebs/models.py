@@ -1,10 +1,10 @@
 from __future__ import unicode_literals
 
-# import datetime
+import datetime
 
 from django.contrib.gis.db import models
 from django.utils.encoding import python_2_unicode_compatible
-
+from django.contrib.auth.models import User
 
 @python_2_unicode_compatible
 class Site(models.Model):
@@ -28,3 +28,16 @@ class Site(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, related_name='profile')
+    school = models.CharField(max_length=140, blank=True)
+    birthdate = models.DateField('birthdate')
+
+    def is_valid_birthdate(self):
+        if self.birthdate.year > 2003:
+            return False
+
+    def __unicode__(self):
+        return self.user.username
