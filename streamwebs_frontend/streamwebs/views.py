@@ -1,4 +1,6 @@
-# from django.shortcuts import render
+# coding=UTF-8
+
+from django.shortcuts import render
 from django.http import HttpResponse
 
 
@@ -20,7 +22,8 @@ def sites(request):
             'name': 'Test 2',
             'slug': 'test2',
             'site_type': 'salmon',
-            'location': {'x': -121.78305424, 'y': 44.74928593}
+            'location': {'x': -121.78305424, 'y': 44.74928593},
+            'description': 'Site with a description',
         },
         {
             'name': 'Other One',
@@ -32,7 +35,8 @@ def sites(request):
             'name': 'Me too',
             'slug': 'me2',
             'site_type': 'salmon',
-            'location': {'x': -121.93729485, 'y': 45.62930212}
+            'location': {'x': -121.93729485, 'y': 45.62930212},
+            'description': u'Embedded <b>tags</b> & unicode‽ &#x203C;'
         }
     ]
     return render(request, 'streamwebs/sites.html', {
