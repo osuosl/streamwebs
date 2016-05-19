@@ -9,9 +9,10 @@ from streamwebs.models import UserProfile
 class UserTestCase(TestCase):
 
     def test_UserProfile_objs_exist(self):
-        profile = UserProfile.objects.create(school='School', birthdate=datetime.date(1999, 4, 1))
+#        profile = UserProfile.objects.create(school='School', birthdate=datetime.date(1999, 4, 1))
+        profile = UserProfile.objects.create(school='test school')
         self.assertEqual(('profile' in locals()), True)
-        
+             
 #    def test_User_UserProfile_OneToOne(self):
 #        django_user = User.objects.create_user('djangoUser','djangouser@gmail.com', 'imgeneric')
 #        django_user.first_name = 'Django'
