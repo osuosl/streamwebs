@@ -26,13 +26,21 @@ class UserTestCase(TestCase):
         }
 
     def test_UserProfile_objs_exist(self):
-        #profile = UserProfile.objects.create(school='School', birthdate=datetime.date(1999, 4, 1))
-        #print profile.id, profile.school, profile.birthdate, profile.user_id
-        #self.assertEqual(('profile' in locals()), True)
-        profile = apps.get_model('streamwebs', 'userprofile')
-        for field, field_type in self.profile_fields.items():
-            self.assertEqual(field_type, type(profile._meta.get_field(field)))
+        user = User.objects.create_user('user', 'example@gmail.com', 'password')
+        profile = UserProfile.objects.create(user=user, school='a', birthdate=datetime.date(1999, 4, 1))
+        self.assertEqual(profile.school, 'a')
+        self.assertEqual(profile.birthdate, datetime.date(1999, 4, 1))
 
+    def test_bad_school(self):
+        bad_sch_user = User.objects.create_user('bad_sch', 'user@example.com', 'password')
+        bad_sch_prof = UserProfile.objects.create(user=bad_sch_user, school='d', birthdate=datetime.date(1999, 4, 2))
+        self.assertFalse(bad_sch_prof.school in bad_sch_prof.SCHOOL_CHOICES)
+
+    def test_good_school(self):
+        good_sch_user = User.objects.create_user('good_sch', 'user@example.com', 'password')
+        good_sch_prof = UserProfile.objects.create(user=good_sch_user, school='b', birthdate=datetime.date(1999, 4, 2))
+        self.assertIn(good_sch_prof.school, dict(good_sch_prof.SCHOOL_CHOICES))
+        
 #    def test_User_UserProfile_OneToOne(self):
 #        django_user = User.objects.create_user('djangoUser','djangouser@gmail.com', 'imgeneric')
 #        django_user.first_name = 'Django'

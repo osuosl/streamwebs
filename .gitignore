@@ -13,3 +13,5 @@ venv/
 Dockerfile.env
 
 docs/build
+
+*.swp

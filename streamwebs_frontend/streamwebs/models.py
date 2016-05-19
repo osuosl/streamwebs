@@ -40,11 +40,10 @@ class UserProfile(models.Model):
       (SCHOOL_C, 'School C'),
     )
 
-    user = models.OneToOneField(User, related_name='profile')
-    #school = models.CharField(max_length=140, blank=True)
-    school = models.CharField(max_length = 1, choices=SCHOOL_CHOICES)
-    birthdate = models.DateField('birthdate')
-
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    school = models.CharField(max_length = 1, choices=SCHOOL_CHOICES, default='')
+    birthdate = models.DateField(default=(datetime.date(1999, 4, 1)))
+ 
 #    def is_valid_birthdate(self):
 #        if self.birthdate.year > 2003:
 #            return False
