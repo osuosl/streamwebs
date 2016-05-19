@@ -1,0 +1,6 @@
+{
+  "name": "streamwebs",
+  "dependencies": {
+    "jquery": "^2.2.3"
+  }
+}

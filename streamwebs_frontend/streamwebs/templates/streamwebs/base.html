@@ -1,4 +1,5 @@
 {% load staticfiles %}
+{% load staticfiles pipeline %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -7,7 +8,7 @@
     <title>{% block title %}Streamwebs{% endblock %}</title>
     <link rel="stylesheet" type="text/css" href="{% static 'streamwebs/style.css' %}" />
     <link rel="shortcut icon" href="{% static 'streamwebs/images/favicon.ico' %}" />
-    <script type="application/javascript" src="{% static 'streamwebs/jquery.js' %}"></script>
+    {% javascript 'libraries' %}
     {% block scripts %}{% endblock %}
 </head>
 
