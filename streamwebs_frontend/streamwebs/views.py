@@ -42,3 +42,7 @@ def sites(request):
     return render(request, 'streamwebs/sites.html', {
         'sites': site_list,
     })
+
+
+def site(request, site_slug):
+    return HttpResponse('Viewing page for site %s' % site_slug)
