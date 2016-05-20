@@ -11,3 +11,4 @@ pep8
 psycopg2
 requests
 wsgiref
+flake8
