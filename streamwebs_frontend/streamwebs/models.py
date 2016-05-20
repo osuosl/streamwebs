@@ -59,7 +59,7 @@ class UserProfile(models.Model):
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     school = models.CharField(max_length = 1, choices=SCHOOL_CHOICES, default='', validators=[validate_UserProfile_school])
-    birthdate = models.DateField(default=(datetime.date(1999, 4, 1)), validators=[validate_UserProfile_birthdate])
+    birthdate = models.DateField(validators=[validate_UserProfile_birthdate])
 
     def __unicode__(self):
         return self.user.username
