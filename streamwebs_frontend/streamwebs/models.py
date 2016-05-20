@@ -5,6 +5,8 @@ import datetime
 from django.contrib.gis.db import models
 from django.utils.encoding import python_2_unicode_compatible
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
+from django.utils.translation import ugettext_lazy as _
 
 @python_2_unicode_compatible
 class Site(models.Model):
@@ -30,6 +32,21 @@ class Site(models.Model):
         return self.name
 
 
+def validate_UserProfile_school(profile):
+    if not profile.school in dict(profile.SCHOOL_CHOICES):
+        raise ValidationError('That school is not in the list.')
+
+def validate_UserProfile_birthdate(profile):
+    today = datetime.datetime.now() 
+    if profile.birthdate.year > today.year - 13:
+        raise ValidationError('You must have been born before %s' % (today.year-13))
+    elif profile.birthdate.year == today.year - 13:
+        if profile.birthdate.month > today.month: 
+            raise ValidationError('You are not yet 13 (month)')
+        elif profile.birthdate.month == today.month:
+            if profile.birthdate.day > today.day:
+                raise ValidationError('You are not yet 13 (days)')
+            
 class UserProfile(models.Model):
     SCHOOL_A = 'a'
     SCHOOL_B = 'b'
@@ -41,12 +58,8 @@ class UserProfile(models.Model):
     )
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    school = models.CharField(max_length = 1, choices=SCHOOL_CHOICES, default='')
-    birthdate = models.DateField(default=(datetime.date(1999, 4, 1)))
- 
-#    def is_valid_birthdate(self):
-#        if self.birthdate.year > 2003:
-#            return False
+    school = models.CharField(max_length = 1, choices=SCHOOL_CHOICES, default='', validators=[validate_UserProfile_school])
+    birthdate = models.DateField(default=(datetime.date(1999, 4, 1)), validators=[validate_UserProfile_birthdate])
 
     def __unicode__(self):
         return self.user.username
