@@ -1,16 +1,23 @@
 language: python
-sudo: required
+sudo: false
 python:
   - "2.7"
 
-# command to install dependencies
+env:
+  - POSTGRES_DB=streamwebs POSTGRES_USER=postgres POSTGRES_PASSWORD=postgres_pw PG_HOST=localhost
+
 install:
   - "pip install -r requirements.txt"
 
-script: ./runtests.sh
+script:
+  - flake8 streamwebs_frontend/ --exclude streamwebs_frontend/streamwebs/migrations
+  - ./runtests.sh
+
 addons:
   postgresql: "9.3"
+
 before_script:
-  - flake8 streamwebs_frontend/ --exclude streamwebs_frontend/streamwebs/migrations
-  - psql -c "CREATE DATABASE streamwebs;" -U postgres
-  - psql -U postgres -c "CREATE EXTENSION postgis;" streamwebs
+#  - sudo postgres 
+#  - psql -h $PG_HOST -d $POSTGRES_DB -U $POSTGRES_USER --no-password
+  - psql -c 'create database streamwebs;' -U postgres
+  - psql -U postgres -c "create extension postgis"
