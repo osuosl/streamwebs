@@ -1,8 +1,7 @@
 from __future__ import unicode_literals
 
-import datetime
+# import datetime
 
-from django.db import models
 from django.contrib.gis.db import models
 from django.utils.encoding import python_2_unicode_compatible
 
@@ -23,10 +22,9 @@ class Site(models.Model):
     # Geo Django fields to store a point
     location = models.PointField(null=True, blank=True)
     objects = models.GeoManager()
-    
+
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.name
-

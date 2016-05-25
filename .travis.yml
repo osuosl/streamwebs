@@ -6,10 +6,11 @@ python:
 # command to install dependencies
 install:
   - "pip install -r requirements.txt"
+
 script: ./runtests.sh
 addons:
   postgresql: "9.3"
 before_script:
-  - flake8 streamwebs_frontend/
+  - flake8 streamwebs_frontend/ --exclude streamwebs_frontend/streamwebs/migrations
   - psql -c "CREATE DATABASE streamwebs;" -U postgres
   - psql -U postgres -c "CREATE EXTENSION postgis;" streamwebs
