@@ -1,5 +1,5 @@
 from django.test import TestCase
-
+from __future__ import unicode_literals
 import datetime
 from django.contrib.auth.models import User
 from django.contrib.gis.db import models
@@ -13,19 +13,6 @@ from streamwebs.models import UserProfile, validate_UserProfile_school, validate
 # Create your tests here.
 
 class UserTestCase(TestCase):
-
-    def setUp(self):
-#        self.user = User.objects.create_user(username='testuser',
-#                        email='testuser@example.com', password='2cool4U',
-#                        school='School A', birthdate=datetime.date(1999, 4, 1))
-        self.profile_fields = {
-            #'username': models.CharField,
-            #'password': models.CharField,
-            #'email': models.EmailField,
-            'school': models.CharField,
-            'birthdate': models.DateField,
-            'id': models.AutoField
-        }
 
     def test_UserProfile_objs_exist(self):
         user = User.objects.create_user('user', 'example@gmail.com', 'password')
