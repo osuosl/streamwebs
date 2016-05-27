@@ -10,8 +10,7 @@ class UserFormTestCase(TestCase):
 
     def test_UserForm_fields_exist(self): 
         user_form = UserForm()
-        for i in range(len(self.expected_fields)):
-            self.assertEqual(user_form.Meta.fields[i], self.expected_fields[i])
+        self.assertEqual(set(user_form.Meta.fields), set(self.expected_fields))
 
 class UserProfileFormTestCase(TestCase):
 
