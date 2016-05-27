@@ -37,15 +37,15 @@ def validate_UserProfile_school(school):
     if not school in dict(settings.SCHOOL_CHOICES):
         raise ValidationError('That school is not in the list.')
 
-def validate_UserProfile_birthdate(profile):
+def validate_UserProfile_birthdate(birthdate):
     today = datetime.datetime.now() 
-    if profile.birthdate.year > today.year - 13:
+    if birthdate.year > today.year - 13:
         raise ValidationError('You must have been born before %s' % (today.year-13))
-    elif profile.birthdate.year == today.year - 13:
-        if profile.birthdate.month > today.month: 
+    elif birthdate.year == today.year - 13:
+        if birthdate.month > today.month: 
             raise ValidationError('You are not yet 13 (month)')
-        elif profile.birthdate.month == today.month:
-            if profile.birthdate.day > today.day:
+        elif birthdate.month == today.month:
+            if birthdate.day > today.day:
                 raise ValidationError('You are not yet 13 (days)')
             
 class UserProfile(models.Model):

@@ -46,27 +46,27 @@ class UserTestCase(TestCase):
         bad_yr_user = User.objects.create_user('bad_yr', 'user@example.com', 'password')
         bad_yr_prof = UserProfile.objects.create(user=bad_yr_user, school='b', birthdate=datetime.date(today.year - 12, 4, 2))
         with self.assertRaises(ValidationError):
-            validate_UserProfile_birthdate(bad_yr_prof)
+            validate_UserProfile_birthdate(bad_yr_prof.birthdate)
 
     def test_edge_year_bad_month(self):
         today = datetime.datetime.now()
         bad_month_user = User.objects.create_user('bad_month', 'user@example.com', 'password')
         bad_month_prof = UserProfile.objects.create(user=bad_month_user, school='b', birthdate=datetime.date(today.year - 13, today.month + 1, 2))
         with self.assertRaises(ValidationError):
-            validate_UserProfile_birthdate(bad_month_prof)
+            validate_UserProfile_birthdate(bad_month_prof.birthdate)
 
     def test_edge_year_edge_month_bad_day(self):
         today = datetime.datetime.now()
         bad_day_user = User.objects.create_user('bad_day', 'user@example.com', 'password')
         bad_day_prof = UserProfile.objects.create(user=bad_day_user, school='b', birthdate=datetime.date(today.year-13, today.month, today.day+1))
         with self.assertRaises(ValidationError):
-            validate_UserProfile_birthdate(bad_day_prof)
+            validate_UserProfile_birthdate(bad_day_prof.birthdate)
 
     def test_thirteen_today(self):
         today = datetime.datetime.now()
         user13 = User.objects.create_user('user13', 'user@example.com', 'password') 
         profile13 = UserProfile.objects.create(user=user13, school='a', birthdate=datetime.date(today.year-13, today.month, today.day))
         try:
-            validate_UserProfile_birthdate(profile13)
+            validate_UserProfile_birthdate(profile13.birthdate)
         except:
             self.fail('An exception was raised.')
