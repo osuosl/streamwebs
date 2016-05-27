@@ -7,6 +7,7 @@ from django.utils.encoding import python_2_unicode_compatible
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
+from django.conf import settings
 
 @python_2_unicode_compatible
 class Site(models.Model):
@@ -32,8 +33,8 @@ class Site(models.Model):
         return self.name
 
 
-def validate_UserProfile_school(profile):
-    if not profile.school in dict(profile.SCHOOL_CHOICES):
+def validate_UserProfile_school(school):
+    if not school in dict(settings.SCHOOL_CHOICES):
         raise ValidationError('That school is not in the list.')
 
 def validate_UserProfile_birthdate(profile):
@@ -48,17 +49,17 @@ def validate_UserProfile_birthdate(profile):
                 raise ValidationError('You are not yet 13 (days)')
             
 class UserProfile(models.Model):
-    SCHOOL_A = 'a'
-    SCHOOL_B = 'b'
-    SCHOOL_C = 'c'
-    SCHOOL_CHOICES = (
-      (SCHOOL_A, 'School A'),
-      (SCHOOL_B, 'School B'),
-      (SCHOOL_C, 'School C'),
-    )
+#    SCHOOL_A = 'a'
+#    SCHOOL_B = 'b'
+#    SCHOOL_C = 'c'
+#    SCHOOL_CHOICES = (
+#      (SCHOOL_A, 'School A'),
+#      (SCHOOL_B, 'School B'),
+#      (SCHOOL_C, 'School C'),
+#    )
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    school = models.CharField(max_length = 1, choices=SCHOOL_CHOICES, default='', validators=[validate_UserProfile_school])
+    school = models.CharField(max_length = 1, choices=settings.SCHOOL_CHOICES, default='', validators=[validate_UserProfile_school])
     birthdate = models.DateField(validators=[validate_UserProfile_birthdate])
 
     def __unicode__(self):

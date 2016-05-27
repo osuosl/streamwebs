@@ -31,13 +31,13 @@ class UserTestCase(TestCase):
         bad_sch_user = User.objects.create_user('bad_sch', 'user@example.com', 'password')
         bad_sch_prof = UserProfile.objects.create(user=bad_sch_user, school='d', birthdate=datetime.date(1999, 4, 2))
         with self.assertRaises(ValidationError):
-            validate_UserProfile_school(bad_sch_prof)
+            validate_UserProfile_school(bad_sch_prof.school)
 
     def test_school_is_in_list(self):
         good_sch_user = User.objects.create_user('good_sch', 'user@example.com', 'password')
         good_sch_prof = UserProfile.objects.create(user=good_sch_user, school='b', birthdate=datetime.date(1999, 4, 2))
         try:
-            validate_UserProfile_school(good_sch_prof)
+            validate_UserProfile_school(good_sch_prof.school)
         except:
             self.fail('An exception was raised.')
 
