@@ -17,7 +17,5 @@ addons:
   postgresql: "9.3"
 
 before_script:
-#  - sudo postgres 
-#  - psql -h $PG_HOST -d $POSTGRES_DB -U $POSTGRES_USER --no-password
   - psql -c 'create database streamwebs;' -U postgres
   - psql -U postgres -c "create extension postgis"
