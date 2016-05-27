@@ -2,11 +2,11 @@
 <html>
     
     {% if registered %}
-    <strong>"You have successfully created a StreamWebs account."</strong>
+    <strong>You have successfully created a StreamWebs account.</strong>
     <a href='/streamwebs/'>Return to home</a><br />
 
     {% else %}
-    <strong>"Create an account."</strong><br />
+    <strong>Create an account.</strong><br />
 
     <form id='user_form' method='post' action='/streamwebs/register/'>
         {% csrf_token %}

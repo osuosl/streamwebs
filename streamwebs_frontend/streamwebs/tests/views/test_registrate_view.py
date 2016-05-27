@@ -29,8 +29,9 @@ class RegistrateTestCase(TestCase):
         """
         When user submits a good form, the user should see a success message
         """
-        user_form_response = self.client.post(reverse('streamwebs:register'), {'username': 'john', 'email': 'john@example.com', 'password': 'johniscool', 'first_name': 'John', 'last_name': 'Johnson'})
-        profile_form_response = self.client.post(reverse('streamwebs:register'), {'school': ('a'), 'birthdate': '1999-01-01'})
+        user_form_response = self.client.post(reverse('streamwebs:register'), {'username': 'john', 'email': 'john@example.com', 'password': 'johniscool', 'first_name': 'John', 'last_name': 'Johnson', 'school': ('a'), 'birthdate': '1995-11-10'})
+
+ #       profile_form_response = self.client.post(reverse('streamwebs:register'), {'school': ('a'), 'birthdate': '1995-11-10'})
         self.assertEqual(user_form_response.status_code, 200)
-        self.assertEqual(profile_form_response.status_code, 200)
-        self.assertContains(user_form_response, 'You have successfully created a StreamWebs account.')
+  #      self.assertEqual(profile_form_response.status_code, 200)
+        self.assertTrue(user_form_response.context['registered'])
