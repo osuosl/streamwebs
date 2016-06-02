@@ -10,6 +10,7 @@ admin.site.register(Site)
 # The following will add a profile model's files to the user page in the
 # admin panel
 
+
 # Define an inline admin descriptor for normal profile model
 # which acts a bit like a singleton
 # refed from: https://docs.djangoproject.com/en/1.9/topics/auth/customizing/
@@ -18,9 +19,10 @@ class UserProfileInline(admin.StackedInline):
     can_delete = False
     verbose_name_plural = 'profiles'
 
+
 # Define a new User admin
 class UserAdmin(BaseUserAdmin):
-  inlines = (UserProfileInline, )
+    inlines = (UserProfileInline, )
 
 # Re-register UserAdmin
 admin.site.unregister(User)
