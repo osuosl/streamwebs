@@ -8,7 +8,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 # from django.utils.translation import ugettext_lazy as _
 
-from streamwebs.models import (
+from streamwebs.models import(
     UserProfile,
     validate_UserProfile_school,
     validate_UserProfile_birthdate

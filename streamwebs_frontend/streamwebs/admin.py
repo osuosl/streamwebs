@@ -7,10 +7,10 @@ from models import UserProfile
 from .models import Site
 
 admin.site.register(Site)
+
+
 # The following will add a profile model's files to the user page in the
 # admin panel
-
-
 # Define an inline admin descriptor for normal profile model
 # which acts a bit like a singleton
 # refed from: https://docs.djangoproject.com/en/1.9/topics/auth/customizing/

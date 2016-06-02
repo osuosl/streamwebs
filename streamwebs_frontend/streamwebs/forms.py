@@ -3,6 +3,7 @@ from streamwebs.models import UserProfile
 from django.contrib.auth.models import User
 from django import forms
 
+
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
 
@@ -12,7 +13,6 @@ class UserForm(forms.ModelForm):
 
 
 class UserProfileForm(forms.ModelForm):
-    
-    class Meta: 
+    class Meta:
         model = UserProfile
         fields = ('school', 'birthdate')

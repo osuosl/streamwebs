@@ -49,6 +49,7 @@ def sites(request):
 def site(request, site_slug):
     return HttpResponse('Viewing page for site %s' % site_slug)
 
+
 def register(request):
     context = RequestContext(request)
     registered = False
@@ -65,7 +66,7 @@ def register(request):
             profile.user = user
             profile.save()
             registered = True
-        
+
         else:
             print user_form.errors, profile_form.errors
 
@@ -73,14 +74,13 @@ def register(request):
         user_form = UserForm()
         profile_form = UserProfileForm()
 
-
-    context.push({'user_form': user_form, 'profile_form': profile_form, 'registered': registered})
-
-    print context
+    context.push(
+            {
+                'user_form': user_form,
+                'profile_form': profile_form,
+                'registered': registered
+            }
+    )
 
     return render_to_response(
             'streamwebs/register.html', context)
-
-#    return render_to_response(
-#        'streamwebs/register.html',
-#        {'registered': registered}, context)
