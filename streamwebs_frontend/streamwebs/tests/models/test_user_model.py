@@ -138,7 +138,7 @@ class UserTestCase(TestCase):
             'user13',
             'user@example.com',
             'password'
-        ) 
+        )
         profile13 = UserProfile.objects.create(
             user=user13,
             school='a',
