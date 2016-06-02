@@ -17,6 +17,9 @@ from streamwebs.models import(
 
 class UserTestCase(TestCase):
 
+    """
+    Tests that User and UserProfile objects are created correctly
+    """
     def test_UserProfile_objs_exist(self):
         user = User.objects.create_user(
             'user',
@@ -31,6 +34,9 @@ class UserTestCase(TestCase):
         self.assertEqual(profile.school, 'a')
         self.assertEqual(profile.birthdate, datetime.date(1999, 4, 1))
 
+    """
+    Tests that User and UserProfile have a one-to-one relationship
+    """
     def test_User_UserProfile_OneToOne(self):
         user1 = User.objects.create_user(
             'user1',
@@ -46,6 +52,10 @@ class UserTestCase(TestCase):
         self.assertEqual(profile1.user.email, 'user@example.com')
         self.assertEqual(profile1.user.password, user1.password)
 
+    """
+    Creating a UserProfile with a school not in the schools list should raise a
+    ValidationError
+    """
     def test_school_not_in_list(self):
         with self.settings(SCHOOL_CHOICES=(
             ('e', 'School E'),
@@ -65,6 +75,10 @@ class UserTestCase(TestCase):
             with self.assertRaises(ValidationError):
                 validate_UserProfile_school(bad_sch_prof.school)
 
+    """
+    Creating a UserProfile with a school in the schools list should not raise
+    an exception
+    """
     def test_school_is_in_list(self):
         with self.settings(SCHOOL_CHOICES=(
             ('e', 'School E'),
@@ -87,6 +101,10 @@ class UserTestCase(TestCase):
             except:
                 self.fail('An exception was raised.')
 
+    """
+    Creating a UserProfile with a birth year greater than the current year
+    minus 13 should raise a ValidationError
+    """
     def test_bad_birth_year(self):
         today = datetime.datetime.now()
         bad_yr_user = User.objects.create_user(
@@ -102,6 +120,10 @@ class UserTestCase(TestCase):
         with self.assertRaises(ValidationError):
             validate_UserProfile_birthdate(bad_yr_prof.birthdate)
 
+    """
+    If the birth year is from 13 years ago but the birth month is greater than
+    the current month, a ValidationError should be raised
+    """
     def test_edge_year_bad_month(self):
         today = datetime.datetime.now()
         bad_month_user = User.objects.create_user(
@@ -117,6 +139,11 @@ class UserTestCase(TestCase):
         with self.assertRaises(ValidationError):
             validate_UserProfile_birthdate(bad_month_prof.birthdate)
 
+    """
+    If the birth year is from 13 years ago and the birth month is the current
+    month, but the birth day is greater than the current day, a ValidationError
+    should be raised
+    """
     def test_edge_year_edge_month_bad_day(self):
         today = datetime.datetime.now()
         bad_day_user = User.objects.create_user(
@@ -132,6 +159,10 @@ class UserTestCase(TestCase):
         with self.assertRaises(ValidationError):
             validate_UserProfile_birthdate(bad_day_prof.birthdate)
 
+    """
+    A UserProfile representing a user who turns 13 today should not raise an
+    exception.
+    """
     def test_thirteen_today(self):
         today = datetime.datetime.now()
         user13 = User.objects.create_user(
