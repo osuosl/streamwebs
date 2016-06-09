@@ -1,5 +1,6 @@
 from django.test import TestCase
 
+
 # Create your tests here.
 class IndexViewTest(TestCase):
     def test_index(self):
