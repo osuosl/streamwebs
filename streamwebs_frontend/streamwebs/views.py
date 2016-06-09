@@ -1,8 +1,9 @@
 # coding=UTF-8
 
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext
+from django.contrib.auth import authenticate, login
 
 from streamwebs.forms import UserForm, UserProfileForm
 
@@ -84,3 +85,22 @@ def register(request):
 
     return render_to_response(
             'streamwebs/register.html', context)
+
+
+def user_login(request):
+    context = RequestContext(request)
+
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+
+        user = authenticate(username=username, password=password)
+
+        if user:
+            login(request, user)
+            return HttpResponseRedirect('/streamwebs/')
+        else:
+            print 'Invalid login details: {0}, {1}'.format(username, password)
+            return HttpResponse('Invalid credentials')
+    else:
+        return render_to_response('streamwebs/login.html', {}, context)
