@@ -4,19 +4,29 @@
 Project Outline
 ===============
 
-Current plan for the StreamWebs rewrite. For a visual representation, 
+Current plan for the StreamWebs rewrite. For a rough visual representation, 
 refer to `this`_.
 
 For now, the site's homepage will be a static intro that contains a brief 
 description about what StreamWebs is. Make sure the page is editable for
 later renditions of the site.
 
-On ``Home``, the user will be able to navigate to one of the
+From ``Home``, the user will be able to navigate to one of the
 following pages:
 
 * Create Account/Login
 * Sites
 * Resources
+
+.. note::
+
+    There are several things that may later be added to the site, so keep the
+    following in mind while working on the build/structure of StreamWebs:
+    
+    * A built-in internationalization template (for multiple languages)
+    * Methods for reporting/tracking user activity
+    * A database table containing school names - so that a user can select
+      from a list of schools when creating a new account
 
 .. _this: http://i.imgur.com/XqOmLQn.jpg
 
@@ -34,7 +44,7 @@ After login, the user will be taken to the central ``Sites`` page.
 Resources
 ---------
 
-Resources will contain all of StreamWebs' data sheets along with
+``Resources`` will contain all of StreamWebs' data sheets along with
 external/internal links to supplementary information and the curriculum. Make
 sure this page is editable through the admin panel as well.
 
@@ -43,8 +53,7 @@ Sites
 
 **Default Display**
 
-There will be three ways in which a user will be able to navigate to a specific
-site.
+The user will be able to navigate to a specific site in one of three ways:
 
   #) By name
   #) Via location marker on the map
@@ -53,7 +62,7 @@ site.
 Modes 1 and 3 are self-explanatory. Here's how the 2nd option will work:
 
 The center of the sites page will contain a map display with markers denoting
-site locations. Selecting a marker on the map should display additional info
+site locations. Selecting a marker on the map will display additional info
 about the site in a pop-up (for now, this will be the site name and a small
 image). The user should be able to navigate to the selected site's page by
 clicking on the view button displayed in the pop-up.
@@ -69,11 +78,10 @@ to ``sites_default_041116.jpg`` in the ``_static`` directory.
 **If Authenticated**
 
 If the user has been authenticated, alongside viewing site data, they are
-allowed to ``create`` (a site) and ``record`` data. If not, they will only
-be able to view current site data.
+allowed to ``create`` (a site) and ``record`` data.
 
-* ``create`` will require the user to enter the new site's location, type, and
-  a brief description.
+* ``create`` will require the user to enter the new site's name, location,
+  type, and a brief description.
 
 * To ``record`` data, the user will need to select the school (they represent/
   are from), the site they visited, and a data sheet template.
@@ -109,6 +117,13 @@ data.
     ``compare`` is allowable for only one data model at a time. In other words,
     a user can't compare a site's Water Quality, Macroinvertabrates, and Canopy
     Cover all at once.
+
+**Future**
+
+The current StreamWebs site allows an authenticated user to upload pictures,
+excel datasheets, and word documents. This functionality is open to all users.
+While not high priority as of now, the ability to upload is something to
+consider for later. 
 
 **About Site Stewards and Filtering**
 
