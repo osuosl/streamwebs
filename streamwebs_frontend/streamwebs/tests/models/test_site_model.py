@@ -17,7 +17,10 @@ class SiteTestCase(TestCase):
             'location': models.PointField,
             'created': models.DateTimeField,
             'modified': models.DateTimeField,
-            'id': models.AutoField
+            'id': models.AutoField,
+
+            # Datasheets
+            'water_quality': models.ManyToOneRel
         }
 
         self.optional_fields = {

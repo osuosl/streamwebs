@@ -3,10 +3,10 @@ from django.test import TestCase
 from django.contrib.gis.db import models
 from django.apps import apps
 from itertools import chain
-from django.core.exceptions import ValidationError
 
-from streamwebs.models import Site, SiteManager, validate_wq_site
+from streamwebs.models import Site
 from streamwebs.models import Water_Quality
+from streamwebs.models import Measurements
 
 
 class WaterQualityTestCase(TestCase):
@@ -14,10 +14,10 @@ class WaterQualityTestCase(TestCase):
     def setUp(self):
         self.expected_fields = {
             'site': models.ForeignKey,
+            'site_id': models.ForeignKey,
+            'DEQ_wq_level': models.CharField,
             'date': models.DateField,
-            # 'time': models.TimeField,
             'school': models.CharField,
-            'teacher': models.CharField,
             'latitude': models.DecimalField,
             'longitude': models.DecimalField,
             'fish_present': models.BooleanField,
@@ -25,7 +25,7 @@ class WaterQualityTestCase(TestCase):
             'dead_fish': models.PositiveSmallIntegerField,
             'water_temp': models.DecimalField,
             'air_temp': models.DecimalField,
-            'dissolved_O2': models.DecimalField,
+            'dissolved_oxygen': models.DecimalField,
             'pH': models.DecimalField,
             'turbidity': models.DecimalField,
             'salinity': models.DecimalField,
@@ -38,12 +38,13 @@ class WaterQualityTestCase(TestCase):
             'phosphates': models.DecimalField,
             'fecal_coliform': models.DecimalField,
             'notes': models.TextField,
-            'id': models.AutoField
-        }
+            'id': models.AutoField,
 
-        # Where does 'Vernier' and 'Manual' fit into the model?
-        # Celcius and Fahrenheit?
-        # Sample number??
+            # Corresponding measurement entry
+            'measurements': models.ForeignKey,
+            'measurements_id': models.ForeignKey
+
+        }
 
         self.optional_fields = {
             'conductivity',
@@ -52,15 +53,15 @@ class WaterQualityTestCase(TestCase):
             'ammonia',
             'nitrite',
             'nitrate',
-            'phosphate',
+            'phosphates',
             'fecal_coliform',
             'notes',
         }
 
     def test_fields_exist(self):
         model = apps.get_model('streamwebs', 'water_quality')
-        for field, field_type in self.expected_field.items():
-            self.asserEqual(
+        for field, field_type in self.expected_fields.items():
+            self.assertEqual(
                 field_type, type(model._meta.get_field(field)))
 
     def test_no_extra_fields(self):
@@ -72,51 +73,62 @@ class WaterQualityTestCase(TestCase):
         self.assertEqual(sorted(fields), sorted(self.expected_fields.keys()))
 
     def test_optional_fields(self):
-        apps.get_model('streamwebs', 'site')
+        apps.get_model('streamwebs', 'water_quality')
         for field in self.optional_fields:
             self.assertEqual(
                 Water_Quality._meta.get_field(field).blank, True)
 
-    def test_datasheet_OneToOne(self):
+    def test_datasheet_ManyToOneSite(self):
+        """Tests that a datasheet correctly corresponds to a specified site"""
         site = Site.objects.create_site('test', 'some_type', 'some_slug')
-        waterq = Water_Quality.objects.create(site=site, date='2016-06-01',
-                                              school='a', teacher='teacher',
-                                              latitude=123, longitude=123,
+        measurements = Measurements.objects.create_measures('Water Quality',
+                                                             1,
+                                                             'Celsius',
+                                                             'Celsius',
+                                                             'Manual')
+        waterq = Water_Quality.objects.create(site=site,
+                                              DEQ_wq_level='A',
+                                              date='2016-06-01',
+                                              school='a', latitude=90,
+                                              longitude=123,
                                               fish_present='False',
                                               live_fish=0, dead_fish=0,
                                               water_temp=45, air_temp=65,
-                                              dissolved_O2=15, pH=6.7,
-                                              turbidity=0, salinity=12)
-        # waterq = apps.get_model('streamwebs', 'water_quality')
+                                              dissolved_oxygen=15, pH=6.7,
+                                              turbidity=0, salinity=12,
+                                              measurements=measurements)
         self.assertEqual(waterq.site.site_name, 'test')
-        # check for a match in lat and long?
+        self.assertEqual(waterq.site.site_type, 'some_type')
+        self.assertEqual(waterq.site.site_slug, 'some_slug')
 
-    def test_datasheet_nonexistent_site(self):
-        # site = Site.objects.create('test', 'some_type', 'some_slug')
-        no_site_wq = Water_Quality.objects.create(site='nonexistent',
-                                                  date='2016-06-01',
-                                                  school='a',
-                                                  teacher='teacher',
-                                                  latitude=123, longitude=123,
-                                                  fish_present='False',
-                                                  live_fish=0, dead_fish=0,
-                                                  water_temp=45, air_temp=65,
-                                                  dissolved_O2=15, pH=6.7,
-                                                  turbidity=0, salinity=12)
-        with self.assertRaises(ValidationError):
-            validate_wq_site(no_site_wq.site_name)
+    def test_datasheet_ManyToOneMeasurement(self):
+        """Tests that a datasheet correctly corresponds to a specified
+           measurement entry"""
+        site = Site.objects.create_site('test', 'some_type', 'some_slug')
+        measurements = Measurements.objects.create_measures('Water Quality',
+                                                             1,
+                                                             'Celsius',
+                                                             'Celsius',
+                                                             'Manual')
+        waterq = Water_Quality.objects.create(site=site,
+                                              DEQ_wq_level='A',
+                                              date='2016-06-01',
+                                              school='a', latitude=90,
+                                              longitude=123,
+                                              fish_present='False',
+                                              live_fish=0, dead_fish=0,
+                                              water_temp=45, air_temp=65,
+                                              dissolved_oxygen=15, pH=6.7,
+                                              turbidity=0, salinity=12,
+                                              measurements=measurements)
+        self.assertEqual(waterq.measurements.datasheet_type, 'Water Quality')
+        self.assertEqual(waterq.measurements.sample_number, 1)
+        self.assertEqual(waterq.measurements.air_temp_unit, 'Celsius')
+        self.assertEqual(waterq.measurements.water_temp_unit, 'Celsius')
+        self.assertEqual(waterq.measurements.tool, 'Manual')
 
-    def test_datasheet_bad_site(self):
-        # site = Site.objects.create('test', 'some_type', 'some_slug')
-        bad_site_wq = Water_Quality.objects.create(site='#@^%--&',
-                                                   date='2016-06-01',
-                                                   school='a',
-                                                   teacher='teacher',
-                                                   latitude=123, longitude=123,
-                                                   fish_present='False',
-                                                   live_fish=0, dead_fish=0,
-                                                   water_temp=45, air_temp=65,
-                                                   dissolved_O2=15, pH=6.7,
-                                                   turbidity=0, salinity=12)
-        with self.assertRaises(ValidationError):
-            validate_wq_site(bad_site_wq.site_name)
+# Note: Not of high priority (since Django probably doesn't allow it in the
+#       first place), but may want to eventually add tests that assert
+#       datasheet creation fails when given a nonexistent or bad site
+#           * def test_datasheet_nonexistent_site(self):
+#           * def test_datasheet_bad_site(self):

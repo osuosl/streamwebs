@@ -5,8 +5,14 @@ from django.contrib.auth.models import User
 from models import UserProfile
 
 from .models import Site
+from .models import Water_Quality
+from .models import Measurements
 
 admin.site.register(Site)
+admin.site.register(Water_Quality)
+admin.site.register(Measurements)
+# The following will add a profile model's files to the user page in the
+# admin panel
 
 
 # The following will add a profile model's files to the user page in the
