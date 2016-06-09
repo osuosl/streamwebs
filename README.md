@@ -21,6 +21,7 @@ The following is a list of the more common and more useful docker commands:
 - ``docker-compose run --service-ports --rm web bash`` exposes the ports described for the web service and removes the container upon completion
 - `docker-compose kill` stops services that are running
 - `docker-compose rm` removes all the containers associated with the application's services
+- `docker-compose ps` lists all the running containers
 
 
 **Note that docker-compose and docker commands may need to be run as root with
