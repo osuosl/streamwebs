@@ -91,7 +91,7 @@ def register(request):
 
 
 def user_login(request):
-    context = RequestContext(request)
+#    context = RequestContext(request)
 
     if request.method == 'POST':
         username = request.POST['username']
@@ -106,7 +106,8 @@ def user_login(request):
             print 'Invalid login details: {0}, {1}'.format(username, password)
             return HttpResponse('Invalid credentials')
     else:
-        return render_to_response('streamwebs/login.html', {}, context)
+#        return render_to_response('streamwebs/login.html', {}, context)
+        return render(request, 'streamwebs/login.html')
 
 
 @login_required
