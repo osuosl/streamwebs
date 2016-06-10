@@ -1,8 +1,6 @@
 # coding=UTF-8
 
-from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
-from django.template import RequestContext
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
@@ -54,7 +52,6 @@ def site(request, site_slug):
 
 
 def register(request):
-#    context = RequestContext(request)
     registered = False
 
     if request.method == 'POST':
@@ -77,22 +74,13 @@ def register(request):
         user_form = UserForm()
         profile_form = UserProfileForm()
 
-#    context.push(
-#            {
-#                'user_form': user_form,
-#                'profile_form': profile_form,
-#                'registered': registered
-#            }
-#    )
-
-#    return render_to_response(
-#            'streamwebs/register.html', context)
-    return render(request, 'streamwebs/register.html', {'user_form': user_form, 'profile_form': profile_form, 'registered': registered})
+    return render(request, 'streamwebs/register.html', {
+            'user_form': user_form,
+            'profile_form': profile_form,
+            'registered': registered})
 
 
 def user_login(request):
-#    context = RequestContext(request)
-
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
@@ -106,7 +94,6 @@ def user_login(request):
             print 'Invalid login details: {0}, {1}'.format(username, password)
             return HttpResponse('Invalid credentials')
     else:
-#        return render_to_response('streamwebs/login.html', {}, context)
         return render(request, 'streamwebs/login.html')
 
 
