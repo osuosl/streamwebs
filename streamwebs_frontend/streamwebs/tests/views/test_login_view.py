@@ -56,7 +56,10 @@ class LoginTestCase(TestCase):
         self.assertContains(response_both_bad, 'Invalid credentials')
 
     def test_logout_when_logged_in(self):
-        response_in = self.client.post(reverse('streamwebs:login'), {'username': 'john', 'password': 'johnpassword'})
+        response_in = self.client.post(
+            reverse('streamwebs:login'),
+            {'username': 'john', 'password': 'johnpassword'}
+        )
         self.assertRedirects(
             response_in,
             reverse('streamwebs:index'),
@@ -74,8 +77,5 @@ class LoginTestCase(TestCase):
     def test_logout_when_not_logged_in(self):
         response_out_attempt = self.client.get(reverse('streamwebs:logout'))
         self.assertEqual(response_out_attempt.status_code, 302)
-        self.assertTemplateNotUsed(response_out_attempt, 'streamwebs/index.html')
-
-
-
-    
+        self.assertTemplateNotUsed(
+            response_out_attempt, 'streamwebs/index.html')
