@@ -5,10 +5,14 @@ RUN yum -y install gdal-python\
                    geos-python\
                    proj\
                    proj-nad\
-                   postgresql-devel
+                   postgresql-devel\
+                   nodejs\
+                   npm
+
+RUN npm install -g bower
 
 COPY requirements.txt /opt/
 
 RUN pip install -r /opt/requirements.txt
 
-RUN echo 'source /opt/streamwebs/dockerfiles/startup.sh' >> /root/.bashrc
+#RUN echo 'source /opt/streamwebs/dockerfiles/startup.sh' >> /root/.bashrc

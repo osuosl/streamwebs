@@ -10,7 +10,7 @@ services:
     volumes:
       - .:/opt/streamwebs
     working_dir: /opt/streamwebs
-    command: python /opt/streamwebs/streamwebs_frontend/manage.py runserver 0.0.0.0:8000
+    command: /opt/streamwebs/dockerfiles/startup.sh
     ports:
       - "8000:8000"
     links:

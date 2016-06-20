@@ -15,3 +15,5 @@ Dockerfile.env
 docs/build
 
 *.swp
+
+bower_components

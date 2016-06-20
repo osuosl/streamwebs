@@ -16,7 +16,8 @@ import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+PROJECT_ROOT = os.path.join(BASE_DIR, 'streamwebs')
+STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
@@ -40,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.gis',
+    'pipeline',
     'streamwebs',
 ]
 
@@ -134,3 +136,25 @@ SCHOOL_CHOICES = (
     ('c', 'School C'),
 )
 
+# Pipeline settings for static files
+# Used to package, compress, and minimize our bower dependencies (e.g. JQuery)
+# https://axiacore.com/blog/effective-dependency-management-django-using-bower/
+# http://django-pipeline.readthedocs.io/en/latest/installation.html
+
+STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'pipeline.finders.PipelineFinder',
+)
+
+PIPELINE = {
+    'JAVASCRIPT': {
+        'libraries': {
+            'source_filenames': {
+                'streamwebs/bower_components/jquery/dist/jquery.js',
+            },
+            'output_filename': 'streamwebs/js/libs.min.js',
+        }
+    }
+}
