@@ -12,8 +12,8 @@ venv/
 
 Dockerfile.env
 
-*.swp
+docs/build
 
-docs/build/
+*.swp
 
 bower_components
