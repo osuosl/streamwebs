@@ -12,6 +12,6 @@ venv/
 
 Dockerfile.env
 
-docs/build
+docs/build/
 
 bower_components
