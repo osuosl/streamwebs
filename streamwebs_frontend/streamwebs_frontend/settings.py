@@ -129,12 +129,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-# Temporary list of schools
-SCHOOL_CHOICES = (
-    ('a', 'School A'),
-    ('b', 'School B'),
-    ('c', 'School C'),
-)
+# List of schools
+SCHOOL_CHOICES = ()
 
 # Pipeline settings for static files
 # Used to package, compress, and minimize our bower dependencies (e.g. JQuery)
