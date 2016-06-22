@@ -9,8 +9,8 @@ StreamWebs Github repository `here <https://github.com/osuosl/streamwebs>`_.
 Testing
 -------
 The tests directory is located in streamwebs_frontend/streamwebs/ and contains
-three subdirectories: forms, models, and views, each of which contains files
-that test individual forms, models, and views. To run tests, you must be in the
+subdirectories (such as " models" and "views"), each of which contains files
+that test individual models, views, etc. To run tests, you must be in the
 same directory in which manage.py is located, i.e. /streamwebs_frontend/:
 
 ::
@@ -29,8 +29,7 @@ Django testing framework works in its `official documentation
 
 Resolving the "relation does not exist" error
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-If you run a variation of the above command and encounter a traceback and this
-output,
+If you run a variation of the above command and encounter a traceback with this error message,
 
 ::
 
