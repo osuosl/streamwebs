@@ -80,7 +80,8 @@ class UserProfile(models.Model):
 
 class MeasurementsManager(models.Manager):
     """
-    Manager for the site class - creates a site to be used in tests
+    Manager for the measurement class - creates measurement info to be used in
+    the datasheet tests for both the required and additional fields
     """
     def create_measurement_info(self, datasheet_type, measuring, sample_number,
                                 tool):
@@ -89,6 +90,12 @@ class MeasurementsManager(models.Manager):
                            sample_number=sample_number,
                            tool=tool)
         return info
+
+    def create_additional_info(self, datasheet_type, measuring, sample_number):
+        add_info = self.create(datasheet_type=datasheet_type,
+                               measuring=measuring,
+                               sample_number=sample_number)
+        return add_info
 
 
 @python_2_unicode_compatible
@@ -101,12 +108,24 @@ class Measurements(models.Model):
     NOT_ACCESSED = 'N/A'
     VERNIER = 'Vernier'
     MANUAL = 'Manual'
+
+    # Required fields
     WATER_TEMP = 'Water Temperature'
     AIR_TEMP = 'Air Temperature'
     DISSOLVED_O2 = 'Dissolved Oxygen'
     PH = 'pH'
     TURBIDITY = 'Turbidity'
     SALINITY = 'Salinity'
+
+    # Additional paramters
+    CONDUCT = 'Conductivity'
+    TOT_SOL = 'Total Solids'
+    BOD = 'Bod'
+    AMMONIA = 'Ammonia'
+    NITRITE = 'Nitrite'
+    NITRATE = 'Nitrate'
+    PHOSPHATES = 'Phosphates'
+    FECAL_COL = 'Fecal Coliform'
 
     DATASHEET_OPTIONS = ((None, '-----'), (WQ, 'Water Quality'),)
     MEASURING = ((None, '-----'),
@@ -115,7 +134,15 @@ class Measurements(models.Model):
                  (DISSOLVED_O2, 'Dissolved Oxygen'),
                  (PH, 'pH'),
                  (TURBIDITY, 'Turbidity'),
-                 (SALINITY, 'Salinity'),)
+                 (SALINITY, 'Salinity'),
+                 (CONDUCT, 'Conductivity'),
+                 (TOT_SOL, 'Total Solids'),
+                 (BOD, 'Bod'),
+                 (AMMONIA, 'Ammonia'),
+                 (NITRITE, 'Nitrite'),
+                 (NITRATE, 'Nitrate'),
+                 (PHOSPHATES, 'Phosphates'),
+                 (FECAL_COL, 'Fecal Coliform'),)
     SAMPLE_NUMBER = ((ONE, '1'), (TWO, '2'), (THREE, '3'), (FOUR, '4'),)
     TOOL_CHOICES = ((NOT_ACCESSED, 'N/A'),
                     (MANUAL, 'Manual'),
@@ -188,10 +215,11 @@ class Water_Quality(models.Model):
                                        default=UNIT_CHOICES[0])
     water_temp = models.DecimalField(default=0, max_digits=5, decimal_places=2)
     water_temp_info = models.ForeignKey(Measurements, on_delete=models.CASCADE,
-                                        related_name='water_info', null=True)
+                                        related_name='water_temp_info',
+                                        null=True)
     air_temp = models.DecimalField(default=0, max_digits=5, decimal_places=2)
     air_temp_info = models.ForeignKey(Measurements, on_delete=models.CASCADE,
-                                      related_name='air_info', null=True)
+                                      related_name='air_temp_info', null=True)
     dissolved_oxygen = models.DecimalField(default=0, max_digits=5,
                                            decimal_places=2)
     oxygen_info = models.ForeignKey(Measurements, on_delete=models.CASCADE,
@@ -209,20 +237,45 @@ class Water_Quality(models.Model):
     # The following are optional fields
     conductivity = models.DecimalField(default=0, max_digits=5,
                                        decimal_places=2, blank=True)
+    conductivity_info = models.ForeignKey(Measurements,
+                                          on_delete=models.CASCADE,
+                                          related_name='conductivity_info',
+                                          null=True, blank=True)
     total_solids = models.DecimalField(default=0, max_digits=5,
                                        decimal_places=2, blank=True)
+    tot_solids_info = models.ForeignKey(Measurements, on_delete=models.CASCADE,
+                                        related_name='tot_solids_info',
+                                        null=True, blank=True)
     bod = models.DecimalField(default=0, max_digits=5, decimal_places=2,
                               blank=True)
+    bod_info = models.ForeignKey(Measurements, on_delete=models.CASCADE,
+                                 related_name='bod_info', null=True,
+                                 blank=True)
     ammonia = models.DecimalField(default=0, max_digits=5, decimal_places=2,
                                   blank=True)
+    ammonia_info = models.ForeignKey(Measurements, on_delete=models.CASCADE,
+                                     related_name='ammonia_info', null=True,
+                                     blank=True)
     nitrite = models.DecimalField(default=0, max_digits=5, decimal_places=2,
                                   blank=True)
+    nitrite_info = models.ForeignKey(Measurements, on_delete=models.CASCADE,
+                                     related_name='nitrite_info', null=True,
+                                     blank=True)
     nitrate = models.DecimalField(default=0, max_digits=5, decimal_places=2,
                                   blank=True)
+    nitrate_info = models.ForeignKey(Measurements, on_delete=models.CASCADE,
+                                     related_name='nitrate_info', null=True,
+                                     blank=True)
     phosphates = models.DecimalField(default=0, max_digits=5, decimal_places=2,
                                      blank=True)
+    phosphate_info = models.ForeignKey(Measurements, on_delete=models.CASCADE,
+                                       related_name='phosphate_info',
+                                       null=True, blank=True)
     fecal_coliform = models.DecimalField(default=0, max_digits=5,
                                          decimal_places=2, blank=True)
+    fecal_info = models.ForeignKey(Measurements, on_delete=models.CASCADE,
+                                   related_name='fecal_info', null=True,
+                                   blank=True)
     notes = models.TextField(blank=True)
 
     # Add some logic in which the datasheet object is only created when

@@ -17,13 +17,21 @@ class MeasurementsTestCase(TestCase):
             'tool': models.CharField,
             'id': models.AutoField,
 
-            # Datasheets
-            'water_info': models.ManyToOneRel,
-            'air_info': models.ManyToOneRel,
+            # Datasheet relations
+            'water_temp_info': models.ManyToOneRel,
+            'air_temp_info': models.ManyToOneRel,
             'oxygen_info': models.ManyToOneRel,
             'pH_info': models.ManyToOneRel,
             'turbid_info': models.ManyToOneRel,
-            'salt_info': models.ManyToOneRel
+            'salt_info': models.ManyToOneRel,
+            'conductivity_info': models.ManyToOneRel,
+            'bod_info': models.ManyToOneRel,
+            'tot_solids_info': models.ManyToOneRel,
+            'ammonia_info': models.ManyToOneRel,
+            'nitrite_info': models.ManyToOneRel,
+            'nitrate_info': models.ManyToOneRel,
+            'phosphate_info': models.ManyToOneRel,
+            'fecal_info': models.ManyToOneRel
         }
 
     def test_fields_exist(self):

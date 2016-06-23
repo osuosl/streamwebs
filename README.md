@@ -45,3 +45,8 @@ your browser.
 ### Miscellaneous Tips
 Run ``flake8 streamwebs_frontend --exclude streamwebs_frontend/streamwebs/migrations``
 to exclude the migrations directory when linting.
+
+If you'd like to access the postgresql database, open up an interactive shell
+with ``docker-compose run web bash``. Then run the following command:
+``psql -h postgres_host -d streamwebs -U postgres_user``. This will bring you
+to the postgres interactive terminal.
