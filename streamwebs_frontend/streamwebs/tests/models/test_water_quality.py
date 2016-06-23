@@ -23,12 +23,20 @@ class WaterQualityTestCase(TestCase):
             'fish_present': models.BooleanField,
             'live_fish': models.PositiveSmallIntegerField,
             'dead_fish': models.PositiveSmallIntegerField,
+            'water_temp_unit': models.CharField,
+            'air_temp_unit': models.CharField,
             'water_temp': models.DecimalField,
+            'water_temp_info': models.ForeignKey,
             'air_temp': models.DecimalField,
+            'air_temp_info': models.ForeignKey,
             'dissolved_oxygen': models.DecimalField,
+            'oxygen_info': models.ForeignKey,
             'pH': models.DecimalField,
+            'pH_info': models.ForeignKey,
             'turbidity': models.DecimalField,
+            'turbid_info': models.ForeignKey,
             'salinity': models.DecimalField,
+            'salt_info': models.ForeignKey,
             'conductivity': models.DecimalField,
             'total_solids': models.DecimalField,
             'bod': models.DecimalField,
@@ -40,10 +48,13 @@ class WaterQualityTestCase(TestCase):
             'notes': models.TextField,
             'id': models.AutoField,
 
-            # Corresponding measurement entry
-            'measurements': models.ForeignKey,
-            'measurements_id': models.ForeignKey
-
+            # Corresponding measurement entry (id)
+            'water_temp_info_id': models.ForeignKey,
+            'air_temp_info_id': models.ForeignKey,
+            'oxygen_info_id': models.ForeignKey,
+            'pH_info_id': models.ForeignKey,
+            'turbid_info_id': models.ForeignKey,
+            'salt_info_id': models.ForeignKey
         }
 
         self.optional_fields = {
@@ -81,11 +92,18 @@ class WaterQualityTestCase(TestCase):
     def test_datasheet_ManyToOneSite(self):
         """Tests that a datasheet correctly corresponds to a specified site"""
         site = Site.objects.create_site('test', 'some_type', 'some_slug')
-        measurements = Measurements.objects.create_measures('Water Quality',
-                                                             1,
-                                                             'Celsius',
-                                                             'Celsius',
-                                                             'Manual')
+        water_temp_info = Measurements.objects.create_measurement_info \
+                          ('Water Quality', 'Water Temperature', 1, 'Manual')
+        air_temp_info = Measurements.objects.create_measurement_info \
+                        ('Water Quality', 'Air Temperature', 1, 'Manual')
+        oxygen_info = Measurements.objects.create_measurement_info \
+                      ('Water Quality', 'Dissolved Oxygen', 1, 'Manual')
+        pH_info = Measurements.objects.create_measurement_info \
+                  ('Water Quality', 'pH', 1, 'Manual')
+        turbid_info = Measurements.objects.create_measurement_info \
+                      ('Water Quality', 'Turbidity', 1, 'Manual')
+        salt_info = Measurements.objects.create_measurement_info \
+                    ('Water Quality', 'Salinity', 1, 'Manual')
         waterq = Water_Quality.objects.create(site=site,
                                               DEQ_wq_level='A',
                                               date='2016-06-01',
@@ -93,23 +111,43 @@ class WaterQualityTestCase(TestCase):
                                               longitude=123,
                                               fish_present='False',
                                               live_fish=0, dead_fish=0,
-                                              water_temp=45, air_temp=65,
-                                              dissolved_oxygen=15, pH=6.7,
-                                              turbidity=0, salinity=12,
-                                              measurements=measurements)
+                                              water_temp_unit='Celsius',
+                                              air_temp_unit='Celsius',
+                                              water_temp=45,
+                                              water_temp_info=water_temp_info, 
+                                              air_temp=65,
+                                              air_temp_info=air_temp_info, 
+                                              dissolved_oxygen=15,
+                                              oxygen_info=oxygen_info,
+                                              pH=6.7,
+                                              pH_info=pH_info,
+                                              turbidity=0,
+                                              turbid_info=turbid_info,
+                                              salinity=12,
+                                              salt_info=salt_info)
         self.assertEqual(waterq.site.site_name, 'test')
         self.assertEqual(waterq.site.site_type, 'some_type')
         self.assertEqual(waterq.site.site_slug, 'some_slug')
 
-    def test_datasheet_ManyToOneMeasurement(self):
+########## BREAK UP THIS TEST INTO SMALLER PARTS TO TEST **EVERYTHING**
+########## I.e. datasheet_type, measuring, sample, and tool
+########## For each piece of measurementd info
+    def test_datasheet_SetMeasurementInfo(self):
         """Tests that a datasheet correctly corresponds to a specified
            measurement entry"""
         site = Site.objects.create_site('test', 'some_type', 'some_slug')
-        measurements = Measurements.objects.create_measures('Water Quality',
-                                                             1,
-                                                             'Celsius',
-                                                             'Celsius',
-                                                             'Manual')
+        water_temp_info = Measurements.objects.create_measurement_info \
+                          ('Water Quality', 'Water Temperature', 1, 'Manual')
+        air_temp_info = Measurements.objects.create_measurement_info \
+                        ('Water Quality', 'Air Temperature', 1, 'Manual')
+        oxygen_info = Measurements.objects.create_measurement_info \
+                      ('Water Quality', 'Dissolved Oxygen', 1, 'Manual')
+        pH_info = Measurements.objects.create_measurement_info \
+                  ('Water Quality', 'pH', 1, 'Manual')
+        turbid_info = Measurements.objects.create_measurement_info \
+                      ('Water Quality', 'Turbidity', 1, 'Manual')
+        salt_info = Measurements.objects.create_measurement_info \
+                    ('Water Quality', 'Salinity', 1, 'Manual')
         waterq = Water_Quality.objects.create(site=site,
                                               DEQ_wq_level='A',
                                               date='2016-06-01',
@@ -117,15 +155,26 @@ class WaterQualityTestCase(TestCase):
                                               longitude=123,
                                               fish_present='False',
                                               live_fish=0, dead_fish=0,
-                                              water_temp=45, air_temp=65,
-                                              dissolved_oxygen=15, pH=6.7,
-                                              turbidity=0, salinity=12,
-                                              measurements=measurements)
-        self.assertEqual(waterq.measurements.datasheet_type, 'Water Quality')
-        self.assertEqual(waterq.measurements.sample_number, 1)
-        self.assertEqual(waterq.measurements.air_temp_unit, 'Celsius')
-        self.assertEqual(waterq.measurements.water_temp_unit, 'Celsius')
-        self.assertEqual(waterq.measurements.tool, 'Manual')
+                                              water_temp_unit='Celsius',
+                                              air_temp_unit='Celsius',
+                                              water_temp=45,
+                                              water_temp_info=water_temp_info, 
+                                              air_temp=65,
+                                              air_temp_info=air_temp_info, 
+                                              dissolved_oxygen=15,
+                                              oxygen_info=oxygen_info,
+                                              pH=6.7,
+                                              pH_info=pH_info,
+                                              turbidity=0,
+                                              turbid_info=turbid_info,
+                                              salinity=12,
+                                              salt_info=salt_info)
+        self.assertEqual(waterq.water_temp_info.measuring, 'Water Temperature')
+        self.assertEqual(waterq.air_temp_info.measuring, 'Air Temperature')
+        self.assertEqual(waterq.oxygen_info.measuring, 'Dissolved Oxygen')
+        self.assertEqual(waterq.pH_info.measuring, 'pH')
+        self.assertEqual(waterq.turbid_info.measuring, 'Turbidity')
+        self.assertEqual(waterq.salt_info.measuring, 'Salinity')
 
 # Note: Not of high priority (since Django probably doesn't allow it in the
 #       first place), but may want to eventually add tests that assert

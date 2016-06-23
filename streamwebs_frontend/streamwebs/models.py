@@ -82,14 +82,13 @@ class MeasurementsManager(models.Manager):
     """
     Manager for the site class - creates a site to be used in tests
     """
-    def create_measures(self, datasheet_type, sample_number, air_temp_unit,
-                        water_temp_unit, tool):
-        measurements = self.create(datasheet_type=datasheet_type,
+    def create_measurement_info(self, datasheet_type, measuring, sample_number,
+                                tool):
+        info = self.create(datasheet_type=datasheet_type,
+                                   measuring=measuring,
                                    sample_number=sample_number,
-                                   air_temp_unit=air_temp_unit,
-                                   water_temp_unit=water_temp_unit,
                                    tool=tool)
-        return measurements
+        return info
 
 
 @python_2_unicode_compatible
@@ -145,7 +144,7 @@ class Measurements(models.Model):
     objects = MeasurementsManager()
 
     def __str__(self):
-        return self.datasheet_type 
+        return self.measuring 
 
     class Meta:
         verbose_name = 'Measurement'
@@ -197,13 +196,24 @@ class Water_Quality(models.Model):
     water_temp_unit = models.CharField(max_length=255, choices=UNIT_CHOICES,
                                        default=UNIT_CHOICES[0])
     water_temp = models.DecimalField(default=0, max_digits=5, decimal_places=2)
+    water_temp_info = models.ForeignKey(Measurements, on_delete=models.CASCADE,
+                                        related_name='water_info', null=True)
     air_temp = models.DecimalField(default=0, max_digits=5, decimal_places=2)
+    air_temp_info = models.ForeignKey(Measurements, on_delete=models.CASCADE,
+                                      related_name='air_info', null=True)
     dissolved_oxygen = models.DecimalField(default=0, max_digits=5,
                                            decimal_places=2)
+    oxygen_info = models.ForeignKey(Measurements, on_delete=models.CASCADE,
+                                    related_name='oxygen_info', null=True)
     pH = models.DecimalField(default=0, max_digits=5, decimal_places=2)
+    pH_info = models.ForeignKey(Measurements, on_delete=models.CASCADE,
+                                related_name='pH_info', null=True)
     turbidity = models.DecimalField(default=0, max_digits=5, decimal_places=2)
+    turbid_info = models.ForeignKey(Measurements, on_delete=models.CASCADE,
+                                    related_name='turbid_info', null=True)
     salinity = models.DecimalField(default=0, max_digits=5, decimal_places=2)
-    measurements = models.ForeignKey(Measurements, on_delete=models.CASCADE)
+    salt_info = models.ForeignKey(Measurements, on_delete=models.CASCADE,
+                                  related_name='salt_info', null=True)
 
     # The following are optional fields
     conductivity = models.DecimalField(default=0, max_digits=5,

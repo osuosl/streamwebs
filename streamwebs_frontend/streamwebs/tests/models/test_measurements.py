@@ -12,14 +12,18 @@ class MeasurementsTestCase(TestCase):
     def setUp(self):
         self.expected_fields = {
             'datasheet_type': models.CharField,
+            'measuring': models.CharField,
             'sample_number': models.CharField,
-            'air_temp_unit': models.CharField,
-            'water_temp_unit': models.CharField,
             'tool': models.CharField,
             'id': models.AutoField,
 
             # Datasheets
-            'water_quality': models.ManyToOneRel
+            'water_info': models.ManyToOneRel,
+            'air_info': models.ManyToOneRel,
+            'oxygen_info': models.ManyToOneRel,
+            'pH_info': models.ManyToOneRel,
+            'turbid_info': models.ManyToOneRel,
+            'salt_info': models.ManyToOneRel
         }
 
     def test_fields_exist(self):
