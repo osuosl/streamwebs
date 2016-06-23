@@ -92,18 +92,18 @@ class WaterQualityTestCase(TestCase):
     def test_datasheet_ManyToOneSite(self):
         """Tests that a datasheet correctly corresponds to a specified site"""
         site = Site.objects.create_site('test', 'some_type', 'some_slug')
-        water_temp_info = Measurements.objects.create_measurement_info \
-                          ('Water Quality', 'Water Temperature', 1, 'Manual')
-        air_temp_info = Measurements.objects.create_measurement_info \
-                        ('Water Quality', 'Air Temperature', 1, 'Manual')
-        oxygen_info = Measurements.objects.create_measurement_info \
-                      ('Water Quality', 'Dissolved Oxygen', 1, 'Manual')
-        pH_info = Measurements.objects.create_measurement_info \
-                  ('Water Quality', 'pH', 1, 'Manual')
-        turbid_info = Measurements.objects.create_measurement_info \
-                      ('Water Quality', 'Turbidity', 1, 'Manual')
-        salt_info = Measurements.objects.create_measurement_info \
-                    ('Water Quality', 'Salinity', 1, 'Manual')
+        water_temp_info = Measurements.objects.create_measurement_info(
+                          'Water Quality', 'Water Temperature', 1, 'Manual')
+        air_temp_info = Measurements.objects.create_measurement_info(
+                        'Water Quality', 'Air Temperature', 1, 'Manual')
+        oxygen_info = Measurements.objects.create_measurement_info(
+                      'Water Quality', 'Dissolved Oxygen', 1, 'Vernier')
+        pH_info = Measurements.objects.create_measurement_info(
+                  'Water Quality', 'pH', 1, 'Vernier')
+        turbid_info = Measurements.objects.create_measurement_info(
+                      'Water Quality', 'Turbidity', 1, 'Manual')
+        salt_info = Measurements.objects.create_measurement_info(
+                    'Water Quality', 'Salinity', 1, 'Vernier')
         waterq = Water_Quality.objects.create(site=site,
                                               DEQ_wq_level='A',
                                               date='2016-06-01',
@@ -114,9 +114,9 @@ class WaterQualityTestCase(TestCase):
                                               water_temp_unit='Celsius',
                                               air_temp_unit='Celsius',
                                               water_temp=45,
-                                              water_temp_info=water_temp_info, 
+                                              water_temp_info=water_temp_info,
                                               air_temp=65,
-                                              air_temp_info=air_temp_info, 
+                                              air_temp_info=air_temp_info,
                                               dissolved_oxygen=15,
                                               oxygen_info=oxygen_info,
                                               pH=6.7,
@@ -129,25 +129,22 @@ class WaterQualityTestCase(TestCase):
         self.assertEqual(waterq.site.site_type, 'some_type')
         self.assertEqual(waterq.site.site_slug, 'some_slug')
 
-########## BREAK UP THIS TEST INTO SMALLER PARTS TO TEST **EVERYTHING**
-########## I.e. datasheet_type, measuring, sample, and tool
-########## For each piece of measurementd info
     def test_datasheet_SetMeasurementInfo(self):
         """Tests that a datasheet correctly corresponds to a specified
            measurement entry"""
         site = Site.objects.create_site('test', 'some_type', 'some_slug')
-        water_temp_info = Measurements.objects.create_measurement_info \
-                          ('Water Quality', 'Water Temperature', 1, 'Manual')
-        air_temp_info = Measurements.objects.create_measurement_info \
-                        ('Water Quality', 'Air Temperature', 1, 'Manual')
-        oxygen_info = Measurements.objects.create_measurement_info \
-                      ('Water Quality', 'Dissolved Oxygen', 1, 'Manual')
-        pH_info = Measurements.objects.create_measurement_info \
-                  ('Water Quality', 'pH', 1, 'Manual')
-        turbid_info = Measurements.objects.create_measurement_info \
-                      ('Water Quality', 'Turbidity', 1, 'Manual')
-        salt_info = Measurements.objects.create_measurement_info \
-                    ('Water Quality', 'Salinity', 1, 'Manual')
+        water_temp_info = Measurements.objects.create_measurement_info(
+                          'Water Quality', 'Water Temperature', 1, 'Manual')
+        air_temp_info = Measurements.objects.create_measurement_info(
+                        'Water Quality', 'Air Temperature', 1, 'Manual')
+        oxygen_info = Measurements.objects.create_measurement_info(
+                      'Water Quality', 'Dissolved Oxygen', 1, 'Vernier')
+        pH_info = Measurements.objects.create_measurement_info(
+                  'Water Quality', 'pH', 1, 'Vernier')
+        turbid_info = Measurements.objects.create_measurement_info(
+                      'Water Quality', 'Turbidity', 1, 'Manual')
+        salt_info = Measurements.objects.create_measurement_info(
+                    'Water Quality', 'Salinity', 1, 'Vernier')
         waterq = Water_Quality.objects.create(site=site,
                                               DEQ_wq_level='A',
                                               date='2016-06-01',
@@ -158,9 +155,9 @@ class WaterQualityTestCase(TestCase):
                                               water_temp_unit='Celsius',
                                               air_temp_unit='Celsius',
                                               water_temp=45,
-                                              water_temp_info=water_temp_info, 
+                                              water_temp_info=water_temp_info,
                                               air_temp=65,
-                                              air_temp_info=air_temp_info, 
+                                              air_temp_info=air_temp_info,
                                               dissolved_oxygen=15,
                                               oxygen_info=oxygen_info,
                                               pH=6.7,
@@ -169,12 +166,38 @@ class WaterQualityTestCase(TestCase):
                                               turbid_info=turbid_info,
                                               salinity=12,
                                               salt_info=salt_info)
+        """Assert that each field (and its additional measurement info) has
+           been propery set"""
+        self.assertEqual(waterq.water_temp_info.datasheet_type,
+                         'Water Quality')
         self.assertEqual(waterq.water_temp_info.measuring, 'Water Temperature')
+        self.assertEqual(waterq.water_temp_info.sample_number, 1)
+        self.assertEqual(waterq.water_temp_info.tool, 'Manual')
+
+        self.assertEqual(waterq.air_temp_info.datasheet_type, 'Water Quality')
         self.assertEqual(waterq.air_temp_info.measuring, 'Air Temperature')
+        self.assertEqual(waterq.air_temp_info.sample_number, 1)
+        self.assertEqual(waterq.air_temp_info.tool, 'Manual')
+
+        self.assertEqual(waterq.oxygen_info.datasheet_type, 'Water Quality')
         self.assertEqual(waterq.oxygen_info.measuring, 'Dissolved Oxygen')
+        self.assertEqual(waterq.oxygen_info.sample_number, 1)
+        self.assertEqual(waterq.oxygen_info.tool, 'Vernier')
+
+        self.assertEqual(waterq.pH_info.datasheet_type, 'Water Quality')
         self.assertEqual(waterq.pH_info.measuring, 'pH')
+        self.assertEqual(waterq.pH_info.sample_number, 1)
+        self.assertEqual(waterq.pH_info.tool, 'Vernier')
+
+        self.assertEqual(waterq.turbid_info.datasheet_type, 'Water Quality')
         self.assertEqual(waterq.turbid_info.measuring, 'Turbidity')
+        self.assertEqual(waterq.turbid_info.sample_number, 1)
+        self.assertEqual(waterq.turbid_info.tool, 'Manual')
+
+        self.assertEqual(waterq.salt_info.datasheet_type, 'Water Quality')
         self.assertEqual(waterq.salt_info.measuring, 'Salinity')
+        self.assertEqual(waterq.salt_info.sample_number, 1)
+        self.assertEqual(waterq.salt_info.tool, 'Vernier')
 
 # Note: Not of high priority (since Django probably doesn't allow it in the
 #       first place), but may want to eventually add tests that assert

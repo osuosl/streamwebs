@@ -85,9 +85,9 @@ class MeasurementsManager(models.Manager):
     def create_measurement_info(self, datasheet_type, measuring, sample_number,
                                 tool):
         info = self.create(datasheet_type=datasheet_type,
-                                   measuring=measuring,
-                                   sample_number=sample_number,
-                                   tool=tool)
+                           measuring=measuring,
+                           sample_number=sample_number,
+                           tool=tool)
         return info
 
 
@@ -115,25 +115,17 @@ class Measurements(models.Model):
                  (DISSOLVED_O2, 'Dissolved Oxygen'),
                  (PH, 'pH'),
                  (TURBIDITY, 'Turbidity'),
-                 (SALINITY, 'Salinity'),
-    )
+                 (SALINITY, 'Salinity'),)
     SAMPLE_NUMBER = ((ONE, '1'), (TWO, '2'), (THREE, '3'), (FOUR, '4'),)
     TOOL_CHOICES = ((NOT_ACCESSED, 'N/A'),
                     (MANUAL, 'Manual'),
-                    (VERNIER, 'Vernier'),
-    )
+                    (VERNIER, 'Vernier'),)
 
     """Contains miscellaneous measurement information for the various
        datasheets such as units, sample number, etc"""
     datasheet_type = models.CharField(max_length=255,
                                       choices=DATASHEET_OPTIONS,
                                       default=DATASHEET_OPTIONS[0])
-#    """Continue to add (id) fields as more datasheets are created
-#          Note: datasheet ids should share a OneToOneField relationship with its
-#                corresponding measurement entry (rather than a Foreign Key
-#                relation)"""
-#    wq_datasheet_id = models.OneToOneField('Water_Quality',
-#                                           on_delete=models.CASCADE)
     measuring = models.CharField(max_length=255, choices=MEASURING,
                                  default=None)
     sample_number = models.CharField(max_length=255, choices=SAMPLE_NUMBER,
@@ -144,7 +136,7 @@ class Measurements(models.Model):
     objects = MeasurementsManager()
 
     def __str__(self):
-        return self.measuring 
+        return self.measuring
 
     class Meta:
         verbose_name = 'Measurement'
@@ -174,8 +166,7 @@ class Water_Quality(models.Model):
     BOOL_CHOICES = ((True, 'Yes'), (False, 'No'), (None, '-----'),)
     UNIT_CHOICES = ((None, '-----'),
                     (FAHRENHEIT, 'Fahrenheit'),
-                    (CELSIUS, 'Celsius'),
-    )
+                    (CELSIUS, 'Celsius'),)
 
     """
     The Water Quality model corresponds to the Water Quality datasheet. Each
@@ -238,22 +229,8 @@ class Water_Quality(models.Model):
     # the Site in which it corresponds to actually exists
 
     def __str__(self):
-        return self.site
+        return self.site.site_name
 
     class Meta:
         verbose_name = 'Water Quality'
         verbose_name_plural = 'Water Quality'
-
-
-# May want to ref the following -- ??
-# https://docs.djangoproject.com/en/1.9/ref/models/instances/#customizing-model-loading
-
-# How do you resave the measurement entries, so that they display the corr.
-# datasheet ids -- they're undistinguishable otherwise...
-
-#class RelationManager(Water_Quality, Measurements):
-#    wq_id = models.ForeignKey(Water_Quality, null=True)
-#    measurement_id = models.ForeignKey(Measurements, null=True)
-#
-#    def __unicode__(self):
-#        return wq_id, measurement_id
