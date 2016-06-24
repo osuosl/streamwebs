@@ -133,9 +133,11 @@ STATIC_URL = '/static/'
 # List of schools
 # Format: each school listed in the SCHOOL_CHOICES tuple should be a tuple of
 # two elements, the first being the value to be set on the user model and the
-# second being the human-readable name. For example: ('OSU', 'Oregon State
-# University'),
-SCHOOL_CHOICES = ()
+# second being the human-readable name. See the following example: 
+SCHOOL_CHOICES = (
+    # Example:
+    ('a', 'School A'),
+)
 
 # Pipeline settings for static files
 # Used to package, compress, and minimize our bower dependencies (e.g. JQuery)
