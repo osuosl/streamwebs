@@ -1,5 +1,5 @@
 from __future__ import unicode_literals
-from django.test import TestCase
+from django.test import TestCase, override_settings
 import datetime
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
@@ -11,6 +11,10 @@ from streamwebs.models import (
 )
 
 
+@override_settings(SCHOOL_CHOICES=(
+    ('e', 'School E'),
+    ('f', 'School F'),
+    ('g', 'School G'),))
 class UserTestCase(TestCase):
 
     """
@@ -24,10 +28,10 @@ class UserTestCase(TestCase):
         )
         profile = UserProfile.objects.create(
             user=user,
-            school='a',
+            school='e',
             birthdate=datetime.date(1999, 4, 1)
         )
-        self.assertEqual(profile.school, 'a')
+        self.assertEqual(profile.school, 'e')
         self.assertEqual(profile.birthdate, datetime.date(1999, 4, 1))
 
     """
@@ -41,7 +45,7 @@ class UserTestCase(TestCase):
         )
         profile1 = UserProfile.objects.create(
             user=user1,
-            school='c',
+            school='e',
             birthdate=datetime.date(1999, 4, 1)
         )
         self.assertEqual(profile1.user.username, 'user1')
@@ -53,49 +57,38 @@ class UserTestCase(TestCase):
     ValidationError
     """
     def test_school_not_in_list(self):
-        with self.settings(SCHOOL_CHOICES=(
-            ('e', 'School E'),
-            ('f', 'School F'),
-            ('g', 'School G'),
-        )):
-            bad_sch_user = User.objects.create_user(
-                'bad_sch',
-                'user@example.com',
-                'password'
-            )
-            bad_sch_prof = UserProfile.objects.create(
-                user=bad_sch_user,
-                school='d',
-                birthdate=datetime.date(1999, 4, 2)
-            )
-            with self.assertRaises(ValidationError):
-                validate_UserProfile_school(bad_sch_prof.school)
+        bad_sch_user = User.objects.create_user(
+            'bad_sch',
+            'user@example.com',
+            'password'
+        )
+        bad_sch_prof = UserProfile.objects.create(
+            user=bad_sch_user,
+            school='d',
+            birthdate=datetime.date(1999, 4, 2)
+        )
+        with self.assertRaises(ValidationError):
+            validate_UserProfile_school(bad_sch_prof.school)
 
     """
     Creating a UserProfile with a school in the schools list should not raise
     an exception
     """
     def test_school_is_in_list(self):
-        with self.settings(SCHOOL_CHOICES=(
-            ('e', 'School E'),
-            ('f', 'School F'),
-            ('g', 'School G'),
-        )):
-
-            good_sch_user = User.objects.create_user(
-                'good_sch',
-                'user@example.com',
-                'password'
-            )
-            good_sch_prof = UserProfile.objects.create(
-                user=good_sch_user,
-                school='e',
-                birthdate=datetime.date(1999, 4, 2)
-            )
-            try:
-                validate_UserProfile_school(good_sch_prof.school)
-            except:
-                self.fail('An exception was raised.')
+        good_sch_user = User.objects.create_user(
+            'good_sch',
+            'user@example.com',
+            'password'
+        )
+        good_sch_prof = UserProfile.objects.create(
+            user=good_sch_user,
+            school='f',
+            birthdate=datetime.date(1999, 4, 2)
+        )
+        try:
+            validate_UserProfile_school(good_sch_prof.school)
+        except:
+            self.fail('An exception was raised.')
 
     """
     Creating a UserProfile with a birth year greater than the current year
@@ -110,7 +103,7 @@ class UserTestCase(TestCase):
         )
         bad_yr_prof = UserProfile.objects.create(
             user=bad_yr_user,
-            school='b',
+            school='g',
             birthdate=datetime.date(today.year - 12, 4, 2)
         )
         with self.assertRaises(ValidationError):
@@ -129,7 +122,7 @@ class UserTestCase(TestCase):
         )
         bad_month_prof = UserProfile.objects.create(
             user=bad_month_user,
-            school='b',
+            school='e',
             birthdate=datetime.date(today.year - 13, today.month + 1, 2)
         )
         with self.assertRaises(ValidationError):
@@ -149,7 +142,7 @@ class UserTestCase(TestCase):
         )
         bad_day_prof = UserProfile.objects.create(
             user=bad_day_user,
-            school='b',
+            school='f',
             birthdate=datetime.date(today.year-13, today.month, today.day+1)
         )
         with self.assertRaises(ValidationError):
@@ -168,7 +161,7 @@ class UserTestCase(TestCase):
         )
         profile13 = UserProfile.objects.create(
             user=user13,
-            school='a',
+            school='g',
             birthdate=datetime.date(today.year-13, today.month, today.day)
         )
         try:
