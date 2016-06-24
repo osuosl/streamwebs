@@ -5,7 +5,16 @@
     </head>
 
     <body>
-        <h1>Welcome to StreamWebs</h1>
+        <h1>StreamWebs</h1>
+        <p>About:</p>
+
+        {% if user.is_authenticated %}
+            <a href="/streamwebs/logout/">Log out</a><br />
+        {% else %}
+            <a href="/streamwebs/register/">Register</a><br />
+            <a href="/streamwebs/login/">Log in</a>
+        {% endif %}
+
     </body>
 </html>
 
