@@ -4,9 +4,9 @@ from django.contrib.auth.models import User
 
 
 class LoginTestCase(TestCase):
+
     def setUp(self):
         self.client = Client()
-
         self.user = User.objects.create_user(
             'john',
             'john@example.com',
@@ -23,6 +23,9 @@ class LoginTestCase(TestCase):
         self.assertTemplateUsed(response, 'streamwebs/login.html')
 
     def test_good_username_good_password(self):
+        """
+        A valid username and password should log the user in.
+        """
         response_good = self.client.post(
             reverse('streamwebs:login'),
             {'username': 'john', 'password': 'johnpassword'}
@@ -35,6 +38,9 @@ class LoginTestCase(TestCase):
         )
 
     def test_good_username_bad_password(self):
+        """
+        A valid username but invalid password shouldn't log the user in.
+        """
         response_bad_pass = self.client.post(
             reverse('streamwebs:login'),
             {'username': 'john', 'password': 'badpassword'}
@@ -42,6 +48,9 @@ class LoginTestCase(TestCase):
         self.assertContains(response_bad_pass, 'Invalid credentials')
 
     def test_bad_username_good_password(self):
+        """
+        An invalid username and valid password shouldn't log the user in.
+        """
         response_bad_name = self.client.post(
             reverse('streamwebs:login'),
             {'username': 'notjohn', 'password': 'johnpassword'}
@@ -49,6 +58,9 @@ class LoginTestCase(TestCase):
         self.assertContains(response_bad_name, 'Invalid credentials')
 
     def test_bad_username_bad_password(self):
+        """
+        An invalid username and password shouldn't log the user in.
+        """
         response_both_bad = self.client.post(
             reverse('streamwebs:login'),
             {'username': 'notjohn', 'password': 'badpassword'}
@@ -56,6 +68,9 @@ class LoginTestCase(TestCase):
         self.assertContains(response_both_bad, 'Invalid credentials')
 
     def test_logout_when_logged_in(self):
+        """
+        A logged in user should be able to log out.
+        """
         response_in = self.client.post(
             reverse('streamwebs:login'),
             {'username': 'john', 'password': 'johnpassword'}
@@ -75,6 +90,9 @@ class LoginTestCase(TestCase):
         )
 
     def test_logout_when_not_logged_in(self):
+        """
+        A logout attempt from someone who isn't logged in should fail.
+        """
         response_out_attempt = self.client.get(reverse('streamwebs:logout'))
         self.assertEqual(response_out_attempt.status_code, 302)
         self.assertTemplateNotUsed(
