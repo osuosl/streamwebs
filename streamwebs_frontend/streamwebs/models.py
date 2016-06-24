@@ -56,7 +56,7 @@ def validate_UserProfile_birthdate(birthdate):
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     school = models.CharField(
-        max_length=1,
+        max_length=255,
         choices=settings.SCHOOL_CHOICES,
         default='',
         validators=[validate_UserProfile_school]
