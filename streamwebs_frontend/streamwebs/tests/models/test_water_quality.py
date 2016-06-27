@@ -6,7 +6,7 @@ from itertools import chain
 
 from streamwebs.models import Site
 from streamwebs.models import Water_Quality
-from streamwebs.models import Measurements
+from streamwebs.models import WQ_Sample
 
 
 class WaterQualityTestCase(TestCase):
@@ -25,66 +25,22 @@ class WaterQualityTestCase(TestCase):
             'dead_fish': models.PositiveSmallIntegerField,
             'water_temp_unit': models.CharField,
             'air_temp_unit': models.CharField,
-            'water_temp': models.DecimalField,
-            'water_temp_info': models.ForeignKey,
-            'air_temp': models.DecimalField,
-            'air_temp_info': models.ForeignKey,
-            'dissolved_oxygen': models.DecimalField,
-            'oxygen_info': models.ForeignKey,
-            'pH': models.DecimalField,
-            'pH_info': models.ForeignKey,
-            'turbidity': models.DecimalField,
-            'turbid_info': models.ForeignKey,
-            'salinity': models.DecimalField,
-            'salt_info': models.ForeignKey,
-            'conductivity': models.DecimalField,
-            'conductivity_info': models.ForeignKey,
-            'total_solids': models.DecimalField,
-            'tot_solids_info': models.ForeignKey,
-            'bod': models.DecimalField,
-            'bod_info': models.ForeignKey,
-            'ammonia': models.DecimalField,
-            'ammonia_info': models.ForeignKey,
-            'nitrite': models.DecimalField,
-            'nitrite_info': models.ForeignKey,
-            'nitrate': models.DecimalField,
-            'nitrate_info': models.ForeignKey,
-            'phosphates': models.DecimalField,
-            'phosphate_info': models.ForeignKey,
-            'fecal_coliform': models.DecimalField,
-            'fecal_info': models.ForeignKey,
+            'sample_1': models.ForeignKey,
+            'sample_2': models.ForeignKey,
+            'sample_3': models.ForeignKey,
+            'sample_4': models.ForeignKey,
             'notes': models.TextField,
             'id': models.AutoField,
 
-            # Corresponding measurement entry (id)
-            'water_temp_info_id': models.ForeignKey,
-            'air_temp_info_id': models.ForeignKey,
-            'oxygen_info_id': models.ForeignKey,
-            'pH_info_id': models.ForeignKey,
-            'turbid_info_id': models.ForeignKey,
-            'salt_info_id': models.ForeignKey,
-
-            # Measurement entry ids for optional fields
-            'conductivity_info_id': models.ForeignKey,
-            'tot_solids_info_id': models.ForeignKey,
-            'bod_info_id': models.ForeignKey,
-            'ammonia_info_id': models.ForeignKey,
-            'nitrite_info_id': models.ForeignKey,
-            'nitrate_info_id': models.ForeignKey,
-            'phosphate_info_id': models.ForeignKey,
-            'fecal_info_id': models.ForeignKey
+            # Corresponding sample entry (id)
+            'sample_1_id': models.ForeignKey,
+            'sample_2_id': models.ForeignKey,
+            'sample_3_id': models.ForeignKey,
+            'sample_4_id': models.ForeignKey
         }
 
         self.optional_fields = {
-            'conductivity',
-            'total_solids',
-            'bod',
-            'ammonia',
-            'nitrite',
-            'nitrate',
-            'phosphates',
-            'fecal_coliform',
-            'notes'
+           'notes'
         }
 
     def test_fields_exist(self):
@@ -110,18 +66,32 @@ class WaterQualityTestCase(TestCase):
     def test_datasheet_ManyToOneSite(self):
         """Tests that a datasheet correctly corresponds to a specified site"""
         site = Site.objects.create_site('test', 'some_type', 'some_slug')
-        water_temp_info = Measurements.objects.create_measurement_info(
-                          'Water Quality', 'Water Temperature', 1, 'Manual')
-        air_temp_info = Measurements.objects.create_measurement_info(
-                        'Water Quality', 'Air Temperature', 1, 'Manual')
-        oxygen_info = Measurements.objects.create_measurement_info(
-                      'Water Quality', 'Dissolved Oxygen', 1, 'Vernier')
-        pH_info = Measurements.objects.create_measurement_info(
-                  'Water Quality', 'pH', 1, 'Vernier')
-        turbid_info = Measurements.objects.create_measurement_info(
-                      'Water Quality', 'Turbidity', 1, 'Manual')
-        salt_info = Measurements.objects.create_measurement_info(
-                    'Water Quality', 'Salinity', 1, 'Vernier')
+
+        sample_1 = WQ_Sample.objects.create_sample(35, 'Manual', 70,
+                                                   'Manual', 6, 'Manual',
+                                                   8.65, 'Vernier', 0.879,
+                                                   'Manual', 8.8, 'Vernier',
+                                                   15, 10, 7, 0.93,
+                                                   2.1, 1.9, 14.5, 13)
+
+        sample_2 = WQ_Sample.objects.create_sample(35, 'Vernier', 70,
+                                                   'Vernier', 5, 'Vernier',
+                                                   0.5, 'Manual', 8.79,
+                                                   'Vernier', 8, 'Manual',
+                                                   1, 0.10, 29, 0.93, 2.1,
+                                                   2.0, 1.45, 10)
+
+        sample_3 = WQ_Sample.objects.create_sample(25, 'Manual', 57,
+                                                   'Vernier', 12, 'Manual',
+                                                   8.45, 'Vernier', 0.87,
+                                                   'Manual', 9.8, 'Vernier')
+
+        sample_4 = WQ_Sample.objects.create_sample(45, 'Vernier', 89,
+                                                   'Manual', 9, 'Vernier',
+                                                   3.25, 'Vernier', 0.879,
+                                                   'Manual', 8, 'Vernier',
+                                                   0, 0, 0, 0, 2.5, 0, 0, 0)
+
         waterq = Water_Quality.objects.create(site=site,
                                               DEQ_wq_level='A',
                                               date='2016-06-01',
@@ -129,40 +99,48 @@ class WaterQualityTestCase(TestCase):
                                               longitude=123,
                                               fish_present='False',
                                               live_fish=0, dead_fish=0,
-                                              water_temp_unit='Celsius',
-                                              air_temp_unit='Celsius',
-                                              water_temp=45,
-                                              water_temp_info=water_temp_info,
-                                              air_temp=65,
-                                              air_temp_info=air_temp_info,
-                                              dissolved_oxygen=15,
-                                              oxygen_info=oxygen_info,
-                                              pH=6.7,
-                                              pH_info=pH_info,
-                                              turbidity=0,
-                                              turbid_info=turbid_info,
-                                              salinity=12,
-                                              salt_info=salt_info)
+                                              water_temp_unit='Fahrenheit',
+                                              air_temp_unit='Fahrenheit',
+                                              sample_1=sample_1,
+                                              sample_2=sample_2,
+                                              sample_3=sample_3,
+                                              sample_4=sample_4,
+                                              notes='Test data made')
+        # Assert that site data matches the newly created test site
         self.assertEqual(waterq.site.site_name, 'test')
         self.assertEqual(waterq.site.site_type, 'some_type')
         self.assertEqual(waterq.site.site_slug, 'some_slug')
 
-    def test_datasheet_SetMeasurementInfo(self):
+    def test_datasheet_SetSampleInfo(self):
         """Tests that a datasheet correctly corresponds to a specified
            measurement entry - required fields"""
         site = Site.objects.create_site('test', 'some_type', 'some_slug')
-        water_temp_info = Measurements.objects.create_measurement_info(
-                          'Water Quality', 'Water Temperature', 1, 'Manual')
-        air_temp_info = Measurements.objects.create_measurement_info(
-                        'Water Quality', 'Air Temperature', 1, 'Manual')
-        oxygen_info = Measurements.objects.create_measurement_info(
-                      'Water Quality', 'Dissolved Oxygen', 1, 'Vernier')
-        pH_info = Measurements.objects.create_measurement_info(
-                  'Water Quality', 'pH', 1, 'Vernier')
-        turbid_info = Measurements.objects.create_measurement_info(
-                      'Water Quality', 'Turbidity', 1, 'Manual')
-        salt_info = Measurements.objects.create_measurement_info(
-                    'Water Quality', 'Salinity', 1, 'Vernier')
+
+        sample_1 = WQ_Sample.objects.create_sample(35, 'Manual', 70,
+                                                   'Manual', 6, 'Manual',
+                                                   8.65, 'Vernier', 0.879,
+                                                   'Manual', 8.8, 'Vernier',
+                                                   15, 10, 7, 0.93,
+                                                   2.1, 1.9, 14.5, 13)
+
+        sample_2 = WQ_Sample.objects.create_sample(35, 'Vernier', 70,
+                                                   'Vernier', 5, 'Vernier',
+                                                   0.5, 'Manual', 8.79,
+                                                   'Vernier', 8, 'Manual',
+                                                   1, 0.10, 29, 0.93, 2.1,
+                                                   2.0, 1.45, 10)
+
+        sample_3 = WQ_Sample.objects.create_sample(25, 'Manual', 57,
+                                                   'Vernier', 12, 'Manual',
+                                                   8.45, 'Vernier', 0.87,
+                                                   'Manual', 9.8, 'Vernier')
+
+        sample_4 = WQ_Sample.objects.create_sample(45, 'Vernier', 89,
+                                                   'Manual', 9, 'Vernier',
+                                                   3.25, 'Vernier', 0.879,
+                                                   'Manual', 8, 'Vernier',
+                                                   0, 0, 0, 0, 2.5, 0, 0, 0)
+
         waterq = Water_Quality.objects.create(site=site,
                                               DEQ_wq_level='A',
                                               date='2016-06-01',
@@ -172,89 +150,96 @@ class WaterQualityTestCase(TestCase):
                                               live_fish=0, dead_fish=0,
                                               water_temp_unit='Celsius',
                                               air_temp_unit='Celsius',
-                                              water_temp=45,
-                                              water_temp_info=water_temp_info,
-                                              air_temp=65,
-                                              air_temp_info=air_temp_info,
-                                              dissolved_oxygen=15,
-                                              oxygen_info=oxygen_info,
-                                              pH=6.7,
-                                              pH_info=pH_info,
-                                              turbidity=0,
-                                              turbid_info=turbid_info,
-                                              salinity=12,
-                                              salt_info=salt_info)
-        # Assert that each field (and its additional measurement info) has been
-        # properly set
-        self.assertEqual(waterq.water_temp_info.datasheet_type,
-                         'Water Quality')
-        self.assertEqual(waterq.water_temp_info.measuring, 'Water Temperature')
-        self.assertEqual(waterq.water_temp_info.sample_number, 1)
-        self.assertEqual(waterq.water_temp_info.tool, 'Manual')
+                                              sample_1=sample_1,
+                                              sample_2=sample_2,
+                                              sample_3=sample_3,
+                                              sample_4=sample_4,
+                                              notes='Test data made')
 
-        self.assertEqual(waterq.air_temp_info.datasheet_type, 'Water Quality')
-        self.assertEqual(waterq.air_temp_info.measuring, 'Air Temperature')
-        self.assertEqual(waterq.air_temp_info.sample_number, 1)
-        self.assertEqual(waterq.air_temp_info.tool, 'Manual')
+        # Assert that the required fields for each of the 4 samples are created
+        # for the datasheet
+        self.assertEqual(waterq.sample_1.water_temperature, 35)
+        self.assertEqual(waterq.sample_1.water_temp_tool, 'Manual')
+        self.assertEqual(waterq.sample_1.air_temperature, 70)
+        self.assertEqual(waterq.sample_1.air_temp_tool, 'Manual')
+        self.assertEqual(waterq.sample_1.dissolved_oxygen, 6)
+        self.assertEqual(waterq.sample_1.oxygen_tool, 'Manual')
+        self.assertEqual(waterq.sample_1.pH, 8.65)
+        self.assertEqual(waterq.sample_1.pH_tool, 'Vernier')
+        self.assertEqual(waterq.sample_1.turbidity, 0.879)
+        self.assertEqual(waterq.sample_1.turbid_tool, 'Manual')
+        self.assertEqual(waterq.sample_1.salinity, 8.8)
+        self.assertEqual(waterq.sample_1.salt_tool, 'Vernier')
 
-        self.assertEqual(waterq.oxygen_info.datasheet_type, 'Water Quality')
-        self.assertEqual(waterq.oxygen_info.measuring, 'Dissolved Oxygen')
-        self.assertEqual(waterq.oxygen_info.sample_number, 1)
-        self.assertEqual(waterq.oxygen_info.tool, 'Vernier')
+        self.assertEqual(waterq.sample_2.water_temperature, 35)
+        self.assertEqual(waterq.sample_2.water_temp_tool, 'Vernier')
+        self.assertEqual(waterq.sample_2.air_temperature, 70)
+        self.assertEqual(waterq.sample_2.air_temp_tool, 'Vernier')
+        self.assertEqual(waterq.sample_2.dissolved_oxygen, 5)
+        self.assertEqual(waterq.sample_2.oxygen_tool, 'Vernier')
+        self.assertEqual(waterq.sample_2.pH, 0.5)
+        self.assertEqual(waterq.sample_2.pH_tool, 'Manual')
+        self.assertEqual(waterq.sample_2.turbidity, 8.79)
+        self.assertEqual(waterq.sample_2.turbid_tool, 'Vernier')
+        self.assertEqual(waterq.sample_2.salinity, 8)
+        self.assertEqual(waterq.sample_2.salt_tool, 'Manual')
 
-        self.assertEqual(waterq.pH_info.datasheet_type, 'Water Quality')
-        self.assertEqual(waterq.pH_info.measuring, 'pH')
-        self.assertEqual(waterq.pH_info.sample_number, 1)
-        self.assertEqual(waterq.pH_info.tool, 'Vernier')
+        self.assertEqual(waterq.sample_3.water_temperature, 25)
+        self.assertEqual(waterq.sample_3.water_temp_tool, 'Manual')
+        self.assertEqual(waterq.sample_3.air_temperature, 57)
+        self.assertEqual(waterq.sample_3.air_temp_tool, 'Vernier')
+        self.assertEqual(waterq.sample_3.dissolved_oxygen, 12)
+        self.assertEqual(waterq.sample_3.oxygen_tool, 'Manual')
+        self.assertEqual(waterq.sample_3.pH, 8.45)
+        self.assertEqual(waterq.sample_3.pH_tool, 'Vernier')
+        self.assertEqual(waterq.sample_3.turbidity, 0.87)
+        self.assertEqual(waterq.sample_3.turbid_tool, 'Manual')
+        self.assertEqual(waterq.sample_3.salinity, 9.8)
+        self.assertEqual(waterq.sample_3.salt_tool, 'Vernier')
 
-        self.assertEqual(waterq.turbid_info.datasheet_type, 'Water Quality')
-        self.assertEqual(waterq.turbid_info.measuring, 'Turbidity')
-        self.assertEqual(waterq.turbid_info.sample_number, 1)
-        self.assertEqual(waterq.turbid_info.tool, 'Manual')
+        self.assertEqual(waterq.sample_4.water_temperature, 45)
+        self.assertEqual(waterq.sample_4.water_temp_tool, 'Vernier')
+        self.assertEqual(waterq.sample_4.air_temperature, 89)
+        self.assertEqual(waterq.sample_4.air_temp_tool, 'Manual')
+        self.assertEqual(waterq.sample_4.dissolved_oxygen, 9)
+        self.assertEqual(waterq.sample_4.oxygen_tool, 'Vernier')
+        self.assertEqual(waterq.sample_4.pH, 3.25)
+        self.assertEqual(waterq.sample_4.pH_tool, 'Vernier')
+        self.assertEqual(waterq.sample_4.turbidity, 0.879)
+        self.assertEqual(waterq.sample_4.turbid_tool, 'Manual')
+        self.assertEqual(waterq.sample_4.salinity, 8)
+        self.assertEqual(waterq.sample_4.salt_tool, 'Vernier')
 
-        self.assertEqual(waterq.salt_info.datasheet_type, 'Water Quality')
-        self.assertEqual(waterq.salt_info.measuring, 'Salinity')
-        self.assertEqual(waterq.salt_info.sample_number, 1)
-        self.assertEqual(waterq.salt_info.tool, 'Vernier')
-
-    def test_datasheet_AdditionalMeasurementInfo(self):
+    def test_datasheet_AdditionalParams(self):
         """Tests that a datasheet correctly corresponds to a specified
            measurement entry - additional fields"""
         site = Site.objects.create_site('test', 'some_type', 'some_slug')
 
-        # The following fields are required
-        water_temp_info = Measurements.objects.create_measurement_info(
-                          'Water Quality', 'Water Temperature', 1, 'Manual')
-        air_temp_info = Measurements.objects.create_measurement_info(
-                        'Water Quality', 'Air Temperature', 1, 'Manual')
-        oxygen_info = Measurements.objects.create_measurement_info(
-                      'Water Quality', 'Dissolved Oxygen', 1, 'Vernier')
-        pH_info = Measurements.objects.create_measurement_info(
-                  'Water Quality', 'pH', 1, 'Vernier')
-        turbid_info = Measurements.objects.create_measurement_info(
-                      'Water Quality', 'Turbidity', 1, 'Manual')
-        salt_info = Measurements.objects.create_measurement_info(
-                    'Water Quality', 'Salinity', 1, 'Vernier')
+        sample_1 = WQ_Sample.objects.create_sample(35, 'Manual', 70,
+                                                   'Manual', 6, 'Manual',
+                                                   8.65, 'Vernier', 0.879,
+                                                   'Manual', 8.8, 'Vernier',
+                                                   15, 10, 7, 0.93,
+                                                   2.1, 1.9, 14.5, 13)
 
-        # The following fields are additional/optional
-        conduct_info = Measurements.objects.create_additional_info(
-                       'Water Quality', 'Conductivity', 1)
-        tot_solids_info = Measurements.objects.create_additional_info(
-                          'Water Quality', 'Total Solids', 1)
-        bod_info = Measurements.objects.create_additional_info(
-                   'Water Quality', 'Bod', 1)
-        ammonia_info = Measurements.objects.create_additional_info(
-                       'Water Quality', 'Ammonia', 1)
-        nitrite_info = Measurements.objects.create_additional_info(
-                       'Water Quality', 'Nitrite', 1)
-        nitrate_info = Measurements.objects.create_additional_info(
-                       'Water Quality', 'Nitrate', 1)
-        phosphate_info = Measurements.objects.create_additional_info(
-                        'Water Quality', 'Phosphates', 1)
-        fecal_info = Measurements.objects.create_additional_info(
-                     'Water Quality', 'Fecal Coliform', 1)
+        sample_2 = WQ_Sample.objects.create_sample(35, 'Vernier', 70,
+                                                   'Vernier', 5, 'Vernier',
+                                                   0.5, 'Manual', 8.79,
+                                                   'Vernier', 8, 'Manual',
+                                                   1, 0.10, 29, 0.93, 2.1,
+                                                   2.0, 1.45, 10)
 
-        # Creating a test datasheet, this time w/ additional parameters defined
+        sample_3 = WQ_Sample.objects.create_sample(25, 'Manual', 57,
+                                                   'Vernier', 12, 'Manual',
+                                                   8.45, 'Vernier', 0.87,
+                                                   'Manual', 9.8, 'Vernier')
+
+        sample_4 = WQ_Sample.objects.create_sample(45, 'Vernier', 89,
+                                                   'Manual', 9, 'Vernier',
+                                                   3.25, 'Vernier', 0.879,
+                                                   'Manual', 8, 'Vernier',
+                                                   0, 0, 0, 0, 2.5, 0, 0, 0)
+
         waterq = Water_Quality.objects.create(site=site,
                                               DEQ_wq_level='A',
                                               date='2016-06-01',
@@ -264,68 +249,49 @@ class WaterQualityTestCase(TestCase):
                                               live_fish=0, dead_fish=0,
                                               water_temp_unit='Celsius',
                                               air_temp_unit='Celsius',
-                                              water_temp=45,
-                                              water_temp_info=water_temp_info,
-                                              air_temp=65,
-                                              air_temp_info=air_temp_info,
-                                              dissolved_oxygen=15,
-                                              oxygen_info=oxygen_info,
-                                              pH=6.7,
-                                              pH_info=pH_info,
-                                              turbidity=0,
-                                              turbid_info=turbid_info,
-                                              salinity=12,
-                                              salt_info=salt_info,
-                                              conductivity=7,
-                                              conductivity_info=conduct_info,
-                                              total_solids=20,
-                                              tot_solids_info=tot_solids_info,
-                                              bod=3,
-                                              bod_info=bod_info,
-                                              ammonia=0.075,
-                                              ammonia_info=ammonia_info,
-                                              nitrite=2.3,
-                                              nitrite_info=nitrite_info,
-                                              nitrate=2.25,
-                                              nitrate_info=nitrate_info,
-                                              phosphates=1.2,
-                                              phosphate_info=phosphate_info,
-                                              fecal_coliform=0.75,
-                                              fecal_info=fecal_info)
+                                              sample_1=sample_1,
+                                              sample_2=sample_2,
+                                              sample_3=sample_3,
+                                              sample_4=sample_4,
+                                              notes='Test data made')
 
-        self.assertEqual(
-            waterq.conductivity_info.datasheet_type, 'Water Quality')
-        self.assertEqual(waterq.conductivity_info.measuring, 'Conductivity')
-        self.assertEqual(waterq.conductivity_info.sample_number, 1)
+        # Asserting that the additional params are properly created, if the
+        # field is left blank, default to ``None``
+        self.assertEqual(waterq.sample_1.conductivity, 15)
+        self.assertEqual(waterq.sample_1.total_solids, 10)
+        self.assertEqual(waterq.sample_1.bod, 7)
+        self.assertEqual(waterq.sample_1.ammonia, 0.93)
+        self.assertEqual(waterq.sample_1.nitrite, 2.1)
+        self.assertEqual(waterq.sample_1.nitrate, 1.9)
+        self.assertEqual(waterq.sample_1.phosphates, 14.5)
+        self.assertEqual(waterq.sample_1.fecal_coliform, 13)
 
-        self.assertEqual(
-            waterq.tot_solids_info.datasheet_type, 'Water Quality')
-        self.assertEqual(waterq.tot_solids_info.measuring, 'Total Solids')
-        self.assertEqual(waterq.tot_solids_info.sample_number, 1)
+        self.assertEqual(waterq.sample_2.conductivity, 1)
+        self.assertEqual(waterq.sample_2.total_solids, 0.10)
+        self.assertEqual(waterq.sample_2.bod, 29)
+        self.assertEqual(waterq.sample_2.ammonia, 0.93)
+        self.assertEqual(waterq.sample_2.nitrite, 2.1)
+        self.assertEqual(waterq.sample_2.nitrate, 2.0)
+        self.assertEqual(waterq.sample_2.phosphates, 1.45)
+        self.assertEqual(waterq.sample_2.fecal_coliform, 10)
 
-        self.assertEqual(waterq.bod_info.datasheet_type, 'Water Quality')
-        self.assertEqual(waterq.bod_info.measuring, 'Bod')
-        self.assertEqual(waterq.bod_info.sample_number, 1)
+        self.assertEqual(waterq.sample_3.conductivity, None)
+        self.assertEqual(waterq.sample_3.total_solids, None)
+        self.assertEqual(waterq.sample_3.bod, None)
+        self.assertEqual(waterq.sample_3.ammonia, None)
+        self.assertEqual(waterq.sample_3.nitrite, None)
+        self.assertEqual(waterq.sample_3.nitrate, None)
+        self.assertEqual(waterq.sample_3.phosphates, None)
+        self.assertEqual(waterq.sample_3.fecal_coliform, None)
 
-        self.assertEqual(waterq.ammonia_info.datasheet_type, 'Water Quality')
-        self.assertEqual(waterq.ammonia_info.measuring, 'Ammonia')
-        self.assertEqual(waterq.ammonia_info.sample_number, 1)
-
-        self.assertEqual(waterq.nitrite_info.datasheet_type, 'Water Quality')
-        self.assertEqual(waterq.nitrite_info.measuring, 'Nitrite')
-        self.assertEqual(waterq.nitrite_info.sample_number, 1)
-
-        self.assertEqual(waterq.nitrate_info.datasheet_type, 'Water Quality')
-        self.assertEqual(waterq.nitrate_info.measuring, 'Nitrate')
-        self.assertEqual(waterq.nitrate_info.sample_number, 1)
-
-        self.assertEqual(waterq.phosphate_info.datasheet_type, 'Water Quality')
-        self.assertEqual(waterq.phosphate_info.measuring, 'Phosphates')
-        self.assertEqual(waterq.phosphate_info.sample_number, 1)
-
-        self.assertEqual(waterq.fecal_info.datasheet_type, 'Water Quality')
-        self.assertEqual(waterq.fecal_info.measuring, 'Fecal Coliform')
-        self.assertEqual(waterq.fecal_info.sample_number, 1)
+        self.assertEqual(waterq.sample_4.conductivity, 0)
+        self.assertEqual(waterq.sample_4.total_solids, 0)
+        self.assertEqual(waterq.sample_4.bod, 0)
+        self.assertEqual(waterq.sample_4.ammonia, 0)
+        self.assertEqual(waterq.sample_4.nitrite, 2.5)
+        self.assertEqual(waterq.sample_4.nitrate, 0)
+        self.assertEqual(waterq.sample_4.phosphates, 0)
+        self.assertEqual(waterq.sample_4.fecal_coliform, 0)
 
 # Note: Not of high priority (since Django probably doesn't allow it in the
 #       first place), but may want to eventually add tests that assert
