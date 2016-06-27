@@ -7,6 +7,7 @@ from django.shortcuts import render
 
 from streamwebs.forms import UserForm, UserProfileForm
 
+
 # Create your views here.
 def index(request):
     return render(request, 'streamwebs/index.html', {})
