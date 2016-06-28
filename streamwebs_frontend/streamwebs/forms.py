@@ -6,10 +6,18 @@ from django import forms
 
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
+    password_check = forms.CharField(
+        widget=forms.PasswordInput(),
+        label='Repeat your password')
 
     class Meta:
         model = User
-        fields = ('username', 'email', 'password', 'first_name', 'last_name')
+        fields = ('first_name', 'last_name', 'username', 'email', 'password')
+
+    def clean_password(self):
+        if self.data['password'] != self.data['password_check']:
+            raise forms.ValidationError('Passwords do not match')
+        return self.data['password']
 
 
 class UserProfileForm(forms.ModelForm):
