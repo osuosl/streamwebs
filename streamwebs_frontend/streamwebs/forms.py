@@ -19,6 +19,15 @@ class UserForm(forms.ModelForm):
             'first_name': _('First Name'),
             'last_name': _('Last Name'),
         }
+    password = forms.CharField(widget=forms.PasswordInput())
+    password_check = forms.CharField(
+        widget=forms.PasswordInput(),
+        label='Repeat your password')
+
+    def clean_password(self):
+        if self.data['password'] != self.data['password_check']:
+            raise forms.ValidationError('Passwords do not match')
+        return self.data['password']
 
 
 class UserProfileForm(forms.ModelForm):
