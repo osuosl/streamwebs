@@ -74,6 +74,7 @@ TEMPLATES = [
     },
 ]
 
+
 WSGI_APPLICATION = 'streamwebs_frontend.wsgi.application'
 
 
@@ -132,9 +133,15 @@ STATIC_URL = '/static/'
 # List of schools
 # Format: each school listed in the SCHOOL_CHOICES tuple should be a tuple of
 # two elements, the first being the value to be set on the user model and the
-# second being the human-readable name. For example: ('OSU', 'Oregon State
-# University'),
-SCHOOL_CHOICES = ()
+# second being the human-readable name. Below is a temporary entry that
+# demonstrates how each school should be formatted. Keep in mind that if this
+# list is empty, the testing of the "register" page in-browser will be limited
+# since successful registration requires the selection of a school that
+# actually exists in SCHOOL_CHOICES.
+SCHOOL_CHOICES = (
+    # Example:
+    ('a', 'School A'),
+)
 
 # Pipeline settings for static files
 # Used to package, compress, and minimize our bower dependencies (e.g. JQuery)
