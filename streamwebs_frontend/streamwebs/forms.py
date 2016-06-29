@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 from streamwebs.models import UserProfile
 from django.contrib.auth.models import User
 from django import forms
+from captcha.fields import CaptchaField
 
 
 class UserForm(forms.ModelForm):
@@ -21,6 +22,8 @@ class UserForm(forms.ModelForm):
 
 
 class UserProfileForm(forms.ModelForm):
+    captcha = CaptchaField()
+
     class Meta:
         model = UserProfile
         fields = ('school', 'birthdate')
