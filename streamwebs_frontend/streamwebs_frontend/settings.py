@@ -144,6 +144,11 @@ SCHOOL_CHOICES = (
     ('a', 'School A'),
 )
 
+# From http://django-simple-captcha.readthedocs.io/en/latest/advanced.html:
+# "When set to True, the string "PASSED" will be accepted as a valid response
+# to any CAPTCHA. Warning: do NOT set this to True in production."
+CAPTCHA_TEST_MODE = True
+
 # Pipeline settings for static files
 # Used to package, compress, and minimize our bower dependencies (e.g. JQuery)
 # https://axiacore.com/blog/effective-dependency-management-django-using-bower/
