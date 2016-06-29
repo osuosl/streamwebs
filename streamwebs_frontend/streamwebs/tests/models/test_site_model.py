@@ -17,7 +17,10 @@ class SiteTestCase(TestCase):
             'location': models.PointField,
             'created': models.DateTimeField,
             'modified': models.DateTimeField,
-            'id': models.AutoField
+            'id': models.AutoField,
+
+            # Datasheets
+            'water_quality': models.ManyToOneRel
         }
 
         self.optional_fields = {
@@ -36,7 +39,7 @@ class SiteTestCase(TestCase):
         fields = list(set(chain.from_iterable(
             (field.name, field.attname) if hasattr(field, 'attname') else
             (field.name,) for field in Site._meta.get_fields()
-            if not (field.many_to_one and field.realted_model is None)
+            if not (field.many_to_one and field.related_model is None)
         )))
         self.assertEqual(sorted(fields), sorted(self.expected_fields.keys()))
 

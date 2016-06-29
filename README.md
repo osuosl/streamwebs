@@ -34,9 +34,19 @@ ERROR: stat /home/thai/projects/streamwebs: too many levels of symbolic links
 restarting docker should fix the problem. The command to do so is
 ``sudo systemctl restart docker``
 
-Note that after running ``docker-compose up``, docker doesn't print the
+
+Another note: after running ``docker-compose up``, docker doesn't print the
 standard "django app is running" output. Just know that it is.
 
 You can check that this is true by going to ``localhost:8000/streamwebs`` in
 your browser.
 
+
+### Miscellaneous Tips
+Run ``flake8 streamwebs_frontend --exclude streamwebs_frontend/streamwebs/migrations``
+to exclude the migrations directory when linting.
+
+If you'd like to access the postgresql database, open up an interactive shell
+with ``docker-compose run web bash``. Then run the following command:
+``psql -h $POSTGRES_HOST -d streamwebs -U $POSTGRES_USER. This will bring you
+to the postgres interactive terminal.
