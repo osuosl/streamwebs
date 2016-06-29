@@ -52,7 +52,9 @@ class RegistrateTestCase(TestCase):
                 'last_name': 'Johnson',
                 'password_check': 'johniscool',
                 'school': 'a',
-                'birthdate': '1995-11-10'
+                'birthdate': '1995-11-10',
+                'captcha_0': 'dummy-val',
+                'captcha_1': 'PASSED'
             }
         )
         self.assertEqual(user_form_response.status_code, 200)
@@ -68,7 +70,9 @@ class RegistrateTestCase(TestCase):
                 'last_name': 'Johnson',
                 'password_check': 'johnisnotcool',
                 'school': 'a',
-                'birthdate': '1995-11-10'
+                'birthdate': '1995-11-10',
+                'captcha_0': 'dummy-val',
+                'captcha_1': 'PASSED'
             }
         )
         self.assertFormError(
@@ -78,3 +82,26 @@ class RegistrateTestCase(TestCase):
             'Passwords do not match'
         )
         self.assertFalse(bad_pw_response.context['registered'])
+
+    def test_captcha_fail(self):
+        bad_capt_response = self.client.post(
+            reverse('streamwebs:register'), {
+                'username': 'john',
+                'email': 'john@example.com',
+                'password': 'johniscool',
+                'first_name': 'John',
+                'last_name': 'Johnson',
+                'password_check': 'johniscool',
+                'school': 'a',
+                'birthdate': '1995-11-10',
+                'captcha_0': 'dummy-val',
+                'captcha_1': 'FAILED'
+                 }
+        )
+        self.assertFormError(
+            bad_capt_response,
+            'profile_form',
+            'captcha',
+            'Invalid CAPTCHA'
+        )
+        self.assertFalse(bad_capt_response.context['registered'])
