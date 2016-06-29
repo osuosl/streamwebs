@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
 import os
+import sys
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -126,11 +127,6 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.9/howto/static-files/
-
-STATIC_URL = '/static/'
-
 # List of schools
 # Format: each school listed in the SCHOOL_CHOICES tuple should be a tuple of
 # two elements, the first being the value to be set on the user model and the
@@ -139,15 +135,30 @@ STATIC_URL = '/static/'
 # list is empty, the testing of the "register" page in-browser will be limited
 # since successful registration requires the selection of a school that
 # actually exists in SCHOOL_CHOICES.
+
 SCHOOL_CHOICES = (
     # Example:
     ('a', 'School A'),
 )
 
-# From http://django-simple-captcha.readthedocs.io/en/latest/advanced.html:
+# The following config is to allow automated testing without obstruction from
+# the captcha field. From
+# http://django-simple-captcha.readthedocs.io/en/latest/advanced.html:
 # "When set to True, the string "PASSED" will be accepted as a valid response
-# to any CAPTCHA. Warning: do NOT set this to True in production."
-CAPTCHA_TEST_MODE = True
+# to any CAPTCHA."
+
+if 'test' in sys.argv:
+    CAPTCHA_TEST_MODE = True
+
+# Captcha type: four random characters, case insensitive
+CAPTCHA_CHALLENGE_FUNCT = 'captcha.helpers.random_char_challenge'
+
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/1.9/howto/static-files/
+
+STATIC_URL = '/static/'
+
 
 # Pipeline settings for static files
 # Used to package, compress, and minimize our bower dependencies (e.g. JQuery)
