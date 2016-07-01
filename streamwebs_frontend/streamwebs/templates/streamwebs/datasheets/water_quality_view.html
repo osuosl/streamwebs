@@ -4,7 +4,7 @@
 
 {% block title %}Water Quality - {{data.site.name}} - Streamwebs{% endblock %}
 
-{% block body_title %}<a href='{% url 'site' data.site.slug %}'>{{data.site.name}}</a>
+{% block body_title %}<a href='{% url 'streamwebs:site' data.site.slug %}'>{{data.site.name}}</a>
 » Water Quality ({{data.date}}){% endblock %}
 
 {% block scripts %}

@@ -12,7 +12,7 @@
     {% for data_type, data in site.data.items %}
     <h6>{{data_type}}</h6>
         {% for data_id, data_date in data.items %}
-        <p><a href="{% url data_type|lower|strtoul site.slug data_id %}">{{data_date}}</a></p>
+        <p><a href="{% url data_type|lower|strtoul|namespace site.slug data_id %}">{{data_date}}</a></p>
         {% endfor %}
     {% endfor %}
 </div>
@@ -20,7 +20,7 @@
 </div>
 <div class="new_data">
     {% for link_name, type_name in data_types.items %}
-    <p><a href="{% url link_name site.slug %}">{{type_name}}</a></p>
+    <p><a href="{% url link_name|namespace site.slug %}">{{type_name}}</a></p>
     {% endfor %}
 </div>
 {% endblock %}
