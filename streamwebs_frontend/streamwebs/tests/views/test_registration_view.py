@@ -1,11 +1,7 @@
-from django.test import Client, TestCase, override_settings
+from django.test import Client, TestCase
 from django.core.urlresolvers import reverse
 
 
-@override_settings(SCHOOL_CHOICES=(
-    ('a', 'School A'),
-    ('b', 'School B'),
-    ('c', 'School C'),))
 class RegistrateTestCase(TestCase):
     def setUp(self):
         self.client = Client()
@@ -51,7 +47,7 @@ class RegistrateTestCase(TestCase):
                 'first_name': 'John',
                 'last_name': 'Johnson',
                 'password_check': 'johniscool',
-                'school': 'a',
+                'school': 'default',
                 'birthdate': '1995-11-10',
                 'captcha_0': 'dummy-val',
                 'captcha_1': 'PASSED'
@@ -69,7 +65,7 @@ class RegistrateTestCase(TestCase):
                 'first_name': 'John',
                 'last_name': 'Johnson',
                 'password_check': 'johnisnotcool',
-                'school': 'a',
+                'school': 'default',
                 'birthdate': '1995-11-10',
                 'captcha_0': 'dummy-val',
                 'captcha_1': 'PASSED'
@@ -92,7 +88,7 @@ class RegistrateTestCase(TestCase):
                 'first_name': 'John',
                 'last_name': 'Johnson',
                 'password_check': 'johniscool',
-                'school': 'a',
+                'school': 'default',
                 'birthdate': '1995-11-10',
                 'captcha_0': 'dummy-val',
                 'captcha_1': 'FAILED'

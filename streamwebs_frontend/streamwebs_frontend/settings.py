@@ -129,16 +129,15 @@ USE_TZ = True
 
 # List of schools
 # Format: each school listed in the SCHOOL_CHOICES tuple should be a tuple of
-# two elements, the first being the value to be set on the user model and the
-# second being the human-readable name. Below is a temporary entry that
-# demonstrates how each school should be formatted. Keep in mind that if this
-# list is empty, the testing of the "register" page in-browser will be limited
-# since successful registration requires the selection of a school that
-# actually exists in SCHOOL_CHOICES.
+# two elements-- the first being the value to be set on the user model and the
+# second being the human-readable name. The 'default' tuple currently in the
+# list is there for testing purposes; when the list is empty, the testing of
+# the "register" page in-browser is limited since successful registration
+# requires the selection of a school that actually exists in SCHOOL_CHOICES,
+# even when the @override_settings decorator is applied to the TestCase. 
 
 SCHOOL_CHOICES = (
-    # Example:
-    ('a', 'School A'),
+    ('default', 'Default'),
 )
 
 # The following config is to allow automated testing without obstruction from
