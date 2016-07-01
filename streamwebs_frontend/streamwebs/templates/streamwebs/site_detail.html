@@ -1,6 +1,7 @@
 {% extends 'streamwebs/base.html' %}
 
 {% load staticfiles %}
+{% load filters %}
 
 {% block title %}{{site.name}} - Streamwebs{% endblock %}
 
@@ -11,7 +12,7 @@
     {% for data_type, data in site.data.items %}
     <h6>{{data_type}}</h6>
         {% for data_id, data_date in data.items %}
-        <p><a href="{% url 'water_quality' site.slug data_id %}">{{data_date}}</a></p>
+        <p><a href="{% url data_type|lower|strtoul site.slug data_id %}">{{data_date}}</a></p>
         {% endfor %}
     {% endfor %}
 </div>

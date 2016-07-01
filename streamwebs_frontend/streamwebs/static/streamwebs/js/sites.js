@@ -26,7 +26,6 @@ function search() {
 }
 
 function goto(slug) {
-    console.log('Going to site ' + slug);
     window.location.href = "/streamwebs/site/" + slug;
 }
 
