@@ -70,29 +70,78 @@ class SiteTestCase(TestCase):
         self.assertEqual(sorted(fields), sorted(self.expected_fields.keys()))
 
     def test_datasheet_ManyToOne(self):
-    """Tests that a datasheet correctly corresponds to a specified site"""
-    site = Site.objects.create_site('test', 'some_type', 'some_slug')
+        """Tests that a datasheet correctly corresponds to a specified site"""
+        site = Site.objects.create_site('test', 'some_type', 'some_slug')
+        #macro_sample = create_macros(0, 2, 1, 1, 3, 0, 4, 5, 2, 6, 4, 5, 7, 8,
+        #                             8, 12, 9, 8, 7, 5, 11)
+        macros = Macroinvertebrates.objects.create(site=site,
+                                                   caddisfly=0,
+                                                   mayfly=2, riffle_beetle=1,
+                                                   stonefly=1, water_penny=3,
+                                                   dobsonfly=0,
+                                                   sensitive_total=7,
+                                                   clam_or_mussel=4,
+                                                   crane_fly=5, crayfish=2,
+                                                   damselfly=6, dragonfly=4,
+                                                   scud=5, fishfly=7,
+                                                   alderfly=8, mite=8,
+                                                   somewhat_sensitive_total=14,
+                                                   aquatic_worm=12,
+                                                   blackfly=9, leech=8,
+                                                   midge=7, snail=5,
+                                                   mosquito_larva=11,
+                                                   tolerant_total=5,
+                                                   wq_rating=26)
+    
+        self.assertEqual(macros.site.site_name, 'test')
+        self.assertEqual(macros.site.site_type, 'some_type')
+        self.assertEqual(macros.site.site_slug, 'some_slug')
 
-    # macro_sample = create_macros(0, 2, 1, 1, 3, 0, 4, 5, 2, 6, 4, 5, 7, 8,
-    #                              8, 12, 9, 8, 7, 5, 11)
+    def test_datasheet_SetMacroInfo(self):
+        """Tests that macroinvertebrate data is created"""
+        site = Site.objects.create_site('test', 'some_type', 'some_slug')
+     
+        macros = Macroinvertebrates.objects.create(site=site,
+                                                   caddisfly=0,
+                                                   mayfly=2, riffle_beetle=1,
+                                                   stonefly=1, water_penny=3,
+                                                   dobsonfly=0,
+                                                   sensitive_total=7,
+                                                   clam_or_mussel=4,
+                                                   crane_fly=5, crayfish=2,
+                                                   damselfly=6, dragonfly=4,
+                                                   scud=5, fishfly=7,
+                                                   alderfly=8, mite=8,
+                                                   somewhat_sensitive_total=14,
+                                                   aquatic_worm=12,
+                                                   blackfly=9, leech=8,
+                                                   midge=7, snail=5,
+                                                   mosquito_larva=11,
+                                                   tolerant_total=5,
+                                                   wq_rating=26)
 
-    macros = Macroinvertebrates.objects.create(site=site,
-                                                  caddisfly=0,
-                                                  mayfly=2, riffle_beetle=1,
-                                                  stonefly=1, water_penny=3,
-                                                  dobsonfly=0,
-                                                  sensitive_total=7,
-                                                  clam_or_mussel=4,
-                                                  crane_fly=5, crayfish=2,
-                                                  damselfly=6, dragonfly=4,
-                                                  scud=5, fishfly=7,
-                                                  alderfly=8, mite=8,
-                                                  somewhat_sensitive=14,
-                                                  aquatic_worm=12,
-                                                  blackfly=9, leech=8,
-                                                  midge=7, snail=5,
-                                                  mosquito_larva=11,
-                                                  tolerant_total=5,
-                                                  wq_rating=26)
-
-    self.assertEqual()    
+        self.assertEqual(macros.caddisfly, 0)
+        self.assertEqual(macros.mayfly, 2)
+        self.assertEqual(macros.riffle_beetle, 1)
+        self.assertEqual(macros.stonefly, 1)
+        self.assertEqual(macros.water_penny, 3)
+        self.assertEqual(macros.dobsonfly, 0)
+        self.assertEqual(macros.sensitive_total, 7)
+        self.assertEqual(macros.clam_or_mussel, 4)
+        self.assertEqual(macros.crane_fly, 5)
+        self.assertEqual(macros.crayfish, 2)
+        self.assertEqual(macros.damselfly, 6)
+        self.assertEqual(macros.dragonfly, 4)
+        self.assertEqual(macros.scud, 5)
+        self.assertEqual(macros.fishfly, 7)
+        self.assertEqual(macros.alderfly, 8)
+        self.assertEqual(macros.mite, 8)
+        self.assertEqual(macros.somewhat_sensitive_total, 14)
+        self.assertEqual(macros.aquatic_worm, 12)
+        self.assertEqual(macros.blackfly, 9)
+        self.assertEqual(macros.leech, 8)
+        self.assertEqual(macros.midge, 7)
+        self.assertEqual(macros.snail, 5)
+        self.assertEqual(macros.mosquito_larva, 11)
+        self.assertEqual(macros.tolerant_total, 5)
+        self.assertEqual(macros.wq_rating, 26)
