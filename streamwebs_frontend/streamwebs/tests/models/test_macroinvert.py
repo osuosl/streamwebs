@@ -76,7 +76,7 @@ class MacroTestCase(TestCase):
 
     def test_datasheet_ManyToOne(self):
         """Tests that a datasheet correctly corresponds to a specified site"""
-        default_dt = timezone.now() # default date_time value
+        default_dt = timezone.now()  # default date_time value
 
         site = Site.objects.create_site('test', 'some_type', 'some_slug')
 
