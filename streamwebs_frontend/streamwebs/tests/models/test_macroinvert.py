@@ -4,6 +4,7 @@ from django.contrib.gis.db import models
 from django.apps import apps
 from itertools import chain
 
+from streamwebs.models import Site
 from streamwebs.models import Macroinvertebrates
 
 
@@ -12,15 +13,16 @@ class SiteTestCase(TestCase):
     def setUp(self):
         self.expected_fields = {
             'school': models.CharField,
-            'date/time': models.DateTimeField,
+            'date_time': models.DateTimeField,
             'weather': models.CharField,
-            'site_name': models.ForeignKey,
-            'water_type': models.CharField,
+            'site': models.ForeignKey,
+            'site_id': models.ForeignKey,
             'time_spent': models.PositiveIntegerField,  # in minutes
             'num_people': models.PositiveIntegerField,
             'riffle': models.BooleanField,
             'pool': models.BooleanField,
-  
+            'id': models.AutoField,
+
             # Sensitive/intolerant to pollution
             'caddisfly': models.PositiveIntegerField,
             'mayfly': models.PositiveIntegerField,
@@ -29,17 +31,19 @@ class SiteTestCase(TestCase):
             'water_penny': models.PositiveIntegerField,
             'dobsonfly': models.PositiveIntegerField,
             'sensitive_total': models.PositiveIntegerField,
-  
+
             # Somewhat sensitive
-            'clam/mussel': models.PositiveIntegerField,
+            'clam_or_mussel': models.PositiveIntegerField,
             'crane_fly': models.PositiveIntegerField,
             'crayfish': models.PositiveIntegerField,
             'damselfly': models.PositiveIntegerField,
             'dragonfly': models.PositiveIntegerField,
             'scud': models.PositiveIntegerField,
             'fishfly': models.PositiveIntegerField,
+            'alderfly': models.PositiveIntegerField,
+            'mite': models.PositiveIntegerField,
             'somewhat_sensitive_total': models.PositiveIntegerField,
-  
+
             # Tolerant
             'aquatic_worm': models.PositiveIntegerField,
             'blackfly': models.PositiveIntegerField,
@@ -72,8 +76,7 @@ class SiteTestCase(TestCase):
     def test_datasheet_ManyToOne(self):
         """Tests that a datasheet correctly corresponds to a specified site"""
         site = Site.objects.create_site('test', 'some_type', 'some_slug')
-        #macro_sample = create_macros(0, 2, 1, 1, 3, 0, 4, 5, 2, 6, 4, 5, 7, 8,
-        #                             8, 12, 9, 8, 7, 5, 11)
+
         macros = Macroinvertebrates.objects.create(site=site,
                                                    caddisfly=0,
                                                    mayfly=2, riffle_beetle=1,
@@ -92,7 +95,7 @@ class SiteTestCase(TestCase):
                                                    mosquito_larva=11,
                                                    tolerant_total=5,
                                                    wq_rating=26)
-    
+
         self.assertEqual(macros.site.site_name, 'test')
         self.assertEqual(macros.site.site_type, 'some_type')
         self.assertEqual(macros.site.site_slug, 'some_slug')
@@ -100,7 +103,7 @@ class SiteTestCase(TestCase):
     def test_datasheet_SetMacroInfo(self):
         """Tests that macroinvertebrate data is created"""
         site = Site.objects.create_site('test', 'some_type', 'some_slug')
-     
+
         macros = Macroinvertebrates.objects.create(site=site,
                                                    caddisfly=0,
                                                    mayfly=2, riffle_beetle=1,

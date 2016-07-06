@@ -20,7 +20,8 @@ class SiteTestCase(TestCase):
             'id': models.AutoField,
 
             # Datasheets
-            'water_quality': models.ManyToOneRel
+            'water_quality': models.ManyToOneRel,
+            'macroinvertebrates': models.ManyToOneRel
         }
 
         self.optional_fields = {
