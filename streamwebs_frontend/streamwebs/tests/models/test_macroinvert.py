@@ -8,7 +8,7 @@ from streamwebs.models import Site
 from streamwebs.models import Macroinvertebrates
 
 
-class SiteTestCase(TestCase):
+class MacroTestCase(TestCase):
 
     def setUp(self):
         self.expected_fields = {
