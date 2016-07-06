@@ -1,5 +1,6 @@
 from __future__ import unicode_literals
 
+from django.utils import timezone
 import datetime
 
 from django.contrib.gis.db import models
@@ -230,3 +231,55 @@ class Water_Quality(models.Model):
     class Meta:
         verbose_name = 'Water Quality'
         verbose_name_plural = 'Water Quality'
+
+
+@python_2_unicode_compatible
+class Macroinvertebrates(models.Model):
+    school = models.CharField(max_length=250)
+    date_time = models.DateTimeField(default=timezone.now)
+    weather = models.CharField(max_length=250)
+    site = models.ForeignKey(Site, null=True, on_delete=models.CASCADE)
+    time_spent = models.PositiveIntegerField(default=0)
+    num_people = models.PositiveIntegerField(default=0)
+    riffle = models.BooleanField(default=False)
+    pool = models.BooleanField(default=False)
+
+    # Sensitive/intolerant to pollution
+    caddisfly = models.PositiveIntegerField(default=0)
+    mayfly = models.PositiveIntegerField(default=0)
+    riffle_beetle = models.PositiveIntegerField(default=0)
+    stonefly = models.PositiveIntegerField(default=0)
+    water_penny = models.PositiveIntegerField(default=0)
+    dobsonfly = models.PositiveIntegerField(default=0)
+    sensitive_total = models.PositiveIntegerField(default=0)
+
+    # Somewhat sensitive
+    clam_or_mussel = models.PositiveIntegerField(default=0)
+    crane_fly = models.PositiveIntegerField(default=0)
+    crayfish = models.PositiveIntegerField(default=0)
+    damselfly = models.PositiveIntegerField(default=0)
+    dragonfly = models.PositiveIntegerField(default=0)
+    scud = models.PositiveIntegerField(default=0)
+    fishfly = models.PositiveIntegerField(default=0)
+    alderfly = models.PositiveIntegerField(default=0)
+    mite = models.PositiveIntegerField(default=0)
+    somewhat_sensitive_total = models.PositiveIntegerField(default=0)
+
+    # Tolerant
+    aquatic_worm = models.PositiveIntegerField(default=0)
+    blackfly = models.PositiveIntegerField(default=0)
+    leech = models.PositiveIntegerField(default=0)
+    midge = models.PositiveIntegerField(default=0)
+    snail = models.PositiveIntegerField(default=0)
+    mosquito_larva = models.PositiveIntegerField(default=0)
+    tolerant_total = models.PositiveIntegerField(default=0)
+
+    # Water quality rating
+    wq_rating = models.PositiveIntegerField(default=0)
+
+    def __str__(self):
+        return self.site.site_name
+
+    class Meta:
+        verbose_name = 'Macroinvertebrate'
+        verbose_name_plural = 'Macroinvertebrates'
