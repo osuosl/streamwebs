@@ -3,6 +3,7 @@ from django.test import TestCase
 from django.contrib.gis.db import models
 from django.apps import apps
 from itertools import chain
+from django.utils import timezone
 
 from streamwebs.models import Site
 from streamwebs.models import Macroinvertebrates
@@ -75,9 +76,17 @@ class MacroTestCase(TestCase):
 
     def test_datasheet_ManyToOne(self):
         """Tests that a datasheet correctly corresponds to a specified site"""
+        default_dt = timezone.now() # default date_time value
+
         site = Site.objects.create_site('test', 'some_type', 'some_slug')
 
         macros = Macroinvertebrates.objects.create(site=site,
+                                                   date_time=default_dt,
+                                                   weather='sunny',
+                                                   time_spent=45,
+                                                   num_people=17,
+                                                   riffle=False,
+                                                   pool=True,
                                                    caddisfly=0,
                                                    mayfly=2, riffle_beetle=1,
                                                    stonefly=1, water_penny=3,
@@ -102,9 +111,17 @@ class MacroTestCase(TestCase):
 
     def test_datasheet_SetMacroInfo(self):
         """Tests that macroinvertebrate data is created"""
+        default_dt = timezone.now()
+
         site = Site.objects.create_site('test', 'some_type', 'some_slug')
 
         macros = Macroinvertebrates.objects.create(site=site,
+                                                   date_time=default_dt,
+                                                   weather='sunny',
+                                                   time_spent=45,
+                                                   num_people=17,
+                                                   riffle=False,
+                                                   pool=True,
                                                    caddisfly=0,
                                                    mayfly=2, riffle_beetle=1,
                                                    stonefly=1, water_penny=3,
@@ -123,6 +140,15 @@ class MacroTestCase(TestCase):
                                                    tolerant_total=5,
                                                    wq_rating=26)
 
+        # General datasheet info
+        self.assertEqual(macros.date_time, default_dt)
+        self.assertEqual(macros.weather, 'sunny')
+        self.assertEqual(macros.time_spent, 45)
+        self.assertEqual(macros.num_people, 17)
+        self.assertEqual(macros.riffle, False)
+        self.assertEqual(macros.pool, True)
+
+        # Checks the values for sensitive/intolerant macroinvertebrates
         self.assertEqual(macros.caddisfly, 0)
         self.assertEqual(macros.mayfly, 2)
         self.assertEqual(macros.riffle_beetle, 1)
@@ -130,6 +156,8 @@ class MacroTestCase(TestCase):
         self.assertEqual(macros.water_penny, 3)
         self.assertEqual(macros.dobsonfly, 0)
         self.assertEqual(macros.sensitive_total, 7)
+
+        # Somewhat tolerant
         self.assertEqual(macros.clam_or_mussel, 4)
         self.assertEqual(macros.crane_fly, 5)
         self.assertEqual(macros.crayfish, 2)
@@ -140,6 +168,8 @@ class MacroTestCase(TestCase):
         self.assertEqual(macros.alderfly, 8)
         self.assertEqual(macros.mite, 8)
         self.assertEqual(macros.somewhat_sensitive_total, 14)
+
+        # Tolerant
         self.assertEqual(macros.aquatic_worm, 12)
         self.assertEqual(macros.blackfly, 9)
         self.assertEqual(macros.leech, 8)
@@ -147,4 +177,6 @@ class MacroTestCase(TestCase):
         self.assertEqual(macros.snail, 5)
         self.assertEqual(macros.mosquito_larva, 11)
         self.assertEqual(macros.tolerant_total, 5)
+
+        # Overall water quality rating
         self.assertEqual(macros.wq_rating, 26)
