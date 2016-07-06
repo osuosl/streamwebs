@@ -811,6 +811,17 @@ class Canopy_Cover(models.Model):
         verbose_name_plural = 'canopy cover surveys'
 
 
+class PhotoPointManager(models.Manager):
+    
+    def create_photo_point(self, compass_bearing, distance_feet,
+                           distance_inches, camera_height_feet,
+                           camera_height_inches, photo_filename, notes):
+        return self.create(compass_bearing=compass_bearing, distance_feet=None,
+                           distance_inches=None, camera_height_feet=None,
+                           camera_height_inches=None, photo_filename=None,
+                           notes=None) 
+
+
 class PhotoPoint(models.Model):
     compass_bearing = models.DecimalField(max_digits=5, decimal_places=2)
     distance_feet = models.PositiveSmallIntegerField(blank=True, null=True)
@@ -825,7 +836,7 @@ class PhotoPoint(models.Model):
     photo_filename = models.CharField(max_length=255, blank=True)
     notes = models.TextField(blank=True)
 
-#    objects = PhotoPointManager()
+    photo_points = PhotoPointManager()
 
     class Meta:
         verbose_name = 'Photo Point'
