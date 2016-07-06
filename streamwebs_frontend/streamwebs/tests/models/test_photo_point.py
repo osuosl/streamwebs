@@ -2,6 +2,7 @@ from django.test import TestCase
 from django.contrib.gis.db import models
 from itertools import chain
 from streamwebs.models import CameraPoint, PhotoPoint, Site
+from django.apps import apps
 
 
 class PhotoPointTestCase(TestCase):
@@ -46,13 +47,12 @@ class PhotoPointTestCase(TestCase):
         # MyModel._meta.get_all_field_names() is deprecated. The following is
         # an alternative, as suggested by the Django docs:
         # https://docs.djangoproject.com/en/1.9/ref/models/meta/
-        pp_fields = list(set(chain.from_iterable(
+        fields = list(set(chain.from_iterable(
             (field.name, field.attname) if hasattr(field, 'attname') else
             (field.name,) for field in PhotoPoint._meta.get_fields()
             if not (field.many_to_one and field.related_model is None)
             )))
-        self.assertEqual(sorted(pp_fields),
-                         sorted(self.expected_fields.keys()))
+        self.assertEqual(sorted(fields), sorted(self.expected_fields.keys()))
 
     def test_optional_fields(self):
         """
