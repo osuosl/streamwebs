@@ -167,7 +167,6 @@ class WQ_Sample(models.Model):
         verbose_name = 'Water Quality Sample'
         verbose_name_plural = 'Water Quality Samples'
 
-
 @python_2_unicode_compatible
 class Water_Quality(models.Model):
     LEVEL_A = 'A'   # Define DEQ water quality levels
@@ -175,7 +174,7 @@ class Water_Quality(models.Model):
     LEVEL_C = 'C'
     LEVEL_D = 'D'
     LEVEL_E = 'E'
-#    NOT_ACCESSED = 'N/A'
+    # NOT_ACCESSED = 'N/A'
     FAHRENHEIT = 'Fahrenheit'
     CELSIUS = 'Celsius'
 
@@ -230,3 +229,11 @@ class Water_Quality(models.Model):
     class Meta:
         verbose_name = 'Water Quality'
         verbose_name_plural = 'Water Quality'
+
+class Rip_Aqua_Survey(models.Model):
+    pass
+
+class Rip_Aqua_Survey_Plants(models.Model):
+    pass
+class Rip_Aqua_Survey_Wildlife(models.Model):
+    pass
