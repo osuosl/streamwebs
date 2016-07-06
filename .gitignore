@@ -6,6 +6,7 @@ venv/
 
 # Django stuff
 *.log
+migrations/
 
 # NFS write temps
 .nfs*
