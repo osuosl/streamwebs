@@ -18,11 +18,11 @@ class PhotoPointTestCase(TestCase):
             'photo_filename': models.CharField,
             'photo': models.ImageField,
             'notes': models.TextField,
-            'id': models.AutoField
+            'id': models.AutoField,
 
-#            'photo_pt_1': models.ManyToOneRel,
-#            'photo_pt_2': models.ManyToOneRel,
-#            'photo_pt_3': models.ManyToOneRel
+            'photo_pt_1': models.ManyToOneRel,
+            'photo_pt_2': models.ManyToOneRel,
+            'photo_pt_3': models.ManyToOneRel
         }
 
         self.optional_fields = {

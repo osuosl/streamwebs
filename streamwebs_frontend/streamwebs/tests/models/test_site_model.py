@@ -26,7 +26,8 @@ class SiteTestCase(TestCase):
             'water_quality': models.ManyToOneRel,
             'macroinvertebrates': models.ManyToOneRel,
             'ripariantransect': models.ManyToOneRel,
-            'canopy_cover': models.ManyToOneRel
+            'canopy_cover': models.ManyToOneRel,
+            'camerapoint': models.ManyToOneRel  # "Photo Point Monitoring"
         }
 
         self.optional_fields = {
