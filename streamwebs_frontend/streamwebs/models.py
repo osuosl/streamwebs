@@ -167,6 +167,7 @@ class WQ_Sample(models.Model):
         verbose_name = 'Water Quality Sample'
         verbose_name_plural = 'Water Quality Samples'
 
+
 @python_2_unicode_compatible
 class Water_Quality(models.Model):
     LEVEL_A = 'A'   # Define DEQ water quality levels
@@ -230,15 +231,16 @@ class Water_Quality(models.Model):
         verbose_name = 'Water Quality'
         verbose_name_plural = 'Water Quality'
 
+
 class RAS_WildlifeManager(models.Manager):
     """
     Manager for the Wildlife entries - creates both the field datas
     """
     def create_sample(self, track_input=None, comments_input=None):
         info = self.create(track=track_input,
-                           comments=comments_input,
-                          )
+                           comments=comments_input)
         return info
+
 
 class RAS_PlantManager(models.Manager):
     """
@@ -246,8 +248,7 @@ class RAS_PlantManager(models.Manager):
     """
     def create_sample(self, species_input=None, sig_input=None):
         info = self.create(species=species_input,
-                           significance=sig_input,
-                          )
+                           significance=sig_input)
         return info
 
 
@@ -256,6 +257,7 @@ class Rip_Aqua_Survey_Plants(models.Model):
     significance = models.CharField(max_length=255, null=True)
 
     objects = RAS_PlantManager()
+
     def __str__(self):
         return self.site.site_name
 
@@ -263,11 +265,13 @@ class Rip_Aqua_Survey_Plants(models.Model):
         verbose_name = 'Riparian Aqua Survey Plant Entry'
         verbose_name_plural = 'Riparian Aqua Survey Plant Entries'
 
+
 class Rip_Aqua_Survey_Wildlife(models.Model):
     track = models.CharField(max_length=255, null=True)
     comments = models.CharField(max_length=255, null=True)
 
     objects = RAS_WildlifeManager()
+
     def __str__(self):
         return self.site.site_name
 
@@ -299,80 +303,80 @@ class Rip_Aqua_Survey(models.Model):
     sand = models.CharField(max_length=255, choices=UNIT_CHOICES,
                             default=UNIT_CHOICES[0])
     gravel = models.CharField(max_length=255, choices=UNIT_CHOICES,
-                            default=UNIT_CHOICES[0])
+                              default=UNIT_CHOICES[0])
     cobble = models.CharField(max_length=255, choices=UNIT_CHOICES,
-                            default=UNIT_CHOICES[0])
+                              default=UNIT_CHOICES[0])
     boulders = models.CharField(max_length=255, choices=UNIT_CHOICES,
-                            default=UNIT_CHOICES[0])
+                                default=UNIT_CHOICES[0])
     bedrock = models.CharField(max_length=255, choices=UNIT_CHOICES,
-                            default=UNIT_CHOICES[0])
+                               default=UNIT_CHOICES[0])
 
     # Instream Woody Debris
     wood_debris_small = models.CharField(max_length=255, choices=UNIT_CHOICES,
-                            default=UNIT_CHOICES[0])
+                                         default=UNIT_CHOICES[0])
     wood_debris_med = models.CharField(max_length=255, choices=UNIT_CHOICES,
-                            default=UNIT_CHOICES[0])
+                                       default=UNIT_CHOICES[0])
     wood_debris_lrg = models.CharField(max_length=255, choices=UNIT_CHOICES,
-                            default=UNIT_CHOICES[0])
+                                       default=UNIT_CHOICES[0])
     comments = models.CharField(max_length=255, null=True)
 
     # Vegetation Types
     conif_trees = models.CharField(max_length=255, choices=UNIT_CHOICES,
-                            default=UNIT_CHOICES[0])
+                                   default=UNIT_CHOICES[0])
     decid_trees = models.CharField(max_length=255, choices=UNIT_CHOICES,
-                            default=UNIT_CHOICES[0])
+                                   default=UNIT_CHOICES[0])
     shrubs = models.CharField(max_length=255, choices=UNIT_CHOICES,
-                            default=UNIT_CHOICES[0])
+                              default=UNIT_CHOICES[0])
     small_plants = models.CharField(max_length=255, choices=UNIT_CHOICES,
-                            default=UNIT_CHOICES[0])
+                                    default=UNIT_CHOICES[0])
     ferns = models.CharField(max_length=255, choices=UNIT_CHOICES,
-                            default=UNIT_CHOICES[0])
+                             default=UNIT_CHOICES[0])
     grasses = models.CharField(max_length=255, choices=UNIT_CHOICES,
-                            default=UNIT_CHOICES[0])
+                               default=UNIT_CHOICES[0])
 
     # Plants Identified
     plants_1 = models.ForeignKey(Rip_Aqua_Survey_Plants,
-                                    on_delete=models.CASCADE,
-                                    related_name='plants_1', null=True)
+                                 on_delete=models.CASCADE,
+                                 related_name='plants_1', null=True)
     plants_2 = models.ForeignKey(Rip_Aqua_Survey_Plants,
-                                    on_delete=models.CASCADE,
-                                    related_name='plants_2', null=True)
+                                 on_delete=models.CASCADE,
+                                 related_name='plants_2', null=True)
     plants_3 = models.ForeignKey(Rip_Aqua_Survey_Plants,
-                                    on_delete=models.CASCADE,
-                                    related_name='plants_3', null=True)
+                                 on_delete=models.CASCADE,
+                                 related_name='plants_3', null=True)
     plants_4 = models.ForeignKey(Rip_Aqua_Survey_Plants,
-                                    on_delete=models.CASCADE,
-                                    related_name='plants_4', null=True)
+                                 on_delete=models.CASCADE,
+                                 related_name='plants_4', null=True)
     plants_5 = models.ForeignKey(Rip_Aqua_Survey_Plants,
-                                    on_delete=models.CASCADE,
-                                    related_name='plants_5', null=True)
+                                 on_delete=models.CASCADE,
+                                 related_name='plants_5', null=True)
     plants_6 = models.ForeignKey(Rip_Aqua_Survey_Plants,
-                                    on_delete=models.CASCADE,
-                                    related_name='plants_6', null=True)
+                                 on_delete=models.CASCADE,
+                                 related_name='plants_6', null=True)
 
     # Wildlife & Birds Identified
     wildlife_1 = models.ForeignKey(Rip_Aqua_Survey_Wildlife,
-                                      on_delete=models.CASCADE,
-                                      related_name='wildlife_1', null=True)
+                                   on_delete=models.CASCADE,
+                                   related_name='wildlife_1', null=True)
     wildlife_2 = models.ForeignKey(Rip_Aqua_Survey_Wildlife,
-                                      on_delete=models.CASCADE,
-                                      related_name='wildlife_2', null=True)
+                                   on_delete=models.CASCADE,
+                                   related_name='wildlife_2', null=True)
     wildlife_3 = models.ForeignKey(Rip_Aqua_Survey_Wildlife,
-                                      on_delete=models.CASCADE,
-                                      related_name='wildlife_3', null=True)
+                                   on_delete=models.CASCADE,
+                                   related_name='wildlife_3', null=True)
     wildlife_4 = models.ForeignKey(Rip_Aqua_Survey_Wildlife,
-                                      on_delete=models.CASCADE,
-                                      related_name='wildlife_4', null=True)
+                                   on_delete=models.CASCADE,
+                                   related_name='wildlife_4', null=True)
     wildlife_5 = models.ForeignKey(Rip_Aqua_Survey_Wildlife,
-                                      on_delete=models.CASCADE,
-                                      related_name='wildlife_5', null=True)
+                                   on_delete=models.CASCADE,
+                                   related_name='wildlife_5', null=True)
     wildlife_6 = models.ForeignKey(Rip_Aqua_Survey_Wildlife,
-                                      on_delete=models.CASCADE,
-                                      related_name='wildlife_6', null=True)
+                                   on_delete=models.CASCADE,
+                                   related_name='wildlife_6', null=True)
 
     def __str__(self):
-      return self.site.site_name
+        return self.site.site_name
 
     class Meta:
-      verbose_name = 'Riparian Aqua Survey'
-      verbose_name_plural = 'Riparian Aqua Surveys'
+        verbose_name = 'Riparian Aqua Survey'
+        verbose_name_plural = 'Riparian Aqua Surveys'
