@@ -34,7 +34,7 @@ class CanopyCovTestCase(TestCase):
         }
 
     def test_fields_exist(self):
-        """Checks that the required fields have been created"""
+        """Checks that the expected fields have been created"""
         model = apps.get_model('streamwebs', 'canopy_cover')
         for field, field_type in self.expected_fields.items():
             self.assertEqual(field_type, type(model._meta.get_field(field)))
