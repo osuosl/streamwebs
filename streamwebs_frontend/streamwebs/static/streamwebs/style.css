@@ -1,7 +1,13 @@
 @charset "UTF-8";
 
-body {
-    font-family: sans-serif
+/* WebKit/Blink Browsers */
+::selection {
+  background: #b9dce8;
+}
+
+/* Gecko Browsers */
+::-moz-selection {
+  background: #b9dce8;
 }
 
 .title {
@@ -14,33 +20,27 @@ body {
 }
 
 #map {
-    width: 500px;
-    height: 300px;
+    width: 100%;
+    height: 500px;
+    margin-bottom: 10px;
 }
 
-#search_bar {
-    width: 352px; /* Fits with 300-wide dropdown + 50px padding + 1px border */
-    height: 25px;
+.search-nav {
+    /* Make the search bar behave as if it were not in a navbar */
+    padding: 0 0 0 0 !important;
+    margin-left: 0.75rem !important;
+    margin-right: -0.75rem !important;
 }
 
-.search_item {
-    background-color: white;
-    color: black;
-    border: thin solid black;
-    width: 300px;
-    padding-left: 50px;
-    height: 40px;
-    vertical-align: middle;
+#search {
+    margin-bottom: 0;
+}
+
+.search-results {
+    margin-top: 0;
     position: absolute;
     z-index: 10;
-    margin-bottom: -1px;
-    cursor: auto;
-}
-
-.search_item:hover {
-    background-color: rgb(196, 196, 196);
-    color: black;
-    cursor: pointer;
+    width: 100%;
 }
 
 .datasheet-title {
