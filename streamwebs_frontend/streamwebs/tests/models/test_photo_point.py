@@ -16,7 +16,7 @@ class PhotoPointTestCase(TestCase):
             'distance': models.DecimalField,
             'camera_height': models.DecimalField,
             'notes': models.TextField,
-            'id': models.AutoField,
+            'id': models.AutoField
 
             'camera_point_id': models.ForeignKey,
             'photo_point': models.ManyToOneRel
@@ -47,12 +47,12 @@ class PhotoPointTestCase(TestCase):
         # MyModel._meta.get_all_field_names() is deprecated. The following is
         # an alternative, as suggested by the Django docs:
         # https://docs.djangoproject.com/en/1.9/ref/models/meta/
-        fields = list(set(chain.from_iterable(
+        pp_fields = list(set(chain.from_iterable(
             (field.name, field.attname) if hasattr(field, 'attname') else
             (field.name,) for field in PhotoPoint._meta.get_fields()
             if not (field.many_to_one and field.related_model is None)
             )))
-        self.assertEqual(sorted(fields), sorted(self.expected_fields.keys()))
+        self.assertEqual(sorted(pp_fields), sorted(self.expected_fields.keys()))
 
     def test_optional_fields(self):
         """
