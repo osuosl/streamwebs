@@ -6,6 +6,7 @@
     <meta charset="utf-8" />
     <title>{% block title %}{% endblock %} StreamWebs</title>
     <link rel="stylesheet" type="text/css" href="{% static 'streamwebs/bower_components/Materialize/dist/css/materialize.css' %}" />
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{% static 'streamwebs/style.css' %}" />
     <link rel="shortcut icon" href="{% static 'streamwebs/images/favicon.ico' %}" />
     <script src="{% static 'streamwebs/bower_components/jquery/dist/jquery.js' %}"></script>
@@ -24,10 +25,7 @@
         </select>
         <input type="submit" value="{% trans 'Go' %}" />
     </form>
-    {% include "streamwebs/navigation.html" %}
-    <span class="title">
-        {% block body_title %}{% endblock %}
-    </span>
+    <h1 class="center-align">{% block body_title %}Streamwebs{% endblock %}</h1>
     <div class="content">
         {% block content %}{% endblock %}
     </div>

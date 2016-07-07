@@ -1,26 +1,29 @@
 var dropdownShown = 0;
 function search() {
     console.log('Searched!');
-    var search_value = $('#search_bar').val().toLowerCase();
+
+    var search_value = $('#search').val().toLowerCase();
     var stewards = $('#steward_box').prop('checked');
     var salmon = $('#salmon_box').prop('checked');
     var available = $('#available_box').prop('checked');
     var none = !stewards && !salmon && !available;
     dropdownShown = 0;
-    $('.search_item').each(function() {
-        var name = $(this).children().first().text().toLowerCase();
-        var search_point = $('#search_bar').offset().top + parseInt($('#search_bar').css('height'));
+
+    $('.search-item').each(function() {
+        var name = $(this).text().toLowerCase();
+        var search_point = $('#search').offset().top + parseInt($('#search').css('height'));
+
         if ((none ||
             (stewards && $(this).hasClass('steward')) ||
             (salmon && $(this).hasClass('salmon')) ||
             (available && $(this).hasClass('available'))) &&
         search_value && name.includes(search_value)) {
-            $(this).show();
+            $(this).removeClass('hide');
             $(this).css("top", search_point + (dropdownShown * 40));
-            $(this).css("left", $('#search_bar').offset().left);
+            $(this).css("left", $('#search').offset().left);
             dropdownShown += 1;
         } else {
-            $(this).hide();
+            $(this).addClass('hide');
         }
     });
 }
@@ -29,17 +32,7 @@ function goto(slug) {
     window.location.href = "/streamwebs/sites/" + slug;
 }
 
-function submit_search(ptag) {
-    var site = $(ptag).attr('name');
-    goto(site);
-}
-
 function submit_map(site) {
-    goto(site);
-}
-
-function submit_select() {
-    var site = $('#site_list').val();
     goto(site);
 }
 
