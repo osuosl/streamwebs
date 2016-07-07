@@ -37,11 +37,11 @@ class CCCardinalTestCase(TestCase):
             'X': models.BooleanField,
             'shaded': models.PositiveIntegerField,
 
-           # # Foreign key relations
-           # 'north': ManyToOneRel,
-           # 'east': ManyToOneRel,
-           # 'south': ManyToOneRel,
-           # 'west': ManyToOneRel
+            # # Foreign key relations
+            # 'north': ManyToOneRel,
+            # 'east': ManyToOneRel,
+            # 'south': ManyToOneRel,
+            # 'west': ManyToOneRel
         }
 
     def test_fields_exist(self):

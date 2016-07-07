@@ -42,7 +42,7 @@ class CanopyCovTestCase(TestCase):
     def test_no_extra_fields(self):
         """Checks for discrepancies between the actual model and its expected
            fields"""
-        fields = list(set)chain.from_iterable(
+        fields = list(set(chain.from_iterable(
             (field.name, field.attname) if hasattr(field, 'attname') else
             (field.name,) for field in Canopy_Cover._meta.get_fields()
             if not (field.many_to_one and field.related_model is None)
@@ -89,9 +89,9 @@ class CanopyCovTestCase(TestCase):
                                               east=east, south=south,
                                               west=west, est_canopy_cover=50)
 
-        assertEqual(canopyc.site.site_name, 'test')
-        assertEqual(canopyc.site.site_type, 'some_type')
-        assertEqual(canopyc.site.site_slug, 'some_slug')
+        self.assertEqual(canopyc.site.site_name, 'test')
+        self.assertEqual(canopyc.site.site_type, 'some_type')
+        self.assertEqual(canopyc.site.site_slug, 'some_slug')
 
     def test_datasheet_CreateCanopyCover(self):
         """Tests that a Canopy Cover object is actually created, checks that
@@ -134,11 +134,11 @@ class CanopyCovTestCase(TestCase):
                                               east=east, south=south,
                                               west=west, est_canopy_cover=50)
 
-        assertEqual(canopyc.school, 'School A')
-        assertEqual(canopyc.date_time, default_dt)
-        assertEqual(canopyc.weather , 'cloudy')
-        assertEqual(canopyc.north.shaded, 11)
-        assertEqual(canopyc.east.shaded, 8)
-        assertEqual(canopyc.south.shaded, 14)
-        assertEqual(canopyc.west.shaded, 17)
-        assertEqual(canopyc.est_canopy_cover, 50)
+        self.assertEqual(canopyc.school, 'School A')
+        self.assertEqual(canopyc.date_time, default_dt)
+        self.assertEqual(canopyc.weather, 'cloudy')
+        self.assertEqual(canopyc.north.shaded, 11)
+        self.assertEqual(canopyc.east.shaded, 8)
+        self.assertEqual(canopyc.south.shaded, 14)
+        self.assertEqual(canopyc.west.shaded, 17)
+        self.assertEqual(canopyc.est_canopy_cover, 50)
