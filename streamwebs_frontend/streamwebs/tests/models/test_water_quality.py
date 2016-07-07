@@ -15,7 +15,7 @@ class WaterQualityTestCase(TestCase):
         self.expected_fields = {
             'site': models.ForeignKey,
             'site_id': models.ForeignKey,
-            'DEQ_wq_level': models.CharField,
+            'DEQ_dq_level': models.CharField,
             'date': models.DateField,
             'school': models.CharField,
             'latitude': models.DecimalField,
@@ -44,12 +44,15 @@ class WaterQualityTestCase(TestCase):
         }
 
     def test_fields_exist(self):
+        """Tests that all required fields are created"""
         model = apps.get_model('streamwebs', 'water_quality')
         for field, field_type in self.expected_fields.items():
             self.assertEqual(
                 field_type, type(model._meta.get_field(field)))
 
     def test_no_extra_fields(self):
+        """Checks for discrepancies between the actual model and its expected
+           fields"""
         fields = list(set(chain.from_iterable(
             (field.name, field.attname) if hasattr(field, 'attname') else
             (field.name,) for field in Water_Quality._meta.get_fields()
@@ -58,6 +61,7 @@ class WaterQualityTestCase(TestCase):
         self.assertEqual(sorted(fields), sorted(self.expected_fields.keys()))
 
     def test_optional_fields(self):
+        """Tests that optional fields default to `True` when left blank"""
         apps.get_model('streamwebs', 'water_quality')
         for field in self.optional_fields:
             self.assertEqual(
@@ -93,7 +97,7 @@ class WaterQualityTestCase(TestCase):
                                                    0, 0, 0, 0, 2.5, 0, 0, 0)
 
         waterq = Water_Quality.objects.create(site=site,
-                                              DEQ_wq_level='A',
+                                              DEQ_dq_level='A',
                                               date='2016-06-01',
                                               school='a', latitude=90,
                                               longitude=123,
@@ -142,7 +146,7 @@ class WaterQualityTestCase(TestCase):
                                                    0, 0, 0, 0, 2.5, 0, 0, 0)
 
         waterq = Water_Quality.objects.create(site=site,
-                                              DEQ_wq_level='A',
+                                              DEQ_dq_level='A',
                                               date='2016-06-01',
                                               school='a', latitude=90,
                                               longitude=123,
@@ -241,7 +245,7 @@ class WaterQualityTestCase(TestCase):
                                                    0, 0, 0, 0, 2.5, 0, 0, 0)
 
         waterq = Water_Quality.objects.create(site=site,
-                                              DEQ_wq_level='A',
+                                              DEQ_dq_level='A',
                                               date='2016-06-01',
                                               school='a', latitude=90,
                                               longitude=123,

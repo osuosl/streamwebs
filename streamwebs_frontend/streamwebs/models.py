@@ -183,11 +183,10 @@ class Water_Quality(models.Model):
     LEVEL_C = 'C'
     LEVEL_D = 'D'
     LEVEL_E = 'E'
-#    NOT_ACCESSED = 'N/A'
     FAHRENHEIT = _('Fahrenheit')
     CELSIUS = _('Celsius')
 
-    DEQ_WQ_CHOICES = (
+    DEQ_DQ_CHOICES = (
         (None, '-----'),
         (LEVEL_A, 'Level A'),
         (LEVEL_B, 'Level B'),
@@ -206,7 +205,7 @@ class Water_Quality(models.Model):
     object has a one-to-one relationship with its specified Site.
     """
     site = models.ForeignKey(Site, null=True, on_delete=models.CASCADE)
-    DEQ_wq_level = models.CharField(max_length=1, choices=DEQ_WQ_CHOICES,
+    DEQ_dq_level = models.CharField(max_length=1, choices=DEQ_DQ_CHOICES,
                                     default=None)
     date = models.DateField(default=datetime.date.today)
     school = models.CharField(max_length=250)
