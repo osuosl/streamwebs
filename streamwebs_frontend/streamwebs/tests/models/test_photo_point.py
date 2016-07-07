@@ -16,7 +16,7 @@ class PhotoPointTestCase(TestCase):
             'distance': models.DecimalField,
             'camera_height': models.DecimalField,
             'notes': models.TextField,
-            'id': models.AutoField
+            'id': models.AutoField,
 
             'camera_point_id': models.ForeignKey,
             'photo_point': models.ManyToOneRel
