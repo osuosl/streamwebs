@@ -1,5 +1,6 @@
 from django.test import TestCase
 from django.contrib.gis.db import models
+<<<<<<< HEAD
 from django.contrib.gis.geos import Point
 from django.apps import apps
 from itertools import chain
