@@ -7,10 +7,12 @@ from models import UserProfile
 from .models import Site
 from .models import Water_Quality
 from .models import WQ_Sample
+from .models import Macroinvertebrates
 
 admin.site.register(Site)
 admin.site.register(Water_Quality)
 admin.site.register(WQ_Sample)
+admin.site.register(Macroinvertebrates)
 
 
 # The following will add a profile model's files to the user page in the
