@@ -75,7 +75,7 @@ class MacroTestCase(TestCase):
         )))
         self.assertEqual(sorted(fields), sorted(self.expected_fields.keys()))
 
-    def test_datasheet_ManyToOne(self):
+    def test_datasheet_ManyToOneSite(self):
         """Tests that a datasheet correctly corresponds to a specified site"""
         default_dt = timezone.now()  # default date_time value
 
