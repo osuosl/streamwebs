@@ -52,7 +52,8 @@ class PhotoPointTestCase(TestCase):
             (field.name,) for field in PhotoPoint._meta.get_fields()
             if not (field.many_to_one and field.related_model is None)
             )))
-        self.assertEqual(sorted(pp_fields), sorted(self.expected_fields.keys()))
+        self.assertEqual(sorted(pp_fields),
+                         sorted(self.expected_fields.keys()))
 
     def test_optional_fields(self):
         """
