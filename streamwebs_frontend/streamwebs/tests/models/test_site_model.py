@@ -21,7 +21,8 @@ class SiteTestCase(TestCase):
 
             # Datasheets
             'water_quality': models.ManyToOneRel,
-            'rip_aqua_survey': models.ManyToOneRel
+            'rip_aqua_survey': models.ManyToOneRel,
+            'macroinvertebrates': models.ManyToOneRel
         }
 
         self.optional_fields = {
