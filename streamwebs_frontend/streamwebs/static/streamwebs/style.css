@@ -2,12 +2,12 @@
 
 /* WebKit/Blink Browsers */
 ::selection {
-  background: #b9dce8;
+    background: #b9dce8;
 }
 
 /* Gecko Browsers */
 ::-moz-selection {
-  background: #b9dce8;
+    background: #b9dce8;
 }
 
 .title {
@@ -27,9 +27,11 @@
 
 .search-nav {
     /* Make the search bar behave as if it were not in a navbar */
+
     padding: 0 0 0 0 !important;
     margin-left: 0.75rem !important;
     margin-right: -0.75rem !important;
+    margin-bottom: 0 !important;
 }
 
 #search {
@@ -43,64 +45,68 @@
     width: 100%;
 }
 
+nav {
+    margin-bottom: 25px;
+}
+
 .datasheet-title {
-  color: rgb(16, 66, 87);
+    color: rgb(16, 66, 87);
 }
 
 .datasheet {
-  width: 100%;
+    width: 100%;
 }
 
 .datasheet table {
-  margin: 0 auto;
-  padding: 10px 5px 10px 20px;
+    margin: 0 auto;
+    padding: 10px 5px 10px 20px;
 }
 
 .datasheet form table {
-  margin: 0 auto;
-  padding: 10px 5px 10px 20px;
+    margin: 0 auto;
+    padding: 10px 5px 10px 20px;
 }
 
 #water-quality-temp-units {
-  margin-bottom: 0;
+    margin-bottom: 0;
 }
 
 #water-quality-data-table {
-  margin-top: 0;
+    margin-top: 0;
 }
 
 .field-label {
-  font-weight: bold;
+    font-weight: bold;
 }
 
 .inline-form-options {
-  padding: 0 10px;
+    padding: 0 10px;
 }
 
 td.triplet:nth-child(odd) {
-  border-left: 1px solid black;
-  border-right: 1px solid black;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
 }
 
 td.pair:nth-child(odd) {
-  border-left: 1px solid black;
-  border-right: 1px solid black;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
 }
 
 td.pair:nth-child(even) {
-  border-right: 1px solid black;
+    border-right: 1px solid black;
 }
 
 .data-table {
-  border: 1px solid black;
-  background-color: rgb(231, 241, 243);
-  padding: 5px 30px 5px 10px;
+    border: 1px solid black;
+    background-color: rgb(231, 241, 243);
+    padding: 5px 30px 5px 10px;
 }
 
 .data-table td {
-  font-weight: bold;
+    font-weight: bold;
 }
 
 .form-cell {
-  min-width: 300px;
+    min-width: 300px;
 }
