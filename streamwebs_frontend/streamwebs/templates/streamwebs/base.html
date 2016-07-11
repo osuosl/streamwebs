@@ -9,8 +9,6 @@
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{% static 'streamwebs/style.css' %}" />
     <link rel="shortcut icon" href="{% static 'streamwebs/images/favicon.ico' %}" />
-    <script src="{% static 'streamwebs/bower_components/jquery/dist/jquery.js' %}"></script>
-    {% block scripts %}{% endblock %}
 </head>
 
 <body>
@@ -28,5 +26,8 @@
     <div class="content">
         {% block content %}{% endblock %}
     </div>
+
+    <script src="{% static 'streamwebs/bower_components/jquery/dist/jquery.js' %}"></script>
+    {% block scripts %}{% endblock %}
 </body>
 </html>
