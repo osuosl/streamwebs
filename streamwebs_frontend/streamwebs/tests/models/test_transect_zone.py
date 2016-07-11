@@ -5,6 +5,7 @@ from itertools import chain
 
 from streamwebs.models import TransectZone
 
+
 class TransectZoneTestCase(TestCase):
 
     def setUp(self):

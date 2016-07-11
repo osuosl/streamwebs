@@ -283,3 +283,49 @@ class Macroinvertebrates(models.Model):
     class Meta:
         verbose_name = 'Macroinvertebrate'
         verbose_name_plural = 'Macroinvertebrates'
+
+
+class TransectZoneManager:
+    """
+    Manager for the TransectZone model.
+    """
+    def create_zone(conifers=0, hardwood=0, shrubs=0, comments=''):
+        return self.create(conifers=conifers, hardwood=hardwood, shrubs=shrubs,
+                           comments=comments)
+
+
+class TransectZone(models.Model):
+    """
+    Each Riparian Transect datasheet requires five zones.
+    """
+    conifers = models.PositiveSmallIntegerField(default=0)
+    hardwoods = models.PositiveSmallIntegerField(default=0)
+    shrubs = models.PositiveSmallIntegerField(default=0)
+    comments = models.TextField(blank=True)
+
+    zones = TransectZoneManager()
+
+    class Meta:
+        verbose_name = 'Zone'
+        verbose_name_plural = 'Zones'
+
+
+class RipTransectManager(models.Manager):
+    """
+    Manager for the RiparianTransect model/datasheet.
+    """
+    def create_transect(school, date_time, site, zone_1, zone_2, zone_3,
+                        zone_4, zone_5, names='', weather='', slope=None,
+                        notes=''):
+        return self.create(names=names, school=school, date_time=date_time,
+                           weather=weather, site=site, slope=slope,
+                           notes=notes, zone_1=zone_1, zone_2=zone_2,
+                           zone_3=zone_3, zone_4=zone_4, zone_5=zone_5)
+
+
+class RiparianTransect(models.Model):
+    transects = RipTransectManager()
+
+    class Meta:
+        verbose_name = 'Riparian Transect'
+        verbose_name_plural = 'Riparian Transects'
