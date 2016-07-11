@@ -39,7 +39,7 @@
 
                             <div class="search-results collection">
                             {% for site in sites %}
-                                <a href="site/{{site.slug}}" class="collection-item search-item cyan-text hide">{{site.name}}</a>
+                                <a href="site/{{site.slug}}" class="collection-item search-item {{site.site_type}} cyan-text hide">{{site.name}}</a>
                             {% endfor %}
                             </div>
                         </div>
