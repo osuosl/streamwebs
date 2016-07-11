@@ -22,7 +22,11 @@
         </select>
         <input type="submit" value="{% trans 'Go' %}" />
     </form>
-    <h1 class="center-align">{% block body_title %}Streamwebs{% endblock %}</h1>
+    <nav class="cyan">
+        <div class="nav-wrapper">
+            <a href="#!" class="brand-logo center">{% block body_title %}Streamwebs{% endblock %}</a>
+        </div>
+    </nav>
     <div class="content">
         {% block content %}{% endblock %}
     </div>
