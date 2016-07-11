@@ -9,7 +9,7 @@ function search() {
     var none = !stewards && !salmon && !available;
     dropdownShown = 0;
 
-    $('.search-item').each(function() {
+    $('.search-item').each(function () {
         var name = $(this).text().toLowerCase();
         var search_point = $('#search').offset().top + parseInt($('#search').css('height'));
 
@@ -85,7 +85,7 @@ function initialize() {
         site.infoWindow = new google.maps.InfoWindow({
             content: '<p><a href="javascript:submit_map(\'' + site.slug + '\')">' + site.name + '</a></p><p>' + site.description + '</p>',
         });
-        site.marker.addListener('click', () => {
+        site.marker.addListener('click', function () {
             for (let otherSite of sites) {
                 otherSite.infoWindow.close();
             }
