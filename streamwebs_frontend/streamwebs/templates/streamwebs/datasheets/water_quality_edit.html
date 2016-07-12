@@ -1,0 +1,266 @@
+{% extends 'streamwebs/data_edit.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Input Water Quality - {{site.name}} - Streamwebs{% endblock %}
+
+{% block body_title %}<a href='{% url 'streamwebs:site' site.slug %}'>{{site.name}}</a> »
+Edit Water Quality{% endblock %}
+
+{% block scripts %}
+<script type="application/javascript" src="{% static 'streamwebs/js/data/edit/water_quality.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<div id="water_quality" class="datasheet">
+    <form action="" method="POST">
+        <table>
+            <tr>
+                <td class="form-cell">
+                    <p class="field-label">Stream/Site name: {{data.site.name}}</p>
+                    <label for="date" class="field-label">Date:</label>
+                    <input type="date" name="date" />
+                </td>
+                <td class="form-cell">
+                    <label for="DEQ Data Quality Level" class="field-label">DEQ Data Quality Level:</label>
+                    <select name="DEQ Data Quality Level" required disabled>
+                        <option value="Level A">Level A</option>
+                        <option value="Level B">Level B</option>
+                        <option value="Level C">Level C</option>
+                        <option value="Level D">Level D</option>
+                        <option value="Level E">Level E</option>
+                    </select>
+                    <br/><br/>
+                    <label for="latitude" class="field-label">Latitude:</label>
+                    <input type="text" name="latitude" />
+                    <br/><br/>
+                    <label for="longitude" class="field-label">Longitude:</label>
+                    <input type="text" name="longitude" />
+                </td>
+            </tr>
+        </table>
+        <br/>
+        <table>
+            <tr>
+                <td class="inline-form-options triplet">
+                    <label for="fish" class="field-label">Any fish present?&nbsp;</label>
+                    <input type="radio" name="fish" value="yes" />Yes
+                    <input type="radio" name="fish" value="no" />No
+                </td>
+                <td class="inline-form-options triplet">
+                    <label for="number-live-fish" class="field-label">Number of live fish:&nbsp;&nbsp;</label>
+                    <input type="text" name="number-live-fish" maxlength="10" size="10" />
+                </td>
+                <td class="inline-form-options triplet">
+                    <label for="number-dead-fish" class="field-label">Number of dead fish:&nbsp;&nbsp;&nbsp;</label>
+                    <input type="text" name="number-dead-fish" maxlength="10" size="10" />
+                </td>
+            </tr>
+        </table>
+        <br/>
+        <table id="water-quality-temp-units">
+            <tr>
+                <td class="inline-form-options pair">
+                    <label for="water-temp-units" class="field-label">Water Temperature Units</label>
+                    <input type="radio" name="water-temp-units" value="F" />Fahrenheit
+                    <input type="radio" name="water-temp-units" value="C" />Celsius
+                </td>
+                <td class="inline-form-options pair">
+                    <label for="air-temp-units" class="field-label">Air Temperature Units</label>
+                    <input type="radio" name="air-temp-units" value="F" />Fahrenheit
+                    <input type="radio" name="air-temp-units" value="C" />Celsius
+                </td>
+            </tr>
+        </table>
+        <table id="water-quality-data-table" class="data-table">
+            <tr>
+                <th></th>
+                <th>Sample 1</th>
+                <th>Sample 2</th>
+                <th>Sample 3</th>
+                <th>Sample 4</th>
+            </tr>
+            <tr>
+                <td>Water Temperature: </td>
+                <td><input type="text" name="water-temperature-1" /><br/>
+                    <input type="radio" name="water-temp-tool-1" value="vernier" />Vernier
+                    <input type="radio" name="water-temp-tool-1" value="manual" />manual
+                </td>
+                <td><input type="text" name="water-temperature-2" /><br/>
+                    <input type="radio" name="water-temp-tool-2" value="vernier" />Vernier
+                    <input type="radio" name="water-temp-tool-2" value="manual" />manual
+                </td>
+                <td><input type="text" name="water-temperature-3" /><br/>
+                    <input type="radio" name="water-temp-tool-3" value="vernier" />Vernier
+                    <input type="radio" name="water-temp-tool-3" value="manual" />manual
+                </td>
+                <td><input type="text" name="water-temperature-4" /><br/>
+                    <input type="radio" name="water-temp-tool-4" value="vernier" />Vernier
+                    <input type="radio" name="water-temp-tool-4" value="manual" />manual
+                </td>
+            </tr>
+            <tr>
+                <td>Air Temperature: </td>
+                <td><input type="text" name="air-temperature-1" /><br/>
+                    <input type="radio" name="air-temp-tool-1" value="vernier" />Vernier
+                    <input type="radio" name="air-temp-tool-1" value="manual" />manual
+                </td>
+                <td><input type="text" name="air-temperature-2" /><br/>
+                    <input type="radio" name="air-temp-tool-2" value="vernier" />Vernier
+                    <input type="radio" name="air-temp-tool-2" value="manual" />manual
+                </td>
+                <td><input type="text" name="air-temperature-3" /><br/>
+                    <input type="radio" name="air-temp-tool-3" value="vernier" />Vernier
+                    <input type="radio" name="air-temp-tool-3" value="manual" />manual
+                </td>
+                <td><input type="text" name="air-temperature-4" /><br/>
+                    <input type="radio" name="air-temp-tool-4" value="vernier" />Vernier
+                    <input type="radio" name="air-temp-tool-4" value="manual" />manual
+                </td>
+            </tr>
+            <tr>
+                <td>Dissolved Oxygen (mg/L): </td>
+                <td><input type="text" name="dissolved-oxygen-1" /><br/>
+                    <input type="radio" name="oxygen-tool-1" value="vernier" />Vernier
+                    <input type="radio" name="oxygen-tool-1" value="manual" />manual
+                </td>
+                <td><input type="text" name="dissolved-oxygen-2" /><br/>
+                    <input type="radio" name="oxygen-tool-2" value="vernier" />Vernier
+                    <input type="radio" name="oxygen-tool-2" value="manual" / />manual
+                </td>
+                <td><input type="text" name="dissolved-oxygen-3" /><br/>
+                    <input type="radio" name="oxygen-tool-3" value="vernier" />Vernier
+                    <input type="radio" name="oxygen-tool-3" value="manual" />manual
+                </td>
+                <td><input type="text" name="dissolved-oxygen-4" /><br/>
+                    <input type="radio" name="oxygen-tool-4" value="vernier" />Vernier
+                    <input type="radio" name="oxygen-tool-4" value="manual" />manual
+                </td>
+            </tr>
+            <tr>
+                <td>pH: </td>
+                <td><input type="text" name="pH-1" /><br/>
+                    <input type="radio" name="pH-tool-1" value="vernier" />Vernier
+                    <input type="radio" name="pH1-tool" value="manual" />manual
+                </td>
+                <td><input type="text" name="pH-2" /><br/>
+                    <input type="radio" name="pH-tool-2" value="vernier" />Vernier
+                    <input type="radio" name="pH-tool-2" value="manual" />manual
+                </td>
+                <td><input type="text" name="pH-3" /><br/>
+                    <input type="radio" name="pH-tool-3" value="vernier" />Vernier
+                    <input type="radio" name="pH3-tool" value="manual" />manual
+                </td>
+                <td><input type="text" name="pH-4" /><br/>
+                    <input type="radio" name="pH-tool-4" value="vernier" />Vernier
+                    <input type="radio" name="pH-tool-4" value="manual" />manual
+                </td>
+            </tr>
+            <tr>
+                <td>Turbidity (NTU): </td>
+                <td><input type="text" name="turbidity-1" /><br/>
+                    <input type="radio" name="turbid-tool-1" value="vernier" />Vernier
+                    <input type="radio" name="turbid-tool-1" value="manual" />manual
+                </td>
+                <td><input type="text" name="turbidity-2" /><br/>
+                    <input type="radio" name="turbid-tool-2" value="vernier" />Vernier
+                    <input type="radio" name="turbid-tool-2" value="manual" />manual
+                </td>
+                <td><input type="text" name="turbidity-3" /><br/>
+                    <input type="radio" name="turbid-tool-3" value="vernier" />Vernier
+                    <input type="radio" name="turbid-tool-3" value="manual" />manual
+                </td>
+                <td><input type="text" name="turbidity-4" /><br/>
+                    <input type="radio" name="turbid-tool-4" value="vernier" />Vernier
+                    <input type="radio" name="turbid-tool-4" value="manual" />manual
+                </td>
+            </tr>
+            <tr>
+                <td>Salinity (PSU) PPT: </td>
+                <td><input type="text" name="salinity-1" /><br/>
+                    <input type="radio" name="salt-tool-1" value="vernier" />Vernier
+                    <input type="radio" name="salt-tool-1" value="manual" />manual
+                </td>
+                <td><input type="text" name="salinity-2" /><br/>
+                    <input type="radio" name="salt-tool-2" value="vernier" />Vernier
+                    <input type="radio" name="salt-tool-2" value="manual" />manual
+                </td>
+                <td><input type="text" name="salinity-3" /><br/>
+                    <input type="radio" name="salt-tool-3" value="vernier" />Vernier
+                    <input type="radio" name="salt-tool-3" value="manual" />manual
+                </td>
+                <td><input type="text" name="salinity-4" /><br/>
+                    <input type="radio" name="salt-tool-4" value="vernier" />Vernier
+                    <input type="radio" name="salt-tool-4" value="manual" />manual
+                </td>
+            </tr>
+            <!-- Additional Parameters -->
+            <tr>
+                <th><br/>Additional Parameters</br></th>
+            </tr>
+            <tr>
+                <td>Conductivity (µS/cm): </td>
+                <td><input type="text" name="conductivity-1" /></td>
+                <td><input type="text" name="conductivity-2" /></td>
+                <td><input type="text" name="conductivity-3" /></td>
+                <td><input type="text" name="conductivity-4" /></td>
+            </tr>
+            <tr>
+                <td>Total Solids (mg/L): </td>
+                <td><input type="text" name="total-solids-1" /></td>
+                <td><input type="text" name="total-solids-2" /></td>
+                <td><input type="text" name="total-solids-3" /></td>
+                <td><input type="text" name="total-solids-4" /></td>
+            </tr>
+            <tr>
+                <td>BOD (mg/L): </td>
+                <td><input type="text" name="bod-1" /></td>
+                <td><input type="text" name="bod-2" /></td>
+                <td><input type="text" name="bod-3" /></td>
+                <td><input type="text" name="bod-4" /></td>
+            </tr>
+            <tr>
+                <td>Ammonia (mg/L): </td>
+                <td><input type="text" name="ammonia-1" /></td>
+                <td><input type="text" name="ammonia-2" /></td>
+                <td><input type="text" name="ammonia-3" /></td>
+                <td><input type="text" name="ammonia-4" /></td>
+            </tr>
+            <tr>
+                <td>Nitrite (mg/L): </td>
+                <td><input type="text" name="nitrite-1" /></td>
+                <td><input type="text" name="nitrite-2" /></td>
+                <td><input type="text" name="nitrite-3" /></td>
+                <td><input type="text" name="nitrite-4" /></td>
+            </tr>
+            <tr>
+                <td>Nitrate (mg/L): </td>
+                <td><input type="text" name="nitrate-1" /></td>
+                <td><input type="text" name="nitrate-2" /></td>
+                <td><input type="text" name="nitrate-3" /></td>
+                <td><input type="text" name="nitrate-4" /></td>
+            </tr>
+            <tr>
+                <td>Phosphates (mg/L): </td>
+                <td><input type="text" name="pHosphates-1" /></td>
+                <td><input type="text" name="pHosphates-2" /></td>
+                <td><input type="text" name="pHosphates-3" /></td>
+                <td><input type="text" name="pHosphates-4" /></td>
+            </tr>
+            <tr>
+                <td>Fecal Coliform (CFU/100 mL): </td>
+                <td><input type="text" name="fecal-coliform-1" /></td>
+                <td><input type="text" name="fecal-coliform-2" /></td>
+                <td><input type="text" name="fecal-coliform-3" /></td>
+                <td><input type="text" name="fecal-coliform-4" /></td>
+            </tr>
+        </table>
+        <br/>
+        <table>
+            <tr><td><label for="field-notes" class="field-label">Field Notes:</label></td></tr>
+            <tr><td><textarea cols="80" rows="10" name="field-notes"></textarea><br/></br></td></tr>
+            <tr><td><input type="submit" value="Submit" /></td></tr>
+        </table>
+    </form>
+</div>
+{% endblock %}
