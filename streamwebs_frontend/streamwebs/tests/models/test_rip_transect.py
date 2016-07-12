@@ -1,12 +1,11 @@
 from django.test import TestCase
 from django.contrib.gis.db import models
-from django.apps import apps
 from itertools import chain
 
 from streamwebs.models import RiparianTransect, TransectZone, Site
 
 
-class RiparianTransectTestCase(self):
+class RiparianTransectTestCase(TestCase):
 
     def setUp(self):
         self.expected_fields = {
@@ -24,7 +23,7 @@ class RiparianTransectTestCase(self):
             'zone_3': models.ForeignKey,
             'zone_4': models.ForeignKey,
             'zone_5': models.ForeignKey,
-    
+
             # Corresponding zone id
             'zone_1_id': models.ForeignKey,
             'zone_2_id': models.ForeignKey,
@@ -48,7 +47,7 @@ class RiparianTransectTestCase(self):
     def test_no_extra_fields(self):
         fields = list(set(chain.from_iterable(
             (field.name, field.attname) if hasattr(field, 'attname') else
-            (field.name,) for field in TransectZone._meta.get_fields()
+            (field.name,) for field in RiparianTransect._meta.get_fields()
             if not (field.many_to_one and field.related_model is None)
         )))
         self.assertEqual(sorted(fields), sorted(self.expected_fields.keys()))
@@ -64,16 +63,11 @@ class RiparianTransectTestCase(self):
         """
         site = Site.objects.create_site('test site', 'test site type',
                                         'test_site_slug')
-        zone_1 = TransectZone.zones.create_zone(1, 1, 1,
-                                                'Comments on test site')
-        zone_2 = TransectZone.zones.create_zone(2, 2, 2,
-                                                'Comments on test site')
-        zone_3 = TransectZone.zones.create_zone(3, 3, 3,
-                                                'Comments on test site')
-        zone_4 = TransectZone.zones.create_zone(4, 4, 4,
-                                                'Comments on test site')
-        zone_5 = TransectZone.zones.create_zone(5, 5, 5,
-                                                'Comments on test site')
+        zone_1 = TransectZone.zones.create_zone(1, 1, 1, 'Comments on zone 1')
+        zone_2 = TransectZone.zones.create_zone(2, 2, 2, 'Comments on zone 2')
+        zone_3 = TransectZone.zones.create_zone(3, 3, 3, 'Comments on zone 3')
+        zone_4 = TransectZone.zones.create_zone(4, 4, 4, 'Comments on zone 4')
+        zone_5 = TransectZone.zones.create_zone(5, 5, 5, 'Comments on zone 5')
         transect = RiparianTransect.transects.create_transect(
             'School of Cool', '2016-07-11 14:09', site, zone_1, zone_2, zone_3,
             zone_4, zone_5)
@@ -82,7 +76,7 @@ class RiparianTransectTestCase(self):
         self.assertEqual(transect.site.site_type, 'test site type')
         self.assertEqual(transect.site.site_slug, 'test_site_slug')
 
-    def test_datasheet_creation_req_fields:
+    def test_datasheet_creation_req_fields(self):
         site = Site.objects.create_site('test site', 'test site type',
                                         'test_site_slug')
         zone_1 = TransectZone.zones.create_zone(1, 1, 1, 'Comments on zone 1')
@@ -105,7 +99,7 @@ class RiparianTransectTestCase(self):
         self.assertEqual(transect.slope, None)
         self.assertEqual(transect.notes, '')
 
-    def test_datasheet_creation_opt_fields:
+    def test_datasheet_creation_opt_fields(self):
         site = Site.objects.create_site('test site', 'test site type',
                                         'test_site_slug')
         zone_1 = TransectZone.zones.create_zone(1, 1, 1, 'Comments on zone 1')
@@ -114,9 +108,9 @@ class RiparianTransectTestCase(self):
         zone_4 = TransectZone.zones.create_zone(4, 4, 4, 'Comments on zone 4')
         zone_5 = TransectZone.zones.create_zone(5, 5, 5, 'Comments on zone 5')
         transect = RiparianTransect.transects.create_transect(
-            'Katie and Sally', 'School of Cool', '2016-07-11 14:09', 'Cloudy, 
-            no meatballs', site, 1.11, 'Notes on transect', zone_1, zone_2,
-            zone_3, zone_4, zone_5)
+            'School of Cool', '2016-07-11 14:09', site, zone_1, zone_2, zone_3,
+            zone_4, zone_5, 'Katie and Sally', 'Cloudy, no meatballs', 1.11,
+            'Notes on transect')
 
         # Required
         self.assertEqual(transect.school, 'School of Cool')
@@ -126,10 +120,10 @@ class RiparianTransectTestCase(self):
         # Optional
         self.assertEqual(transect.names, 'Katie and Sally')
         self.assertEqual(transect.weather, 'Cloudy, no meatballs')
-        self.assertEqual(transect.slope, None)
+        self.assertEqual(transect.slope, 1.11)
         self.assertEqual(transect.notes, 'Notes on transect')
 
-    def test_datasheet_SetZonesInfo:
+    def test_datasheet_SetZonesInfo(self):
         site = Site.objects.create_site('test site', 'test site type',
                                         'test_site_slug')
         zone_1 = TransectZone.zones.create_zone(1, 2, 3, 'Comments on zone 1')
@@ -140,7 +134,7 @@ class RiparianTransectTestCase(self):
         transect = RiparianTransect.transects.create_transect(
             'School of Cool', '2016-07-11 14:09', site, zone_1, zone_2, zone_3,
             zone_4, zone_5)
-    
+
         self.assertEqual(transect.zone_1.conifers, 1)
         self.assertEqual(transect.zone_1.hardwoods, 2)
         self.assertEqual(transect.zone_1.shrubs, 3)

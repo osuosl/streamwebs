@@ -285,13 +285,14 @@ class Macroinvertebrates(models.Model):
         verbose_name_plural = 'Macroinvertebrates'
 
 
-class TransectZoneManager:
+class TransectZoneManager(models.Manager):
     """
     Manager for the TransectZone model.
     """
-    def create_zone(conifers=0, hardwood=0, shrubs=0, comments=''):
-        return self.create(conifers=conifers, hardwood=hardwood, shrubs=shrubs,
-                           comments=comments)
+    def create_zone(self, conifers=0, hardwoods=0, shrubs=0, comments=''):
+        info = self.create(conifers=conifers, hardwoods=hardwoods,
+                           shrubs=shrubs, comments=comments)
+        return info
 
 
 class TransectZone(models.Model):
@@ -314,17 +315,44 @@ class RipTransectManager(models.Manager):
     """
     Manager for the RiparianTransect model/datasheet.
     """
-    def create_transect(school, date_time, site, zone_1, zone_2, zone_3,
+    def create_transect(self, school, date_time, site, zone_1, zone_2, zone_3,
                         zone_4, zone_5, names='', weather='', slope=None,
                         notes=''):
-        return self.create(names=names, school=school, date_time=date_time,
-                           weather=weather, site=site, slope=slope,
-                           notes=notes, zone_1=zone_1, zone_2=zone_2,
-                           zone_3=zone_3, zone_4=zone_4, zone_5=zone_5)
+        return self.create(school=school, date_time=date_time, site=site,
+                           zone_1=zone_1, zone_2=zone_2, zone_3=zone_3,
+                           zone_4=zone_4, zone_5=zone_5, names=names,
+                           weather=weather, slope=slope, notes=notes)
 
 
 class RiparianTransect(models.Model):
+    """
+    This model corresponds to the Riparian Transect data sheet and has a one-to
+    -one relationship with its specified Site.
+    """
+    names = models.CharField(max_length=255, blank=True)
+    school = models.CharField(max_length=255)
+    date_time = models.DateTimeField(default=timezone.now)
+    weather = models.CharField(max_length=255, blank=True)
+    site = models.ForeignKey(Site, null=True, on_delete=models.CASCADE)
+    slope = models.DecimalField(blank=True, null=True, max_digits=5,
+                                decimal_places=3)
+    notes = models.TextField(blank=True)
+
+    zone_1 = models.ForeignKey(TransectZone, on_delete=models.CASCADE,
+                               related_name='zone_1', null=True)
+    zone_2 = models.ForeignKey(TransectZone, on_delete=models.CASCADE,
+                               related_name='zone_2', null=True)
+    zone_3 = models.ForeignKey(TransectZone, on_delete=models.CASCADE,
+                               related_name='zone_3', null=True)
+    zone_4 = models.ForeignKey(TransectZone, on_delete=models.CASCADE,
+                               related_name='zone_4', null=True)
+    zone_5 = models.ForeignKey(TransectZone, on_delete=models.CASCADE,
+                               related_name='zone_5', null=True)
+
     transects = RipTransectManager()
+
+    def __str__(self):
+        return self.site.site_name
 
     class Meta:
         verbose_name = 'Riparian Transect'

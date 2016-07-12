@@ -1,6 +1,5 @@
 from django.test import TestCase
 from django.contrib.gis.db import models
-from django.apps import apps
 from itertools import chain
 
 from streamwebs.models import TransectZone
@@ -13,10 +12,10 @@ class TransectZoneTestCase(TestCase):
             'conifers': models.PositiveSmallIntegerField,
             'hardwoods': models.PositiveSmallIntegerField,
             'shrubs': models.PositiveSmallIntegerField,
-            'comments': models.CharField,
+            'comments': models.TextField,
             'id': models.AutoField,
 
-        # Foreign key relation
+            # Foreign key relation
             'zone_1': models.ManyToOneRel,
             'zone_2': models.ManyToOneRel,
             'zone_3': models.ManyToOneRel,
