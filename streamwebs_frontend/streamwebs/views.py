@@ -243,3 +243,21 @@ def water_quality_edit(request, site_slug):
     return render(request, 'streamwebs/datasheets/water_quality_edit.html', {
         'site': site
     })
+
+
+def RAS(request, site_slug, data_id):
+    site = {
+        'data': 'data mc dataface'
+    }
+    return render(request, 'streamwebs/datasheets/ras_view.html', {
+        'site': site
+    })
+
+
+def RAS_edit(request, site_slug):
+    site = {
+        'data': 'should probz go here'
+    }
+    return render(request, 'streamwebs/datasheets/ras_edit.html', {
+        'site': site
+    })
