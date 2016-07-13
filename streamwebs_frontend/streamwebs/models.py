@@ -389,9 +389,98 @@ class RiparianTransect(models.Model):
 
     transects = RipTransectManager()
 
+    class Meta:
+        verbose_name = 'Riparian Transect'
+        verbose_name_plural = 'Riparian Transects'
+
+
+class CardinalManager(models.Manager):
+    """
+    Manager for the canopy cover survey's cardinal boxes - creates dummy data
+    data for each of the cardinal directions
+    """
+    def create_shade(self, direction, A, B, C, D, E, F, G, H, I, J, K, L, M, N,
+                     O, P, Q, R, S, T, U, V, W, X, num_shaded):
+
+        cc_info = self.create(direction=direction, A=A, B=B, C=C, D=D, E=E,
+                              F=F, G=G, H=H, I=I, J=J, K=K, L=L, M=M, N=N, O=O,
+                              P=P, Q=Q, R=R, S=S, T=T, U=U, V=V, W=W, X=X,
+                              num_shaded=num_shaded)
+        return cc_info
+
+
+@python_2_unicode_compatible
+class CC_Cardinal(models.Model):
+    NORTH = 'North'
+    EAST = 'East'
+    SOUTH = 'South'
+    WEST = 'West'
+
+    DIRECTIONS = (
+        (None, '-----'),
+        (NORTH, 'North'),
+        (EAST, 'East'),
+        (SOUTH, 'South'),
+        (WEST, 'West'),
+    )
+
+    direction = models.CharField(max_length=255, choices=DIRECTIONS,
+                                 default=DIRECTIONS[0])
+    A = models.BooleanField(default=False)
+    B = models.BooleanField(default=False)
+    C = models.BooleanField(default=False)
+    D = models.BooleanField(default=False)
+    E = models.BooleanField(default=False)
+    F = models.BooleanField(default=False)
+    G = models.BooleanField(default=False)
+    H = models.BooleanField(default=False)
+    I = models.BooleanField(default=False)
+    J = models.BooleanField(default=False)
+    K = models.BooleanField(default=False)
+    L = models.BooleanField(default=False)
+    M = models.BooleanField(default=False)
+    N = models.BooleanField(default=False)
+    O = models.BooleanField(default=False)
+    P = models.BooleanField(default=False)
+    Q = models.BooleanField(default=False)
+    R = models.BooleanField(default=False)
+    S = models.BooleanField(default=False)
+    T = models.BooleanField(default=False)
+    U = models.BooleanField(default=False)
+    V = models.BooleanField(default=False)
+    W = models.BooleanField(default=False)
+    X = models.BooleanField(default=False)
+    num_shaded = models.PositiveIntegerField(default=0)
+
+    objects = CardinalManager()
+
+    def __str__(self):
+        return self.direction
+
+    class Meta:
+        verbose_name = 'Cardinal Direction'
+        verbose_name_plural = 'Cardinal Directions'
+
+
+@python_2_unicode_compatible
+class Canopy_Cover(models.Model):
+    school = models.CharField(max_length=250)
+    date_time = models.DateTimeField(default=timezone.now)
+    site = models.ForeignKey(Site, null=True, on_delete=models.CASCADE)
+    weather = models.CharField(max_length=250)
+    north = models.ForeignKey(CC_Cardinal, on_delete=models.CASCADE,
+                              related_name='north', null=True)
+    east = models.ForeignKey(CC_Cardinal, on_delete=models.CASCADE,
+                             related_name='east', null=True)
+    south = models.ForeignKey(CC_Cardinal, on_delete=models.CASCADE,
+                              related_name='south', null=True)
+    west = models.ForeignKey(CC_Cardinal, on_delete=models.CASCADE,
+                             related_name='west', null=True)
+    est_canopy_cover = models.PositiveIntegerField(default=0)
+
     def __str__(self):
         return self.site.site_name
 
     class Meta:
-        verbose_name = 'Riparian Transect'
-        verbose_name_plural = 'Riparian Transects'
+        verbose_name = 'Canopy Cover Survey'
+        verbose_name_plural = 'Canopy Cover Surveys'
