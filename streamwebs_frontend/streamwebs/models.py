@@ -316,12 +316,12 @@ class RipTransectManager(models.Manager):
     Manager for the RiparianTransect model/datasheet.
     """
     def create_transect(self, school, date_time, site, zone_1, zone_2, zone_3,
-                        zone_4, zone_5, names='', weather='', slope=None,
+                        zone_4, zone_5, weather='', slope=None,
                         notes=''):
         return self.create(school=school, date_time=date_time, site=site,
                            zone_1=zone_1, zone_2=zone_2, zone_3=zone_3,
-                           zone_4=zone_4, zone_5=zone_5, names=names,
-                           weather=weather, slope=slope, notes=notes)
+                           zone_4=zone_4, zone_5=zone_5, weather=weather,
+                           slope=slope, notes=notes)
 
 
 class RiparianTransect(models.Model):
@@ -329,7 +329,6 @@ class RiparianTransect(models.Model):
     This model corresponds to the Riparian Transect data sheet and has a one-to
     -one relationship with its specified Site.
     """
-    names = models.CharField(max_length=255, blank=True)
     school = models.CharField(max_length=255)
     date_time = models.DateTimeField(default=timezone.now)
     weather = models.CharField(max_length=255, blank=True)

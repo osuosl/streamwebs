@@ -9,13 +9,13 @@ class RiparianTransectTestCase(TestCase):
 
     def setUp(self):
         self.expected_fields = {
-            'names': models.CharField,
             'school': models.CharField,
             'date_time': models.DateTimeField,
             'weather': models.CharField,
             'site': models.ForeignKey,
             'site_id': models.ForeignKey,
             'slope': models.DecimalField,
+            'notes': models.TextField,
             'id': models.AutoField,
             'zone_1': models.ForeignKey,
             'zone_2': models.ForeignKey,
@@ -92,7 +92,6 @@ class RiparianTransectTestCase(TestCase):
         self.assertEqual(transect.site.site_name, 'test site')
 
         # Optional
-        self.assertEqual(transect.names, '')
         self.assertEqual(transect.weather, '')
         self.assertEqual(transect.slope, None)
         self.assertEqual(transect.notes, '')
