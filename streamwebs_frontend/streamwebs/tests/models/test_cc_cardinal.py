@@ -11,6 +11,7 @@ class CCCardinalTestCase(TestCase):
 
     def setUp(self):
         self.expected_fields = {
+            'direction': models.CharField,
             'A': models.BooleanField,
             'B': models.BooleanField,
             'C': models.BooleanField,
@@ -35,13 +36,14 @@ class CCCardinalTestCase(TestCase):
             'V': models.BooleanField,
             'W': models.BooleanField,
             'X': models.BooleanField,
-            'shaded': models.PositiveIntegerField,
+            'num_shaded': models.PositiveIntegerField,
+            'id': models.AutoField,
 
-            # # Foreign key relations
-            # 'north': ManyToOneRel,
-            # 'east': ManyToOneRel,
-            # 'south': ManyToOneRel,
-            # 'west': ManyToOneRel
+            # Foreign key relations
+            'north': models.ManyToOneRel,
+            'east': models.ManyToOneRel,
+            'south': models.ManyToOneRel,
+            'west': models.ManyToOneRel
         }
 
     def test_fields_exist(self):
