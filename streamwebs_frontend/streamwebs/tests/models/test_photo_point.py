@@ -1,6 +1,5 @@
 from django.test import TestCase
 from django.contrib.gis.db import models
-from django.apps import apps
 from itertools import chain
 from streamwebs.models import CameraPoint, PhotoPoint, Site
 import tempfile
@@ -12,12 +11,10 @@ class PhotoPointTestCase(TestCase):
         self.expected_fields = {
             'camera_point': models.ForeignKey,
             'pp_date': models.DateField,
-            'compass_bearing': models.DecimalField,
-            'distance_feet': models.PositiveSmallIntegerField,
-            'distance_inches': models.PositiveSmallIntegerField,
-            'camera_height_feet': models.PositiveSmallIntegerField,
-            'camera_height_inches': models.PositiveSmallIntegerField,
-            'photo_filename': models.CharField,
+            'compass_bearing': models.PositiveSmallIntegerField,
+            'distance': models.DecimalField,
+            'camera_height': models.DecimalField,
+            'photo_filename': models.CharField,  # still necessary?
             'photo': models.ImageField,
             'notes': models.TextField,
             'id': models.AutoField,
@@ -26,10 +23,6 @@ class PhotoPointTestCase(TestCase):
         }
 
         self.optional_fields = {
-            'distance_feet': models.PositiveSmallIntegerField,
-            'distance_inches': models.PositiveSmallIntegerField,
-            'camera_height_feet': models.PositiveSmallIntegerField,
-            'camera_height_inches': models.PositiveSmallIntegerField,
             'photo_filename': models.CharField,
             'photo': models.ImageField,
             'notes': models.TextField
@@ -40,9 +33,9 @@ class PhotoPointTestCase(TestCase):
         The model's field types and the expected field types listed in setUp
         should match exactly.
         """
-        pp_model = apps.get_model('streamwebs', 'photopoint')
         for field, field_type in self.expected_fields.items():
-            self.assertEqual(field_type, type(pp_model._meta.get_field(field)))
+            self.assertEqual(field_type,
+                             type(PhotoPoint._meta.get_field(field)))
 
     def test_no_extra_fields(self):
         """
@@ -64,7 +57,6 @@ class PhotoPointTestCase(TestCase):
         """
         The model's optional fields should match the ones listed in setUp.
         """
-        apps.get_model('streamwebs', 'photopoint')
         for field in self.optional_fields:
             self.assertEqual(
                 PhotoPoint._meta.get_field(field).blank, True)
@@ -83,7 +75,9 @@ class PhotoPointTestCase(TestCase):
         photo_point = PhotoPoint.photo_points.create_photo_point(
             camera_point=camera_point,
             pp_date='2016-07-06',
-            compass_bearing=12.6
+            compass_bearing=140,
+            distance=4.5,
+            camera_height=2.3
         )
 
         self.assertEqual(photo_point.camera_point.site.site_name,
@@ -105,7 +99,9 @@ class PhotoPointTestCase(TestCase):
         photo_point = PhotoPoint.photo_points.create_photo_point(
             camera_point=camera_point,
             pp_date='2016-07-04',
-            compass_bearing=6.12
+            compass_bearing=270,
+            distance=2.3,
+            camera_height=0.5
         )
 
         # Required
@@ -113,13 +109,11 @@ class PhotoPointTestCase(TestCase):
                          'test site d')
         self.assertEqual(photo_point.camera_point.cp_date, '2016-07-03')
         self.assertEqual(photo_point.pp_date, '2016-07-04')
-        self.assertEqual(photo_point.compass_bearing, 6.12)
+        self.assertEqual(photo_point.compass_bearing, 270)
+        self.assertEqual(photo_point.distance, 2.3)
+        self.assertEqual(photo_point.camera_height, 0.5)
 
         # Optional
-        self.assertEqual(photo_point.distance_feet, None)
-        self.assertEqual(photo_point.distance_inches, None)
-        self.assertEqual(photo_point.camera_height_feet, None)
-        self.assertEqual(photo_point.camera_height_inches, None)
         self.assertEqual(photo_point.photo_filename, '')
         self.assertEqual(photo_point.photo, None)
         self.assertEqual(photo_point.notes, '')
@@ -142,10 +136,8 @@ class PhotoPointTestCase(TestCase):
             camera_point=camera_point,
             pp_date='2016-07-02',
             compass_bearing=1.62,
-            distance_feet=4,
-            distance_inches=5,
-            camera_height_feet=5,
-            camera_height_inches=4,
+            distance=4.1,
+            camera_height=5.3,
             photo_filename='fake.jpg',
             photo=temp_photo,
             notes='Notes on photo point for test site e'
@@ -156,10 +148,8 @@ class PhotoPointTestCase(TestCase):
         self.assertEqual(photo_point.camera_point.cp_date, '2016-07-01')
         self.assertEqual(photo_point.pp_date, '2016-07-02')
         self.assertEqual(photo_point.compass_bearing, 1.62)
-        self.assertEqual(photo_point.distance_feet, 4)
-        self.assertEqual(photo_point.distance_inches, 5)
-        self.assertEqual(photo_point.camera_height_feet, 5)
-        self.assertEqual(photo_point.camera_height_inches, 4)
+        self.assertEqual(photo_point.distance, 4.1)
+        self.assertEqual(photo_point.camera_height, 5.3)
         self.assertEqual(photo_point.photo_filename, 'fake.jpg')
         self.assertEqual(photo_point.photo, temp_photo)
         self.assertEqual(photo_point.notes,

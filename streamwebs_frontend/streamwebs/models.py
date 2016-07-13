@@ -466,16 +466,12 @@ class CameraPoint(models.Model):
 class PhotoPointManager(models.Manager):
 
     def create_photo_point(self, camera_point, pp_date, compass_bearing,
-                           distance_feet=None, distance_inches=None,
-                           camera_height_feet=None, camera_height_inches=None,
-                           photo_filename='', photo=None, notes=''):
+                           distance, camera_height, photo_filename='',
+                           photo=None, notes=''):
 
         return self.create(camera_point=camera_point, pp_date=pp_date,
-                           compass_bearing=compass_bearing,
-                           distance_feet=distance_feet,
-                           distance_inches=distance_inches,
-                           camera_height_feet=camera_height_feet,
-                           camera_height_inches=camera_height_inches,
+                           compass_bearing=compass_bearing, distance=distance,
+                           camera_height=camera_height,
                            photo_filename=photo_filename, photo=photo,
                            notes=notes)
 
@@ -484,15 +480,9 @@ class PhotoPoint(models.Model):
     camera_point = models.ForeignKey(CameraPoint, on_delete=models.CASCADE,
                                      null=True, related_name='camera_point')
     pp_date = models.DateField(default=datetime.date.today)
-    compass_bearing = models.DecimalField(max_digits=5, decimal_places=2)
-    distance_feet = models.PositiveSmallIntegerField(blank=True, null=True)
-    distance_inches = models.PositiveSmallIntegerField(default=0, blank=True,
-                                                       null=True)
-    camera_height_feet = models.PositiveSmallIntegerField(blank=True,
-                                                          null=True)
-    camera_height_inches = models.PositiveSmallIntegerField(default=0,
-                                                            blank=True,
-                                                            null=True)
+    compass_bearing = models.PositiveSmallIntegerField()
+    distance = models.DecimalField(max_digits=3, decimal_places=0)
+    camera_height = models.DecimalField(max_digits=3, decimal_places=0)
     photo_filename = models.CharField(max_length=255, blank=True)
     photo = models.ImageField(blank=True, null=True)
     notes = models.TextField(blank=True)
