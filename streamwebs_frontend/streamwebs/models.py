@@ -54,15 +54,13 @@ def validate_UserProfile_school(school):
 def validate_UserProfile_birthdate(birthdate):
     today = datetime.datetime.now()
     if birthdate.year > today.year - 13:
-        raise ValidationError(
-            'You must have been born before %s' % (today.year-13)
-        )
+        raise ValidationError('You must be at least 13')
     elif birthdate.year == today.year - 13:
         if birthdate.month > today.month:
-            raise ValidationError('You are not yet 13 (month)')
+            raise ValidationError('You must be at least 13')
         elif birthdate.month == today.month:
             if birthdate.day > today.day:
-                raise ValidationError('You are not yet 13 (days)')
+                raise ValidationError('You must be at least 13')
 
 
 class UserProfile(models.Model):
