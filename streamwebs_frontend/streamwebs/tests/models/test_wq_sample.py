@@ -3,6 +3,7 @@ from django.test import TestCase
 from django.contrib.gis.db import models
 from django.apps import apps
 from itertools import chain
+from django.core.exceptions import ValidationError
 
 from streamwebs.models import WQ_Sample
 
@@ -64,3 +65,41 @@ class WQSampleTestCase(TestCase):
             if not (field.many_to_one and field.related_model is None)
         )))
         self.assertEqual(sorted(fields), sorted(self.expected_fields.keys()))
+
+    #Tests for pH validator.
+    
+
+    def test_validate_pH_too_large(self):
+        sample_1 = WQ_Sample.objects.create_sample(35, 'Manual', 70,
+                                                   'Manual', 6, 'Manual',
+                                                   8.65, 15, 0.879,
+                                                   'Manual', 8.8, 'Vernier',
+                                                   15, 10, 7, 0.93,
+                                                   2.1, 1.9, 14.5, 13)
+
+        
+        self.assertRaises(ValidationError, sample_1.validate_pH)
+
+    def test_validate_pH_too_small(self):
+        sample_1 = WQ_Sample.objects.create_sample(35, 'Manual', 70,
+                                                   'Manual', 6, 'Manual',
+                                                    8.65, '-1', 0.879,
+                                                   'Manual', 8.8, 'Vernier',
+                                                   15, 10, 7, 0.93,
+                                                   2.1, 1.9, 14.5, 13)
+
+
+        self.assertRaises(ValidationError, sample_1.validate_pH)
+    """
+    def test_validate_pH_in_range(self):
+        sample_1 = WQ_Sample.objects.create_sample(35, 'Manual', 70,
+                                                   'Manual', 6, 'Manual',
+                                                   8.65, 'Vernier', 0.879,
+                                                   'Manual', 8.8, 'Vernier',
+                                                   15, 10, 7, 0.93,
+                                                   2.1, 1.9, 14.5, 13)
+
+
+        self.assertEqual(self.assertRaises(self.assertRaises(ValidationError,
+            sample_1.validate_pH), False))
+    """

@@ -7,7 +7,7 @@ from django.contrib.gis.db import models
 from django.utils.encoding import python_2_unicode_compatible
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-# from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 
 
@@ -163,7 +163,14 @@ class WQ_Sample(models.Model):
 
     def __str__(self):
         return self.site.site_name
-
+    
+    def validate_pH(ph):
+        if (ph < 0 and ph > 14):
+            raise ValidationError(
+                _('%(ph)s is not 0-14.'),
+                params={'ph': ph},
+            )
+    
     class Meta:
         verbose_name = 'Water Quality Sample'
         verbose_name_plural = 'Water Quality Samples'
