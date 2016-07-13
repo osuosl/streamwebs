@@ -1,6 +1,7 @@
 Django
 Jinja2
 MarkupSafe
+Pillow
 PyYAML
 Pygments
 Sphinx
@@ -13,3 +14,4 @@ psycopg2
 requests
 wsgiref
 flake8
+django-simple-captcha

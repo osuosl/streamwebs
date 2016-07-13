@@ -7,8 +7,11 @@ RUN yum -y install gdal-python\
                    proj-nad\
                    postgresql-devel\
                    nodejs\
-                   npm
-
+                   npm\
+                   freetype-devel\
+                   libjpeg-devel\
+                   libpng-devel
+                       
 RUN npm install -g bower
 
 COPY requirements.txt /opt/
