@@ -16,7 +16,6 @@ class RiparianTransectTestCase(TestCase):
             'site': models.ForeignKey,
             'site_id': models.ForeignKey,
             'slope': models.DecimalField,
-            'notes': models.TextField,
             'id': models.AutoField,
             'zone_1': models.ForeignKey,
             'zone_2': models.ForeignKey,
@@ -33,7 +32,6 @@ class RiparianTransectTestCase(TestCase):
         }
 
         self.optional_fields = {
-            'names': models.CharField,
             'weather': models.CharField,
             'slope': models.DecimalField,
             'notes': models.TextField,
@@ -109,8 +107,7 @@ class RiparianTransectTestCase(TestCase):
         zone_5 = TransectZone.zones.create_zone(5, 5, 5, 'Comments on zone 5')
         transect = RiparianTransect.transects.create_transect(
             'School of Cool', '2016-07-11 14:09', site, zone_1, zone_2, zone_3,
-            zone_4, zone_5, 'Katie and Sally', 'Cloudy, no meatballs', 1.11,
-            'Notes on transect')
+            zone_4, zone_5, 'Cloudy, no meatballs', 1.11, 'Notes on transect')
 
         # Required
         self.assertEqual(transect.school, 'School of Cool')
@@ -118,7 +115,6 @@ class RiparianTransectTestCase(TestCase):
         self.assertEqual(transect.site.site_name, 'test site')
 
         # Optional
-        self.assertEqual(transect.names, 'Katie and Sally')
         self.assertEqual(transect.weather, 'Cloudy, no meatballs')
         self.assertEqual(transect.slope, 1.11)
         self.assertEqual(transect.notes, 'Notes on transect')
