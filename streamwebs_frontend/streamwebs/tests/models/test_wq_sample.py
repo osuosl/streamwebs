@@ -67,6 +67,12 @@ class WQSampleTestCase(TestCase):
         )))
         self.assertEqual(sorted(fields), sorted(self.expected_fields.keys()))
 
+    def test_optional_fields(self):
+        sample = apps.get_model('streamwebs', 'wq_sample')
+        for field in self.optional_fields:
+            self.assertEqual(
+                 sample._meta.get_field(field).blank, True)
+
     # Tests for pH validator.
     def test_validate_pH_too_large(self):
         sample_pH_16 = WQ_Sample.objects.create_sample(
