@@ -6,6 +6,7 @@ from itertools import chain
 from django.core.exceptions import ValidationError
 
 from streamwebs.models import WQ_Sample
+from streamwebs.models import validate_pH
 
 
 class WQSampleTestCase(TestCase):
@@ -66,40 +67,25 @@ class WQSampleTestCase(TestCase):
         )))
         self.assertEqual(sorted(fields), sorted(self.expected_fields.keys()))
 
-    #Tests for pH validator.
-    
-
+    # Tests for pH validator.
     def test_validate_pH_too_large(self):
-        sample_1 = WQ_Sample.objects.create_sample(35, 'Manual', 70,
+        sample_pH_16 = WQ_Sample.objects.create_sample(35, 'Manual', 70,
                                                    'Manual', 6, 'Manual',
-                                                   8.65, 15, 0.879,
+                                                   16, 'Vernier', 0.879,
                                                    'Manual', 8.8, 'Vernier',
                                                    15, 10, 7, 0.93,
                                                    2.1, 1.9, 14.5, 13)
 
-        
-        self.assertRaises(ValidationError, sample_1.validate_pH)
+        with self.assertRaises(ValidationError):
+            validate_pH(sample_pH_16.pH)
 
     def test_validate_pH_too_small(self):
-        sample_1 = WQ_Sample.objects.create_sample(35, 'Manual', 70,
+        sample_pH_negative_1 = WQ_Sample.objects.create_sample(35, 'Manual', 70,
                                                    'Manual', 6, 'Manual',
-                                                    8.65, '-1', 0.879,
+                                                   -1, 'Vernier', 0.879,
                                                    'Manual', 8.8, 'Vernier',
                                                    15, 10, 7, 0.93,
                                                    2.1, 1.9, 14.5, 13)
 
-
-        self.assertRaises(ValidationError, sample_1.validate_pH)
-    """
-    def test_validate_pH_in_range(self):
-        sample_1 = WQ_Sample.objects.create_sample(35, 'Manual', 70,
-                                                   'Manual', 6, 'Manual',
-                                                   8.65, 'Vernier', 0.879,
-                                                   'Manual', 8.8, 'Vernier',
-                                                   15, 10, 7, 0.93,
-                                                   2.1, 1.9, 14.5, 13)
-
-
-        self.assertEqual(self.assertRaises(self.assertRaises(ValidationError,
-            sample_1.validate_pH), False))
-    """
+        with self.assertRaises(ValidationError):
+            validate_pH(sample_pH_negative_1.pH)

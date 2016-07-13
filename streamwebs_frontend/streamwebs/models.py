@@ -108,6 +108,14 @@ class WQSampleManager(models.Manager):
         return info
 
 
+def validate_pH(ph):
+    if not(0 <= ph and ph <= 14):
+        raise ValidationError(
+            _('%(ph)s is not 0-14.'),
+            params={'ph': ph},
+            )
+
+
 @python_2_unicode_compatible
 class WQ_Sample(models.Model):
     NOT_ACCESSED = 'N/A'
@@ -163,14 +171,7 @@ class WQ_Sample(models.Model):
 
     def __str__(self):
         return self.site.site_name
-    
-    def validate_pH(ph):
-        if (ph < 0 and ph > 14):
-            raise ValidationError(
-                _('%(ph)s is not 0-14.'),
-                params={'ph': ph},
-            )
-    
+
     class Meta:
         verbose_name = 'Water Quality Sample'
         verbose_name_plural = 'Water Quality Samples'
