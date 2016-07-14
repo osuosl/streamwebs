@@ -5,7 +5,7 @@ from streamwebs.models import Canopy_Cover, CC_Cardinal
 from django.contrib.auth.models import User
 from django import forms
 from django.utils.translation import ugettext_lazy as _
-
+from captcha.fields import ReCaptchaField
 
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput()) \
@@ -32,6 +32,8 @@ class UserForm(forms.ModelForm):
 
 
 class UserProfileForm(forms.ModelForm):
+    captcha = ReCaptchaField()
+
     class Meta:
         model = UserProfile
         fields = ('school', 'birthdate')
