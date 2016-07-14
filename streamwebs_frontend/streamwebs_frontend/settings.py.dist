@@ -29,6 +29,11 @@ LOCALE_PATHS = [
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '9$b3ov_dw6+&_(9w89p7&_&bsxzohtsf_7k!qyn-33696w#3&h'
 
+# Google ('no-captcha') recaptcha
+RECAPTCHA_PUBLIC_KEY = '6Lep3yQTAAAAANSLTu1MzZQzFD_KNpwYlfp3tPzM'
+RECAPTCHA_PRIVATE_KEY= '6Lep3yQTAAAAAMRW7tnIDr2NUV77CWPRJ96wmWo3'
+
+NOCAPTCHA = True
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -45,6 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.gis',
+    'captcha',
     'pipeline',
     'streamwebs',
 ]
