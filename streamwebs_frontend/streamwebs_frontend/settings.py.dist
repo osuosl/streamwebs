@@ -37,10 +37,6 @@ RECAPTCHA_PRIVATE_KEY= '6Lep3yQTAAAAAMRW7tnIDr2NUV77CWPRJ96wmWo3'
 # Captcha type: one-click
 NOCAPTCHA = True
 
-# Test mode
-if 'test' in sys.argv:
-    os.environ['RECAPTCHA_TESTING'] = 'True'
-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
