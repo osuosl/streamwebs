@@ -7,12 +7,14 @@ from django import forms
 from django.utils.translation import ugettext_lazy as _
 from captcha.fields import ReCaptchaField
 
+
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput()) \
                 .label = _('Password')
     password_check = forms.CharField(
         widget=forms.PasswordInput(),
         label='Repeat your password')
+    email = forms.CharField(required=True)
 
     class Meta:
         model = User
