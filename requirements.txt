@@ -13,3 +13,4 @@ psycopg2
 requests
 wsgiref
 flake8
+django-recaptcha
