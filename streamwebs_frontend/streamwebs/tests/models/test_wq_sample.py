@@ -52,6 +52,15 @@ class WQSampleTestCase(TestCase):
             'phosphates',
             'fecal_coliform',
         }
+        # Object to test pH
+        WQ_Sample.objects.create_sample(
+            35, 'Manual', 70,
+            'Manual', 6, 'Manual',
+            16, 'Vernier', 0.879,
+            'Manual', 8.8, 'Vernier',
+            15, 10, 7, 0.93,
+            2.1, 1.9, 14.5, 13
+        )
 
     def test_fields_exist(self):
         model = apps.get_model('streamwebs', 'wq_sample')
@@ -67,43 +76,20 @@ class WQSampleTestCase(TestCase):
         )))
         self.assertEqual(sorted(fields), sorted(self.expected_fields.keys()))
 
-    # Tests for pH validator.
+    # Tests for pH validator. Valid pH's are 0-14.
     def test_validate_pH_too_large(self):
-        sample_pH_16 = WQ_Sample.objects.create_sample(
-            35, 'Manual', 70,
-            'Manual', 6, 'Manual',
-            16, 'Vernier', 0.879,
-            'Manual', 8.8, 'Vernier',
-            15, 10, 7, 0.93,
-            2.1, 1.9, 14.5, 13
-        )
-
         with self.assertRaises(ValidationError):
-            validate_pH(sample_pH_16.pH)
+            validate_pH(WQ_Sample.objects.get(pH=16).pH)
 
     def test_validate_pH_too_small(self):
-        sample_pH_negative_1 = WQ_Sample.objects.create_sample(
-            35, 'Manual', 70,
-            'Manual', 6, 'Manual',
-            -1, 'Vernier', 0.879,
-            'Manual', 8.8, 'Vernier',
-            15, 10, 7, 0.93,
-            2.1, 1.9, 14.5, 13
-        )
-
+        sample_too_small = WQ_Sample.objects.get(pH=16)
+        sample_too_small.pH = -1
+        sample_too_small.save()
         with self.assertRaises(ValidationError):
-            validate_pH(sample_pH_negative_1.pH)
+            validate_pH(sample_too_small.pH)
 
     def test_validate_pH_good(self):
-        sample_pH_7 = WQ_Sample.objects.create_sample(
-            35, 'Manual', 70,
-            'Manual', 6, 'Manual',
-            7, 'Vernier', 0.879,
-            'Manual', 8.8, 'Vernier',
-            15, 10, 7, 0.93,
-            2.1, 1.9, 14.5, 13
-        )
-        try:
-            validate_pH(sample_pH_7.pH)
-        except ValidationError:
-            self.fail("ValidationError was raised.")
+        sample_good = WQ_Sample.objects.get(pH=16)
+        sample_good.pH = 7
+        sample_good.save()
+        self.assertEqual(validate_pH(sample_good.pH), None)
