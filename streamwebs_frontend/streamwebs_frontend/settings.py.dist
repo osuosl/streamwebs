@@ -15,6 +15,7 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 
 import os
 from django.utils.translation import ugettext_lazy as _
+import sys
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -33,7 +34,13 @@ SECRET_KEY = '9$b3ov_dw6+&_(9w89p7&_&bsxzohtsf_7k!qyn-33696w#3&h'
 RECAPTCHA_PUBLIC_KEY = '6Lep3yQTAAAAANSLTu1MzZQzFD_KNpwYlfp3tPzM'
 RECAPTCHA_PRIVATE_KEY= '6Lep3yQTAAAAAMRW7tnIDr2NUV77CWPRJ96wmWo3'
 
+# Captcha type: one-click
 NOCAPTCHA = True
+
+# Test mode
+if 'test' in sys.argv:
+    os.environ['RECAPTCHA_TESTING'] = 'True'
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
