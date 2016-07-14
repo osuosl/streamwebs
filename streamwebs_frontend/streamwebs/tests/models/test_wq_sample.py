@@ -88,7 +88,22 @@ class WQSampleTestCase(TestCase):
             -1, 'Vernier', 0.879,
             'Manual', 8.8, 'Vernier',
             15, 10, 7, 0.93,
-            2.1, 1.9, 14.5, 13)
+            2.1, 1.9, 14.5, 13
+        )
 
         with self.assertRaises(ValidationError):
             validate_pH(sample_pH_negative_1.pH)
+
+    def test_validate_pH_good(self):
+        sample_pH_7 = WQ_Sample.objects.create_sample(
+            35, 'Manual', 70,
+            'Manual', 6, 'Manual',
+            7, 'Vernier', 0.879,
+            'Manual', 8.8, 'Vernier',
+            15, 10, 7, 0.93,
+            2.1, 1.9, 14.5, 13
+        )
+        try:
+            validate_pH(sample_pH_7.pH)
+        except ValidationError:
+            self.fail("ValidationError was raised.")
