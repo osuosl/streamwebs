@@ -138,7 +138,8 @@ class WQ_Sample(models.Model):
                                            decimal_places=2)
     oxygen_tool = models.CharField(max_length=255, choices=TOOL_CHOICES,
                                    default=TOOL_CHOICES[0])
-    pH = models.DecimalField(default=0, max_digits=5, decimal_places=2)
+    pH = models.DecimalField(validators=[validate_pH], default=0, max_digits=5,
+                             decimal_places=2)
     pH_tool = models.CharField(max_length=255, choices=TOOL_CHOICES,
                                default=TOOL_CHOICES[0])
     turbidity = models.DecimalField(default=0, max_digits=5, decimal_places=2)

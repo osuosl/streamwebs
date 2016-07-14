@@ -53,7 +53,7 @@ class WQSampleTestCase(TestCase):
             'fecal_coliform',
         }
         # Object to test pH
-        WQ_Sample.objects.create_sample(
+        self.sample_data = WQ_Sample.objects.create_sample(
             35, 'Manual', 70,
             'Manual', 6, 'Manual',
             16, 'Vernier', 0.879,
@@ -79,17 +79,15 @@ class WQSampleTestCase(TestCase):
     # Tests for pH validator. Valid pH's are 0-14.
     def test_validate_pH_too_large(self):
         with self.assertRaises(ValidationError):
-            validate_pH(WQ_Sample.objects.get(pH=16).pH)
+            validate_pH(self.sample_data.pH)
 
     def test_validate_pH_too_small(self):
-        sample_too_small = WQ_Sample.objects.get(pH=16)
-        sample_too_small.pH = -1
-        sample_too_small.save()
+        self.sample_data.pH = -1
+        self.sample_data.save()
         with self.assertRaises(ValidationError):
-            validate_pH(sample_too_small.pH)
+            validate_pH(self.sample_data.pH)
 
     def test_validate_pH_good(self):
-        sample_good = WQ_Sample.objects.get(pH=16)
-        sample_good.pH = 7
-        sample_good.save()
-        self.assertEqual(validate_pH(sample_good.pH), None)
+        self.sample_data.pH = 7
+        self.sample_data.save()
+        self.assertEqual(validate_pH(self.sample_data.pH), None)
