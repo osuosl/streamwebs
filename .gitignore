@@ -18,3 +18,5 @@ docs/build
 *.swp
 
 bower_components
+
+streamwebs_frontend/streamwebs_frontend/settings.py
