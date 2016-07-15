@@ -306,6 +306,9 @@ class TransectZone(models.Model):
 
     zones = TransectZoneManager()
 
+    def __str__(self):
+        return str(self.id)
+
     class Meta:
         verbose_name = 'Zone'
         verbose_name_plural = 'Zones'
