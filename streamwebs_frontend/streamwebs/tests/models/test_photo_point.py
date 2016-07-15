@@ -14,7 +14,6 @@ class PhotoPointTestCase(TestCase):
             'compass_bearing': models.PositiveSmallIntegerField,
             'distance': models.DecimalField,
             'camera_height': models.DecimalField,
-            'photo_filename': models.CharField,  # still necessary?
             'photo': models.ImageField,
             'notes': models.TextField,
             'id': models.AutoField,
@@ -23,7 +22,6 @@ class PhotoPointTestCase(TestCase):
         }
 
         self.optional_fields = {
-            'photo_filename': models.CharField,
             'photo': models.ImageField,
             'notes': models.TextField
         }
@@ -114,7 +112,6 @@ class PhotoPointTestCase(TestCase):
         self.assertEqual(photo_point.camera_height, 0.5)
 
         # Optional
-        self.assertEqual(photo_point.photo_filename, '')
         self.assertEqual(photo_point.photo, None)
         self.assertEqual(photo_point.notes, '')
 
@@ -138,7 +135,6 @@ class PhotoPointTestCase(TestCase):
             compass_bearing=1.62,
             distance=4.1,
             camera_height=5.3,
-            photo_filename='fake.jpg',
             photo=temp_photo,
             notes='Notes on photo point for test site e'
         )
@@ -150,7 +146,6 @@ class PhotoPointTestCase(TestCase):
         self.assertEqual(photo_point.compass_bearing, 1.62)
         self.assertEqual(photo_point.distance, 4.1)
         self.assertEqual(photo_point.camera_height, 5.3)
-        self.assertEqual(photo_point.photo_filename, 'fake.jpg')
         self.assertEqual(photo_point.photo, temp_photo)
         self.assertEqual(photo_point.notes,
                          'Notes on photo point for test site e')

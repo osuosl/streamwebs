@@ -466,13 +466,11 @@ class CameraPoint(models.Model):
 class PhotoPointManager(models.Manager):
 
     def create_photo_point(self, camera_point, pp_date, compass_bearing,
-                           distance, camera_height, photo_filename='',
-                           photo=None, notes=''):
+                           distance, camera_height, photo=None, notes=''):
 
         return self.create(camera_point=camera_point, pp_date=pp_date,
                            compass_bearing=compass_bearing, distance=distance,
-                           camera_height=camera_height,
-                           photo_filename=photo_filename, photo=photo,
+                           camera_height=camera_height, photo=photo,
                            notes=notes)
 
 
@@ -483,7 +481,6 @@ class PhotoPoint(models.Model):
     compass_bearing = models.PositiveSmallIntegerField()
     distance = models.DecimalField(max_digits=3, decimal_places=0)
     camera_height = models.DecimalField(max_digits=3, decimal_places=0)
-    photo_filename = models.CharField(max_length=255, blank=True)
     photo = models.ImageField(blank=True, null=True)
     notes = models.TextField(blank=True)
 
