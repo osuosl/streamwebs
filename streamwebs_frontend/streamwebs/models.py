@@ -7,7 +7,7 @@ from django.contrib.gis.db import models
 from django.utils.encoding import python_2_unicode_compatible
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-# from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 
 
@@ -106,6 +106,14 @@ class WQSampleManager(models.Manager):
         return info
 
 
+def validate_pH(ph):
+    if not(0 <= ph and ph <= 14):
+        raise ValidationError(
+            _('%(ph)s is not 0-14.'),
+            params={'ph': ph},
+            )
+
+
 @python_2_unicode_compatible
 class WQ_Sample(models.Model):
     NOT_ACCESSED = 'N/A'
@@ -128,7 +136,8 @@ class WQ_Sample(models.Model):
                                            decimal_places=2)
     oxygen_tool = models.CharField(max_length=255, choices=TOOL_CHOICES,
                                    default=TOOL_CHOICES[0])
-    pH = models.DecimalField(default=0, max_digits=5, decimal_places=2)
+    pH = models.DecimalField(validators=[validate_pH], default=0, max_digits=5,
+                             decimal_places=2)
     pH_tool = models.CharField(max_length=255, choices=TOOL_CHOICES,
                                default=TOOL_CHOICES[0])
     turbidity = models.DecimalField(default=0, max_digits=5, decimal_places=2)
