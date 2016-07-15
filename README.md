@@ -7,7 +7,9 @@ existing Streamwebs site during the transition to a possible re-write of the
 application.
 
 To set up a dev instance of StreamWebs, copy ``Dockerfile.env.dist`` to 
-``Dockerfile.env``. Then, run the following:
+``Dockerfile.env``. You will also have to copy ``settings.py.dist`` to
+``settings.py`` (located in ``streamwebs_frontend/streamwebs_frontend``). Then,
+run the following:
 ```
 $ docker-compose build
 $ docker-compose up
@@ -15,12 +17,17 @@ $ docker-compose up
 
 The following is a list of the more common and more useful docker commands: 
 - ``docker-compose build`` will build the necessary containers 
-- ``docker-compose build --no-cache --pull`` does a full from-scratch build; you can run this when the changes made to the docker environment are not taking effect 
+- ``docker-compose build --no-cache --pull`` does a full from-scratch build;
+  you can run this when the changes made to the docker environment are not
+taking effect 
 - ``docker-compose up`` runs the application
-- ``docker-compose run web bash`` is like docker-compose up but also provides an interactive shell
-- ``docker-compose run --service-ports --rm web bash`` exposes the ports described for the web service and removes the container upon completion
+- ``docker-compose run web bash`` is like docker-compose up but also provides
+  an interactive shell
+- ``docker-compose run --service-ports --rm web bash`` exposes the ports
+  described for the web service and removes the container upon completion
 - `docker-compose kill` stops services that are running
-- `docker-compose rm` removes all the containers associated with the application's services
+- `docker-compose rm` removes all the containers associated with the
+  application's services
 - `docker-compose ps` lists all the running containers
 
 
