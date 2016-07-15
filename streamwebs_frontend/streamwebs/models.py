@@ -7,7 +7,7 @@ from django.contrib.gis.db import models
 from django.utils.encoding import python_2_unicode_compatible
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-# from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 
 
@@ -277,6 +277,15 @@ class Macroinvertebrates(models.Model):
 
     def __str__(self):
         return self.site.site_name
+
+    def clean(self):
+        if ((self.caddisfly + self.mayfly + self.riffle_beetle
+             + self.stonefly + self.water_penny +
+             self.dobsonfly) * 3) != self.sensitive_total:
+                raise ValidationError(
+                    _('%(sensitive_total)s is not the correct total'),
+                    params={'sensitive_total': self.sensitive_total},
+                )
 
     class Meta:
         verbose_name = 'Macroinvertebrate'
