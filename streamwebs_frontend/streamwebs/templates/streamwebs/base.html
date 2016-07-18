@@ -1,5 +1,6 @@
 {% load staticfiles %}
 {% load pipeline %}
+{% load i18n %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -13,7 +14,17 @@
 </head>
 
 <body>
-    <span class="title">{% block body_title %}Streamwebs{% endblock %}</span>
+    <form action="/i18n/setlang/" method="post">
+       {% csrf_token %}
+        <input name="next" type="hidden" value="{{ request.path }}" />
+        <select name="language">
+              {% for lang in LANGUAGES %}
+              <option value="{{ lang.0 }}">{{ lang.1 }}</option>
+              {% endfor %}
+        </select>
+        <input type="submit" value="Go" />
+    </form>
+    <span class="title">{% block body_title %}{% endblock %}</span>
     {% block content %}{% endblock %}
 </body>
 </html>
