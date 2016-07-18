@@ -27,11 +27,6 @@ class RiparianTransectFormTestCase(TestCase):
             'site',
             'slope',
             'notes',
-            'zone_1',
-            'zone_2',
-            'zone_3',
-            'zone_4',
-            'zone_5'
         )
 
     def test_RiparianTransectFormTestCase(self):

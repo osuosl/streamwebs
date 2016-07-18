@@ -98,4 +98,4 @@ class TransectZoneForm(forms.ModelForm):
 class RiparianTransectForm(forms.ModelForm):
     class Meta:
         model = RiparianTransect
-        fields = ('school', 'date_time', 'weather', 'slope', 'notes')
+        fields = ('school', 'date_time', 'weather', 'site', 'slope', 'notes') 
