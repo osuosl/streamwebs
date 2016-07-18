@@ -291,16 +291,22 @@ class Macroinvertebrates(models.Model):
            + self.damselfly + self.dragonfly + self.scud + self.fishfly
            + self.alderfly + self.mite) * 2) != self.somewhat_sensitive_total:
                 raise ValidationError(
-                    _('%(sensitive_total)s is not the correct total'),
-                    params={'sensitive_total': self.somewhat_sensitive_total},
+                    _('%(some_sensitive)s is not the correct total'),
+                    params={'some_sensitive': self.somewhat_sensitive_total},
                 )
 
         if(self.aquatic_worm + self.blackfly + self.leech + self.midge
            + self.snail + self.mosquito_larva) != self.tolerant_total:
                 raise ValidationError(
-                    _('%(sensitive_total)s is not the correct total'),
-                    params={'sensitive_total': self.tolerant_total},
+                    _('%(tolerant_total)s is not the correct total'),
+                    params={'tolerant_total': self.tolerant_total},
                     )
+        if(self.sensitive_total + self.somewhat_sensitive_total
+           + self.tolerant_total) != self.wq_rating:
+                raise ValidationError(
+                    _('%(wq_rating)s is not the correct total'),
+                    params={'wq_rating': self.wq_rating},
+                )
 
     class Meta:
         verbose_name = 'Macroinvertebrate'
