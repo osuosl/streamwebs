@@ -299,14 +299,29 @@ def riparian_transect_edit(request): # gotta send that slug/other site stuff!!
 
         if (zone_form_1.is_valid() and zone_form_2.is_valid() and 
             zone_form_3.is_valid() and zone_form_4.is_valid() and
-            zone_form_5.is_valid() and transect_form.is_valid()): 
+            zone_form_5.is_valid() and transect_form.is_valid()):
+
             zone_1 = zone_form_1.save()
             zone_2 = zone_form_2.save()
             zone_3 = zone_form_3.save()
             zone_4 = zone_form_4.save()
             zone_5 = zone_form_5.save()
+
+            zone_1.save()
+            zone_2.save()
+            zone_3.save()
+            zone_4.save()
+            zone_5.save()
             
-            transect = transect_form.save()
+            transect = transect_form.save(commit=False)
+
+            transect.zone_1 = zone_1
+            transect.zone_2 = zone_2
+            transect.zone_3 = zone_3
+            transect.zone_4 = zone_4
+            transect.zone_5 = zone_5
+
+            transect.save()
 
             added = True
 

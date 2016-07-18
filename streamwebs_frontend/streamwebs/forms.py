@@ -98,5 +98,4 @@ class TransectZoneForm(forms.ModelForm):
 class RiparianTransectForm(forms.ModelForm):
     class Meta:
         model = RiparianTransect
-        fields = ('school', 'date_time', 'weather', 'site', 'slope', 'notes',
-                  'zone_1', 'zone_2', 'zone_3', 'zone_4', 'zone_5') # actually, probably don't want the user to see "zone _" as actual fields to fill out; just specify identifying number in the final HTML template wherever the indiv zone forms/fields are
+        fields = ('school', 'date_time', 'weather', 'slope', 'notes')

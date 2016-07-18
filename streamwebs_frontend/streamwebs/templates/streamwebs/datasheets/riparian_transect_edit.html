@@ -1,26 +1,32 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Riparian Transect</title> <!-- check wq ver -->
+        <title>Riparian Transect</title>
     </head>
 
     <body>
         <h1>Riparian Transect</h1>
 
         {% if user.is_authenticated %}
-        <form id='rip_trans_form' method='post' action='/streamwebs/datasheets/riparian_transect_edit/'>
-            {% csrf_token %}
+            {% if added %}
+            <strong>You have successfully submitted your Riparian Transect data sheet.</strong>
 
-            {{ zone_form }}
-            {{ zone_form }}
-            {{ zone_form }}
-            {{ zone_form }}
-            {{ zone_form }}
+            {% else %}
+            <form id='rip_trans_form' method='post' action='/streamwebs/datasheets/riparian_transect_edit/'>
+                {% csrf_token %}
+                   
+                <!-- Individual fields will be formatted prettily later -->
+                {{ zone_form_1.as_p }}
+                {{ zone_form_2.as_p }}
+                {{ zone_form_3.as_p }}
+                {{ zone_form_4.as_p }}
+                {{ zone_form_5.as_p }}
 
-            {{ transect_form }}
+                {{ transect_form.as_p }}
 
-            <input type='submit', name='submit', value='Submit' />
-        </form>
+                <input type='submit', name='submit', value='Submit' />
+            </form>
+            {% endif %}
 
         {% else %}
             <p>You must be logged in to submit data.</p>
