@@ -182,6 +182,7 @@ class MacroTestCase(TestCase):
         # Overall water quality rating
         self.assertEqual(macros.wq_rating, 26)
 
+    """Tests for validating intolerant macroinvertebrates"""
     def test_validate_macroinverts_intolerant(self):
         default_dt = timezone.now()
         site = Site.objects.create_site('test', 'some_type', 'some_slug')
@@ -202,18 +203,53 @@ class MacroTestCase(TestCase):
                                                    damselfly=6, dragonfly=4,
                                                    scud=5, fishfly=7,
                                                    alderfly=8, mite=8,
-                                                   somewhat_sensitive_total=14,
+                                                   somewhat_sensitive_total=98,
                                                    aquatic_worm=12,
                                                    blackfly=9, leech=8,
                                                    midge=7, snail=5,
                                                    mosquito_larva=11,
-                                                   tolerant_total=5,
+                                                   tolerant_total=52,
                                                    wq_rating=26)
 
         with self.assertRaises(ValidationError):
             macros.clean()
 
-    def test_validate_macroinverts_no_error(self):
+    def test_validate_macroinverts_intolerant_no_error(self):
+        default_dt = timezone.now()
+        site = Site.objects.create_site('test', 'some_type', 'some_slug')
+        macros = Macroinvertebrates.objects.create(site=site,
+                                                   date_time=default_dt,
+                                                   weather='sunny',
+                                                   time_spent=45,
+                                                   num_people=17,
+                                                   riffle=False,
+                                                   pool=True,
+                                                   caddisfly=0,
+                                                   mayfly=2, riffle_beetle=1,
+                                                   stonefly=1, water_penny=3,
+                                                   dobsonfly=0,
+                                                   sensitive_total=21,
+                                                   clam_or_mussel=4,
+                                                   crane_fly=5, crayfish=2,
+                                                   damselfly=6, dragonfly=4,
+                                                   scud=5, fishfly=7,
+                                                   alderfly=8, mite=8,
+                                                   somewhat_sensitive_total=98,
+                                                   aquatic_worm=12,
+                                                   blackfly=9, leech=8,
+                                                   midge=7, snail=5,
+                                                   mosquito_larva=11,
+                                                   tolerant_total=52,
+                                                   wq_rating=26)
+        raised = False
+        try:
+            macros.clean()
+        except:
+            raised = True
+        self.assertFalse(raised, 'ValidationError raised')
+
+    """Tests for validating somewhat sensitive macroinvertebrates"""
+    def test_validate_macroinverts_somewhat_sensitive(self):
         default_dt = timezone.now()
         site = Site.objects.create_site('test', 'some_type', 'some_slug')
         macros = Macroinvertebrates.objects.create(site=site,
@@ -238,6 +274,108 @@ class MacroTestCase(TestCase):
                                                    blackfly=9, leech=8,
                                                    midge=7, snail=5,
                                                    mosquito_larva=11,
+                                                   tolerant_total=52,
+                                                   wq_rating=26)
+
+        with self.assertRaises(ValidationError):
+            macros.clean()
+
+    def test_validate_macroinverts_somewhat_sensitive_no_error(self):
+        default_dt = timezone.now()
+        site = Site.objects.create_site('test', 'some_type', 'some_slug')
+        macros = Macroinvertebrates.objects.create(site=site,
+                                                   date_time=default_dt,
+                                                   weather='sunny',
+                                                   time_spent=45,
+                                                   num_people=17,
+                                                   riffle=False,
+                                                   pool=True,
+                                                   caddisfly=0,
+                                                   mayfly=2, riffle_beetle=1,
+                                                   stonefly=1, water_penny=3,
+                                                   dobsonfly=0,
+                                                   sensitive_total=21,
+                                                   clam_or_mussel=4,
+                                                   crane_fly=5, crayfish=2,
+                                                   damselfly=6, dragonfly=4,
+                                                   scud=5, fishfly=7,
+                                                   alderfly=8, mite=8,
+                                                   somewhat_sensitive_total=98,
+                                                   aquatic_worm=12,
+                                                   blackfly=9, leech=8,
+                                                   midge=7, snail=5,
+                                                   mosquito_larva=11,
+                                                   tolerant_total=52,
+                                                   wq_rating=26)
+        raised = False
+        try:
+            macros.clean()
+        except:
+            raised = True
+        self.assertFalse(raised, 'ValidationError raised')
+
+    """Tests for validating tolerant macroinvertebrates"""
+    def test_validate_macroinverts_tolerant(self):
+        default_dt = timezone.now()
+        site = Site.objects.create_site('test', 'some_type', 'some_slug')
+        macros = Macroinvertebrates.objects.create(site=site,
+                                                   date_time=default_dt,
+                                                   weather='sunny',
+                                                   time_spent=45,
+                                                   num_people=17,
+                                                   riffle=False,
+                                                   pool=True,
+                                                   caddisfly=0,
+                                                   mayfly=2, riffle_beetle=1,
+                                                   stonefly=1, water_penny=3,
+                                                   dobsonfly=0,
+                                                   sensitive_total=21,
+                                                   clam_or_mussel=4,
+                                                   crane_fly=5, crayfish=2,
+                                                   damselfly=6, dragonfly=4,
+                                                   scud=5, fishfly=7,
+                                                   alderfly=8, mite=8,
+                                                   somewhat_sensitive_total=98,
+                                                   aquatic_worm=12,
+                                                   blackfly=9, leech=8,
+                                                   midge=7, snail=5,
+                                                   mosquito_larva=11,
                                                    tolerant_total=5,
                                                    wq_rating=26)
-        self.assertEqual(macros.clean(), None)
+
+        with self.assertRaises(ValidationError):
+            macros.clean()
+
+    def test_validate_macroinverts_tolerant_no_error(self):
+        default_dt = timezone.now()
+        site = Site.objects.create_site('test', 'some_type', 'some_slug')
+        macros = Macroinvertebrates.objects.create(site=site,
+                                                   date_time=default_dt,
+                                                   weather='sunny',
+                                                   time_spent=45,
+                                                   num_people=17,
+                                                   riffle=False,
+                                                   pool=True,
+                                                   caddisfly=0,
+                                                   mayfly=2, riffle_beetle=1,
+                                                   stonefly=1, water_penny=3,
+                                                   dobsonfly=0,
+                                                   sensitive_total=21,
+                                                   clam_or_mussel=4,
+                                                   crane_fly=5, crayfish=2,
+                                                   damselfly=6, dragonfly=4,
+                                                   scud=5, fishfly=7,
+                                                   alderfly=8, mite=8,
+                                                   somewhat_sensitive_total=98,
+                                                   aquatic_worm=12,
+                                                   blackfly=9, leech=8,
+                                                   midge=7, snail=5,
+                                                   mosquito_larva=11,
+                                                   tolerant_total=52,
+                                                   wq_rating=26)
+        raised = False
+        try:
+            macros.clean()
+        except:
+            raised = True
+        self.assertFalse(raised, 'ValidationError raised')

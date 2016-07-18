@@ -287,6 +287,21 @@ class Macroinvertebrates(models.Model):
                     params={'sensitive_total': self.sensitive_total},
                 )
 
+        if((self.clam_or_mussel + self.crane_fly + self.crayfish
+           + self.damselfly + self.dragonfly + self.scud + self.fishfly
+           + self.alderfly + self.mite) * 2) != self.somewhat_sensitive_total:
+                raise ValidationError(
+                    _('%(sensitive_total)s is not the correct total'),
+                    params={'sensitive_total': self.somewhat_sensitive_total},
+                )
+
+        if(self.aquatic_worm + self.blackfly + self.leech + self.midge
+           + self.snail + self.mosquito_larva) != self.tolerant_total:
+                raise ValidationError(
+                    _('%(sensitive_total)s is not the correct total'),
+                    params={'sensitive_total': self.tolerant_total},
+                    )
+
     class Meta:
         verbose_name = 'Macroinvertebrate'
         verbose_name_plural = 'Macroinvertebrates'
