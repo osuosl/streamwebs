@@ -1,12 +1,14 @@
+{% extends "streamwebs/base.html" %}
+{% load i18n %}
 <!DOCTYPE html>
 <html>
-    
+    {% block content %}
     {% if registered %}
-    <strong>You have successfully created a StreamWebs account.</strong>
-    <a href='/streamwebs/'>Return to home</a><br />
+    <strong>{% trans "You have successfully created a StreamWebs account." %}</strong>
+    <a href='/streamwebs/'>{% trans "Return to home" %}</a><br />
 
     {% else %}
-    <strong>Create an account.</strong><br />
+    <strong>{% trans "Create an account." %}</strong><br />
 
     <form id='user_form' method='post' action='/streamwebs/register/'>
         {% csrf_token %}
@@ -14,8 +16,8 @@
         {{ user_form.as_p }}
         {{ profile_form.as_p }}
 
-        <input type='submit' name='submit' value='Create Account' />
+        <input type='submit' name='submit' value='{% trans "Create Account"%}' />
     </form>
     {% endif %}
-
+    {% endblock %}
 </html>
