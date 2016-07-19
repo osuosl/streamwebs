@@ -7,7 +7,9 @@ from django.shortcuts import render
 from streamwebs.forms import UserForm, UserProfileForm, MacroinvertebratesForm
 from streamwebs.models import Macroinvertebrates, Site
 from django.utils.translation import ugettext_lazy as _
-from streamwebs.forms import UserForm, UserProfileForm, TransectZoneForm, RiparianTransectForm
+from streamwebs.forms import (
+    UserForm, UserProfileForm, TransectZoneForm, RiparianTransectForm
+)
 
 
 # Create your views here.
@@ -282,24 +284,28 @@ def macroinvertebrate_edit(request, site_slug):
                    'site': site})
 
 
-def riparian_transect_edit(request): # gotta send that slug/other site stuff!!
+def riparian_transect_edit(request):
     """
     The view for the submission of a new riparian transect data sheet.
     """
     added = False
 
     if request.method == 'POST':
+
         zone_form_1 = TransectZoneForm(data=request.POST)
         zone_form_2 = TransectZoneForm(data=request.POST)
         zone_form_3 = TransectZoneForm(data=request.POST)
         zone_form_4 = TransectZoneForm(data=request.POST)
         zone_form_5 = TransectZoneForm(data=request.POST)
-        
+
         transect_form = RiparianTransectForm(data=request.POST)
 
-        if (zone_form_1.is_valid() and zone_form_2.is_valid() and 
-            zone_form_3.is_valid() and zone_form_4.is_valid() and
-            zone_form_5.is_valid() and transect_form.is_valid()):
+        if (zone_form_1.is_valid() and
+                zone_form_2.is_valid() and
+                zone_form_3.is_valid() and
+                zone_form_4.is_valid() and
+                zone_form_5.is_valid() and
+                transect_form.is_valid()):
 
             zone_1 = zone_form_1.save()
             zone_2 = zone_form_2.save()
@@ -312,7 +318,7 @@ def riparian_transect_edit(request): # gotta send that slug/other site stuff!!
             zone_3.save()
             zone_4.save()
             zone_5.save()
-            
+
             transect = transect_form.save(commit=False)
 
             transect.zone_1 = zone_1
@@ -339,8 +345,13 @@ def riparian_transect_edit(request): # gotta send that slug/other site stuff!!
 
         transect_form = RiparianTransectForm()
 
-    return render(request, 'streamwebs/datasheets/riparian_transect_edit.html',
-        {'zone_form_1': zone_form_1, 'zone_form_2': zone_form_2,
-         'zone_form_3': zone_form_3, 'zone_form_4': zone_form_4,
-         'zone_form_5': zone_form_5, 'transect_form': transect_form,
-         'added': added})
+    return render(
+        request,
+        'streamwebs/datasheets/riparian_transect_edit.html',
+        {
+            'zone_form_1': zone_form_1, 'zone_form_2': zone_form_2,
+            'zone_form_3': zone_form_3, 'zone_form_4': zone_form_4,
+            'zone_form_5': zone_form_5, 'transect_form': transect_form,
+            'added': added
+        }
+    )
