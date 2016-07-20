@@ -3,10 +3,9 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>{% block title %}Streamwebs{% endblock %}</title>
+    <title>{% block title %}{% endblock %} StreamWebs</title>
     <link rel="stylesheet" type="text/css" href="{% static 'streamwebs/style.css' %}" />
     <link rel="shortcut icon" href="{% static 'streamwebs/images/favicon.ico' %}" />
-    {% load pipeline %}
     {% block scripts %}{% endblock %}
 </head>
 
