@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
-from streamwebs.forms import UserForm, UserProfileForm
+from streamwebs.forms import UserForm, UserProfileForm, MacroinvertibrateForm
 
 
 # Create your views here.
@@ -243,3 +243,25 @@ def water_quality_edit(request, site_slug):
     return render(request, 'streamwebs/datasheets/water_quality_edit.html', {
         'site': site
     })
+
+
+def macroinvertebrate_edit(request):
+    """
+    The view for the submission of a new macroinvertebrate data sheet.
+    """
+    added = False
+    if request.method == 'POST':
+        macro_form = MacroinvertibrateForm(data=request.POST)
+
+        if macro_form.is_valid():
+            macro_form = macro_form.save()
+            added = True
+
+        else:
+            print macro_form.errors
+
+    else:
+        macro_form = MacroinvertibrateForm()
+
+    return render(request, 'streamwebs/datasheets/macroinvertebrate_edit.html',
+                  {'macro_form': macro_form, 'added': added})

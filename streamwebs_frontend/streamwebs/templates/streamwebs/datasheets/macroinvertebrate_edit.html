@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Macroinvertibrates</title>
+    </head>
+
+    <body>
+        <h1>Macroinvertibrates</h1>
+
+        {% if user.is_authenticated %}
+            {% if added %}
+            <strong>You have successfully submitted your Macroinvertibrates data sheet.</strong>
+
+            {% else %}
+            <form id='macro_form' method='post' action='/streamwebs/datasheets/macroinvertebrate_edit/'>
+                {% csrf_token %}
+
+                <!-- Individual fields will be formatted prettily later -->
+                {{ macro_form.as_p }}
+
+                <input type='submit', name='submit', value='Submit' />
+            </form>
+            {% endif %}
+
+        {% else %}
+            <p>You must be logged in to submit data.</p>
+            <a href='/streamwebs/login/'>Log in here.</a>
+        {% endif %}
+
+    </body>
+</html>
