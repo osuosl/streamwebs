@@ -10,6 +10,7 @@ install:
   - "pip install -r requirements.txt"
 
 script:
+  - bower install
   - flake8 streamwebs_frontend/ --exclude streamwebs_frontend/streamwebs/migrations
   - ./runtests.sh
 
