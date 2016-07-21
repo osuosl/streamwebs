@@ -25,6 +25,8 @@ urlpatterns = [
     url(r'^datasheets/riparian_transect_edit/$', views.riparian_transect_edit, name='riparian_transect_edit'),
     url(r'^datasheets/riparian_transect_edit/$', views.riparian_transect_edit,
         name='riparian_transect_edit'),
+    url(r'^datasheets/riparian_transect_view/$', views.riparian_transect_view,
+        name='riparian_transect_view'),
     url(r'^register/$', views.register, name='register'),
     url(r'^login/$', views.user_login, name='login'),
     url(r'^logout/$', views.user_logout, name='logout')

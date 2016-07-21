@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Riparian Transect Data</title>
+    </head>
+    <body>
+        <h2>Riparian Transect: {{ transect.date_time }}</h2>
+        <div>
+            <table>
+                <tr>
+                    <th align='left'>School</th>
+                    <td>{{ transect.school }}</td>
+                </tr>
+                <tr>
+                    <th align='left'>Site</th>
+                    <td>{{ transect.site.site_name }}</td>
+                </tr>
+                <tr>
+                    <th align='left'>Slope of stream bank</th>
+                    <td>{{ transect.slope }}</td>
+                </tr>
+            </table>
+        </div>
+        <div>
+            <p>Conifer/hardwood/shrub bar graph goes here</p>
+        </div>
+        <div>
+            <table>
+                <tr>
+                    <th align='left'>Zone 1 (0 to 20 ft) comments</th>
+                </tr>
+                <tr>
+                    <td>{{ transect.zone_1.comments }}</td>
+                </tr>
+                <tr>
+                    <th align='left'>Zone 2 (20 to 40 ft) comments</th>
+                </tr>
+                <tr>
+                    <td>{{ transect.zone_2.comments }}</td>
+                </tr>
+                <tr>
+                    <th align='left'>Zone 3 (40 to 60 ft) comments</th>
+                </tr>
+                <tr>
+                    <td>{{ transect.zone_3.comments }}</td>
+                </tr>
+                <tr>
+                    <th align='left'>Zone 4 (60 to 80 ft) comments</th>
+                </tr>
+                <tr>
+                    <td>{{ transect.zone_4.comments }}</td>
+                </tr>
+                <tr>
+                    <th align='left'>Zone 5 (80 to 100 ft) comments</th>
+                </tr>
+                <tr>
+                    <td>{{ transect.zone_5.comments }}</td>
+                </tr>
+            </table>
+        </div>
+        <div>
+            <table>
+                <tr>
+                    <th align='left'>Field notes</th>
+                    <td>{{ transect.notes }}</td>
+                </tr>
+            </table>
+        </div>
+    </body>
+<html>
