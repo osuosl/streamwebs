@@ -15,15 +15,90 @@
             <form id='rip_trans_form' method='post' action='/streamwebs/datasheets/riparian_transect_edit/'>
                 {% csrf_token %}
                    
-                <!-- Individual fields will be formatted prettily later -->
-                {{ zone_form_1.as_p }}
-                {{ zone_form_2.as_p }}
-                {{ zone_form_3.as_p }}
-                {{ zone_form_4.as_p }}
-                {{ zone_form_5.as_p }}
-
-                {{ transect_form.as_p }}
-
+                <table>
+                    <thead>
+                        <tr>
+                            <th>RIPARIAN AREA TRANSECT</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th>{{ transect_form.school.label_tag }}</th>
+                            <td>{{ transect_form.school }}</td>
+                            <td>{{ transect_form.school.errors }} </td>
+                        </tr>
+                        <tr>
+                            <th>{{ transect_form.date_time.label_tag }}</th>
+                            <td>{{ transect_form.date_time }}</td>
+                        </tr>
+                        <tr> 
+                            <th>{{ transect_form.weather.label_tag }}</th>
+                            <td>{{ transect_form.weather }}</td>
+                        </tr>
+                        <tr>
+                            <th>{{ transect_form.site.label_tag }}</th>
+                            <td>{{ transect_form.site }}</td>
+                            <td>{{ transect_form.site.errors }}</td>
+                        </tr>
+                        <tr>
+                            <th>{{ transect_form.slope.label_tag }}</th>
+                            <td>{{ transect_form.slope }}</td>
+                        </tr>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Zone</th>
+                                    <th>Conifers</th>
+                                    <th>Hardwoods</th>
+                                    <th>Shrubs</th>
+                                    <th>Additional Comments</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th>1<br>Set 15' rope at 20' from water</th>
+                                    <td>{{ zone_form_1.conifers }}</td>
+                                    <td>{{ zone_form_1.hardwoods }}</td>
+                                    <td>{{ zone_form_1.shrubs }}</td>
+                                    <td>{{ zone_form_1.comments }}</td>
+                                </tr>
+                                <tr>
+                                    <th>2<br>At 40' from the water</th>
+                                    <td>{{ zone_form_2.conifers }}</td>
+                                    <td>{{ zone_form_2.hardwoods }}</td>
+                                    <td>{{ zone_form_2.shrubs }}</td>
+                                    <td>{{ zone_form_2.comments }}</td>
+                                </tr>
+                                <tr>
+                                    <th>3<br>At 60' from the water</th>
+                                    <td>{{ zone_form_3.conifers }}</td>
+                                    <td>{{ zone_form_3.hardwoods }}</td>
+                                    <td>{{ zone_form_3.shrubs }}</td>
+                                    <td>{{ zone_form_3.comments }}</td>
+                                </tr>
+                                <tr>
+                                    <th>4<br>At 80' from the water</th>
+                                    <td>{{ zone_form_4.conifers }}</td>
+                                    <td>{{ zone_form_4.hardwoods }}</td>
+                                    <td>{{ zone_form_4.shrubs }}</td>
+                                    <td>{{ zone_form_4.comments }}</td>
+                                </tr>
+                                <tr>
+                                    <th>5<br>At 100' from the water</th>
+                                    <td>{{ zone_form_5.conifers }}</td>
+                                    <td>{{ zone_form_5.hardwoods }}</td>
+                                    <td>{{ zone_form_5.shrubs }}</td>
+                                    <td>{{ zone_form_5.comments }}</td>
+                                </tr>
+                            </tbody>
+                        </table> <!-- end zones sub-table -->
+                        <tr>
+                            <th>{{ transect_form.notes.label_tag }}</th>
+                            <td>{{ transect_form.notes }}</td>
+                        </tr>
+                    </tbody>
+                </table> <!-- end main transect table -->
+                    
                 <input type='submit', name='submit', value='Submit' />
             </form>
             {% endif %}
@@ -35,4 +110,3 @@
 
     </body>
 </html>
-
