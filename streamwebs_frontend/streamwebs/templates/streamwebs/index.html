@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>StreamWebs</title>
-    </head>
-
-    <body>
-        <h1>StreamWebs</h1>
+{% extends 'streamwebs/base.html' %}
+{% load staticfiles %}
+{% block title %}{% endblock %}
+{% block body_title %}StreamWebs{% endblock %}
+{% block content %}
         <p>About:</p>
 
         {% if user.is_authenticated %}
@@ -14,8 +11,4 @@
             <a href="/streamwebs/register/">Register</a><br />
             <a href="/streamwebs/login/">Log in</a>
         {% endif %}
-
-    </body>
-</html>
-
-
+{% endblock %}

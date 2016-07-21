@@ -1,6 +1,7 @@
-<!DOCTYPE html>
-<html>
-    
+{% extends 'streamwebs/base.html' %}
+{% block title %}Register -{% endblock %}
+{% block body_title %}Register{% endblock %}
+{% block content %}
     {% if registered %}
     <strong>You have successfully created a StreamWebs account.</strong>
     <a href='/streamwebs/'>Return to home</a><br />
@@ -17,5 +18,4 @@
         <input type='submit' name='submit' value='Create Account' />
     </form>
     {% endif %}
-
-</html>
+{% endblock %}

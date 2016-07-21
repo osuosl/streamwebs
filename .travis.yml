@@ -8,6 +8,8 @@ env:
 
 install:
   - "pip install -r requirements.txt"
+  - npm install -g bower
+  - bower install
 
 script:
   - flake8 streamwebs_frontend/ --exclude streamwebs_frontend/streamwebs/migrations
