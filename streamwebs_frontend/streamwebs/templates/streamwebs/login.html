@@ -1,14 +1,9 @@
-{% extends "streamwebs/base.html" %}
+{% extends 'streamwebs/base.html' %}
+{% load staticfiles %}
 {% load i18n %}
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>{% trans "Log in" %}</title>
-    </head>
-
-    <body>
-      {% block content %}
-        <h1>{% trans "Log In" %}</h1>
+{% block title %}Log In -{% endblock %}
+{% block body_title %}{% trans "Log In" %}{% endblock %}
+{% block content %}
 
         <form id='login_form' method='post' action='/streamwebs/login/'>
             {% csrf_token %}
@@ -19,6 +14,4 @@
 
             <input type='submit' name='submit' value='{% trans "Log in" %}' />
         </form>
-        {% endblock %}
-     </body>
-</html>
+{% endblock %}

@@ -1,15 +1,13 @@
 {% load staticfiles %}
-{% load pipeline %}
 {% load i18n %}
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>{% block title %}Streamwebs{% endblock %}</title>
+    <title>{% block title %}{% endblock %} StreamWebs</title>
     <link rel="stylesheet" type="text/css" href="{% static 'streamwebs/style.css' %}" />
     <link rel="shortcut icon" href="{% static 'streamwebs/images/favicon.ico' %}" />
-    {% javascript 'libraries' %}
+    <script src="{% static 'streamwebs/bower_components/jquery/dist/jquery.js' %}"></script>
     {% block scripts %}{% endblock %}
 </head>
 
@@ -22,9 +20,13 @@
               <option value="{{ lang.0 }}">{{ lang.1 }}</option>
               {% endfor %}
         </select>
-        <input type="submit" value="Go" />
+        <input type="submit" value="{% trans 'Go' %}" />
     </form>
-    <span class="title">{% block body_title %}{% endblock %}</span>
-    {% block content %}{% endblock %}
+    <span class="title">
+        {% block body_title %}{% endblock %}
+    </span>
+    <div class="content">
+        {% block content %}{% endblock %}
+    </div>
 </body>
 </html>

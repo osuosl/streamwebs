@@ -1,8 +1,8 @@
-{% extends "streamwebs/base.html" %}
+{% extends 'streamwebs/base.html' %}
 {% load i18n %}
-<!DOCTYPE html>
-<html>
-    {% block content %}
+{% block title %}Register -{% endblock %}
+{% block body_title %}{% trans "Register" %}{% endblock %}
+{% block content %}
     {% if registered %}
     <strong>{% trans "You have successfully created a StreamWebs account." %}</strong>
     <a href='/streamwebs/'>{% trans "Return to home" %}</a><br />
@@ -19,5 +19,4 @@
         <input type='submit' name='submit' value='{% trans "Create Account"%}' />
     </form>
     {% endif %}
-    {% endblock %}
-</html>
+{% endblock %}

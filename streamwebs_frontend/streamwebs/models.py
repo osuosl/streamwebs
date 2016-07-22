@@ -109,7 +109,7 @@ class WQSampleManager(models.Manager):
 def validate_pH(ph):
     if not(0 <= ph and ph <= 14):
         raise ValidationError(
-            _('%(ph)s is not 0-14.'),
+            '%(ph)s is not 0-14.',
             params={'ph': ph},
             )
 

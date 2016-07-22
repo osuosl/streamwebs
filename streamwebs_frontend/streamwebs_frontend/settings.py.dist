@@ -19,8 +19,9 @@ from django.utils.translation import ugettext_lazy as _
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT_ROOT = os.path.join(BASE_DIR, 'streamwebs')
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
-LOCALE_PATHS = os.path.join(BASE_DIR, 'locale')
-
+LOCALE_PATHS = [
+    '../locale/',
+]
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
@@ -172,11 +173,8 @@ PIPELINE = {
     }
 }
 
-LOCALE_PATHS = [
-    'streamwebs/locale',
-]
-
 LANGUAGES = [
     ('en-us', _('English')),
     ('es', _('Spanish')),
+    ('ru', _('Russian')),
 ]
