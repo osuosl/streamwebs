@@ -285,7 +285,7 @@ def macroinvertebrate_edit(request, site_slug):
                    'site': site})
 
 
-def riparian_transect_view(request):
+def riparian_transect_view(request, site_slug, data_id):
     """
     The following is temporarily created objects in order to see how data is
     presented in this view.
@@ -310,7 +310,7 @@ def riparian_transect_view(request):
                   {'transect': transect})
 
 
-def riparian_transect_edit(request):
+def riparian_transect_edit(request, site_slug):
     """
     The view for the submission of a new riparian transect data sheet.
     """

@@ -11,6 +11,7 @@ urlpatterns = [
 
     url(r'^site/(?P<site_slug>[0-9a-zA-Z]+)/water/(?P<data_id>\d+)',
         views.water_quality, name='water_quality'),
+
     url(r'^site/(?P<site_slug>[0-9a-zA-Z]+)/water/edit',
         views.water_quality_edit, name='water_quality_edit'),
 
@@ -19,14 +20,12 @@ urlpatterns = [
     url(r'^site/(?P<site_slug>[0-9a-zA-Z]+)/macro/edit$',
         views.macroinvertebrate_edit, name='macroinvertebrate_edit'),
 
+    url(r'^site/(?P<site_slug>[0-9a-zA-Z]+)/transect/(?P<data_id>\d+)',
+        views.riparian_transect_view, name='riparian_transect_view'),
 
-#    url(r'^site/(?P<site_slug>[0-9a-zA-Z]+)/riparian_transect/edit',
-#        views.riparian_transect_edit, name='riparian_transect_edit'),
-    url(r'^datasheets/riparian_transect_edit/$', views.riparian_transect_edit, name='riparian_transect_edit'),
-    url(r'^datasheets/riparian_transect_edit/$', views.riparian_transect_edit,
-        name='riparian_transect_edit'),
-    url(r'^datasheets/riparian_transect_view/$', views.riparian_transect_view,
-        name='riparian_transect_view'),
+    url(r'^site/(?P<site_slug>[0-9a-zA-Z]+)/transect/edit',
+        views.riparian_transect_edit, name='riparian_transect_edit'),
+
     url(r'^register/$', views.register, name='register'),
     url(r'^login/$', views.user_login, name='login'),
     url(r'^logout/$', views.user_logout, name='logout')
