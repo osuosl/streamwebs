@@ -1,0 +1,20 @@
+<div id="topbar">
+    <div class="navbar">
+        <div class="navbar left"
+             align="right"></div>
+        <div class="navbar content"
+             align="right">
+        <nav>
+        <a href="{% url 'streamwebs:sites' %}">Sites</a>
+        <a href="{% url 'streamwebs:index' %}">Resources</a>
+        {% if user.is_authenticated %}
+            <a href="{% url 'streamwebs:logout' %}">Logout</a>
+        {% else %}
+            <a href="{% url 'streamwebs:login' %}">Login</a>
+            <a href="{% url 'streamwebs:register' %}">Create Account</a>
+        {% endif %}
+        </div>
+        </nav>
+        <div class="navbar right"></div>
+    </div>
+</div>

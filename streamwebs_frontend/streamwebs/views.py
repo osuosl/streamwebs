@@ -10,6 +10,7 @@ from django.utils.translation import ugettext_lazy as _
 
 # Create your views here.
 def index(request):
+    request.current_app = 'streamwebs'
     return render(request, 'streamwebs/index.html', {})
 
 
