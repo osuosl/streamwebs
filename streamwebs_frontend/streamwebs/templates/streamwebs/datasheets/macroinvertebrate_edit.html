@@ -9,14 +9,14 @@
 
         {% if user.is_authenticated %}
             {% if added %}
-            <strong>You have successfully submitted your Macroinvertibrates data sheet.</strong>
+            <strong>You have successfully submitted your Macroinvertebrates data sheet.</strong>
 
             {% else %}
-            <form id='macro_form' method='post' action='/streamwebs/datasheets/macroinvertebrate_edit/'>
+            <form id='macro_form' method='post' action='{{ request.path }}'>
                 {% csrf_token %}
 
                 <!-- Individual fields will be formatted prettily later -->
-                {{ macro_form.as_p }}
+                {{ macro_form }}
 
                 <input type='submit', name='submit', value='Submit' />
             </form>

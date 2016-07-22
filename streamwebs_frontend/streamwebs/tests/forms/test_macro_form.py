@@ -1,5 +1,5 @@
 from django.test import TestCase
-from streamwebs.forms import MacroinvertibrateForm
+from streamwebs.forms import MacroinvertebratesForm
 
 
 class MacroinvertibrateFormTestCase(TestCase):
@@ -18,6 +18,6 @@ class MacroinvertibrateFormTestCase(TestCase):
                                 'wq_rating')
 
     def test_MacroinvertibrateForm_fields_exist(self):
-        macro_form = MacroinvertibrateForm()
+        macro_form = MacroinvertebratesForm()
         self.assertEqual(set(macro_form.Meta.fields),
                          set(self.expected_fields))

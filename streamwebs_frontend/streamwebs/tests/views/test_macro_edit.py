@@ -25,19 +25,22 @@ class MacroFormTestCase(TestCase):
                                 'snail', 'mosquito_larva', 'tolerant_total',
                                 'wq_rating')
 
-    def test_view_with_bad_blank_data(self):
+    def test_edit_view_with_bad_blank_data(self):
         """
         When the user tries to submit a bad (blank) form, the form errors
         should be displayed
         """
+        test_site = Site.objects.create_site('test site', 'test site type',
+                                             'test_site_slug')
         response = self.client.post(
-            reverse('streamwebs:macroinvertebrate_edit'), {}
+            reverse('streamwebs:macroinvertebrate_edit', kwargs={
+                'site_slug': test_site.id}), {}
         )
         self.assertFormError(response, 'macro_form', 'school',
                              'This field is required.')
         self.assertFalse(response.context['added'])
 
-    def test_view_with_good_data(self):
+    def test_edit_view_with_good_data(self):
         """
         When the user submits a form with all required fields filled
         appropriately, the user should see a success message
@@ -46,7 +49,8 @@ class MacroFormTestCase(TestCase):
         test_site = Site.objects.create_site('test site', 'test site type',
                                              'test_site_slug')
         response = self.client.post(
-            reverse('streamwebs:macroinvertebrate_edit'), {
+            reverse('streamwebs:macroinvertebrate_edit', kwargs={
+                'site_slug': test_site.id}), {
                 'conifers': 1,
                 'school': "aaaa",
                 'date_time': '2016-07-11 14:09',
@@ -90,13 +94,15 @@ class MacroFormTestCase(TestCase):
 
         self.assertEqual(response.status_code, 200)
 
-    def test_view_with_not_logged_in_user(self):
+    def test_edit_view_with_not_logged_in_user(self):
         """
         When the user is not logged in, they cannot view the data entry page
         """
+        test_site = Site.objects.create_site('test site', 'test site type',
+                                             'test_site_slug')
         self.client.logout()
         response = self.client.post(
-            reverse('streamwebs:macroinvertebrate_edit')
-        )
+            reverse('streamwebs:macroinvertebrate_edit', kwargs={
+                'site_slug': test_site.id}))
         self.assertContains(response, 'You must be logged in to submit data.')
         self.assertEqual(response.status_code, 200)
