@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Log in</title>
-    </head>
-
-    <body>
-        <h1>Log In</h1>
+{% extends 'streamwebs/base.html' %}
+{% load staticfiles %}
+{% block title %}Log In -{% endblock %}
+{% block body_title %}Log In{% endblock %}
+{% block content %}
 
         <form id='login_form' method='post' action='/streamwebs/login/'>
             {% csrf_token %}
@@ -16,6 +13,4 @@
 
             <input type='submit' name='submit' value='Log in' />
         </form>
-
-     </body>
-</html>
+{% endblock %}
