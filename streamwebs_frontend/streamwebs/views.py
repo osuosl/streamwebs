@@ -290,24 +290,11 @@ def riparian_transect_view(request, site_slug, data_id):
     The following is temporarily created objects in order to see how data is
     presented in this view.
     """
-    site = Site.objects.create_site('Streamy Stream', 'stream',
-                                    'streamy_stream')
-    zone_1 = TransectZone.zones.create_zone(1, 2, 3, 'Zone 1 is zoney')
-    zone_2 = TransectZone.zones.create_zone(3, 5, 1, 'Zone 2 is zoney')
-    zone_3 = TransectZone.zones.create_zone(8, 4, 9, 'Zone 3 is zoney')
-    zone_4 = TransectZone.zones.create_zone(5, 3, 1, 'Zone 4 is zoney')
-    zone_5 = TransectZone.zones.create_zone(2, 7, 0, 'Zone 5 is zoney')
-    transect = RiparianTransect.transects.create_transect(
-        'Schoolio School',
-        '2016-07-21 11:33:00',
-        site,
-        zone_1, zone_2, zone_3, zone_4, zone_5,
-        'Weathery',
-        3.2,
-        'Transect is transecty'
-    )
+    site = Site.objects.filter(site_slug=site_slug)
+    transects = RiparianTransect.transects.filter(site_id=site.id)
+    transect = transects.get(id=data_id)
     return render(request, 'streamwebs/datasheets/riparian_transect_view.html',
-                  {'transect': transect})
+            {'transect': transect, 'site': site})
 
 
 def riparian_transect_edit(request, site_slug):
