@@ -10,7 +10,7 @@ from django.utils.translation import ugettext_lazy as _
 from streamwebs.forms import (
     UserForm, UserProfileForm, TransectZoneForm, RiparianTransectForm
 )
-from streamwebs.models import RiparianTransect, TransectZone, Site
+from streamwebs.models import RiparianTransect, Site
 
 
 # Create your views here.
@@ -286,15 +286,11 @@ def macroinvertebrate_edit(request, site_slug):
 
 
 def riparian_transect_view(request, site_slug, data_id):
-    """
-    The following is temporarily created objects in order to see how data is
-    presented in this view.
-    """
-    site = Site.objects.filter(site_slug=site_slug)
+    site = Site.objects.get(id=site_slug)
     transects = RiparianTransect.transects.filter(site_id=site.id)
     transect = transects.get(id=data_id)
     return render(request, 'streamwebs/datasheets/riparian_transect_view.html',
-            {'transect': transect, 'site': site})
+                  {'transect': transect, 'site': site})
 
 
 def riparian_transect_edit(request, site_slug):

@@ -22,8 +22,9 @@ class ViewTransectTestCase(TestCase):
         response = self.client.get(
                 reverse(
                     'streamwebs:riparian_transect_view',
-                    kwargs={'site_slug': self.transect.site.id,
-                            'data_id': self.transect.id}
+                    kwargs={'data_id': self.transect.id,
+                            'site_slug': self.transect.site.id
+                            }
                 )
         )
         self.assertEqual(response.status_code, 200)
@@ -36,18 +37,18 @@ class ViewTransectTestCase(TestCase):
         response = self.client.get(
                 reverse(
                     'streamwebs:riparian_transect_view',
-                    kwargs={'site_slug': self.transect.site.id,
-                            'data_id': self.transect.id}
+                    kwargs={'data_id': self.transect.id,
+                            'site_slug': self.transect.site.id
+                            }
                 )
         )
 
         self.assertContains(response, 'Riparian Transect')
         self.assertContains(response, 'School Name')
-#        self.assertContains(response, '2016-07-22 15:04:00')
+        self.assertContains(response, 'July 22, 2016, 3:04 p.m.')
         self.assertContains(response, 'Site Name')
         self.assertContains(response, 'This is zone 1')
         self.assertContains(response, 'This is zone 2')
         self.assertContains(response, 'This is zone 3')
         self.assertContains(response, 'This is zone 4')
         self.assertContains(response, 'This is zone 5')
-
