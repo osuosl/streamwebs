@@ -48,19 +48,19 @@ class Site(models.Model):
 
 def validate_UserProfile_school(school):
     if school not in dict(settings.SCHOOL_CHOICES):
-        raise ValidationError('That school is not in the list.')
+        raise ValidationError(_('That school is not in the list.'))
 
 
 def validate_UserProfile_birthdate(birthdate):
     today = datetime.datetime.now()
     if birthdate.year > today.year - 13:
-        raise ValidationError('You must be at least 13')
+        raise ValidationError(_('You must be at least 13'))
     elif birthdate.year == today.year - 13:
         if birthdate.month > today.month:
-            raise ValidationError('You must be at least 13')
+            raise ValidationError(_('You must be at least 13'))
         elif birthdate.month == today.month:
             if birthdate.day > today.day:
-                raise ValidationError('You must be at least 13')
+                raise ValidationError(_('You must be at least 13'))
 
 
 class UserProfile(models.Model):
@@ -109,7 +109,7 @@ class WQSampleManager(models.Manager):
 def validate_pH(ph):
     if not(0 <= ph and ph <= 14):
         raise ValidationError(
-            _('%(ph)s is not 0-14.'),
+            '%(ph)s is not 0-14.',
             params={'ph': ph},
             )
 
@@ -184,8 +184,8 @@ class Water_Quality(models.Model):
     LEVEL_D = 'D'
     LEVEL_E = 'E'
 #    NOT_ACCESSED = 'N/A'
-    FAHRENHEIT = 'Fahrenheit'
-    CELSIUS = 'Celsius'
+    FAHRENHEIT = _('Fahrenheit')
+    CELSIUS = _('Celsius')
 
     DEQ_WQ_CHOICES = (
         (None, '-----'),
@@ -196,10 +196,10 @@ class Water_Quality(models.Model):
         (LEVEL_E, 'Level E'),
     )
 
-    BOOL_CHOICES = ((True, 'Yes'), (False, 'No'), (None, '-----'),)
+    BOOL_CHOICES = ((True, _('Yes')), (False, _('No')), (None, '-----'),)
     UNIT_CHOICES = ((None, '-----'),
-                    (FAHRENHEIT, 'Fahrenheit'),
-                    (CELSIUS, 'Celsius'),)
+                    (FAHRENHEIT, _('Fahrenheit')),
+                    (CELSIUS, _('Celsius')),)
 
     """
     The Water Quality model corresponds to the Water Quality datasheet. Each
