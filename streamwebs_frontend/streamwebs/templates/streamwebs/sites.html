@@ -33,7 +33,7 @@
                 <nav class="search-nav col s8 cyan">
                     <div class="nav-wrapper">
                         <div class="input-field">
-                            <input id="search" type="search" autocomplete="off" placeholder="Search sites" oninput="search()">
+                            <input id="search" type="search" autocomplete="off" placeholder="{% trans 'Search sites' %}" oninput="search()">
                             <label for="search"><i class="material-icons">search</i></label>
                             <i class="material-icons">close</i>
 
@@ -70,7 +70,7 @@
         </div>
 
         <div id="site_select">
-            <a href="#!" class="dropdown-button btn select-button cyan" data-activates='dropdown'>Select Site<i class="material-icons right">arrow_drop_down</i></a>
+            <a href="#!" class="dropdown-button btn select-button cyan" data-activates='dropdown'>{% trans "Select Site" %}<i class="material-icons right">arrow_drop_down</i></a>
             <ul id="dropdown" class="dropdown-content">
             {% for site in sites %}
                 <li><a href="site/{{site.slug}}" class="cyan-text">{{site.name}}</a></li>
