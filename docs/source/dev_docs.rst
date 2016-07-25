@@ -85,71 +85,115 @@ In order to make a Django project translatable, you have to add a minimal number
 of hooks to your Python code and templates. Django then provides utilities to
 extract the translation strings into a message file. This file is a convenient
 way for translators to provide the equivalent of the translation strings in the
- target language. Once the translators have filled in the message file, it must
+target language. Once the translators have filled in the message file, it must
 be compiled. Once this is done, Django takes care of translating Web apps on the
 fly in each available language, according to users’ language preferences.
 To enable i18n we need to make the following changes in the settings.py:
-USE_I18N = True
-TEMPLATES = [
-    {
-        ...
-        'OPTIONS': {
-            'context_processors': [
-                ...
-                'django.template.context_processors.i18n',
-            ],
+
+::
+
+    from django.utils.translation import ugettext_lazy as _
+    USE_I18N = True
+    TEMPLATES = [
+        {
+            ...
+            'OPTIONS': {
+                'context_processors': [
+                    ...
+                    'django.template.context_processors.i18n',
+                ],
+            },
         },
-    },
-]
-MIDDLEWARE_CLASSES = (
-    ...
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.locale.LocaleMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    ...
-)(Note: the order is important!!!)
+    ]
+
+::
+
+    MIDDLEWARE_CLASSES = (
+        ...
+        'django.contrib.sessions.middleware.SessionMiddleware',
+        'django.middleware.locale.LocaleMiddleware',
+        'django.middleware.common.CommonMiddleware',
+        ...
+    )
+
+Note: the order is important!!!
+
 Specify the languages you want to use:
-from django.utils.translation import ugettext_lazy as _
-LANGUAGES = (
-    ('en', _('English')),
-    ('es', _('Spanish')),
-)
+
+::
+
+    LANGUAGES = (
+        ('en', 'English'),
+        ('es', 'Español'),
+    )
+
 The ugettext_lazy function is used to mark the language names for translation,
 and it’s usual to use the function’s shortcut _.
 Note: there is another function, ugettext, used for translation.
 The difference between these two functions is that ugettext translates the
 string immediately whereas ugettext_lazy translates the string when rendering
 a template.
-All .py files containing text for translation should have 'from
-django.utils.translation import ugettext_lazy as _' towards the top of the file.
+All .py files containing text for translation should have
 
-Also settings.py should have local_paths specified
+::
 
-LOCALE_PATHS = (
-    '../locale/',
-)
+    from django.utils.translation import ugettext_lazy as _
+
+towards the top of the file. Also settings.py should have local_paths specified
+
+::
+
+    LOCALE_PATHS = (
+        '../locale/',
+    )
 
 The urls.py should contain this:
-'url(r'^i18n/', include('django.conf.urls.i18n'))'
 
-Finally, mark the text you want to translate by wrapping it into _(), i.e.:
-_("Password").
-Templates have to contain {% load i18n %} at the top and the text to be
-translated has to be wrapped around {% '' %}, i.e.: {% 'Username:' %}
+::
+
+    url(r'^i18n/', include('django.conf.urls.i18n'))
+
+Finally, mark the text you want to translate by wrapping it into _(' '), i.e.:
+_('Password').
+
+Template files have to contain
+
+::
+
+    {% load i18n %}
+
+at the top and the text to be translated has to be wrapped around
+{% ' ' %}, i.e.:
+
+::
+
+    {% 'Username:' %}
 
 The string for translating Streamwebs website are extracted into
 locale/.po files.
-In docker run 'python manage.py makemessages -l <language code>'
+In docker run
+
+::
+
+    python manage.py makemessages -l <language code>
+
 (i.e., 'python manage.py makemessages -l es' for Spanish). If this is a new
 language just added into the settings.py, the command will create a new
 directory in the locale folder with the .po file. If the language already
- existed, the command will update the .po file. 
- After translating all the strings in .po file
- 'run python manage.py compilemessages'. This runs over all available .po
- files and creates .mo files, which are binary files optimized for use by
- gettext.
- For translators: use .po file of your working language, complete the space
- in the empty parenthesis with the translations:
- #: streamwebs/templates/streamwebs/register.html:11
- msgid "Create an account."
- msgstr "Translation goes here"
+existed, the command will update the .po file.
+
+After translating all the strings in .po file run
+
+::
+
+    python manage.py compilemessages
+
+This runs over all available .po files and creates .mo files, which are binary files optimized for use by
+gettext. For translators: use .po file of your working language, complete the space
+in the empty parenthesis with the translations:
+
+::
+
+    #: streamwebs/templates/streamwebs/register.html:11
+     msgid "Create an account."
+     msgstr " "
