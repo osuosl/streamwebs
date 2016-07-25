@@ -91,3 +91,9 @@ class WQSampleTestCase(TestCase):
         self.sample_data.pH = 7
         self.sample_data.save()
         self.assertEqual(validate_pH(self.sample_data.pH), None)
+
+    def test_optional_fields(self):
+        sample = apps.get_model('streamwebs', 'wq_sample')
+        for field in self.optional_fields:
+            self.assertEqual(
+                sample._meta.get_field(field).blank, True)
