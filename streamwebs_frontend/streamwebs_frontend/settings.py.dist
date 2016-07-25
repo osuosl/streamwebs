@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 # flake8: noqa
 
 """
@@ -174,7 +175,7 @@ PIPELINE = {
 }
 
 LANGUAGES = [
-    ('en-us', _('English')),
-    ('es', _('Spanish')),
-    ('ru', _('Russian')),
+    ('en-us', 'English'),
+    ('es', 'Español'),
+    ('ru', 'Русский'),
 ]
