@@ -296,8 +296,8 @@ class Macroinvertebrates(models.Model):
                 )
 
         if((self.clam_or_mussel + self.crane_fly + self.crayfish +
-           self.damselfly + self.dragonfly + self.scud + self.fishfly +
-           self.alderfly + self.mite) * 2) != self.somewhat_sensitive_total:
+            self.damselfly + self.dragonfly + self.scud + self.fishfly +
+            self.alderfly + self.mite) * 2) != self.somewhat_sensitive_total:
                 raise ValidationError(
                     _('%(some_sensitive)s is not the correct total'),
                     params={'some_sensitive': self.somewhat_sensitive_total},
