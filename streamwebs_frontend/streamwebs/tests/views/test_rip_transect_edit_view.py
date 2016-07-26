@@ -19,7 +19,13 @@ class AddTransectTestCase(TestCase):
         site = Site.objects.create_site('Site Name', 'Site Type', 'site_slug')
         response = self.client.post(
             reverse('streamwebs:riparian_transect_edit',
-                    kwargs={'site_slug': site.id}), {})
+                    kwargs={'site_slug': site.id}
+            ), {
+                'form-TOTAL_FORMS': 5,
+                'form-INITIAL_FORMS': 0,
+                'form-MAX_NUM_FORMS': 5,
+                }
+        )
         self.assertFormError(response, 'transect_form', 'school',
                              'This field is required.')
         self.assertFalse(response.context['added'])
@@ -35,24 +41,42 @@ class AddTransectTestCase(TestCase):
                 'streamwebs:riparian_transect_edit',
                 kwargs={'site_slug': site.id}
             ), {
-                    'conifers': 1,
-                    'hardwoods': 1,
-                    'shrubs': 1,
-                    'comments': 'comments',
-                    'conifers': 1,
-                    'hardwoods': 1,
-                    'shrubs': 1,
-                    'comments': 'comments',
-                    'conifers': 1,
-                    'hardwoods': 1,
-                    'shrubs': 1,
-                    'comments': 'comments',
                     'school': 'School of cool',
                     'date_time': '2016-07-18 14:09:07',
                     'weather': 'cloudy',
                     'site': site.id,
                     'slope': 5,
-                    'notes': 'notes'
+                    'notes': 'notes',
+                    
+                    'form-TOTAL_FORMS': 5,
+                    'form-INITIAL_FORMS': 0,
+#                    'form-MAX_NUM_FORMS': 5,
+
+                    'form-0-conifers': 1,
+                    'form-0-hardwoods': 2,
+                    'form-0-shrubs': 3,
+                    'form-0-comments': '1 comments',
+
+                    'form-1-conifers': 4,
+                    'form-1-hardwoods': 5,
+                    'form-1-shrubs': 6,
+                    'form-1-comments': '2 comments',
+
+                    'form-2-conifers': 7,
+                    'form-2-hardwoods': 8,
+                    'form-2-shrubs': 9,
+                    'form-2-comments': '3 comments',
+
+                    'form-3-conifers': 8,
+                    'form-3-hardwoods': 7,
+                    'form-3-shrubs': 6,
+                    'form-3-comments': '4 comments',
+
+                    'form-4-conifers': 5,
+                    'form-4-hardwoods': 4,
+                    'form-4-shrubs': 3,
+                    'form-4-comments': '5 comments',
+
                 }
         )
         self.assertTemplateUsed(

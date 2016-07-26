@@ -4,13 +4,12 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
-from streamwebs.forms import UserForm, UserProfileForm, MacroinvertebratesForm
-from streamwebs.models import Macroinvertebrates, Site
 from django.utils.translation import ugettext_lazy as _
-from streamwebs.forms import (
-    UserForm, UserProfileForm, TransectZoneForm, RiparianTransectForm
-)
-from streamwebs.models import RiparianTransect, Site
+from django.forms import inlineformset_factory
+from streamwebs.forms import (UserForm, UserProfileForm, TransectZoneForm,
+                              RiparianTransectForm, MacroinvertebratesForm)
+from streamwebs.models import (RiparianTransect, Site, TransectZone,
+                               Macroinvertebrates)
 
 
 # Create your views here.
@@ -286,9 +285,22 @@ def macroinvertebrate_edit(request, site_slug):
 
 
 def riparian_transect_view(request, site_slug, data_id):
+#    site = Site.objects.get(id=site_slug)
+#    transects = RiparianTransect.transects.filter(site_id=site.id)
+#    transect = transects.get(id=data_id)
+    transect = RiparianTransect.transects.filter(site_id=site_slug).get(id=data_id)
     site = Site.objects.get(id=site_slug)
-    transects = RiparianTransect.transects.filter(site_id=site.id)
-    transect = transects.get(id=data_id)
+    
+#    site = Site.objects.create_site('Site name', 'site type', 'site_slug')
+#    zone_1 = TransectZone.zones.create_zone(1, 5, 3, 'this is zone 1')
+#    zone_2 = TransectZone.zones.create_zone(1, 4, 3, 'this is zone 2')
+#    zone_3 = TransectZone.zones.create_zone(1, 1, 3, 'this is zone 3')
+#    zone_4 = TransectZone.zones.create_zone(1, 3, 3, 'this is zone 4')
+#    zone_5 = TransectZone.zones.create_zone(1, 2, 4, 'this is zone 5')
+#    transect = RiparianTransect.transects.create_transect(
+#        'The School', '2016-07-25 15:44:00', site, zone_1, zone_2, zone_3,
+#        zone_4, zone_5, 'The Weather', 2, 'Notes'
+#    )
     return render(request, 'streamwebs/datasheets/riparian_transect_view.html',
                   {'transect': transect, 'site': site})
 
@@ -298,69 +310,50 @@ def riparian_transect_edit(request, site_slug):
     The view for the submission of a new riparian transect data sheet.
     """
     added = False
+    transect = RiparianTransect()
+    TransectZoneInlineFormSet = inlineformset_factory(
+        RiparianTransect, TransectZone,
+        fields=('conifers', 'hardwoods', 'shrubs', 'comments'), extra=5
+    )
 
     if request.method == 'POST':
 
-        zone_form_1 = TransectZoneForm(data=request.POST)
-        zone_form_2 = TransectZoneForm(data=request.POST)
-        zone_form_3 = TransectZoneForm(data=request.POST)
-        zone_form_4 = TransectZoneForm(data=request.POST)
-        zone_form_5 = TransectZoneForm(data=request.POST)
-
+        zone_formset = TransectZoneInlineFormSet(data=request.POST,
+                                                 instance=transect)
         transect_form = RiparianTransectForm(data=request.POST)
 
-        if (zone_form_1.is_valid() and
-                zone_form_2.is_valid() and
-                zone_form_3.is_valid() and
-                zone_form_4.is_valid() and
-                zone_form_5.is_valid() and
-                transect_form.is_valid()):
-
-            zone_1 = zone_form_1.save()
-            zone_2 = zone_form_2.save()
-            zone_3 = zone_form_3.save()
-            zone_4 = zone_form_4.save()
-            zone_5 = zone_form_5.save()
-
-            zone_1.save()
-            zone_2.save()
-            zone_3.save()
-            zone_4.save()
-            zone_5.save()
-
+        if (zone_formset.is_valid() and transect_form.is_valid()):
+            
             transect = transect_form.save(commit=False)
+            zones = zone_formset.save(commit=False)
+
+            zone_1 = zones[0].save()
+            zone_2 = zones[1].save()
+            zone_3 = zones[2].save()
+            zone_4 = zones[3].save()
+            zone_5 = zones[4].save()
 
             transect.zone_1 = zone_1
-            transect.zone_2 = zone_2
-            transect.zone_3 = zone_3
-            transect.zone_4 = zone_4
-            transect.zone_5 = zone_5
+            transect_zone_2 = zone_2
+            transect_zone_3 = zone_3
+            transect_zone_4 = zone_4
+            transect_zone_5 = zone_5
 
             transect.save()
 
             added = True
 
         else:
-            print (zone_form_1.errors, zone_form_2.errors, zone_form_3.errors,
-                   zone_form_4.errors, zone_form_5.errors,
-                   transect_form.errors)
+            print (zone_formset.errors, transect_form.errors)
 
     else:
-        zone_form_1 = TransectZoneForm()
-        zone_form_2 = TransectZoneForm()
-        zone_form_3 = TransectZoneForm()
-        zone_form_4 = TransectZoneForm()
-        zone_form_5 = TransectZoneForm()
-
+        zone_formset = TransectZoneInlineFormSet(instance=transect)
         transect_form = RiparianTransectForm()
 
     return render(
         request,
-        'streamwebs/datasheets/riparian_transect_edit.html',
-        {
-            'zone_form_1': zone_form_1, 'zone_form_2': zone_form_2,
-            'zone_form_3': zone_form_3, 'zone_form_4': zone_form_4,
-            'zone_form_5': zone_form_5, 'transect_form': transect_form,
+        'streamwebs/datasheets/riparian_transect_edit.html', {
+            'transect_form': transect_form, 'zone_formset': zone_formset,
             'added': added
         }
     )
