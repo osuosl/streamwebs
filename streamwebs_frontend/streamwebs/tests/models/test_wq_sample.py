@@ -79,6 +79,13 @@ class WQSampleTestCase(TestCase):
         )))
         self.assertEqual(sorted(fields), sorted(self.expected_fields.keys()))
 
+    def test_optional_fields(self):
+        """Tests that optional fields default to true when left blank"""
+        sample = apps.get_model('streamwebs', 'wq_sample')
+        for field in self.optional_fields:
+            self.assertEqual(
+                sample._meta.get_field(field).blank, True)
+
     # Tests for pH validator. Valid pH's are 0-14.
     def test_validate_pH_too_large(self):
         with self.assertRaises(ValidationError):
@@ -94,9 +101,3 @@ class WQSampleTestCase(TestCase):
         self.sample_data.pH = 7
         self.sample_data.save()
         self.assertEqual(validate_pH(self.sample_data.pH), None)
-
-    def test_optional_fields(self):
-        sample = apps.get_model('streamwebs', 'wq_sample')
-        for field in self.optional_fields:
-            self.assertEqual(
-                sample._meta.get_field(field).blank, True)
