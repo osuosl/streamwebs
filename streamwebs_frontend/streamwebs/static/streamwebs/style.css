@@ -72,7 +72,7 @@ nav {
     margin-bottom: 25px;
 }
 
-.datasheet-title {
+/*.datasheet-title {
     color: rgb(16, 66, 87);
 }
 
@@ -132,7 +132,7 @@ td.pair:nth-child(even) {
 
 .form-cell {
     min-width: 300px;
-}
+}*/
 
 /* CSS for D3 graphs; ALL FREE TO BE CHANGED */
 .graph {
