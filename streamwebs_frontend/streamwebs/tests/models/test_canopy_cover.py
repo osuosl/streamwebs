@@ -4,10 +4,12 @@ from django.contrib.gis.db import models
 from django.apps import apps
 from itertools import chain
 from django.utils import timezone
+from django.core.exceptions import ValidationError
 
 from streamwebs.models import Site
 from streamwebs.models import Canopy_Cover
 from streamwebs.models import CC_Cardinal
+from streamwebs.models import validate_cover
 
 
 class CanopyCovTestCase(TestCase):
@@ -207,3 +209,92 @@ class CanopyCovTestCase(TestCase):
         self.assertEqual(canopyc.east.direction, 'East')
         self.assertEqual(canopyc.south.direction, 'South')
         self.assertEqual(canopyc.west.direction, 'West')
+
+    def test_validate_cover_good(self):
+        """Tests that est_canopy_cover is in between 0-24."""
+        default_dt = timezone.now()
+
+        site = Site.objects.create_site('test', 'some_type', 'some_slug')
+
+        north = CC_Cardinal.objects.create_shade('North', True, True, False,
+                                                 False, False, True, False,
+                                                 False, True, True, True,
+                                                 False, True, False, False,
+                                                 False, True, False, True,
+                                                 True, False, True, False,
+                                                 False, 11)
+
+        east = CC_Cardinal.objects.create_shade('East', True, True, False,
+                                                False, False, True, False,
+                                                False, True, True, True, False,
+                                                True, False, False, False,
+                                                False, False, True, True,
+                                                False, False, False, False, 8)
+
+        south = CC_Cardinal.objects.create_shade('South', True, True, True,
+                                                 False, False, True, False,
+                                                 False, True, True, True, True,
+                                                 True, False, False, False,
+                                                 True, False, True, True,
+                                                 False, True, False, True, 14)
+
+        west = CC_Cardinal.objects.create_shade('West', True, True, False,
+                                                True, False, True, True, False,
+                                                True, True, True, True, True,
+                                                False, False, True, True,
+                                                False, True, True, True, True,
+                                                True, False, 17)
+
+        canopyc = Canopy_Cover.objects.create(school='School A',
+                                              date_time=default_dt, site=site,
+                                              weather='cloudy', north=north,
+                                              east=east, south=south,
+                                              west=west, est_canopy_cover=23)
+
+        self.assertEqual(validate_cover(canopyc.est_canopy_cover), None)
+
+    def test_validate_cover_too_large(self):
+        """Tests that validation error is risen when est_canopy_cover
+           is too large."""
+
+        default_dt = timezone.now()
+
+        site = Site.objects.create_site('test', 'some_type', 'some_slug')
+
+        north = CC_Cardinal.objects.create_shade('North', True, True, False,
+                                                 False, False, True, False,
+                                                 False, True, True, True,
+                                                 False, True, False, False,
+                                                 False, True, False, True,
+                                                 True, False, True, False,
+                                                 False, 11)
+
+        east = CC_Cardinal.objects.create_shade('East', True, True, False,
+                                                False, False, True, False,
+                                                False, True, True, True, False,
+                                                True, False, False, False,
+                                                False, False, True, True,
+                                                False, False, False, False, 8)
+
+        south = CC_Cardinal.objects.create_shade('South', True, True, True,
+                                                 False, False, True, False,
+                                                 False, True, True, True, True,
+                                                 True, False, False, False,
+                                                 True, False, True, True,
+                                                 False, True, False, True, 14)
+
+        west = CC_Cardinal.objects.create_shade('West', True, True, False,
+                                                True, False, True, True, False,
+                                                True, True, True, True, True,
+                                                False, False, True, True,
+                                                False, True, True, True, True,
+                                                True, False, 17)
+
+        canopyc = Canopy_Cover.objects.create(school='School A',
+                                              date_time=default_dt, site=site,
+                                              weather='cloudy', north=north,
+                                              east=east, south=south,
+                                              west=west, est_canopy_cover=50)
+
+        with self.assertRaises(ValidationError):
+            validate_cover(canopyc.est_canopy_cover)

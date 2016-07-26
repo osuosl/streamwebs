@@ -471,6 +471,14 @@ class CC_Cardinal(models.Model):
         verbose_name_plural = 'Cardinal Directions'
 
 
+def validate_cover(est_canopy_cover):
+    if not(0 <= est_canopy_cover and est_canopy_cover <= 24):
+        raise ValidationError(
+            '%(est_canopy_cover)s is not 0-24.',
+            params={'est_canopy_cover': est_canopy_cover},
+            )
+
+
 @python_2_unicode_compatible
 class Canopy_Cover(models.Model):
     school = models.CharField(max_length=250)
