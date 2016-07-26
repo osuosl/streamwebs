@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>{% block title %}{% endblock %} StreamWebs</title>
+    <title>{% block title %}StreamWebs{% endblock %}</title>
     <link rel="stylesheet" type="text/css" href="{% static 'streamwebs/bower_components/materialize/dist/css/materialize.css' %}" />
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{% static 'streamwebs/style.css' %}" />
@@ -12,7 +12,7 @@
 </head>
 
 <body>
-    <form action="/i18n/setlang/" method="post">
+    <!-- <form action="/i18n/setlang/" method="post">
        {% csrf_token %}
         <input name="next" type="hidden" value="{{ request.path }}" />
         <select name="language">
@@ -21,7 +21,7 @@
               {% endfor %}
         </select>
         <input type="submit" value="{% trans 'Go' %}" />
-    </form>
+    </form> -->
     <nav class="cyan">
         <div class="nav-wrapper">
             <a href="#!" class="brand-logo center">{% block body_title %}Streamwebs{% endblock %}</a>

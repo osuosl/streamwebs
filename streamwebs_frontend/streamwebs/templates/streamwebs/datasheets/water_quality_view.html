@@ -13,7 +13,7 @@
 {% endblock %}
 
 {% block content %}
-<div id="water_quality" class="datasheet">
+    <!-- <div id="water_quality" class="datasheet">
     <table>
         <tr>
             <td class="form-cell">
@@ -23,13 +23,17 @@
             </td>
             <td class="form-cell">
                 <label for="DEQ Data Quality Level" class="field-label">DEQ Data Quality Level:</label>
-                <select name="DEQ Data Quality Level" required disabled>
-                    <option value="Level A" {% if data.DEQ_wq_level == 'A' %}selected{% endif %}>Level A</option>
-                    <option value="Level B" {% if data.DEQ_wq_level == 'B' %}selected{% endif %}>Level B</option>
-                    <option value="Level C" {% if data.DEQ_wq_level == 'C' %}selected{% endif %}>Level C</option>
-                    <option value="Level D" {% if data.DEQ_wq_level == 'D' %}selected{% endif %}>Level D</option>
-                    <option value="Level E" {% if data.DEQ_wq_level == 'E' %}selected{% endif %}>Level E</option>
-                </select>
+
+                <div class="input-field">
+                    <select name="DEQ Data Quality Level">
+                        <option value="Level A" {% if data.DEQ_wq_level == 'A' %}selected{% endif %}>Level A</option>
+                        <option value="Level B" {% if data.DEQ_wq_level == 'B' %}selected{% endif %}>Level B</option>
+                        <option value="Level C" {% if data.DEQ_wq_level == 'C' %}selected{% endif %}>Level C</option>
+                        <option value="Level D" {% if data.DEQ_wq_level == 'D' %}selected{% endif %}>Level D</option>
+                        <option value="Level E" {% if data.DEQ_wq_level == 'E' %}selected{% endif %}>Level E</option>
+                    </select>
+                    <label>Stuff</label>
+                </div>
                 <br/><br/>
                 <label for="latitude" class="field-label">Latitude:</label>
                 <input type="text" name="latitude" readonly value="{{data.site.location.y}}" />
@@ -195,7 +199,7 @@
             </td>
         </tr>
         <!-- Additional Parameters -->
-        <tr>
+        <!-- <tr>
             <th><br/>Additional Parameters</br></th>
         </tr>
         <tr>
@@ -260,5 +264,30 @@
         <tr><td><label for="field-notes" class="field-label">Field Notes:</label></td></tr>
         <tr><td><textarea cols="80" rows="10" name="field-notes" readonly>{{data.notes}}</textarea><br/></br></td></tr>
     </table>
-</div>
+</div> -->
+
+    <div class="container">
+        <div class="row">
+            <div class="col s6">
+                <p>Stream/Site name: {{data.site.name}}</p>
+                <div class="input-field">
+                    <label for="date">Date</label>
+                    <input id="date" type="text" value="{{data.date}}" disabled>
+                </div>
+            </div>
+
+            <div class="col s6">
+                <div class="input-field">
+                    <select disabled>
+                        <option value="Level A" {% if data.DEQ_wq_level == 'A' %}selected{% endif %}>Level A</option>
+                        <option value="Level B" {% if data.DEQ_wq_level == 'B' %}selected{% endif %}>Level B</option>
+                        <option value="Level C" {% if data.DEQ_wq_level == 'C' %}selected{% endif %}>Level C</option>
+                        <option value="Level D" {% if data.DEQ_wq_level == 'D' %}selected{% endif %}>Level D</option>
+                        <option value="Level E" {% if data.DEQ_wq_level == 'E' %}selected{% endif %}>Level E</option>
+                    </select>
+                    <label>DEQ Data Quality Level</label>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
