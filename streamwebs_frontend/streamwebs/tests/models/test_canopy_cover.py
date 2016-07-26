@@ -199,8 +199,8 @@ class CanopyCovTestCase(TestCase):
             self.assertEqual(eval(south_var), south_bools[k])
 
         for l in range(len(west_bools)):
-            west_var = 'canopyc.' + 'west.' + str(chr(k + 65))
-            self.assertEqual(eval(west_var), west_bools[k])
+            west_var = 'canopyc.' + 'west.' + str(chr(l + 65))
+            self.assertEqual(eval(west_var), west_bools[l])
 
         # Check that the direction field is correct for each cardinal box
         self.assertEqual(canopyc.north.direction, 'North')
