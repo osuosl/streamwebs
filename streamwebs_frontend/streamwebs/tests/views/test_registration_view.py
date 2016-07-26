@@ -1,11 +1,7 @@
-from django.test import Client, TestCase, override_settings
+from django.test import Client, TestCase
 from django.core.urlresolvers import reverse
 
 
-@override_settings(SCHOOL_CHOICES=(
-    ('a', 'School A'),
-    ('b', 'School B'),
-    ('c', 'School C'),))
 class RegistrateTestCase(TestCase):
     def setUp(self):
         self.client = Client()
