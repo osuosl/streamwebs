@@ -288,33 +288,34 @@ class Macroinvertebrates(models.Model):
 
     def clean(self):
         if ((self.caddisfly + self.mayfly + self.riffle_beetle +
-             self.stonefly + self.water_penny +
-             self.dobsonfly) * 3) != self.sensitive_total:
-                raise ValidationError(
-                    _('%(sensitive_total)s is not the correct total'),
-                    params={'sensitive_total': self.sensitive_total},
-                )
+           self.stonefly + self.water_penny +
+           self.dobsonfly) * 3) != self.sensitive_total:
+            raise ValidationError(
+                _('%(sensitive_total)s is not the correct total'),
+                params={'sensitive_total': self.sensitive_total},
+            )
 
-        if((self.clam_or_mussel + self.crane_fly + self.crayfish +
-            self.damselfly + self.dragonfly + self.scud + self.fishfly +
-            self.alderfly + self.mite) * 2) != self.somewhat_sensitive_total:
-                raise ValidationError(
-                    _('%(some_sensitive)s is not the correct total'),
-                    params={'some_sensitive': self.somewhat_sensitive_total},
-                )
+        if ((self.clam_or_mussel + self.crane_fly + self.crayfish +
+           self.damselfly + self.dragonfly + self.scud + self.fishfly +
+           self.alderfly + self.mite) * 2) != self.somewhat_sensitive_total:
+            raise ValidationError(
+                _('%(some_sensitive)s is not the correct total'),
+                params={'some_sensitive': self.somewhat_sensitive_total},
+            )
 
-        if(self.aquatic_worm + self.blackfly + self.leech + self.midge +
+        if (self.aquatic_worm + self.blackfly + self.leech + self.midge +
            self.snail + self.mosquito_larva) != self.tolerant_total:
-                raise ValidationError(
-                    _('%(tolerant_total)s is not the correct total'),
-                    params={'tolerant_total': self.tolerant_total},
-                    )
-        if(self.sensitive_total + self.somewhat_sensitive_total +
+            raise ValidationError(
+                _('%(tolerant_total)s is not the correct total'),
+                params={'tolerant_total': self.tolerant_total},
+            )
+
+        if (self.sensitive_total + self.somewhat_sensitive_total +
            self.tolerant_total) != self.wq_rating:
-                raise ValidationError(
-                    _('%(wq_rating)s is not the correct total'),
-                    params={'wq_rating': self.wq_rating},
-                )
+            raise ValidationError(
+                _('%(wq_rating)s is not the correct total'),
+                params={'wq_rating': self.wq_rating},
+            )
 
     class Meta:
         verbose_name = 'Macroinvertebrate'
