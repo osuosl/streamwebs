@@ -493,7 +493,8 @@ class Canopy_Cover(models.Model):
                               related_name='south', null=True)
     west = models.ForeignKey(CC_Cardinal, on_delete=models.CASCADE,
                              related_name='west', null=True)
-    est_canopy_cover = models.PositiveIntegerField(default=0)
+    est_canopy_cover = models.PositiveIntegerField(default=0,
+                                                   validators=[validate_pH])
 
     def __str__(self):
         return self.site.site_name
