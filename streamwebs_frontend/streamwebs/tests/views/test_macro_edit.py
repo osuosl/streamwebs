@@ -51,7 +51,6 @@ class MacroFormTestCase(TestCase):
         response = self.client.post(
             reverse('streamwebs:macroinvertebrate_edit', kwargs={
                 'site_slug': test_site.id}), {
-                'conifers': 1,
                 'school': "aaaa",
                 'date_time': '2016-07-11 14:09',
                 'weather': "aaaa",

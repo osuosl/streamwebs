@@ -1,4 +1,5 @@
 {% load staticfiles %}
+{% load i18n %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,11 +12,21 @@
 </head>
 
 <body>
+    <form action="/i18n/setlang/" method="post">
+       {% csrf_token %}
+        <input name="next" type="hidden" value="{{ request.path }}" />
+        <select name="language">
+              {% for lang in LANGUAGES %}
+              <option value="{{ lang.0 }}">{{ lang.1 }}</option>
+              {% endfor %}
+        </select>
+        <input type="submit" value="{% trans 'Go' %}" />
+    </form>
     <span class="title">
-      {% block body_title %}{% endblock %}
+        {% block body_title %}{% endblock %}
     </span>
     <div class="content">
-      {% block content %}{% endblock %}
+        {% block content %}{% endblock %}
     </div>
 </body>
 </html>

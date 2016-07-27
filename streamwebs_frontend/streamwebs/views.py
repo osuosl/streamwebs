@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from streamwebs.forms import UserForm, UserProfileForm, MacroinvertebratesForm
 from streamwebs.models import Macroinvertebrates, Site
+from django.utils.translation import ugettext_lazy as _
 
 
 # Create your views here.
@@ -111,7 +112,7 @@ def user_login(request):
             return HttpResponseRedirect('/streamwebs/')
         else:
             print 'Invalid login details: {0}, {1}'.format(username, password)
-            return HttpResponse('Invalid credentials')
+            return HttpResponse(_('Invalid credentials'))
     else:
         return render(request, 'streamwebs/login.html')
 

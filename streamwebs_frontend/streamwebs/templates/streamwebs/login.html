@@ -1,16 +1,17 @@
 {% extends 'streamwebs/base.html' %}
 {% load staticfiles %}
+{% load i18n %}
 {% block title %}Log In -{% endblock %}
-{% block body_title %}Log In{% endblock %}
+{% block body_title %}{% trans "Log In" %}{% endblock %}
 {% block content %}
 
         <form id='login_form' method='post' action='/streamwebs/login/'>
             {% csrf_token %}
-            Username: <input type='text' name='username' value='' size='50' />
+            {% trans "Username:" %}<input type='text' name='username' value='' size='50' />
             <br />
-            Password: <input type='password' name='password' value='' size='50' />
+            {% trans "Password:" %}<input type='password' name='password' value='' size='50' />
             <br />
 
-            <input type='submit' name='submit' value='Log in' />
+            <input type='submit' name='submit' value='{% trans "Log in" %}' />
         </form>
 {% endblock %}
