@@ -462,50 +462,14 @@ class Macroinvertebrates(models.Model):
         verbose_name_plural = 'macroinvertebrates'
 
 
-class TransectZoneManager(models.Manager):
-    """
-    Manager for the TransectZone model.
-    """
-    def create_zone(self, conifers=0, hardwoods=0, shrubs=0, comments=''):
-        info = self.create(conifers=conifers, hardwoods=hardwoods,
-                           shrubs=shrubs, comments=comments)
-        return info
-
-
-class TransectZone(models.Model):
-    """
-    Each Riparian Transect datasheet requires five zones.
-    """
-    conifers = models.PositiveSmallIntegerField(default=0,
-                                                verbose_name=_('conifers'))
-    hardwoods = models.PositiveSmallIntegerField(default=0,
-                                                 verbose_name=_('hardwoods'))
-    shrubs = models.PositiveSmallIntegerField(default=0,
-                                              verbose_name=_('shrubs'))
-    comments = models.TextField(blank=True,
-                                verbose_name=_('additional comments'))
-
-    zones = TransectZoneManager()
-
-    def __str__(self):
-        return str(self.id)
-
-    class Meta:
-        verbose_name = 'zone'
-        verbose_name_plural = 'zones'
-
-
 class RipTransectManager(models.Manager):
     """
     Manager for the RiparianTransect model/datasheet.
     """
-    def create_transect(self, school, date_time, site, zone_1, zone_2, zone_3,
-                        zone_4, zone_5, weather='', slope=None,
+    def create_transect(self, school, date_time, site, weather='', slope=None,
                         notes=''):
         return self.create(school=school, date_time=date_time, site=site,
-                           zone_1=zone_1, zone_2=zone_2, zone_3=zone_3,
-                           zone_4=zone_4, zone_5=zone_5, weather=weather,
-                           slope=slope, notes=notes)
+                           weather=weather, slope=slope, notes=notes)
 
 
 def validate_slope(slope):
@@ -529,22 +493,51 @@ class RiparianTransect(models.Model):
                                 decimal_places=3, validators=[validate_slope])
     notes = models.TextField(blank=True)
 
-    zone_1 = models.ForeignKey(TransectZone, on_delete=models.CASCADE,
-                               related_name='zone_1', null=True)
-    zone_2 = models.ForeignKey(TransectZone, on_delete=models.CASCADE,
-                               related_name='zone_2', null=True)
-    zone_3 = models.ForeignKey(TransectZone, on_delete=models.CASCADE,
-                               related_name='zone_3', null=True)
-    zone_4 = models.ForeignKey(TransectZone, on_delete=models.CASCADE,
-                               related_name='zone_4', null=True)
-    zone_5 = models.ForeignKey(TransectZone, on_delete=models.CASCADE,
-                               related_name='zone_5', null=True)
+    objects = RipTransectManager()
 
-    transects = RipTransectManager()
+    def __str__(self):
+        return 'Transect ' + str(self.id) + ' for site ' + self.site.site_name
 
     class Meta:
         verbose_name = 'riparian transect'
         verbose_name_plural = 'riparian transects'
+
+
+class TransectZoneManager(models.Manager):
+    """
+    Manager for the TransectZone model.
+    """
+    def create_zone(self, transect, conifers=0, hardwoods=0, shrubs=0,
+                    comments=''):
+        return self.create(transect=transect, conifers=conifers,
+                           hardwoods=hardwoods, shrubs=shrubs,
+                           comments=comments)
+
+
+class TransectZone(models.Model):
+    """
+    Each Riparian Transect datasheet requires five zones.
+    """
+    transect = models.ForeignKey(RiparianTransect, on_delete=models.CASCADE,
+                                 related_name='transect', null=True)
+    conifers = models.PositiveSmallIntegerField(default=0,
+                                                verbose_name=_('conifers'))
+    hardwoods = models.PositiveSmallIntegerField(default=0,
+                                                 verbose_name=_('hardwoods'))
+    shrubs = models.PositiveSmallIntegerField(default=0,
+                                              verbose_name=_('shrubs'))
+    comments = models.TextField(blank=True,
+                                verbose_name=_('additional comments'))
+
+    objects = TransectZoneManager()
+
+    def __str__(self):
+        return ('Zone ' + str(self.id) + ' for transect ' +
+                str(self.transect.id))
+
+    class Meta:
+        verbose_name = 'zone'
+        verbose_name_plural = 'zones'
 
 
 class CardinalManager(models.Manager):
@@ -675,9 +668,6 @@ class Canopy_Cover(models.Model):
         default=0, validators=[validate_cover],
         verbose_name=_('estimated canopy cover')
         )
-
-    def __str__(self):
-        return self.site.site_name
 
     class Meta:
         verbose_name = 'canopy cover survey'
