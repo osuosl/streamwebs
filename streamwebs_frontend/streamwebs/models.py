@@ -669,6 +669,9 @@ class Canopy_Cover(models.Model):
         verbose_name=_('estimated canopy cover')
         )
 
+    def __str__(self):
+        return self.site.site_name
+
     class Meta:
         verbose_name = 'canopy cover survey'
         verbose_name_plural = 'canopy cover surveys'
