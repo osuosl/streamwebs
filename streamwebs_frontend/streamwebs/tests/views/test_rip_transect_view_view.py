@@ -4,26 +4,28 @@ from streamwebs.models import Site, TransectZone, RiparianTransect
 
 
 class ViewTransectTestCase(TestCase):
-    def setUp(self):
-        site = Site.objects.create_site('Site Name', 'Site Type', 'site_slug')
-        zone_1 = TransectZone.zones.create_zone(1, 2, 3, 'This is zone 1')
-        zone_2 = TransectZone.zones.create_zone(1, 2, 3, 'This is zone 2')
-        zone_3 = TransectZone.zones.create_zone(1, 2, 3, 'This is zone 3')
-        zone_4 = TransectZone.zones.create_zone(1, 2, 3, 'This is zone 4')
-        zone_5 = TransectZone.zones.create_zone(1, 2, 3, 'This is zone 5')
-        self.transect = RiparianTransect.transects.create_transect(
-            'School Name',
-            '2016-07-22 15:04:00',
-            site,
-            zone_1, zone_2, zone_3, zone_4, zone_5
-        )
+#    def setUp(self):
 
     def test_data_sheet_view(self):
+        site = Site.objects.create_site('Site Name', 'Site Type', 'site_slug')
+        transect = RiparianTransect.objects.create_transect(
+            'School Name', '2016-07-22 15:04:00', site
+        )
+        zone_1 = TransectZone.objects.create_zone(transect, 1, 2, 3,
+                                                  'This is zone 1')
+        zone_2 = TransectZone.objects.create_zone(transect, 1, 2, 3,
+                                                  'This is zone 2')
+        zone_3 = TransectZone.objects.create_zone(transect, 1, 2, 3,
+                                                  'This is zone 3')
+        zone_4 = TransectZone.objects.create_zone(transect, 1, 2, 3,
+                                                  'This is zone 4')
+        zone_5 = TransectZone.objects.create_zone(transect, 1, 2, 3,
+                                                  'This is zone 5')
         response = self.client.get(
                 reverse(
                     'streamwebs:riparian_transect_view',
-                    kwargs={'data_id': self.transect.id,
-                            'site_slug': self.transect.site.id
+                    kwargs={'data_id': transect.id,
+                            'site_slug': transect.site.id
                             }
                 )
         )
@@ -34,11 +36,25 @@ class ViewTransectTestCase(TestCase):
         )
 
     def test_data_sheet_view_content(self):
+        site = Site.objects.create_site('Site Name', 'Site Type', 'site_slug')
+        transect = RiparianTransect.objects.create_transect(
+            'School Name', '2016-07-22 15:04:00', site
+        )
+        zone_1 = TransectZone.objects.create_zone(transect, 1, 2, 3,
+                                                  'This is zone 1')
+        zone_2 = TransectZone.objects.create_zone(transect, 1, 2, 3,
+                                                  'This is zone 2')
+        zone_3 = TransectZone.objects.create_zone(transect, 1, 2, 3,
+                                                  'This is zone 3')
+        zone_4 = TransectZone.objects.create_zone(transect, 1, 2, 3,
+                                                  'This is zone 4')
+        zone_5 = TransectZone.objects.create_zone(transect, 1, 2, 3,
+                                                  'This is zone 5')
         response = self.client.get(
                 reverse(
                     'streamwebs:riparian_transect_view',
-                    kwargs={'data_id': self.transect.id,
-                            'site_slug': self.transect.site.id
+                    kwargs={'data_id': transect.id,
+                            'site_slug': transect.site.id
                             }
                 )
         )

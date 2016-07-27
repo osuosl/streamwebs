@@ -20,7 +20,7 @@ class AddTransectTestCase(TestCase):
         response = self.client.post(
             reverse('streamwebs:riparian_transect_edit',
                     kwargs={'site_slug': site.id}
-            ), {
+                    ), {
                 'form-TOTAL_FORMS': 5,
                 'form-INITIAL_FORMS': 0,
                 'form-MAX_NUM_FORMS': 5,
@@ -47,10 +47,10 @@ class AddTransectTestCase(TestCase):
                     'site': site.id,
                     'slope': 5,
                     'notes': 'notes',
-                    
+
                     'form-TOTAL_FORMS': 5,
                     'form-INITIAL_FORMS': 0,
-#                    'form-MAX_NUM_FORMS': 5,
+                    'form-MAX_NUM_FORMS': 5,
 
                     'form-0-conifers': 1,
                     'form-0-hardwoods': 2,

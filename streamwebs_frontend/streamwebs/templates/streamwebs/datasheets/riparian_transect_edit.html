@@ -15,9 +15,15 @@
             <form id='rip_trans_form' method='post'>
                 {% csrf_token %}
                 {{ transect_form.as_p }}
-                {{ zone_formset.as_p }}
-                    
-                <input type='submit', name='submit', value='Submit' />
+
+                {{ zone_formset.management_form }}
+                <table>
+                    {% for zone in zone_formset.forms %}
+                        {{ zone }}
+                    {% endfor %}
+                </table>
+
+            <input type='submit', name='submit', value='Submit' />
             </form>
             {% endif %}
 
