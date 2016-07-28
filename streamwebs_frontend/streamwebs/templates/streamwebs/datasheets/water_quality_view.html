@@ -267,12 +267,17 @@
 </div> -->
 
     <div class="container">
+        <p>Stream/Site name: {{data.site.name}}</p>
         <div class="row">
             <div class="col s6">
-                <p>Stream/Site name: {{data.site.name}}</p>
                 <div class="input-field">
                     <label for="date">Date</label>
                     <input id="date" type="text" value="{{data.date}}" disabled>
+                </div>
+
+                <div class="input-field">
+                    <label for="lat">Latitude</label>
+                    <input id="lat" type="text" value="{{data.site.location.y}}" disabled>
                 </div>
             </div>
 
@@ -286,6 +291,55 @@
                         <option value="Level E" {% if data.DEQ_wq_level == 'E' %}selected{% endif %}>Level E</option>
                     </select>
                     <label>DEQ Data Quality Level</label>
+                </div>
+
+                <div class="input-field">
+                    <label for="long">Longitude</label>
+                    <input id="long" type="text" value="{{data.site.location.x}}" disabled>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col s4">
+                <p>Any fish present?</p>
+                <div class="rowchk">
+                    <input type="checkbox" id="yfish" checked="checked" disabled="disabled" />
+                    <label for="yfish">Yes</label>
+                    <input type="checkbox" id="nfish" disabled="disabled" />
+                    <label for="nfish">No</label>
+                </div>
+            </div>
+
+            <div class="col s4">
+                <p>Number of live fish:</p>
+                <input type="text" value="{{data.live_fish}}" disabled>
+            </div>
+
+            <div class="col s4">
+                <p>Number of dead fish:</p>
+                <input type="text" value="{{data.dead_fish}}" disabled>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col s6">
+                <p>Water Temperature Units</p>
+                <div class="rowchk">
+                    <input type="checkbox" id="fahr" checked="checked" disabled="disabled" />
+                    <label for="fahr">Fahrenheit</label>
+                    <input type="checkbox" id="cels" disabled="disabled" />
+                    <label for="cels">Celsius</label>
+                </div>
+            </div>
+
+            <div class="col s6">
+                <p>Air Temperature Units</p>
+                <div class="rowchk">
+                    <input type="checkbox" id="afahr" checked="checked" disabled="disabled" />
+                    <label for="afahr">Fahrenheit</label>
+                    <input type="checkbox" id="acels" disabled="disabled" />
+                    <label for="acels">Celsius</label>
                 </div>
             </div>
         </div>
