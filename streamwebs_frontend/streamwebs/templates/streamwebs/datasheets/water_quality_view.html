@@ -1,0 +1,347 @@
+{% extends "streamwebs/data_view.html" %}
+
+{% load staticfiles %}
+
+{% block title %}Water Quality - {{data.site.name}} - Streamwebs{% endblock %}
+
+{% block body_title %}<a href='{% url 'streamwebs:site' data.site.slug %}'>{{data.site.name}}</a>
+» Water Quality ({{data.date}}){% endblock %}
+
+{% block scripts %}
+<script type="application/javascript" src="{% static 'streamwebs/js/data_view.js' %}"></script>
+<script type="application/javascript" src="{% static 'streamwebs/js/data/view/water_quality.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+    <!-- <div id="water_quality" class="datasheet">
+    <table>
+        <tr>
+            <td class="form-cell">
+                <p class="field-label">Stream/Site name: {{data.site.name}}</p>
+                <label for="date" class="field-label">Date:</label>
+                <input readonly type="date" name="date" value="{{data.date}}" />
+            </td>
+            <td class="form-cell">
+                <label for="DEQ Data Quality Level" class="field-label">DEQ Data Quality Level:</label>
+
+                <div class="input-field">
+                    <select name="DEQ Data Quality Level">
+                        <option value="Level A" {% if data.DEQ_wq_level == 'A' %}selected{% endif %}>Level A</option>
+                        <option value="Level B" {% if data.DEQ_wq_level == 'B' %}selected{% endif %}>Level B</option>
+                        <option value="Level C" {% if data.DEQ_wq_level == 'C' %}selected{% endif %}>Level C</option>
+                        <option value="Level D" {% if data.DEQ_wq_level == 'D' %}selected{% endif %}>Level D</option>
+                        <option value="Level E" {% if data.DEQ_wq_level == 'E' %}selected{% endif %}>Level E</option>
+                    </select>
+                    <label>Stuff</label>
+                </div>
+                <br/><br/>
+                <label for="latitude" class="field-label">Latitude:</label>
+                <input type="text" name="latitude" readonly value="{{data.site.location.y}}" />
+                <br/><br/>
+                <label for="longitude" class="field-label">Longitude:</label>
+                <input type="text" name="longitude" readonly value="{{data.site.location.x}}" />
+            </td>
+        </tr>
+    </table>
+    <br/>
+    <table>
+        <tr>
+            <td class="inline-form-options triplet">
+                <label for="fish" class="field-label">Any fish present?&nbsp;</label>
+                <input type="radio" name="fish" value="yes" disabled {% if data.fish_present %}checked="checked"{% endif %} />Yes
+                <input type="radio" name="fish" value="no" disabled {% if not data.fish_present %}checked="checked"{% endif %} />No
+            </td>
+            <td class="inline-form-options triplet">
+                <label for="number-live-fish" class="field-label">Number of live fish:&nbsp;&nbsp;</label>
+                <input type="text" name="number-live-fish" readonly maxlength="10" size="10" value="{{data.live_fish}}" />
+            </td>
+            <td class="inline-form-options triplet">
+                <label for="number-dead-fish" class="field-label">Number of dead fish:&nbsp;&nbsp;&nbsp;</label>
+                <input type="text" name="number-dead-fish" readonly maxlength="10" size="10" value="{{data.dead_fish}}" />
+            </td>
+        </tr>
+    </table>
+    <br/>
+    <table id="water-quality-temp-units">
+        <tr>
+            <td class="inline-form-options pair">
+                <label for="water-temp-units" class="field-label">Water Temperature Units</label>
+                <input type="radio" name="water-temp-units" value="F" disabled {% if data.water_temp_unit == 'F' %}checked="checked"{% endif %} />Fahrenheit
+                <input type="radio" name="water-temp-units" value="C" disabled {% if data.water_temp_unit == 'C' %}checked="checked"{% endif %} />Celsius
+            </td>
+            <td class="inline-form-options pair">
+                <label for="air-temp-units" class="field-label">Air Temperature Units</label>
+                <input type="radio" name="air-temp-units" disabled value="F"{% if data.air_temp_unit == 'F' %}checked="checked"{% endif %} />Fahrenheit
+                <input type="radio" name="air-temp-units" disabled value="C"{% if data.air_temp_unit == 'C' %}checked="checked"{% endif %} />Celsius
+            </td>
+        </tr>
+    </table>
+    <table id="water-quality-data-table" class="data-table">
+        <tr>
+            <th></th>
+            <th>Sample 1</th>
+            <th>Sample 2</th>
+            <th>Sample 3</th>
+            <th>Sample 4</th>
+        </tr>
+        <tr>
+            <td>Water Temperature: </td>
+            <td><input type="text" name="water-temperature-1" readonly value="{{data.sample_1.water_temperature}}" /><br/>
+                <input type="radio" name="water-temp-tool-1" disabled value="vernier" {% if data.sample_1.water_temp_tool == 'Vernier' %}checked="checked"{% endif %} />Vernier
+                <input type="radio" name="water-temp-tool-1" disabled value="manual" {% if data.sample_1.water_temp_tool == 'Manual' %}checked="checked"{% endif %} />manual
+            </td>
+            <td><input type="text" name="water-temperature-2" readonly value="{{data.sample_2.water_temperature}}" /><br/>
+                <input type="radio" name="water-temp-tool-2" disabled value="vernier" {% if data.sample_2.water_temp_tool == 'Vernier' %}checked="checked"{% endif %} />Vernier
+                <input type="radio" name="water-temp-tool-2" disabled value="manual" {% if data.sample_2.water_temp_tool == 'Manual' %}checked="checked"{% endif %} />manual
+            </td>
+            <td><input type="text" name="water-temperature-3" readonly value="{{data.sample_3.water_temperature}}" /><br/>
+                <input type="radio" name="water-temp-tool-3" disabled value="vernier" {% if data.sample_3.water_temp_tool == 'Vernier' %}checked="checked"{% endif %} />Vernier
+                <input type="radio" name="water-temp-tool-3" disabled value="manual" {% if data.sample_3.water_temp_tool == 'Manual' %}checked="checked"{% endif %} />manual
+            </td>
+            <td><input type="text" name="water-temperature-4" readonly value="{{data.sample_4.water_temperature}}" /><br/>
+                <input type="radio" name="water-temp-tool-4" disabled value="vernier" {% if data.sample_4.water_temp_tool == 'Vernier' %}checked="checked"{% endif %} />Vernier
+                <input type="radio" name="water-temp-tool-4" disabled value="manual" {% if data.sample_4.water_temp_tool == 'Manual' %}checked="checked"{% endif %} />manual
+            </td>
+        </tr>
+        <tr>
+            <td>Air Temperature: </td>
+            <td><input type="text" name="air-temperature-1" readonly value="{{data.sample_1.air_temp}}" /><br/>
+                <input type="radio" name="air-temp-tool-1" disabled value="vernier" {% if data.sample_1.air_temp_tool == 'Vernier' %}checked="checked"{% endif %} />Vernier
+                <input type="radio" name="air-temp-tool-1" disabled value="manual" {% if data.sample_1.air_temp_tool == 'Manual' %}checked="checked"{% endif %} />manual
+            </td>
+            <td><input type="text" name="air-temperature-2" readonly value="{{data.sample_2.air_temp}}" /><br/>
+                <input type="radio" name="air-temp-tool-2" disabled value="vernier" {% if data.sample_2.air_temp_tool == 'Vernier' %}checked="checked"{% endif %} />Vernier
+                <input type="radio" name="air-temp-tool-2" disabled value="manual" {% if data.sample_2.air_temp_tool == 'Manual' %}checked="checked"{% endif %} />manual
+            </td>
+            <td><input type="text" name="air-temperature-3" readonly value="{{data.sample_3.air_temp}}" /><br/>
+                <input type="radio" name="air-temp-tool-3" disabled value="vernier" {% if data.sample_3.air_temp_tool == 'Vernier' %}checked="checked"{% endif %} />Vernier
+                <input type="radio" name="air-temp-tool-3" disabled value="manual" {% if data.sample_3.air_temp_tool == 'Manual' %}checked="checked"{% endif %} />manual
+            </td>
+            <td><input type="text" name="air-temperature-4" readonly value="{{data.sample_4.air_temp}}" /><br/>
+                <input type="radio" name="air-temp-tool-4" disabled value="vernier" {% if data.sample_4.air_temp_tool == 'Vernier' %}checked="checked"{% endif %} />Vernier
+                <input type="radio" name="air-temp-tool-4" disabled value="manual" {% if data.sample_4.air_temp_tool == 'Manual' %}checked="checked"{% endif %} />manual
+            </td>
+        </tr>
+        <tr>
+            <td>Dissolved Oxygen (mg/L): </td>
+            <td><input type="text" name="dissolved-oxygen-1" readonly value="{{data.sample_1.dissolved_oxygen}}" /><br/>
+                <input type="radio" name="oxygen-tool-1" disabled value="vernier" {% if data.sample_1.oxygen_tool == 'Vernier' %}checked="checked"{% endif %} />Vernier
+                <input type="radio" name="oxygen-tool-1" disabled value="manual" {% if data.sample_1.oxygen_tool == 'Manual' %}checked="checked"{% endif %} />manual
+            </td>
+            <td><input type="text" name="dissolved-oxygen-2" readonly value="{{data.sample_2.dissolved_oxygen}}" /><br/>
+                <input type="radio" name="oxygen-tool-2" disabled value="vernier" {% if data.sample_2.oxygen_tool == 'Vernier' %}checked="checked"{% endif %} />Vernier
+                <input type="radio" name="oxygen-tool-2" disabled value="manual" {% if data.sample_2.oxygen_tool == 'Manual' %}checked="checked"{% endif %} / />manual
+            </td>
+            <td><input type="text" name="dissolved-oxygen-3" readonly value="{{data.sample_3.dissolved_oxygen}}" /><br/>
+                <input type="radio" name="oxygen-tool-3" disabled value="vernier" {% if data.sample_3.oxygen_tool == 'Vernier' %}checked="checked"{% endif %} />Vernier
+                <input type="radio" name="oxygen-tool-3" disabled value="manual" {% if data.sample_3.oxygen_tool == 'Manual' %}checked="checked"{% endif %} />manual
+            </td>
+            <td><input type="text" name="dissolved-oxygen-4" readonly value="{{data.sample_4.dissolved_oxygen}}" /><br/>
+                <input type="radio" name="oxygen-tool-4" disabled value="vernier" {% if data.sample_4.oxygen_tool == 'Vernier' %}checked="checked"{% endif %} />Vernier
+                <input type="radio" name="oxygen-tool-4" disabled value="manual" {% if data.sample_4.oxygen_tool == 'Manual' %}checked="checked"{% endif %} />manual
+            </td>
+        </tr>
+        <tr>
+            <td>pH: </td>
+            <td><input type="text" name="pH-1" readonly value="{{data.sample_1.pH}}" /><br/>
+                <input type="radio" name="pH-tool-1" disabled value="vernier" {% if data.sample_1.pH_tool == 'Vernier' %}checked="checked"{% endif %} />Vernier
+                <input type="radio" name="pH1-tool" disabled value="manual" {% if data.sample_1.pH_tool == 'Manual' %}checked="checked"{% endif %} />manual
+            </td>
+            <td><input type="text" name="pH-2" readonly value="{{data.sample_2.pH}}" /><br/>
+                <input type="radio" name="pH-tool-2" disabled value="vernier" {% if data.sample_2.pH_tool == 'Vernier' %}checked="checked"{% endif %} />Vernier
+                <input type="radio" name="pH-tool-2" disabled value="manual" {% if data.sample_2.pH_tool == 'Manual' %}checked="checked"{% endif %} />manual
+            </td>
+            <td><input type="text" name="pH-3" readonly value="{{data.sample_3.pH}}" /><br/>
+                <input type="radio" name="pH-tool-3" disabled value="vernier" {% if data.sample_3.pH_tool == 'Vernier' %}checked="checked"{% endif %} />Vernier
+                <input type="radio" name="pH3-tool" disabled value="manual" {% if data.sample_3.pH_tool == 'Manual' %}checked="checked"{% endif %} />manual
+            </td>
+            <td><input type="text" name="pH-4" readonly value="{{data.sample_4.pH}}" /><br/>
+                <input type="radio" name="pH-tool-4" disabled value="vernier" {% if data.sample_4.pH_tool == 'Vernier' %}checked="checked"{% endif %} />Vernier
+                <input type="radio" name="pH-tool-4" disabled value="manual" {% if data.sample_4.pH_tool == 'Manual' %}checked="checked"{% endif %} />manual
+            </td>
+        </tr>
+        <tr>
+            <td>Turbidity (NTU): </td>
+            <td><input type="text" name="turbidity-1" readonly value="{{data.sample_1.turbidity}}" /><br/>
+                <input type="radio" name="turbid-tool-1" disabled value="vernier" {% if data.sample_1.turbid_tool == 'Vernier' %}checked="checked"{% endif %} />Vernier
+                <input type="radio" name="turbid-tool-1" disabled value="manual" {% if data.sample_1.turbid_tool == 'Manual' %}checked="checked"{% endif %} />manual
+            </td>
+            <td><input type="text" name="turbidity-2" readonly value="{{data.sample_2.turbidity}}" /><br/>
+                <input type="radio" name="turbid-tool-2" disabled value="vernier" {% if data.sample_2.turbid_tool == 'Vernier' %}checked="checked"{% endif %} />Vernier
+                <input type="radio" name="turbid-tool-2" disabled value="manual" {% if data.sample_2.turbid_tool == 'Manual' %}checked="checked"{% endif %} />manual
+            </td>
+            <td><input type="text" name="turbidity-3" readonly value="{{data.sample_3.turbidity}}" /><br/>
+                <input type="radio" name="turbid-tool-3" disabled value="vernier" {% if data.sample_3.turbid_tool == 'Vernier' %}checked="checked"{% endif %} />Vernier
+                <input type="radio" name="turbid-tool-3" disabled value="manual" {% if data.sample_3.turbid_tool == 'Manual' %}checked="checked"{% endif %} />manual
+            </td>
+            <td><input type="text" name="turbidity-4" readonly value="{{data.sample_4.turbidity}}" /><br/>
+                <input type="radio" name="turbid-tool-4" disabled value="vernier" {% if data.sample_4.turbid_tool == 'Vernier' %}checked="checked"{% endif %} />Vernier
+                <input type="radio" name="turbid-tool-4" disabled value="manual" {% if data.sample_4.turbid_tool == 'Manual' %}checked="checked"{% endif %} />manual
+            </td>
+        </tr>
+        <tr>
+            <td>Salinity (PSU) PPT: </td>
+            <td><input type="text" name="salinity-1" readonly value="{{data.sample_1.salinity}}" /><br/>
+                <input type="radio" name="salt-tool-1" disabled value="vernier" {% if data.sample_1.salt_tool == 'Vernier' %}checked="checked"{% endif %} />Vernier
+                <input type="radio" name="salt-tool-1" disabled value="manual" {% if data.sample_1.salt_tool == 'Manual' %}checked="checked"{% endif %} />manual
+            </td>
+            <td><input type="text" name="salinity-2" readonly value="{{data.sample_2.salinity}}" /><br/>
+                <input type="radio" name="salt-tool-2" disabled value="vernier" {% if data.sample_2.salt_tool == 'Vernier' %}checked="checked"{% endif %} />Vernier
+                <input type="radio" name="salt-tool-2" disabled value="manual" {% if data.sample_2.salt_tool == 'Manual' %}checked="checked"{% endif %} />manual
+            </td>
+            <td><input type="text" name="salinity-3" readonly value="{{data.sample_3.salinity}}" /><br/>
+                <input type="radio" name="salt-tool-3" disabled value="vernier" {% if data.sample_3.salt_tool == 'Vernier' %}checked="checked"{% endif %} />Vernier
+                <input type="radio" name="salt-tool-3" disabled value="manual" {% if data.sample_3.salt_tool == 'Manual' %}checked="checked"{% endif %} />manual
+            </td>
+            <td><input type="text" name="salinity-4" readonly value="{{data.sample_4.salinity}}" /><br/>
+                <input type="radio" name="salt-tool-4" disabled value="vernier" {% if data.sample_4.salt_tool == 'Vernier' %}checked="checked"{% endif %} />Vernier
+                <input type="radio" name="salt-tool-4" disabled value="manual" {% if data.sample_4.salt_tool == 'Manual' %}checked="checked"{% endif %} />manual
+            </td>
+        </tr>
+        <!-- Additional Parameters -->
+        <!-- <tr>
+            <th><br/>Additional Parameters</br></th>
+        </tr>
+        <tr>
+            <td>Conductivity (µS/cm): </td>
+            <td><input type="text" name="conductivity-1" readonly value="{{data.sample_1.conductivity}}" /></td>
+            <td><input type="text" name="conductivity-2" readonly value="{{data.sample_2.conductivity}}" /></td>
+            <td><input type="text" name="conductivity-3" readonly value="{{data.sample_3.conductivity}}" /></td>
+            <td><input type="text" name="conductivity-4" readonly value="{{data.sample_4.conductivity}}" /></td>
+        </tr>
+        <tr>
+            <td>Total Solids (mg/L): </td>
+            <td><input type="text" name="total-solids-1" readonly value="{{data.sample_1.total_solids}}" /></td>
+            <td><input type="text" name="total-solids-2" readonly value="{{data.sample_2.total_solids}}" /></td>
+            <td><input type="text" name="total-solids-3" readonly value="{{data.sample_3.total_solids}}" /></td>
+            <td><input type="text" name="total-solids-4" readonly value="{{data.sample_4.total_solids}}" /></td>
+        </tr>
+        <tr>
+            <td>BOD (mg/L): </td>
+            <td><input type="text" name="bod-1" readonly value="{{data.sample_1.bod}}" /></td>
+            <td><input type="text" name="bod-2" readonly value="{{data.sample_2.bod}}" /></td>
+            <td><input type="text" name="bod-3" readonly value="{{data.sample_3.bod}}" /></td>
+            <td><input type="text" name="bod-4" readonly value="{{data.sample_4.bod}}" /></td>
+        </tr>
+        <tr>
+            <td>Ammonia (mg/L): </td>
+            <td><input type="text" name="ammonia-1" readonly value="{{data.sample_1.ammonia}}" /></td>
+            <td><input type="text" name="ammonia-2" readonly value="{{data.sample_2.ammonia}}" /></td>
+            <td><input type="text" name="ammonia-3" readonly value="{{data.sample_3.ammonia}}" /></td>
+            <td><input type="text" name="ammonia-4" readonly value="{{data.sample_4.ammonia}}" /></td>
+        </tr>
+        <tr>
+            <td>Nitrite (mg/L): </td>
+            <td><input type="text" name="nitrite-1" readonly value="{{data.sample_1.nitrite}}" /></td>
+            <td><input type="text" name="nitrite-2" readonly value="{{data.sample_2.nitrite}}" /></td>
+            <td><input type="text" name="nitrite-3" readonly value="{{data.sample_3.nitrite}}" /></td>
+            <td><input type="text" name="nitrite-4" readonly value="{{data.sample_4.nitrite}}" /></td>
+        </tr>
+        <tr>
+            <td>Nitrate (mg/L): </td>
+            <td><input type="text" name="nitrate-1" readonly value="{{data.sample_1.nitrate}}" /></td>
+            <td><input type="text" name="nitrate-2" readonly value="{{data.sample_2.nitrate}}" /></td>
+            <td><input type="text" name="nitrate-3" readonly value="{{data.sample_3.nitrate}}" /></td>
+            <td><input type="text" name="nitrate-4" readonly value="{{data.sample_4.nitrate}}" /></td>
+        </tr>
+        <tr>
+            <td>Phosphates (mg/L): </td>
+            <td><input type="text" name="pHosphates-1" readonly value="{{data.sample_1.phosphates}}" /></td>
+            <td><input type="text" name="pHosphates-2" readonly value="{{data.sample_2.phosphates}}" /></td>
+            <td><input type="text" name="pHosphates-3" readonly value="{{data.sample_3.phosphates}}" /></td>
+            <td><input type="text" name="pHosphates-4" readonly value="{{data.sample_4.phosphates}}" /></td>
+        </tr>
+        <tr>
+            <td>Fecal Coliform (CFU/100 mL): </td>
+            <td><input type="text" name="fecal-coliform-1" readonly value="{{data.sample_1.fecal_coliform}}" /></td>
+            <td><input type="text" name="fecal-coliform-2" readonly value="{{data.sample_2.fecal_coliform}}" /></td>
+            <td><input type="text" name="fecal-coliform-3" readonly value="{{data.sample_3.fecal_coliform}}" /></td>
+            <td><input type="text" name="fecal-coliform-4" readonly value="{{data.sample_4.fecal_coliform}}" /></td>
+        </tr>
+    </table>
+    <br/>
+    <table>
+        <tr><td><label for="field-notes" class="field-label">Field Notes:</label></td></tr>
+        <tr><td><textarea cols="80" rows="10" name="field-notes" readonly>{{data.notes}}</textarea><br/></br></td></tr>
+    </table>
+</div> -->
+
+    <div class="container">
+        <p>Stream/Site name: {{data.site.name}}</p>
+        <div class="row">
+            <div class="col s6">
+                <div class="input-field">
+                    <label for="date">Date</label>
+                    <input id="date" type="text" value="{{data.date}}" disabled>
+                </div>
+
+                <div class="input-field">
+                    <label for="lat">Latitude</label>
+                    <input id="lat" type="text" value="{{data.site.location.y}}" disabled>
+                </div>
+            </div>
+
+            <div class="col s6">
+                <div class="input-field">
+                    <select disabled>
+                        <option value="Level A" {% if data.DEQ_wq_level == 'A' %}selected{% endif %}>Level A</option>
+                        <option value="Level B" {% if data.DEQ_wq_level == 'B' %}selected{% endif %}>Level B</option>
+                        <option value="Level C" {% if data.DEQ_wq_level == 'C' %}selected{% endif %}>Level C</option>
+                        <option value="Level D" {% if data.DEQ_wq_level == 'D' %}selected{% endif %}>Level D</option>
+                        <option value="Level E" {% if data.DEQ_wq_level == 'E' %}selected{% endif %}>Level E</option>
+                    </select>
+                    <label>DEQ Data Quality Level</label>
+                </div>
+
+                <div class="input-field">
+                    <label for="long">Longitude</label>
+                    <input id="long" type="text" value="{{data.site.location.x}}" disabled>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col s4">
+                <p>Any fish present?</p>
+                <div class="rowchk">
+                    <input type="checkbox" id="yfish" checked="checked" disabled="disabled" />
+                    <label for="yfish">Yes</label>
+                    <input type="checkbox" id="nfish" disabled="disabled" />
+                    <label for="nfish">No</label>
+                </div>
+            </div>
+
+            <div class="col s4">
+                <p>Number of live fish:</p>
+                <input type="text" value="{{data.live_fish}}" disabled>
+            </div>
+
+            <div class="col s4">
+                <p>Number of dead fish:</p>
+                <input type="text" value="{{data.dead_fish}}" disabled>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col s6">
+                <p>Water Temperature Units</p>
+                <div class="rowchk">
+                    <input type="checkbox" id="fahr" checked="checked" disabled="disabled" />
+                    <label for="fahr">Fahrenheit</label>
+                    <input type="checkbox" id="cels" disabled="disabled" />
+                    <label for="cels">Celsius</label>
+                </div>
+            </div>
+
+            <div class="col s6">
+                <p>Air Temperature Units</p>
+                <div class="rowchk">
+                    <input type="checkbox" id="afahr" checked="checked" disabled="disabled" />
+                    <label for="afahr">Fahrenheit</label>
+                    <input type="checkbox" id="acels" disabled="disabled" />
+                    <label for="acels">Celsius</label>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
