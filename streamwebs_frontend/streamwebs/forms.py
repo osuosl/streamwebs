@@ -1,6 +1,10 @@
 # -*- coding: UTF-8 -*-
 from __future__ import unicode_literals
+<<<<<<< 0aa0b479db821f6ee121bb8c107c91599a9fc4b0
 from streamwebs.models import UserProfile, WQ_Sample, Water_Quality
+=======
+from streamwebs.models import UserProfile, Canopy_Cover, CC_Cardinal
+>>>>>>> Added form for Canopy_Cover and tests
 from django.contrib.auth.models import User
 from django import forms
 from django.utils.translation import ugettext_lazy as _
@@ -83,3 +87,26 @@ class WQSampleForm(forms.ModelForm):
                   'phosphates': _('Phosphates (mg/L):'),
                   'fecal_coliform': _('Fecal Coliform (CFU/100 mL):'),
                   }
+
+
+class Canopy_Cover_Form(forms.ModelForm):
+    class Meta:
+        model = Canopy_Cover
+        fields = ('school', 'date_time', 'site', 'weather', 'north', 'east',
+                  'south', 'west', 'est_canopy_cover')
+        labels = {
+            'school': _('School'),
+            'est_canopy_cover': _('Estimated Canopy Cover'),
+        }
+
+
+class CC_Cardinal_Form(forms.ModelForm):
+    class Meta:
+        model = CC_Cardinal
+        fields = ('direction', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I',
+                  'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U',
+                  'V', 'W', 'X', 'num_shaded')
+        labels = {
+            'direction': _('Direction'),
+            'num_shaded': _('Number Shaded')
+        }
