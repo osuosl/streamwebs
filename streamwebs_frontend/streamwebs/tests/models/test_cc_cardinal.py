@@ -2,9 +2,10 @@ from django.test import TestCase
 
 from django.contrib.gis.db import models
 from django.apps import apps
+from django.core.exceptions import ValidationError
 from itertools import chain
 
-from streamwebs.models import CC_Cardinal
+from streamwebs.models import CC_Cardinal, validate_shaded
 
 
 class CCCardinalTestCase(TestCase):
@@ -62,3 +63,29 @@ class CCCardinalTestCase(TestCase):
             if not (field.many_to_one and field.related_model is None)
         )))
         self.assertEqual(sorted(fields), sorted(self.expected_fields.keys()))
+
+    def test_validate_shaded_good(self):
+        """Check that num_shaded is in between 0-24"""
+        north = CC_Cardinal.objects.create_shade('North', True, True, False,
+                                                 False, False, True, False,
+                                                 False, True, True, True,
+                                                 False, True, False, False,
+                                                 False, True, False, True,
+                                                 True, False, True, False,
+                                                 False, 11)
+
+        self.assertEqual(validate_shaded(north.num_shaded), None)
+
+    def test_validate_shaded_too_large(self):
+        """Check that validation error is risen when num_shaded
+           is too large"""
+        north = CC_Cardinal.objects.create_shade('North', True, True, False,
+                                                 False, False, True, False,
+                                                 False, True, True, True,
+                                                 False, True, False, False,
+                                                 False, True, False, True,
+                                                 True, False, True, False,
+                                                 False, 45)
+
+        with self.assertRaises(ValidationError):
+            validate_shaded(north.num_shaded)

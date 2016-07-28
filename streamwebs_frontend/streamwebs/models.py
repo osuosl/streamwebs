@@ -418,6 +418,14 @@ class CardinalManager(models.Manager):
         return cc_info
 
 
+def validate_shaded(num_shaded):
+    if not(0 <= num_shaded and num_shaded <= 24):
+        raise ValidationError(
+            '%(num_shaded)s is not 0-24.',
+            params={'num_shaded': num_shaded},
+            )
+
+
 @python_2_unicode_compatible
 class CC_Cardinal(models.Model):
     NORTH = 'North'
@@ -459,7 +467,8 @@ class CC_Cardinal(models.Model):
     V = models.BooleanField(default=False, blank=True)
     W = models.BooleanField(default=False, blank=True)
     X = models.BooleanField(default=False, blank=True)
-    num_shaded = models.PositiveIntegerField(default=0)
+    num_shaded = models.PositiveIntegerField(default=0,
+                                             validators=[validate_shaded])
 
     objects = CardinalManager()
 
@@ -472,9 +481,9 @@ class CC_Cardinal(models.Model):
 
 
 def validate_cover(est_canopy_cover):
-    if not(0 <= est_canopy_cover and est_canopy_cover <= 24):
+    if not(0 <= est_canopy_cover and est_canopy_cover <= 96):
         raise ValidationError(
-            '%(est_canopy_cover)s is not 0-24.',
+            '%(est_canopy_cover)s is not 0-96.',
             params={'est_canopy_cover': est_canopy_cover},
             )
 

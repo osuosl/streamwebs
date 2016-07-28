@@ -211,7 +211,7 @@ class CanopyCovTestCase(TestCase):
         self.assertEqual(canopyc.west.direction, 'West')
 
     def test_validate_cover_good(self):
-        """Tests that est_canopy_cover is in between 0-24."""
+        """Tests that est_canopy_cover is in between 0-96."""
         default_dt = timezone.now()
 
         site = Site.objects.create_site('test', 'some_type', 'some_slug')
@@ -229,7 +229,7 @@ class CanopyCovTestCase(TestCase):
                                                 False, True, True, True, False,
                                                 True, False, False, False,
                                                 False, False, True, True,
-                                                False, False, False, False, 8)
+                                                False, False, False, False, 9)
 
         south = CC_Cardinal.objects.create_shade('South', True, True, True,
                                                  False, False, True, False,
@@ -294,7 +294,7 @@ class CanopyCovTestCase(TestCase):
                                               date_time=default_dt, site=site,
                                               weather='cloudy', north=north,
                                               east=east, south=south,
-                                              west=west, est_canopy_cover=50)
+                                              west=west, est_canopy_cover=100)
 
         with self.assertRaises(ValidationError):
             validate_cover(canopyc.est_canopy_cover)
