@@ -30,6 +30,8 @@ class RegistrateTestCase(TestCase):
                              'This field is required.')
         self.assertFormError(response1, 'user_form', 'password',
                              'This field is required.')
+        self.assertFormError(response1, 'user_form', 'password_check',
+                             'This field is required.')
         self.assertFormError(response1, 'user_form', 'email',
                              'This field is required.')
         self.assertFormError(response1, 'profile_form', 'birthdate',
@@ -51,6 +53,7 @@ class RegistrateTestCase(TestCase):
                 'password': 'johniscool',
                 'first_name': 'John',
                 'last_name': 'Johnson',
+                'password_check': 'johniscool',
                 'school': 'a',
                 'birthdate': '1995-11-10',
                 'g-recaptcha-response': 'NOPE'
@@ -72,7 +75,8 @@ class RegistrateTestCase(TestCase):
                 'last_name': 'Johnson',
                 'password_check': 'johniscool',
                 'school': 'a',
-                'birthdate': '1995-11-10'
+                'birthdate': '1995-11-10',
+                'g-recaptcha-response': 'PASSED'
             }
         )
         self.assertEqual(user_form_response.status_code, 200)
@@ -88,7 +92,8 @@ class RegistrateTestCase(TestCase):
                 'last_name': 'Johnson',
                 'password_check': 'johnisnotcool',
                 'school': 'a',
-                'birthdate': '1995-11-10'
+                'birthdate': '1995-11-10',
+                'g-recaptcha-response': 'PASSED'
             }
         )
         self.assertFormError(
@@ -98,26 +103,6 @@ class RegistrateTestCase(TestCase):
             'Passwords do not match'
         )
         self.assertFalse(bad_pw_response.context['registered'])
-        with self.settings(SCHOOL_CHOICES=(
-            ('a', 'School A'),
-            ('b', 'School B'),
-            ('c', 'School C'),
-        )):
-            user_form_response = self.client.post(
-                reverse('streamwebs:register'), {
-                    'username': 'john',
-                    'email': 'john@example.com',
-                    'password': 'johniscool',
-                    'first_name': 'John',
-                    'last_name': 'Johnson',
-                    'school': 'a',
-                    'birthdate': '1995-11-10',
-                    'g-recaptcha-response': 'PASSED'
-                }
-            )
-
-            self.assertEqual(user_form_response.status_code, 200)
-            self.assertTrue(user_form_response.context['registered'])
 
     def test_view_with_captcha_mode_false(self):
         """
@@ -134,6 +119,7 @@ class RegistrateTestCase(TestCase):
                 'password': 'johniscool',
                 'first_name': 'John',
                 'last_name': 'Johnson',
+                'password_check': 'johniscool',
                 'school': 'a',
                 'birthdate': '1995-11-10',
                 'g-recaptcha-response': 'PASSED'
