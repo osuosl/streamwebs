@@ -482,12 +482,12 @@ class CC_Cardinal(models.Model):
     def clean(self):
         shaded = 0
         squares = [self.A, self.B, self.C, self.D, self.E, self.F, self.G,
-            self.H, self.I, self.J, self.K, self.L, self.M, self.N, self.O,
-            self.P, self.Q, self.R, self.S, self.T, self.U, self.V, self.W,
-            self.X]
+                   self.H, self.I, self.J, self.K, self.L, self.M, self.N,
+                   self.O, self.P, self.Q, self.R, self.S, self.T, self.U,
+                   self.V, self.W, self.X]
 
         for square in squares:
-            if square == True:
+            if square is True:
                 shaded += 1
 
         if(shaded != self.num_shaded):
