@@ -89,3 +89,31 @@ class CCCardinalTestCase(TestCase):
 
         with self.assertRaises(ValidationError):
             validate_shaded(north.num_shaded)
+
+    def test_clean_with_error(self):
+        north = CC_Cardinal.objects.create_shade('North', True, True, False,
+                                                 False, False, True, False,
+                                                 False, True, True, True,
+                                                 False, True, False, False,
+                                                 False, True, False, True,
+                                                 True, False, True, False,
+                                                 False, 21)
+
+        with self.assertRaises(ValidationError):
+            north.clean()
+
+    def test_clean_no_error(self):
+        north = CC_Cardinal.objects.create_shade('North', True, True, False,
+                                                 False, False, True, False,
+                                                 False, True, True, True,
+                                                 False, True, False, False,
+                                                 False, True, False, True,
+                                                 True, False, True, False,
+                                                 False, 11)
+
+        raised = False
+        try:
+            north.clean()
+        except:
+            raised = True
+        self.assertFalse(raised, 'ValidationError raised')

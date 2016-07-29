@@ -479,6 +479,23 @@ class CC_Cardinal(models.Model):
         verbose_name = 'Cardinal Direction'
         verbose_name_plural = 'Cardinal Directions'
 
+    def clean(self):
+        shaded = 0
+        squares = [self.A, self.B, self.C, self.D, self.E, self.F, self.G,
+            self.H, self.I, self.J, self.K, self.L, self.M, self.N, self.O,
+            self.P, self.Q, self.R, self.S, self.T, self.U, self.V, self.W,
+            self.X]
+
+        for square in squares:
+            if square == True:
+                shaded += 1
+
+        if(shaded != self.num_shaded):
+            raise ValidationError(
+                _('%(num_shaded)s is not the correct total'),
+                params={'num_shaded': self.num_shaded},
+            )
+
 
 def validate_cover(est_canopy_cover):
     if not(0 <= est_canopy_cover and est_canopy_cover <= 96):
