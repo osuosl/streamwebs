@@ -12,9 +12,16 @@ class TransectZoneFormTestCase(TestCase):
             'comments'
         )
 
-    def test_TransectZoneForm_fields_exist(self):
+        self.optional_fields = ('comments',)
+
+    def test_form_fields_exist(self):
         zone_form = TransectZoneForm()
         self.assertEqual(set(zone_form.Meta.fields), set(self.expected_fields))
+
+    def test_optional_fields(self):
+        zone_form = TransectZoneForm()
+        for field in self.optional_fields:
+            self.assertEqual(zone_form.base_fields[field].required, False)
 
 
 class RiparianTransectFormTestCase(TestCase):
@@ -29,7 +36,17 @@ class RiparianTransectFormTestCase(TestCase):
             'notes',
         )
 
-    def test_RiparianTransectFormTestCase(self):
+        self.required_fields = (
+            'school',
+            'site'
+        )
+
+    def test_form_fields_exist(self):
         transect_form = RiparianTransectForm()
         self.assertEqual(set(transect_form.Meta.fields),
                          set(self.expected_fields))
+
+    def test_required_fields(self):
+        transect_form = RiparianTransectForm()
+        for field in self.required_fields:
+            self.assertEqual(transect_form.base_fields[field].required, True)
