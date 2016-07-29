@@ -40,7 +40,7 @@ class ViewTransectTestCase(TestCase):
             'School Name', '2016-07-22 15:04:00', site
         )
         zone_1 = TransectZone.objects.create_zone(transect, 1, 2, 3,  # NOQA
-                                                  'This is zone 1!!!')  # NOQA
+                                                  'This is zone 1')  # NOQA
         zone_2 = TransectZone.objects.create_zone(transect, 1, 2, 3,  # NOQA
                                                   'This is zone 2')  # NOQA
         zone_3 = TransectZone.objects.create_zone(transect, 1, 2, 3,  # NOQA
@@ -48,7 +48,7 @@ class ViewTransectTestCase(TestCase):
         zone_4 = TransectZone.objects.create_zone(transect, 1, 2, 3,  # NOQA
                                                   'This is zone 4')  # NOQA
         zone_5 = TransectZone.objects.create_zone(transect, 1, 2, 3,  # NOQA
-                                                  'This is zone 5????')  # NOQA
+                                                  'This is zone 5')  # NOQA
         response = self.client.get(
                 reverse(
                     'streamwebs:riparian_transect_view',
@@ -62,9 +62,6 @@ class ViewTransectTestCase(TestCase):
         self.assertContains(response, 'School Name')
         self.assertContains(response, 'July 22, 2016, 3:04 p.m.')
         self.assertContains(response, 'Site Name')
-        print ("\n STARTING TO PRINT!!!!")
-        print (response)
-        print ("\n END PRINT!!!!")
         self.assertContains(response, 'This is zone 1')
         self.assertContains(response, 'This is zone 2')
         self.assertContains(response, 'This is zone 3')
