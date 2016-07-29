@@ -21,9 +21,9 @@ class AddTransectTestCase(TestCase):
             reverse('streamwebs:riparian_transect_edit',
                     kwargs={'site_slug': site.id}
                     ), {
-                'form-TOTAL_FORMS': 5,
-                'form-INITIAL_FORMS': 0,
-                'form-MAX_NUM_FORMS': 5,
+                'transect-TOTAL_FORMS': '5',
+                'transect-INITIAL_FORMS': '0',
+                'transect-MAX_NUM_FORMS': '5'
                 }
         )
         self.assertFormError(response, 'transect_form', 'school',
@@ -48,34 +48,34 @@ class AddTransectTestCase(TestCase):
                     'slope': 5,
                     'notes': 'notes',
 
-                    'form-TOTAL_FORMS': 5,
-                    'form-INITIAL_FORMS': 0,
-                    'form-MAX_NUM_FORMS': 5,
+                    'transect-TOTAL_FORMS': '5',
+                    'transect-INITIAL_FORMS': '0',
+                    'transect-MAX_NUM_FORMS': '5',
 
-                    'form-0-conifers': 1,
-                    'form-0-hardwoods': 2,
-                    'form-0-shrubs': 3,
-                    'form-0-comments': '1 comments',
+                    'transect-0-conifers': 1,
+                    'transect-0-hardwoods': 2,
+                    'transect-0-shrubs': 3,
+                    'transect-0-comments': '1 comments',
 
-                    'form-1-conifers': 4,
-                    'form-1-hardwoods': 5,
-                    'form-1-shrubs': 6,
-                    'form-1-comments': '2 comments',
+                    'transect-1-conifers': 4,
+                    'transect-1-hardwoods': 5,
+                    'transect-1-shrubs': 6,
+                    'transect-1-comments': '2 comments',
 
-                    'form-2-conifers': 7,
-                    'form-2-hardwoods': 8,
-                    'form-2-shrubs': 9,
-                    'form-2-comments': '3 comments',
+                    'transect-2-conifers': 7,
+                    'transect-2-hardwoods': 8,
+                    'transect-2-shrubs': 9,
+                    'transect-2-comments': '3 comments',
 
-                    'form-3-conifers': 8,
-                    'form-3-hardwoods': 7,
-                    'form-3-shrubs': 6,
-                    'form-3-comments': '4 comments',
+                    'transect-3-conifers': 8,
+                    'transect-3-hardwoods': 7,
+                    'transect-3-shrubs': 6,
+                    'transect-3-comments': '4 comments',
 
-                    'form-4-conifers': 5,
-                    'form-4-hardwoods': 4,
-                    'form-4-shrubs': 3,
-                    'form-4-comments': '5 comments',
+                    'transect-4-conifers': 5,
+                    'transect-4-hardwoods': 4,
+                    'transect-4-shrubs': 3,
+                    'transect-4-comments': '5 comments'
 
                 }
         )

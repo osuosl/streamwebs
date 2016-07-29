@@ -312,7 +312,6 @@ def riparian_transect_edit(request, site_slug):
     )
 
     if request.method == 'POST':
-
         zone_formset = TransectZoneInlineFormSet(data=request.POST,
                                                  instance=transect)
         transect_form = RiparianTransectForm(data=request.POST)
