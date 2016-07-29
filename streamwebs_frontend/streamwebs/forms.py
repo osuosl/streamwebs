@@ -26,7 +26,7 @@ class UserForm(forms.ModelForm):
 
     def clean_password(self):
         if self.data['password'] != self.data['password_check']:
-            raise forms.ValidationError('Passwords do not match')
+            raise forms.ValidationError(_('Passwords do not match'))
         return self.data['password']
 
 
@@ -41,6 +41,8 @@ class UserProfileForm(forms.ModelForm):
 
 
 class WQForm(forms.ModelForm):
+    notes = forms.CharField(required=False)
+
     class Meta:
         model = Water_Quality
         fields = ('site', 'date', 'DEQ_wq_level', 'latitude',
@@ -62,6 +64,15 @@ class WQForm(forms.ModelForm):
 
 
 class WQSampleForm(forms.ModelForm):
+    conductivity = forms.CharField(required=False)
+    total_solids = forms.CharField(required=False)
+    bod = forms.CharField(required=False)
+    ammonia = forms.CharField(required=False)
+    nitrite = forms.CharField(required=False)
+    nitrate = forms.CharField(required=False)
+    phosphates = forms.CharField(required=False)
+    fecal_coliform = forms.CharField(required=False)
+
     class Meta:
         model = WQ_Sample
         fields = ('water_temperature', 'air_temperature', 'dissolved_oxygen',
