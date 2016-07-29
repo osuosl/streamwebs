@@ -290,9 +290,17 @@ def riparian_transect_view(request, site_slug, data_id):
     zones = TransectZone.objects.filter(transect_id=transect)
     site = Site.objects.get(id=site_slug)
 
-    print ("\n Num zones found: " + str(len(zones)))
-    for zone in zones:
-        print (str(zone) + " " + zone.comments)
+    print "this is. a line."
+#    test_var = len(zones)
+    print zones[0].comments
+    print zones[1].comments
+    print zones[2].comments
+    print zones[3].comments
+    print zones[4].comments
+    print "^^ first zone comment"
+#    print ("\n Num zones found: " + str(len(zones)))
+#    for zone in zones:
+#        print (str(zone) + " " + zone.comments)
 
     return render(
         request, 'streamwebs/datasheets/riparian_transect_view.html', {

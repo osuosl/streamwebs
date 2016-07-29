@@ -65,7 +65,7 @@ class ViewTransectTestCase(TestCase):
         print ("\n STARTING TO PRINT!!!!")
         print (response)
         print ("\n END PRINT!!!!")
-#        self.assertContains(response, 'This is zone 1')
+        self.assertContains(response, 'This is zone 1')
         self.assertContains(response, 'This is zone 2')
         self.assertContains(response, 'This is zone 3')
         self.assertContains(response, 'This is zone 4')
