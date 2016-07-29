@@ -292,6 +292,7 @@ def riparian_transect_view(request, site_slug, data_id):
 
     print "this is. a line."
 #    test_var = len(zones)
+    zones = list(zones)
     print zones[0].comments
     print zones[1].comments
     print zones[2].comments
