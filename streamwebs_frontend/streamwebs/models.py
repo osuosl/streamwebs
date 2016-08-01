@@ -364,6 +364,14 @@ class RipTransectManager(models.Manager):
                            slope=slope, notes=notes)
 
 
+def validate_slope(slope):
+    if not(0 <= slope):
+        raise ValidationError(
+            '%(slope)s is not positive.',
+            params={'slope': slope},
+            )
+
+
 class RiparianTransect(models.Model):
     """
     This model corresponds to the Riparian Transect data sheet and has a one-to
@@ -374,7 +382,7 @@ class RiparianTransect(models.Model):
     weather = models.CharField(max_length=255, blank=True)
     site = models.ForeignKey(Site, null=True, on_delete=models.CASCADE)
     slope = models.DecimalField(blank=True, null=True, max_digits=5,
-                                decimal_places=3)
+                                decimal_places=3, validators=[validate_slope])
     notes = models.TextField(blank=True)
 
     zone_1 = models.ForeignKey(TransectZone, on_delete=models.CASCADE,

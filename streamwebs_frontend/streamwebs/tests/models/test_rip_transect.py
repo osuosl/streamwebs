@@ -1,8 +1,10 @@
 from django.test import TestCase
 from django.contrib.gis.db import models
 from itertools import chain
+from django.core.exceptions import ValidationError
 
 from streamwebs.models import RiparianTransect, TransectZone, Site
+from streamwebs.models import validate_slope
 
 
 class RiparianTransectTestCase(TestCase):
@@ -54,6 +56,35 @@ class RiparianTransectTestCase(TestCase):
         for field in self.optional_fields:
             self.assertEqual(RiparianTransect._meta.get_field(field).blank,
                              True)
+
+    def test_validate_slope_good(self):
+        site = Site.objects.create_site('test site', 'test site type',
+                                        'test_site_slug')
+        zone_1 = TransectZone.zones.create_zone(1, 1, 1, 'Comments on zone 1')
+        zone_2 = TransectZone.zones.create_zone(2, 2, 2, 'Comments on zone 2')
+        zone_3 = TransectZone.zones.create_zone(3, 3, 3, 'Comments on zone 3')
+        zone_4 = TransectZone.zones.create_zone(4, 4, 4, 'Comments on zone 4')
+        zone_5 = TransectZone.zones.create_zone(5, 5, 5, 'Comments on zone 5')
+        transect = RiparianTransect.transects.create_transect(
+            'School of Cool', '2016-07-11 14:09', site, zone_1, zone_2, zone_3,
+            zone_4, zone_5, 'Cloudy, no meatballs', 1.11, 'Notes on transect')
+
+        self.assertEqual(validate_slope(transect.slope), None)
+
+    def test_validate_slope_bad(self):
+        site = Site.objects.create_site('test site', 'test site type',
+                                        'test_site_slug')
+        zone_1 = TransectZone.zones.create_zone(1, 1, 1, 'Comments on zone 1')
+        zone_2 = TransectZone.zones.create_zone(2, 2, 2, 'Comments on zone 2')
+        zone_3 = TransectZone.zones.create_zone(3, 3, 3, 'Comments on zone 3')
+        zone_4 = TransectZone.zones.create_zone(4, 4, 4, 'Comments on zone 4')
+        zone_5 = TransectZone.zones.create_zone(5, 5, 5, 'Comments on zone 5')
+        transect = RiparianTransect.transects.create_transect(
+            'School of Cool', '2016-07-11 14:09', site, zone_1, zone_2, zone_3,
+            zone_4, zone_5, 'Cloudy, no meatballs', -1.11, 'Notes on transect')
+
+        with self.assertRaises(ValidationError):
+            validate_slope(transect.slope)
 
     def test_Transect_ManyToOneSite(self):
         """
