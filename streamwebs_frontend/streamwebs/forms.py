@@ -1,10 +1,7 @@
 # -*- coding: UTF-8 -*-
 from __future__ import unicode_literals
-<<<<<<< 0aa0b479db821f6ee121bb8c107c91599a9fc4b0
 from streamwebs.models import UserProfile, WQ_Sample, Water_Quality
-=======
-from streamwebs.models import UserProfile, Canopy_Cover, CC_Cardinal
->>>>>>> Added form for Canopy_Cover and tests
+from streamwebs.models import Canopy_Cover, CC_Cardinal
 from django.contrib.auth.models import User
 from django import forms
 from django.utils.translation import ugettext_lazy as _
