@@ -31,7 +31,6 @@ class UserForm(forms.ModelForm):
 
 
 class UserProfileForm(forms.ModelForm):
-    
     class Meta:
         model = UserProfile
         fields = ('school', 'birthdate')
@@ -42,7 +41,6 @@ class UserProfileForm(forms.ModelForm):
 
 
 class WQForm(forms.ModelForm):
-
     class Meta:
         model = Water_Quality
         fields = ('site', 'date', 'DEQ_wq_level', 'latitude',
@@ -64,7 +62,6 @@ class WQForm(forms.ModelForm):
 
 
 class WQSampleForm(forms.ModelForm):
-
     class Meta:
         model = WQ_Sample
         fields = ('water_temperature', 'air_temperature', 'dissolved_oxygen',
