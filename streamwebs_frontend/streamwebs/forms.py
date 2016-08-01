@@ -7,7 +7,10 @@ from django.utils.translation import ugettext_lazy as _
 
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput()) \
-                    .label = _('Password')
+                .label = _('Password')
+    password_check = forms.CharField(
+        widget=forms.PasswordInput(),
+        label='Repeat your password')
 
     class Meta:
         model = User
@@ -19,10 +22,6 @@ class UserForm(forms.ModelForm):
             'first_name': _('First Name'),
             'last_name': _('Last Name'),
         }
-    password = forms.CharField(widget=forms.PasswordInput())
-    password_check = forms.CharField(
-        widget=forms.PasswordInput(),
-        label='Repeat your password')
 
     def clean_password(self):
         if self.data['password'] != self.data['password_check']:
