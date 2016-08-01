@@ -106,6 +106,7 @@ class CC_Cardinal_Form(forms.ModelForm):
         fields = ('direction', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I',
                   'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U',
                   'V', 'W', 'X', 'num_shaded')
+        A = forms.BooleanField(initial=False, required=False)
         labels = {
             'direction': _('Direction'),
             'num_shaded': _('Number Shaded')

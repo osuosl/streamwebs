@@ -22,6 +22,11 @@ class Canopy_Cover_Form_TestCase(TestCase):
         self.assertEqual(set(cc_form.Meta.fields),
                          set(self.expected_fields))
 
+    def test_Canopy_Cover_Form_required_fields(self):
+        cc_form = Canopy_Cover_Form()
+        for field in self.expected_fields:
+            self.assertEqual(cc_form.base_fields[field].required, True)
+
 
 class CC_Cardinal_Form_TestCase(TestCase):
 
@@ -59,3 +64,15 @@ class CC_Cardinal_Form_TestCase(TestCase):
         cc_cardinal_form = CC_Cardinal_Form()
         self.assertEqual(set(cc_cardinal_form.Meta.fields),
                          set(self.expected_fields))
+
+    def test_CC_Cardinal_Form_required_fields(self):
+        cardinal_form = CC_Cardinal_Form()
+        self.assertEqual(cardinal_form.base_fields['direction'].required,
+                         True)
+        self.assertEqual(cardinal_form.base_fields['num_shaded'].required,
+                         True)
+
+    def test_CC_Cardinal_Form_optional_fields(self):
+        cardinal_form = CC_Cardinal_Form()
+        for letter in 'ABCDEFGHIJKLMNOPQRSTUVWX':
+            self.assertEqual(cardinal_form.base_fields[letter].required, False)
