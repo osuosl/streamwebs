@@ -41,7 +41,6 @@ class UserProfileForm(forms.ModelForm):
 
 
 class WQForm(forms.ModelForm):
-    notes = forms.CharField(required=False)
 
     class Meta:
         model = Water_Quality
@@ -64,14 +63,6 @@ class WQForm(forms.ModelForm):
 
 
 class WQSampleForm(forms.ModelForm):
-    conductivity = forms.CharField(required=False)
-    total_solids = forms.CharField(required=False)
-    bod = forms.CharField(required=False)
-    ammonia = forms.CharField(required=False)
-    nitrite = forms.CharField(required=False)
-    nitrate = forms.CharField(required=False)
-    phosphates = forms.CharField(required=False)
-    fecal_coliform = forms.CharField(required=False)
 
     class Meta:
         model = WQ_Sample
