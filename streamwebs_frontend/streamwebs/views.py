@@ -333,9 +333,6 @@ def riparian_transect_edit(request, site_slug):
 
             added = True
 
-        else:
-            print (zone_formset.errors, transect_form.errors)
-
     else:
         zone_formset = TransectZoneInlineFormSet(instance=transect)
         transect_form = RiparianTransectForm()
