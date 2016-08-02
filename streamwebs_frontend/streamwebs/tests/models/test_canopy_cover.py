@@ -249,7 +249,7 @@ class CanopyCovTestCase(TestCase):
                                               date_time=default_dt, site=site,
                                               weather='cloudy', north=north,
                                               east=east, south=south,
-                                              west=west, est_canopy_cover=23)
+                                              west=west, est_canopy_cover=51)
 
         self.assertEqual(validate_cover(canopyc.est_canopy_cover), None)
 
