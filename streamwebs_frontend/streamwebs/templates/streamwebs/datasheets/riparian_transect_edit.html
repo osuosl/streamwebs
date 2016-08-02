@@ -1,36 +1,76 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Riparian Transect</title>
-    </head>
+{% extends 'streamwebs/base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+{% load filters %}
+{% block title %}Riparian Transect{% endblock %}
+{% block body_title %}Riparian Transect{% endblock %}
+{% block content %}
 
-    <body>
-        <h1>Riparian Transect</h1>
-
-        {% if user.is_authenticated %}
-            {% if added %}
+    {% if user.is_authenticated %}
+        {% if added %}
             <strong>You have successfully submitted your Riparian Transect data sheet.</strong>
 
-            {% else %}
+        {% else %}
             <form id='rip_trans_form' method='post'>
                 {% csrf_token %}
-                {{ transect_form.as_p }}
+                <table> <!-- main transect info table -->
+                    <tr>
+                        <th align='left'>School:</th>
+                        <td>{{ transect_form.school }}</td>
+                    </tr>
+                    <tr>
+                        <th align='left'>Date:</th>
+                        <td>{{ transect_form.date_time }}</td>
+                    </tr>
+                    <tr>
+                        <th align='left'>Site:</th>
+                        <td>{{ transect_form.site }}</td>
+                    </tr>
+                    <tr>
+                        <th align='left'>Slope:</th>
+                        <td>{{ transect_form.slope }}</td>
+                    </tr>
+                    <tr>
+                        <th align='left'>Weather:</th>
+                        <td>{{ transect_form.weather }}</td>
+                    </tr>
 
-                {{ zone_formset.management_form }}
-                <table>
-                    {% for zone in zone_formset %}
-                        {{ zone }}
+                    {{ zone_formset.management_form }}
+                    <table> <!-- zones subtable -->
+                        <tr>
+                            <th>Zone</th>
+                            <th>Conifers</th>
+                            <th>Hardwoods</th>
+                            <th>Shrubs</th>
+                            <th>Comments</th>
+                        </tr>
+                    {% for zone_form in zone_formset %}
+                        <tr>
+                            <th>
+                                {{ forloop.counter0|plus_one }}<br>
+                                {{ forloop.counter0|get_zone }}
+                            </th>
+                            <td>{{ zone_form.conifers }}</td>
+                            <td>{{ zone_form.hardwoods }}</td>
+                            <td>{{ zone_form.shrubs }}</td>
+                            <td>{{ zone_form.comments }}</td>
+                        </tr>
                     {% endfor %}
-                </table>
+                    </table> <!-- end zones subtable -->
+
+                    <tr>
+                        <th align='left'>Other observations:</th>
+                        <td>{{ transect_form.notes }}</td>
+                    </tr>
+                </table> <!-- end main transect info table -->
 
             <input type='submit', name='submit', value='Submit' />
             </form>
-            {% endif %}
-
-        {% else %}
-            <p>You must be logged in to submit data.</p>
-            <a href='/streamwebs/login/'>Log in here.</a>
         {% endif %}
 
-    </body>
-</html>
+    {% else %}
+        <p>You must be logged in to submit data.</p>
+        <a href='/streamwebs/login/'>Log in here.</a>
+    {% endif %}
+
+{% endblock %}
