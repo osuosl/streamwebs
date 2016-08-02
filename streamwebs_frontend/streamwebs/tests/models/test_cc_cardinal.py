@@ -91,6 +91,8 @@ class CCCardinalTestCase(TestCase):
             validate_shaded(north.num_shaded)
 
     def test_clean_with_error(self):
+        """Check that validation error is risen with clean() method when
+           the number shaded does not match the number of Trues."""
         north = CC_Cardinal.objects.create_shade('North', True, True, False,
                                                  False, False, True, False,
                                                  False, True, True, True,
@@ -103,6 +105,8 @@ class CCCardinalTestCase(TestCase):
             north.clean()
 
     def test_clean_no_error(self):
+        """Checks that no validation error is risen with clean() method when
+           the number shaded matches the number of Trues."""
         north = CC_Cardinal.objects.create_shade('North', True, True, False,
                                                  False, False, True, False,
                                                  False, True, True, True,
