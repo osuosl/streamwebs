@@ -186,7 +186,7 @@ class Water_Quality(models.Model):
     FAHRENHEIT = _('Fahrenheit')
     CELSIUS = _('Celsius')
 
-    DEQ_WQ_CHOICES = (
+    DEQ_DQ_CHOICES = (
         (None, '-----'),
         (LEVEL_A, 'Level A'),
         (LEVEL_B, 'Level B'),
@@ -205,12 +205,12 @@ class Water_Quality(models.Model):
     object has a one-to-one relationship with its specified Site.
     """
     site = models.ForeignKey(Site, null=True, on_delete=models.CASCADE)
-    DEQ_wq_level = models.CharField(max_length=1, choices=DEQ_WQ_CHOICES,
+    DEQ_dq_level = models.CharField(max_length=1, choices=DEQ_DQ_CHOICES,
                                     default=None)
     date = models.DateField(default=datetime.date.today)
     school = models.CharField(max_length=250)
-    latitude = models.DecimalField(default=0, max_digits=5, decimal_places=2)
-    longitude = models.DecimalField(default=0, max_digits=5, decimal_places=2)
+    latitude = models.DecimalField(default=0, max_digits=9, decimal_places=6)
+    longitude = models.DecimalField(default=0, max_digits=9, decimal_places=6)
     fish_present = models.BooleanField(choices=BOOL_CHOICES, default=None)
     live_fish = models.PositiveSmallIntegerField(default=0)
     dead_fish = models.PositiveSmallIntegerField(default=0)

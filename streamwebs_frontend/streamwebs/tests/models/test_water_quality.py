@@ -15,7 +15,7 @@ class WaterQualityTestCase(TestCase):
         self.expected_fields = {
             'site': models.ForeignKey,
             'site_id': models.ForeignKey,
-            'DEQ_wq_level': models.CharField,
+            'DEQ_dq_level': models.CharField,  # DEQ Data Quality Level
             'date': models.DateField,
             'school': models.CharField,
             'latitude': models.DecimalField,
@@ -44,12 +44,15 @@ class WaterQualityTestCase(TestCase):
         }
 
     def test_fields_exist(self):
+        """Tests that all fields are successfully created"""
         model = apps.get_model('streamwebs', 'water_quality')
         for field, field_type in self.expected_fields.items():
             self.assertEqual(
                 field_type, type(model._meta.get_field(field)))
 
     def test_no_extra_fields(self):
+        """Checks that there are no differences between the actual model and
+           its expected fields"""
         fields = list(set(chain.from_iterable(
             (field.name, field.attname) if hasattr(field, 'attname') else
             (field.name,) for field in Water_Quality._meta.get_fields()
@@ -58,6 +61,7 @@ class WaterQualityTestCase(TestCase):
         self.assertEqual(sorted(fields), sorted(self.expected_fields.keys()))
 
     def test_optional_fields(self):
+        """Tests that optional fields default to True when left blank"""
         apps.get_model('streamwebs', 'water_quality')
         for field in self.optional_fields:
             self.assertEqual(
@@ -93,7 +97,7 @@ class WaterQualityTestCase(TestCase):
                                                    0, 0, 0, 0, 2.5, 0, 0, 0)
 
         waterq = Water_Quality.objects.create(site=site,
-                                              DEQ_wq_level='A',
+                                              DEQ_dq_level='A',
                                               date='2016-06-01',
                                               school='a', latitude=90,
                                               longitude=123,
@@ -106,10 +110,67 @@ class WaterQualityTestCase(TestCase):
                                               sample_3=sample_3,
                                               sample_4=sample_4,
                                               notes='Test data made')
+
         # Assert that site data matches the newly created test site
         self.assertEqual(waterq.site.site_name, 'test')
         self.assertEqual(waterq.site.site_type, 'some_type')
         self.assertEqual(waterq.site.site_slug, 'some_slug')
+
+    def test_datasheet_CreateWaterQuality(self):
+        """Tests that a Water Quality object is created - checks that the
+           datasheet's general info is correctly assigned"""
+        site = Site.objects.create_site('test', 'some_type', 'some_slug')
+
+        sample_1 = WQ_Sample.objects.create_sample(35, 'Manual', 70,
+                                                   'Manual', 6, 'Manual',
+                                                   8.65, 'Vernier', 0.879,
+                                                   'Manual', 8.8, 'Vernier',
+                                                   15, 10, 7, 0.93,
+                                                   2.1, 1.9, 14.5, 13)
+
+        sample_2 = WQ_Sample.objects.create_sample(35, 'Vernier', 70,
+                                                   'Vernier', 5, 'Vernier',
+                                                   0.5, 'Manual', 8.79,
+                                                   'Vernier', 8, 'Manual',
+                                                   1, 0.10, 29, 0.93, 2.1,
+                                                   2.0, 1.45, 10)
+
+        sample_3 = WQ_Sample.objects.create_sample(25, 'Manual', 57,
+                                                   'Vernier', 12, 'Manual',
+                                                   8.45, 'Vernier', 0.87,
+                                                   'Manual', 9.8, 'Vernier')
+
+        sample_4 = WQ_Sample.objects.create_sample(45, 'Vernier', 89,
+                                                   'Manual', 9, 'Vernier',
+                                                   3.25, 'Vernier', 0.879,
+                                                   'Manual', 8, 'Vernier',
+                                                   0, 0, 0, 0, 2.5, 0, 0, 0)
+
+        waterq = Water_Quality.objects.create(site=site,
+                                              DEQ_dq_level='A',
+                                              date='2016-06-01',
+                                              school='a', latitude=90,
+                                              longitude=123,
+                                              fish_present=False,
+                                              live_fish=0, dead_fish=0,
+                                              water_temp_unit='Fahrenheit',
+                                              air_temp_unit='Fahrenheit',
+                                              sample_1=sample_1,
+                                              sample_2=sample_2,
+                                              sample_3=sample_3,
+                                              sample_4=sample_4,
+                                              notes='Test data made')
+
+        self.assertEqual(waterq.date, '2016-06-01')
+        self.assertEqual(waterq.school, 'a')
+        self.assertEqual(waterq.latitude, 90)
+        self.assertEqual(waterq.longitude, 123)
+        self.assertEqual(waterq.fish_present, False)
+        self.assertEqual(waterq.live_fish, 0)
+        self.assertEqual(waterq.dead_fish, 0)
+        self.assertEqual(waterq.water_temp_unit, 'Fahrenheit')
+        self.assertEqual(waterq.air_temp_unit, 'Fahrenheit')
+        self.assertEqual(waterq.notes, 'Test data made')
 
     def test_datasheet_SetSampleInfo(self):
         """Tests that a datasheet correctly corresponds to a specified
@@ -142,7 +203,7 @@ class WaterQualityTestCase(TestCase):
                                                    0, 0, 0, 0, 2.5, 0, 0, 0)
 
         waterq = Water_Quality.objects.create(site=site,
-                                              DEQ_wq_level='A',
+                                              DEQ_dq_level='A',
                                               date='2016-06-01',
                                               school='a', latitude=90,
                                               longitude=123,
@@ -241,7 +302,7 @@ class WaterQualityTestCase(TestCase):
                                                    0, 0, 0, 0, 2.5, 0, 0, 0)
 
         waterq = Water_Quality.objects.create(site=site,
-                                              DEQ_wq_level='A',
+                                              DEQ_dq_level='A',
                                               date='2016-06-01',
                                               school='a', latitude=90,
                                               longitude=123,
