@@ -90,7 +90,7 @@ nav {
 
 .form-cell {
     min-width: 300px;
-}*/
+}
 
 /* CSS for D3 graphs; ALL FREE TO BE CHANGED */
 .graph {
@@ -139,4 +139,12 @@ div.graph .line {
     fill: none;
     stroke: black;
     shape-rendering: crispEdges;
+}
+
+table input {
+    width: 90% !important;
+}
+
+table .row {
+    margin: 0 !important;
 }
