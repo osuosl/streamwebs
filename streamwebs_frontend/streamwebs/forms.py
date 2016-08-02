@@ -43,13 +43,13 @@ class UserProfileForm(forms.ModelForm):
 class WQForm(forms.ModelForm):
     class Meta:
         model = Water_Quality
-        fields = ('site', 'date', 'DEQ_wq_level', 'latitude',
+        fields = ('site', 'date', 'DEQ_dq_level', 'latitude',
                   'longitude', 'fish_present', 'live_fish',
                   'dead_fish', 'water_temp_unit',
                   'air_temp_unit', 'notes')
         labels = {'site': _('Stream/Site name:'),
                   'date': _('Date:'),
-                  'DEQ_wq_level': _('DEQ Data Quality Level:'),
+                  'DEQ_dq_level': _('DEQ Data Quality Level:'),
                   'latitude': _('Latitude:'),
                   'longitude': _('Longitude:'),
                   'fish_present': _('Any fish present?'),
