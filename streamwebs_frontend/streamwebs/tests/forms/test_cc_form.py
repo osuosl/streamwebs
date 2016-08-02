@@ -31,34 +31,10 @@ class Canopy_Cover_Form_TestCase(TestCase):
 class CC_Cardinal_Form_TestCase(TestCase):
 
     def setUp(self):
-        self.expected_fields = (
-            'direction',
-            'A',
-            'B',
-            'C',
-            'D',
-            'E',
-            'F',
-            'G',
-            'H',
-            'I',
-            'J',
-            'K',
-            'L',
-            'M',
-            'N',
-            'O',
-            'P',
-            'Q',
-            'R',
-            'S',
-            'T',
-            'U',
-            'V',
-            'W',
-            'X',
-            'num_shaded'
-        )
+        self.expected_fields = ('direction', 'A', 'B', 'C', 'D', 'E', 'F', 'G',
+                                'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
+                                'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X',
+                                'num_shaded')
 
     def test_CC_Cardinal_Form_fields_exist(self):
         cc_cardinal_form = CC_Cardinal_Form()
