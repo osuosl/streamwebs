@@ -16,27 +16,27 @@
                 <table> <!-- main transect info table -->
                     <tr>{{ transect_form.non_field_errors }}</tr>
                     <tr>
-                        <th align='left'>School:</th>
+                        <th align='left'>{{ transect_form.school.label }}</th>
                         <td>{{ transect_form.school }}</td>
                         <td>{{ transect_form.school.errors }}</td>
                     </tr>
                     <tr>
-                        <th align='left'>Date:</th>
+                        <th align='left'>{{ transect_form.date_time.label }}</th>
                         <td>{{ transect_form.date_time }}</td>
                         <td>{{ transect_form.date_time.errors }}</td>
                     </tr>
                     <tr>
-                        <th align='left'>Site:</th>
+                        <th align='left'>{{ transect_form.site.label }}</th>
                         <td>{{ transect_form.site }}</td>
                         <td>{{ transect_form.site.errors }}</td>
                     </tr>
                     <tr>
-                        <th align='left'>Slope:</th>
+                        <th align='left'>{{ transect_form.slope.label }}</th>
                         <td>{{ transect_form.slope }}</td>
                         <td>{{ transect_form.weather.errors }}</td>
                     </tr>
                     <tr>
-                        <th align='left'>Weather:</th>
+                        <th align='left'>{{ transect_form.weather.label }}</th>
                         <td>{{ transect_form.weather }}</td>
                         <td>{{ transect_form.weather.errors }}</td>
                     </tr>
@@ -44,14 +44,13 @@
                     {{ zone_formset.management_form }}
                     <table> <!-- zones subtable -->
                         <tr>
-                            <th>Zone</th>
-                            <th>Conifers</th>
-                            <th>Hardwoods</th>
-                            <th>Shrubs</th>
-                            <th>Comments</th>
+                            <th>{{ 'zone'|get_zone_labels }}</th>
+                            <th>{{ 'conifers'|get_zone_labels }}</th>
+                            <th>{{ 'hardwoods'|get_zone_labels }}</th>
+                            <th>{{ 'shrubs'|get_zone_labels }}</th>
+                            <th>{{ 'comments'|get_zone_labels }}</th>
                         </tr>
                     {% for zone_form in zone_formset %}
-                        <tr>{{ zone_form.non_field_errors }}</tr>
                         <tr>
                             <th></th>
                             <td>{{ zone_form.conifers.errors }}</td>
@@ -73,7 +72,7 @@
                     </table> <!-- end zones subtable -->
 
                     <tr>
-                        <th align='left'>Other observations:</th>
+                        <th align='left'>{{ transect_form.notes.label }}</th>
                         <td>{{ transect_form.notes }}</td>
                     </tr>
                 </table> <!-- end main transect info table -->

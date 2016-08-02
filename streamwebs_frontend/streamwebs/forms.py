@@ -93,9 +93,21 @@ class TransectZoneForm(forms.ModelForm):
     class Meta:
         model = TransectZone
         fields = ('conifers', 'hardwoods', 'shrubs', 'comments')
+        labels = {'conifers': _('Conifers:'),
+                  'hardwoods': _('Hardwoods'),
+                  'shrubs': _('Shrubs:'),
+                  'comments': _('Comments:')
+                  }
 
 
 class RiparianTransectForm(forms.ModelForm):
     class Meta:
         model = RiparianTransect
         fields = ('school', 'date_time', 'weather', 'site', 'slope', 'notes')
+        labels = {'school': _('School:'),
+                  'date_time': _('Date and Time:'),
+                  'weather': _('Weather:'),
+                  'site': _('Site:'),
+                  'slope': _('Slope (rise over run):'),
+                  'notes': _('Field Notes:')
+                  }

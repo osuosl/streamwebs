@@ -1,4 +1,5 @@
 from django.template import Library
+from django.utils.translation import ugettext_lazy as _
 
 register = Library()
 
@@ -28,12 +29,27 @@ def plus_one(index):
 def get_zone(index):
     """Grabs a zone description based on form order"""
     if index == 0:
-        return "Set 15' rope at 20' from the water"
+        return _("Set 15' rope at 20' from the water")
     elif index == 1:
-        return "At 40' from the water"
+        return _("At 40' from the water")
     elif index == 2:
-        return "At 60' from the water"
+        return _("At 60' from the water")
     elif index == 3:
-        return "At 80' from the water"
+        return _("At 80' from the water")
     elif index == 4:
-        return "At 100' from the water"
+        return _("At 100' from the water")
+
+
+@register.filter
+def get_zone_labels(category):
+    """Grabs translatable zone-table header string"""
+    if category == 'zone':
+        return _('Zone')
+    elif category == 'conifers':
+        return _('Conifers')
+    elif category == 'hardwoods':
+        return _('Hardwoods')
+    elif category == 'shrubs':
+        return _('Shrubs')
+    elif category == 'comments':
+        return _('Comments')
