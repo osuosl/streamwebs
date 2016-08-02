@@ -83,3 +83,11 @@ nav {
 .rowchk > label {
     margin-right: 15px;
 }
+
+table input {
+    width: 90% !important;
+}
+
+table .row {
+    margin: 0 !important;
+}
