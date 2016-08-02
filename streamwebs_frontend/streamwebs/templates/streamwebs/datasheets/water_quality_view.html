@@ -343,5 +343,300 @@
                 </div>
             </div>
         </div>
+
+        <table>
+            <thead>
+                <th data-field="test"></th>
+                <th data-field="sample1">Sample 1</th>
+                <th data-field="sample2">Sample 2</th>
+                <th data-field="sample3">Sample 3</th>
+                <th data-field="sample4">Sample 4</th>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td>Water Temperature</td>
+                    <td>
+                        <div class="row">
+                            <div class="input-field"><input type="text" value="{{data.sample_1.water_temperature}}" disabled class="data"></div>
+                        </div>
+                        <div class="row">
+                            <input type="radio" disabled {% if data.sample_1.water_temp_tool == 'Vernier' %} checked="checked" {% endif %} id="vradio1">
+                            <label for="vradio1">Vernier</label>
+                            <input type="radio" disabled {% if data.sample_1.water_temp_tool == 'Manual' %} checked="checked" {% endif %} id="mradio1">
+                            <label for="mradio1">manual</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="row">
+                            <div class="input-field"><input type="text" value="{{data.sample_2.water_temperature}}" disabled class="data"></div>
+                        </div>
+                        <div class="row">
+                            <input type="radio" disabled {% if data.sample_2.water_temp_tool == 'Vernier' %} checked="checked" {% endif %} id="vradio2">
+                            <label for="vradio2">Vernier</label>
+                            <input type="radio" disabled {% if data.sample_2.water_temp_tool == 'Manual' %} checked="checked" {% endif %} id="mradio2">
+                            <label for="mradio2">manual</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="row">
+                            <div class="input-field"><input type="text" value="{{data.sample_3.water_temperature}}" disabled class="data"></div>
+                        </div>
+                        <div class="row">
+                            <input type="radio" disabled {% if data.sample_3.water_temp_tool == 'Vernier' %} checked="checked" {% endif %} id="vradio3">
+                            <label for="vradio3">Vernier</label>
+                            <input type="radio" disabled {% if data.sample_3.water_temp_tool == 'Manual' %} checked="checked" {% endif %} id="mradio3">
+                            <label for="mradio3">manual</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="row">
+                            <div class="input-field"><input type="text" value="{{data.sample_4.water_temperature}}" disabled class="data"></div>
+                        </div>
+                        <div class="row">
+                            <input type="radio" disabled {% if data.sample_4.water_temp_tool == 'Vernier' %} checked="checked" {% endif %} id="vradio4">
+                            <label for="vradio4">Vernier</label>
+                            <input type="radio" disabled {% if data.sample_4.water_temp_tool == 'Manual' %} checked="checked" {% endif %} id="mradio4">
+                            <label for="mradio4">manual</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Air Temperature</td>
+                    <td>
+                        <div class="row">
+                            <div class="input-field"><input type="text" value="{{data.sample_1.air_temperature}}" disabled class="data"></div>
+                        </div>
+                        <div class="row">
+                            <input type="radio" disabled {% if data.sample_1.air_temp_tool == 'Vernier' %} checked="checked" {% endif %} id="vradio1">
+                            <label for="vradio1">Vernier</label>
+                            <input type="radio" disabled {% if data.sample_1.air_temp_tool == 'Manual' %} checked="checked" {% endif %} id="mradio1">
+                            <label for="mradio1">manual</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="row">
+                            <div class="input-field"><input type="text" value="{{data.sample_2.air_temperature}}" disabled class="data"></div>
+                        </div>
+                        <div class="row">
+                            <input type="radio" disabled {% if data.sample_2.air_temp_tool == 'Vernier' %} checked="checked" {% endif %} id="vradio2">
+                            <label for="vradio2">Vernier</label>
+                            <input type="radio" disabled {% if data.sample_2.air_temp_tool == 'Manual' %} checked="checked" {% endif %} id="mradio2">
+                            <label for="mradio2">manual</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="row">
+                            <div class="input-field"><input type="text" value="{{data.sample_3.air_temperature}}" disabled class="data"></div>
+                        </div>
+                        <div class="row">
+                            <input type="radio" disabled {% if data.sample_3.air_temp_tool == 'Vernier' %} checked="checked" {% endif %} id="vradio3">
+                            <label for="vradio3">Vernier</label>
+                            <input type="radio" disabled {% if data.sample_3.air_temp_tool == 'Manual' %} checked="checked" {% endif %} id="mradio3">
+                            <label for="mradio3">manual</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="row">
+                            <div class="input-field"><input type="text" value="{{data.sample_4.air_temperature}}" disabled class="data"></div>
+                        </div>
+                        <div class="row">
+                            <input type="radio" disabled {% if data.sample_4.air_temp_tool == 'Vernier' %} checked="checked" {% endif %} id="vradio4">
+                            <label for="vradio4">Vernier</label>
+                            <input type="radio" disabled {% if data.sample_4.air_temp_tool == 'Manual' %} checked="checked" {% endif %} id="mradio4">
+                            <label for="mradio4">manual</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Dissolved Oxygen (mg/L)</td>
+                    <td>
+                        <div class="row">
+                            <div class="input-field"><input type="text" value="{{data.sample_1.dissolved_oxygen}}" disabled class="data"></div>
+                        </div>
+                        <div class="row">
+                            <input type="radio" disabled {% if data.sample_1.oxygen_tool == 'Vernier' %} checked="checked" {% endif %} id="vradio1">
+                            <label for="vradio1">Vernier</label>
+                            <input type="radio" disabled {% if data.sample_1.oxygen_tool == 'Manual' %} checked="checked" {% endif %} id="mradio1">
+                            <label for="mradio1">manual</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="row">
+                            <div class="input-field"><input type="text" value="{{data.sample_2.dissolved_oxygen}}" disabled class="data"></div>
+                        </div>
+                        <div class="row">
+                            <input type="radio" disabled {% if data.sample_2.oxygen_tool == 'Vernier' %} checked="checked" {% endif %} id="vradio2">
+                            <label for="vradio2">Vernier</label>
+                            <input type="radio" disabled {% if data.sample_2.oxygen_tool == 'Manual' %} checked="checked" {% endif %} id="mradio2">
+                            <label for="mradio2">manual</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="row">
+                            <div class="input-field"><input type="text" value="{{data.sample_3.dissolved_oxygen}}" disabled class="data"></div>
+                        </div>
+                        <div class="row">
+                            <input type="radio" disabled {% if data.sample_3.oxygen_tool == 'Vernier' %} checked="checked" {% endif %} id="vradio3">
+                            <label for="vradio3">Vernier</label>
+                            <input type="radio" disabled {% if data.sample_3.oxygen_tool == 'Manual' %} checked="checked" {% endif %} id="mradio3">
+                            <label for="mradio3">manual</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="row">
+                            <div class="input-field"><input type="text" value="{{data.sample_4.dissolved_oxygen}}" disabled class="data"></div>
+                        </div>
+                        <div class="row">
+                            <input type="radio" disabled {% if data.sample_4.oxygen_tool == 'Vernier' %} checked="checked" {% endif %} id="vradio4">
+                            <label for="vradio4">Vernier</label>
+                            <input type="radio" disabled {% if data.sample_4.oxygen_tool == 'Manual' %} checked="checked" {% endif %} id="mradio4">
+                            <label for="mradio4">manual</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>pH</td>
+                    <td>
+                        <div class="row">
+                            <div class="input-field"><input type="text" value="{{data.sample_1.pH}}" disabled class="data"></div>
+                        </div>
+                        <div class="row">
+                            <input type="radio" disabled {% if data.sample_1.pH_tool == 'Vernier' %} checked="checked" {% endif %} id="vradio1">
+                            <label for="vradio1">Vernier</label>
+                            <input type="radio" disabled {% if data.sample_1.pH_tool == 'Manual' %} checked="checked" {% endif %} id="mradio1">
+                            <label for="mradio1">manual</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="row">
+                            <div class="input-field"><input type="text" value="{{data.sample_2.pH}}" disabled class="data"></div>
+                        </div>
+                        <div class="row">
+                            <input type="radio" disabled {% if data.sample_2.pH_tool == 'Vernier' %} checked="checked" {% endif %} id="vradio2">
+                            <label for="vradio2">Vernier</label>
+                            <input type="radio" disabled {% if data.sample_2.pH_tool == 'Manual' %} checked="checked" {% endif %} id="mradio2">
+                            <label for="mradio2">manual</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="row">
+                            <div class="input-field"><input type="text" value="{{data.sample_3.pH}}" disabled class="data"></div>
+                        </div>
+                        <div class="row">
+                            <input type="radio" disabled {% if data.sample_3.pH_tool == 'Vernier' %} checked="checked" {% endif %} id="vradio3">
+                            <label for="vradio3">Vernier</label>
+                            <input type="radio" disabled {% if data.sample_3.pH_tool == 'Manual' %} checked="checked" {% endif %} id="mradio3">
+                            <label for="mradio3">manual</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="row">
+                            <div class="input-field"><input type="text" value="{{data.sample_4.pH}}" disabled class="data"></div>
+                        </div>
+                        <div class="row">
+                            <input type="radio" disabled {% if data.sample_4.pH_tool == 'Vernier' %} checked="checked" {% endif %} id="vradio4">
+                            <label for="vradio4">Vernier</label>
+                            <input type="radio" disabled {% if data.sample_4.pH_tool == 'Manual' %} checked="checked" {% endif %} id="mradio4">
+                            <label for="mradio4">manual</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Turbidity (NTU)</td>
+                    <td>
+                        <div class="row">
+                            <div class="input-field"><input type="text" value="{{data.sample_1.turbidity}}" disabled class="data"></div>
+                        </div>
+                        <div class="row">
+                            <input type="radio" disabled {% if data.sample_1.turbid_tool == 'Vernier' %} checked="checked" {% endif %} id="vradio1">
+                            <label for="vradio1">Vernier</label>
+                            <input type="radio" disabled {% if data.sample_1.turbid_tool == 'Manual' %} checked="checked" {% endif %} id="mradio1">
+                            <label for="mradio1">manual</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="row">
+                            <div class="input-field"><input type="text" value="{{data.sample_2.turbidity}}" disabled class="data"></div>
+                        </div>
+                        <div class="row">
+                            <input type="radio" disabled {% if data.sample_2.turbid_tool == 'Vernier' %} checked="checked" {% endif %} id="vradio2">
+                            <label for="vradio2">Vernier</label>
+                            <input type="radio" disabled {% if data.sample_2.turbid_tool == 'Manual' %} checked="checked" {% endif %} id="mradio2">
+                            <label for="mradio2">manual</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="row">
+                            <div class="input-field"><input type="text" value="{{data.sample_3.turbidity}}" disabled class="data"></div>
+                        </div>
+                        <div class="row">
+                            <input type="radio" disabled {% if data.sample_3.turbid_tool == 'Vernier' %} checked="checked" {% endif %} id="vradio3">
+                            <label for="vradio3">Vernier</label>
+                            <input type="radio" disabled {% if data.sample_3.turbid_tool == 'Manual' %} checked="checked" {% endif %} id="mradio3">
+                            <label for="mradio3">manual</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="row">
+                            <div class="input-field"><input type="text" value="{{data.sample_4.turbidity}}" disabled class="data"></div>
+                        </div>
+                        <div class="row">
+                            <input type="radio" disabled {% if data.sample_4.turbid_tool == 'Vernier' %} checked="checked" {% endif %} id="vradio4">
+                            <label for="vradio4">Vernier</label>
+                            <input type="radio" disabled {% if data.sample_4.turbid_tool == 'Manual' %} checked="checked" {% endif %} id="mradio4">
+                            <label for="mradio4">manual</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Salinity (PSU) PPT</td>
+                    <td>
+                        <div class="row">
+                            <div class="input-field"><input type="text" value="{{data.sample_1.salinity}}" disabled class="data"></div>
+                        </div>
+                        <div class="row">
+                            <input type="radio" disabled {% if data.sample_1.salt_tool == 'Vernier' %} checked="checked" {% endif %} id="vradio1">
+                            <label for="vradio1">Vernier</label>
+                            <input type="radio" disabled {% if data.sample_1.salt_tool == 'Manual' %} checked="checked" {% endif %} id="mradio1">
+                            <label for="mradio1">manual</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="row">
+                            <div class="input-field"><input type="text" value="{{data.sample_2.salinity}}" disabled class="data"></div>
+                        </div>
+                        <div class="row">
+                            <input type="radio" disabled {% if data.sample_2.salt_tool == 'Vernier' %} checked="checked" {% endif %} id="vradio2">
+                            <label for="vradio2">Vernier</label>
+                            <input type="radio" disabled {% if data.sample_2.salt_tool == 'Manual' %} checked="checked" {% endif %} id="mradio2">
+                            <label for="mradio2">manual</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="row">
+                            <div class="input-field"><input type="text" value="{{data.sample_3.salinity}}" disabled class="data"></div>
+                        </div>
+                        <div class="row">
+                            <input type="radio" disabled {% if data.sample_3.salt_tool == 'Vernier' %} checked="checked" {% endif %} id="vradio3">
+                            <label for="vradio3">Vernier</label>
+                            <input type="radio" disabled {% if data.sample_3.salt_tool == 'Manual' %} checked="checked" {% endif %} id="mradio3">
+                            <label for="mradio3">manual</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="row">
+                            <div class="input-field"><input type="text" value="{{data.sample_4.salinity}}" disabled class="data"></div>
+                        </div>
+                        <div class="row">
+                            <input type="radio" disabled {% if data.sample_4.salt_tool == 'Vernier' %} checked="checked" {% endif %} id="vradio4">
+                            <label for="vradio4">Vernier</label>
+                            <input type="radio" disabled {% if data.sample_4.salt_tool == 'Manual' %} checked="checked" {% endif %} id="mradio4">
+                            <label for="mradio4">manual</label>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 {% endblock %}
