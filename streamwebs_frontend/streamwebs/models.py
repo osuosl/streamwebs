@@ -418,6 +418,14 @@ class CardinalManager(models.Manager):
         return cc_info
 
 
+def validate_shaded(num_shaded):
+    if not(0 <= num_shaded and num_shaded <= 24):
+        raise ValidationError(
+            '%(num_shaded)s is not 0-24.',
+            params={'num_shaded': num_shaded},
+            )
+
+
 @python_2_unicode_compatible
 class CC_Cardinal(models.Model):
     NORTH = 'North'
@@ -459,7 +467,8 @@ class CC_Cardinal(models.Model):
     V = models.BooleanField(default=False, blank=True)
     W = models.BooleanField(default=False, blank=True)
     X = models.BooleanField(default=False, blank=True)
-    num_shaded = models.PositiveIntegerField(default=0)
+    num_shaded = models.PositiveIntegerField(default=0,
+                                             validators=[validate_shaded])
 
     objects = CardinalManager()
 
@@ -469,6 +478,31 @@ class CC_Cardinal(models.Model):
     class Meta:
         verbose_name = 'Cardinal Direction'
         verbose_name_plural = 'Cardinal Directions'
+
+    def clean(self):
+        shaded = 0
+        squares = [self.A, self.B, self.C, self.D, self.E, self.F, self.G,
+                   self.H, self.I, self.J, self.K, self.L, self.M, self.N,
+                   self.O, self.P, self.Q, self.R, self.S, self.T, self.U,
+                   self.V, self.W, self.X]
+
+        for square in squares:
+            if square is True:
+                shaded += 1
+
+        if(shaded != self.num_shaded):
+            raise ValidationError(
+                _('%(num_shaded)s is not the correct total'),
+                params={'num_shaded': self.num_shaded},
+            )
+
+
+def validate_cover(est_canopy_cover):
+    if not(0 <= est_canopy_cover and est_canopy_cover <= 96):
+        raise ValidationError(
+            '%(est_canopy_cover)s is not 0-96.',
+            params={'est_canopy_cover': est_canopy_cover},
+            )
 
 
 @python_2_unicode_compatible
@@ -485,7 +519,8 @@ class Canopy_Cover(models.Model):
                               related_name='south', null=True)
     west = models.ForeignKey(CC_Cardinal, on_delete=models.CASCADE,
                              related_name='west', null=True)
-    est_canopy_cover = models.PositiveIntegerField(default=0)
+    est_canopy_cover = models.PositiveIntegerField(default=0,
+                                                   validators=[validate_cover])
 
     def __str__(self):
         return self.site.site_name
