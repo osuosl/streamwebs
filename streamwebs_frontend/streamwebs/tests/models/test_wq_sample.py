@@ -91,8 +91,11 @@ class WQSampleTestCase(TestCase):
             self.assertEqual(
                 sample._meta.get_field(field).blank, True)
 
-    def test_Sample_ManyToOneTransect(self):
-        sample_1 = WQ_Sample.objects.create_sample(self.water_quality)
+    def test_Sample_ManyToOneWaterQuality(self):
+        sample_1 = WQ_Sample.objects.create_sample(self.water_quality, 0, 0,
+                                                   0, 0, 0, 0,
+                                                   0, 0, 0, 0,
+                                                   0, 0, 0)
         sample_2 = WQ_Sample.objects.create_sample(self.water_quality, 0, 0,
                                                    0, 0, 0, 0,
                                                    0, 0, 0, 0,
@@ -107,7 +110,8 @@ class WQSampleTestCase(TestCase):
         self.assertEqual(sample_2.water_quality.site.site_name, 'test site')
 
     def test_sample_creation_req_fields(self):
-        sample = WQ_Sample.objects.create_sample(self.water_quality)
+        sample = WQ_Sample.objects.create_sample(self.water_quality, 0, 0, 0,
+                                                 0, 0, 0, 0, 0, 0, 0, 0, 0)
 
         # Required
         self.assertEqual(sample.water_quality.site.site_name, 'test site')

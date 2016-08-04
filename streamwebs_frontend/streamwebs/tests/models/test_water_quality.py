@@ -80,34 +80,6 @@ class WaterQualityTestCase(TestCase):
         self.assertEqual(waterq.site.site_type, 'some_type')
         self.assertEqual(waterq.site.site_slug, 'some_slug')
 
-    def test_datasheet_CreateWaterQuality(self):
-        """Tests that a Water Quality object is created - checks that the
-           datasheet's general info is correctly assigned"""
-
-        site = Site.objects.create_site('test', 'some_type', 'some_slug')
-
-        waterq = Water_Quality.objects.create(site=site,
-                                              DEQ_dq_level='A',
-                                              date='2016-06-01',
-                                              school='a', latitude=90,
-                                              longitude=123,
-                                              fish_present=False,
-                                              live_fish=0, dead_fish=0,
-                                              water_temp_unit='Fahrenheit',
-                                              air_temp_unit='Fahrenheit',
-                                              notes='Test data made')
-
-        self.assertEqual(waterq.date, '2016-06-01')
-        self.assertEqual(waterq.school, 'a')
-        self.assertEqual(waterq.latitude, 90)
-        self.assertEqual(waterq.longitude, 123)
-        self.assertEqual(waterq.fish_present, False)
-        self.assertEqual(waterq.live_fish, 0)
-        self.assertEqual(waterq.dead_fish, 0)
-        self.assertEqual(waterq.water_temp_unit, 'Fahrenheit')
-        self.assertEqual(waterq.air_temp_unit, 'Fahrenheit')
-        self.assertEqual(waterq.notes, 'Test data made')
-
     def test_wq_creation_req_fields(self):
         wq = Water_Quality.objects.create_water_quality(self.site,
                                                         '2016-08-04',
@@ -131,7 +103,7 @@ class WaterQualityTestCase(TestCase):
         # optional
         self.assertEqual(wq.notes, '')
 
-    def test_wq_ceration_opt_fields(self):
+    def test_wq_creation_opt_fields(self):
         wq = Water_Quality.objects.create_water_quality(self.site,
                                                         '2016-08-04',
                                                         'a', 'A', 90,

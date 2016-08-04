@@ -81,10 +81,10 @@ class WaterQualityManager(models.Manager):
     """
     Manager for the Water_Quality model/datasheet.
     """
-    def create_water_quality(self, site, date, school, DEQ_dq_level=None,
-                             latitude=0, longitude=0, fish_present=None,
-                             live_fish=0, dead_fish=0, air_temp_unit=None,
-                             water_temp_unit=None, notes=''):
+    def create_water_quality(self, site, date, school, DEQ_dq_level,
+                             latitude, longitude, fish_present,
+                             live_fish, dead_fish, air_temp_unit,
+                             water_temp_unit, notes=''):
 
         wq_info = self.create(site=site,
                               date=date,
@@ -163,10 +163,10 @@ class WQSampleManager(models.Manager):
     Manager for the water quality samples - creates both the required and
     additional field data for the Water Quality datasheet tests
     """
-    def create_sample(self, water_quality, water_temp=0, water_temp_tool=0,
-                      air_temp=0, air_temp_tool=0, oxygen=0,
-                      oxygen_tool=0, pH=0, pH_tool=0,
-                      turbidity=0, turbid_tool=0, salinity=0, salt_tool=0,
+    def create_sample(self, water_quality, water_temp, water_temp_tool,
+                      air_temp, air_temp_tool, oxygen,
+                      oxygen_tool, pH, pH_tool,
+                      turbidity, turbid_tool, salinity, salt_tool,
                       conductivity=None, tot_sol=None, bod=None,
                       ammonia=None, nitrite=None, nitrate=None,
                       phosphates=None, fecal_col=None):
