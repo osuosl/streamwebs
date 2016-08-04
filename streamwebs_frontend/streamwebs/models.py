@@ -36,21 +36,15 @@ class Site(models.Model):
     location as a pair of latitudinal/longitudinal coordinates and an optional
     text description of entry.
     """
-
-    site_name = models.CharField(
-        max_length=250, blank=False, verbose_name=_('site name')
-    )
-    site_type = models.CharField(max_length=250, blank=True)
-    description = models.TextField(blank=True)
-    site_slug = models.SlugField(
-        unique=True, blank=False, max_length=50, editable=False
-    )
+    site_name = models.CharField(max_length=250, verbose_name=_('site name'))
+    site_type = models.CharField(max_length=250, verbose_name=_('site type'))
+    description = models.TextField(blank=True,
+                                   verbose_name=_('site description'))
+    site_slug = models.SlugField(unique=True, max_length=50, editable=False)
 
     # Geo Django fields to store a point
-    location = models.PointField(
-        null=True, blank=True, validators=[validate_Site_location]
-    )
-    # objects = models.GeoManager()
+    location = models.PointField(null=True, verbose_name=_('location'),
+                                 validators=[validate_Site_location])
 
     created = models.DateTimeField(default=timezone.now)
     modified = models.DateTimeField(default=timezone.now)

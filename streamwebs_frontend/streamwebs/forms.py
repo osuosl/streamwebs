@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 from streamwebs.models import UserProfile, WQ_Sample, Water_Quality, \
     Macroinvertebrates, Canopy_Cover, CC_Cardinal, TransectZone, \
-    RiparianTransect
+    RiparianTransect, Site
 from django.contrib.auth.models import User
 from django import forms
 from django.utils.translation import ugettext_lazy as _
@@ -149,3 +149,9 @@ class RiparianTransectForm(forms.ModelForm):
     class Meta:
         model = RiparianTransect
         fields = ('school', 'date_time', 'weather', 'site', 'slope', 'notes')
+
+
+class SiteForm(forms.ModelForm):
+    class Meta:
+        model = Site
+        fields = ('site_name', 'site_type', 'description', 'location')
