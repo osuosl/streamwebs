@@ -154,4 +154,4 @@ class RiparianTransectForm(forms.ModelForm):
 class SiteForm(forms.ModelForm):
     class Meta:
         model = Site
-        fields = ('site_name', 'site_type', 'description', 'location')
+        fields = ('site_name', 'site_type', 'description', 'location', 'image')

@@ -9,13 +9,19 @@ class SiteFormTestCase(TestCase):
             'site_name',
             'site_type',
             'description',
-            'location'
+            'location',
+            'image'
         )
 
         self.required_fields = (
             'site_name',
             'site_type',
             'location'
+        )
+
+        self.optional_fields = (
+            'description',
+            'image'
         )
 
     def test_SiteForm_fields_exist(self):
@@ -26,3 +32,8 @@ class SiteFormTestCase(TestCase):
         site_form = SiteForm()
         for field in self.required_fields:
             self.assertEqual(site_form.base_fields[field].required, True)
+ 
+    def test_SiteForm_optional_fields(self):
+        site_form = SiteForm()
+        for field in self.optional_fields:
+            self.assertEqual(site_form.base_fields[field].required, False)
