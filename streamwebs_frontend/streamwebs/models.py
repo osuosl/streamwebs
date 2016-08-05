@@ -17,8 +17,14 @@ class SiteManager(models.Manager):
     """
     Manager for the site class - creates a site to be used in tests
     """
-    def create_site(self, site_name, site_type):
-        site = self.create(site_name=site_name, site_type=site_type)
+    default = 'POINT(44.0612385 -121.3846841)'
+
+    def create_site(self, site_name, site_type, location=default,
+                    description='', image=None):
+
+        site = self.create(site_name=site_name, site_type=site_type,
+                           location=location, description=description,
+                           image=image)
         return site
 
 
@@ -36,16 +42,31 @@ class Site(models.Model):
     location as a pair of latitudinal/longitudinal coordinates and an optional
     text description of entry.
     """
+    STUDENT_STEWARDSHIP = 'SS'
+    SALMON_WATCH = 'SW'
+    AVAILABLE_PROJECT = 'AP'
+
+    SITE_TYPE_CHOICES = (
+        (STUDENT_STEWARDSHIP, _('Student Stewardship Project')),
+        (SALMON_WATCH, _('Salmon Watch')),
+        (AVAILABLE_PROJECT, _('Available Project'))
+    )
+
     site_name = models.CharField(max_length=250, verbose_name=_('site name'))
-    site_type = models.CharField(max_length=250, verbose_name=_('site type'))
+    site_type = models.CharField(max_length=2, choices=SITE_TYPE_CHOICES,
+                                 default=STUDENT_STEWARDSHIP,
+                                 verbose_name=_('site type'))
     description = models.TextField(blank=True,
                                    verbose_name=_('site description'))
     site_slug = models.SlugField(unique=True, max_length=50, editable=False)
 
     # Geo Django fields to store a point
-    location = models.PointField(null=True, verbose_name=_('location'),
+    location = models.PointField(default='POINT(44.0612385 -121.3846841)',
+                                 verbose_name=_('location')
                                  validators=[validate_Site_location])
 
+    image = models.ImageField(null=True, blank=True, verbose_name=_('image'))
+    
     created = models.DateTimeField(default=timezone.now)
     modified = models.DateTimeField(default=timezone.now)
 

@@ -53,7 +53,6 @@ class RiparianTransectTestCase(TestCase):
         transect = RiparianTransect.objects.create_transect(
             'School of Cool', '2016-07-11 14:09', site, 'Cloudy, no meatballs',
             1.11, 'Notes on transect')
-
         self.assertEqual(validate_slope(transect.slope), None)
 
     def test_validate_slope_bad(self):

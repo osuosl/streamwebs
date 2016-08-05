@@ -2,8 +2,10 @@ from django.test import TestCase
 
 from streamwebs.models import Site
 from django.contrib.gis.db import models
+from django.contrib.gis.geos import Point
 from django.apps import apps
 from itertools import chain
+import tempfile
 
 
 class SiteTestCase(TestCase):
@@ -17,6 +19,7 @@ class SiteTestCase(TestCase):
             'location': models.PointField,
             'created': models.DateTimeField,
             'modified': models.DateTimeField,
+            'image': models.ImageField,
             'id': models.AutoField,
 
             # Datasheets
@@ -27,7 +30,8 @@ class SiteTestCase(TestCase):
         }
 
         self.optional_fields = {
-            'description'
+            'description',
+            'image'
         }
 
     def test_fields_exist(self):
@@ -79,3 +83,30 @@ class SiteTestCase(TestCase):
         print "Testing!"
         self.site = Site.test_objects.create_site('', '')
         self.assertIsNotNone(self.site.site_slug)
+
+    def test_obj_creation_req_fields(self):
+        """Sites should be created successfully with only req fields"""
+        site = Site.objects.create_site('Cool Creek', 'SS', 'cool_creek')
+
+        self.assertEqual(site.site_name, 'Cool Creek')
+        self.assertEqual(site.site_type, 'SS')
+        self.assertEqual(site.site_slug, 'cool_creek')
+        self.assertEqual(site.location.coords, (44.0612385, -121.3846841))
+        self.assertEqual(site.description, '')
+        self.assertEqual(site.image, None)
+
+    def test_obj_creation_opt_fields(self):
+        """Sites should be created successfully with both req and opt fields"""
+        point = Point(44.3910532, -120.2684184)
+        temp_photo = tempfile.NamedTemporaryFile(suffix='.jpg').name
+
+        site = Site.objects.create_site('Cool Creek', 'SS', 'cool_creek',
+                                        point, 'A very cool creek', temp_photo)
+
+        self.assertEqual(site.site_name, 'Cool Creek')
+        self.assertEqual(site.site_type, 'SS')
+        self.assertEqual(site.site_slug, 'cool_creek')
+        self.assertEqual(site.location.coords, (44.3910532, -120.2684184))
+        self.assertEqual(site.description, 'A very cool creek')
+        self.assertEqual(site.image, temp_photo)
+>>>>>>> add image field, edit manager, add site type choices
