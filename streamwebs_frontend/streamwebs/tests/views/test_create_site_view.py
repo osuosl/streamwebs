@@ -14,6 +14,7 @@ class CreateSiteTestCase(TestCase):
     def test_view_with_bad_blank_data(self):
         """Blank form: Errors will be displayed and site will not be created"""
         response = self.client.post(reverse('streamwebs:create_site'), {})
+        print response
 
         self.assertTemplateUsed(response, 'streamwebs/create_site.html')
 
@@ -39,6 +40,9 @@ class CreateSiteTestCase(TestCase):
         self.assertTemplateUsed(response, 'streamwebs/create_site.html')
         self.assertEqual(response.status_code, 200)
         self.assertTrue(response.context['created'])
+        self.assertContains(
+            response, 'You have successfully added a new StreamWebs site.'
+        )
 
     def test_view_with_not_logged_in_user(self):
         """Tests that the user can't submit data if they're not logged in"""

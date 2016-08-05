@@ -10,7 +10,7 @@ from django.forms import inlineformset_factory, modelformset_factory
 from streamwebs.forms import (
     UserForm, UserProfileForm, RiparianTransectForm, MacroinvertebratesForm,
     WQSampleForm, WQSampleFormReadOnly, WQForm, WQFormReadOnly
-    )
+    SiteForm)
 from streamwebs.models import (
     Macroinvertebrates, Site, Water_Quality, WQ_Sample, RiparianTransect,
     TransectZone,
@@ -25,6 +25,30 @@ def _timestamp(dt):
 
 def index(request):
     return render(request, 'streamwebs/index.html', {})
+
+
+def create_site(request):
+    created = False
+
+    if request.method == 'POST':
+        site_form = SiteForm(data=request.POST)
+
+        if site_form.is_valid():
+            # save the form to a site object
+            # save the object to the database
+            site = site_form.save()
+            site.site_slug = site.id
+            site.save()
+            created = True
+
+        else:
+            print site_form.errors
+
+    else:
+        site_form = SiteForm()
+
+    return render(request, 'streamwebs/create_site.html', {
+        'site_form': site_form, 'created': created})
 
 
 def sites(request):
