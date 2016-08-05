@@ -62,7 +62,7 @@ class Site(models.Model):
 
     # Geo Django fields to store a point
     location = models.PointField(default='POINT(44.0612385 -121.3846841)',
-                                 verbose_name=_('location')
+                                 verbose_name=_('location'),
                                  validators=[validate_Site_location])
 
     image = models.ImageField(null=True, blank=True, verbose_name=_('image'))
