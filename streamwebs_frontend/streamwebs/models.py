@@ -65,17 +65,16 @@ def validate_UserProfile_birthdate(birthdate):
 
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE,
-                                verbose_name=_('User'))
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     school = models.CharField(
         max_length=255,
         choices=settings.SCHOOL_CHOICES,
         default='',
         validators=[validate_UserProfile_school],
-        verbose_name=_('School')
+        verbose_name=_('school')
     )
     birthdate = models.DateField(validators=[validate_UserProfile_birthdate],
-                                 verbose_name=_('Birthdate'))
+                                 verbose_name=_('birthdate'))
 
     def __unicode__(self):
         return self.user.username
@@ -136,31 +135,31 @@ class Water_Quality(models.Model):
     site = models.ForeignKey(Site, null=True, on_delete=models.CASCADE)
     DEQ_dq_level = models.CharField(max_length=1, choices=DEQ_DQ_CHOICES,
                                     default=None,
-                                    verbose_name=_('DEQ Data Quality Level'))
+                                    verbose_name=_('DEQ data quality level'))
     date = models.DateField(default=datetime.date.today,
-                            verbose_name=_('Date'))
-    school = models.CharField(max_length=250, verbose_name=_('School'))
+                            verbose_name=_('date'))
+    school = models.CharField(max_length=250, verbose_name=_('school'))
     latitude = models.DecimalField(default=0, max_digits=9, decimal_places=6,
-                                   verbose_name=_('Latitude'))
+                                   verbose_name=_('latitude'))
     longitude = models.DecimalField(default=0, max_digits=9, decimal_places=6,
-                                    verbose_name=_('Longitude'))
+                                    verbose_name=_('longitude'))
     fish_present = models.BooleanField(choices=BOOL_CHOICES,
                                        default=None,
-                                       verbose_name=_('Any fish present?'))
+                                       verbose_name=_('any fish present?'))
     live_fish = models.PositiveSmallIntegerField(
-        default=0, verbose_name=_('Number of live fish')
+        default=0, verbose_name=_('number of live fish')
         )
     dead_fish = models.PositiveSmallIntegerField(
-        default=0, verbose_name=_('Number of dead fish')
+        default=0, verbose_name=_('number of dead fish')
         )
     air_temp_unit = models.CharField(max_length=255, choices=UNIT_CHOICES,
                                      default=UNIT_CHOICES[0],
-                                     verbose_name=_('Air Temperature Units'))
+                                     verbose_name=_('air temperature units'))
     water_temp_unit = models.CharField(
         max_length=255, choices=UNIT_CHOICES, default=UNIT_CHOICES[0],
-        verbose_name=_('Water Temperature Units')
+        verbose_name=_('water temperature units')
         )
-    notes = models.TextField(blank=True, verbose_name=_('Notes'))
+    notes = models.TextField(blank=True, verbose_name=_('notes'))
 
     # Add some logic in which the datasheet object is only created when
     # the Site in which it corresponds to actually exists
@@ -171,8 +170,8 @@ class Water_Quality(models.Model):
         return self.site.site_name
 
     class Meta:
-        verbose_name = 'Water Quality'
-        verbose_name_plural = 'Water Quality'
+        verbose_name = 'water quality'
+        verbose_name_plural = 'water quality'
 
 
 class WQSampleManager(models.Manager):
@@ -231,18 +230,18 @@ class WQ_Sample(models.Model):
                                       related_name='water_quality', null=True)
     water_temperature = models.DecimalField(
         default=0, max_digits=5, decimal_places=2,
-        verbose_name=_('Water Temperature')
+        verbose_name=_('water temperature')
         )
     water_temp_tool = models.CharField(max_length=255, choices=TOOL_CHOICES,
                                        default=TOOL_CHOICES[0])
     air_temperature = models.DecimalField(default=0, max_digits=5,
                                           decimal_places=2,
-                                          verbose_name=_('Air Temperature'))
+                                          verbose_name=_('air temperature'))
     air_temp_tool = models.CharField(max_length=255, choices=TOOL_CHOICES,
                                      default=TOOL_CHOICES[0])
     dissolved_oxygen = models.DecimalField(
         default=0, max_digits=5, decimal_places=2,
-        verbose_name=_('Dissolved Oxygen (mg/L)')
+        verbose_name=_('dissolved oxygen (mg/L)')
         )
     oxygen_tool = models.CharField(max_length=255, choices=TOOL_CHOICES,
                                    default=TOOL_CHOICES[0])
@@ -251,41 +250,41 @@ class WQ_Sample(models.Model):
     pH_tool = models.CharField(max_length=255, choices=TOOL_CHOICES,
                                default=TOOL_CHOICES[0])
     turbidity = models.DecimalField(default=0, max_digits=5, decimal_places=2,
-                                    verbose_name=_('Turbidity (NTU)'))
+                                    verbose_name=_('turbidity (NTU)'))
     turbid_tool = models.CharField(max_length=255, choices=TOOL_CHOICES,
                                    default=TOOL_CHOICES[0])
     salinity = models.DecimalField(default=0, max_digits=5, decimal_places=2,
-                                   verbose_name=_('Salinity (PSU) PPT'))
+                                   verbose_name=_('salinity (PSU) PPT'))
     salt_tool = models.CharField(max_length=255, choices=TOOL_CHOICES,
                                  default=TOOL_CHOICES[0])
 
     # The following are optional fields
     conductivity = models.DecimalField(default=0, max_digits=5,
                                        decimal_places=2, blank=True, null=True,
-                                       verbose_name=_('Conductivity (µS/cm)'))
+                                       verbose_name=_('conductivity (µS/cm)'))
     total_solids = models.DecimalField(default=0, max_digits=5,
                                        decimal_places=2, blank=True, null=True,
-                                       verbose_name=_('Total Solids (mg/L)'))
+                                       verbose_name=_('total solids (mg/L)'))
     bod = models.DecimalField(default=0, max_digits=5, decimal_places=2,
                               blank=True, null=True,
                               verbose_name=_('BOD (mg/L)'))
     ammonia = models.DecimalField(default=0, max_digits=5, decimal_places=2,
                                   blank=True, null=True,
-                                  verbose_name=_('Ammonia (mg/L)'))
+                                  verbose_name=_('ammonia (mg/L)'))
     nitrite = models.DecimalField(default=0, max_digits=5, decimal_places=2,
                                   blank=True, null=True,
-                                  verbose_name=_('Nitrite (mg/L)'))
+                                  verbose_name=_('nitrite (mg/L)'))
     nitrate = models.DecimalField(default=0, max_digits=5, decimal_places=2,
                                   blank=True, null=True,
-                                  verbose_name=_('Nitrate (mg/L)'))
+                                  verbose_name=_('nitrate (mg/L)'))
     phosphates = models.DecimalField(default=0, max_digits=5, decimal_places=2,
                                      blank=True, null=True,
-                                     verbose_name=_('Phosphates (mg/L)'))
+                                     verbose_name=_('phosphates (mg/L)'))
     fecal_coliform = models.DecimalField(
         default=0, max_digits=5,
         decimal_places=2, blank=True,
         null=True,
-        verbose_name=_('Fecal Coliform (CFU/100 mL)')
+        verbose_name=_('fecal coliform (CFU/100 mL)')
         )
 
     objects = WQSampleManager()
@@ -294,26 +293,26 @@ class WQ_Sample(models.Model):
         return self.site.site_name
 
     class Meta:
-        verbose_name = 'Water Quality Sample'
-        verbose_name_plural = 'Water Quality Samples'
+        verbose_name = 'water quality sample'
+        verbose_name_plural = 'water quality samples'
 
 
 @python_2_unicode_compatible
 class Macroinvertebrates(models.Model):
-    school = models.CharField(max_length=250, verbose_name=_('School'))
+    school = models.CharField(max_length=250, verbose_name=_('school'))
     date_time = models.DateTimeField(default=timezone.now,
-                                     verbose_name=_('Date and time'))
+                                     verbose_name=_('date and time'))
     weather = models.CharField(max_length=250,
-                               verbose_name=_('Weather'))
+                               verbose_name=_('weather'))
     site = models.ForeignKey(Site, null=True, on_delete=models.CASCADE)
     time_spent = models.PositiveIntegerField(
-        default=0, verbose_name=_('Time spent sorting/identifying')
+        default=0, verbose_name=_('time spent sorting/identifying')
         )
     num_people = models.PositiveIntegerField(
         default=0, verbose_name=_('# of people sorting/identifying')
         )
-    riffle = models.BooleanField(default=False, verbose_name=_('Riffle'))
-    pool = models.BooleanField(default=False, verbose_name=_(' Pool'))
+    riffle = models.BooleanField(default=False, verbose_name=_('riffle'))
+    pool = models.BooleanField(default=False, verbose_name=_(' pool'))
 
     # Sensitive/intolerant to pollution
     caddisfly = models.PositiveIntegerField(default=0,
@@ -330,7 +329,7 @@ class Macroinvertebrates(models.Model):
     dobsonfly = models.PositiveIntegerField(default=0,
                                             verbose_name=_('dobsonfly'))
     sensitive_total = models.PositiveIntegerField(
-        default=0, verbose_name=_('Sensitive TOTAL')
+        default=0, verbose_name=_('sensitive total')
         )
 
     # Somewhat sensitive
@@ -365,12 +364,12 @@ class Macroinvertebrates(models.Model):
         default=0, verbose_name=_('mosquito larva')
         )
     tolerant_total = models.PositiveIntegerField(
-        default=0, verbose_name=_('Tolerant TOTAL')
+        default=0, verbose_name=_('tolerant total')
         )
 
     # Water quality rating
     wq_rating = models.PositiveIntegerField(
-        default=0, verbose_name=_('Water Quality Rating')
+        default=0, verbose_name=_('water quality rating')
         )
 
     def __str__(self):
@@ -408,8 +407,8 @@ class Macroinvertebrates(models.Model):
             )
 
     class Meta:
-        verbose_name = 'Macroinvertebrate'
-        verbose_name_plural = 'Macroinvertebrates'
+        verbose_name = 'macroinvertebrate'
+        verbose_name_plural = 'macroinvertebrates'
 
 
 class TransectZoneManager(models.Manager):
@@ -427,13 +426,13 @@ class TransectZone(models.Model):
     Each Riparian Transect datasheet requires five zones.
     """
     conifers = models.PositiveSmallIntegerField(default=0,
-                                                verbose_name=_('Conifers'))
+                                                verbose_name=_('conifers'))
     hardwoods = models.PositiveSmallIntegerField(default=0,
-                                                 verbose_name=_('Hardwoods'))
+                                                 verbose_name=_('cardwoods'))
     shrubs = models.PositiveSmallIntegerField(default=0,
-                                              verbose_name=_('Shrubs'))
+                                              verbose_name=_('shrubs'))
     comments = models.TextField(blank=True,
-                                verbose_name=_('Additional Comments'))
+                                verbose_name=_('additional comments'))
 
     zones = TransectZoneManager()
 
@@ -441,8 +440,8 @@ class TransectZone(models.Model):
         return str(self.id)
 
     class Meta:
-        verbose_name = 'Zone'
-        verbose_name_plural = 'Zones'
+        verbose_name = 'zone'
+        verbose_name_plural = 'zones'
 
 
 class RipTransectManager(models.Manager):
@@ -493,8 +492,8 @@ class RiparianTransect(models.Model):
     transects = RipTransectManager()
 
     class Meta:
-        verbose_name = 'Riparian Transect'
-        verbose_name_plural = 'Riparian Transects'
+        verbose_name = 'riparian transect'
+        verbose_name_plural = 'riparian transects'
 
 
 class CardinalManager(models.Manager):
@@ -537,7 +536,7 @@ class CC_Cardinal(models.Model):
 
     direction = models.CharField(max_length=255, choices=DIRECTIONS,
                                  default=DIRECTIONS[0],
-                                 verbose_name=_('Direction'))
+                                 verbose_name=_('direction'))
     A = models.BooleanField(default=False, blank=True)
     B = models.BooleanField(default=False, blank=True)
     C = models.BooleanField(default=False, blank=True)
@@ -564,7 +563,7 @@ class CC_Cardinal(models.Model):
     X = models.BooleanField(default=False, blank=True)
     num_shaded = models.PositiveIntegerField(default=0,
                                              validators=[validate_shaded],
-                                             verbose_name=_('# Shaded Boxes'))
+                                             verbose_name=_('# shaded boxes'))
 
     objects = CardinalManager()
 
@@ -572,8 +571,8 @@ class CC_Cardinal(models.Model):
         return self.direction
 
     class Meta:
-        verbose_name = 'Cardinal Direction'
-        verbose_name_plural = 'Cardinal Directions'
+        verbose_name = 'cardinal direction'
+        verbose_name_plural = 'cardinal directions'
 
     def clean(self):
         shaded = 0
@@ -603,32 +602,32 @@ def validate_cover(est_canopy_cover):
 
 @python_2_unicode_compatible
 class Canopy_Cover(models.Model):
-    school = models.CharField(max_length=250, verbose_name=_('School'))
+    school = models.CharField(max_length=250, verbose_name=_('school'))
     date_time = models.DateTimeField(default=timezone.now,
-                                     verbose_name=_('Date and Time'))
+                                     verbose_name=_('date and time'))
     site = models.ForeignKey(Site, null=True, on_delete=models.CASCADE,
-                             verbose_name=_('Site'))
-    weather = models.CharField(max_length=250, verbose_name=_('Weather'))
+                             verbose_name=_('site'))
+    weather = models.CharField(max_length=250, verbose_name=_('weather'))
     north = models.ForeignKey(CC_Cardinal, on_delete=models.CASCADE,
                               related_name='north', null=True,
-                              verbose_name=_('North'))
+                              verbose_name=_('north'))
     east = models.ForeignKey(CC_Cardinal, on_delete=models.CASCADE,
                              related_name='east', null=True,
-                             verbose_name=_('East'))
+                             verbose_name=_('east'))
     south = models.ForeignKey(CC_Cardinal, on_delete=models.CASCADE,
                               related_name='south', null=True,
-                              verbose_name=_('South'))
+                              verbose_name=_('south'))
     west = models.ForeignKey(CC_Cardinal, on_delete=models.CASCADE,
                              related_name='west', null=True,
-                             verbose_name=_('West'))
+                             verbose_name=_('west'))
     est_canopy_cover = models.PositiveIntegerField(
         default=0, validators=[validate_cover],
-        verbose_name=_('Estimated Canopy Cover')
+        verbose_name=_('estimated canopy cover')
         )
 
     def __str__(self):
         return self.site.site_name
 
     class Meta:
-        verbose_name = 'Canopy Cover Survey'
-        verbose_name_plural = 'Canopy Cover Surveys'
+        verbose_name = 'canopy cover survey'
+        verbose_name_plural = 'canopy cover surveys'
