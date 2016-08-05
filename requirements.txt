@@ -1,5 +1,6 @@
 Django
 Jinja2
+Pillow
 MarkupSafe
 PyYAML
 Pygments
