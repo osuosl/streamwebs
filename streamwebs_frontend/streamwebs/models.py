@@ -349,7 +349,7 @@ class Macroinvertebrates(models.Model):
                                            verbose_name=_('alderfly'))
     mite = models.PositiveIntegerField(default=0, verbose_name=_('mite'))
     somewhat_sensitive_total = models.PositiveIntegerField(
-        default=0, verbose_name=_('Somewhat Sensitive TOTAL')
+        default=0, verbose_name=_('somewhat sensitive total')
         )
 
     # Tolerant
@@ -428,7 +428,7 @@ class TransectZone(models.Model):
     conifers = models.PositiveSmallIntegerField(default=0,
                                                 verbose_name=_('conifers'))
     hardwoods = models.PositiveSmallIntegerField(default=0,
-                                                 verbose_name=_('cardwoods'))
+                                                 verbose_name=_('hardwoods'))
     shrubs = models.PositiveSmallIntegerField(default=0,
                                               verbose_name=_('shrubs'))
     comments = models.TextField(blank=True,
