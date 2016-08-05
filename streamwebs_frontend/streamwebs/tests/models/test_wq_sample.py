@@ -4,8 +4,7 @@ from django.contrib.gis.db import models
 from django.apps import apps
 from itertools import chain
 from django.core.exceptions import ValidationError
-
-from streamwebs.models import WQ_Sample
+from streamwebs.models import Water_Quality, WQ_Sample, Site
 from streamwebs.models import validate_pH
 
 
@@ -36,10 +35,8 @@ class WQSampleTestCase(TestCase):
             'id': models.AutoField,
 
             # List the foreign key relation here
-            'sample_1': models.ManyToOneRel,
-            'sample_2': models.ManyToOneRel,
-            'sample_3': models.ManyToOneRel,
-            'sample_4': models.ManyToOneRel
+            'water_quality': models.ForeignKey,
+            'water_quality_id': models.ForeignKey,
         }
 
         self.optional_fields = {
@@ -52,9 +49,17 @@ class WQSampleTestCase(TestCase):
             'phosphates',
             'fecal_coliform',
         }
+
+        site = Site.objects.create_site('test site', 'test site type',
+                                        'test_site_slug')
+
+        self.water_quality = Water_Quality.objects.create_water_quality(
+                             site, '2016-08-03', 'a', 'A', 90, 123,
+                             False, 0, 0, 'Fahrenheit', 'Fahrenheit')
+
         # Object to test pH
         self.sample_data = WQ_Sample.objects.create_sample(
-            35, 'Manual', 70,
+            self.water_quality, 35, 'Manual', 70,
             'Manual', 6, 'Manual',
             16, 'Vernier', 0.879,
             'Manual', 8.8, 'Vernier',
@@ -85,6 +90,95 @@ class WQSampleTestCase(TestCase):
         for field in self.optional_fields:
             self.assertEqual(
                 sample._meta.get_field(field).blank, True)
+
+    def test_Sample_ManyToOneWaterQuality(self):
+        sample_1 = WQ_Sample.objects.create_sample(self.water_quality, 34,
+                                                   'Vernier',
+                                                   55, 'Manual',
+                                                   4.2, 'Vernier',
+                                                   9, 'Manual',
+                                                   0.44, 'Manual',
+                                                   5.6, 'Vernier')
+        sample_2 = WQ_Sample.objects.create_sample(self.water_quality, 23,
+                                                   'Vernier',
+                                                   65, 'Manual',
+                                                   2.5, 'Vernier',
+                                                   9, 'Manual',
+                                                   0.41, 'Manual',
+                                                   7.6, 'Vernier')
+
+        self.assertEqual(sample_1.water_quality.school, 'a')
+        self.assertEqual(sample_1.water_quality.date, '2016-08-03')
+        self.assertEqual(sample_1.water_quality.site.site_name, 'test site')
+
+        self.assertEqual(sample_2.water_quality.school, 'a')
+        self.assertEqual(sample_2.water_quality.date, '2016-08-03')
+        self.assertEqual(sample_2.water_quality.site.site_name, 'test site')
+
+    def test_sample_creation_req_fields(self):
+        sample = WQ_Sample.objects.create_sample(self.water_quality, 23,
+                                                 'Vernier',
+                                                 65, 'Manual',
+                                                 2.5, 'Vernier',
+                                                 9, 'Manual',
+                                                 0.41, 'Manual',
+                                                 7.6, 'Vernier')
+
+        # Required
+        self.assertEqual(sample.water_quality.site.site_name, 'test site')
+        self.assertEqual(sample.water_temperature, 23)
+        self.assertEqual(sample.water_temp_tool, 'Vernier')
+        self.assertEqual(sample.air_temperature, 65)
+        self.assertEqual(sample.air_temp_tool, 'Manual')
+        self.assertEqual(sample.dissolved_oxygen, 2.5)
+        self.assertEqual(sample.oxygen_tool, 'Vernier')
+        self.assertEqual(sample.pH, 9)
+        self.assertEqual(sample.pH_tool, 'Manual')
+        self.assertEqual(sample.turbidity, 0.41)
+        self.assertEqual(sample.turbid_tool, 'Manual')
+        self.assertEqual(sample.salinity, 7.6)
+        self.assertEqual(sample.salt_tool, 'Vernier')
+
+        # Optional
+        self.assertEqual(sample.conductivity, None)
+        self.assertEqual(sample.total_solids, None)
+        self.assertEqual(sample.bod, None)
+        self.assertEqual(sample.ammonia, None)
+        self.assertEqual(sample.nitrite, None)
+        self.assertEqual(sample.nitrate, None)
+        self.assertEqual(sample.phosphates, None)
+        self.assertEqual(sample.fecal_coliform, None)
+
+    def test_sample_creation_opt_fields(self):
+        sample = WQ_Sample.objects.create_sample(self.water_quality, 0, 0, 0,
+                                                 0, 0, 0, 0, 0, 0, 0, 0,
+                                                 0, 35, 2, 0.34, 3.23, 12,
+                                                 37, 0.34, 1.45)
+
+        # Required
+        self.assertEqual(sample.water_quality.site.site_name, 'test site')
+        self.assertEqual(sample.water_temperature, 0)
+        self.assertEqual(sample.water_temp_tool, 0)
+        self.assertEqual(sample.air_temperature, 0)
+        self.assertEqual(sample.air_temp_tool, 0)
+        self.assertEqual(sample.dissolved_oxygen, 0)
+        self.assertEqual(sample.oxygen_tool, 0)
+        self.assertEqual(sample.pH, 0)
+        self.assertEqual(sample.pH_tool, 0)
+        self.assertEqual(sample.turbidity, 0)
+        self.assertEqual(sample.turbid_tool, 0)
+        self.assertEqual(sample.salinity, 0)
+        self.assertEqual(sample.salt_tool, 0)
+
+        # Optional
+        self.assertEqual(sample.conductivity, 35)
+        self.assertEqual(sample.total_solids, 2)
+        self.assertEqual(sample.bod, 0.34)
+        self.assertEqual(sample.ammonia, 3.23)
+        self.assertEqual(sample.nitrite, 12)
+        self.assertEqual(sample.nitrate, 37)
+        self.assertEqual(sample.phosphates, 0.34)
+        self.assertEqual(sample.fecal_coliform, 1.45)
 
     # Tests for pH validator. Valid pH's are 0-14.
     def test_validate_pH_too_large(self):

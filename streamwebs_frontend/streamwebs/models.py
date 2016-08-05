@@ -77,21 +77,107 @@ class UserProfile(models.Model):
         return self.user.username
 
 
+class WaterQualityManager(models.Manager):
+    """
+    Manager for the Water_Quality model/datasheet.
+    """
+    def create_water_quality(self, site, date, school, DEQ_dq_level,
+                             latitude, longitude, fish_present,
+                             live_fish, dead_fish, air_temp_unit,
+                             water_temp_unit, notes=''):
+
+        wq_info = self.create(site=site,
+                              date=date,
+                              school=school,
+                              DEQ_dq_level=DEQ_dq_level,
+                              latitude=latitude,
+                              longitude=longitude,
+                              fish_present=fish_present,
+                              live_fish=live_fish,
+                              dead_fish=dead_fish,
+                              air_temp_unit=air_temp_unit,
+                              water_temp_unit=water_temp_unit,
+                              notes=notes)
+        return wq_info
+
+
+@python_2_unicode_compatible
+class Water_Quality(models.Model):
+    LEVEL_A = 'A'   # Define DEQ water quality levels
+    LEVEL_B = 'B'
+    LEVEL_C = 'C'
+    LEVEL_D = 'D'
+    LEVEL_E = 'E'
+    FAHRENHEIT = _('Fahrenheit')
+    CELSIUS = _('Celsius')
+
+    DEQ_DQ_CHOICES = (
+        (None, '-----'),
+        (LEVEL_A, 'Level A'),
+        (LEVEL_B, 'Level B'),
+        (LEVEL_C, 'Level C'),
+        (LEVEL_D, 'Level D'),
+        (LEVEL_E, 'Level E'),
+    )
+
+    BOOL_CHOICES = ((True, _('Yes')), (False, _('No')), (None, '-----'),)
+    UNIT_CHOICES = ((None, '-----'),
+                    (FAHRENHEIT, _('Fahrenheit')),
+                    (CELSIUS, _('Celsius')),)
+
+    """
+    The Water Quality model corresponds to the Water Quality datasheet. Each
+    object has a one-to-one relationship with its specified Site.
+    """
+    site = models.ForeignKey(Site, null=True, on_delete=models.CASCADE)
+    DEQ_dq_level = models.CharField(max_length=1, choices=DEQ_DQ_CHOICES,
+                                    default=None)
+    date = models.DateField(default=datetime.date.today)
+    school = models.CharField(max_length=250)
+    latitude = models.DecimalField(default=0, max_digits=9, decimal_places=6)
+    longitude = models.DecimalField(default=0, max_digits=9, decimal_places=6)
+    fish_present = models.BooleanField(choices=BOOL_CHOICES, default=None)
+    live_fish = models.PositiveSmallIntegerField(default=0)
+    dead_fish = models.PositiveSmallIntegerField(default=0)
+    air_temp_unit = models.CharField(max_length=255, choices=UNIT_CHOICES,
+                                     default=UNIT_CHOICES[0])
+    water_temp_unit = models.CharField(max_length=255, choices=UNIT_CHOICES,
+                                       default=UNIT_CHOICES[0])
+    notes = models.TextField(blank=True)
+
+    # Add some logic in which the datasheet object is only created when
+    # the Site in which it corresponds to actually exists
+
+    objects = WaterQualityManager()
+
+    def __str__(self):
+        return self.site.site_name
+
+    class Meta:
+        verbose_name = 'Water Quality'
+        verbose_name_plural = 'Water Quality'
+
+
 class WQSampleManager(models.Manager):
     """
     Manager for the water quality samples - creates both the required and
     additional field data for the Water Quality datasheet tests
     """
-    def create_sample(self, water_temp, wt_tool, air_temp, at_tool, oxygen,
-                      oxygen_tool, pH, pH_tool, turbidity, turbid_tool,
-                      salinity, salt_tool, conductivity=None, tot_sol=None,
-                      bod=None, ammonia=None, nitrite=None, nitrate=None,
+    def create_sample(self, water_quality, water_temp, water_temp_tool,
+                      air_temp, air_temp_tool, oxygen,
+                      oxygen_tool, pH, pH_tool,
+                      turbidity, turbid_tool, salinity, salt_tool,
+                      conductivity=None, tot_sol=None, bod=None,
+                      ammonia=None, nitrite=None, nitrate=None,
                       phosphates=None, fecal_col=None):
 
-        info = self.create(water_temperature=water_temp,
-                           water_temp_tool=wt_tool,
-                           air_temperature=air_temp, air_temp_tool=at_tool,
-                           dissolved_oxygen=oxygen, oxygen_tool=oxygen_tool,
+        info = self.create(water_quality=water_quality,
+                           water_temperature=water_temp,
+                           water_temp_tool=water_temp_tool,
+                           air_temperature=air_temp,
+                           air_temp_tool=air_temp_tool,
+                           dissolved_oxygen=oxygen,
+                           oxygen_tool=oxygen_tool,
                            pH=pH, pH_tool=pH_tool,
                            turbidity=turbidity, turbid_tool=turbid_tool,
                            salinity=salinity, salt_tool=salt_tool,
@@ -124,6 +210,8 @@ class WQ_Sample(models.Model):
                     (VERNIER, 'Vernier'),)
 
     # These are required fields
+    water_quality = models.ForeignKey(Water_Quality, on_delete=models.CASCADE,
+                                      related_name='water_quality', null=True)
     water_temperature = models.DecimalField(default=0, max_digits=5,
                                             decimal_places=2)
     water_temp_tool = models.CharField(max_length=255, choices=TOOL_CHOICES,
@@ -174,69 +262,6 @@ class WQ_Sample(models.Model):
     class Meta:
         verbose_name = 'Water Quality Sample'
         verbose_name_plural = 'Water Quality Samples'
-
-
-@python_2_unicode_compatible
-class Water_Quality(models.Model):
-    LEVEL_A = 'A'   # Define DEQ water quality levels
-    LEVEL_B = 'B'
-    LEVEL_C = 'C'
-    LEVEL_D = 'D'
-    LEVEL_E = 'E'
-    FAHRENHEIT = _('Fahrenheit')
-    CELSIUS = _('Celsius')
-
-    DEQ_DQ_CHOICES = (
-        (None, '-----'),
-        (LEVEL_A, 'Level A'),
-        (LEVEL_B, 'Level B'),
-        (LEVEL_C, 'Level C'),
-        (LEVEL_D, 'Level D'),
-        (LEVEL_E, 'Level E'),
-    )
-
-    BOOL_CHOICES = ((True, _('Yes')), (False, _('No')), (None, '-----'),)
-    UNIT_CHOICES = ((None, '-----'),
-                    (FAHRENHEIT, _('Fahrenheit')),
-                    (CELSIUS, _('Celsius')),)
-
-    """
-    The Water Quality model corresponds to the Water Quality datasheet. Each
-    object has a one-to-one relationship with its specified Site.
-    """
-    site = models.ForeignKey(Site, null=True, on_delete=models.CASCADE)
-    DEQ_dq_level = models.CharField(max_length=1, choices=DEQ_DQ_CHOICES,
-                                    default=None)
-    date = models.DateField(default=datetime.date.today)
-    school = models.CharField(max_length=250)
-    latitude = models.DecimalField(default=0, max_digits=9, decimal_places=6)
-    longitude = models.DecimalField(default=0, max_digits=9, decimal_places=6)
-    fish_present = models.BooleanField(choices=BOOL_CHOICES, default=None)
-    live_fish = models.PositiveSmallIntegerField(default=0)
-    dead_fish = models.PositiveSmallIntegerField(default=0)
-    air_temp_unit = models.CharField(max_length=255, choices=UNIT_CHOICES,
-                                     default=UNIT_CHOICES[0])
-    water_temp_unit = models.CharField(max_length=255, choices=UNIT_CHOICES,
-                                       default=UNIT_CHOICES[0])
-    sample_1 = models.ForeignKey(WQ_Sample, on_delete=models.CASCADE,
-                                 related_name='sample_1', null=True)
-    sample_2 = models.ForeignKey(WQ_Sample, on_delete=models.CASCADE,
-                                 related_name='sample_2', null=True)
-    sample_3 = models.ForeignKey(WQ_Sample, on_delete=models.CASCADE,
-                                 related_name='sample_3', null=True)
-    sample_4 = models.ForeignKey(WQ_Sample, on_delete=models.CASCADE,
-                                 related_name='sample_4', null=True)
-    notes = models.TextField(blank=True)
-
-    # Add some logic in which the datasheet object is only created when
-    # the Site in which it corresponds to actually exists
-
-    def __str__(self):
-        return self.site.site_name
-
-    class Meta:
-        verbose_name = 'Water Quality'
-        verbose_name_plural = 'Water Quality'
 
 
 @python_2_unicode_compatible
