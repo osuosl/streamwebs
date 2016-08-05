@@ -35,10 +35,6 @@ class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = ('school', 'birthdate')
-        labels = {
-            'school': _('School'),
-            'birthdate': _('Birthdate'),
-        }
 
 
 class WQForm(forms.ModelForm):
@@ -48,18 +44,6 @@ class WQForm(forms.ModelForm):
                   'longitude', 'fish_present', 'live_fish',
                   'dead_fish', 'water_temp_unit',
                   'air_temp_unit', 'notes')
-        labels = {'site': _('Stream/Site name:'),
-                  'date': _('Date:'),
-                  'DEQ_dq_level': _('DEQ Data Quality Level:'),
-                  'latitude': _('Latitude:'),
-                  'longitude': _('Longitude:'),
-                  'fish_present': _('Any fish present?'),
-                  'live_fish': _('Number of live fish:'),
-                  'dead_fish': _('Number of dead fish:'),
-                  'water_temp_unit': _('Water Temperature Units'),
-                  'air_temp_unit': _('Air Temperature Units'),
-                  'notes': _('Field Notes:'),
-                  }
 
 
 class WQSampleForm(forms.ModelForm):
@@ -69,21 +53,6 @@ class WQSampleForm(forms.ModelForm):
                   'pH', 'turbidity', 'salinity', 'conductivity',
                   'total_solids', 'bod', 'ammonia', 'nitrite',
                   'nitrate', 'phosphates', 'fecal_coliform')
-        labels = {'water_temperature': _('Water Temperature:'),
-                  'air_temperature': _('Air Temperature:'),
-                  'dissolved_oxygen': _('Dissolved Oxygen (mg/L):'),
-                  'pH': _('pH:'),
-                  'turbidity': _('Turbidity (NTU):'),
-                  'salinity': _('Salinity (PSU) PPT:'),
-                  'conductivity': _('Conductivity (µS/cm):'),
-                  'total_solids': _('Total Solids (mg/L):'),
-                  'bod': _('BOD (mg/L):'),
-                  'ammonia': _('Ammonia (mg/L):'),
-                  'nitrite': _('Nitrite (mg/L):'),
-                  'nitrate': _('Nitrate (mg/L):'),
-                  'phosphates': _('Phosphates (mg/L):'),
-                  'fecal_coliform': _('Fecal Coliform (CFU/100 mL):'),
-                  }
 
 
 class Canopy_Cover_Form(forms.ModelForm):
@@ -91,10 +60,6 @@ class Canopy_Cover_Form(forms.ModelForm):
         model = Canopy_Cover
         fields = ('school', 'date_time', 'site', 'weather', 'north', 'east',
                   'south', 'west', 'est_canopy_cover')
-        labels = {
-            'school': _('School'),
-            'est_canopy_cover': _('Estimated Canopy Cover'),
-        }
 
 
 class CC_Cardinal_Form(forms.ModelForm):
@@ -103,7 +68,3 @@ class CC_Cardinal_Form(forms.ModelForm):
         fields = ('direction', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I',
                   'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U',
                   'V', 'W', 'X', 'num_shaded')
-        labels = {
-            'direction': _('Direction'),
-            'num_shaded': _('Number Shaded')
-        }
