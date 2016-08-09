@@ -48,7 +48,3 @@ class MacroinvertebratesForm(forms.ModelForm):
                   'snail', 'mosquito_larva', 'wq_rating',
                   'somewhat_sensitive_total', 'sensitive_total',
                   'tolerant_total')
-        labels = {
-            'school': _('School'),
-            'birthdate': _('Birthdate'),
-        }
