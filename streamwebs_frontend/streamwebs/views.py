@@ -290,8 +290,9 @@ def riparian_transect_view(request, site_slug, data_id):
     zones = TransectZone.objects.filter(transect_id=transect)
     site = Site.objects.get(id=site_slug)
 
-    # Converting the original queryset to a list is neccessary to pass Travis
-    # tests.
+    # Invoking the database by evaluating the queryset before passing it to the
+    # template is necessary in order to pass Travis tests.
+    # https://docs.djangoproject.com/en/1.9/ref/models/querysets/#when-querysets-are-evaluated
     zones = list(zones)
 
     return render(
