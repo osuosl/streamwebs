@@ -1,31 +1,29 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Macroinvertebrates</title>
-    </head>
+{% extends 'streamwebs/base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+{% load filters %}
+{% block title %}{% trans "Macroinvertebrates Data Edit" %}{% endblock %}
 
-    <body>
-        <h1>Macroinvertebrates</h1>
+{% block content %}
 
-        {% if user.is_authenticated %}
-            {% if added %}
-            <strong>You have successfully submitted your Macroinvertebrates data sheet.</strong>
+  {% if user.is_authenticated %}
+      {% if added %}
+      <strong>{% trans "You have successfully submitted your Macroinvertebrate data sheet." %}.</strong>
 
-            {% else %}
-            <form id='macro_form' method='post' action='{{ request.path }}'>
-                {% csrf_token %}
+      {% else %}
+      <form id='macro_form' method='post' action='{{ request.path }}'>
+          {% csrf_token %}
 
-                <!-- Individual fields will be formatted prettily later -->
-                {{ macro_form }}
+          <!-- Individual fields will be formatted prettily later -->
+          {{ macro_form }}
 
-                <input type='submit', name='submit', value='Submit' />
-            </form>
-            {% endif %}
+          <input type='submit', name='submit', value='Submit' />
+      </form>
+      {% endif %}
 
-        {% else %}
-            <p>You must be logged in to submit data.</p>
-            <a href='/streamwebs/login/'>Log in here.</a>
-        {% endif %}
+  {% else %}
+      <p>{% trans "You must be logged in to submit data." %}</p>
+      <a href='/streamwebs/login/'>{% trans "Log in here." %}</a>
+  {% endif %}
 
-    </body>
-</html>
+{% endblock %}
