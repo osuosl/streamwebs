@@ -271,7 +271,7 @@ def macroinvertebrate_edit(request, site_slug):
 
         else:
             # print macro_form.errors
-
+            pass
     else:
         macro_form = MacroinvertebratesForm()
 
