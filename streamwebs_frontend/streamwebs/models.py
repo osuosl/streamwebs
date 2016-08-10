@@ -331,6 +331,8 @@ class Macroinvertebrates(models.Model):
     # Water quality rating
     wq_rating = models.PositiveIntegerField(default=0)
 
+    objects = MacroinvertebratesManager()
+
     def __str__(self):
         return self.site.site_name
 
