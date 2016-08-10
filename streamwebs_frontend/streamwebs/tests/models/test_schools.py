@@ -37,12 +37,6 @@ class SchoolTestCase(TestCase):
         )))
         self.assertEqual(sorted(fields), sorted(self.expected_fields.keys()))
 
-    def test_optional_fields(self):
-        apps.get_model('streamwebs', 'school')
-        for field in self.optional_fields:
-            self.assertEqual(
-                School._meta.get_field(field).blank, True)
-
     def test_create_and_mod_dates(self):
         """When a new school is created, both date fields should be set"""
         self.assertTrue(School._meta.get_field('modified').auto_now)
