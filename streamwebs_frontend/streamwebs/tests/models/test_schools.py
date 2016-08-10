@@ -1,5 +1,5 @@
 from django.test import TestCase
-from streamwebs.models import school
+from streamwebs.models import School
 from django.contrib.gis.db import models
 from django.apps import apps
 from itertools import chain
@@ -32,7 +32,7 @@ class SchoolTestCase(TestCase):
         # which was deprecated in Django 1.9
         fields = list(set(chain.from_iterable(
             (field.name, field.attname) if hasattr(field, 'attname') else
-            (field.name,) for field in school._meta.get_fields()
+            (field.name,) for field in School._meta.get_fields()
             if not (field.many_to_one and field.related_model is None)
         )))
         self.assertEqual(sorted(fields), sorted(self.expected_fields.keys()))
@@ -41,9 +41,9 @@ class SchoolTestCase(TestCase):
         apps.get_model('streamwebs', 'school')
         for field in self.optional_fields:
             self.assertEqual(
-                school._meta.get_field(field).blank, True)
+                School._meta.get_field(field).blank, True)
 
     def test_create_and_mod_dates(self):
         """When a new school is created, both date fields should be set"""
-        self.assertTrue(school._meta.get_field('modified').auto_now)
-        self.assertTrue(school._meta.get_field('created').auto_now_add)
+        self.assertTrue(School._meta.get_field('modified').auto_now)
+        self.assertTrue(School._meta.get_field('created').auto_now_add)
