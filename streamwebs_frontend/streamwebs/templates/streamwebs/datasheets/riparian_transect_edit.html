@@ -2,13 +2,13 @@
 {% load staticfiles %}
 {% load i18n %}
 {% load filters %}
-{% block title %}Riparian Transect{% endblock %}
-{% block body_title %}Riparian Transect{% endblock %}
+{% block title %}{% trans "Riparian Transect" %}{% endblock %}
+{% block body_title %}{% trans "Riparian Transect" %}{% endblock %}
 {% block content %}
 
     {% if user.is_authenticated %}
         {% if added %}
-            <strong>You have successfully submitted your Riparian Transect data sheet.</strong>
+        <strong>{% trans "You have successfully submitted your Riparian Transect data sheet." %}</strong>
 
         {% else %}
             <form id='rip_trans_form' method='post'>
@@ -82,8 +82,8 @@
         {% endif %}
 
     {% else %}
-        <p>You must be logged in to submit data.</p>
-        <a href='/streamwebs/login/'>Log in here.</a>
+    <p>{% trans "You must be logged in to submit data." %}</p>
+        <a href='/streamwebs/login/'>{% trans "Log in here." %}</a>
     {% endif %}
 
 {% endblock %}
