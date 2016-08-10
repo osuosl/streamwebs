@@ -9,7 +9,7 @@ class ViewTransectTestCase(TestCase):
         site = Site.objects.create_site('Site Name', 'Site Type', 'site_slug')
         transect = RiparianTransect.objects.create_transect(
             'School Name', '2016-07-22 15:04:00', site
-        )  #
+        )
         zone_1 = TransectZone.objects.create_zone(transect, 1, 2, 3,  # NOQA
                                                   'This is zone 1')  # NOQA
         zone_2 = TransectZone.objects.create_zone(transect, 1, 2, 3,  # NOQA
