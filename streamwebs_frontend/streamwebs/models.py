@@ -485,13 +485,18 @@ class RiparianTransect(models.Model):
     This model corresponds to the Riparian Transect data sheet and has a one-to
     -one relationship with its specified Site.
     """
-    school = models.CharField(max_length=255)
-    date_time = models.DateTimeField(default=timezone.now)
-    weather = models.CharField(max_length=255, blank=True)
-    site = models.ForeignKey(Site, null=True, on_delete=models.CASCADE)
-    slope = models.DecimalField(blank=True, null=True, max_digits=5,
-                                decimal_places=3, validators=[validate_slope])
-    notes = models.TextField(blank=True)
+    school = models.CharField(max_length=255, verbose_name=_('school'))
+    date_time = models.DateTimeField(default=timezone.now,
+                                     verbose_name=_('date and time'))
+    weather = models.CharField(max_length=255, blank=True,
+                               verbose_name=_('weather'))
+    site = models.ForeignKey(Site, null=True, on_delete=models.CASCADE,
+                             verbose_name=_('site'))
+    slope = models.DecimalField(
+        blank=True, null=True, max_digits=5, decimal_places=3,
+        verbose_name=_('slope of stream bank (rise over run)')
+    )
+    notes = models.TextField(blank=True, verbose_name=_('notes'))
 
     objects = RipTransectManager()
 
