@@ -5,7 +5,7 @@ from django.apps import apps
 from itertools import chain
 
 
-class SiteTestCase(TestCase):
+class SchoolTestCase(TestCase):
 
     def setUp(self):
         self.expected_fields = {
@@ -44,6 +44,6 @@ class SiteTestCase(TestCase):
                 school._meta.get_field(field).blank, True)
 
     def test_create_and_mod_dates(self):
-        """When a new site is created, both date fields should be set"""
+        """When a new school is created, both date fields should be set"""
         self.assertTrue(school._meta.get_field('modified').auto_now)
         self.assertTrue(school._meta.get_field('created').auto_now_add)
