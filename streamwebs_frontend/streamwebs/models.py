@@ -239,7 +239,7 @@ class Water_Quality(models.Model):
         verbose_name_plural = 'Water Quality'
 
 
-class MacroManager(models.Manager):
+class MacroinvertebratesManager(models.Manager):
     """
     Manager for the Macroinvertebrates model.
     """
