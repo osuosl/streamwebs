@@ -8,7 +8,7 @@ class MacroViewTestCase(TestCase):
     def test_data_sheet_view(self):
         site = Site.objects.create_site('Site Name', 'Site Type', 'site_slug')
         macro = Macroinvertebrates.objects.create_macro(
-            site, 1, 2, 3, True, True, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6,
+            site, 2, 3, True, True, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6,
             7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8)
 
         response = self.client.get(
@@ -28,7 +28,7 @@ class MacroViewTestCase(TestCase):
     def test_data_sheet_view_content(self):
         site = Site.objects.create_site('Site Name', 'Site Type', 'site_slug')
         macro = Macroinvertebrates.objects.create_macro(
-            site, 1, 2, 3, True, True, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6,
+            site, 2, 3, True, True, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6,
             7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8)
 
         response = self.client.get(
