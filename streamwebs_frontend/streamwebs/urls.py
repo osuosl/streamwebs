@@ -5,11 +5,18 @@ from . import views
 app_name = 'streamwebs'
 urlpatterns = [
     url(r'^i18n/', include('django.conf.urls.i18n')),
+
     url(r'^$', views.index, name='index'),
 
     url(r'^sites$', views.sites, name='sites'),
 
     url(r'^site/(?P<site_slug>[0-9a-zA-Z-]+)$', views.site, name='site'),
+
+    url(r'^site/(?P<site_slug>[0-9a-zA-Z-]+)/water$',
+        views.graph_water, name='graph_water'),
+
+    url(r'^site/(?P<site_slug>[0-9a-zA-Z-]+)/macros$',
+        views.graph_macros, name='graph_macros'),
 
     url(r'^site/(?P<site_slug>[0-9a-zA-Z-]+)/water/(?P<data_id>\d+)',
         views.water_quality, name='water_quality'),

@@ -1,0 +1,51 @@
+{% extends "streamwebs/base.html" %}
+{% load staticfiles %}
+{% block title %}Macroinvertebrates - {{site.name}} -{% endblock %}
+{% load i18n %}
+
+{% block scripts %}
+<script type="application/javascript">
+    window.data_time = {{data.time|safe}};
+    window.data_summ = {{data.summary|safe}};
+    const siteId = '{{site.site_slug}}';
+</script>
+
+<script type="application/javascript"
+        src="{% static 'streamwebs/js/graphs/macros.js' %}">
+</script>
+{% endblock %}
+
+{% block body_title %}<a href="{% url 'streamwebs:site' site.site_slug %}">{{site.site_name}}</a>:
+{% trans "Macroinvertebrates" %}{% endblock %}
+
+{% block content %}
+<form action="">
+    <div id="type">
+        <p>{% trans "Graph Type:" %}</p>
+        <label for="type-line">{% trans "Time" %}</label>
+        <input type="radio" name="type" id="type-line" />
+        <label for="type-bar">{% trans "Summary" %}</label>
+        <input type="radio" name="type" id="type-bar" checked />
+    </div>
+
+    <div id="dates">
+        <p>{% trans "Date Range:" %}</p>
+        <label for="date-start">{% trans "After" %}</label>
+        <input type="date" name="date" id="date-start" value="" />
+        <label for="date-end">{% trans "Before" %}</label>
+        <input type="date" name="date" id="date-end" value="" />
+    </div>
+</form>
+
+<h3 style="display:none" class="graph-header">Macroinvertebrates Over Time</h3>
+<div id="graph-{{site.site_slug}}" class="graph line">
+    <h3 style="display:none" class="graph-header">Sensitive Species</h3>
+    <div id="graph-{{site.site_slug}}-sensitive" class="graph sensitive"></div>
+    <h3 style="display:none" class="graph-header">Somewhat Sensitive Species</h3>
+    <div id="graph-{{site.site_slug}}-somewhat" class="graph somewhat"></div>
+    <h3 style="display:none" class="graph-header">Tolerant Species</h3>
+    <div id="graph-{{site.site_slug}}-tolerant" class="graph tolerant"></div>
+    <h3 style="display:none" class="graph-header">Species Type Breakdown</h3>
+    <div id="graph-{{site.site_slug}}-pie" class="graph pie"></div>
+</div>
+{% endblock %}
