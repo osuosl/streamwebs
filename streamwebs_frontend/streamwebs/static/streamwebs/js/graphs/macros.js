@@ -22,7 +22,7 @@ const useLineGraph = function useLineGraph() {
     $('.graph-header').show();
     outerContainer.find('.graph-header').hide();
 
-    data = window.data_time;
+    data = JSON.parse(JSON.stringify(window.data_time)); // Copy the data so we don't change the original
 
     const formatted = [];
 
@@ -131,7 +131,7 @@ const useBarGraph = function useBarGraph() {
     $('.graph-header').hide();
     outerContainer.find('.graph-header').show();
 
-    data = window.data_summ;
+    data = JSON.parse(JSON.stringify(window.data_summ)); // Copy the data so we don't change the original
 
     const categories = {'tolerant': [], 'somewhat': [], 'sensitive': [], 'total': []};
 
@@ -311,7 +311,7 @@ $.fn.fix_radios = function fix_radios() {
             return;
         }
 
-        $('input[name=' + this.name + ']').each(() => {
+        $('input[name=' + this.name + ']').each(function() {
             this.was_checked = this.checked;
         });
     }
@@ -324,8 +324,13 @@ $(() => {
     $('#date-end').change(changeRangeEnd);
 
     $('input[type=radio]').fix_radios();
-    $('#type-bar').change(useBarGraph);
-    $('#type-line').change(useLineGraph);
+    $('input[name=type]').change(() => {
+        if ($('input[name=type]:checked').val() === 'line') {
+            useLineGraph();
+        } else {
+            useBarGraph();
+        }
+    });
 
-    $('#type-bar').click();
+    $('#type-bar').change();
 });

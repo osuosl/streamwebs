@@ -149,7 +149,7 @@ def graph_macros(request, site_slug):
             'somewhat': m.get_somewhat_sensitive_counts(),
             'sensitive': m.get_sensitive_counts()
         }
-    for m in macros}
+        for m in macros}
 
     time = {_timestamp(m.date_time): m.get_totals() for m in macros}
     return render(request, 'streamwebs/graphs/macroinvertebrates.html', {
