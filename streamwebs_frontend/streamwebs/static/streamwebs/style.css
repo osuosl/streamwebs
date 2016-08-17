@@ -148,3 +148,7 @@ table input {
 table .row {
     margin: 0 !important;
 }
+
+i {
+    vertical-align: middle;
+}
