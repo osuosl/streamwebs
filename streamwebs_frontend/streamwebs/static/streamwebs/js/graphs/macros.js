@@ -2,23 +2,39 @@ let data = window.data_summ;
 
 let date_range = [0, Number.MAX_SAFE_INTEGER];
 
-const changeRangeStart = function changeRangeStart(e) {
-    date_range[0] = e.data;
-    data = data.filter((elem) => {
-        return elem.date_time >= e.data; //TODO: Adjust for actual types
-    });
+const changeRangeStart = function changeRangeStart() {
+    const date = Date.parse($(this).val());
+    if (!date || Number.isNaN(date)) {
+        return;
+    }
+
+    date_range[0] = date;
+
+    if ($('input[type=radio]:checked').val() == 'line') {
+        useLineGraph();
+    } else {
+        useBarGraph();
+    }
 };
 
-const changeRangeEnd = function changeRangeEnd(e) {
-    date_range[1] = e.data;
-    data = data.filter((elem) => {
-        return elem.date_time <= e.data; //TODO: Adjust for actual types
-    });
+const changeRangeEnd = function changeRangeEnd() {
+    const date = Date.parse($(this).val());
+    if (!date || Number.isNaN(date)) {
+        return;
+    }
+
+    date_range[1] = date;
+
+    if ($('input[type=radio]:checked').val() == 'line') {
+        useLineGraph();
+    } else {
+        useBarGraph();
+    }
 };
 
 const useLineGraph = function useLineGraph() {
     const outerContainer = $('#graph-' + siteId);
-    outerContainer.find('div svg').remove();
+    outerContainer.find('svg').remove();
     $('.graph-header').show();
     outerContainer.find('.graph-header').hide();
 
@@ -136,14 +152,15 @@ const useBarGraph = function useBarGraph() {
     const categories = {'tolerant': [], 'somewhat': [], 'sensitive': [], 'total': []};
 
     let numEntries = 0;
-    for (let date in data) {
+    for (let key in data) {
+        const date = parseInt(key, 10) * 1000; // Convert from seconds to millis
         if (date >= date_range[1] || date <= date_range[0]) {
             continue;
         }
 
-        for (let category in data[date]) {
+        for (let category in data[key]) {
             let total = 0;
-            for (let species of data[date][category]) { // Look at each animal
+            for (let species of data[key][category]) { // Look at each animal
                 let found = false;
                 for (let entry of categories[category]) {
                     if (entry.name === species.name) { // If we've seen the animal
@@ -192,9 +209,9 @@ const useBarGraph = function useBarGraph() {
         const species = categories[category];
 
         const container = $('#graph-' + siteId + '-' + category);
-        const margin = {top: 20, right: 20, bottom: 30, left: 40};
-        const width = (container.width() * 0.5) - margin.left - margin.right;
-        const height = 192 - margin.top - margin.bottom;
+        const margin = {top: 50, right: 200, bottom: 40, left: 50};
+        const width = (container.width() * 0.7) - margin.left - margin.right;
+        const height = 256 - margin.top - margin.bottom;
 
         const x = d3.scaleBand()
             .domain(species.map((d) => { return d.name }))
@@ -210,6 +227,8 @@ const useBarGraph = function useBarGraph() {
         const svg = d3.select('#graph-' + siteId + '-' + category).append('svg')
             .attr('width', width + margin.left + margin.right)
             .attr('height', height + margin.top + margin.bottom)
+            .attr('xmlns', 'http://www.w3.org/2000/svg')
+            .attr('xmlns:xlink', 'http://www.w3.org/1999/xlink')
         .append('g')
             .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
@@ -236,7 +255,38 @@ const useBarGraph = function useBarGraph() {
             .attr('x', (d) => { return x(d.name) })
             .attr('width', x.bandwidth())
             .attr('y', (d) => { return y(d.value) })
-            .attr('height', (d) => { return height - y(d.value) });
+            .attr('height', (d) => { return height - y(d.value) })
+            .attr('x-data-name', (d) => { return d.name })
+            .attr('x-data-value', (d) => { return d.value });
+
+        const hover = svg.append('g')
+            .attr('class', 'bar-img')
+            .attr('transform', 'translate(0,0)')
+            .attr('width', 130)
+            .attr('height', 65)
+            .attr('opacity', 0);
+
+        hover.append('rect')
+            .attr('x', 0)
+            .attr('y', 0)
+            .attr('width', 130)
+            .attr('height', 65)
+            .attr('fill', '#ffffff')
+            .attr('stroke', '#000000')
+            .style('border', '1px solid black');
+
+        hover.append('image')
+            .attr('x', 0)
+            .attr('y', 0)
+            .attr('width', 125)
+            .attr('height', 45)
+            .attr('xlink:href', '/static/streamwebs/images/macroinvertebrates/snail.png');
+
+        hover.append('text')
+            .attr('x', 10)
+            .attr('y', 55)
+            .attr('dy', '0.2em')
+            .style('font', '10px sans-serif');
     }
 
     const totals = categories['total'];
@@ -292,6 +342,28 @@ const useBarGraph = function useBarGraph() {
         .text((d) => {
             return names[d.data.name] + ' (' + ((d.value/sum)*100).toFixed(2) + '%)'
         });
+
+    $('.bar').mouseenter((e) => {
+        const target = $(e.target);
+        const g = target.siblings('.bar-img');
+        g.find('image')[0].setAttributeNS('http://www.w3.org/1999/xlink', 'href',
+            '/static/streamwebs/images/macroinvertebrates/' +
+            target.attr('x-data-name').toLowerCase().replace(/[ /]/g, '_') +
+            '.png'
+        );
+        g.attr('transform',
+            'translate(' +
+            (parseFloat(target.attr('x')) + parseFloat(target.attr('width')) + 10) +
+            ',' + (parseFloat(target.attr('height')) + parseFloat(target.attr('y')))/4 + ')'
+        );
+        g.find('text').html(
+            target.attr('x-data-name') + ' (' + target.attr('x-data-value') + ')'
+        );
+        g.attr('opacity', 1);
+    })
+    .mouseleave((e) => {
+        $(e.target).siblings('.bar-img').attr('opacity', 0);
+    });
 };
 
 // Fix for broken .change() event on radio buttons
@@ -320,6 +392,7 @@ $.fn.fix_radios = function fix_radios() {
 };
 
 $(() => {
+    $('input[type=date]').val('');
     $('#date-start').change(changeRangeStart);
     $('#date-end').change(changeRangeEnd);
 
