@@ -30,7 +30,7 @@ class WaterQualityTestCase(TestCase):
         }
 
         self.optional_fields = {
-           'notes'
+            'notes'
         }
 
         self.site = Site.test_objects.create_site('test site', 'test type')
