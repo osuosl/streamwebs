@@ -13,6 +13,7 @@ proj_path = "/opt/streamwebs/streamwebs_frontend/"
 sys.path.append(proj_path)
 application = get_wsgi_application()
 
+from streamwebs.models import Site  # NOQA
 from streamwebs.models import Macroinvertebrates  # NOQA
 
 # Site, school, Collected, Post date, Time spent, # of peeps,
@@ -20,12 +21,15 @@ from streamwebs.models import Macroinvertebrates  # NOQA
 # water penny, dobsonfly, clam/mussel, crane fly, crayfish, damselfly,
 # dragonfly, scud, fishfly, adlerfly, mite, aquatic worm, blackfly, leech,
 # midge, snail, mosquito 
- 
+
+count = 0
+
 with open('../csvs/macros.csv', 'r') as csvfile:
     macroreader = csv.reader(csvfile)
     for row in macroreader:
         if row[0] != 'Stream/Site name':  # Skip the header
             macros = Macroinvertebrates()
+            site = Site()
 
             # Strip ``Collected date`` so that's in the correct format
             dt = row[2].strip('MonTuesWdhurFiSat(Aly), ')
@@ -37,10 +41,10 @@ with open('../csvs/macros.csv', 'r') as csvfile:
                 macros.time_spent = None
             elif ts == '20-30':
                 macros.time_spent = 25
-            else:   # In the SW model, we expect a positive small integer...
-                macros.time_spent = int(round(float(ts)))
+            else:   # In the SW model, we expect a positive integer...
+                macros.time_spent = round(float(ts))
 
-            if (row[5] == 'NA' or row[5] == 'UNK'):
+            if (row[5] == 'NA' or row[5] == 'UNK' or row[5] == ''):
                 macros.num_people = None
             else:
                 macros.num_people = row[5]
@@ -54,34 +58,43 @@ with open('../csvs/macros.csv', 'r') as csvfile:
                 macros.riffle = False
                 macros.pool = False
 
-            macros.save()
+            for i in range(7, 28):
+                if row[i] == '':  # Convert '' -> 0
+                    row[i] = 0
 
-            ## Sensitive
-            #macros.caddisfly = row[7]
-            #macros.mayfly = row[8]
-            #macros.riffle_beetle = row[9]
-            #macros.stonefly = row[10]
-            #macros.water_penny = row[11]
-            #macros.dobsonfly = row[12]
+            # Sensitive
+            macros.caddisfly = row[7] 
+            macros.mayfly = row[8]
+            macros.riffle_beetle = row[9]
+            macros.stonefly = row[10]
+            macros.water_penny = row[11]
+            macros.dobsonfly = row[12]
 
-            ## Somewhat Sensitive
-            #macros.clam_or_mussel = row[13]
-            #macros.crane_fly = row[14]
-            #macros.crayfish = row[15]
-            #macros.damselfly = row[16]
-            #macros.dragonfly = row[17]
-            #macros.scud = row[18]
-            #macros.fishfly = row[19]
-            #macros.alderfly = row[20]
-            #macros.mite = row[21]
+            # Somewhat Sensitive
+            macros.clam_or_mussel = row[13]
+            macros.crane_fly = row[14]
+            macros.crayfish = row[15]
+            macros.damselfly = row[16]
+            macros.dragonfly = row[17]
+            macros.scud = row[18]
+            macros.fishfly = row[19]
+            macros.alderfly = row[20]
+            macros.mite = row[21]
 
-            ## Tolerant
-            #macros.aquatic_worm = row[22]
-            #macros.blackfly = row[23]
-            #macros.leech = row[24]
-            #macros.midge = row[25]
-            #macros.snail = row[26]
-            #macros.mosquito_larva = row[27]
+            # Tolerant
+            macros.aquatic_worm = row[22]
+            macros.blackfly = row[23]
+            macros.leech = row[24]
+            macros.midge = row[25]
+            macros.snail = row[26]
+            macros.mosquito_larva = row[27]
 
-            ## Figure out to make foreign key relation between data and site
+            # Figure out to make foreign key relation between data and site
+            print site            
+
+
             #macros.site_id
+
+            #count += 1
+
+            #print count, '\t', row
