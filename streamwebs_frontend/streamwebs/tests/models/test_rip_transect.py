@@ -58,8 +58,8 @@ class RiparianTransectTestCase(TestCase):
                              True)
 
     def test_validate_slope_good(self):
-        site = Site.objects.create_site('test site', 'test site type',
-                                        'test_site_slug')
+        site = Site.test_objects.create_site('test site', 'test site type',
+                                             'test_site_slug')
         zone_1 = TransectZone.zones.create_zone(1, 1, 1, 'Comments on zone 1')
         zone_2 = TransectZone.zones.create_zone(2, 2, 2, 'Comments on zone 2')
         zone_3 = TransectZone.zones.create_zone(3, 3, 3, 'Comments on zone 3')
@@ -72,8 +72,8 @@ class RiparianTransectTestCase(TestCase):
         self.assertEqual(validate_slope(transect.slope), None)
 
     def test_validate_slope_bad(self):
-        site = Site.objects.create_site('test site', 'test site type',
-                                        'test_site_slug')
+        site = Site.test_objects.create_site('test site', 'test site type',
+                                             'test_site_slug')
         zone_1 = TransectZone.zones.create_zone(1, 1, 1, 'Comments on zone 1')
         zone_2 = TransectZone.zones.create_zone(2, 2, 2, 'Comments on zone 2')
         zone_3 = TransectZone.zones.create_zone(3, 3, 3, 'Comments on zone 3')
@@ -90,8 +90,8 @@ class RiparianTransectTestCase(TestCase):
         """
         A datasheet should correctly correspond to a single site.
         """
-        site = Site.objects.create_site('test site', 'test site type',
-                                        'test_site_slug')
+        site = Site.test_objects.create_site('test site', 'test site type',
+                                             'test_site_slug')
         zone_1 = TransectZone.zones.create_zone(1, 1, 1, 'Comments on zone 1')
         zone_2 = TransectZone.zones.create_zone(2, 2, 2, 'Comments on zone 2')
         zone_3 = TransectZone.zones.create_zone(3, 3, 3, 'Comments on zone 3')
@@ -106,8 +106,8 @@ class RiparianTransectTestCase(TestCase):
         self.assertEqual(transect.site.site_slug, 'test_site_slug')
 
     def test_datasheet_creation_req_fields(self):
-        site = Site.objects.create_site('test site', 'test site type',
-                                        'test_site_slug')
+        site = Site.test_objects.create_site('test site', 'test site type',
+                                             'test_site_slug')
         zone_1 = TransectZone.zones.create_zone(1, 1, 1, 'Comments on zone 1')
         zone_2 = TransectZone.zones.create_zone(2, 2, 2, 'Comments on zone 2')
         zone_3 = TransectZone.zones.create_zone(3, 3, 3, 'Comments on zone 3')
@@ -128,8 +128,8 @@ class RiparianTransectTestCase(TestCase):
         self.assertEqual(transect.notes, '')
 
     def test_datasheet_creation_opt_fields(self):
-        site = Site.objects.create_site('test site', 'test site type',
-                                        'test_site_slug')
+        site = Site.test_objects.create_site('test site', 'test site type',
+                                             'test_site_slug')
         zone_1 = TransectZone.zones.create_zone(1, 1, 1, 'Comments on zone 1')
         zone_2 = TransectZone.zones.create_zone(2, 2, 2, 'Comments on zone 2')
         zone_3 = TransectZone.zones.create_zone(3, 3, 3, 'Comments on zone 3')
@@ -150,8 +150,8 @@ class RiparianTransectTestCase(TestCase):
         self.assertEqual(transect.notes, 'Notes on transect')
 
     def test_datasheet_SetZonesInfo(self):
-        site = Site.objects.create_site('test site', 'test site type',
-                                        'test_site_slug')
+        site = Site.test_objects.create_site('test site', 'test site type',
+                                             'test_site_slug')
         zone_1 = TransectZone.zones.create_zone(1, 2, 3, 'Comments on zone 1')
         zone_2 = TransectZone.zones.create_zone(2, 3, 1, 'Comments on zone 2')
         zone_3 = TransectZone.zones.create_zone(3, 2, 1, 'Comments on zone 3')

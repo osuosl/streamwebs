@@ -50,8 +50,8 @@ class WQSampleTestCase(TestCase):
             'fecal_coliform',
         }
 
-        site = Site.objects.create_site('test site', 'test site type',
-                                        'test_site_slug')
+        site = Site.test_objects.create_site('test site', 'test site type',
+                                             'test_site_slug')
 
         self.water_quality = Water_Quality.objects.create_water_quality(
                              site, '2016-08-03', 'a', 'A', 90, 123,
@@ -150,10 +150,10 @@ class WQSampleTestCase(TestCase):
         self.assertEqual(sample.fecal_coliform, None)
 
     def test_sample_creation_opt_fields(self):
-        sample = WQ_Sample.objects.create_sample(self.water_quality, 0, 0, 0,
+        sample = WQ_Sample.objects.create_sample(self.water_quality, 0, 0,
                                                  0, 0, 0, 0, 0, 0, 0, 0,
-                                                 0, 35, 2, 0.34, 3.23, 12,
-                                                 37, 0.34, 1.45)
+                                                 0, 0, 35, 2, 0.34, 3.23,
+                                                 12, 37, 0.34, 1.45)
 
         # Required
         self.assertEqual(sample.water_quality.site.site_name, 'test site')
