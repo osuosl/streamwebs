@@ -51,8 +51,3 @@ class SiteTestCase(TestCase):
         for field in self.optional_fields:
             self.assertEqual(
                 Site._meta.get_field(field).blank, True)
-
-    def test_create_and_mod_dates(self):
-        """When a new site is created, both date fields should be set"""
-        self.assertTrue(Site._meta.get_field('modified').auto_now)
-        self.assertTrue(Site._meta.get_field('created').auto_now_add)
