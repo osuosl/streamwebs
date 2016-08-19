@@ -41,7 +41,7 @@ class Site(models.Model):
     created = models.DateTimeField(default=timezone.now)
     modified = models.DateTimeField(default=timezone.now)
 
-    objects = SiteManager()
+    test_objects = SiteManager()
 
     def __str__(self):
         return self.site_name

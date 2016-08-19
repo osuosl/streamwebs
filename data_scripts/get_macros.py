@@ -5,8 +5,6 @@ import sys
 import csv
 
 from django.core.wsgi import get_wsgi_application
-# from django.contrib.gis.geos import GEOSGeometry
-from django.contrib.gis.geos import Point
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "streamwebs_frontend.settings")
 proj_path = "/opt/streamwebs/streamwebs_frontend/"
@@ -20,16 +18,13 @@ from streamwebs.models import Macroinvertebrates  # NOQA
 # Water Type (riffle/pool), caddisfly, mayfly, riffle beetle, stonefly,
 # water penny, dobsonfly, clam/mussel, crane fly, crayfish, damselfly,
 # dragonfly, scud, fishfly, adlerfly, mite, aquatic worm, blackfly, leech,
-# midge, snail, mosquito 
-
-count = 0
+# midge, snail, mosquito
 
 with open('../csvs/macros.csv', 'r') as csvfile:
     macroreader = csv.reader(csvfile)
     for row in macroreader:
         if row[0] != 'Stream/Site name':  # Skip the header
             macros = Macroinvertebrates()
-            site = Site()
 
             # Strip ``Collected date`` so that's in the correct format
             dt = row[2].strip('MonTuesWdhurFiSat(Aly), ')
@@ -63,7 +58,7 @@ with open('../csvs/macros.csv', 'r') as csvfile:
                     row[i] = 0
 
             # Sensitive
-            macros.caddisfly = row[7] 
+            macros.caddisfly = row[7]
             macros.mayfly = row[8]
             macros.riffle_beetle = row[9]
             macros.stonefly = row[10]
@@ -89,12 +84,10 @@ with open('../csvs/macros.csv', 'r') as csvfile:
             macros.snail = row[26]
             macros.mosquito_larva = row[27]
 
-            # Figure out to make foreign key relation between data and site
-            print site            
+            # Create the foreign key relation between datasheet and site
+            site = Site.objects.get(site_name=row[0])
+            macros.site_id = site.id
 
+            macros.save()
 
-            #macros.site_id
-
-            #count += 1
-
-            #print count, '\t', row
+print 'Data loaded.'
