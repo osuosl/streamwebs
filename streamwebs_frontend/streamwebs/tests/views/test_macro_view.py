@@ -5,7 +5,7 @@ from streamwebs.models import Site, Macroinvertebrates
 
 class MacroViewTestCase(TestCase):
     def setUp(self):
-        self.site = Site.objects.create_site(
+        self.site = Site.test_objects.create_site(
             'Site Name', 'Site Type', 'site_slug'
             )
         self.macro = Macroinvertebrates.objects.create_macro(

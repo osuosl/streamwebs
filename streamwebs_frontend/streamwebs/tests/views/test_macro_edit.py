@@ -30,8 +30,9 @@ class MacroFormTestCase(TestCase):
         When the user tries to submit a bad (blank) form, the form errors
         should be displayed
         """
-        test_site = Site.objects.create_site('test site', 'test site type',
-                                             'test_site_slug')
+        test_site = Site.test_objects.create_site('test site',
+                                                  'test site type',
+                                                  'test_site_slug')
         response = self.client.post(
             reverse('streamwebs:macroinvertebrate_edit', kwargs={
                 'site_slug': test_site.id}), {}
@@ -45,9 +46,10 @@ class MacroFormTestCase(TestCase):
         When the user submits a form with all required fields filled
         appropriately, the user should see a success message
         """
-        # TODO MAKE samlpe site
-        test_site = Site.objects.create_site('test site', 'test site type',
-                                             'test_site_slug')
+        # TODO MAKE sample site
+        test_site = Site.test_objects.create_site('test site',
+                                                  'test site type',
+                                                  'test_site_slug')
         response = self.client.post(
             reverse('streamwebs:macroinvertebrate_edit', kwargs={
                 'site_slug': test_site.id}), {
@@ -97,8 +99,9 @@ class MacroFormTestCase(TestCase):
         """
         When the user is not logged in, they cannot view the data entry page
         """
-        test_site = Site.objects.create_site('test site', 'test site type',
-                                             'test_site_slug')
+        test_site = Site.test_objects.create_site('test site',
+                                                  'test site type',
+                                                  'test_site_slug')
         self.client.logout()
         response = self.client.post(
             reverse('streamwebs:macroinvertebrate_edit', kwargs={

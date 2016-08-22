@@ -38,10 +38,10 @@ class Site(models.Model):
     location = models.PointField(null=True, blank=True)
     objects = models.GeoManager()
 
-    created = models.DateTimeField(auto_now_add=True)
-    modified = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(default=timezone.now)
+    modified = models.DateTimeField(default=timezone.now)
 
-    objects = SiteManager()
+    test_objects = SiteManager()
 
     def __str__(self):
         return self.site_name
@@ -354,10 +354,12 @@ class Macroinvertebrates(models.Model):
                                verbose_name=_('weather'))
     site = models.ForeignKey(Site, null=True, on_delete=models.CASCADE)
     time_spent = models.PositiveIntegerField(
-        default=0, verbose_name=_('time spent sorting/identifying')
+        default=None, null=True,
+        verbose_name=_('time spent sorting/identifying')
         )
     num_people = models.PositiveIntegerField(
-        default=0, verbose_name=_('# of people sorting/identifying')
+        default=None, null=True,
+        verbose_name=_('# of people sorting/identifying')
         )
     riffle = models.BooleanField(default=False, verbose_name=_('riffle'))
     pool = models.BooleanField(default=False, verbose_name=_(' pool'))

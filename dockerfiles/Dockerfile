@@ -7,7 +7,8 @@ RUN yum -y install gdal-python\
                    proj-nad\
                    postgresql-devel\
                    nodejs\
-                   npm
+                   npm\
+                   vim
 
 RUN npm install -g bower
 

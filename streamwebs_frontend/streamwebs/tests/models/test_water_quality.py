@@ -33,8 +33,9 @@ class WaterQualityTestCase(TestCase):
            'notes'
         }
 
-        self.site = Site.objects.create_site('test site', 'test site type',
-                                             'test_site_slug')
+        self.site = Site.test_objects.create_site('test site',
+                                                  'test site type',
+                                                  'test_site_slug')
 
     def test_fields_exist(self):
         """Tests that all fields are successfully created"""
@@ -62,7 +63,7 @@ class WaterQualityTestCase(TestCase):
 
     def test_datasheet_ManyToOneSite(self):
         """Tests that a datasheet correctly corresponds to a specified site"""
-        site = Site.objects.create_site('test', 'some_type', 'some_slug')
+        site = Site.test_objects.create_site('test', 'some_type', 'some_slug')
 
         waterq = Water_Quality.objects.create(site=site,
                                               DEQ_dq_level='A',
@@ -127,7 +128,6 @@ class WaterQualityTestCase(TestCase):
         # optional
         self.assertEqual(wq.notes, 'Notes on wq')
 
-#
 # Note: Not of high priority (since Django probably doesn't allow it in the
 #       first place), but may want to eventually add tests that assert
 #       datasheet creation fails when given a nonexistent or bad site
