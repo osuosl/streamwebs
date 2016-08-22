@@ -8,22 +8,29 @@ class RetrieveSiteTestCase(TestCase):
     def setUp(self):
         self.client = Client()
 
-        location = 'POINT(44.0612385 -121.3846841)'
-        image = tempfile.NamedTemporaryFile(suffix='.jpg').name
+        self.location = 'POINT(44.0612385 -121.3846841)'
+        self.image = tempfile.NamedTemporaryFile(suffix='.jpg').name
 
-        self.site = Site.objects.create_site('Test Site', 'AP', 'slug',
-            location, 'Test site description', image)
+        # Make a bunch of WQ objects tied to same site
+        # When retrieve that site, list of WQ objects should appear
 
     def test_data_sheet_view(self):
         """Tests that view's status is 200 and correct template is used"""
+        site = Site.objects.create_site('Test Site', 'AP', 'slug',
+                                        self.location, 'Test site description',
+                                        self.image)
         response = self.client.get(reverse('streamwebs:site',
-            kwargs={'site_slug': self.site.id}))
+                                           kwargs={'site_slug': site.id}))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'streamwebs/site_detail.html')
 
     def test_data_sheet_content(self):
         """Tests that view's content is correct"""
+        site = Site.objects.create_site('Test Site', 'AP', 'slug',
+                                        self.location, 'Test site description',
+                                        self.image)
+
         response = self.client.get(reverse('streamwebs:site',
-            kwargs={'site_slug': self.site.id}))
+                                           kwargs={'site_slug': site.id}))
         self.assertContains(response, 'Test Site')
         self.assertContains(response, 'Test site description')

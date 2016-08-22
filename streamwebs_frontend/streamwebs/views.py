@@ -59,6 +59,7 @@ def sites(request):
     })
 
 
+# view-view for individual specified site
 def site(request, site_slug):
     """ View an individual site """
     site = Site.objects.get(site_slug=site_slug)
