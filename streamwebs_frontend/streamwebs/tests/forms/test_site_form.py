@@ -32,7 +32,7 @@ class SiteFormTestCase(TestCase):
         site_form = SiteForm()
         for field in self.required_fields:
             self.assertEqual(site_form.base_fields[field].required, True)
- 
+
     def test_SiteForm_optional_fields(self):
         site_form = SiteForm()
         for field in self.optional_fields:

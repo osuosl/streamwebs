@@ -14,7 +14,6 @@ class CreateSiteTestCase(TestCase):
     def test_view_with_bad_blank_data(self):
         """Blank form: Errors will be displayed and site will not be created"""
         response = self.client.post(reverse('streamwebs:create_site'), {})
-        print response
 
         self.assertTemplateUsed(response, 'streamwebs/create_site.html')
 
@@ -23,7 +22,7 @@ class CreateSiteTestCase(TestCase):
         self.assertFormError(response, 'site_form', 'site_type',
                              'This field is required.')
         self.assertFormError(response, 'site_form', 'location',
-                             'This field is required.')
+                             'No geometry value provided.')
 
         self.assertFalse(response.context['created'])
 
@@ -36,7 +35,7 @@ class CreateSiteTestCase(TestCase):
             'site_type': 'SW',
             'location': 'POINT(44.0612385 -121.3846841)',
             'image': temp_photo})
-        
+
         self.assertTemplateUsed(response, 'streamwebs/create_site.html')
         self.assertEqual(response.status_code, 200)
         self.assertTrue(response.context['created'])
