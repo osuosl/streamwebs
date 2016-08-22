@@ -32,7 +32,7 @@ SECRET_KEY = '9$b3ov_dw6+&_(9w89p7&_&bsxzohtsf_7k!qyn-33696w#3&h'
 
 # Google ('no-captcha') recaptcha
 RECAPTCHA_PUBLIC_KEY = '6Lep3yQTAAAAANSLTu1MzZQzFD_KNpwYlfp3tPzM'
-RECAPTCHA_PRIVATE_KEY= '6Lep3yQTAAAAAMRW7tnIDr2NUV77CWPRJ96wmWo3'
+RECAPTCHA_PRIVATE_KEY = '6Lep3yQTAAAAAMRW7tnIDr2NUV77CWPRJ96wmWo3'
 
 # Captcha type: one-click
 NOCAPTCHA = True
