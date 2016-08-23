@@ -945,3 +945,51 @@ class CC_Cardinal(models.Model):
                 _('%(num_shaded)s is not the correct total'),
                 params={'num_shaded': self.num_shaded},
             )
+
+
+@python_2_unicode_compatible
+class Soil_Survey(models.Model):
+    school = models.ForeignKey(School, null=True, on_delete=models.CASCADE,
+                               verbose_name=_('school'))
+    teacher = models.CharField(max_length=250)
+    date = models.DateTimeField(default=timezone.now,
+                                verbose_name=_('date and time'))
+    weather = models.CharField(max_length=250, verbose_name=_('weather'))
+    site = models.ForeignKey(Site, null=True, on_delete=models.CASCADE,
+                             verbose_name=_('site'))
+
+    landscape_pos_choices = [
+        ('summit', 'Summit'),
+        ('slope', 'Slope'),
+        ('depression', 'Depression'),
+        ('large_flat', 'Large Flat Area'),
+        ('stream_bank', 'Stream Bank')
+    ]
+
+    cover_type_choices = [
+        ('bare_soil', 'Bare Soil'),
+        ('rocks', 'Rocks'),
+        ('grass', 'Grass'),
+        ('shrubs', 'Shrubs'),
+        ('trees', 'Trees')
+    ]
+
+    land_use_choices = [
+        ('urban', 'Urban'),
+        ('agricultural', 'Agricultural'),
+        ('recreation', 'Recreation'),
+        ('wilderness', 'Wilderness'),
+        ('other', 'Other')
+    ]
+
+    landscape_pos = models.CharField(max_length=2,
+                                     choices=landscape_pos_choices)
+    cover_type = models.CharField(max_length=2, choices=cover_type_choices)
+    land_use = models.CharField(max_length=2, choices=land_use_choices)
+
+    def __str__(self):
+        return self.site.site_name
+
+    class Meta:
+        verbose_name = 'soil survey'
+        verbose_name_plural = 'soil surveys'
