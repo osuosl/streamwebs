@@ -230,6 +230,7 @@ class Water_Quality(models.Model):
         verbose_name=_('air temperature units')
     )
     notes = models.TextField(blank=True, verbose_name=_('notes'))
+    nid = models.PositiveIntegerField(blank=True, null=True)
 
     # Add some logic in which the datasheet object is only created when
     # the Site in which it corresponds to actually exists
@@ -308,47 +309,57 @@ class WQ_Sample(models.Model):
         related_name='water_quality',
         null=True
     )
+    DEFAULT = '(Select a sample number)'
+    ONE = 1
+    TWO = 2
+    THREE = 3
+    FOUR = 4
+
+    # These are required fields
+    water_quality = models.ForeignKey(Water_Quality, on_delete=models.CASCADE,
+                                      related_name='water_quality', null=True)
+    sample = models.PositiveIntegerField()
     water_temperature = models.DecimalField(
         default=0, max_digits=5, decimal_places=2,
         verbose_name=_('water temperature')
-        )
+    )
     water_temp_tool = models.CharField(
-        max_length=255, choices=TOOL_CHOICES, default=0,
+        max_length=255, choices=TOOL_CHOICES, default=0, null=True,
     )
     air_temperature = models.DecimalField(
-        default=0, max_digits=5, decimal_places=2,
+        default=0, null=True, max_digits=5, decimal_places=2,
         verbose_name=_('air temperature')
     )
     air_temp_tool = models.CharField(
-        max_length=255, choices=TOOL_CHOICES, default=0,
+        max_length=255, choices=TOOL_CHOICES, default=0, null=True,
     )
     dissolved_oxygen = models.DecimalField(
-        default=0, max_digits=5, decimal_places=2,
+        default=0, max_digits=5, decimal_places=2, null=True,
         verbose_name=_('dissolved oxygen (mg/L)')
     )
     oxygen_tool = models.CharField(
-        max_length=255, choices=TOOL_CHOICES, default=0,
+        max_length=255, choices=TOOL_CHOICES, default=0, null=True,
     )
     pH = models.DecimalField(
-        validators=[validate_pH], default=0,
+        validators=[validate_pH], default=0, null=True
         max_digits=5, decimal_places=2, verbose_name=_('pH')
     )
     pH_tool = models.CharField(
-        max_length=255, choices=TOOL_CHOICES, default=0,
+        max_length=255, choices=TOOL_CHOICES, default=0, null=True
     )
     turbidity = models.DecimalField(
-        default=0, max_digits=5, decimal_places=2,
+        default=0, null=True, max_digits=5, decimal_places=2,
         verbose_name=_('turbidity (NTU)')
     )
     turbid_tool = models.CharField(
-        max_length=255, choices=TOOL_CHOICES, default=0,
+        max_length=255, choices=TOOL_CHOICES, default=0, null=True,
     )
     salinity = models.DecimalField(
-        default=0, max_digits=5, decimal_places=2,
+        default=0, null=True, max_digits=5, decimal_places=2,
         verbose_name=_('salinity (PSU) PPT')
     )
     salt_tool = models.CharField(
-        max_length=255, choices=TOOL_CHOICES, default=0,
+        max_length=255, choices=TOOL_CHOICES, default=0, null=True
     )
     # The following are optional fields
     conductivity = models.DecimalField(
@@ -380,9 +391,12 @@ class WQ_Sample(models.Model):
         null=True, verbose_name=_('phosphates (mg/L)')
     )
     fecal_coliform = models.DecimalField(
-        default=0, max_digits=5, decimal_places=2, blank=True,
-        null=True, verbose_name=_('fecal coliform (CFU/100 mL)')
-    )
+        default=0, max_digits=5,
+        decimal_places=2, blank=True,
+        null=True,
+        verbose_name=_('fecal coliform (CFU/100 mL)')
+        )
+    nid = models.PositiveIntegerField(blank=True, null=True)
 
     test_objects = WQSampleManager()
     objects = models.Manager()
