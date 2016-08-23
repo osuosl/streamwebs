@@ -86,7 +86,7 @@ class SiteTestCase(TestCase):
 
     def test_obj_creation_req_fields(self):
         """Sites should be created successfully with only req fields"""
-        site = Site.objects.create_site('Cool Creek', 'SS', 'cool_creek')
+        site = Site.test_objects.create_site('Cool Creek', 'SS', 'cool_creek')
 
         self.assertEqual(site.site_name, 'Cool Creek')
         self.assertEqual(site.site_type, 'SS')
@@ -100,7 +100,7 @@ class SiteTestCase(TestCase):
         point = Point(44.3910532, -120.2684184)
         temp_photo = tempfile.NamedTemporaryFile(suffix='.jpg').name
 
-        site = Site.objects.create_site('Cool Creek', 'SS', 'cool_creek',
+        site = Site.test_objects.create_site('Cool Creek', 'SS', 'cool_creek',
                                         point, 'A very cool creek', temp_photo)
 
         self.assertEqual(site.site_name, 'Cool Creek')

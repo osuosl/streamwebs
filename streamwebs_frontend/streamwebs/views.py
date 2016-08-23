@@ -142,7 +142,6 @@ def graph_macros(request, site_slug):
 
 def macroinvertebrate(request, site_slug, data_id):
     site = Site.objects.get(site_slug=site_slug)
-    # data = Macroinvertebrates.objects.filter(site_id=site.id).get(id=data_id)
     data = Macroinvertebrates.objects.get(id=data_id)
     return render(
         request,
