@@ -16,7 +16,8 @@ class AddTransectTestCase(TestCase):
         When the user tries to submit a bad (blank) form, the form errors
         should be displayed
         """
-        site = Site.objects.create_site('Site Name', 'Site Type', 'site_slug')
+        site = Site.test_objects.create_site('Site Name', 'Site Type',
+                                             'site_slug')
         response = self.client.post(
             reverse('streamwebs:riparian_transect_edit',
                     kwargs={'site_slug': site.id}
@@ -35,7 +36,8 @@ class AddTransectTestCase(TestCase):
         When the user submits a form with all required fields filled
         appropriately, the user should see a success message
         """
-        site = Site.objects.create_site('Site Name', 'Site Type', 'site_slug')
+        site = Site.test_objects.create_site('Site Name', 'Site Type',
+                                             'site_slug')
         response = self.client.post(
             reverse(
                 'streamwebs:riparian_transect_edit',
@@ -91,7 +93,8 @@ class AddTransectTestCase(TestCase):
         When the user is not logged in, they cannot view the data entry page
         """
         self.client.logout()
-        site = Site.objects.create_site('Site Name', 'Site Type', 'site_slug')
+        site = Site.test_objects.create_site('Site Name', 'Site Type',
+                                             'site_slug')
         response = self.client.get(
             reverse('streamwebs:riparian_transect_edit',
                     kwargs={'site_slug': site.id})

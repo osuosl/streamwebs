@@ -6,10 +6,10 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.utils.translation import ugettext_lazy as _
 from django.forms import inlineformset_factory
-from streamwebs.forms import (UserForm, UserProfileForm, TransectZoneForm,
-                              RiparianTransectForm, MacroinvertebratesForm)
-from streamwebs.models import (RiparianTransect, Site, TransectZone,
-                               Macroinvertebrates)
+from streamwebs.forms import (
+    UserForm, UserProfileForm, RiparianTransectForm, MacroinvertebratesForm)
+from streamwebs.models import (
+    RiparianTransect, Site, TransectZone, Macroinvertebrates)
 
 
 # Create your views here.

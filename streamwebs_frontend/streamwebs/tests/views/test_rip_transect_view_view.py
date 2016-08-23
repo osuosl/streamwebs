@@ -6,7 +6,8 @@ from streamwebs.models import Site, TransectZone, RiparianTransect
 class ViewTransectTestCase(TestCase):
 
     def test_data_sheet_view(self):
-        site = Site.objects.create_site('Site Name', 'Site Type', 'site_slug')
+        site = Site.test_objects.create_site('Site Name', 'Site Type',
+                                             'site_slug')
         transect = RiparianTransect.objects.create_transect(
             'School Name', '2016-07-22 15:04:00', site
         )
@@ -35,7 +36,8 @@ class ViewTransectTestCase(TestCase):
         )
 
     def test_data_sheet_view_content(self):
-        site = Site.objects.create_site('Site Name', 'Site Type', 'site_slug')
+        site = Site.test_objects.create_site('Site Name', 'Site Type',
+                                             'site_slug')
         transect = RiparianTransect.objects.create_transect(
             'School Name', '2016-07-22 15:04:00', site
         )
