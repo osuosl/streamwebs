@@ -55,8 +55,8 @@ class School(models.Model):
     city = models.CharField(max_length=250, blank=True)
     zipcode = models.CharField(max_length=250, blank=True)
 
-    created = models.DateTimeField(auto_now_add=True)
-    modified = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(default=timezone.now)
+    modified = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return self.name

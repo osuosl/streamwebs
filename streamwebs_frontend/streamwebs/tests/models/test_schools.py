@@ -36,8 +36,3 @@ class SchoolTestCase(TestCase):
             if not (field.many_to_one and field.related_model is None)
         )))
         self.assertEqual(sorted(fields), sorted(self.expected_fields.keys()))
-
-    def test_create_and_mod_dates(self):
-        """When a new school is created, both date fields should be set"""
-        self.assertTrue(School._meta.get_field('modified').auto_now)
-        self.assertTrue(School._meta.get_field('created').auto_now_add)
