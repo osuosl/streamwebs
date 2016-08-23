@@ -101,7 +101,8 @@ class SiteTestCase(TestCase):
         temp_photo = tempfile.NamedTemporaryFile(suffix='.jpg').name
 
         site = Site.test_objects.create_site('Cool Creek', 'SS', 'cool_creek',
-                                        point, 'A very cool creek', temp_photo)
+                                             point, 'A very cool creek',
+                                             temp_photo)
 
         self.assertEqual(site.site_name, 'Cool Creek')
         self.assertEqual(site.site_type, 'SS')

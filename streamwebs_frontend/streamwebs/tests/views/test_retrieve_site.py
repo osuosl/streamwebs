@@ -17,8 +17,9 @@ class RetrieveSiteTestCase(TestCase):
     def test_data_sheet_view(self):
         """Tests that view's status is 200 and correct template is used"""
         site = Site.test_objects.create_site('Test Site', 'AP', 'slug',
-                                        self.location, 'Test site description',
-                                        self.image)
+                                             self.location,
+                                             'Test site description',
+                                             self.image)
         response = self.client.get(reverse('streamwebs:site',
                                            kwargs={'site_slug': site.id}))
         self.assertEqual(response.status_code, 200)
@@ -27,8 +28,9 @@ class RetrieveSiteTestCase(TestCase):
     def test_data_sheet_content(self):
         """Tests that view's content is correct"""
         site = Site.test_objects.create_site('Test Site', 'AP', 'slug',
-                                        self.location, 'Test site description',
-                                        self.image)
+                                             self.location,
+                                             'Test site description',
+                                             self.image)
 
         response = self.client.get(reverse('streamwebs:site',
                                            kwargs={'site_slug': site.id}))
