@@ -4,9 +4,12 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
-from streamwebs.forms import UserForm, UserProfileForm, MacroinvertebratesForm
-from streamwebs.models import Macroinvertebrates, Site
 from django.utils.translation import ugettext_lazy as _
+from django.forms import inlineformset_factory
+from streamwebs.forms import (
+    UserForm, UserProfileForm, RiparianTransectForm, MacroinvertebratesForm)
+from streamwebs.models import (
+    RiparianTransect, Site, TransectZone, Macroinvertebrates)
 
 
 # Create your views here.
@@ -279,3 +282,66 @@ def macroinvertebrate_edit(request, site_slug):
                   {'macro_form': macro_form,
                    'added': added,
                    'site': site})
+
+
+def riparian_transect_view(request, site_slug, data_id):
+    transects = RiparianTransect.objects.filter(site_id=site_slug)
+    transect = transects.get(id=data_id)
+    zones = TransectZone.objects.filter(transect_id=transect)
+    site = Site.objects.get(id=site_slug)
+
+    # Invoking the database by evaluating the queryset before passing it to the
+    # template is necessary in order to pass Travis tests.
+    # https://docs.djangoproject.com/en/1.9/ref/models/querysets/#when-querysets-are-evaluated
+    zones = list(zones)
+
+    return render(
+        request, 'streamwebs/datasheets/riparian_transect_view.html', {
+            'transect': transect,
+            'zones': zones,
+            'site': site
+            }
+        )
+
+
+def riparian_transect_edit(request, site_slug):
+    """
+    The view for the submission of a new riparian transect data sheet.
+    """
+    added = False
+    site = Site.objects.get(id=site_slug)
+    transect = RiparianTransect()
+    TransectZoneInlineFormSet = inlineformset_factory(
+        RiparianTransect, TransectZone,
+        fields=('conifers', 'hardwoods', 'shrubs', 'comments'), extra=5
+    )
+
+    if request.method == 'POST':
+        zone_formset = TransectZoneInlineFormSet(data=request.POST,
+                                                 instance=transect)
+        transect_form = RiparianTransectForm(data=request.POST)
+
+        if (zone_formset.is_valid() and transect_form.is_valid()):
+
+            transect = transect_form.save()             # save form to object
+            transect.save()                             # save object
+
+            zones = zone_formset.save(commit=False)     # save forms to objs
+
+            for zone in zones:                          # for each zone,
+                zone.transect = transect                # assign the transect
+                zone.save()                             # save the zone obj
+
+            added = True
+
+    else:
+        zone_formset = TransectZoneInlineFormSet(instance=transect)
+        transect_form = RiparianTransectForm()
+
+    return render(
+        request,
+        'streamwebs/datasheets/riparian_transect_edit.html', {
+            'transect_form': transect_form, 'zone_formset': zone_formset,
+            'added': added, 'site': site
+        }
+    )

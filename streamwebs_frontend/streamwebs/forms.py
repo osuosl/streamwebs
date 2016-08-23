@@ -1,7 +1,8 @@
 # -*- coding: UTF-8 -*-
 from __future__ import unicode_literals
 from streamwebs.models import UserProfile, WQ_Sample, Water_Quality, \
-    Macroinvertebrates, Canopy_Cover, CC_Cardinal
+    Macroinvertebrates, Canopy_Cover, CC_Cardinal, TransectZone, \
+    RiparianTransect
 from django.contrib.auth.models import User
 from django import forms
 from django.utils.translation import ugettext_lazy as _
@@ -86,3 +87,15 @@ class CC_Cardinal_Form(forms.ModelForm):
         fields = ('direction', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I',
                   'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U',
                   'V', 'W', 'X', 'num_shaded')
+
+
+class TransectZoneForm(forms.ModelForm):
+    class Meta:
+        model = TransectZone
+        fields = ('conifers', 'hardwoods', 'shrubs', 'comments')
+
+
+class RiparianTransectForm(forms.ModelForm):
+    class Meta:
+        model = RiparianTransect
+        fields = ('school', 'date_time', 'weather', 'site', 'slope', 'notes')

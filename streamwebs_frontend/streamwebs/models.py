@@ -429,84 +429,47 @@ class Macroinvertebrates(models.Model):
 
     def clean(self):
         if ((self.caddisfly + self.mayfly + self.riffle_beetle +
-           self.stonefly + self.water_penny +
-           self.dobsonfly) * 3) != self.sensitive_total:
-            raise ValidationError(
-                _('%(sensitive_total)s is not the correct total'),
-                params={'sensitive_total': self.sensitive_total},
-            )
+             self.stonefly + self.water_penny +
+             self.dobsonfly) * 3) != self.sensitive_total:
+                raise ValidationError(
+                    _('%(sensitive_total)s is not the correct total'),
+                    params={'sensitive_total': self.sensitive_total},
+                )
 
         if ((self.clam_or_mussel + self.crane_fly + self.crayfish +
-           self.damselfly + self.dragonfly + self.scud + self.fishfly +
-           self.alderfly + self.mite) * 2) != self.somewhat_sensitive_total:
-            raise ValidationError(
-                _('%(some_sensitive)s is not the correct total'),
-                params={'some_sensitive': self.somewhat_sensitive_total},
-            )
+             self.damselfly + self.dragonfly + self.scud + self.fishfly +
+             self.alderfly + self.mite) * 2) != self.somewhat_sensitive_total:
+                raise ValidationError(
+                    _('%(some_sensitive)s is not the correct total'),
+                    params={'some_sensitive': self.somewhat_sensitive_total},
+                )
 
         if (self.aquatic_worm + self.blackfly + self.leech + self.midge +
-           self.snail + self.mosquito_larva) != self.tolerant_total:
-            raise ValidationError(
-                _('%(tolerant_total)s is not the correct total'),
-                params={'tolerant_total': self.tolerant_total},
-            )
-
-        if (self.sensitive_total + self.somewhat_sensitive_total +
-           self.tolerant_total) != self.wq_rating:
-            raise ValidationError(
-                _('%(wq_rating)s is not the correct total'),
-                params={'wq_rating': self.wq_rating},
-            )
+                self.snail + self.mosquito_larva) != self.tolerant_total:
+                raise ValidationError(
+                    _('%(tolerant_total)s is not the correct total'),
+                    params={'tolerant_total': self.tolerant_total},
+                )
+        if(self.sensitive_total + self.somewhat_sensitive_total +
+                self.tolerant_total) != self.wq_rating:
+                raise ValidationError(
+                    _('%(wq_rating)s is not the correct total'),
+                    params={'wq_rating': self.wq_rating},
+                )
 
     class Meta:
         verbose_name = 'macroinvertebrate'
         verbose_name_plural = 'macroinvertebrates'
 
 
-class TransectZoneManager(models.Manager):
-    """
-    Manager for the TransectZone model.
-    """
-    def create_zone(self, conifers=0, hardwoods=0, shrubs=0, comments=''):
-        info = self.create(conifers=conifers, hardwoods=hardwoods,
-                           shrubs=shrubs, comments=comments)
-        return info
-
-
-class TransectZone(models.Model):
-    """
-    Each Riparian Transect datasheet requires five zones.
-    """
-    conifers = models.PositiveSmallIntegerField(default=0,
-                                                verbose_name=_('conifers'))
-    hardwoods = models.PositiveSmallIntegerField(default=0,
-                                                 verbose_name=_('hardwoods'))
-    shrubs = models.PositiveSmallIntegerField(default=0,
-                                              verbose_name=_('shrubs'))
-    comments = models.TextField(blank=True,
-                                verbose_name=_('additional comments'))
-
-    zones = TransectZoneManager()
-
-    def __str__(self):
-        return str(self.id)
-
-    class Meta:
-        verbose_name = 'zone'
-        verbose_name_plural = 'zones'
-
-
 class RipTransectManager(models.Manager):
     """
     Manager for the RiparianTransect model/datasheet.
     """
-    def create_transect(self, school, date_time, site, zone_1, zone_2, zone_3,
-                        zone_4, zone_5, weather='', slope=None,
+    def create_transect(self, school, date_time, site, weather='', slope=None,
                         notes=''):
         return self.create(school=school, date_time=date_time, site=site,
-                           zone_1=zone_1, zone_2=zone_2, zone_3=zone_3,
-                           zone_4=zone_4, zone_5=zone_5, weather=weather,
-                           slope=slope, notes=notes)
+                           weather=weather, slope=slope, notes=notes)
 
 
 def validate_slope(slope):
@@ -522,30 +485,64 @@ class RiparianTransect(models.Model):
     This model corresponds to the Riparian Transect data sheet and has a one-to
     -one relationship with its specified Site.
     """
-    school = models.CharField(max_length=255)
-    date_time = models.DateTimeField(default=timezone.now)
-    weather = models.CharField(max_length=255, blank=True)
-    site = models.ForeignKey(Site, null=True, on_delete=models.CASCADE)
-    slope = models.DecimalField(blank=True, null=True, max_digits=5,
-                                decimal_places=3, validators=[validate_slope])
-    notes = models.TextField(blank=True)
+    school = models.CharField(max_length=255, verbose_name=_('school'))
+    date_time = models.DateTimeField(default=timezone.now,
+                                     verbose_name=_('date and time'))
+    weather = models.CharField(max_length=255, blank=True,
+                               verbose_name=_('weather'))
+    site = models.ForeignKey(Site, null=True, on_delete=models.CASCADE,
+                             verbose_name=_('site'))
+    slope = models.DecimalField(
+        blank=True, null=True, max_digits=5, decimal_places=3,
+        verbose_name=_('slope of stream bank (rise over run)')
+    )
+    notes = models.TextField(blank=True, verbose_name=_('notes'))
 
-    zone_1 = models.ForeignKey(TransectZone, on_delete=models.CASCADE,
-                               related_name='zone_1', null=True)
-    zone_2 = models.ForeignKey(TransectZone, on_delete=models.CASCADE,
-                               related_name='zone_2', null=True)
-    zone_3 = models.ForeignKey(TransectZone, on_delete=models.CASCADE,
-                               related_name='zone_3', null=True)
-    zone_4 = models.ForeignKey(TransectZone, on_delete=models.CASCADE,
-                               related_name='zone_4', null=True)
-    zone_5 = models.ForeignKey(TransectZone, on_delete=models.CASCADE,
-                               related_name='zone_5', null=True)
+    objects = RipTransectManager()
 
-    transects = RipTransectManager()
+    def __str__(self):
+        return 'Transect ' + str(self.id) + ' for site ' + self.site.site_name
 
     class Meta:
         verbose_name = 'riparian transect'
         verbose_name_plural = 'riparian transects'
+
+
+class TransectZoneManager(models.Manager):
+    """
+    Manager for the TransectZone model.
+    """
+    def create_zone(self, transect, conifers=0, hardwoods=0, shrubs=0,
+                    comments=''):
+        return self.create(transect=transect, conifers=conifers,
+                           hardwoods=hardwoods, shrubs=shrubs,
+                           comments=comments)
+
+
+class TransectZone(models.Model):
+    """
+    Each Riparian Transect datasheet requires five zones.
+    """
+    transect = models.ForeignKey(RiparianTransect, on_delete=models.CASCADE,
+                                 related_name='transect', null=True)
+    conifers = models.PositiveSmallIntegerField(default=0,
+                                                verbose_name=_('conifers'))
+    hardwoods = models.PositiveSmallIntegerField(default=0,
+                                                 verbose_name=_('hardwoods'))
+    shrubs = models.PositiveSmallIntegerField(default=0,
+                                              verbose_name=_('shrubs'))
+    comments = models.TextField(blank=True,
+                                verbose_name=_('additional comments'))
+
+    objects = TransectZoneManager()
+
+    def __str__(self):
+        return ('Zone ' + str(self.id) + ' for transect ' +
+                str(self.transect.id))
+
+    class Meta:
+        verbose_name = 'zone'
+        verbose_name_plural = 'zones'
 
 
 class CardinalManager(models.Manager):
