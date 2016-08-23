@@ -3,7 +3,7 @@
         <div class="navbar right" align="right">
             <nav>
                 <a href="{% url 'streamwebs:sites' %}">Sites</a>
-                <a href="{% url 'streamwebs:index' %}">Resources</a>
+                <a href="{% url 'streamwebs:resources' %}">Resources</a>
                 {% if user.is_authenticated %}
                     <a href="{% url 'streamwebs:logout' %}">Logout</a>
                 {% else %}

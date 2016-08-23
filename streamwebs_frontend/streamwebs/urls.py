@@ -18,8 +18,9 @@ urlpatterns = [
         views.macroinvertebrate, name='macroinvertebrate_view'),
     url(r'^site/(?P<site_slug>[0-9a-zA-Z]+)/macro/edit$',
         views.macroinvertebrate_edit, name='macroinvertebrate_edit'),
-
-
+    url(r'^resources/$', views.resources, name='resources'),
+    url(r'^resources/data-sheets/', views.resources_data_sheets,
+        name='resources-data-sheets'),
     url(r'^register/$', views.register, name='register'),
     url(r'^login/$', views.user_login, name='login'),
     url(r'^logout/$', views.user_logout, name='logout')
