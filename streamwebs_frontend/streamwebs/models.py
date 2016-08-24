@@ -462,6 +462,27 @@ class Macroinvertebrates(models.Model):
         verbose_name_plural = 'macroinvertebrates'
 
 
+class ResourcesManager(models.Model):
+    """ Manager for the Resources model """
+    def create_resource(self, name, downloadable, thumbnail):
+        return self.create(
+            name=name, downloadable=downloadable, thumbnail=thumbnail
+        )
+
+
+class Resources(models.Model):
+    """ This model organizes Resources like pdfs """
+    name = models.CharField(max_length=255)
+    downloadable = models.FileField(upload_to='static/resources/')
+    thumbnail = models.ImageField(upload_to='static/resources/')
+
+    objects = ResourcesManager()
+
+    class Meta:
+        verbose_name = 'resource'
+        verbose_name_plural = 'resources'
+
+
 class RipTransectManager(models.Manager):
     """
     Manager for the RiparianTransect model/datasheet.
