@@ -8,7 +8,7 @@ urlpatterns = [
     url(r'^$', views.index, name='index'),
 
     url(r'^create_site/$', views.create_site, name='create_site'),
-    
+
     url(r'^sites$', views.sites, name='sites'),
 
     url(r'^site/(?P<site_slug>[0-9a-zA-Z-]+)$', views.site, name='site'),

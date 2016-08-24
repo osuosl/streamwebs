@@ -71,7 +71,7 @@ class RiparianTransectTestCase(TestCase):
 
         transect = RiparianTransect.objects.create_transect(
             'School of Cool', '2016-07-11 14:09', self.site)
-        
+
         self.assertEqual(transect.site.site_name, 'test site')
         self.assertEqual(transect.site.site_type, 'test type')
         self.assertEqual(transect.site.site_slug, 'test-site')

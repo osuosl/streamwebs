@@ -64,14 +64,13 @@ class Site(models.Model):
     location = models.PointField(default='POINT(44.0612385 -121.3846841)',
                                  verbose_name=_('location'),
                                  validators=[validate_Site_location])
-
     image = models.ImageField(null=True, blank=True, verbose_name=_('image'))
-    
+
     created = models.DateTimeField(default=timezone.now)
     modified = models.DateTimeField(default=timezone.now)
 
-    test_objects = SiteManager()
-    objects = models.Manager()
+    objects = models.Manager()  # default manager
+    test_objects = SiteManager()  # custom manager for use in writing tests
 
     def __str__(self):
         return self.site_name
@@ -403,7 +402,8 @@ class WQ_Sample(models.Model):
     objects = models.Manager()
 
     def __str__(self):
-        return self.water_quality.site.site_name + ' sheet ' + str(self.water_quality.id)
+        return self.water_quality.site.site_name + ' sheet ' + \
+               str(self.water_quality.id)
 
     class Meta:
         verbose_name = 'water quality sample'
