@@ -53,6 +53,7 @@ class School(models.Model):
     school_type = models.CharField(max_length=250)
     address = models.CharField(max_length=250, blank=True)
     city = models.CharField(max_length=250, blank=True)
+    province = models.CharField(max_length=250, blank=True)
     zipcode = models.CharField(max_length=250, blank=True)
 
     created = models.DateTimeField(default=timezone.now)
