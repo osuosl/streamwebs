@@ -47,6 +47,21 @@ class Site(models.Model):
         return self.site_name
 
 
+@python_2_unicode_compatible
+class School(models.Model):
+    name = models.CharField(max_length=250)
+    school_type = models.CharField(max_length=250)
+    address = models.CharField(max_length=250, blank=True)
+    city = models.CharField(max_length=250, blank=True)
+    zipcode = models.CharField(max_length=250, blank=True)
+
+    created = models.DateTimeField(default=timezone.now)
+    modified = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return self.name
+
+
 def validate_UserProfile_school(school):
     if school not in dict(settings.SCHOOL_CHOICES):
         raise ValidationError(_('That school is not in the list.'))
