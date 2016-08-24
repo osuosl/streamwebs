@@ -1,6 +1,7 @@
 from django.test import TestCase
 
 from django.contrib.gis.db import models
+from django.apps import apps
 from itertools import chain
 
 from streamwebs.models import Site
@@ -29,6 +30,10 @@ class SoilSurveyTestCase(TestCase):
             'id': models.AutoField,
         }
 
+        self.optional_fields = {
+            'site_char'
+        }
+
         self.site = Site.test_objects.create_site('test site',
                                                   'test site type',
                                                   'test_site_slug')
@@ -48,3 +53,10 @@ class SoilSurveyTestCase(TestCase):
         )))
 
         self.assertEqual(sorted(fields), sorted(self.expected_fields.keys()))
+
+    def test_optional_fields(self):
+        """Tests that optional fields default to True when left blank"""
+        apps.get_model('streamwebs', 'soil_survey')
+        for field in self.optional_fields:
+            self.assertEqual(
+                Soil_Survey._meta.get_field(field).blank, True)
