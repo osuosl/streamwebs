@@ -27,7 +27,8 @@ class SiteTestCase(TestCase):
             'macroinvertebrates': models.ManyToOneRel,
             'ripariantransect': models.ManyToOneRel,
             'canopy_cover': models.ManyToOneRel,
-            'camerapoint': models.ManyToOneRel  # "Photo Point Monitoring"
+            'camerapoint': models.ManyToOneRel,  # "Photo Point Monitoring"
+            'soil_survey': models.ManyToOneRel
         }
 
         self.optional_fields = {
