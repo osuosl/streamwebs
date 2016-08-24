@@ -982,10 +982,31 @@ class Soil_Survey(models.Model):
         ('other', 'Other')
     ]
 
-    landscape_pos = models.CharField(max_length=2,
+    landscape_pos = models.CharField(max_length=1, default=None,
                                      choices=landscape_pos_choices)
-    cover_type = models.CharField(max_length=2, choices=cover_type_choices)
-    land_use = models.CharField(max_length=2, choices=land_use_choices)
+    cover_type = models.CharField(max_length=1, default=None,
+                                  choices=cover_type_choices)
+    land_use = models.CharField(max_length=1, default=None,
+                                choices=land_use_choices)
+
+    distance = models.CharField(max_length=250, null=True,
+                                verbose_name=_('distance from stream'))
+    site_char = models.TextField(blank=True,
+                                 verbose_name=_('distinguishing site \
+                                 characteristics'))
+
+    soil_type_choices = [
+        ('sand', 'Sand'),
+        ('loamy_sand', 'Loamy Sand'),
+        ('silt_loam', 'Silt Loam'),
+        ('loam', 'Loam'),
+        ('clay_loam', 'Clay Loam'),
+        ('light_clay', 'Light Clay'),
+        ('heavy_clay', 'Heavy Clay')
+    ]
+
+    soil_type = models.CharField(max_length=1, default=None,
+                                 choices=soil_type_choices)
 
     def __str__(self):
         return self.site.site_name
