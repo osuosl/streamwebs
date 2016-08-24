@@ -24,6 +24,7 @@ STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 LOCALE_PATHS = [
     '../locale/',
 ]
+MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
@@ -146,6 +147,11 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# Media files (user-uploaded files, esp. images)
+# https://docs.djangoproject.com/en/1.9/ref/models/fields/#django.db.models.FileField.storage
+
+MEDIA_URL = '/media/'
 
 # List of schools
 # Format: each school listed in the SCHOOL_CHOICES tuple should be a tuple of

@@ -17,7 +17,7 @@
         <a href='/streamwebs/'>{% trans 'Home' %}</a><br /> <!-- change later -->
 
         {% else %}
-        <form id='site_form' method='post' action='/streamwebs/create_site/'>
+        <form id='site_form' method='post' enctype="multipart/form-data" action='/streamwebs/create_site/'>
             {% csrf_token %}
 
             {{ site_form.as_p }}

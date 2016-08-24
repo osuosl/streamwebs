@@ -64,7 +64,8 @@ class Site(models.Model):
     location = models.PointField(default='POINT(44.0612385 -121.3846841)',
                                  verbose_name=_('location'),
                                  validators=[validate_Site_location])
-    image = models.ImageField(null=True, blank=True, verbose_name=_('image'))
+    image = models.ImageField(null=True, blank=True, verbose_name=_('image')),
+                              upload_to='site_photos/')
 
     created = models.DateTimeField(default=timezone.now)
     modified = models.DateTimeField(default=timezone.now)

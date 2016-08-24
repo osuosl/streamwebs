@@ -31,7 +31,7 @@ def create_site(request):
     created = False
 
     if request.method == 'POST':
-        site_form = SiteForm(data=request.POST)
+        site_form = SiteForm(request.POST, request.FILES)
 
         if site_form.is_valid():
             # save the form to a site object
