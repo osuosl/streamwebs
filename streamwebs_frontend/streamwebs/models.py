@@ -320,7 +320,7 @@ class WQ_Sample(models.Model):
                                       related_name='water_quality', null=True)
     sample = models.PositiveIntegerField()
     water_temperature = models.DecimalField(
-        default=0, max_digits=5, decimal_places=2,
+        default=0, max_digits=5, decimal_places=2, null=True,
         verbose_name=_('water temperature')
     )
     water_temp_tool = models.CharField(
@@ -402,8 +402,7 @@ class WQ_Sample(models.Model):
     objects = models.Manager()
 
     def __str__(self):
-        # return "test"
-        return str(self.water_quality.id)
+        return str(self.nid)
 
     class Meta:
         verbose_name = 'water quality sample'
