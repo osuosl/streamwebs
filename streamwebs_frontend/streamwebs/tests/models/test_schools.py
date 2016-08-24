@@ -13,6 +13,7 @@ class SchoolTestCase(TestCase):
             'school_type': models.CharField,
             'address': models.CharField,
             'city': models.CharField,
+            'province': models.CharField,
             'zipcode': models.CharField,
 
             'created': models.DateTimeField,
