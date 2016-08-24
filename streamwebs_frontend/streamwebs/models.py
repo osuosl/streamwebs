@@ -253,7 +253,7 @@ class Water_Quality(models.Model):
     objects = models.Manager()
 
     def __str__(self):
-        return self.site.site_name
+        return self.site.site_name + ' data sheet ' + str(self.id)
 
     class Meta:
         verbose_name = 'water quality'
@@ -403,8 +403,7 @@ class WQ_Sample(models.Model):
     objects = models.Manager()
 
     def __str__(self):
-        # return "test"
-        return str(self.water_quality.id)
+        return self.water_quality.site.site_name + ' sheet ' + str(self.water_quality.id)
 
     class Meta:
         verbose_name = 'water quality sample'
