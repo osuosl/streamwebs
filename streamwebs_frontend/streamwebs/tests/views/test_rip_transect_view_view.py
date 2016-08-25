@@ -22,10 +22,9 @@ class ViewTransectTestCase(TestCase):
                                                   'This is zone 5')  # NOQA
         response = self.client.get(
                 reverse(
-                    'streamwebs:riparian_transect_view',
-                    kwargs={'data_id': transect.id,
-                            'site_slug': transect.site.site_slug
-                            }
+                    'streamwebs:riparian_transect',
+                    kwargs={'site_slug': transect.site.site_slug,
+                            'data_id': transect.id}
                 )
         )
         self.assertEqual(response.status_code, 200)
@@ -50,10 +49,9 @@ class ViewTransectTestCase(TestCase):
                                                   'This is zone 5')  # NOQA
         response = self.client.get(
                 reverse(
-                    'streamwebs:riparian_transect_view',
-                    kwargs={'data_id': transect.id,
-                            'site_slug': site.site_slug
-                            }
+                    'streamwebs:riparian_transect',
+                    kwargs={'site_slug': transect.site.site_slug,
+                            'data_id': transect.id}
                 )
         )
 
