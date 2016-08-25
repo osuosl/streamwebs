@@ -197,43 +197,40 @@ class Water_Quality(models.Model):
     )
     DEQ_dq_level = models.CharField(
         max_length=1, choices=DEQ_DQ_CHOICES,
-        default=None, verbose_name=_('DEQ data quality level')
+        default=None, null=True, verbose_name=_('DEQ data quality level')
     )
     school = models.CharField(
-        max_length=250, verbose_name=_('school')
+        max_length=250, null=Rrue, verbose_name=_('school')
     )
     latitude = models.DecimalField(
-        default=0, max_digits=9, decimal_places=6, verbose_name=_('latitude'),
-        validators=[validate_WaterQuality_latitude]
+        default=0, null=True, max_digits=9, decimal_places=6,
+        verbose_name=_('latitude'), validators=[validate_WaterQuality_latitude]
     )
     longitude = models.DecimalField(
-        default=0, max_digits=9, decimal_places=6, verbose_name=_('longitude'),
+        default=0, null=True, max_digits=9, decimal_places=6, 
+        verbose_name=_('longitude'),
         validators=[validate_WaterQuality_longitude]
-
     )
     fish_present = models.CharField(
-        max_length=255, choices=BOOL_CHOICES, default=0,
+        max_length=255, choices=BOOL_CHOICES, default=0, null=True,
         verbose_name=_('any fish present?')
     )
     live_fish = models.PositiveSmallIntegerField(
-        default=0, verbose_name=_('number of live fish')
+        default=0, null=True, verbose_name=_('number of live fish')
     )
     dead_fish = models.PositiveSmallIntegerField(
-        default=0, verbose_name=_('number of dead fish')
+        default=0, null=True, verbose_name=_('number of dead fish')
     )
     water_temp_unit = models.CharField(
-        max_length=255, choices=UNIT_CHOICES, default=0,
+        max_length=255, choices=UNIT_CHOICES, default=0, null=True,
         verbose_name=_('water temperature units')
     )
     air_temp_unit = models.CharField(
-        max_length=255, choices=UNIT_CHOICES, default=0,
+        max_length=255, choices=UNIT_CHOICES, default=0, null=True,
         verbose_name=_('air temperature units')
     )
     notes = models.TextField(blank=True, verbose_name=_('notes'))
     nid = models.PositiveIntegerField(blank=True, null=True)
-
-    # Add some logic in which the datasheet object is only created when
-    # the Site in which it corresponds to actually exists
 
     test_objects = WaterQualityManager()
     objects = models.Manager()
