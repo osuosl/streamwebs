@@ -2,6 +2,27 @@ let data = window.data_summ;
 
 let date_range = [0, Number.MAX_SAFE_INTEGER];
 
+/*
+ * Number.prototype.toFixed() has several problems: it doesn't
+ * round consistently, and it always has the given precision, adding
+ * zeroes to the end of the string if necessary. This will instead
+ * provide a consistent rounding to the number of provided decimal places
+ * OR the number of decimals in the number, whichever is lower:
+ *
+ * toFixed(Math.PI, 2) == "3.14"
+ * toFixed(Math.PI, 3) == "3.142"
+ * toFixed(10, 4) == "10"
+ * toFixed(10.000000000001, 1) == "10"
+ *
+ * One unfortunate side note: scientific notation is maintained:
+ *
+ * toFixed(1e100, 2) == "1e+100"
+ */
+function toFixed(value, precision) {
+    var power = Math.pow(10, precision || 0);
+    return String(Math.round(value * power) / power);
+}
+
 const changeRangeStart = function changeRangeStart() {
     const date = Date.parse($(this).val());
     if (!date || Number.isNaN(date)) {
@@ -357,7 +378,7 @@ const useBarGraph = function useBarGraph() {
             ',' + (parseFloat(target.attr('height')) + parseFloat(target.attr('y')))/4 + ')'
         );
         g.find('text').html(
-            target.attr('x-data-name') + ' (' + target.attr('x-data-value') + ')'
+            target.attr('x-data-name') + ' (' + toFixed(target.attr('x-data-value'), 2) + ')'
         );
         g.attr('opacity', 1);
     })
