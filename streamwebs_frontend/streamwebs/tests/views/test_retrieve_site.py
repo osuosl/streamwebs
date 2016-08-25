@@ -28,8 +28,6 @@ class RetrieveSiteTestCase(TestCase):
 
     def test_site_view_site_content(self):
         """Tests that view's site info is present"""
-        print '\nWhere my coors at'
-        print self.response
         self.assertContains(self.response, 'Test Site')
         self.assertContains(self.response, 'Test site description')
         self.assertContains(self.response, 44.0612385000000017)
