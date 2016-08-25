@@ -24,12 +24,16 @@ function toFixed(value, precision) {
 }
 
 const changeRangeStart = function changeRangeStart() {
-    const date = Date.parse($(this).val());
-    if (!date || Number.isNaN(date)) {
-        return;
-    }
+    if (!$(this).val()) { // If the field is empty, clear the range
+        date_range[0] = 0;
+    } else {
+        const date = Date.parse($(this).val());
+        if (!date || Number.isNaN(date)) {
+            return;
+        }
 
-    date_range[0] = date;
+        date_range[0] = date;
+    }
 
     if ($('input[type=radio]:checked').val() == 'line') {
         useLineGraph();
@@ -39,12 +43,16 @@ const changeRangeStart = function changeRangeStart() {
 };
 
 const changeRangeEnd = function changeRangeEnd() {
-    const date = Date.parse($(this).val());
-    if (!date || Number.isNaN(date)) {
-        return;
-    }
+    if (!$(this).val()) { // If the field is empty, clear the range
+        date_range[1] = Number.MAX_SAFE_INTEGER;
+    } else {
+        const date = Date.parse($(this).val());
+        if (!date || Number.isNaN(date)) {
+            return;
+        }
 
-    date_range[1] = date;
+        date_range[1] = date;
+    }
 
     if ($('input[type=radio]:checked').val() == 'line') {
         useLineGraph();
