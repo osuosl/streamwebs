@@ -13,8 +13,7 @@ from streamwebs.forms import (
     SiteForm)
 from streamwebs.models import (
     Macroinvertebrates, Site, Water_Quality, WQ_Sample, RiparianTransect,
-    TransectZone,
-    )
+    TransectZone, Canopy_Cover)
 from datetime import datetime
 import json
 
@@ -64,12 +63,16 @@ def site(request, site_slug):
     """ View an individual site """
     site = Site.objects.get(site_slug=site_slug)
     wq_sheets = Water_Quality.objects.filter(site_id=site.id).order_by('-date')
+    macro_sheets = Macroinvertebrates.objects.filter(site_id=site.id).order_by('-date')
     transect_sheets = RiparianTransect.objects.filter(site_id=site.id).order_by('-date')
+    canopy_sheets = Canopy_Cover.objects.filter(site_id=site.id).order_by('-date')
 
     return render(request, 'streamwebs/site_detail.html', {
         'site': site,
         'wq_sheets': wq_sheets,
-        'transect_sheets': transect_sheets
+        'macro_sheets': macro_sheets,
+        'transect_sheets': transect_sheets,
+        'canopy_sheets': canopy_sheets,
     })
 
 

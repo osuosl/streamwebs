@@ -8,15 +8,17 @@
 {% block body_title %}{{site.site_name}}{% endblock %}
 
 {% block content %}
-    <p>Type: {{ site.site_type }}</p>
-    <p>Description: {{ site.description }}</p>
-    <p>Location: {{ site.location }}</p>
-    <p>Created: {{ site.created }}</p>
-    <p>Modified: {{ site.modified }}</p>
-    <img src="{{ site.image.url }}" alt="site image" />
 
-    <!-- existing sheets: lists site's sheets for each existing type -->
+    <!-- site info -->
     <div class="site_data">
+        <p>Type: {{ site.site_type }}</p>
+        <p>Description: {{ site.description }}</p>
+        <p>Location: {{ site.location }}</p>
+        <p>Created: {{ site.created }}</p>
+        <p>Modified: {{ site.modified }}</p>
+        <img src="{{ site.image.url }}" alt="site image" />
+    
+        <!-- existing sheets: lists site's sheets for each existing type -->
         {% if wq_sheets %}
         <p>Water Quality data sheets:</p>
             {% for sheet in wq_sheets %}
@@ -27,18 +29,37 @@
             {% endfor %}
         {% endif %}
 
+        {% if macro_sheets %}
+        <p>Macroinvertebrates data sheets:</p>
+            {% for sheet in macro_sheets %}
+            <p><a href="{% url 'streamwebs:macroinvertebrate_view' site.id sheet.id %}">
+                Macroinvertebrates data: {{ sheet.date_time }}</a></p>
+            {% endfor %}
+        {% endif %}
+    
         {% if transect_sheets %}
         <p>Riparian transect data sheets:</p>
             {% for sheet in transect_sheets %}
-            <p>{{ sheet.date_time }}</p>
+            <p><a href="{% url 'streamwebs:riparian_transect' site.id sheet.id %}">
+                Riparian transect data: {{ sheet.date_time }}</a></p>
             {% endfor %}
         {% endif %}
-    </div>
+    
+        <!-- No views, templates for canopy cover yet, so no links to sheets --> 
+        {% if canopy_sheets %}
+        <p>Canopy cover data sheets:</p>
+            {% for sheet in canopy_sheets %}
+            <p>Canopy cover data: {{ sheet.date_time }}</p>
+            {% endfor %}
+        {% endif %}
+    </div>   
 
-    <!-- types: links to create new data sheets for each type -->
+    <!-- links to create new data sheets for each type -->
     <div class="new_data">
-        <p><a href="{% url 'streamwebs:water_quality_edit' site_slug=site.site_slug %}">
-            Add New Sample</a></p>
+        <h4>Add data for this site: </h4>
+        <p><a href="{% url 'streamwebs:water_quality_edit' site_slug=site.site_slug %}">Water quality</a></p>
+        <p><a href="{% url 'streamwebs:macroinvertebrate_edit' site.site_slug %}">Macroinvertebrates</a></p>
+        <p><a href="{% url 'streamwebs:riparian_transect_edit' site.site_slug %}">Riparian transect</a></p>
+        <p>Canopy cover (coming soon)</p>
     </div>
-
-{% endblock %}
+    {% endblock %}
