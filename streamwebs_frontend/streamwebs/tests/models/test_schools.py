@@ -15,6 +15,7 @@ class SchoolTestCase(TestCase):
             'city': models.CharField,
             'province': models.CharField,
             'zipcode': models.CharField,
+            'active': models.BooleanField,
 
             'created': models.DateTimeField,
             'modified': models.DateTimeField,
