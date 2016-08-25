@@ -50,7 +50,6 @@ class Site(models.Model):
     location = models.PointField(
         null=True, blank=True, validators=[validate_Site_location]
     )
-    # objects = models.GeoManager()
 
     created = models.DateTimeField(default=timezone.now)
     modified = models.DateTimeField(default=timezone.now)
