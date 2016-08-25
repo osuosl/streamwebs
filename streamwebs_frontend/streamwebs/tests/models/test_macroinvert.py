@@ -79,7 +79,7 @@ class MacroTestCase(TestCase):
         """Tests that a datasheet correctly corresponds to a specified site"""
         default_dt = timezone.now()  # default date_time value
 
-        site = Site.test_objects.create_site('test', 'some_type', 'some_slug')
+        site = Site.test_objects.create_site('test', 'some_type')
 
         macros = Macroinvertebrates.objects.create(site=site,
                                                    date_time=default_dt,
@@ -108,13 +108,13 @@ class MacroTestCase(TestCase):
 
         self.assertEqual(macros.site.site_name, 'test')
         self.assertEqual(macros.site.site_type, 'some_type')
-        self.assertEqual(macros.site.site_slug, 'some_slug')
+        self.assertEqual(macros.site.site_slug, 'test')
 
     def test_datasheet_SetMacroInfo(self):
         """Tests that macroinvertebrate data is created"""
         default_dt = timezone.now()
 
-        site = Site.test_objects.create_site('test', 'some_type', 'some_slug')
+        site = Site.test_objects.create_site('test', 'some_type')
 
         macros = Macroinvertebrates.objects.create(site=site,
                                                    date_time=default_dt,
@@ -185,7 +185,7 @@ class MacroTestCase(TestCase):
     """Tests for validating intolerant macroinvertebrates"""
     def test_validate_macroinverts_intolerant(self):
         default_dt = timezone.now()
-        site = Site.test_objects.create_site('test', 'some_type', 'some_slug')
+        site = Site.test_objects.create_site('test', 'some_type')
         macros = Macroinvertebrates.objects.create(site=site,
                                                    date_time=default_dt,
                                                    weather='sunny',
@@ -216,7 +216,7 @@ class MacroTestCase(TestCase):
 
     def test_validate_macroinverts_intolerant_no_error(self):
         default_dt = timezone.now()
-        site = Site.test_objects.create_site('test', 'some_type', 'some_slug')
+        site = Site.test_objects.create_site('test', 'some_type')
         macros = Macroinvertebrates.objects.create(site=site,
                                                    date_time=default_dt,
                                                    weather='sunny',
@@ -251,7 +251,7 @@ class MacroTestCase(TestCase):
     """Tests for validating somewhat sensitive macroinvertebrates"""
     def test_validate_macroinverts_somewhat_sensitive(self):
         default_dt = timezone.now()
-        site = Site.test_objects.create_site('test', 'some_type', 'some_slug')
+        site = Site.test_objects.create_site('test', 'some_type')
         macros = Macroinvertebrates.objects.create(site=site,
                                                    date_time=default_dt,
                                                    weather='sunny',
@@ -282,7 +282,7 @@ class MacroTestCase(TestCase):
 
     def test_validate_macroinverts_somewhat_sensitive_no_error(self):
         default_dt = timezone.now()
-        site = Site.test_objects.create_site('test', 'some_type', 'some_slug')
+        site = Site.test_objects.create_site('test', 'some_type')
         macros = Macroinvertebrates.objects.create(site=site,
                                                    date_time=default_dt,
                                                    weather='sunny',
@@ -317,7 +317,7 @@ class MacroTestCase(TestCase):
     """Tests for validating tolerant macroinvertebrates"""
     def test_validate_macroinverts_tolerant(self):
         default_dt = timezone.now()
-        site = Site.test_objects.create_site('test', 'some_type', 'some_slug')
+        site = Site.test_objects.create_site('test', 'some_type')
         macros = Macroinvertebrates.objects.create(site=site,
                                                    date_time=default_dt,
                                                    weather='sunny',
@@ -348,7 +348,7 @@ class MacroTestCase(TestCase):
 
     def test_validate_macroinverts_tolerant_no_error(self):
         default_dt = timezone.now()
-        site = Site.test_objects.create_site('test', 'some_type', 'some_slug')
+        site = Site.test_objects.create_site('test', 'some_type')
         macros = Macroinvertebrates.objects.create(site=site,
                                                    date_time=default_dt,
                                                    weather='sunny',
@@ -383,7 +383,7 @@ class MacroTestCase(TestCase):
     """Tests for validating water quality rating"""
     def test_validate_wq_rating(self):
         default_dt = timezone.now()
-        site = Site.test_objects.create_site('test', 'some_type', 'some_slug')
+        site = Site.test_objects.create_site('test', 'some_type')
         macros = Macroinvertebrates.objects.create(site=site,
                                                    date_time=default_dt,
                                                    weather='sunny',
@@ -414,7 +414,7 @@ class MacroTestCase(TestCase):
 
     def test_validate_wq_rating_no_error(self):
         default_dt = timezone.now()
-        site = Site.test_objects.create_site('test', 'some_type', 'some_slug')
+        site = Site.test_objects.create_site('test', 'some_type')
         macros = Macroinvertebrates.objects.create(site=site,
                                                    date_time=default_dt,
                                                    weather='sunny',

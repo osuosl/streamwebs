@@ -27,9 +27,7 @@ class RiparianTransectTestCase(TestCase):
             'notes': models.TextField,
         }
 
-        self.site = Site.test_objects.create_site('test site',
-                                                  'test site type',
-                                                  'test_site_slug')
+        self.site = Site.test_objects.create_site('test site', 'test type')
 
     def test_fields_exist(self):
         for field, field_type in self.expected_fields.items():
@@ -50,8 +48,7 @@ class RiparianTransectTestCase(TestCase):
                              True)
 
     def test_validate_slope_good(self):
-        site = Site.test_objects.create_site('test site', 'test site type',
-                                             'test_site_slug')
+        site = Site.test_objects.create_site('test site', 'test site type')
         transect = RiparianTransect.objects.create_transect(
             'School of Cool', '2016-07-11 14:09', site, 'Cloudy, no meatballs',
             1.11, 'Notes on transect')
@@ -59,8 +56,7 @@ class RiparianTransectTestCase(TestCase):
         self.assertEqual(validate_slope(transect.slope), None)
 
     def test_validate_slope_bad(self):
-        site = Site.test_objects.create_site('test site', 'test site type',
-                                             'test_site_slug')
+        site = Site.test_objects.create_site('test site', 'test site type')
         transect = RiparianTransect.objects.create_transect(
             'School of Cool', '2016-07-11 14:09', site, 'Cloudy, no meatballs',
             -1.11, 'Notes on transect')
@@ -76,8 +72,8 @@ class RiparianTransectTestCase(TestCase):
             'School of Cool', '2016-07-11 14:09', self.site)
 
         self.assertEqual(transect.site.site_name, 'test site')
-        self.assertEqual(transect.site.site_type, 'test site type')
-        self.assertEqual(transect.site.site_slug, 'test_site_slug')
+        self.assertEqual(transect.site.site_type, 'test type')
+        self.assertEqual(transect.site.site_slug, 'test-site')
 
     def test_transect_creation_req_fields(self):
         transect = RiparianTransect.objects.create_transect(

@@ -51,3 +51,6 @@ class SiteTestCase(TestCase):
         for field in self.optional_fields:
             self.assertEqual(
                 Site._meta.get_field(field).blank, True)
+
+    def test_site_slug_is_unique(self):
+        self.site = Site.test_objects.create_site('test site', 'site type')

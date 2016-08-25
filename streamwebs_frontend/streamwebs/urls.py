@@ -9,23 +9,24 @@ urlpatterns = [
 
     url(r'^sites$', views.sites, name='sites'),
 
-    url(r'^site/(?P<site_slug>[0-9a-zA-Z]+)$', views.site, name='site'),
+    url(r'^site/(?P<site_slug>[0-9a-zA-Z-]+)$', views.site, name='site'),
 
-    url(r'^site/(?P<site_slug>[0-9a-zA-Z]+)/water/(?P<data_id>\d+)',
+    url(r'^site/(?P<site_slug>[0-9a-zA-Z-]+)/water/(?P<data_id>\d+)',
         views.water_quality, name='water_quality'),
 
-    url(r'^site/(?P<site_slug>[0-9a-zA-Z]+)/water/edit',
+    url(r'^site/(?P<site_slug>[0-9a-zA-Z-]+)/water/edit',
         views.water_quality_edit, name='water_quality_edit'),
 
-    url(r'^site/(?P<site_slug>[0-9a-zA-Z]+)/macro/(?P<data_id>\d+)$',
+    url(r'^site/(?P<site_slug>[0-9a-zA-Z-]+)/macro/(?P<data_id>\d+)$',
         views.macroinvertebrate, name='macroinvertebrate_view'),
-    url(r'^site/(?P<site_slug>[0-9a-zA-Z]+)/macro/edit$',
+
+    url(r'^site/(?P<site_slug>[0-9a-zA-Z-]+)/macro/edit$',
         views.macroinvertebrate_edit, name='macroinvertebrate_edit'),
 
-    url(r'^site/(?P<site_slug>[0-9a-zA-Z]+)/transect/(?P<data_id>\d+)',
+    url(r'^site/(?P<site_slug>[0-9a-zA-Z-]+)/transect/(?P<data_id>\d+)',
         views.riparian_transect_view, name='riparian_transect_view'),
 
-    url(r'^site/(?P<site_slug>[0-9a-zA-Z]+)/transect/edit',
+    url(r'^site/(?P<site_slug>[0-9a-zA-Z-]+)/transect/edit',
         views.riparian_transect_edit, name='riparian_transect_edit'),
 
     url(r'^register/$', views.register, name='register'),

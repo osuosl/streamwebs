@@ -16,11 +16,10 @@ class AddTransectTestCase(TestCase):
         When the user tries to submit a bad (blank) form, the form errors
         should be displayed
         """
-        site = Site.test_objects.create_site('Site Name', 'Site Type',
-                                             'site_slug')
+        site = Site.test_objects.create_site('site name', 'Site Type')
         response = self.client.post(
             reverse('streamwebs:riparian_transect_edit',
-                    kwargs={'site_slug': site.id}
+                    kwargs={'site_slug': site.site_slug}
                     ), {
                 'transect-TOTAL_FORMS': '5',
                 'transect-INITIAL_FORMS': '0',
@@ -36,12 +35,11 @@ class AddTransectTestCase(TestCase):
         When the user submits a form with all required fields filled
         appropriately, the user should see a success message
         """
-        site = Site.test_objects.create_site('Site Name', 'Site Type',
-                                             'site_slug')
+        site = Site.test_objects.create_site('site name', 'Site Type')
         response = self.client.post(
             reverse(
                 'streamwebs:riparian_transect_edit',
-                kwargs={'site_slug': site.id}
+                kwargs={'site_slug': site.site_slug}
             ), {
                     'school': 'School of cool',
                     'date_time': '2016-07-18 14:09:07',
@@ -78,7 +76,6 @@ class AddTransectTestCase(TestCase):
                     'transect-4-hardwoods': 4,
                     'transect-4-shrubs': 3,
                     'transect-4-comments': '5 comments'
-
                 }
         )
         self.assertTemplateUsed(
@@ -93,11 +90,12 @@ class AddTransectTestCase(TestCase):
         When the user is not logged in, they cannot view the data entry page
         """
         self.client.logout()
-        site = Site.test_objects.create_site('Site Name', 'Site Type',
-                                             'site_slug')
+        site = Site.test_objects.create_site('site name', 'Site Type')
         response = self.client.get(
-            reverse('streamwebs:riparian_transect_edit',
-                    kwargs={'site_slug': site.id})
+            reverse(
+                'streamwebs:riparian_transect_edit',
+                kwargs={'site_slug': site.site_slug}
+            )
         )
         self.assertContains(response, 'You must be logged in to submit data.')
         self.assertEqual(response.status_code, 200)

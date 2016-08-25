@@ -17,9 +17,8 @@ class SiteManager(models.Manager):
     """
     Manager for the site class - creates a site to be used in tests
     """
-    def create_site(self, site_name, site_type, site_slug):
-        site = self.create(site_name=site_name, site_type=site_type,
-                           site_slug=site_slug)
+    def create_site(self, site_name, site_type):
+        site = self.create(site_name=site_name, site_type=site_type)
         return site
 
 
@@ -52,7 +51,7 @@ class Site(models.Model):
         if not self.site_slug:
             self.site_slug = origSlug = slugify(self.site_name)[:50]
             # If the generated slug is not unique, append a number
-            for i in xrange(1,99):
+            for i in xrange(1, 99):
                 if not Site.objects.filter(site_slug=self.site_slug).exists():
                     break
                 # Ensure the slug is never longer than it's field's maxiumum

@@ -4,9 +4,7 @@
 {% load filters %}
 {% block title %}{% trans "View Riparian Transect Data" %}{% endblock %}
 {% block body_title %}{% trans "Riparian Transect: " %}{{ transect.date_time }}{% endblock %}
-
 {% block content %}
-
     <div>
         <table>
             <tr>
@@ -15,7 +13,7 @@
             </tr>
             <tr>
                 <th align='left'>{% trans "Site" %}</th>
-                <td>{{ transect.site.site_name }}</td>
+                <td>{{ site.site_name }}</td>
             </tr>
             <tr>
                 <th align='left'>{% trans "Slope of stream bank" %}</th>
