@@ -50,6 +50,7 @@ class Site(models.Model):
     location = models.PointField(
         null=True, blank=True, validators=[validate_Site_location]
     )
+    # objects = models.GeoManager()
 
     created = models.DateTimeField(default=timezone.now)
     modified = models.DateTimeField(default=timezone.now)
@@ -311,11 +312,23 @@ class WQ_Sample(models.Model):
     TWO = 2
     THREE = 3
     FOUR = 4
+<<<<<<< 7ed8ac6bf0a35e5347914ea7fb0ccd1951cff0a8
+=======
+    TOOL_CHOICES = ((NOT_ACCESSED, None),
+                    (MANUAL, 'Manual'),
+                    (VERNIER, 'Vernier'),)
+    SAMPLE_CHOICES = ((DEFAULT, '(Select a sample number)'),
+                      (ONE, 1),
+                      (TWO, 2),
+                      (THREE, 3),
+                      (FOUR, 4),)
+>>>>>>> Flake8
 
     # These are required fields
     water_quality = models.ForeignKey(Water_Quality, on_delete=models.CASCADE,
                                       related_name='water_quality', null=True)
-    sample = models.PositiveIntegerField()
+    sample = models.CharField(max_length=255, choices=SAMPLE_CHOICES,
+                              null=True, default=SAMPLE_CHOICES[0])
     water_temperature = models.DecimalField(
         default=0, max_digits=5, decimal_places=2, null=True,
         verbose_name=_('water temperature')

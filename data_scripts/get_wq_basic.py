@@ -11,7 +11,7 @@ proj_path = "/opt/streamwebs/streamwebs_frontend/"
 sys.path.append(proj_path)
 application = get_wsgi_application()
 
-from streamwebs.models import Site
+from streamwebs.models import Site  # NOQA
 from streamwebs.models import Water_Quality  # NOQA
 
 
@@ -30,7 +30,6 @@ with open('../csvs/wq_csvs/small/wq.csv', 'r') as csvfile:
 
             # Strip ``Collected date`` to be YYYY-MM-DD
             collected = row[2].strip('MonTuesWdhurFiSat(Aly), ')
-            #print collected
 
             waterq.date = collected
 

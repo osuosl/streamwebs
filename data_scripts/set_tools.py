@@ -16,9 +16,8 @@ from streamwebs.models import WQ_Sample  # NOQA
 
 
 # Water Temp 1, 2, 4, 3
-# Air Temp 1, 2, 3, 4 
+# Air Temp 1, 2, 3, 4
 # Dissolved Oxygen... etc.
-
 with open('../csvs/wq_csvs/small/tools.csv', 'r') as csvfile:
     toolreader = csv.reader(csvfile)
     for row in toolreader:

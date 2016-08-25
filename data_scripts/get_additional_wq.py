@@ -30,7 +30,6 @@ with open('../csvs/wq_csvs/small/conduct.csv', 'r') as csvfile:
                 row[0] = None
 
             if row[3] == '':
-                #print ('Here')
                 conduct_1.conductivity = row[0]
             elif row[3] == '1':
                 conduct_2.conductivity = row[0]
@@ -62,14 +61,14 @@ with open('../csvs/wq_csvs/small/total_sol.csv', 'r') as csvfile:
                 row[0] = None
 
             if row[3] == '':
-               total_solids_1.total_solids = row[0]
+                total_solids_1.total_solids = row[0]
             elif row[3] == '1':
-               total_solids_2.total_solids = row[0]
+                total_solids_2.total_solids = row[0]
             elif row[3] == '2':
-               total_solids_3.total_solids = row[0]
+                total_solids_3.total_solids = row[0]
             else:
-               total_solids_4.total_solids = row[0]
-            
+                total_solids_4.total_solids = row[0]
+
             total_solids_1.save()
             total_solids_2.save()
             total_solids_3.save()
@@ -100,7 +99,7 @@ with open('../csvs/wq_csvs/small/bod.csv', 'r') as csvfile:
                 bod_3.bod = row[0]
             else:
                 bod_4.bod = row[0]
-            
+
             bod_1.save()
             bod_2.save()
             bod_3.save()
@@ -131,7 +130,7 @@ with open('../csvs/wq_csvs/small/ammonia.csv', 'r') as csvfile:
                 ammonia_3.ammonia = row[0]
             else:
                 ammonia_4.ammonia = row[0]
-            
+
             ammonia_1.save()
             ammonia_2.save()
             ammonia_3.save()
@@ -193,7 +192,7 @@ with open('../csvs/wq_csvs/small/nitrate.csv', 'r') as csvfile:
                 nitrate_3.nitrate = row[0]
             else:
                 nitrate_4.nitrate = row[0]
-            
+
             nitrate_1.save()
             nitrate_2.save()
             nitrate_3.save()
@@ -224,7 +223,7 @@ with open('../csvs/wq_csvs/small/phosphates.csv', 'r') as csvfile:
                 phosphates_3.phosphates = row[0]
             else:
                 phosphates_4.phosphates = row[0]
-            
+
             phosphates_1.save()
             phosphates_2.save()
             phosphates_3.save()
@@ -255,7 +254,7 @@ with open('../csvs/wq_csvs/small/fecal_col.csv', 'r') as csvfile:
                 fecal_col_3.fecal_coliform = row[0]
             else:
                 fecal_col_4.fecal_coliform = row[0]
-            
+
             fecal_col_1.save()
             fecal_col_2.save()
             fecal_col_3.save()

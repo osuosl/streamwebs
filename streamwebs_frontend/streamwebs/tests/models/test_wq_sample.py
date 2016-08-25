@@ -12,7 +12,7 @@ class WQSampleTestCase(TestCase):
 
     def setUp(self):
         self.expected_fields = {
-            'sample': models.PositiveIntegerField,
+            'sample': models.CharField,
             'water_temperature': models.DecimalField,
             'water_temp_tool': models.CharField,
             'air_temperature': models.DecimalField,
@@ -100,6 +100,7 @@ class WQSampleTestCase(TestCase):
             9, 'Manual', 0.41, 'Manual', 7.6, 'Vernier'
         )
 
+        print sample_1.water_quality.site.site_name
         self.assertEqual(sample_1.water_quality.school, 'a')
         self.assertEqual(sample_1.water_quality.date, '2016-08-03')
         self.assertEqual(sample_1.water_quality.site.site_name, 'test site')

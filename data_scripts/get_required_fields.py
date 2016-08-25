@@ -70,7 +70,7 @@ with open('../csvs/wq_csvs/small/water.csv', 'r') as csvfile:
                 water_temp_3.water_temperature = row[0]
             else:
                 water_temp_4.water_temperature = row[0]
-            
+
             water_temp_1.save()
             water_temp_2.save()
             water_temp_3.save()
@@ -101,7 +101,7 @@ with open('../csvs/wq_csvs/small/oxygen.csv', 'r') as csvfile:
                 oxygen_3.dissolved_oxygen = row[0]
             else:
                 oxygen_4.dissolved_oxygen = row[0]
-            
+
             oxygen_1.save()
             oxygen_2.save()
             oxygen_3.save()
