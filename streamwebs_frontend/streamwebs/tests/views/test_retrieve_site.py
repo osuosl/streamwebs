@@ -28,10 +28,12 @@ class RetrieveSiteTestCase(TestCase):
 
     def test_site_view_site_content(self):
         """Tests that view's site info is present"""
+        print '\nWhere my coors at'
+        print self.response
         self.assertContains(self.response, 'Test Site')
         self.assertContains(self.response, 'Test site description')
-        self.assertContains(self.response,
-                            '44.0612385000000017 -121.3846841000000012')
+        self.assertContains(self.response, 44.0612385000000017)
+        self.assertContains(self.response, -121.3846841000000012)
         self.assertContains(self.response,
                             self.site.created.strftime('%b. %d, %Y'))
         self.assertContains(self.response,
@@ -40,10 +42,10 @@ class RetrieveSiteTestCase(TestCase):
     def test_site_view_with_sheets(self):
         """Tests that site displays sheet links if sheets exist"""
         wq_sheet_1 = Water_Quality.objects.create_water_quality(  # NOQA
-            self.site, '2016-08-25', 'Test School', 'E', 45, 45, 'No', 0, 0,  # NOQA
+            self.site, '2016-08-25', 'Test School', 'E', 45, 45, 'False', 0, 0,  # NOQA
             'Fahrenheit', 'Fahrenheit')  # NOQA
         wq_sheet_2 = Water_Quality.objects.create_water_quality(  # NOQA
-            self.site, '2016-07-25', 'Test School', 'E', 45, 45, 'No', 0, 0,
+            self.site, '2016-07-25', 'Test School', 'E', 45, 45, 'False', 0, 0,
             'Fahrenheit', 'Fahrenheit')  # NOQA
 
         macro_sheet_1 = Macroinvertebrates.objects.create_macro(self.site)  # NOQA
