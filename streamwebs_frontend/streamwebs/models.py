@@ -539,7 +539,7 @@ class Macroinvertebrates(models.Model):
     objects = MacroinvertebratesManager()
 
     def __str__(self):
-        return self.site.site_name
+        return self.site.site_name + ' sheet ' + str(self.id)
 
     def clean(self):
         if ((self.caddisfly + self.mayfly + self.riffle_beetle +
@@ -829,7 +829,7 @@ class Canopy_Cover(models.Model):
         )
 
     def __str__(self):
-        return self.site.site_name
+        return self.site.site_name + ' sheet ' + str(self.id)
 
     class Meta:
         verbose_name = 'canopy cover survey'
