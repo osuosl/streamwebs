@@ -404,7 +404,7 @@ class WQ_Sample(models.Model):
 
     def __str__(self):
         return self.water_quality.site.site_name + ' sheet ' + \
-               str(self.water_quality.id)
+               str(self.water_quality.id) + ' sample ' + str(self.id)
 
     class Meta:
         verbose_name = 'water quality sample'

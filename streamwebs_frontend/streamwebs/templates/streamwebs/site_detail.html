@@ -17,21 +17,28 @@
 
     <!-- existing sheets: lists site's sheets for each existing type -->
     <div class="site_data">
-        {% if samples %}
-        <h6>Samples taken near {{site.site_name}}:</h6>
-            {% for s in samples %}
-                <p><a href="{% url 'streamwebs:water_quality' site.site_slug s.id %}">
-                    {{ s.date }}</a>, {{ s.school }}, Lat/Long: ({{ s.latitude }},
-                    {{ s.longitude }})</p>
+        {% if wq_sheets %}
+        <p>Water Quality data sheets:</p>
+            {% for sheet in wq_sheets %}
+            <p><a href="{% url 'streamwebs:water_quality' site.site_slug s.id %}">
+                {{ s.date }}</a>, {{ s.school }}, Lat/Long: ({{ s.latitude }},
+                {{ s.longitude }})</p>
+
             {% endfor %}
-        {% else %}
-        <h6>No samples found near {{site.site_name}}.</h6>
+        {% endif %}
+
+        {% if transect_sheets %}
+        <p>Riparian transect data sheets:</p>
+            {% for sheet in transect_sheets %}
+            <p>{{ sheet.date_time }}</p>
+            {% endfor %}
         {% endif %}
     </div>
 
     <!-- types: links to create new data sheets for each type -->
     <div class="new_data">
-    <p><a href="{% url 'streamwebs:water_quality_edit' site_slug=site.site_slug %}">
-    Add New Sample</a></p>
+        <p><a href="{% url 'streamwebs:water_quality_edit' site_slug=site.site_slug %}">
+            Add New Sample</a></p>
     </div>
+
 {% endblock %}

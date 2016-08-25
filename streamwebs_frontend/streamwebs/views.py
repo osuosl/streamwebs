@@ -63,11 +63,13 @@ def sites(request):
 def site(request, site_slug):
     """ View an individual site """
     site = Site.objects.get(site_slug=site_slug)
-    # Sort samples descending by date
-    samples = Water_Quality.objects.filter(site_id=site.id).order_by('-date')
+    wq_sheets = Water_Quality.objects.filter(site_id=site.id).order_by('-date')
+    transect_sheets = RiparianTransect.objects.filter(site_id=site.id).order_by('-date')
+
     return render(request, 'streamwebs/site_detail.html', {
         'site': site,
-        'samples': samples,
+        'wq_sheets': wq_sheets,
+        'transect_sheets': transect_sheets
     })
 
 

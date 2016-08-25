@@ -30,8 +30,8 @@ urlpatterns = [
     url(r'^site/(?P<site_slug>[0-9a-zA-Z-]+)/macros$',
         views.graph_macros, name='graph_macros'),
 
-    url(r'^site/(?P<site_slug>[0-9a-zA-Z-]+)/transect/(?P<data_id>\d+)',
-        views.riparian_transect_view, name='riparian_transect_view'),
+    url(r'^site/(?P<site_slug>[0-9a-zA-Z]+)/transect/(?P<data_id>\d+)',
+        views.riparian_transect_view, name='riparian_transect'),
 
     url(r'^site/(?P<site_slug>[0-9a-zA-Z-]+)/transect/edit',
         views.riparian_transect_edit, name='riparian_transect_edit'),
