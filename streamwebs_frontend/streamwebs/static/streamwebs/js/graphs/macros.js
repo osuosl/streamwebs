@@ -360,6 +360,7 @@ const useBarGraph = function useBarGraph() {
     g.append('text')
         .attr('transform', (d) => { return 'translate(' + labelArc.centroid(d) + ')' })
         .attr('dy', '.35em')
+        .style('z-index', '1')
         .text((d) => {
             return names[d.data.name] + ' (' + toFixed(((d.value/sum)*100), 2) + '%)'
         });
