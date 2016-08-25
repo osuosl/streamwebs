@@ -361,7 +361,7 @@ const useBarGraph = function useBarGraph() {
         .attr('transform', (d) => { return 'translate(' + labelArc.centroid(d) + ')' })
         .attr('dy', '.35em')
         .text((d) => {
-            return names[d.data.name] + ' (' + ((d.value/sum)*100).toFixed(2) + '%)'
+            return names[d.data.name] + ' (' + toFixed(((d.value/sum)*100), 2) + '%)'
         });
 
     $('.bar').mouseenter((e) => {
