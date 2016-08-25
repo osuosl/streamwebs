@@ -12,6 +12,7 @@ class WQSampleTestCase(TestCase):
 
     def setUp(self):
         self.expected_fields = {
+            'sample': models.PositiveIntegerField,
             'water_temperature': models.DecimalField,
             'water_temp_tool': models.CharField,
             'air_temperature': models.DecimalField,
@@ -32,6 +33,7 @@ class WQSampleTestCase(TestCase):
             'nitrate': models.DecimalField,
             'phosphates': models.DecimalField,
             'fecal_coliform': models.DecimalField,
+            'nid': models.PositiveIntegerField,
             'id': models.AutoField,
 
             # List the foreign key relation here

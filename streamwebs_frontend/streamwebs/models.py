@@ -249,7 +249,7 @@ class WQSampleManager(models.Manager):
     additional field data for the Water Quality datasheet tests
     """
     def create_sample(
-        self, water_quality, water_temperature, water_temp_tool,
+        self, water_quality, sample, water_temperature, water_temp_tool,
         air_temperature, air_temp_tool, dissolved_oxygen, oxygen_tool, pH,
         pH_tool, turbidity, turbid_tool, salinity, salt_tool,
         conductivity=None, total_solids=None, bod=None, ammonia=None,
@@ -257,6 +257,7 @@ class WQSampleManager(models.Manager):
     ):
         info = self.create(
             water_quality=water_quality,
+            sample=sample,
             water_temperature=water_temperature,
             water_temp_tool=water_temp_tool,
             air_temperature=air_temperature,
