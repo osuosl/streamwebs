@@ -78,7 +78,6 @@ class RiparianTransectTestCase(TestCase):
         self.assertEqual(transect.site.site_type, 'test type')
         self.assertEqual(transect.site.site_slug, 'test-site')
 
-
     def test_transect_creation_req_fields(self):
         transect = RiparianTransect.objects.create_transect(
             'School of Cool', '2016-07-11 14:09', self.site)
@@ -92,7 +91,6 @@ class RiparianTransectTestCase(TestCase):
         self.assertEqual(transect.weather, '')
         self.assertEqual(transect.slope, None)
         self.assertEqual(transect.notes, '')
-
 
     def test_transect_creation_opt_fields(self):
         transect = RiparianTransect.objects.create_transect(
