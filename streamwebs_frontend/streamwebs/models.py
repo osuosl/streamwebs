@@ -464,18 +464,21 @@ class Macroinvertebrates(models.Model):
 
 class ResourceManager(models.Model):
     """ Manager for the Resources model """
-    def create_resource(self, name, downloadable, thumbnail):
+    def create_resource(self, name, res_type, downloadable, thumbnail):
         return self.create(
-            name=name, downloadable=downloadable, thumbnail=thumbnail
+            name=name, res_type=res_type, downloadable=downloadable,
+            thumbnail=thumbnail
         )
 
+def upload_url_helper(instance, filename):
+    return os.path.join(settings.MEDIA_ROOT, 'thumbnails/')
 
 class Resource(models.Model):
     """ This model organizes Resources like pdfs """
     name = models.CharField(max_length=255, blank=False)
     res_type = models.CharField(max_length=255)
-    downloadable = models.FileField(upload_to='static/resources/')
-    thumbnail = models.ImageField(upload_to='static/resources/')
+    downloadable = models.FileField(upload_to='.')
+    thumbnail = models.ImageField(upload_to=upload_url_helper)
 
     objects = ResourceManager()
 
@@ -483,6 +486,8 @@ class Resource(models.Model):
         verbose_name = 'resource'
         verbose_name_plural = 'resources'
 
+    def __str__(self):
+        return 'Resource name ' + self.name
 
 class RipTransectManager(models.Manager):
     """

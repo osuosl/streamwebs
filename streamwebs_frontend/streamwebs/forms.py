@@ -93,6 +93,12 @@ class TransectZoneForm(forms.ModelForm):
     class Meta:
         model = TransectZone
         fields = ('conifers', 'hardwoods', 'shrubs', 'comments')
+# 
+#
+# class Resource_Data_Sheet_Form(forms.ModelForm):
+#     class Meta:
+#         model = Resource
+#         fields = ('name', 'downloadable', 'thumbnail')
 
 
 class RiparianTransectForm(forms.ModelForm):

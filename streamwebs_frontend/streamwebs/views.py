@@ -291,8 +291,8 @@ def resources(request):
 
 
 def resources_data_sheets(request):
-    """ View for data sheet resources """
-    data_sheets = Resource.objects.filter(res_type='data_sheets')
+    """ View for data_sheet resources """
+    data_sheets = Resource.objects.filter(res_type='data_sheet')
     return render(
         request, 'streamwebs/resources_data_sheets.html',
         {'data_sheets': data_sheets}
