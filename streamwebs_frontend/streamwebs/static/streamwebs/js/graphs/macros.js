@@ -361,14 +361,19 @@ const useBarGraph = function useBarGraph() {
     .append('g')
         .attr('class', 'arc');
 
+    const g2 = svg.selectAll('.arc-text')
+        .data(pie(totals))
+        .enter()
+    .append('g')
+        .attr('class', 'arc-text');
+
     g.append('path')
         .attr('d', arc)
         .style('fill', (d) => { return color(d.data.name) });
 
-    g.append('text')
+    g2.append('text')
         .attr('transform', (d) => { return 'translate(' + labelArc.centroid(d) + ')' })
         .attr('dy', '.35em')
-        .style('z-index', '1')
         .text((d) => {
             return names[d.data.name] + ' (' + toFixed(((d.value/sum)*100), 2) + '%)'
         });
