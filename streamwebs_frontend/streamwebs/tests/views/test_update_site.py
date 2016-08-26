@@ -33,7 +33,8 @@ class UpdateSiteTestCase(TestCase):
                 'location': 'POINT(44.0612385 -121.3846841)'})
 
         self.assertTrue(response.context['updated'])
-        self.assertNotEqual(self.site.modified, response.context['modified'])
+        self.assertNotEqual(self.site.modified,
+                            response.context['modified_time'])
         self.assertEqual(response.status_code, 200)
 
     def test_unsuccessful_site_update(self):
@@ -53,7 +54,7 @@ class UpdateSiteTestCase(TestCase):
                 'location': 'POINT(44.0612385 -121.3846841)'})
 
         self.assertTrue(response.context['updated'])
-        self.assertEqual(self.site.modified, response.context['modified'])
+        self.assertEqual(self.site.modified, response.context['modified_time'])
         self.assertEqual(response.status_code, 200)
 
     def test_view_with_not_logged_in_user(self):
