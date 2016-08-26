@@ -18,6 +18,7 @@ class UpdateSiteTestCase(TestCase):
         response = self.client.get(reverse('streamwebs:update_site',
                                            kwargs={'site_slug': self.site.id}))
         self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'streamwebs/update_site.html')
         self.assertContains(response, 'Creaky Creek')
         self.assertContains(response, 'SS')
         self.assertContains(response, self.site.id)
@@ -32,6 +33,7 @@ class UpdateSiteTestCase(TestCase):
                 'location': 'POINT(44.0612385 -121.3846841)'})
 
         self.assertTrue(response.context['updated'])
+        self.assertNotEqual(self.site.modified, response.context['modified'])
         self.assertEqual(response.status_code, 200)
 
     def test_unsuccessful_site_update(self):
@@ -44,7 +46,16 @@ class UpdateSiteTestCase(TestCase):
 
     def test_passive_update(self):
         """Tests that submitting prepopulated form as-is changes nothing"""
-        pass
+        response = self.client.post(reverse(
+            'streamwebs:update_site', kwargs={'site_slug': self.site.id}), {
+                'site_name': 'Creaky Creek',
+                'site_type': 'SS',
+                'location': 'POINT(44.0612385 -121.3846841)'})
+
+        self.assertTrue(response.context['updated'])
+        self.assertEqual(self.site.modified, response.context['modified'])
+        self.assertEqual(response.status_code, 200)
+
 
     def test_view_with_not_logged_in_user(self):
         """Tests that the user can't update site if they're not logged in"""

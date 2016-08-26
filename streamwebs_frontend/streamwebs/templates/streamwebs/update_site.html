@@ -8,11 +8,9 @@
 {% block content %}
     {% if user.is_authenticated %}
         {% if updated %}
-        <strong>{% trans 'You have successfully updated ' %}{{ site.site_name }}The site id is {{ site.id }}</strong>
-        <!-- provide link to view the updated site -->
-
+        <strong>{% trans 'You have successfully updated ' %}<a href="{% url 'streamwebs:site' site.id %}">{{ site.site_name }}.</a></strong>
+        
         {% else %}
-        your site id is {{ site.id }}
         <form id='site_form' method='post' enctype="multipart/form-data" action={% url 'streamwebs:update_site' site.id %}>
             {% csrf_token %}
             {{ site_form.media }}

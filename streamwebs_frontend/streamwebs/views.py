@@ -4,6 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
+from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from django.forms import inlineformset_factory, modelformset_factory
 
@@ -16,6 +17,7 @@ from streamwebs.models import (
     TransectZone, Canopy_Cover)
 from datetime import datetime
 import json
+import copy
 
 
 def _timestamp(dt):
@@ -33,8 +35,6 @@ def create_site(request):
         site_form = SiteForm(request.POST, request.FILES)
 
         if site_form.is_valid():
-            # save the form to a site object
-            # save the object to the database
             site = site_form.save()
             site.site_slug = site.id
             site.save()
@@ -79,14 +79,21 @@ def site(request, site_slug):
 def update_site(request, site_slug):
     updated = False
     site = Site.objects.get(id=site_slug)
+    temp = copy.copy(site)
 
     if request.method == 'POST':
         site_form = SiteForm(request.POST, request.FILES, instance=site)
 
         if site_form.is_valid():
-            site = site_form.save(commit=False)
-            site.site_slug = site.id
-            site.save()
+            if (site.site_name != temp.site_name or
+                    site.description != temp.description or
+                    site.location != temp.location or
+                    site.image != temp.image):
+                site = site_form.save(commit=False)
+                site.site_slug = site.id
+                site.modified = timezone.now()
+                site.save()
+
             updated = True
 
     else:
@@ -99,6 +106,7 @@ def update_site(request, site_slug):
     return render(request, 'streamwebs/update_site.html', {
         'site': site,
         'site_form': site_form,
+        'modified': site.modified,
         'updated': updated
     })
 
