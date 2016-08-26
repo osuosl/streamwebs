@@ -56,7 +56,6 @@ class UpdateSiteTestCase(TestCase):
         self.assertEqual(self.site.modified, response.context['modified'])
         self.assertEqual(response.status_code, 200)
 
-
     def test_view_with_not_logged_in_user(self):
         """Tests that the user can't update site if they're not logged in"""
         self.client.logout()
