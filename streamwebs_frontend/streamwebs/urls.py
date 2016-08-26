@@ -15,8 +15,14 @@ urlpatterns = [
     url(r'^site/(?P<site_slug>[0-9a-zA-Z-]+)/water$',
         views.graph_water, name='graph_water'),
 
-    url(r'^site/(?P<site_slug>[0-9a-zA-Z-]+)/water/(?P<data_id>\d+)',
+    url(r'^site/(?P<site_slug>[0-9a-zA-Z-]+)/macros$',
+        views.graph_macros, name='graph_macros'),
+
+    url(r'^site/(?P<site_slug>[0-9a-zA-Z-]+)/water/(?P<data_id>\d+)', 
         views.water_quality, name='water_quality'),
+
+    url(r'^site/(?P<site_slug>[0-9a-zA-Z]+)/update/', views.update_site,
+        name='update_site'),
 
     url(r'^site/(?P<site_slug>[0-9a-zA-Z-]+)/water/edit',
         views.water_quality_edit, name='water_quality_edit'),

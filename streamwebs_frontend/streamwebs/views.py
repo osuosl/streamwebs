@@ -40,8 +40,8 @@ def create_site(request):
             site.save()
             created = True
 
-        else:
-            print site_form.errors
+#        else:
+#            print site_form.errors
 
     else:
         site_form = SiteForm()
@@ -73,6 +73,33 @@ def site(request, site_slug):
         'macro_sheets': macro_sheets,
         'transect_sheets': transect_sheets,
         'canopy_sheets': canopy_sheets,
+    })
+
+
+def update_site(request, site_slug):
+    updated = False
+    site = Site.objects.get(id=site_slug)
+
+    if request.method == 'POST':
+        site_form = SiteForm(request.POST, request.FILES, instance=site)
+
+        if site_form.is_valid():
+            site = site_form.save(commit=False)
+            site.site_slug = site.id
+            site.save()
+            updated = True
+
+    else:
+        site_form = SiteForm(initial={'site_name': site.site_name,
+                                      'site_type': site.site_type,
+                                      'description': site.description,
+                                      'location': site.location,
+                                      'image': site.image})
+
+    return render(request, 'streamwebs/update_site.html', {
+        'site': site,
+        'site_form': site_form,
+        'updated': updated
     })
 
 

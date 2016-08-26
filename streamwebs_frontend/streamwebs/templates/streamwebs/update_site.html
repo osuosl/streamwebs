@@ -1,0 +1,27 @@
+{% extends 'streamwebs/base.html' %}
+
+{% load i18n %}
+
+{% block title %} Update Site {% endblock %}
+{% block body_title %}{{ site.site_name }}{% endblock %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+        {% if updated %}
+        <strong>{% trans 'You have successfully updated ' %}{{ site.site_name }}The site id is {{ site.id }}</strong>
+        <!-- provide link to view the updated site -->
+
+        {% else %}
+        your site id is {{ site.id }}
+        <form id='site_form' method='post' enctype="multipart/form-data" action={% url 'streamwebs:update_site' site.id %}>
+            {% csrf_token %}
+            {{ site_form.media }}
+            {{ site_form.as_p }}
+
+            <input type='submit' name='submit' value='{% trans 'Update site' %}'/>
+        </form>
+        {% endif %}
+    {% else %}
+    <strong>You must be logged in to edit a site.</strong>
+    {% endif %}
+{% endblock %}
