@@ -1,0 +1,8 @@
+{% extends "streamwebs/base.html" %}
+
+{% block content %}
+{% for sheet in data_sheets %}
+    <br>{{ sheet }}.
+{% endfor %}
+
+{% endblock %}

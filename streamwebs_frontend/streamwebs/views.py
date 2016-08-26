@@ -7,9 +7,11 @@ from django.shortcuts import render
 from django.utils.translation import ugettext_lazy as _
 from django.forms import inlineformset_factory
 from streamwebs.forms import (
-    UserForm, UserProfileForm, RiparianTransectForm, MacroinvertebratesForm)
+    UserForm, UserProfileForm, RiparianTransectForm, MacroinvertebratesForm
+)
 from streamwebs.models import (
-    RiparianTransect, Site, TransectZone, Macroinvertebrates)
+    RiparianTransect, Site, TransectZone, Macroinvertebrates, Resource
+)
 
 
 # Create your views here.
@@ -289,54 +291,11 @@ def resources(request):
 
 
 def resources_data_sheets(request):
-    data_sheets = [
-        {
-            'pdf': 'datasheets/WaterQuality_OSU.pdf',
-            'thumb': 'streamwebs/images/waterquality_form_thumb.png',
-            'text': 'Water Quality'
-        }, {
-            'pdf': 'datasheets/Macros_OSU.pdf',
-            'thumb': 'streamwebs/images/macros_form_thumb.png',
-            'text': 'Aquatic Macroinvertebrates'
-        }, {
-            'pdf': 'datasheets/Riparian_AquaticSurvey_OSU.pdf',
-            'thumb': 'streamwebs/images/riparianaquatic_form_thumb.png',
-            'text': 'Riparian & Aquatic Survey'
-        }, {
-            'pdf': 'datasheets/RiparianTransect_OSU.pdf',
-            'thumb': 'streamwebs/images/ripariantransect_form_thumb.png',
-            'text': 'Riparian Transect'
-        }, {
-            'pdf': 'datasheets/Photopoints_OSU.pdf',
-            'thumb': 'streamwebs/images/photopoint_form_thumb.png',
-            'text': 'Photopoint Monitoring'
-        }, {
-            'pdf': 'datasheets/Streamflow_OSU.pdf',
-            'thumb': 'streamwebs/images/streamflow_form_thumb.png',
-            'text': 'Streamflow'
-        }, {
-            'pdf': 'datasheets/Canopy_OSU.pdf',
-            'thumb': 'streamwebs/images/canopy_form_thumb.png',
-            'text': 'Canopy Cover Survey'
-        }, {
-            'pdf': 'datasheets/Invasive_Mapping_OSU.pdf',
-            'thumb': 'streamwebs/images/invasive_form_thumb.png',
-            'text': 'Invasive Species Mapping'
-        }, {
-            'pdf': 'datasheets/Soil_Survey_OSU.pdf',
-            'thumb': 'streamwebs/images/soil_form_thumb.png',
-            'text': 'Soil Survey'
-        }, {
-            'pdf': 'datasheets/PEBBLE_COUNT_OSU.pdf',
-            'thumb': 'streamwebs/images/pebblecount_form_thumb.png',
-            'text': 'Pebble Count'
-        },
-    ]
-
+    """ View for data sheet resources """
+    data_sheets = Resource.objects.filter(res_type='data_sheets')
     return render(
-        request, 'streamwebs/resources/data_sheets.html', {
-            'data_sheets': data_sheets
-        }
+        request, 'streamwebs/resources_data_sheets.html',
+        {'data_sheets': data_sheets}
     )
 
 

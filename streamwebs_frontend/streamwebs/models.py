@@ -462,7 +462,7 @@ class Macroinvertebrates(models.Model):
         verbose_name_plural = 'macroinvertebrates'
 
 
-class ResourcesManager(models.Model):
+class ResourceManager(models.Model):
     """ Manager for the Resources model """
     def create_resource(self, name, downloadable, thumbnail):
         return self.create(
@@ -470,13 +470,14 @@ class ResourcesManager(models.Model):
         )
 
 
-class Resources(models.Model):
+class Resource(models.Model):
     """ This model organizes Resources like pdfs """
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, blank=False)
+    res_type = models.CharField(max_length=255)
     downloadable = models.FileField(upload_to='static/resources/')
     thumbnail = models.ImageField(upload_to='static/resources/')
 
-    objects = ResourcesManager()
+    objects = ResourceManager()
 
     class Meta:
         verbose_name = 'resource'
