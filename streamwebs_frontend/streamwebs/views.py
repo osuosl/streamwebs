@@ -61,7 +61,7 @@ def sites(request):
 # view-view for individual specified site
 def site(request, site_slug):
     """ View an individual site """
-    site = Site.objects.get(site_slug=site_slug)
+    site = Site.objects.filter(active=True).get(site_slug=site_slug)
     wq_sheets = Water_Quality.objects.filter(site_id=site.id).order_by('-date')
     macro_sheets = Macroinvertebrates.objects.filter(site_id=site.id).order_by('-date')
     transect_sheets = RiparianTransect.objects.filter(site_id=site.id).order_by('-date')
@@ -106,8 +106,29 @@ def update_site(request, site_slug):
     return render(request, 'streamwebs/update_site.html', {
         'site': site,
         'site_form': site_form,
-        'modified': site.modified,
+        'modified_time': site.modified,
         'updated': updated
+    })
+
+
+def deactivate_site(request, site_slug):
+    deactivated = False
+    site = Site.objects.filter(active=True).get(id=site_slug)
+
+    if not(Water_Quality.objects.filter(site_id=site_slug).exists() or
+            Macroinvertebrates.objects.filter(site_id=site_slug).exists() or
+            RiparianTransect.objects.filter(site_id=site_slug).exists() or
+            Canopy_Cover.objects.filter(site_id=site_slug).exists()):
+
+        site.active = False
+        site.modified = timezone.now()
+        site.save()
+        deactivated = True
+
+    return render(request, 'streamwebs/deactivate_site.html', {
+        'site': site,
+        'modified_time': site.modified,
+        'deactivated': deactivated
     })
 
 

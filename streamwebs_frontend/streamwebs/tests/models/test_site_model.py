@@ -20,6 +20,7 @@ class SiteTestCase(TestCase):
             'created': models.DateTimeField,
             'modified': models.DateTimeField,
             'image': models.ImageField,
+            'active': models.BooleanField,
             'id': models.AutoField,
 
             # Datasheets

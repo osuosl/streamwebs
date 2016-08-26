@@ -21,6 +21,9 @@ urlpatterns = [
     url(r'^site/(?P<site_slug>[0-9a-zA-Z-]+)/water/(?P<data_id>\d+)', 
         views.water_quality, name='water_quality'),
 
+    url(r'^site/(?P<site_slug>[0-9a-zA-Z]+)/delete/', views.deactivate_site,
+        name='deactivate_site'),
+
     url(r'^site/(?P<site_slug>[0-9a-zA-Z]+)/update/', views.update_site,
         name='update_site'),
 

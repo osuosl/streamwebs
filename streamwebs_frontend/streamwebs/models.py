@@ -20,11 +20,11 @@ class SiteManager(models.Manager):
     default = 'POINT(44.0612385 -121.3846841)'
 
     def create_site(self, site_name, site_type, location=default,
-                    description='', image=None):
+                    description='', image=None, active=True):
 
         site = self.create(site_name=site_name, site_type=site_type,
                            location=location, description=description,
-                           image=image)
+                           image=image, active=active)
         return site
 
 
@@ -66,6 +66,7 @@ class Site(models.Model):
                                  validators=[validate_Site_location])
     image = models.ImageField(null=True, blank=True, verbose_name=_('image')),
                               upload_to='site_photos/')
+    active = models.BooleanField(default=True)
 
     created = models.DateTimeField(default=timezone.now)
     modified = models.DateTimeField(default=timezone.now)
