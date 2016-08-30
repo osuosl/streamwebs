@@ -495,6 +495,23 @@ class PhotoPoint(models.Model):
         verbose_name_plural = 'Photo Points'
 
 
+class PhotoPointImage(models.Model):
+    photo_point = models.ForeignKey(PhotoPoint, on_delete=models.CASCADE,
+                                    null=True, related_name='photo_point')
+    image = models.ImageField(null=True, blank=True, upload_to='pp_photos/')
+    date = models.DateField(default=datetime.date.today)
+
+    objects = models.Manager()
+
+    def __str__(self):
+        return ('Image ' + str(self.id) + ' for photo point ' +
+                str(self.photo_point.id))
+
+    class Meta:
+        verbose_name = 'photo point image'
+        verbose_name_plural = 'photo point images'
+
+
 @python_2_unicode_compatible
 class Macroinvertebrates(models.Model):
     school = models.CharField(max_length=250, verbose_name=_('school'))

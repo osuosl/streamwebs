@@ -18,7 +18,8 @@ class PhotoPointTestCase(TestCase):
             'notes': models.TextField,
             'id': models.AutoField,
 
-            'camera_point_id': models.ForeignKey
+            'camera_point_id': models.ForeignKey,
+            'photo_point': models.ManyToOneRel
         }
 
         self.optional_fields = {
