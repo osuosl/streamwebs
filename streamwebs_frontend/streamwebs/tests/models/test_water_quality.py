@@ -32,7 +32,7 @@ class WaterQualityTestCase(TestCase):
             'notes'
         }
 
-        self.site = Site.test_objects.create_site('test site', 'test type')
+        self.site = Site.test_objects.create_site('test site')
 
     def test_fields_exist(self):
         """Tests that all fields are successfully created"""
@@ -61,7 +61,7 @@ class WaterQualityTestCase(TestCase):
 
     def test_datasheet_ManyToOneSite(self):
         """Tests that a datasheet correctly corresponds to a specified site"""
-        site = Site.test_objects.create_site('test', 'some_type')
+        site = Site.test_objects.create_site('test')
 
         waterq = Water_Quality.test_objects.create(
             site=site, DEQ_dq_level='A', date='2016-08-03',
@@ -71,7 +71,6 @@ class WaterQualityTestCase(TestCase):
 
         # Assert that site data matches the newly created test site
         self.assertEqual(waterq.site.site_name, 'test')
-        self.assertEqual(waterq.site.site_type, 'some_type')
         self.assertEqual(waterq.site.site_slug, site.site_slug)
 
     def test_wq_creation_req_fields(self):

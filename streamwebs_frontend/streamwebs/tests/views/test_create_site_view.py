@@ -19,8 +19,6 @@ class CreateSiteTestCase(TestCase):
 
         self.assertFormError(response, 'site_form', 'site_name',
                              'This field is required.')
-        self.assertFormError(response, 'site_form', 'site_type',
-                             'This field is required.')
         self.assertFormError(response, 'site_form', 'location',
                              'No geometry value provided.')
 
@@ -32,7 +30,6 @@ class CreateSiteTestCase(TestCase):
         response = self.client.post(reverse('streamwebs:create_site'), {
             'site_name': 'Cool Creek',
             'description': 'A very cool creek',
-            'site_type': 'SW',
             'location': 'POINT(44.0612385 -121.3846841)',
             'image': temp_photo})
 

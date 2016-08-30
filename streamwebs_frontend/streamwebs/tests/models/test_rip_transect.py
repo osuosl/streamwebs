@@ -27,7 +27,7 @@ class RiparianTransectTestCase(TestCase):
             'notes': models.TextField,
         }
 
-        self.site = Site.test_objects.create_site('test site', 'test type')
+        self.site = Site.test_objects.create_site('test site')
 
     def test_fields_exist(self):
         for field, field_type in self.expected_fields.items():
@@ -48,7 +48,7 @@ class RiparianTransectTestCase(TestCase):
                              True)
 
     def test_validate_slope_good(self):
-        site = Site.test_objects.create_site('test site', 'test site type')
+        site = Site.test_objects.create_site('test site')
 
         transect = RiparianTransect.objects.create_transect(
             'School of Cool', '2016-07-11 14:09', site, 'Cloudy, no meatballs',
@@ -56,7 +56,7 @@ class RiparianTransectTestCase(TestCase):
         self.assertEqual(validate_slope(transect.slope), None)
 
     def test_validate_slope_bad(self):
-        site = Site.test_objects.create_site('test site', 'test site type')
+        site = Site.test_objects.create_site('test site')
 
         transect = RiparianTransect.objects.create_transect(
             'School of Cool', '2016-07-11 14:09', site, 'Cloudy, no meatballs',
@@ -73,7 +73,6 @@ class RiparianTransectTestCase(TestCase):
             'School of Cool', '2016-07-11 14:09', self.site)
 
         self.assertEqual(transect.site.site_name, 'test site')
-        self.assertEqual(transect.site.site_type, 'test type')
         self.assertEqual(transect.site.site_slug, 'test-site')
 
     def test_transect_creation_req_fields(self):

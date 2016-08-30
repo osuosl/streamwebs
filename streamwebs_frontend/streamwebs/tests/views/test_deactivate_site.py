@@ -12,7 +12,7 @@ class DeactivateSiteTestCase(TestCase):
                                              'johnpassword')
         self.client.login(username='john', password='johnpassword')
 
-        self.site = Site.test_objects.create_site('Creaky Creek', 'SS', 'slug')
+        self.site = Site.test_objects.create_site('Creaky Creek', 'slug')
 
     def test_successful_deactivate(self):
         """Tests that user can deactivate site if site has no data."""

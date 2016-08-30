@@ -13,7 +13,7 @@ class RetrieveSiteTestCase(TestCase):
         location = 'POINT(44.0612385 -121.3846841)'
         image = tempfile.NamedTemporaryFile(suffix='.jpg').name
 
-        self.site = Site.test_objects.create_site('Test Site', 'AP', 'slug',
+        self.site = Site.test_objects.create_site('Test Site', 'slug',
                                                   location,
                                                   'Test site description',
                                                   image)

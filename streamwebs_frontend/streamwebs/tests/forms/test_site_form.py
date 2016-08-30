@@ -7,7 +7,6 @@ class SiteFormTestCase(TestCase):
     def setUp(self):
         self.expected_fields = (
             'site_name',
-            'site_type',
             'description',
             'location',
             'image'
@@ -15,7 +14,6 @@ class SiteFormTestCase(TestCase):
 
         self.required_fields = (
             'site_name',
-            'site_type',
             'location'
         )
 

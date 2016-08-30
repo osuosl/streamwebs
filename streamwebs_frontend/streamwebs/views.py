@@ -98,7 +98,6 @@ def update_site(request, site_slug):
 
     else:
         site_form = SiteForm(initial={'site_name': site.site_name,
-                                      'site_type': site.site_type,
                                       'description': site.description,
                                       'location': site.location,
                                       'image': site.image})

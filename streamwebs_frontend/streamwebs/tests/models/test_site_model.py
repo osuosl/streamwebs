@@ -13,7 +13,6 @@ class SiteTestCase(TestCase):
     def setUp(self):
         self.expected_fields = {
             'site_name': models.CharField,
-            'site_type': models.CharField,
             'description': models.TextField,
             'site_slug': models.SlugField,
             'location': models.PointField,
@@ -87,10 +86,9 @@ class SiteTestCase(TestCase):
 
     def test_obj_creation_req_fields(self):
         """Sites should be created successfully with only req fields"""
-        site = Site.test_objects.create_site('Cool Creek', 'SS', 'cool_creek')
+        site = Site.test_objects.create_site('Cool Creek', 'cool_creek')
 
         self.assertEqual(site.site_name, 'Cool Creek')
-        self.assertEqual(site.site_type, 'SS')
         self.assertEqual(site.site_slug, 'cool_creek')
         self.assertEqual(site.location.coords, (44.0612385, -121.3846841))
         self.assertEqual(site.description, '')
@@ -101,12 +99,11 @@ class SiteTestCase(TestCase):
         point = Point(44.3910532, -120.2684184)
         temp_photo = tempfile.NamedTemporaryFile(suffix='.jpg').name
 
-        site = Site.test_objects.create_site('Cool Creek', 'SS', 'cool_creek',
+        site = Site.test_objects.create_site('Cool Creek', 'cool_creek',
                                              point, 'A very cool creek',
                                              temp_photo)
 
         self.assertEqual(site.site_name, 'Cool Creek')
-        self.assertEqual(site.site_type, 'SS')
         self.assertEqual(site.site_slug, 'cool_creek')
         self.assertEqual(site.location.coords, (44.3910532, -120.2684184))
         self.assertEqual(site.description, 'A very cool creek')

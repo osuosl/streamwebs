@@ -23,7 +23,7 @@ class TransectZoneTestCase(TestCase):
             'comments': models.TextField,
         }
 
-        site = Site.test_objects.create_site('test site', 'test site type')
+        site = Site.test_objects.create_site('test site')
         self.transect = RiparianTransect.objects.create_transect(
             'School of Cool', '2016-07-27 10:14', site)
 

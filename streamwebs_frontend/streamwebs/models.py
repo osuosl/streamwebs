@@ -19,12 +19,11 @@ class SiteManager(models.Manager):
     """
     default = 'POINT(44.0612385 -121.3846841)'
 
-    def create_site(self, site_name, site_type, location=default,
+    def create_site(self, site_name, location=default,
                     description='', image=None, active=True):
 
-        site = self.create(site_name=site_name, site_type=site_type,
-                           location=location, description=description,
-                           image=image, active=active)
+        site = self.create(site_name=site_name, location=location,
+                           description=description, image=image, active=active)
         return site
 
 
@@ -42,20 +41,8 @@ class Site(models.Model):
     location as a pair of latitudinal/longitudinal coordinates and an optional
     text description of entry.
     """
-    STUDENT_STEWARDSHIP = 'SS'
-    SALMON_WATCH = 'SW'
-    AVAILABLE_PROJECT = 'AP'
-
-    SITE_TYPE_CHOICES = (
-        (STUDENT_STEWARDSHIP, _('Student Stewardship Project')),
-        (SALMON_WATCH, _('Salmon Watch')),
-        (AVAILABLE_PROJECT, _('Available Project'))
-    )
 
     site_name = models.CharField(max_length=250, verbose_name=_('site name'))
-    site_type = models.CharField(max_length=2, choices=SITE_TYPE_CHOICES,
-                                 default=STUDENT_STEWARDSHIP,
-                                 verbose_name=_('site type'))
     description = models.TextField(blank=True,
                                    verbose_name=_('site description'))
     site_slug = models.SlugField(unique=True, max_length=50, editable=False)

@@ -11,7 +11,7 @@ class UpdateSiteTestCase(TestCase):
                                              'johnpassword')
         self.client.login(username='john', password='johnpassword')
 
-        self.site = Site.test_objects.create_site('Creaky Creek', 'SS', 'slug')
+        self.site = Site.test_objects.create_site('Creaky Creek', 'slug')
 
     def test_prepopulate_siteform(self):
         """View should first contain form prepopulated w requested site info"""
@@ -20,7 +20,6 @@ class UpdateSiteTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'streamwebs/update_site.html')
         self.assertContains(response, 'Creaky Creek')
-        self.assertContains(response, 'SS')
         self.assertContains(response, self.site.id)
 
     def test_successful_site_update(self):
@@ -28,7 +27,6 @@ class UpdateSiteTestCase(TestCase):
         response = self.client.post(reverse(
             'streamwebs:update_site', kwargs={'site_slug': self.site.id}), {
                 'site_name': 'Shrieky Creek',
-                'site_type': 'SS',
                 'description': 'some description',
                 'location': 'POINT(44.0612385 -121.3846841)'})
 
@@ -50,7 +48,6 @@ class UpdateSiteTestCase(TestCase):
         response = self.client.post(reverse(
             'streamwebs:update_site', kwargs={'site_slug': self.site.id}), {
                 'site_name': 'Creaky Creek',
-                'site_type': 'SS',
                 'location': 'POINT(44.0612385 -121.3846841)'})
 
         self.assertTrue(response.context['updated'])
