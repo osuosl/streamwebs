@@ -32,7 +32,9 @@ class Site(models.Model):
     site_name = models.CharField(max_length=250, blank=False)
     site_type = models.CharField(max_length=250, blank=True)
     description = models.TextField(blank=True)
-    site_slug = models.SlugField(unique=True, blank=True, editable=False)
+    site_slug = models.SlugField(
+        unique=True, blank=False, max_length=50, editable=False
+    )
 
     # Geo Django fields to store a point
     location = models.PointField(null=True, blank=True)
