@@ -63,8 +63,8 @@ class PhotoPointTestCase(TestCase):
         """
         A photo point should correspond to a single camera point.
         """
-        site = Site.objects.create_site('test site c', 'test site type c',
-                                        'test_site_slug_c')
+        site = Site.test_objects.create_site('test site c', 'test site type c',
+                                             'test_site_slug_c')
         camera_point = CameraPoint.camera_points.create_camera_point(
             site=site,
             cp_date='2016-07-05'
@@ -87,8 +87,8 @@ class PhotoPointTestCase(TestCase):
         A photo point should be created successfully when the required fields
         are provided.
         """
-        site = Site.objects.create_site('test site d', 'test site type d',
-                                        'test_site_slug_d')
+        site = Site.test_objects.create_site('test site d', 'test site type d',
+                                             'test_site_slug_d')
         camera_point = CameraPoint.camera_points.create_camera_point(
             site=site,
             cp_date='2016-07-03'
@@ -120,8 +120,8 @@ class PhotoPointTestCase(TestCase):
         A photo point should be created successfully when the required and
         optional fields are provided.
         """
-        site = Site.objects.create_site('test site e', 'test site type e',
-                                        'test_site_slug_e')
+        site = Site.test_objects.create_site('test site e', 'test site type e',
+                                             'test_site_slug_e')
         camera_point = CameraPoint.camera_points.create_camera_point(
             site=site,
             cp_date='2016-07-01'

@@ -55,8 +55,8 @@ class CameraPointTestCase(TestCase):
         """
         A camera point should correspond to a single specified site.
         """
-        site = Site.objects.create_site('test site', 'test site type',
-                                        'test_site_slug')
+        site = Site.test_objects.create_site('test site', 'test site type',
+                                             'test_site_slug')
         cp_date = datetime.date.today()
 
         camera_point = CameraPoint.camera_points.create_camera_point(
@@ -73,8 +73,8 @@ class CameraPointTestCase(TestCase):
         Tests that the CameraPoint object can be created successfully when the
         required fields are provided.
         """
-        site = Site.objects.create_site('test site a', 'test site type a',
-                                        'test_site_slug_a')
+        site = Site.test_objects.create_site('test site a', 'test site type a',
+                                             'test_site_slug_a')
         camera_point = CameraPoint.camera_points.create_camera_point(
             site=site,
             cp_date='2016-07-07'
@@ -96,8 +96,8 @@ class CameraPointTestCase(TestCase):
         Tests that the CameraPoint object can be created successfully when the
         required and optional fields are provided.
         """
-        site = Site.objects.create_site('test site b', 'test site type b',
-                                        'test_site_slug_b')
+        site = Site.test_objects.create_site('test site b', 'test site type b',
+                                             'test_site_slug_b')
         camera_point = CameraPoint.camera_points.create_camera_point(
             site=site,
             cp_date='2016-07-08',
