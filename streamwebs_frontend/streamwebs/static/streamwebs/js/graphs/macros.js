@@ -323,11 +323,7 @@ const useBarGraph = function useBarGraph() {
     for (let total of totals) {
         sum += total.value;
     }
-    const names = {
-        'sensitive': 'Sensitive',
-        'somewhat': 'Somewhat Sensitive',
-        'tolerant': 'Tolerant',
-    };
+    const columns = ['Sensitive', 'Somewhat Sensitive', 'Tolerant'];
 
     const container = $('#graph-' + siteId + '-pie');
     const width = container.width() * 0.5;
@@ -335,15 +331,16 @@ const useBarGraph = function useBarGraph() {
     const radius = Math.min(width, height) / 2;
 
     const color = d3.scaleOrdinal()
-        .range(['#869099', '#8c7853', '#007d4a']);
+        .domain(columns)
+        .range(['#007d4a', '#869099', '#8c7853']);
 
     const arc = d3.arc()
         .outerRadius(radius - 10)
         .innerRadius(0);
 
     const labelArc = d3.arc()
-        .outerRadius(radius - 40)
-        .innerRadius(radius - 40);
+        .outerRadius(radius - 55)
+        .innerRadius(radius - 55);
 
     const pie = d3.pie()
         .sort(null)
@@ -361,22 +358,42 @@ const useBarGraph = function useBarGraph() {
     .append('g')
         .attr('class', 'arc');
 
-    const g2 = svg.selectAll('.arc-text')
-        .data(pie(totals))
-        .enter()
-    .append('g')
-        .attr('class', 'arc-text');
-
     g.append('path')
         .attr('d', arc)
         .style('fill', (d) => { return color(d.data.name) });
 
+    const g2 = svg.selectAll('.arc-text')
+        .data(pie(totals))
+        .enter()
+    .append('g')
+        .attr('class', 'arc-text')
+        .attr('transform', 'translate(-35, 0)');
+
     g2.append('text')
-        .attr('transform', (d) => { return 'translate(' + labelArc.centroid(d) + ')' })
+        .attr('transform', (d) => { return 'translate(' + labelArc.centroid(d) + ')'; })
         .attr('dy', '.35em')
-        .text((d) => {
-            return names[d.data.name] + ' (' + toFixed(((d.value/sum)*100), 2) + '%)'
-        });
+        .text((d) => { return toFixed(((d.value/sum)*100), 2) + '%'; });
+
+    const legend = svg.selectAll('.legend')
+        .data(columns)
+        .enter()
+    .append('g')
+        .attr('class', 'legend')
+        .attr('transform', (d,i) => { return 'translate(0, ' + i*20 + ')'; })
+        .style('font', '10px sans-serif');
+
+    legend.append('rect')
+        .attr('x', width/2 - 18)
+        .attr('width', 18)
+        .attr('height', 18)
+        .attr('fill', (d) => { return color(d); });
+
+    legend.append('text')
+        .attr('x', width/2 - 24)
+        .attr('y', 9)
+        .attr('dy', '.35em')
+        .attr('text-anchor', 'end')
+        .text((d) => { return d; });
 
     $('.bar').mouseenter((e) => {
         const target = $(e.target);
