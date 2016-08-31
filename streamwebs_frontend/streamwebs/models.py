@@ -433,18 +433,18 @@ class MacroinvertebratesManager(models.Manager):
 
 class CameraPointManager(models.Manager):
 
-    def create_camera_point(self, site, cp_date, created_by='', latitude=None,
+    def create_camera_point(self, site, letter, cp_date, latitude=None,
                             longitude=None, map_datum='', description=''):
 
-        return self.create(site=site, cp_date=cp_date, created_by=created_by,
+        return self.create(site=site, letter=letter, cp_date=cp_date,
                            latitude=latitude, longitude=longitude,
                            map_datum=map_datum, description=description)
 
 
 class CameraPoint(models.Model):
     site = models.ForeignKey(Site, on_delete=models.CASCADE, null=True)
+    letter = models.CharField(null=True, max_length=2)
     cp_date = models.DateField(default=datetime.date.today)
-    created_by = models.CharField(max_length=255, blank=True)
     latitude = models.DecimalField(default=0, max_digits=9, decimal_places=6,
                                    blank=True, null=True)
     longitude = models.DecimalField(default=0, max_digits=9, decimal_places=6,
@@ -452,47 +452,47 @@ class CameraPoint(models.Model):
     map_datum = models.CharField(max_length=255, blank=True)
     description = models.TextField(blank=True)
 
-    camera_points = CameraPointManager()
+    test_objects = CameraPointManager()
 
     def __str__(self):
         return ('Camera point ' + str(self.id) + ' for site ' +
                 self.site.site_name)
 
     class Meta:
-        verbose_name = 'Camera Point'
-        verbose_name_plural = 'Camera Points'
+        verbose_name = 'camera point'
+        verbose_name_plural = 'camera points'
 
 
 class PhotoPointManager(models.Manager):
 
-    def create_photo_point(self, camera_point, pp_date, compass_bearing,
-                           distance, camera_height, photo=None, notes=''):
+    def create_photo_point(self, camera_point, number, pp_date,
+                           compass_bearing, distance, camera_height, notes=''):
 
-        return self.create(camera_point=camera_point, pp_date=pp_date,
-                           compass_bearing=compass_bearing, distance=distance,
-                           camera_height=camera_height, photo=photo,
+        return self.create(camera_point=camera_point, number=number,
+                           pp_date=pp_date, compass_bearing=compass_bearing,
+                           distance=distance, camera_height=camera_height,
                            notes=notes)
 
 
 class PhotoPoint(models.Model):
     camera_point = models.ForeignKey(CameraPoint, on_delete=models.CASCADE,
                                      null=True, related_name='camera_point')
+    number = models.PositiveSmallIntegerField(null=True)
     pp_date = models.DateField(default=datetime.date.today)
     compass_bearing = models.PositiveSmallIntegerField()
     distance = models.DecimalField(max_digits=3, decimal_places=0)
     camera_height = models.DecimalField(max_digits=3, decimal_places=0)
-    photo = models.ImageField(blank=True, null=True)
     notes = models.TextField(blank=True)
 
-    photo_points = PhotoPointManager()
+    test_objects = PhotoPointManager()
 
     def __str__(self):
         return ('Photo point ' + str(self.id) + ' for camera point ' +
                 str(self.camera_point.id))
 
     class Meta:
-        verbose_name = 'Photo Point'
-        verbose_name_plural = 'Photo Points'
+        verbose_name = 'photo point'
+        verbose_name_plural = 'photo points'
 
 
 class PhotoPointImage(models.Model):
@@ -500,8 +500,6 @@ class PhotoPointImage(models.Model):
                                     null=True, related_name='photo_point')
     image = models.ImageField(null=True, blank=True, upload_to='pp_photos/')
     date = models.DateField(default=datetime.date.today)
-
-    objects = models.Manager()
 
     def __str__(self):
         return ('Image ' + str(self.id) + ' for photo point ' +

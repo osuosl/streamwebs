@@ -12,8 +12,8 @@ class CameraPointTestCase(TestCase):
         self.expected_fields = {
             'site': models.ForeignKey,
             'site_id': models.ForeignKey,
+            'letter': models.CharField,
             'cp_date': models.DateField,
-            'created_by': models.CharField,
             'latitude': models.DecimalField,
             'longitude': models.DecimalField,
             'map_datum': models.CharField,
@@ -24,12 +24,15 @@ class CameraPointTestCase(TestCase):
         }
 
         self.optional_fields = {
-            'created_by': models.CharField,
             'latitude': models.DecimalField,
             'longitude': models.DecimalField,
             'map_datum': models.CharField,
             'description': models.TextField
         }
+
+        self.site = Site.test_objects.create_site('test site a',
+                                                  'test site type a',
+                                                  'test_site_slug_a')
 
     def test_fields_exist(self):
         model = apps.get_model('streamwebs', 'camerapoint')
@@ -55,37 +58,35 @@ class CameraPointTestCase(TestCase):
         """
         A camera point should correspond to a single specified site.
         """
-        site = Site.test_objects.create_site('test site', 'test site type',
-                                             'test_site_slug')
         cp_date = datetime.date.today()
 
-        camera_point = CameraPoint.camera_points.create_camera_point(
-            site=site,
+        camera_point = CameraPoint.test_objects.create_camera_point(
+            site=self.site,
+            letter='A',
             cp_date=cp_date
         )
 
-        self.assertEqual(camera_point.site.site_name, 'test site')
-        self.assertEqual(camera_point.site.site_type, 'test site type')
-        self.assertEqual(camera_point.site.site_slug, 'test_site_slug')
+        self.assertEqual(camera_point.site.site_name, 'test site a')
+        self.assertEqual(camera_point.site.site_type, 'test site type a')
+        self.assertEqual(camera_point.site.site_slug, 'test_site_slug_a')
 
     def test_obj_exists_req_fields(self):
         """
         Tests that the CameraPoint object can be created successfully when the
         required fields are provided.
         """
-        site = Site.test_objects.create_site('test site a', 'test site type a',
-                                             'test_site_slug_a')
-        camera_point = CameraPoint.camera_points.create_camera_point(
-            site=site,
+        camera_point = CameraPoint.test_objects.create_camera_point(
+            site=self.site,
+            letter='B',
             cp_date='2016-07-07'
         )
 
         # Required fields
         self.assertEqual(camera_point.site.site_name, 'test site a')
+        self.assertEqual(camera_point.letter, 'B')
         self.assertEqual(camera_point.cp_date, '2016-07-07')
 
         # Optional fields
-        self.assertEqual(camera_point.created_by, '')
         self.assertEqual(camera_point.latitude, None)
         self.assertEqual(camera_point.longitude, None)
         self.assertEqual(camera_point.map_datum, '')
@@ -96,26 +97,23 @@ class CameraPointTestCase(TestCase):
         Tests that the CameraPoint object can be created successfully when the
         required and optional fields are provided.
         """
-        site = Site.test_objects.create_site('test site b', 'test site type b',
-                                             'test_site_slug_b')
-        camera_point = CameraPoint.camera_points.create_camera_point(
-            site=site,
+        camera_point = CameraPoint.test_objects.create_camera_point(
+            site=self.site,
+            letter='C',
             cp_date='2016-07-08',
-            created_by='Ms. Frizzle',
             latitude=0.45,
             longitude=0.45,
             map_datum='WGS84',
-            description='Notes on this camera point for test site b'
+            description='Notes on this camera point for test site a'
         )
 
         # Required fields
-        self.assertEqual(camera_point.site.site_name, 'test site b')
+        self.assertEqual(camera_point.site.site_name, 'test site a')
+        self.assertEqual(camera_point.letter, 'C')
         self.assertEqual(camera_point.cp_date, '2016-07-08')
-
         # Optional fields
-        self.assertEqual(camera_point.created_by, 'Ms. Frizzle')
         self.assertEqual(camera_point.latitude, 0.45)
         self.assertEqual(camera_point.longitude, 0.45)
         self.assertEqual(camera_point.map_datum, 'WGS84')
         self.assertEqual(camera_point.description,
-                         'Notes on this camera point for test site b')
+                         'Notes on this camera point for test site a')

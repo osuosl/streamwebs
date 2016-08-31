@@ -17,11 +17,10 @@ class PhotoPointImageTestCase(TestCase):
         }
 
         site = Site.test_objects.create_site('Test site', 'no', 'noo')
-        camera_point = CameraPoint.camera_points.create_camera_point(
-            site, '2016-07-29')
-        photo_point = PhotoPoint.photo_points.create_photo_point(camera_point,
-                                                                 '2016-07-30',
-                                                                 45, 4, 5)
+        camera_point = CameraPoint.test_objects.create_camera_point(
+            site, 'A', '2016-07-29')
+        photo_point = PhotoPoint.test_objects.create_photo_point(
+            camera_point, 1, '2016-07-30', 45, 4, 5)
         self.temp_photo = tempfile.NamedTemporaryFile(suffix='.jpg').name
         self.pp_image = PhotoPointImage(photo_point=photo_point,
                                         date='2016-08-30',
@@ -50,6 +49,7 @@ class PhotoPointImageTestCase(TestCase):
 
     def test_PhotoPointImage_ManyToOnePhotoPoint(self):
         """A photo point image should correspond to a single photo point."""
+        self.assertEqual(self.pp_image.photo_point.number, 1)
         self.assertEqual(self.pp_image.photo_point.pp_date, '2016-07-30')
         self.assertEqual(
             self.pp_image.photo_point.camera_point.cp_date, '2016-07-29')

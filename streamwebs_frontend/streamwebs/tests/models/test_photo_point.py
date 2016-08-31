@@ -2,7 +2,6 @@ from django.test import TestCase
 from django.contrib.gis.db import models
 from itertools import chain
 from streamwebs.models import CameraPoint, PhotoPoint, Site
-import tempfile
 
 
 class PhotoPointTestCase(TestCase):
@@ -10,11 +9,11 @@ class PhotoPointTestCase(TestCase):
     def setUp(self):
         self.expected_fields = {
             'camera_point': models.ForeignKey,
+            'number': models.PositiveSmallIntegerField,
             'pp_date': models.DateField,
             'compass_bearing': models.PositiveSmallIntegerField,
             'distance': models.DecimalField,
             'camera_height': models.DecimalField,
-            'photo': models.ImageField,
             'notes': models.TextField,
             'id': models.AutoField,
 
@@ -23,9 +22,16 @@ class PhotoPointTestCase(TestCase):
         }
 
         self.optional_fields = {
-            'photo': models.ImageField,
             'notes': models.TextField
         }
+
+        site = Site.test_objects.create_site('test site c', 'test site type c',
+                                             'test_site_slug_c')
+        self.camera_point = CameraPoint.test_objects.create_camera_point(
+            site=site,
+            letter='A',
+            cp_date='2016-07-05'
+        )
 
     def test_fields_exist(self):
         """
@@ -64,15 +70,10 @@ class PhotoPointTestCase(TestCase):
         """
         A photo point should correspond to a single camera point.
         """
-        site = Site.test_objects.create_site('test site c', 'test site type c',
-                                             'test_site_slug_c')
-        camera_point = CameraPoint.camera_points.create_camera_point(
-            site=site,
-            cp_date='2016-07-05'
-        )
 
-        photo_point = PhotoPoint.photo_points.create_photo_point(
-            camera_point=camera_point,
+        photo_point = PhotoPoint.test_objects.create_photo_point(
+            camera_point=self.camera_point,
+            number=1,
             pp_date='2016-07-06',
             compass_bearing=140,
             distance=4.5,
@@ -81,6 +82,7 @@ class PhotoPointTestCase(TestCase):
 
         self.assertEqual(photo_point.camera_point.site.site_name,
                          'test site c')
+        self.assertEqual(photo_point.camera_point.letter, 'A')
         self.assertEqual(photo_point.camera_point.cp_date, '2016-07-05')
 
     def test_obj_exists_req_fields(self):
@@ -88,15 +90,9 @@ class PhotoPointTestCase(TestCase):
         A photo point should be created successfully when the required fields
         are provided.
         """
-        site = Site.test_objects.create_site('test site d', 'test site type d',
-                                             'test_site_slug_d')
-        camera_point = CameraPoint.camera_points.create_camera_point(
-            site=site,
-            cp_date='2016-07-03'
-        )
-
-        photo_point = PhotoPoint.photo_points.create_photo_point(
-            camera_point=camera_point,
+        photo_point = PhotoPoint.test_objects.create_photo_point(
+            camera_point=self.camera_point,
+            number=2,
             pp_date='2016-07-04',
             compass_bearing=270,
             distance=2.3,
@@ -105,15 +101,15 @@ class PhotoPointTestCase(TestCase):
 
         # Required
         self.assertEqual(photo_point.camera_point.site.site_name,
-                         'test site d')
-        self.assertEqual(photo_point.camera_point.cp_date, '2016-07-03')
+                         'test site c')
+        self.assertEqual(photo_point.camera_point.cp_date, '2016-07-05')
+        self.assertEqual(photo_point.number, 2)
         self.assertEqual(photo_point.pp_date, '2016-07-04')
         self.assertEqual(photo_point.compass_bearing, 270)
         self.assertEqual(photo_point.distance, 2.3)
         self.assertEqual(photo_point.camera_height, 0.5)
 
         # Optional
-        self.assertEqual(photo_point.photo, None)
         self.assertEqual(photo_point.notes, '')
 
     def test_obj_exists_opt_fields(self):
@@ -121,32 +117,23 @@ class PhotoPointTestCase(TestCase):
         A photo point should be created successfully when the required and
         optional fields are provided.
         """
-        site = Site.test_objects.create_site('test site e', 'test site type e',
-                                             'test_site_slug_e')
-        camera_point = CameraPoint.camera_points.create_camera_point(
-            site=site,
-            cp_date='2016-07-01'
-        )
-
-        temp_photo = tempfile.NamedTemporaryFile(suffix='.jpg').name
-
-        photo_point = PhotoPoint.photo_points.create_photo_point(
-            camera_point=camera_point,
+        photo_point = PhotoPoint.test_objects.create_photo_point(
+            camera_point=self.camera_point,
+            number=3,
             pp_date='2016-07-02',
             compass_bearing=1.62,
             distance=4.1,
             camera_height=5.3,
-            photo=temp_photo,
-            notes='Notes on photo point for test site e'
+            notes='Notes on photo point for test site c'
         )
 
         self.assertEqual(photo_point.camera_point.site.site_name,
-                         'test site e')
-        self.assertEqual(photo_point.camera_point.cp_date, '2016-07-01')
+                         'test site c')
+        self.assertEqual(photo_point.camera_point.cp_date, '2016-07-05')
+        self.assertEqual(photo_point.number, 3)
         self.assertEqual(photo_point.pp_date, '2016-07-02')
         self.assertEqual(photo_point.compass_bearing, 1.62)
         self.assertEqual(photo_point.distance, 4.1)
         self.assertEqual(photo_point.camera_height, 5.3)
-        self.assertEqual(photo_point.photo, temp_photo)
         self.assertEqual(photo_point.notes,
-                         'Notes on photo point for test site e')
+                         'Notes on photo point for test site c')
