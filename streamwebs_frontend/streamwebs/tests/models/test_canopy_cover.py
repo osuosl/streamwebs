@@ -55,7 +55,7 @@ class CanopyCovTestCase(TestCase):
         """Tests that a datasheet correctly corresponds to is specified site"""
         default_dt = timezone.now()
 
-        site = Site.test_objects.create_site('test', 'some_type', 'some_slug')
+        site = Site.test_objects.create_site('test', 'some_type')
 
         north = CC_Cardinal.objects.create_shade('North', True, True, False,
                                                  False, False, True, False,
@@ -94,14 +94,14 @@ class CanopyCovTestCase(TestCase):
 
         self.assertEqual(canopyc.site.site_name, 'test')
         self.assertEqual(canopyc.site.site_type, 'some_type')
-        self.assertEqual(canopyc.site.site_slug, 'some_slug')
+        self.assertEqual(canopyc.site.site_slug, 'test')
 
     def test_datasheet_CreateCanopyCover(self):
         """Tests that a Canopy Cover object is actually created, checks that
            the correct (shaded) value is received from the CC_Cardinal model"""
         default_dt = timezone.now()
 
-        site = Site.test_objects.create_site('test', 'some_type', 'some_slug')
+        site = Site.test_objects.create_site('test', 'some_type')
 
         north = CC_Cardinal.objects.create_shade('North', True, True, False,
                                                  False, False, True, False,
@@ -168,7 +168,7 @@ class CanopyCovTestCase(TestCase):
                       True, True, True, True, True, False, False, True, True,
                       False, True, True, True, True, True, False]
 
-        site = Site.test_objects.create_site('test', 'some_type', 'some_slug')
+        site = Site.test_objects.create_site('test', 'some_type')
 
         north = CC_Cardinal.objects.create_shade('North',
                                                  *(north_bools + [11]))
@@ -214,7 +214,7 @@ class CanopyCovTestCase(TestCase):
         """Tests that est_canopy_cover is in between 0-96."""
         default_dt = timezone.now()
 
-        site = Site.test_objects.create_site('test', 'some_type', 'some_slug')
+        site = Site.test_objects.create_site('test', 'some_type')
 
         north = CC_Cardinal.objects.create_shade('North', True, True, False,
                                                  False, False, True, False,
@@ -259,7 +259,7 @@ class CanopyCovTestCase(TestCase):
 
         default_dt = timezone.now()
 
-        site = Site.test_objects.create_site('test', 'some_type', 'some_slug')
+        site = Site.test_objects.create_site('test', 'some_type')
 
         north = CC_Cardinal.objects.create_shade('North', True, True, False,
                                                  False, False, True, False,

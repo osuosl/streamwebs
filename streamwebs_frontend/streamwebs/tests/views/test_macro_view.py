@@ -5,9 +5,7 @@ from streamwebs.models import Site, Macroinvertebrates
 
 class MacroViewTestCase(TestCase):
     def setUp(self):
-        self.site = Site.test_objects.create_site(
-            'Site Name', 'Site Type', 'site_slug'
-            )
+        self.site = Site.test_objects.create_site('site name', 'site type')
         self.macro = Macroinvertebrates.objects.create_macro(
             self.site, 2, 3, True, True, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5,
             6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8)
@@ -15,7 +13,7 @@ class MacroViewTestCase(TestCase):
             reverse(
                 'streamwebs:macroinvertebrate_view',
                 kwargs={'data_id': self.macro.id,
-                        'site_slug': self.macro.site.id
+                        'site_slug': self.site.site_slug
                         }
             )
         )
