@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 from django.test import TestCase, override_settings
-import datetime, calendar
+import datetime
+import calendar
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
