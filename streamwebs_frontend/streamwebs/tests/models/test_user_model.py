@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 from django.test import TestCase, override_settings
 import datetime
+import calendar
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
@@ -141,10 +142,23 @@ class UserTestCase(TestCase):
             'user@example.com',
             'password'
         )
+
+        # If today is the last day of the month,
+        if today.day == calendar.monthrange(today.year, today.month)[1]:
+            # and the next month is January,
+            if today.month == 12:
+                month = 1
+            else:
+                month = today.month + 1
+            birthdate = datetime.date(today.year-13, month, 1)
+
+        else:
+            birthdate = datetime.date(today.year-13, today.month, today.day+1)
+
         bad_day_prof = UserProfile.objects.create(
             user=bad_day_user,
             school='f',
-            birthdate=datetime.date(today.year-13, today.month, today.day+1)
+            birthdate=birthdate
         )
         with self.assertRaises(ValidationError):
             validate_UserProfile_birthdate(bad_day_prof.birthdate)
