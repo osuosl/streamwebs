@@ -57,7 +57,7 @@ class UserTestCase(TestCase):
 
     def test_bad_birth_year(self):
         """
-        Creating a UserProfile with a birth year greater than the current year
+        Creating a UserProfile with a birth year greater than the current year:
         minus 13 should raise a ValidationError
         """
 
@@ -101,6 +101,7 @@ class UserTestCase(TestCase):
         ValidationError should be raised
         """
         today = datetime.datetime.now()
+
         bad_day_user = User.objects.create_user(
             'bad_day',
             'user@example.com',
