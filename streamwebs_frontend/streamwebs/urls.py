@@ -1,7 +1,4 @@
 from django.conf.urls import include, url
-from django.conf import settings
-from django.conf.urls.static import static
-
 from . import views
 
 app_name = 'streamwebs'
@@ -38,9 +35,13 @@ urlpatterns = [
     url(r'^resources/data-sheets/', views.resources_data_sheets,
         name='resources-data-sheets'),
 
+    url(r'^resources/data-sheets/', views.resources_data_sheets,
+        name='resources-data-sheets'),
+
+    url(r'^resources/curriculum-guides/', views.resources_publications,
+        name='resources-publications'),
+
     url(r'^login/$', views.user_login, name='login'),
 
     url(r'^logout/$', views.user_logout, name='logout')
 ]
-
-urlpatterns += static('/media/', document_root=settings.MEDIA_ROOT)

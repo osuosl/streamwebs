@@ -8,7 +8,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.forms import inlineformset_factory
 from streamwebs.forms import (
     UserForm, UserProfileForm, RiparianTransectForm, MacroinvertebratesForm,
-    Resource_Data_Sheet_Form
+    Resource_Data_Sheet_Form, Resource_Publication_Form
 )
 from streamwebs.models import (
     RiparianTransect, Site, TransectZone, Macroinvertebrates, Resource
@@ -293,27 +293,47 @@ def resources(request):
 
 def resources_data_sheets(request):
     """ View for data_sheet resources """
-    data_sheets = Resource.objects.filter(res_type='data_sheet')
+    data = Resource.objects.filter(res_type='data_sheet')
     resource_form = Resource_Data_Sheet_Form()
     added = False
-    debugging = "No POST"
 
     if request.method == 'POST':
         resource_form = Resource_Data_Sheet_Form(request.POST, request.FILES)
         if resource_form.is_valid():
-            debugging = "Yes VALID"
             resource_form.save()
-            print "Data saved!"
             added = True
         else:
-            debugging = "NOT VALID"
             print resource_form.errors
 
     return render(
         request, 'streamwebs/resources_data_sheets.html', {
-            'debugging': debugging,
             'added': added,
-            'data_sheets': data_sheets,
+            'data': data,
+            'resource_form': resource_form
+        }
+    )
+
+
+def resources_publications(request):
+    """ View for publication resources """
+    data = Resource.objects.filter(res_type='publication').order_by(
+        'sort_order', 'name'
+    )
+    resource_form = Resource_Publication_Form()
+    added = False
+
+    if request.method == 'POST':
+        resource_form = Resource_Publication_Form(request.POST, request.FILES)
+        if resource_form.is_valid():
+            resource_form.save()
+            added = True
+        else:
+            print resource_form.errors
+
+    return render(
+        request, 'streamwebs/resources_publications.html', {
+            'added': added,
+            'data': data,
             'resource_form': resource_form
         }
     )

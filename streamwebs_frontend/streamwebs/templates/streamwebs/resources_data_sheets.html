@@ -3,24 +3,18 @@
 {% load i18n %}
 
 {% block content %}
-{% trans "Data Sheets:" %}<br>
-{% for sheet in data_sheets %}
-    <a href={{ sheet.downloadable.url }}>
+{% trans "Data Sheets:" %}<p>
+{% for sheet in data %}
+    <p><a href={{ sheet.downloadable.url }}>
         <img src={{ sheet.thumbnail.url }}><br>
         {{ sheet.name }}
-    </a>.<br>
-    <!-- name: {{ sheet.name }}<br> -->
-    <!-- res_type: {{ sheet.res_type }}<br> -->
-    <!-- downloadable: {{ sheet.downloadable }}<br> -->
-    <!-- thumbnail: {{ sheet.thumbnail }}<br> -->
-    thumbnail.url: {{ sheet.thumbnail.url }}<br>
-    media_url: {{ MEDIA_URL }}<br>
+    </a>
 {% endfor %}
 
 {% if perms.resources.can_add %}
-    <p>
+    <hr>
     {% if added %}
-        Resource Added{{ MEDIA_URL }}!
+        Resource Added.
     {% endif %}
     <form id='add-resource-form' action='' method='POST'
         enctype="multipart/form-data">

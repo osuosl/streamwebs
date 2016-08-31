@@ -467,7 +467,7 @@ class ResourceManager(models.Model):
     def create_resource(self, name, res_type, downloadable, thumbnail):
         return self.create(
             name=name, res_type=res_type, downloadable=downloadable,
-            thumbnail=thumbnail
+            thumbnail=thumbnail, sort_order=sort_order
         )
 
 def upload_url_helper(instance, filename):
@@ -488,6 +488,7 @@ class Resource(models.Model):
     # bad way to handle upload_to!  It should be based on res_type
     downloadable = models.FileField(upload_to='data_sheets/', blank=True)
     thumbnail = models.ImageField(upload_to='thumbnails/', blank=True)
+    sort_order = models.PositiveSmallIntegerField(default=1000)
 
     objects = ResourceManager()
 

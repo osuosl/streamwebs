@@ -1,0 +1,143 @@
+- model: streamwebs.Resource
+  pk: 1
+  fields:
+    downloadable: data_sheets/WaterQuality_OSU.pdf
+    thumbnail: thumbnails/waterquality_form_thumb.png
+    name: Water Quality
+    res_type: data_sheet
+
+- model: streamwebs.Resource
+  pk: 2
+  fields:
+    downloadable: data_sheets/Macros_OSU.pdf
+    thumbnail: thumbnails/macros_form_thumb.png
+    name: Aquatic Macroinvertebrates
+    res_type: data_sheet
+
+- model: streamwebs.Resource
+  pk: 3
+  fields:
+    downloadable: data_sheets/Riparian_AquaticSurvey_OSU.pdf
+    thumbnail: thumbnails/riparianaquatic_form_thumb.png
+    name: Riparian & Aquatic Survey
+    res_type: data_sheet
+
+- model: streamwebs.Resource
+  pk: 4
+  fields:
+    downloadable: data_sheets/RiparianTransect_OSU.pdf
+    thumbnail: thumbnails/ripariantransect_form_thumb.png
+    name: Riparian Transect
+    res_type: data_sheet
+
+- model: streamwebs.Resource
+  pk: 5
+  fields:
+    downloadable: data_sheets/Photopoints_OSU.pdf
+    thumbnail: thumbnails/photopoint_form_thumb.png
+    name: Photopoint Monitoring
+    res_type: data_sheet
+
+- model: streamwebs.Resource
+  pk: 6
+  fields:
+    downloadable: data_sheets/Streamflow_OSU.pdf
+    thumbnail: thumbnails/streamflow_form_thumb.png
+    name: Streamflow
+    res_type: data_sheet
+
+- model: streamwebs.Resource
+  pk: 7
+  fields:
+    downloadable: data_sheets/Canopy_OSU.pdf
+    thumbnail: thumbnails/canopy_form_thumb.png
+    name: Canopy Cover Survey
+    res_type: data_sheet
+
+- model: streamwebs.Resource
+  pk: 8
+  fields:
+    downloadable: data_sheets/Invasive_Mapping_OSU.pdf
+    thumbnail: thumbnails/invasive_form_thumb.png
+    name: Invasive Species Mapping
+    res_type: data_sheet
+
+- model: streamwebs.Resource
+  pk: 9
+  fields:
+    downloadable: data_sheets/Soil_Survey_OSU.pdf
+    thumbnail: thumbnails/soil_form_thumb.png
+    name: Soil Survey
+    res_type: data_sheet
+
+- model: streamwebs.Resource
+  pk: 10
+  fields:
+    downloadable: data_sheets/PEBBLE_COUNT_OSU.pdf
+    thumbnail: thumbnails/pebblecount_form_thumb.png
+    name: Pebble Count
+    res_type: data_sheet
+
+- model: streamwebs.Resource
+  pk: 11
+  fields:
+    downloadable: student_stewardship_project_guide_pg3.4-3.20.pdf
+    thumbnail: thumbnails/Student%20Stewardship%20Project%20Guide%20COVER_small.jpg
+    name: StreamWebs Student Stewardship Project Field Book
+    res_type: publication
+
+- model: streamwebs.Resource
+  pk: 12
+  fields:
+    downloadable: sw_2010_teacher_curriculum_guide_final.pdf
+    thumbnail: thumbnails/SW_Cover_small.jpg
+    name: Salmon Watch 10th Edition Curriculum Guide
+    res_type: publication
+
+- model: streamwebs.Resource
+  pk: 13
+  fields:
+    downloadable: sw_volunteer_resource_packet_2010.pdf
+    thumbnail: thumbnails/SW_Cover_small.jpg
+    name: Salmon Watch 10th Edition Volunteer Resource Packet
+    res_type: publication
+
+- model: streamwebs.Resource
+  pk: 14
+  fields:
+    downloadable: 1000_Drops_Teacher_Guide_First_Edition_WEB.pdf
+    thumbnail: thumbnails/1000drops_cover_small.jpg
+    name: 1000 Drops Curriculum Guide
+    res_type: publication
+
+- model: streamwebs.Resource
+  pk: 15
+  fields:
+    downloadable: hometown_waters-marys_river_web.pdf
+    thumbnail: thumbnails/hometown_waters_ud_cover_small.jpg
+    name: Hometown Waters - Marys River
+    res_type: publication
+
+- model: streamwebs.Resource
+  pk: 16
+  fields:
+    downloadable: hometown_waters-bear_creek_web.pdf
+    thumbnail: thumbnails/hometown_waters_ud_cover_small.jpg
+    name: Hometown Waters - Bear Creek
+    res_type: publication
+
+- model: streamwebs.Resource
+  pk: 17
+  fields:
+    downloadable: hometown_waters-johnson_creek_web.pdf
+    thumbnail: thumbnails/hometown_waters_ud_cover_small.jpg
+    name: Hometown Waters - Johnson Creek
+    res_type: publication
+
+- model: streamwebs.Resource
+  pk: 18
+  fields:
+    downloadable: hometown_waters-upper_deschutes_web.pdf
+    thumbnail: thumbnails/hometown_waters_ud_cover_small.jpg
+    name: Hometown Waters - Upper Deschutes
+    res_type: publication

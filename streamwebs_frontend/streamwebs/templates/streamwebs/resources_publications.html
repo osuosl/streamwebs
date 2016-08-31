@@ -1,0 +1,27 @@
+{% extends "streamwebs/base.html" %}
+{% load staticfiles %}
+{% load i18n %}
+
+{% block content %}
+{% trans "Curriculum Guides:" %}<p>
+{% for guide in data %}
+    <p><a href={{ guide.downloadable.url }}>
+        <img src={{ guide.thumbnail.url }}><br>
+        {{ guide.name }}
+    </a>
+{% endfor %}
+
+{% if perms.resources.can_add %}
+    <hr>
+    {% if added %}
+        Resource Added.
+    {% endif %}
+    <form id='add-resource-form' action='' method='POST'
+        enctype="multipart/form-data">
+    {% trans "Add new curriculum guide:" %}
+    {% csrf_token %}
+    {{ resource_form.as_p }}
+    <input type="submit" value="Add Resource">
+    </form>
+{% endif %}
+{% endblock %}
