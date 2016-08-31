@@ -25,13 +25,9 @@ class PhotoPointTestCase(TestCase):
             'notes': models.TextField
         }
 
-        site = Site.test_objects.create_site('test site c', 'test site type c',
-                                             'test_site_slug_c')
+        site = Site.test_objects.create_site('test site c', 'test site type c')
         self.camera_point = CameraPoint.test_objects.create_camera_point(
-            site=site,
-            letter='A',
-            cp_date='2016-07-05'
-        )
+            site, 'A', '2016-07-05', 'POINT(-121.393401 44.061437)')
 
     def test_fields_exist(self):
         """
@@ -72,18 +68,14 @@ class PhotoPointTestCase(TestCase):
         """
 
         photo_point = PhotoPoint.test_objects.create_photo_point(
-            camera_point=self.camera_point,
-            number=1,
-            pp_date='2016-07-06',
-            compass_bearing=140,
-            distance=4.5,
-            camera_height=2.3
-        )
+            self.camera_point, 1, '2016-07-06', 140, 4.5, 2.3)
 
         self.assertEqual(photo_point.camera_point.site.site_name,
                          'test site c')
         self.assertEqual(photo_point.camera_point.letter, 'A')
         self.assertEqual(photo_point.camera_point.cp_date, '2016-07-05')
+        self.assertEqual(photo_point.camera_point.location.coords,
+                         (-121.393401, 44.061437))
 
     def test_obj_exists_req_fields(self):
         """
@@ -91,13 +83,7 @@ class PhotoPointTestCase(TestCase):
         are provided.
         """
         photo_point = PhotoPoint.test_objects.create_photo_point(
-            camera_point=self.camera_point,
-            number=2,
-            pp_date='2016-07-04',
-            compass_bearing=270,
-            distance=2.3,
-            camera_height=0.5
-        )
+            self.camera_point, 2, '2016-07-04', 270, 2.3, camera_height=0.5)
 
         # Required
         self.assertEqual(photo_point.camera_point.site.site_name,
@@ -118,14 +104,8 @@ class PhotoPointTestCase(TestCase):
         optional fields are provided.
         """
         photo_point = PhotoPoint.test_objects.create_photo_point(
-            camera_point=self.camera_point,
-            number=3,
-            pp_date='2016-07-02',
-            compass_bearing=1.62,
-            distance=4.1,
-            camera_height=5.3,
-            notes='Notes on photo point for test site c'
-        )
+            self.camera_point, 3, '2016-07-02', 1.62, 4.1, 5.3,
+            'Notes on photo point for test site c')
 
         self.assertEqual(photo_point.camera_point.site.site_name,
                          'test site c')

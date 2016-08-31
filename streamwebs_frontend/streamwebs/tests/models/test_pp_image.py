@@ -16,9 +16,9 @@ class PhotoPointImageTestCase(TestCase):
             'photo_point_id': models.ForeignKey
         }
 
-        site = Site.test_objects.create_site('Test site', 'no', 'noo')
+        site = Site.test_objects.create_site('Test site', 'no')
         camera_point = CameraPoint.test_objects.create_camera_point(
-            site, 'A', '2016-07-29')
+            site, 'A', '2016-07-29', 'POINT(-121.393401 44.061437)')
         photo_point = PhotoPoint.test_objects.create_photo_point(
             camera_point, 1, '2016-07-30', 45, 4, 5)
         self.temp_photo = tempfile.NamedTemporaryFile(suffix='.jpg').name

@@ -1,5 +1,6 @@
 from django.test import TestCase
 from django.contrib.gis.db import models
+from django.contrib.gis.geos import Point
 from django.apps import apps
 from itertools import chain
 from streamwebs.models import CameraPoint, Site
@@ -14,8 +15,7 @@ class CameraPointTestCase(TestCase):
             'site_id': models.ForeignKey,
             'letter': models.CharField,
             'cp_date': models.DateField,
-            'latitude': models.DecimalField,
-            'longitude': models.DecimalField,
+            'location': models.PointField,
             'map_datum': models.CharField,
             'description': models.TextField,
             'id': models.AutoField,
@@ -24,15 +24,12 @@ class CameraPointTestCase(TestCase):
         }
 
         self.optional_fields = {
-            'latitude': models.DecimalField,
-            'longitude': models.DecimalField,
             'map_datum': models.CharField,
             'description': models.TextField
         }
 
         self.site = Site.test_objects.create_site('test site a',
-                                                  'test site type a',
-                                                  'test_site_slug_a')
+                                                  'test site type a')
 
     def test_fields_exist(self):
         model = apps.get_model('streamwebs', 'camerapoint')
@@ -63,12 +60,12 @@ class CameraPointTestCase(TestCase):
         camera_point = CameraPoint.test_objects.create_camera_point(
             site=self.site,
             letter='A',
-            cp_date=cp_date
+            cp_date=cp_date,
+            location='POINT(-121.393401 44.061437)'
         )
 
         self.assertEqual(camera_point.site.site_name, 'test site a')
         self.assertEqual(camera_point.site.site_type, 'test site type a')
-        self.assertEqual(camera_point.site.site_slug, 'test_site_slug_a')
 
     def test_obj_exists_req_fields(self):
         """
@@ -78,7 +75,8 @@ class CameraPointTestCase(TestCase):
         camera_point = CameraPoint.test_objects.create_camera_point(
             site=self.site,
             letter='B',
-            cp_date='2016-07-07'
+            cp_date='2016-07-07',
+            location='POINT(-121.393401 44.061437)'
         )
 
         # Required fields
@@ -87,8 +85,8 @@ class CameraPointTestCase(TestCase):
         self.assertEqual(camera_point.cp_date, '2016-07-07')
 
         # Optional fields
-        self.assertEqual(camera_point.latitude, None)
-        self.assertEqual(camera_point.longitude, None)
+        self.assertEqual(camera_point.location.coords,
+                         (-121.393401, 44.061437))
         self.assertEqual(camera_point.map_datum, '')
         self.assertEqual(camera_point.description, '')
 
@@ -101,8 +99,7 @@ class CameraPointTestCase(TestCase):
             site=self.site,
             letter='C',
             cp_date='2016-07-08',
-            latitude=0.45,
-            longitude=0.45,
+            location=Point(-120.2684184, 44.3910532),
             map_datum='WGS84',
             description='Notes on this camera point for test site a'
         )
@@ -111,9 +108,10 @@ class CameraPointTestCase(TestCase):
         self.assertEqual(camera_point.site.site_name, 'test site a')
         self.assertEqual(camera_point.letter, 'C')
         self.assertEqual(camera_point.cp_date, '2016-07-08')
+
         # Optional fields
-        self.assertEqual(camera_point.latitude, 0.45)
-        self.assertEqual(camera_point.longitude, 0.45)
+        self.assertEqual(camera_point.location.coords,
+                         (-120.2684184, 44.3910532))
         self.assertEqual(camera_point.map_datum, 'WGS84')
         self.assertEqual(camera_point.description,
                          'Notes on this camera point for test site a')

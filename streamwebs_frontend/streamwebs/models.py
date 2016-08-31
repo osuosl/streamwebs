@@ -433,24 +433,23 @@ class MacroinvertebratesManager(models.Manager):
 
 class CameraPointManager(models.Manager):
 
-    def create_camera_point(self, site, letter, cp_date, latitude=None,
-                            longitude=None, map_datum='', description=''):
+    def create_camera_point(self, site, letter, cp_date, location,
+                            map_datum='', description=''):
 
         return self.create(site=site, letter=letter, cp_date=cp_date,
-                           latitude=latitude, longitude=longitude,
-                           map_datum=map_datum, description=description)
+                           location=location, map_datum=map_datum,
+                           description=description)
 
 
 class CameraPoint(models.Model):
     site = models.ForeignKey(Site, on_delete=models.CASCADE, null=True)
     letter = models.CharField(null=True, max_length=2)
-    cp_date = models.DateField(default=datetime.date.today)
-    latitude = models.DecimalField(default=0, max_digits=9, decimal_places=6,
-                                   blank=True, null=True)
-    longitude = models.DecimalField(default=0, max_digits=9, decimal_places=6,
-                                    blank=True, null=True)
-    map_datum = models.CharField(max_length=255, blank=True)
-    description = models.TextField(blank=True)
+    cp_date = models.DateField(default=datetime.date.today,
+                               verbose_name=_('date established'))
+    location = models.PointField(null=True, verbose_name=_('location'))
+    map_datum = models.CharField(max_length=255, blank=True,
+                                 verbose_name=_('map datum'))
+    description = models.TextField(blank=True, verbose_name=_('description'))
 
     test_objects = CameraPointManager()
 
