@@ -107,6 +107,12 @@ class Resource_Publication_Form(forms.ModelForm):
         fields = ('name', 'res_type', 'downloadable', 'thumbnail')
 
 
+class Resource_Video_Tutorial_Form(forms.ModelForm):
+    class Meta:
+        model = Resource
+        fields = ('name', 'res_type', 'downloadable', 'thumbnail')
+
+
 class RiparianTransectForm(forms.ModelForm):
     class Meta:
         model = RiparianTransect

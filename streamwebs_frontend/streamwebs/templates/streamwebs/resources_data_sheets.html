@@ -3,8 +3,12 @@
 {% load i18n %}
 
 {% block content %}
-{% trans "Data Sheets:" %}<p>
+{% trans "Data Sheets" %}<p>
 {% for sheet in data %}
+    {% if perms.resources.can_add %}
+        <!-- Should include javascript to move elements up/down. -->
+        <!-- See model.Resource.sort_order -->
+    {% endif %}
     <p><a href={{ sheet.downloadable.url }}>
         <img src={{ sheet.thumbnail.url }}><br>
         {{ sheet.name }}
