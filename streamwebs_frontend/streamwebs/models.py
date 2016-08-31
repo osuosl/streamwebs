@@ -474,11 +474,20 @@ def upload_url_helper(instance, filename):
     return os.path.join(settings.MEDIA_ROOT, 'thumbnails/')
 
 class Resource(models.Model):
-    """ This model organizes Resources like pdfs """
+    """ This model organizes Resources like pdfs or videos """
+    TYPE_CHOICES = (
+        (None, '-----'),
+        ('data_sheet', _('Data Sheet')),
+        ('publication', _('Publication')),
+        ('tutorial_video', _('Tutorial Video')),
+    )
     name = models.CharField(max_length=255, blank=False)
-    res_type = models.CharField(max_length=255)
-    downloadable = models.FileField(upload_to='.')
-    thumbnail = models.ImageField(upload_to=upload_url_helper)
+    res_type = models.CharField(
+        max_length=255, blank=False, choices=TYPE_CHOICES
+    )
+    # bad way to handle upload_to!  It should be based on res_type
+    downloadable = models.FileField(upload_to='data_sheets/', blank=True)
+    thumbnail = models.ImageField(upload_to='thumbnails/', blank=True)
 
     objects = ResourceManager()
 

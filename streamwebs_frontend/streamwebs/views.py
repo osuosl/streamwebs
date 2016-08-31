@@ -7,7 +7,8 @@ from django.shortcuts import render
 from django.utils.translation import ugettext_lazy as _
 from django.forms import inlineformset_factory
 from streamwebs.forms import (
-    UserForm, UserProfileForm, RiparianTransectForm, MacroinvertebratesForm
+    UserForm, UserProfileForm, RiparianTransectForm, MacroinvertebratesForm,
+    Resource_Data_Sheet_Form
 )
 from streamwebs.models import (
     RiparianTransect, Site, TransectZone, Macroinvertebrates, Resource
@@ -293,9 +294,28 @@ def resources(request):
 def resources_data_sheets(request):
     """ View for data_sheet resources """
     data_sheets = Resource.objects.filter(res_type='data_sheet')
+    resource_form = Resource_Data_Sheet_Form()
+    added = False
+    debugging = "No POST"
+
+    if request.method == 'POST':
+        resource_form = Resource_Data_Sheet_Form(request.POST, request.FILES)
+        if resource_form.is_valid():
+            debugging = "Yes VALID"
+            resource_form.save()
+            print "Data saved!"
+            added = True
+        else:
+            debugging = "NOT VALID"
+            print resource_form.errors
+
     return render(
-        request, 'streamwebs/resources_data_sheets.html',
-        {'data_sheets': data_sheets}
+        request, 'streamwebs/resources_data_sheets.html', {
+            'debugging': debugging,
+            'added': added,
+            'data_sheets': data_sheets,
+            'resource_form': resource_form
+        }
     )
 
 

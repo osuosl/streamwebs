@@ -1,4 +1,6 @@
 from django.conf.urls import include, url
+from django.conf import settings
+from django.conf.urls.static import static
 
 from . import views
 
@@ -40,3 +42,5 @@ urlpatterns = [
 
     url(r'^logout/$', views.user_logout, name='logout')
 ]
+
+urlpatterns += static('/media/', document_root=settings.MEDIA_ROOT)
