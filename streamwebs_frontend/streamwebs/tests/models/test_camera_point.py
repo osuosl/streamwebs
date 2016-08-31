@@ -95,7 +95,6 @@ class CameraPointTestCase(TestCase):
         # Required fields
         self.assertEqual(camera_point.site.site_name, 'test site a')
         self.assertEqual(camera_point.cp_date, '2016-07-08')
-
         # Optional fields
         self.assertEqual(camera_point.location.coords,
                          (-120.2684184, 44.3910532))

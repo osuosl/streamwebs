@@ -2,7 +2,6 @@ from django.test import TestCase
 from django.contrib.gis.db import models
 from itertools import chain
 from streamwebs.models import CameraPoint, PhotoPoint, Site
-from django.apps import apps
 
 
 class PhotoPointTestCase(TestCase):
