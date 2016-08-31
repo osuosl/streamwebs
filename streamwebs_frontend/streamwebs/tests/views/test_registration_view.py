@@ -1,11 +1,13 @@
 from django.test import Client, TestCase
 from django.core.urlresolvers import reverse
+from streamwebs.models import School
 import os
 
 
 class RegistrateTestCase(TestCase):
     def setUp(self):
         self.client = Client()
+        self.school = School()
         os.environ['RECAPTCHA_TESTING'] = 'True'
 
     def test_view_with_unregistered_user(self):
@@ -66,6 +68,11 @@ class RegistrateTestCase(TestCase):
         When user submits a good form, they should be able to register
         successfully
         """
+        print " AAAAAAAAAAAAAAAAAAAAAAAA "
+        school = School()
+        school.name = "Testyschool"
+        school.school_type = "pro school"
+        school.save()
         user_form_response = self.client.post(
             reverse('streamwebs:register'), {
                 'username': 'john',
@@ -74,11 +81,12 @@ class RegistrateTestCase(TestCase):
                 'first_name': 'John',
                 'last_name': 'Johnson',
                 'password_check': 'johniscool',
-                'school': 'a',
+                'school': school.id,
                 'birthdate': '1995-11-10',
                 'g-recaptcha-response': 'PASSED'
             }
         )
+        print "BBBBBBBBBBBBBBBBBBBBb "
         self.assertEqual(user_form_response.status_code, 200)
         self.assertTrue(user_form_response.context['registered'])
 

@@ -9,8 +9,6 @@ from django.utils.encoding import python_2_unicode_compatible
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
-from django.conf import settings
-
 
 class SiteManager(models.Manager):
     """
@@ -64,11 +62,6 @@ class School(models.Model):
         return self.name
 
 
-def validate_UserProfile_school(school):
-    if school not in dict(settings.SCHOOL_CHOICES):
-        raise ValidationError(_('That school is not in the list.'))
-
-
 def validate_UserProfile_birthdate(birthdate):
     today = datetime.datetime.now()
     if birthdate.year > today.year - 13:
@@ -83,13 +76,7 @@ def validate_UserProfile_birthdate(birthdate):
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    school = models.CharField(
-        max_length=255,
-        choices=settings.SCHOOL_CHOICES,
-        default='',
-        validators=[validate_UserProfile_school],
-        verbose_name=_('school')
-    )
+    school = models.ForeignKey(School, on_delete=models.CASCADE)
     birthdate = models.DateField(validators=[validate_UserProfile_birthdate],
                                  verbose_name=_('birthdate'))
 
