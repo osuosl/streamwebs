@@ -11,10 +11,6 @@ from streamwebs.models import (
 )
 
 
-@override_settings(SCHOOL_CHOICES=(
-    ('e', 'School E'),
-    ('f', 'School F'),
-    ('g', 'School G'),))
 class UserTestCase(TestCase):
     school = School()
     school.name = "testSchool"
@@ -55,50 +51,6 @@ class UserTestCase(TestCase):
         self.assertEqual(profile1.user.username, 'user1')
         self.assertEqual(profile1.user.email, 'user@example.com')
         self.assertEqual(profile1.user.password, user1.password)
-
-    def test_school_not_in_list(self):
-        """
-        Creating a UserProfile with a school not in the schools list should
-        raise a ValidationError
-        """
-        pass  # will update
-        """
-        bad_sch_user = User.objects.create_user(
-            'bad_sch',
-            'user@example.com',
-            'password'
-        )
-        bad_sch_prof = UserProfile.objects.create(
-            user=bad_sch_user,
-            school='d',
-            birthdate=datetime.date(1999, 4, 2)
-        )
-        with self.assertRaises(ValidationError):
-            validate_UserProfile_school(bad_sch_prof.school)
-            """
-
-    def test_school_is_in_list(self):
-        """
-        Creating a UserProfile with a school in the schools list should not
-        raise an exception
-        """
-        pass
-        """
-        good_sch_user = User.objects.create_user(
-            'good_sch',
-            'user@example.com',
-            'password'
-        )
-        good_sch_prof = UserProfile.objects.create(
-            user=good_sch_user,
-            school='f',
-            birthdate=datetime.date(1999, 4, 2)
-        )
-        try:
-            validate_UserProfile_school(good_sch_prof.school)
-        except:
-            self.fail('An exception was raised.')
-        """
 
     def test_bad_birth_year(self):
         """

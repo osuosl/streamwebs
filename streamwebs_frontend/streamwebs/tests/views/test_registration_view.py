@@ -68,7 +68,6 @@ class RegistrateTestCase(TestCase):
         When user submits a good form, they should be able to register
         successfully
         """
-        print " AAAAAAAAAAAAAAAAAAAAAAAA "
         school = School()
         school.name = "Testyschool"
         school.school_type = "pro school"
@@ -86,7 +85,6 @@ class RegistrateTestCase(TestCase):
                 'g-recaptcha-response': 'PASSED'
             }
         )
-        print "BBBBBBBBBBBBBBBBBBBBb "
         self.assertEqual(user_form_response.status_code, 200)
         self.assertTrue(user_form_response.context['registered'])
 
