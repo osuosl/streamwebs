@@ -10,6 +10,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 
+
 class SiteManager(models.Manager):
     """
     Manager for the site class - creates a site to be used in tests
