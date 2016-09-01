@@ -16,7 +16,3 @@ function placeMarkerAndPanTo(latLng, map) {
     });
     map.panTo(latLng);
 }
-
-$(document).ready(function() {
-    initMap();
-});
