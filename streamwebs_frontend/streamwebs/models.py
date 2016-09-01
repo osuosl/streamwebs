@@ -562,6 +562,47 @@ class TransectZone(models.Model):
         verbose_name_plural = 'zones'
 
 
+def validate_cover(est_canopy_cover):
+    if not(0 <= est_canopy_cover and est_canopy_cover <= 96):
+        raise ValidationError(
+            '%(est_canopy_cover)s is not 0-96.',
+            params={'est_canopy_cover': est_canopy_cover},
+            )
+
+
+@python_2_unicode_compatible
+class Canopy_Cover(models.Model):
+    school = models.CharField(max_length=250, verbose_name=_('school'))
+    date_time = models.DateTimeField(default=timezone.now,
+                                     verbose_name=_('date and time'))
+    site = models.ForeignKey(Site, null=True, on_delete=models.CASCADE,
+                             verbose_name=_('site'))
+    weather = models.CharField(max_length=250, verbose_name=_('weather'))
+    #north = models.ForeignKey(CC_Cardinal, on_delete=models.CASCADE,
+    #                          related_name='north', null=True,
+    #                          verbose_name=_('north'))
+    #east = models.ForeignKey(CC_Cardinal, on_delete=models.CASCADE,
+    #                         related_name='east', null=True,
+    #                         verbose_name=_('east'))
+    #south = models.ForeignKey(CC_Cardinal, on_delete=models.CASCADE,
+    #                          related_name='south', null=True,
+    #                          verbose_name=_('south'))
+    #west = models.ForeignKey(CC_Cardinal, on_delete=models.CASCADE,
+    #                         related_name='west', null=True,
+    #                         verbose_name=_('west'))
+    est_canopy_cover = models.PositiveIntegerField(
+        default=0, validators=[validate_cover],
+        verbose_name=_('estimated canopy cover')
+        )
+
+    def __str__(self):
+        return self.site.site_name
+
+    class Meta:
+        verbose_name = 'canopy cover survey'
+        verbose_name_plural = 'canopy cover surveys'
+
+
 class CardinalManager(models.Manager):
     """
     Manager for the canopy cover survey's cardinal boxes - creates dummy data
@@ -630,8 +671,11 @@ class CC_Cardinal(models.Model):
     num_shaded = models.PositiveIntegerField(default=0,
                                              validators=[validate_shaded],
                                              verbose_name=_('# shaded boxes'))
+    canopy_cover = models.ForeignKey(Canopy_Cover, on_delete=models.CASCADE,
+                                     verbose_name=_('Canopy Cover'))
 
-    objects = CardinalManager()
+    objects = models.Manager()
+    test_objects = CardinalManager()
 
     def __str__(self):
         return self.direction
@@ -656,44 +700,3 @@ class CC_Cardinal(models.Model):
                 _('%(num_shaded)s is not the correct total'),
                 params={'num_shaded': self.num_shaded},
             )
-
-
-def validate_cover(est_canopy_cover):
-    if not(0 <= est_canopy_cover and est_canopy_cover <= 96):
-        raise ValidationError(
-            '%(est_canopy_cover)s is not 0-96.',
-            params={'est_canopy_cover': est_canopy_cover},
-            )
-
-
-@python_2_unicode_compatible
-class Canopy_Cover(models.Model):
-    school = models.CharField(max_length=250, verbose_name=_('school'))
-    date_time = models.DateTimeField(default=timezone.now,
-                                     verbose_name=_('date and time'))
-    site = models.ForeignKey(Site, null=True, on_delete=models.CASCADE,
-                             verbose_name=_('site'))
-    weather = models.CharField(max_length=250, verbose_name=_('weather'))
-    north = models.ForeignKey(CC_Cardinal, on_delete=models.CASCADE,
-                              related_name='north', null=True,
-                              verbose_name=_('north'))
-    east = models.ForeignKey(CC_Cardinal, on_delete=models.CASCADE,
-                             related_name='east', null=True,
-                             verbose_name=_('east'))
-    south = models.ForeignKey(CC_Cardinal, on_delete=models.CASCADE,
-                              related_name='south', null=True,
-                              verbose_name=_('south'))
-    west = models.ForeignKey(CC_Cardinal, on_delete=models.CASCADE,
-                             related_name='west', null=True,
-                             verbose_name=_('west'))
-    est_canopy_cover = models.PositiveIntegerField(
-        default=0, validators=[validate_cover],
-        verbose_name=_('estimated canopy cover')
-        )
-
-    def __str__(self):
-        return self.site.site_name
-
-    class Meta:
-        verbose_name = 'canopy cover survey'
-        verbose_name_plural = 'canopy cover surveys'
