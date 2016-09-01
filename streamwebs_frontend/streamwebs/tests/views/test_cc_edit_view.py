@@ -15,7 +15,7 @@ class AddCanopyCoverTestCase(TestCase):
         """
         Display form errors when the user submits a (completely) blank form
         """
-        site = Site.test_objects.create_site('Test', 'Type', 'sluggo')
+        site = Site.test_objects.create_site('Test', 'Type')
         response = self.client.post(
             reverse('streamwebs:canopy_cover_edit',
                     kwargs={'site_slug': site.site_slug}
@@ -37,7 +37,7 @@ class AddCanopyCoverTestCase(TestCase):
         When the user submits a form with all required fields filled
         appropriately, return a success message
         """
-        site = Site.test_objects.create_site('Test', 'Type', 'sluggo')
+        site = Site.test_objects.create_site('Test', 'Type')
         response = self.client.post(
             reverse(
                 'streamwebs:canopy_cover_edit'
@@ -177,7 +177,7 @@ class AddCanopyCoverTestCase(TestCase):
         When the user isn't logged in, don't display the the data entry page
         """
         self.client.logout()
-        site = Site.test_objects.create_site('Test', 'Type', 'sluggo')
+        site = Site.test_objects.create_site('Test', 'Type')
         response = self.client.get(
             reverse('streamwebs:canopy_cover_edit',
                     kwargs={'site_slug': site.site_slug}
