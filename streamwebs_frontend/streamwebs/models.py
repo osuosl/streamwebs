@@ -492,6 +492,46 @@ class Macroinvertebrates(models.Model):
         verbose_name = 'macroinvertebrate'
         verbose_name_plural = 'macroinvertebrates'
 
+    def get_tolerant_counts(self):
+        return [
+            {'name': 'Aquatic Worm', 'value': self.aquatic_worm},
+            {'name': 'Blackfly', 'value': self.blackfly},
+            {'name': 'Leech', 'value': self.leech},
+            {'name': 'Midge', 'value': self.midge},
+            {'name': 'Snail', 'value': self.snail},
+            {'name': 'Mosquito Larva', 'value': self.mosquito_larva}
+        ]
+
+    def get_somewhat_sensitive_counts(self):
+        return [
+            {'name': 'Mussel/Clam', 'value': self.clam_or_mussel},
+            {'name': 'Cranefly', 'value': self.crane_fly},
+            {'name': 'Crayfish', 'value': self.crayfish},
+            {'name': 'Damselfly', 'value': self.damselfly},
+            {'name': 'Dragonfly', 'value': self.dragonfly},
+            {'name': 'Scud', 'value': self.scud},
+            {'name': 'Fishfly', 'value': self.fishfly},
+            {'name': 'Alderfly', 'value': self.alderfly},
+            {'name': 'Water Mite', 'value': self.mite}
+        ]
+
+    def get_sensitive_counts(self):
+        return [
+            {'name': 'Riffle Beetle', 'value': self.riffle_beetle},
+            {'name': 'Mayfly', 'value': self.mayfly},
+            {'name': 'Water Penny', 'value': self.water_penny},
+            {'name': 'Stonefly', 'value': self.stonefly},
+            {'name': 'Caddisfly', 'value': self.caddisfly},
+            {'name': 'Dobsonfly', 'value': self.dobsonfly}
+        ]
+
+    def get_totals(self):
+        return {
+            'Tolerant': self.tolerant_total,
+            'Somewhat Sensitive': self.somewhat_sensitive_total,
+            'Sensitive': self.sensitive_total
+        }
+
 
 class RipTransectManager(models.Manager):
     """

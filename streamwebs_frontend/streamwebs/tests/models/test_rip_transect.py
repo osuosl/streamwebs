@@ -49,6 +49,7 @@ class RiparianTransectTestCase(TestCase):
 
     def test_validate_slope_good(self):
         site = Site.test_objects.create_site('test site', 'test site type')
+
         transect = RiparianTransect.objects.create_transect(
             'School of Cool', '2016-07-11 14:09', site, 'Cloudy, no meatballs',
             1.11, 'Notes on transect')
@@ -57,6 +58,7 @@ class RiparianTransectTestCase(TestCase):
 
     def test_validate_slope_bad(self):
         site = Site.test_objects.create_site('test site', 'test site type')
+
         transect = RiparianTransect.objects.create_transect(
             'School of Cool', '2016-07-11 14:09', site, 'Cloudy, no meatballs',
             -1.11, 'Notes on transect')
@@ -68,6 +70,7 @@ class RiparianTransectTestCase(TestCase):
         """
         A datasheet should correctly correspond to a single site.
         """
+
         transect = RiparianTransect.objects.create_transect(
             'School of Cool', '2016-07-11 14:09', self.site)
 
@@ -93,7 +96,6 @@ class RiparianTransectTestCase(TestCase):
         transect = RiparianTransect.objects.create_transect(
             'School of Cool', '2016-07-11 14:09', self.site,
             'Cloudy, no meatballs', 1.11, 'Notes on transect')
-
         # Required
         self.assertEqual(transect.school, 'School of Cool')
         self.assertEqual(transect.date_time, '2016-07-11 14:09')
