@@ -12,10 +12,12 @@ from streamwebs.models import (
 
 
 class UserTestCase(TestCase):
-    school = School()
-    school.name = "testSchool"
-    school.school_type = "basics"
-    school.save()
+
+    def setUp(self):
+        self.school = School()
+        self.school.name = "testSchool"
+        self.school.school_type = "basics"
+        self.school.save()
 
     def test_UserProfile_objs_exist(self):
         """
