@@ -1,5 +1,7 @@
 # coding=UTF-8
 
+from __future__ import print_function
+from __future__ import print_function
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -10,6 +12,12 @@ from streamwebs.forms import (
     UserForm, UserProfileForm, RiparianTransectForm, MacroinvertebratesForm)
 from streamwebs.models import (
     RiparianTransect, Site, TransectZone, Macroinvertebrates)
+from datetime import datetime
+import json
+
+
+def _timestamp(dt):
+    return (dt - datetime(1970, 1, 1)).total_seconds()
 
 
 # Create your views here.
@@ -53,6 +61,7 @@ def sites(request):
 
 
 def site(request, site_slug):
+    # TODO: actual lookup
     site = {
         'name': 'Test 1',
         'slug': 'test1',
@@ -91,7 +100,7 @@ def register(request):
             registered = True
 
         else:
-            print user_form.errors, profile_form.errors
+            print(user_form.errors, profile_form.errors)
 
     else:
         user_form = UserForm()
@@ -114,7 +123,7 @@ def user_login(request):
             login(request, user)
             return HttpResponseRedirect('/streamwebs/')
         else:
-            print 'Invalid login details: {0}, {1}'.format(username, password)
+            print('Invalid login details: {0}, {1}'.format(username, password))
             return HttpResponse(_('Invalid credentials'))
     else:
         return render(request, 'streamwebs/login.html')
@@ -126,7 +135,31 @@ def user_logout(request):
     return HttpResponseRedirect('/streamwebs/')
 
 
+def graph_water(request, site_slug):
+    # TODO: actual lookup
+    return render(request, 'streamwebs/graphs/water_quality.html')
+
+
+def graph_macros(request, site_slug):
+    site = Site.objects.get(site_slug=site_slug)
+    macros = Macroinvertebrates.objects.filter(site=site)
+    summary = {
+        _timestamp(m.date_time): {
+            'tolerant': m.get_tolerant_counts(),
+            'somewhat': m.get_somewhat_sensitive_counts(),
+            'sensitive': m.get_sensitive_counts()
+        }
+        for m in macros}
+
+    time = {_timestamp(m.date_time): m.get_totals() for m in macros}
+    return render(request, 'streamwebs/graphs/macroinvertebrates.html', {
+        'data': {'summary': json.dumps(summary), 'time': json.dumps(time)},
+        'site': site
+    })
+
+
 def water_quality(request, site_slug, data_id):
+    # TODO: actual lookup
     quality_data = {
         'id': 1,
         'date': '2016-06-10',
@@ -239,56 +272,59 @@ def water_quality(request, site_slug, data_id):
 
 
 def water_quality_edit(request, site_slug):
+    # TODO: actual lookup
     site = {
         'name': 'Test 1',
         'slug': 'test1',
         'site_type': 'steward',
         'location': {'x': -122.31211423, 'y': 45.11231324}
     }
-    return render(request, 'streamwebs/datasheets/water_quality_edit.html', {
-        'site': site
-    })
+    return render(
+        request,
+        'streamwebs/datasheets/water_quality_edit.html',
+        {'site': site}
+    )
 
 
 def macroinvertebrate(request, site_slug, data_id):
-    data = Macroinvertebrates.objects.filter(site_id=site_slug).get(id=data_id)
-    site = Site.objects.get(id=site_slug)
-    return render(request,
-                  'streamwebs/datasheets/macroinvertebrate_view.html', {
-                      'data': data,
-                      'site': site})
+    site = Site.objects.get(site_slug=site_slug)
+    # data = Macroinvertebrates.objects.filter(site_id=site.id).get(id=data_id)
+    data = Macroinvertebrates.objects.get(id=data_id)
+    return render(
+        request,
+        'streamwebs/datasheets/macroinvertebrate_view.html', {
+            'data': data, 'site': site
+        }
+    )
 
 
 def macroinvertebrate_edit(request, site_slug):
     """
     The view for the submission of a new macroinvertebrate data sheet.
     """
-    site = Site.objects.get(id=site_slug)
+    site = Site.objects.get(site_slug=site_slug)
     added = False
     if request.method == 'POST':
         macro_form = MacroinvertebratesForm(data=request.POST)
-
         if macro_form.is_valid():
             macro_form = macro_form.save()
             added = True
-
-        else:
-            # print macro_form.errors
-            pass
     else:
         macro_form = MacroinvertebratesForm()
 
-    return render(request, 'streamwebs/datasheets/macroinvertebrate_edit.html',
-                  {'macro_form': macro_form,
-                   'added': added,
-                   'site': site})
+    return render(
+        request, 'streamwebs/datasheets/macroinvertebrate_edit.html', {
+            'macro_form': macro_form,
+            'added': added,
+            'site': site
+        }
+    )
 
 
 def riparian_transect_view(request, site_slug, data_id):
-    transects = RiparianTransect.objects.filter(site_id=site_slug)
-    transect = transects.get(id=data_id)
+    site = Site.objects.get(site_slug=site_slug)
+    transect = RiparianTransect.objects.filter(site_id=site.id).get(id=data_id)
     zones = TransectZone.objects.filter(transect_id=transect)
-    site = Site.objects.get(id=site_slug)
 
     # Invoking the database by evaluating the queryset before passing it to the
     # template is necessary in order to pass Travis tests.
@@ -309,7 +345,7 @@ def riparian_transect_edit(request, site_slug):
     The view for the submission of a new riparian transect data sheet.
     """
     added = False
-    site = Site.objects.get(id=site_slug)
+    site = Site.objects.get(site_slug=site_slug)
     transect = RiparianTransect()
     TransectZoneInlineFormSet = inlineformset_factory(
         RiparianTransect, TransectZone,
@@ -317,8 +353,9 @@ def riparian_transect_edit(request, site_slug):
     )
 
     if request.method == 'POST':
-        zone_formset = TransectZoneInlineFormSet(data=request.POST,
-                                                 instance=transect)
+        zone_formset = TransectZoneInlineFormSet(
+            data=request.POST, instance=transect
+        )
         transect_form = RiparianTransectForm(data=request.POST)
 
         if (zone_formset.is_valid() and transect_form.is_valid()):

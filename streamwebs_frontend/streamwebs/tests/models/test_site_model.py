@@ -13,7 +13,7 @@ class SiteTestCase(TestCase):
             'site_name': models.CharField,
             'site_type': models.CharField,
             'description': models.TextField,
-            'site_slug': models.SlugField,  # Note: max_length defaults to 50
+            'site_slug': models.SlugField,
             'location': models.PointField,
             'created': models.DateTimeField,
             'modified': models.DateTimeField,
@@ -49,5 +49,33 @@ class SiteTestCase(TestCase):
     def test_optional_fields(self):
         apps.get_model('streamwebs', 'site')
         for field in self.optional_fields:
-            self.assertEqual(
-                Site._meta.get_field(field).blank, True)
+            self.assertEqual(Site._meta.get_field(field).blank, True)
+
+    def test_site_slug_is_unique(self):
+        self.siteA = Site.test_objects.create_site('test site', 'site type')
+        self.siteB = Site.test_objects.create_site('test site', 'site type')
+        self.assertNotEqual(self.siteA.site_slug, self.siteB.site_slug)
+        # Long site names are truncated, make sure they are still unique
+        self.siteA = Site.test_objects.create_site(
+            'test site with a really, really, really, REALLY long name', ''
+        )
+        self.siteB = Site.test_objects.create_site(
+            'test site with a really, really, really, REALLY long name', ''
+        )
+        self.assertNotEqual(self.siteA.site_slug, self.siteB.site_slug)
+
+    def test_site_slug_max_length(self):
+        self.siteA = Site.test_objects.create_site(
+            'test site with a really, really, really, REALLY long name', ''
+        )
+        self.assertIs(len(self.siteA.site_slug), 50)
+        # Conflicting long site names must still be max of 50 chars
+        self.siteB = Site.test_objects.create_site(
+            'test site with a really, really, really, REALLY long name', ''
+        )
+        self.assertIs(len(self.siteB.site_slug), 50)
+
+    def test_site_slug_not_empty(self):
+        print "Testing!"
+        self.site = Site.test_objects.create_site('', '')
+        self.assertIsNotNone(self.site.site_slug)

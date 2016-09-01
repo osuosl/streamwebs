@@ -32,7 +32,7 @@ class WQFormTestCase(TestCase):
         wq_form = WQForm()
         for field in self.optional_fields:
             self.assertEqual(
-                 wq_form.base_fields[field].required, False)
+                wq_form.base_fields[field].required, False)
 
 
 class WQSampleFormTestCase(TestCase):
@@ -74,4 +74,4 @@ class WQSampleFormTestCase(TestCase):
         wq_sample_form = WQSampleForm()
         for field in self.optional_fields:
             self.assertEqual(
-                 wq_sample_form.base_fields[field].required, False)
+                wq_sample_form.base_fields[field].required, False)

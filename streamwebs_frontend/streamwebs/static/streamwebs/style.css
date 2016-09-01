@@ -104,3 +104,52 @@ td.pair:nth-child(even) {
 .form-cell {
   min-width: 300px;
 }
+
+/* CSS for D3 graphs; ALL FREE TO BE CHANGED */
+.graph {
+    width: 100%;
+}
+
+div.tolerant .bar {
+    fill: #8c7853;
+}
+
+div.somewhat .bar {
+    fill: #869099;
+}
+
+div.sensitive .bar {
+    fill: #007d4a;
+}
+
+div.graph .line {
+    fill: none;
+    stroke-width: 2px;
+}
+
+.tolerant.line {
+    stroke: #8c7853;
+}
+
+.somewhat.line {
+    stroke: #869099;
+}
+
+.sensitive.line {
+    stroke: #007d4a;
+}
+
+.sensitive.total {
+    stroke: #e24431;
+}
+
+.axis {
+    font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: black;
+    shape-rendering: crispEdges;
+}
