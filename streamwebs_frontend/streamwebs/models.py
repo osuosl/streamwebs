@@ -9,6 +9,7 @@ from django.utils.encoding import python_2_unicode_compatible
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
+from django.utils.text import slugify
 from django.conf import settings
 
 
@@ -16,9 +17,8 @@ class SiteManager(models.Manager):
     """
     Manager for the site class - creates a site to be used in tests
     """
-    def create_site(self, site_name, site_type, site_slug):
-        site = self.create(site_name=site_name, site_type=site_type,
-                           site_slug=site_slug)
+    def create_site(self, site_name, site_type):
+        site = self.create(site_name=site_name, site_type=site_type)
         return site
 
 
@@ -29,10 +29,12 @@ class Site(models.Model):
     location as a pair of latitudinal/longitudinal coordinates and an optional
     text description of entry.
     """
-    site_name = models.CharField(max_length=250, blank=True)
+    site_name = models.CharField(max_length=250, blank=False)
     site_type = models.CharField(max_length=250, blank=True)
     description = models.TextField(blank=True)
-    site_slug = models.SlugField(blank=True)
+    site_slug = models.SlugField(
+        unique=True, blank=False, max_length=50, editable=False
+    )
 
     # Geo Django fields to store a point
     location = models.PointField(null=True, blank=True)
@@ -45,6 +47,18 @@ class Site(models.Model):
 
     def __str__(self):
         return self.site_name
+
+    def save(self, **kwargs):
+        'Ensure site_slug is a unique, not-null field'
+        if not self.site_slug:
+            self.site_slug = origSlug = slugify(self.site_name)[:50]
+            # If the generated slug is not unique, append a number
+            for i in xrange(1, 99):
+                if not Site.objects.filter(site_slug=self.site_slug).exists():
+                    break
+                # Ensure the slug is never longer than it's field's maxiumum
+                self.site_slug = "%s%d" % (origSlug[:50-len(str(i))], i)
+        super(Site, self).save()
 
 
 @python_2_unicode_compatible
@@ -477,6 +491,46 @@ class Macroinvertebrates(models.Model):
     class Meta:
         verbose_name = 'macroinvertebrate'
         verbose_name_plural = 'macroinvertebrates'
+
+    def get_tolerant_counts(self):
+        return [
+            {'name': 'Aquatic Worm', 'value': self.aquatic_worm},
+            {'name': 'Blackfly', 'value': self.blackfly},
+            {'name': 'Leech', 'value': self.leech},
+            {'name': 'Midge', 'value': self.midge},
+            {'name': 'Snail', 'value': self.snail},
+            {'name': 'Mosquito Larva', 'value': self.mosquito_larva}
+        ]
+
+    def get_somewhat_sensitive_counts(self):
+        return [
+            {'name': 'Mussel/Clam', 'value': self.clam_or_mussel},
+            {'name': 'Cranefly', 'value': self.crane_fly},
+            {'name': 'Crayfish', 'value': self.crayfish},
+            {'name': 'Damselfly', 'value': self.damselfly},
+            {'name': 'Dragonfly', 'value': self.dragonfly},
+            {'name': 'Scud', 'value': self.scud},
+            {'name': 'Fishfly', 'value': self.fishfly},
+            {'name': 'Alderfly', 'value': self.alderfly},
+            {'name': 'Water Mite', 'value': self.mite}
+        ]
+
+    def get_sensitive_counts(self):
+        return [
+            {'name': 'Riffle Beetle', 'value': self.riffle_beetle},
+            {'name': 'Mayfly', 'value': self.mayfly},
+            {'name': 'Water Penny', 'value': self.water_penny},
+            {'name': 'Stonefly', 'value': self.stonefly},
+            {'name': 'Caddisfly', 'value': self.caddisfly},
+            {'name': 'Dobsonfly', 'value': self.dobsonfly}
+        ]
+
+    def get_totals(self):
+        return {
+            'Tolerant': self.tolerant_total,
+            'Somewhat Sensitive': self.somewhat_sensitive_total,
+            'Sensitive': self.sensitive_total
+        }
 
 
 class RipTransectManager(models.Manager):

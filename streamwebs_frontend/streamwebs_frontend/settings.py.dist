@@ -187,4 +187,5 @@ LANGUAGES = [
     ('en-us', 'English'),
     ('es', 'Español'),
     ('ru', 'Русский'),
+    ('de', 'Deutsch'),
 ]
