@@ -11,21 +11,23 @@ class UpdateSiteTestCase(TestCase):
                                              'johnpassword')
         self.client.login(username='john', password='johnpassword')
 
-        self.site = Site.test_objects.create_site('Creaky Creek', 'slug')
+        self.site = Site.test_objects.create_site('Creaky Creek')
 
     def test_prepopulate_siteform(self):
         """View should first contain form prepopulated w requested site info"""
-        response = self.client.get(reverse('streamwebs:update_site',
-                                           kwargs={'site_slug': self.site.id}))
+        response = self.client.get(reverse(
+            'streamwebs:update_site',
+            kwargs={'site_slug': self.site.site_slug}))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'streamwebs/update_site.html')
         self.assertContains(response, 'Creaky Creek')
-        self.assertContains(response, self.site.id)
+        self.assertContains(response, self.site.site_slug)
 
     def test_successful_site_update(self):
         """Tests that update is successful if all data valid"""
         response = self.client.post(reverse(
-            'streamwebs:update_site', kwargs={'site_slug': self.site.id}), {
+            'streamwebs:update_site',
+            kwargs={'site_slug': self.site.site_slug}), {
                 'site_name': 'Shrieky Creek',
                 'description': 'some description',
                 'location': 'POINT(44.0612385 -121.3846841)'})
@@ -38,7 +40,8 @@ class UpdateSiteTestCase(TestCase):
     def test_unsuccessful_site_update(self):
         """Tests that update is unsuccessful if some/all data invalid"""
         response = self.client.post(reverse(
-            'streamwebs:update_site', kwargs={'site_slug': self.site.id}), {})
+            'streamwebs:update_site',
+            kwargs={'site_slug': self.site.site_slug}), {})
         self.assertFormError(response, 'site_form', 'site_name',
                              'This field is required.')
         self.assertFalse(response.context['updated'])
@@ -46,7 +49,8 @@ class UpdateSiteTestCase(TestCase):
     def test_passive_update(self):
         """Tests that submitting prepopulated form as-is changes nothing"""
         response = self.client.post(reverse(
-            'streamwebs:update_site', kwargs={'site_slug': self.site.id}), {
+            'streamwebs:update_site',
+            kwargs={'site_slug': self.site.site_slug}), {
                 'site_name': 'Creaky Creek',
                 'location': 'POINT(44.0612385 -121.3846841)'})
 
@@ -58,7 +62,7 @@ class UpdateSiteTestCase(TestCase):
         """Tests that the user can't update site if they're not logged in"""
         self.client.logout()
         response = self.client.get(reverse('streamwebs:update_site',
-                                   kwargs={'site_slug': self.site.id}))
+                                   kwargs={'site_slug': self.site.site_slug}))
 
         self.assertContains(response, 'You must be logged in to edit a site.')
         self.assertEqual(response.status_code, 200)

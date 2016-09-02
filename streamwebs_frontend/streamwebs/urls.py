@@ -18,13 +18,13 @@ urlpatterns = [
     url(r'^site/(?P<site_slug>[0-9a-zA-Z-]+)/macros$',
         views.graph_macros, name='graph_macros'),
 
-    url(r'^site/(?P<site_slug>[0-9a-zA-Z-]+)/water/(?P<data_id>\d+)', 
+    url(r'^site/(?P<site_slug>[0-9a-zA-Z-]+)/water/(?P<data_id>\d+)',
         views.water_quality, name='water_quality'),
 
-    url(r'^site/(?P<site_slug>[0-9a-zA-Z]+)/delete/', views.deactivate_site,
+    url(r'^site/(?P<site_slug>[0-9a-zA-Z-]+)/delete/', views.deactivate_site,
         name='deactivate_site'),
 
-    url(r'^site/(?P<site_slug>[0-9a-zA-Z]+)/update/', views.update_site,
+    url(r'^site/(?P<site_slug>[0-9a-zA-Z-]+)/update/', views.update_site,
         name='update_site'),
 
     url(r'^site/(?P<site_slug>[0-9a-zA-Z-]+)/water/edit',
@@ -39,7 +39,7 @@ urlpatterns = [
     url(r'^site/(?P<site_slug>[0-9a-zA-Z-]+)/macros$',
         views.graph_macros, name='graph_macros'),
 
-    url(r'^site/(?P<site_slug>[0-9a-zA-Z]+)/transect/(?P<data_id>\d+)',
+    url(r'^site/(?P<site_slug>[0-9a-zA-Z-]+)/transect/(?P<data_id>\d+)',
         views.riparian_transect_view, name='riparian_transect'),
 
     url(r'^site/(?P<site_slug>[0-9a-zA-Z-]+)/transect/edit',

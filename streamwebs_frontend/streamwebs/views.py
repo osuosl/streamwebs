@@ -36,7 +36,6 @@ def create_site(request):
 
         if site_form.is_valid():
             site = site_form.save()
-            site.site_slug = site.id
             site.save()
             created = True
 
@@ -78,7 +77,7 @@ def site(request, site_slug):
 
 def update_site(request, site_slug):
     updated = False
-    site = Site.objects.get(id=site_slug)
+    site = Site.objects.get(site_slug=site_slug)
     temp = copy.copy(site)
 
     if request.method == 'POST':
@@ -90,7 +89,6 @@ def update_site(request, site_slug):
                     site.location != temp.location or
                     site.image != temp.image):
                 site = site_form.save(commit=False)
-                site.site_slug = site.id
                 site.modified = timezone.now()
                 site.save()
 
@@ -112,12 +110,12 @@ def update_site(request, site_slug):
 
 def deactivate_site(request, site_slug):
     deactivated = False
-    site = Site.objects.filter(active=True).get(id=site_slug)
+    site = Site.objects.filter(active=True).get(site_slug=site_slug)
 
-    if not(Water_Quality.objects.filter(site_id=site_slug).exists() or
-            Macroinvertebrates.objects.filter(site_id=site_slug).exists() or
-            RiparianTransect.objects.filter(site_id=site_slug).exists() or
-            Canopy_Cover.objects.filter(site_id=site_slug).exists()):
+    if not(Water_Quality.objects.filter(site_id=site.id).exists() or
+            Macroinvertebrates.objects.filter(site_id=site.id).exists() or
+            RiparianTransect.objects.filter(site_id=site.id).exists() or
+            Canopy_Cover.objects.filter(site_id=site.id).exists()):
 
         site.active = False
         site.modified = timezone.now()

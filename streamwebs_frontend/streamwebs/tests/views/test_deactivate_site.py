@@ -12,12 +12,13 @@ class DeactivateSiteTestCase(TestCase):
                                              'johnpassword')
         self.client.login(username='john', password='johnpassword')
 
-        self.site = Site.test_objects.create_site('Creaky Creek', 'slug')
+        self.site = Site.test_objects.create_site('Creaky Creek')
 
     def test_successful_deactivate(self):
         """Tests that user can deactivate site if site has no data."""
-        response = self.client.get(reverse('streamwebs:deactivate_site',
-                                           kwargs={'site_slug': self.site.id}))
+        response = self.client.get(reverse(
+            'streamwebs:deactivate_site',
+            kwargs={'site_slug': self.site.site_slug}))
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, self.site.site_name)
@@ -29,13 +30,14 @@ class DeactivateSiteTestCase(TestCase):
         # after deactivation, the user cannot view the site at its URL.
         with self.assertRaises(ObjectDoesNotExist):
             response = self.client.get(reverse(
-                'streamwebs:site', kwargs={'site_slug': self.site.id}))
+                'streamwebs:site', kwargs={'site_slug': self.site.site_slug}))
 
     def test_unsuccessful_deactivate(self):
         """Tests that user can't deactivate site if the site has data."""
         data = Macroinvertebrates.objects.create_macro(self.site)  # NOQA
-        response = self.client.get(reverse('streamwebs:deactivate_site',
-                                           kwargs={'site_slug': self.site.id}))
+        response = self.client.get(reverse(
+            'streamwebs:deactivate_site',
+            kwargs={'site_slug': self.site.site_slug}))
 
         self.assertContains(
             response,
@@ -46,8 +48,9 @@ class DeactivateSiteTestCase(TestCase):
     def test_view_with_not_logged_in_user(self):
         """Tests that user can't deactivate site if they're not logged in"""
         self.client.logout()
-        response = self.client.get(reverse('streamwebs:deactivate_site',
-                                           kwargs={'site_slug': self.site.id}))
+        response = self.client.get(reverse(
+            'streamwebs:deactivate_site',
+            kwargs={'site_slug': self.site.site_slug}))
 
         self.assertContains(response,
                             'You must be logged in to delete a site.')

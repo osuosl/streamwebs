@@ -13,13 +13,12 @@ class RetrieveSiteTestCase(TestCase):
         location = 'POINT(44.0612385 -121.3846841)'
         image = tempfile.NamedTemporaryFile(suffix='.jpg').name
 
-        self.site = Site.test_objects.create_site('Test Site', 'slug',
-                                                  location,
+        self.site = Site.test_objects.create_site('Test Site', location,
                                                   'Test site description',
                                                   image)
 
-        self.response = self.client.get(
-            reverse('streamwebs:site', kwargs={'site_slug': self.site.id}))
+        self.response = self.client.get(reverse(
+            'streamwebs:site', kwargs={'site_slug': self.site.site_slug}))
 
     def test_site_view_status(self):
         """Tests that view's status is 200 and correct template is used"""
@@ -55,8 +54,8 @@ class RetrieveSiteTestCase(TestCase):
         transect_sheet_2 = RiparianTransect.objects.create_transect(  # NOQA
             'Test School', '2016-05-25 10:20', self.site)  # NOQA
 
-        new_response = self.client.get(
-            reverse('streamwebs:site', kwargs={'site_slug': self.site.id}))
+        new_response = self.client.get(reverse(
+            'streamwebs:site', kwargs={'site_slug': self.site.site_slug}))
 
         self.assertContains(new_response, 'Water quality data: 08-25-2016')
         self.assertContains(new_response, 'Water quality data: 07-25-2016')
@@ -70,8 +69,8 @@ class RetrieveSiteTestCase(TestCase):
 
     def test_site_view_without_sheets(self):
         """Tests that site doesn't display sheet links if no sheets exist"""
-        new_response = self.client.get(
-            reverse('streamwebs:site', kwargs={'site_slug': self.site.id}))
+        new_response = self.client.get(reverse(
+            'streamwebs:site', kwargs={'site_slug': self.site.site_slug}))
         self.assertNotContains(new_response, 'Water quality data')
         self.assertNotContains(new_response, 'Macroinvertebrates data')
         self.assertNotContains(new_response, 'Riparian transect data')
