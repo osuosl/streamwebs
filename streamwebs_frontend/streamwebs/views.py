@@ -9,9 +9,11 @@ from django.shortcuts import render
 from django.utils.translation import ugettext_lazy as _
 from django.forms import inlineformset_factory
 from streamwebs.forms import (
-    UserForm, UserProfileForm, RiparianTransectForm, MacroinvertebratesForm)
+    UserForm, UserProfileForm, RiparianTransectForm, MacroinvertebratesForm,
+    Canopy_Cover_Form, CC_Cardinal_Form)
 from streamwebs.models import (
-    RiparianTransect, Site, TransectZone, Macroinvertebrates)
+    RiparianTransect, Site, TransectZone, Macroinvertebrates, Canopy_Cover,
+    CC_Cardinal)
 from datetime import datetime
 import json
 
@@ -379,6 +381,54 @@ def riparian_transect_edit(request, site_slug):
         request,
         'streamwebs/datasheets/riparian_transect_edit.html', {
             'transect_form': transect_form, 'zone_formset': zone_formset,
+            'added': added, 'site': site
+        }
+    )
+
+
+def canopy_cover_edit(request, site_slug):
+    """
+    The view for the submission of a new canopy cover data sheet.
+    """
+    added = False
+    site = Site.objects.get(site_slug=site_slug)
+    canopy_cover = Canopy_Cover()
+    CardinalInlineFormSet = inlineformset_factory(
+        Canopy_Cover, CC_Cardinal,
+        fields=(
+            'direction', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
+            'K', 'L', 'M', 'N','O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'X',
+        ), extra=4
+    )
+
+    if request.method == 'POST':
+        cardinal_formset = CardinalInlineFormSet(
+            data=request.POST, instance=canopy_cover
+        )
+        canopy_cover_form = Canopy_Cover_Form(data=request.POST)
+
+        if (cardinal_formset.is_valid() and canopy_cover_form.is_valid()):
+
+            canopy = canopy_cover_form.save()             # save form to object
+            canopy.save()                             # save object
+
+            cardinals = cardinal_formset.save(commit=False)     # save forms to objs
+
+            for cardinal in cardinals:                          # for each zone,
+                cardinal.canopy = canopy                # assign the transect
+                cardinal.save()                             # save the zone obj
+
+            added = True
+
+    else:
+        cardinal_formset = CardinalInlineFormSet(instance=canopy_cover)
+        canopy_cover_form = Canopy_Cover_Form()
+
+    return render(
+        request,
+        'streamwebs/datasheets/canopy_cover_edit.html', {
+            'canopy_cover_form': canopy_cover_form,
+            'cardinal_formset': cardinal_formset,
             'added': added, 'site': site
         }
     )

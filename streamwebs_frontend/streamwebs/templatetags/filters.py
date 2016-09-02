@@ -53,3 +53,12 @@ def get_zone_labels(category):
         return _('Shrubs')
     elif category == 'comments':
         return _('Comments')
+
+
+@register.filter
+def get_cardinal_labels(category):
+    """Grabs translatable cardinal-table header string"""
+    if category == 'direction':
+        return _('Cardinal Direction')
+    elif category == 'box':
+        return _('Cardinal Box')

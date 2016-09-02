@@ -77,8 +77,10 @@ class WQSampleForm(forms.ModelForm):
 class Canopy_Cover_Form(forms.ModelForm):
     class Meta:
         model = Canopy_Cover
-        fields = ('school', 'date_time', 'site', 'weather', 'north', 'east',
-                  'south', 'west', 'est_canopy_cover')
+        #fields = ('school', 'date_time', 'site', 'weather', 'north', 'east',
+        #          'south', 'west', 'est_canopy_cover')
+        fields = ('school', 'date_time', 'site', 'weather', 'est_canopy_cover')
+
 
 
 class CC_Cardinal_Form(forms.ModelForm):
