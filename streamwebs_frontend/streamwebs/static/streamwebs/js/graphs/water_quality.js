@@ -40,13 +40,15 @@ const createGraph = function createGraph() {
 
     const formatted = [];
 
-    for (let key in data) {
-        const date = parseInt(key, 10) * 1000; // Convert from seconds to millis
+    for (let datum of data) {
+        const date = parseInt(datum.date, 10) * 1000; // Convert from seconds to millis
         if (date >= date_range[1] || date <= date_range[0]) {
             continue;
         }
 
-        formatted.push(data[key]);
+        datum.date = new Date(parseInt(datum.date, 10)*1000);
+
+        formatted.push(datum);
     }
 
     formatted.sort((a, b) => {
@@ -57,7 +59,7 @@ const createGraph = function createGraph() {
      * Temperature
      **************************************************************************/
 
-    const container = outerContainer.find('graph-' + siteId + '-temperature');
+    const container = outerContainer.find('#graph-' + siteId + '-temperature');
     const margin = {top: 20, right: 150, bottom: 30, left: 40};
     const width = (container.width() * 0.5) - margin.left - margin.right;
     const height = 192 - margin.top - margin.bottom;
@@ -73,15 +75,15 @@ const createGraph = function createGraph() {
         ])
         .range([height, 0]);
     const z = d3.scaleOrdinal()
-        .domain(types.map((c) => { return c.name }))
-        .range(['#869099', '#8c7853', '#007d4a', '#e24431']);
+        .domain(['Air Temperature', 'Water Temperature'])
+        .range(['#0310fc', '#6cbcfc']);
 
     const line = d3.line()
         .curve(d3.curveBasis)
-        .x((d) => { return x(d.date) })
-        .y((d) => { return y(d.value) });
+        .x((d) => { return x(d[0]) })
+        .y((d) => { return y(Math.max(d[1], d[2])) });
 
-    const svg = d3.select('#graph-' + siteId).append('svg')
+    const svg = d3.select('#graph-' + siteId + '-temperature').append('svg')
         .attr('width', width + margin.left + margin.right)
         .attr('height', height + margin.top + margin.bottom);
 
@@ -97,23 +99,35 @@ const createGraph = function createGraph() {
         .attr('class', 'axis axis--y')
         .call(d3.axisLeft(y));
 
-    const type = g.selectAll('.type')
-        .data(types)
+    const type = g.selectAll('.temp')
+        .data(formatted)
         .enter()
     .append('g')
-        .attr('class', 'type');
+        .attr('class', 'temp');
 
     type.append('path')
         .attr('class', 'line')
-        .attr('d', (d) => { return line(d.values) })
-        .style('stroke', (d) => { return z(d.name) });
+        .attr('d', (d) => { return line([d.date, d.air_temperature, d.water_temperature]) })
+        .style('stroke', () => { return z(['Air Temperature', 'Water Temperature']) });
 
     type.append('text')
         .datum((d) => {
-            return {name: d.name, value: d.values[d.values.length - 1]}
+            return {name: d.name, temp: d.water_temperature}
         })
         .attr('transform', (d) => {
-            return 'translate(' + x(d.value.date) + ',' + y(d.value.value) + ')';
+            return 'translate(' + x(d.name) + ',' + y(d.temp) + ')';
+        })
+        .attr('x', 3)
+        .attr('dy', '0.35em')
+        .style('font', '10px sans-serif')
+        .text((d) => { return d.name });
+
+    type.append('text')
+        .datum((d) => {
+            return {name: d.name, temp: d.air_temperature}
+        })
+        .attr('transform', (d) => {
+            return 'translate(' + x(d.name) + ',' + y(d.temp) + ')';
         })
         .attr('x', 3)
         .attr('dy', '0.35em')
@@ -126,5 +140,5 @@ $(() => {
     $('#date-start').change(changeRangeStart);
     $('#date-end').change(changeRangeEnd);
 
-    //createGraph();
+    createGraph();
 });

@@ -18,10 +18,10 @@ def _timestamp(dt):
 
 
 def _temp_conv(temp, unit):
-    if unit != 'C' and unit != 'F':
-        raise ValueError('Invalid unit')
+    if unit != _('Celsius') and unit != _('Fahrenheit'):
+        raise ValueError(_('Invalid unit'))
 
-    if unit == 'C':
+    if unit == _('Celsius'):
         return temp
 
     return 5/9 * (temp - 32)
