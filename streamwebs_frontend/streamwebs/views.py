@@ -99,9 +99,6 @@ def register(request):
             profile.save()
             registered = True
 
-        else:
-            print(user_form.errors, profile_form.errors)
-
     else:
         user_form = UserForm()
         profile_form = UserProfileForm()
@@ -123,7 +120,6 @@ def user_login(request):
             login(request, user)
             return HttpResponseRedirect('/streamwebs/')
         else:
-            print('Invalid login details: {0}, {1}'.format(username, password))
             return HttpResponse(_('Invalid credentials'))
     else:
         return render(request, 'streamwebs/login.html')
