@@ -8,10 +8,10 @@
 {% block content %}
     {% if user.is_authenticated %}
         {% if updated %}
-        <strong>{% trans 'You have successfully updated ' %}<a href="{% url 'streamwebs:site' site.id %}">{{ site.site_name }}.</a></strong>
+        <strong>{% trans 'You have successfully updated ' %}<a href="{% url 'streamwebs:site' site.site_slug %}">{{ site.site_name }}.</a></strong>
         
         {% else %}
-        <form id='site_form' method='post' enctype="multipart/form-data" action={% url 'streamwebs:update_site' site.id %}>
+        <form id='site_form' method='post' enctype="multipart/form-data" action={% url 'streamwebs:update_site' site.site_slug %}>
             {% csrf_token %}
             {{ site_form.media }}
             {{ site_form.as_p }}
