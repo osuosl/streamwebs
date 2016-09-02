@@ -1,0 +1,2 @@
+[flake8]
+exclude = ./streamwebs_frontend/streamwebs/migrations/
