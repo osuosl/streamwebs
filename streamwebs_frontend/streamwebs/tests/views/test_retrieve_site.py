@@ -33,9 +33,9 @@ class RetrieveSiteTestCase(TestCase):
         self.assertContains(self.response, 44.0612385000000017)
         self.assertContains(self.response, -121.3846841000000012)
         self.assertContains(self.response,
-                            self.site.created.strftime('%b. %d, %Y'))
+                            self.site.created.strftime('%m-%d-%Y %H:%M %Z'))
         self.assertContains(self.response,
-                            self.site.modified.strftime('%b. %d, %Y'))
+                            self.site.modified.strftime('%m-%d-%Y %H:%M %Z'))
 
     def test_site_view_with_sheets(self):
         """Tests that site displays sheet links if sheets exist"""
@@ -58,14 +58,14 @@ class RetrieveSiteTestCase(TestCase):
         new_response = self.client.get(
             reverse('streamwebs:site', kwargs={'site_slug': self.site.id}))
 
-        self.assertContains(new_response, 'Water quality data: Aug. 25, 2016')
-        self.assertContains(new_response, 'Water quality data: July 25, 2016')
+        self.assertContains(new_response, 'Water quality data: 08-25-2016')
+        self.assertContains(new_response, 'Water quality data: 07-25-2016')
         self.assertContains(
-            new_response, 'Macroinvertebrates data: July 11, 2016, 2:09 p.m.')
+            new_response, 'Macroinvertebrates data: 07-11-2016')
         self.assertContains(
-            new_response, 'Riparian transect data: June 25, 2016, 10:20 a.m.')
+            new_response, 'Riparian transect data: 06-25-2016')
         self.assertContains(
-            new_response, 'Riparian transect data: May 25, 2016, 10:20 a.m.')
+            new_response, 'Riparian transect data: 05-25-2016')
         self.assertNotContains(new_response, 'Canopy cover data')
 
     def test_site_view_without_sheets(self):

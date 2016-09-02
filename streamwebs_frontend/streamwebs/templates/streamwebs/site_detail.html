@@ -13,8 +13,9 @@
 <div class="site_data">
     <p>Description: {{ site.description }}</p>
     <p>Location: {{ site.location }}</p>
-    <p>Created: {{ site.created }}</p>
-    <p>Modified: {{ site.modified }}</p>
+    <p>Created: {{ site.created|date:"m-d-Y" }} {{ site.created|time:"H:i T" }}</p>
+    <p>Modified: {{ site.modified|date:"m-d-Y" }} {{ site.modified|time:"H:i T" }}</p>
+    {% if site.image %}
     <img src="{{ site.image.url }}" alt="site image" />
 
     <!-- existing sheets: lists site's sheets for each existing type -->
@@ -22,7 +23,7 @@
     <p>Water Quality data sheets:</p>
         {% for sheet in wq_sheets %}
         <p><a href="{% url 'streamwebs:water_quality' site.site_slug sheet.id %}">
-            {{ sheet.date }}</a>, {{ sheet.school }}, Lat/Long: ({{ sheet.latitude }},
+            {{ sheet.date|date:"m-d-Y" }}</a>, {{ sheet.school }}, Lat/Long: ({{ sheet.latitude }},
             {{ sheet.longitude }})</p>
 
         {% endfor %}
@@ -32,7 +33,7 @@
     <p>Macroinvertebrates data sheets:</p>
         {% for sheet in macro_sheets %}
         <p><a href="{% url 'streamwebs:macroinvertebrate_view' site.site_slug sheet.id %}">
-            Macroinvertebrates data: {{ sheet.date_time }}</a></p>
+            Macroinvertebrates data: {{ sheet.date_time|date:"m-d-Y" }}</a></p>
         {% endfor %}
     {% endif %}
 
@@ -40,7 +41,7 @@
     <p>Riparian transect data sheets:</p>
         {% for sheet in transect_sheets %}
         <p><a href="{% url 'streamwebs:riparian_transect' site.site_slug sheet.id %}">
-            Riparian transect data: {{ sheet.date_time }}</a></p>
+            Riparian transect data: {{ sheet.date_time|date:"m-d-Y" }}</a></p>
         {% endfor %}
     {% endif %}
 
@@ -48,7 +49,7 @@
     {% if canopy_sheets %}
     <p>Canopy cover data sheets:</p>
         {% for sheet in canopy_sheets %}
-        <p>Canopy cover data: {{ sheet.date_time }}</p>
+        <p>Canopy cover data: {{ sheet.date_time|date:"m-d-Y" }}</p>
         {% endfor %}
     {% endif %}
 </div>   
