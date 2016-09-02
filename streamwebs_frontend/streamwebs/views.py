@@ -1,85 +1,46 @@
 # coding=UTF-8
-
-from __future__ import print_function
 from __future__ import print_function
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.utils.translation import ugettext_lazy as _
-from django.forms import inlineformset_factory
+from django.forms import inlineformset_factory, modelformset_factory
+
 from streamwebs.forms import (
-    UserForm, UserProfileForm, RiparianTransectForm, MacroinvertebratesForm)
+    UserForm, UserProfileForm, RiparianTransectForm, MacroinvertebratesForm,
+    WQSampleForm, WQSampleFormReadOnly, WQForm, WQFormReadOnly
+    )
 from streamwebs.models import (
-    RiparianTransect, Site, TransectZone, Macroinvertebrates)
+    Macroinvertebrates, Site, Water_Quality, WQ_Sample, RiparianTransect,
+    TransectZone,
+    )
 from datetime import datetime
 import json
-
 
 def _timestamp(dt):
     return (dt - datetime(1970, 1, 1)).total_seconds()
 
-
-# Create your views here.
 def index(request):
     return render(request, 'streamwebs/index.html', {})
 
 
 def sites(request):
-    # TODO: actual lookup
-    site_list = [
-        {
-            'name': 'Test 1',
-            'slug': 'test1',
-            'site_type': 'steward',
-            'location': {'x': -122.31211423, 'y': 45.11231324}
-        },
-        {
-            'name': 'Test 2',
-            'slug': 'test2',
-            'site_type': 'salmon',
-            'location': {'x': -121.78305424, 'y': 44.74928593},
-            'description': 'Site with a description',
-        },
-        {
-            'name': 'Other One',
-            'slug': 'other',
-            'site_type': 'available',
-            'location': {'x': -122.00193922, 'y': 45.01835423}
-        },
-        {
-            'name': 'Me too',
-            'slug': 'me2',
-            'site_type': 'salmon',
-            'location': {'x': -121.93729485, 'y': 45.62930212},
-            'description': u'Embedded <b>tags</b> & unicode‽ &#x203C;'
-        }
-    ]
+    """ View for streamwebs/sites """
+    site_list = Site.objects.filter()
     return render(request, 'streamwebs/sites.html', {
         'sites': site_list,
     })
 
 
 def site(request, site_slug):
-    # TODO: actual lookup
-    site = {
-        'name': 'Test 1',
-        'slug': 'test1',
-        'site_type': 'steward',
-        'location': {'x': -122.31211423, 'y': 45.11231324},
-        'data': {
-            'Water Quality': {
-                1: '2016-06-10',
-                2: '2016-06-12'
-            }
-        }
-    }
-    types = {
-        'water_quality_edit': 'Water Quality'
-    }
+    """ View an individual site """
+    site = Site.objects.get(site_slug=site_slug)
+    # Sort samples descending by date
+    samples = Water_Quality.objects.filter(site_id=site.id).order_by('-date')
     return render(request, 'streamwebs/site_detail.html', {
         'site': site,
-        'data_types': types
+        'samples': samples,
     })
 
 
@@ -98,7 +59,6 @@ def register(request):
             profile.user = user
             profile.save()
             registered = True
-
     else:
         user_form = UserForm()
         profile_form = UserProfileForm()
@@ -113,7 +73,6 @@ def user_login(request):
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
-
         user = authenticate(username=username, password=password)
 
         if user:
@@ -152,134 +111,6 @@ def graph_macros(request, site_slug):
         'data': {'summary': json.dumps(summary), 'time': json.dumps(time)},
         'site': site
     })
-
-
-def water_quality(request, site_slug, data_id):
-    # TODO: actual lookup
-    quality_data = {
-        'id': 1,
-        'date': '2016-06-10',
-        'site': {
-            'name': 'Test 1',
-            'slug': 'test1',
-            'site_type': 'steward',
-            'location': {'x': -122.31211423, 'y': 45.11231324}
-        },
-        'school': 'Education Middle School',
-        'DEQ_wq_level': 'B',
-        'fish_present': True,
-        'live_fish': 5,
-        'dead_fish': 2,
-        'air_temperature_unit': 'F',
-        'water_temperature_unit': 'C',
-        'sample_1': {
-            'water_temperature': 45,
-            'water_temperature_tool': 'Vernier',
-            'air_temperature': 52.3456,
-            'air_temperature_tool': 'Manual',
-            'dissolved_oxygen': 55.2,
-            'oxygen_tool': 'Manual',
-            'pH': 6.2,
-            'pH_tool': 'Vernier',
-            'turbidity': 12.4,
-            'turbid_tool': 'Vernier',
-            'salinity': 5.8,
-            'salt_tool': 'Vernier',
-            'conductivity': 7.644,
-            'total_solids': .221,
-            'bod': 15.2,
-            'ammonia': 5.256,
-            'nitrite': 15.2,
-            'nitrate': 1.23,
-            'phosphates': 8.26,
-            'fecal_coliform': 54.2
-        },
-        'sample_2': {
-            'water_temperature': 23,
-            'water_temperature_tool': 'Vernier',
-            'air_temperature': 123.346,
-            'air_temperature_tool': 'Manual',
-            'dissolved_oxygen': 87.4,
-            'oxygen_tool': 'Manual',
-            'pH': 7.1,
-            'pH_tool': 'Vernier',
-            'turbidity': 3.2,
-            'turbid_tool': 'Manual',
-            'salinity': 1.558,
-            'salt_tool': 'Manual',
-            'conductivity': 84.14,
-            'total_solids': 1.32,
-            'bod': 1.223,
-            'ammonia': 1.223,
-            'nitrite': 8.36,
-            'nitrate': 9.56,
-            'phosphates': 3.15,
-            'fecal_coliform': 1.284
-        },
-        'sample_3': {
-            'water_temperature': 15,
-            'water_temperature_tool': 'Manual',
-            'air_temperature': 32.756,
-            'air_temperature_tool': 'Manual',
-            'dissolved_oxygen': 5.21,
-            'oxygen_tool': 'Vernier',
-            'pH': 7.2,
-            'pH_tool': 'Vernier',
-            'turbidity': 12.4,
-            'turbid_tool': 'Vernier',
-            'salinity': 6.784265422397,
-            'salt_tool': 'Manual',
-            'conductivity': 54.0,
-            'total_solids': 6.12,
-            'bod': 5.3,
-            'ammonia': 4.75,
-            'nitrite': 0.22,
-            'nitrate': 7.2,
-            'phosphates': 9.4,
-            'fecal_coliform': 6.23
-        },
-        'sample_4': {
-            'water_temperature': 67,
-            'water_temperature_tool': 'Vernier',
-            'air_temperature': 11.56,
-            'air_temperature_tool': 'Manual',
-            'dissolved_oxygen': 15.24,
-            'oxygen_tool': 'Vernier',
-            'pH': 4.2,
-            'pH_tool': 'Manual',
-            'turbidity': 2.5,
-            'turbid_tool': 'Manual',
-            'salinity': 6.54,
-            'salt_tool': 'Vernier',
-            'conductivity': 94.1,
-            'total_solids': 110.2,
-            'bod': 8.215,
-            'ammonia': 13.2,
-            'nitrite': 93.4,
-            'nitrate': 75.2,
-            'phosphates': 64.2,
-            'fecal_coliform': 57.2
-        },
-        'notes': 'All data completely made up for testing with.'
-    }
-    return render(request, 'streamwebs/datasheets/water_quality_view.html', {
-        'data': quality_data
-    })
-
-
-def water_quality_edit(request, site_slug):
-    # TODO: actual lookup
-    site = {
-        'name': 'Test 1',
-        'slug': 'test1',
-        'site_type': 'steward',
-        'location': {'x': -122.31211423, 'y': 45.11231324}
-    }
-    return render(
-        request,
-        'streamwebs/datasheets/water_quality_edit.html',
-        {'site': site}
-    )
 
 
 def macroinvertebrate(request, site_slug, data_id):
@@ -376,5 +207,78 @@ def riparian_transect_edit(request, site_slug):
         'streamwebs/datasheets/riparian_transect_edit.html', {
             'transect_form': transect_form, 'zone_formset': zone_formset,
             'added': added, 'site': site
+        }
+    )
+
+
+def water_quality(request, site_slug, id):
+    """ View a water quality sample """
+    site = Site.objects.get(site_slug=site_slug)
+    wq_form = WQFormReadOnly(instance=Water_Quality.objects.get(id=id))
+
+    WQInlineFormSet = modelformset_factory(
+        WQ_Sample,
+        form=WQSampleFormReadOnly,
+        can_delete=False,
+        max_num=4, min_num=4,
+        extra=4      # always return exactly 4 samples
+    )
+    sample_formset = WQInlineFormSet(
+        queryset=WQ_Sample.objects.filter(water_quality=id)
+    )
+
+    return render(
+        request, 'streamwebs/datasheets/water_quality.html',
+        {
+            'page_title': 'View Water Sample - Streamwebs',
+            'editable': False,
+            'site': site,
+            'wq_form': wq_form,
+            'sample_formset': sample_formset
+        }
+    )
+
+
+def water_quality_edit(request, site_slug):
+    """ Add a new water quality sample """
+    added = False       # flag for the page to see if we added a sample
+    site = Site.objects.get(site_slug=site_slug)
+    WQInlineFormSet = inlineformset_factory(
+        Water_Quality, WQ_Sample,
+        form=WQSampleForm,
+        can_delete=False,
+        max_num=4, min_num=4,
+        extra=4      # always return exactly 4 samples
+    )
+
+    if request.method == 'POST':
+        sample_formset = WQInlineFormSet(
+            data=request.POST, instance=Water_Quality()
+        )
+        wq_form = WQForm(data=request.POST)
+        if (sample_formset.is_valid() and wq_form.is_valid()):
+            water_quality = wq_form.save()   # save form to object
+            water_quality.save()             # save object to db
+            allSamples = sample_formset.save(commit=False)
+            for sample in allSamples:
+                sample.water_quality = water_quality
+                sample.save()
+            added = True
+            # ugly way of resetting the form if successful form submission
+            wq_form = WQForm()
+            sample_formset = WQInlineFormSet(instance=Water_Quality())
+    else:
+        # blank forms for normal page render
+        wq_form = WQForm()
+        sample_formset = WQInlineFormSet(instance=Water_Quality())
+    return render(
+        request, 'streamwebs/datasheets/water_quality.html',
+        {
+            'page_title': 'Add Water Sample - Streamwebs',
+            'editable': True,
+            'added': added,
+            'site': site,
+            'wq_form': wq_form,
+            'sample_formset': sample_formset
         }
     )

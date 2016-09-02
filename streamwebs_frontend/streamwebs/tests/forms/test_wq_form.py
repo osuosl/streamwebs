@@ -9,6 +9,7 @@ class WQFormTestCase(TestCase):
             'site',
             'date',
             'DEQ_dq_level',
+            'school',
             'latitude',
             'longitude',
             'fish_present',
@@ -40,11 +41,17 @@ class WQSampleFormTestCase(TestCase):
     def setUp(self):
         self.expected_fields = (
             'water_temperature',
+            'water_temp_tool',
             'air_temperature',
+            'air_temp_tool',
             'dissolved_oxygen',
+            'oxygen_tool',
             'pH',
+            'pH_tool',
             'turbidity',
+            'turbid_tool',
             'salinity',
+            'salt_tool',
             'conductivity',
             'total_solids',
             'bod',
@@ -63,6 +70,7 @@ class WQSampleFormTestCase(TestCase):
             'nitrite',
             'nitrate',
             'phosphates',
+            'fecal_coliform'
         }
 
     def test_WQSampleForm_fields_exist(self):
