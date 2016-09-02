@@ -17,7 +17,7 @@ class AddWaterQualityTestCase(TestCase):
         When the user tries to submit a bad (blank) form, the form errors
         should be displayed
         """
-        site = Site.test_objects.create_site('Site Name', 'Site Type', 'slug')
+        site = Site.test_objects.create_site('Site Name', 'Site Type')
         response = self.client.post(
             reverse(
                 'streamwebs:water_quality_edit',
@@ -41,7 +41,7 @@ class AddWaterQualityTestCase(TestCase):
         When the user submits a form with all required fields filled
         appropriately, the user should see a success message
         """
-        site = Site.test_objects.create_site('Site Name', 'Site Type', 'slug')
+        site = Site.test_objects.create_site('Site Name', 'Site Type')
         response = self.client.post(
             reverse(
                 'streamwebs:water_quality_edit',
@@ -50,14 +50,13 @@ class AddWaterQualityTestCase(TestCase):
                 'DEQ_dq_level': u'A',
                 'air_temp_unit': u'Fahrenheit',
                 'water_temp_unit': u'Fahrenheit',
-                'csrfmiddlewaretoken': u'vyAy6MjcVOUXCJKvBIr1VmQb8el2ppoL',
                 'date': u'2016-08-22',
                 'dead_fish': 2,
                 'fish_present': u'True',
                 'initial-date': u'2016-08-22',
-                'latitude': 43.12001,
+                'latitude': 50,
                 'live_fish': 5,
-                'longitude': 125.16,
+                'longitude': 50,
                 'notes': u"Call your mom on Mother's Day!",
                 'school': u'Somewhere Cool',
                 'site': site.id,
@@ -157,7 +156,7 @@ class AddWaterQualityTestCase(TestCase):
         When the user is not logged in, they cannot view the data entry page
         """
         self.client.logout()
-        site = Site.test_objects.create_site('Site Name', 'Site Type', 'slug')
+        site = Site.test_objects.create_site('Site Name', 'Site Type')
         response = self.client.get(
             reverse(
                 'streamwebs:water_quality_edit',

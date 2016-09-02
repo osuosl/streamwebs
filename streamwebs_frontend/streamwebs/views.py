@@ -18,8 +18,10 @@ from streamwebs.models import (
 from datetime import datetime
 import json
 
+
 def _timestamp(dt):
     return (dt - datetime(1970, 1, 1)).total_seconds()
+
 
 def index(request):
     return render(request, 'streamwebs/index.html', {})
@@ -211,10 +213,10 @@ def riparian_transect_edit(request, site_slug):
     )
 
 
-def water_quality(request, site_slug, id):
+def water_quality(request, site_slug, data_id):
     """ View a water quality sample """
     site = Site.objects.get(site_slug=site_slug)
-    wq_form = WQFormReadOnly(instance=Water_Quality.objects.get(id=id))
+    wq_form = WQFormReadOnly(instance=Water_Quality.objects.get(id=data_id))
 
     WQInlineFormSet = modelformset_factory(
         WQ_Sample,
@@ -224,7 +226,7 @@ def water_quality(request, site_slug, id):
         extra=4      # always return exactly 4 samples
     )
     sample_formset = WQInlineFormSet(
-        queryset=WQ_Sample.objects.filter(water_quality=id)
+        queryset=WQ_Sample.objects.filter(water_quality=data_id)
     )
 
     return render(

@@ -21,11 +21,13 @@ class SiteManager(models.Manager):
         site = self.create(site_name=site_name, site_type=site_type)
         return site
 
+
 def validate_Site_location(location):
     if location.x > 180 or location.x < -180:
         raise ValidationError(_('Longitude is not within valid range.'))
     if location.y > 90 or location.y < -90:
         raise ValidationError(_('Latitude is not within valid range.'))
+
 
 @python_2_unicode_compatible
 class Site(models.Model):
@@ -147,14 +149,17 @@ class WaterQualityManager(models.Manager):
                               notes=notes)
         return wq_info
 
+
 def validate_WaterQuality_latitude(latitude):
-    if latitude > 90 or latitude < -90:
+    if abs(latitude) > 90:
+        pass
         raise ValidationError(_('Latitude is not within valid range.'))
 
-def validate_WaterQuality_longitude(longitude):
-    if longitude > 180 or longitude < -180:
-        raise ValidationError(_('Longitude is not within valid range.'))
 
+def validate_WaterQuality_longitude(longitude):
+    if abs(longitude) > 180:
+        pass
+        raise ValidationError(_('Longitude is not within valid range.'))
 
 
 @python_2_unicode_compatible
