@@ -1,16 +1,19 @@
+{% load staticfiles %}
+{% load i18n %}
+
 <div id="topbar">
-    <div class="navbar">
-        <div class="navbar right" align="right">
-            <nav>
-                <a href="{% url 'streamwebs:sites' %}">Sites</a>
-                <a href="{% url 'streamwebs:index' %}">Resources</a>
-                {% if user.is_authenticated %}
-                    <a href="{% url 'streamwebs:logout' %}">Logout</a>
-                {% else %}
-                    <a href="{% url 'streamwebs:login' %}">Login</a>
-                    <a href="{% url 'streamwebs:register' %}">Create Account</a>
-                {% endif %}
-            </nav>
-        </div>
+  <nav>
+    <div class="nav-wrapper">
+      <ul class="right">
+        <li><a href="{% url 'streamwebs:sites' %}">Sites</a></li>
+        <li><a href="{% url 'streamwebs:index' %}">Resources</a></li>
+        {% if user.is_authenticated %}
+            <li><a href="{% url 'streamwebs:logout' %}">Logout</a></li>
+        {% else %}
+            <li><a href="{% url 'streamwebs:login' %}">Login</a></li>
+            <li><a href="{% url 'streamwebs:register' %}">Create Account</a></li>
+        {% endif %}
+      </ul>
     </div>
+  </nav>
 </div>

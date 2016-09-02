@@ -7,28 +7,34 @@
     <title>{% block title %}{% endblock %} StreamWebs</title>
     <link rel="stylesheet" type="text/css" href="{% static 'streamwebs/style.css' %}" />
     <link rel="shortcut icon" href="{% static 'streamwebs/images/favicon.ico' %}" />
+    {% block stylesheets %}{% endblock %}
     <script src="{% static 'streamwebs/bower_components/jquery/dist/jquery.js' %}"></script>
     <script src="{% static 'streamwebs/bower_components/d3/d3.js' %}"></script>
     {% block scripts %}{% endblock %}
 </head>
 
 <body>
-    <form action="/i18n/setlang/" method="post">
-       {% csrf_token %}
-        <input name="next" type="hidden" value="{{ request.path }}" />
-        <select name="language">
-              {% for lang in LANGUAGES %}
-              <option value="{{ lang.0 }}">{{ lang.1 }}</option>
-              {% endfor %}
-        </select>
-        <input type="submit" value="{% trans 'Go' %}" />
-    </form>
+
     {% include "streamwebs/navigation.html" %}
     <span class="title">
         {% block body_title %}{% endblock %}
     </span>
     <div class="content">
         {% block content %}{% endblock %}
+    </div>
+    <div class="container">
+      <div class="setlang">
+        <form action="/i18n/setlang/" method="post">
+           {% csrf_token %}
+            <input name="next" type="hidden" value="{{ request.path }}" />
+            <select name="language">
+                  {% for lang in LANGUAGES %}
+                  <option value="{{ lang.0 }}">{{ lang.1 }}</option>
+                  {% endfor %}
+            </select>
+            <input type="submit" value="{% trans 'Go' %}" />
+        </form>
+      </div>
     </div>
 </body>
 </html>
