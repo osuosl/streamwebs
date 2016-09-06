@@ -52,17 +52,15 @@ class WQSampleTestCase(TestCase):
 
         site = Site.test_objects.create_site('test site', 'test site type')
 
-        self.water_quality = Water_Quality.objects.create_water_quality(
+        self.water_quality = Water_Quality.test_objects.create_water_quality(
             site, '2016-08-03', 'a', 'A', 90, 123,
-            False, 0, 0, 'Fahrenheit', 'Fahrenheit')
+            False, 0, 0, 'Fahrenheit', 'Fahrenheit'
+        )
 
         # Object to test pH
-        self.sample_data = WQ_Sample.objects.create_sample(
-            self.water_quality, 35, 'Manual', 70,
-            'Manual', 6, 'Manual',
-            16, 'Vernier', 0.879,
-            'Manual', 8.8, 'Vernier',
-            15, 10, 7, 0.93,
+        self.sample_data = WQ_Sample.test_objects.create_sample(
+            self.water_quality, 35, 'Manual', 70, 'Manual', 6, 'Manual',
+            16, 'Vernier', 0.879, 'Manual', 8.8, 'Vernier', 15, 10, 7, 0.93,
             2.1, 1.9, 14.5, 13
         )
 
@@ -71,7 +69,8 @@ class WQSampleTestCase(TestCase):
         model = apps.get_model('streamwebs', 'wq_sample')
         for field, field_type in self.expected_fields.items():
             self.assertEqual(
-                field_type, type(model._meta.get_field(field)))
+                field_type, type(model._meta.get_field(field))
+            )
 
     def test_no_extra_fields(self):
         """Checks for discrepancies between the actual model and is expected
@@ -87,24 +86,17 @@ class WQSampleTestCase(TestCase):
         """Tests that optional fields default to true when left blank"""
         sample = apps.get_model('streamwebs', 'wq_sample')
         for field in self.optional_fields:
-            self.assertEqual(
-                sample._meta.get_field(field).blank, True)
+            self.assertEqual(sample._meta.get_field(field).blank, True)
 
     def test_Sample_ManyToOneWaterQuality(self):
-        sample_1 = WQ_Sample.objects.create_sample(self.water_quality, 34,
-                                                   'Vernier',
-                                                   55, 'Manual',
-                                                   4.2, 'Vernier',
-                                                   9, 'Manual',
-                                                   0.44, 'Manual',
-                                                   5.6, 'Vernier')
-        sample_2 = WQ_Sample.objects.create_sample(self.water_quality, 23,
-                                                   'Vernier',
-                                                   65, 'Manual',
-                                                   2.5, 'Vernier',
-                                                   9, 'Manual',
-                                                   0.41, 'Manual',
-                                                   7.6, 'Vernier')
+        sample_1 = WQ_Sample.test_objects.create_sample(
+            self.water_quality, 34, 'Vernier', 55, 'Manual', 4.2, 'Vernier',
+            9, 'Manual', 0.44, 'Manual', 5.6, 'Vernier'
+        )
+        sample_2 = WQ_Sample.test_objects.create_sample(
+            self.water_quality, 23, 'Vernier', 65, 'Manual', 2.5, 'Vernier',
+            9, 'Manual', 0.41, 'Manual', 7.6, 'Vernier'
+        )
 
         self.assertEqual(sample_1.water_quality.school, 'a')
         self.assertEqual(sample_1.water_quality.date, '2016-08-03')
@@ -115,13 +107,10 @@ class WQSampleTestCase(TestCase):
         self.assertEqual(sample_2.water_quality.site.site_name, 'test site')
 
     def test_sample_creation_req_fields(self):
-        sample = WQ_Sample.objects.create_sample(self.water_quality, 23,
-                                                 'Vernier',
-                                                 65, 'Manual',
-                                                 2.5, 'Vernier',
-                                                 9, 'Manual',
-                                                 0.41, 'Manual',
-                                                 7.6, 'Vernier')
+        sample = WQ_Sample.test_objects.create_sample(
+            self.water_quality, 23, 'Vernier', 65, 'Manual', 2.5, 'Vernier',
+            9, 'Manual', 0.41, 'Manual', 7.6, 'Vernier'
+        )
 
         # Required
         self.assertEqual(sample.water_quality.site.site_name, 'test site')
@@ -149,10 +138,10 @@ class WQSampleTestCase(TestCase):
         self.assertEqual(sample.fecal_coliform, None)
 
     def test_sample_creation_opt_fields(self):
-        sample = WQ_Sample.objects.create_sample(self.water_quality, 0, 0,
-                                                 0, 0, 0, 0, 0, 0, 0, 0,
-                                                 0, 0, 35, 2, 0.34, 3.23,
-                                                 12, 37, 0.34, 1.45)
+        sample = WQ_Sample.test_objects.create_sample(
+            self.water_quality, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 35, 2, 0.34, 3.23, 12, 37, 0.34, 1.45
+        )
 
         # Required
         self.assertEqual(sample.water_quality.site.site_name, 'test site')

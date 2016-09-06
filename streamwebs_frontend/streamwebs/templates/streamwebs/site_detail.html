@@ -3,24 +3,26 @@
 {% load staticfiles %}
 {% load filters %}
 
-{% block title %}{{site.name}} - Streamwebs{% endblock %}
+{% block title %}{{site.site_name}} - Streamwebs{% endblock %}
 
-{% block body_title %}{{site.name}}{% endblock %}
+{% block body_title %}{{site.site_name}}{% endblock %}
 
 {% block content %}
 <div class="site_data">
-    {% for data_type, data in site.data.items %}
-    <h6>{{data_type}}</h6>
-        {% for data_id, data_date in data.items %}
-        <p><a href="{% url data_type|lower|strtoul|namespace site.slug data_id %}">{{data_date}}</a></p>
+    {% if samples %}
+        <h6>Samples taken near {{site.site_name}}:</h6>
+        {% for s in samples %}
+            <p><a href="{% url 'streamwebs:water_quality' site.site_slug s.id %}">
+                {{ s.date }}</a>, {{ s.school }}, Lat/Long: ({{ s.latitude }},
+                {{ s.longitude }})</p>
         {% endfor %}
-    {% endfor %}
+    {% else %}
+        <h6>No samples found near {{site.site_name}}.</h6>
+    {% endif %}
 </div>
-<div id="map">
-</div>
+
 <div class="new_data">
-    {% for link_name, type_name in data_types.items %}
-    <p><a href="{% url link_name|namespace site.slug %}">{{type_name}}</a></p>
-    {% endfor %}
+<p><a href="{% url 'streamwebs:water_quality_edit' site_slug=site.site_slug %}">
+Add New Sample</a></p>
 </div>
 {% endblock %}
