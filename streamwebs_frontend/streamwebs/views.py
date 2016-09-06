@@ -394,7 +394,7 @@ def canopy_cover_edit(request, site_slug):
         fields=(
             'direction', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
             'K', 'L', 'M', 'N','O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'X',
-        ), extra=4
+            'num_shaded'), extra=4
     )
 
     if request.method == 'POST':
@@ -405,13 +405,13 @@ def canopy_cover_edit(request, site_slug):
 
         if (cardinal_formset.is_valid() and canopy_cover_form.is_valid()):
 
-            canopy = canopy_cover_form.save()             # save form to object
-            canopy.save()                             # save object
+            canopy_cover = canopy_cover_form.save()             # save form to object
+            canopy_cover.save()                             # save object
 
             cardinals = cardinal_formset.save(commit=False)     # save forms to objs
 
             for cardinal in cardinals:                          # for each zone,
-                cardinal.canopy = canopy                # assign the transect
+                cardinal.canopy_cover = canopy_cover               # assign the transect
                 cardinal.save()                             # save the zone obj
 
             added = True

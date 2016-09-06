@@ -10,10 +10,10 @@ class Canopy_Cover_Form_TestCase(TestCase):
             'date_time',
             'site',
             'weather',
-            'north',
-            'east',
-            'south',
-            'west',
+            #'north',
+            #'east',
+            #'south',
+            #'west',
             'est_canopy_cover'
         )
 

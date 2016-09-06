@@ -6,29 +6,30 @@ from streamwebs.models import Site, Canopy_Cover, CC_Cardinal
 class ViewCanopyCoverTestCase(TestCase):
 
     def test_data_sheet_view(self):
-        site = Site.test_objects.create_site('Site', 'Type')
+        site = Site.test_objects.create_site('Test', 'Type')
         canopy = Canopy_Cover.objects.create(
-            'School Name', '2016-09-01 11:54', site, 'Pleasant'
+            school='School Name', date_time='2016-09-01 11:54', 
+            site=site, weather='Pleasant', est_canopy_cover=45
         )
         north = CC_Cardinal.test_objects.create_shade(
             'North', True, True, False, True, False, False, False, True, False,
             False, True, True, True, True, True, False, False, True, True,
-            False, False, True, True, False, False, True, 14, canopy
+            False, False, True, True, False, 13, canopy
         )
         east = CC_Cardinal.test_objects.create_shade(
             'East', False, False, False, True, True, False, False, True, False,
             False, True, True, True, False, True, True, False, True, True,
-            False, False, True, True, False, False, True, 13, canopy
+            False, False, True, True, False, 12, canopy
         )
         south =  CC_Cardinal.test_objects.create_shade(
             'South', True, True, False, True, False, False, False, True, False,
             False, True, False, True, True, True, False, False, True, True,
-            False, False, False, False, False, False, True, 11, canopy
+            False, False, False, False, False, 10, canopy
         )
         west = CC_Cardinal.test_objects.create_shade(
             'West', True, False, False, True, True, True, False, True, False,
             False, True, True, False, True, True, False, False, True, True,
-            False, False, True, True, False, True, False, 14, canopy
+            False, False, True, True, False, 13, canopy
         )
 
         response = self.client.get(
@@ -47,27 +48,28 @@ class ViewCanopyCoverTestCase(TestCase):
     def test_data_sheet_view_content(self):
         site = Site.test_objects.create_site('Test', 'Type')
         canopy = Canopy_Cover.objects.create(
-            'School Name', '2016-09-01 11:54', site, 'Pleasant'
+            school='School Name', date_time='2016-09-01 11:54', site=site,
+            weather='Pleasant', est_canopy_cover=45
         )
-         north = CC_Cardinal.test_objects.create_shade(
+        north = CC_Cardinal.test_objects.create_shade(
             'North', True, True, False, True, False, False, False, True, False,
             False, True, True, True, True, True, False, False, True, True,
-            False, False, True, True, False, False, True, 14, canopy
+            False, False, True, True, False, 13, canopy
         )
         east = CC_Cardinal.test_objects.create_shade(
             'East', False, False, False, True, True, False, False, True, False,
             False, True, True, True, False, True, True, False, True, True,
-            False, False, True, True, False, False, True, 13, canopy
+            False, False, True, True, False, 12, canopy
         )
         south =  CC_Cardinal.test_objects.create_shade(
             'South', True, True, False, True, False, False, False, True, False,
             False, True, False, True, True, True, False, False, True, True,
-            False, False, False, False, False, False, True, 11, canopy
+            False, False, False, False, False, 10, canopy
         )
         west = CC_Cardinal.test_objects.create_shade(
             'West', True, False, False, True, True, True, False, True, False,
             False, True, True, False, True, True, False, False, True, True,
-            False, False, True, True, False, True, False, 14, canopy
+            False, False, True, True, False, 13, canopy
         )
 
         response = self.client.get(

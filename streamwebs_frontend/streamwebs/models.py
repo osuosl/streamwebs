@@ -726,7 +726,7 @@ class CC_Cardinal(models.Model):
                                              validators=[validate_shaded],
                                              verbose_name=_('# shaded boxes'))
     canopy_cover = models.ForeignKey(Canopy_Cover, on_delete=models.CASCADE,
-                                     verbose_name=_('Canopy Cover'))
+                                     related_name='canopy_cover')
 
     objects = models.Manager()
     test_objects = CardinalManager()
