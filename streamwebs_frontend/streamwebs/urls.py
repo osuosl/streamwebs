@@ -48,6 +48,11 @@ urlpatterns = [
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/canopy/(?P<data_id>\d+)/',
         views.canopy_cover_view, name='canopy_cover'),
 
+    url(r'^site/(?P<site_slug>[0-9a-zA-Z-]+)/camera/edit',
+        views.add_camera_point, name='camera_point_add'),
+
+    url(r'^register/$', views.register, name='register'),
+
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/canopy/edit',
         views.canopy_cover_edit, name='canopy_cover_edit'),
 

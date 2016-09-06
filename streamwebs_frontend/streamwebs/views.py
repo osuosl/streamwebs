@@ -13,11 +13,12 @@ from django.conf import settings
 
 from streamwebs.forms import (
     UserForm, UserProfileForm, RiparianTransectForm, MacroinvertebratesForm,
-    Canopy_Cover_Form, WQSampleForm, WQSampleFormReadOnly,
-    WQForm, WQFormReadOnly, SiteForm)
+    Canopy_Cover_Form, WQSampleForm, WQSampleFormReadOnly, WQForm,
+    WQFormReadOnly, SiteForm, CameraPointForm)
+
 from streamwebs.models import (
     Macroinvertebrates, Site, Water_Quality, WQ_Sample, RiparianTransect,
-    TransectZone, Canopy_Cover, CC_Cardinal)
+    TransectZone, Canopy_Cover, CC_Cardinal, CameraPoint, PhotoPoint)
 
 from datetime import datetime
 import json
@@ -352,10 +353,10 @@ def canopy_cover_edit(request, site_slug):
 
             added = True
 
-    else:
-        cardinal_formset = CardinalInlineFormSet(instance=canopy_cover)
-        canopy_cover_form = Canopy_Cover_Form()
-
+        else:
+            cardinal_formset = CardinalInlineFormSet(instance=canopy_cover)
+            canopy_cover_form = Canopy_Cover_Form()
+        
     return render(
         request,
         'streamwebs/datasheets/canopy_cover_edit.html', {
@@ -364,6 +365,51 @@ def canopy_cover_edit(request, site_slug):
             'added': added, 'site': site
         }
     )
+
+
+def add_camera_point(request, site_slug):
+    """View for submitting new PP Monitoring sheet: 1 CP with 3 PPs"""
+    added = False
+    site = Site.objects.get(site_slug=site_slug)
+    camera = CameraPoint()
+    PhotoPointInlineFormSet = inlineformset_factory(
+        CameraPoint, PhotoPoint,
+        fields=('pp_date', 'compass_bearing', 'distance', 'camera_height',
+                'notes'), extra=3)
+
+    if request.method == 'POST':
+        pp_formset = PhotoPointInlineFormSet(
+            data=request.POST, instance=camera
+        )
+        camera_form = CameraPointForm(data=request.POST)
+
+        if (pp_formset.is_valid() and camera_form.is_valid()):
+
+            camera = camera_form.save(commit=False)             # save form to object
+            camera.letter = 'A'
+            camera.save()                             # save object
+
+            photo_points = pp_formset.save(commit=False)     # save forms to objs
+
+            for pp in photo_points:                          # for each zone,
+                pp.camera_point = camera                # assign the transect
+                pp.number = 1
+                pp.save()                             # save the zone obj
+
+            added = True
+
+    else:
+        pp_formset = PhotoPointInlineFormSet(instance=camera)
+        camera_form = CameraPointForm()
+
+    return render(
+        request,
+        'streamwebs/datasheets/camera_point_add.html', {
+            'camera_form': camera_form, 'pp_formset': pp_formset,
+            'added': added, 'site': site
+        }
+    )
+
 
 
 def water_quality(request, site_slug, data_id):

@@ -1,0 +1,29 @@
+{% extends 'streamwebs/base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+{% load filters %}
+{% block title %}{% trans "Add a new camera point" %}{% endblock %}
+{% block body_title %}{% trans "Add a new camera point" %}{% endblock %}
+{% block content %}
+
+    {% if user.is_authenticated %}
+        {% if added %}
+        <strong>{% trans "You have successfully added a new camera point." %}</strong>
+
+        {% else %}
+        <form id='pp_monitoring_form' method='post'>
+            {% csrf_token %}
+            {{ camera_form.media }}
+            {{ camera_form }}
+            {{ pp_formset }}
+
+            <input type='submit', name='submit', value='Submit' />
+        </form>
+        {% endif %}
+
+    {% else %}
+    <p>{% trans "You must be logged in to submit data." %}</p>
+        <a href='/streamwebs/login/'>{% trans "Log in here." %}</a>
+    {% endif %}
+
+{% endblock %}
