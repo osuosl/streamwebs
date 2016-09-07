@@ -17,6 +17,7 @@
     <p>Modified: {{ site.modified|date:"m-d-Y" }} {{ site.modified|time:"H:i T" }}</p>
     {% if site.image %}
     <img src="{{ site.image.url }}" alt="site image" />
+    {% endif %}
 
     <!-- existing sheets: lists site's sheets for each existing type -->
     {% if wq_sheets %}

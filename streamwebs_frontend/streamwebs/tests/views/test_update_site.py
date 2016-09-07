@@ -30,7 +30,7 @@ class UpdateSiteTestCase(TestCase):
             kwargs={'site_slug': self.site.site_slug}), {
                 'site_name': 'Shrieky Creek',
                 'description': 'some description',
-                'location': 'POINT(44.0612385 -121.3846841)'})
+                'location': 'POINT(-121.3846841 44.0612385)'})
 
         self.assertTrue(response.context['updated'])
         self.assertNotEqual(self.site.modified,
@@ -52,7 +52,7 @@ class UpdateSiteTestCase(TestCase):
             'streamwebs:update_site',
             kwargs={'site_slug': self.site.site_slug}), {
                 'site_name': 'Creaky Creek',
-                'location': 'POINT(44.0612385 -121.3846841)'})
+                'location': 'POINT(-121.3846841 44.0612385)'})
 
         self.assertTrue(response.context['updated'])
         self.assertEqual(self.site.modified, response.context['modified_time'])

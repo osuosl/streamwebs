@@ -30,7 +30,7 @@ class CreateSiteTestCase(TestCase):
         response = self.client.post(reverse('streamwebs:create_site'), {
             'site_name': 'Cool Creek',
             'description': 'A very cool creek',
-            'location': 'POINT(44.0612385 -121.3846841)',
+            'location': 'POINT(-121.3846841 44.0612385)',
             'image': temp_photo})
 
         self.assertTemplateUsed(response, 'streamwebs/create_site.html')

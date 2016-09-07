@@ -14,7 +14,7 @@ class AddWaterQualityTestCase(TestCase):
 
     def test_view_sample(self):
         """ View a sample """
-        site = Site.test_objects.create_site('Site Name', 'Site Type')
+        site = Site.test_objects.create_site('Site Name')
         location = Water_Quality.test_objects.create_water_quality(
             site, u'2016-08-22', u'Middleville Elementary',
             u'C', 125.16, 43.12001, u'True', 4, 1,

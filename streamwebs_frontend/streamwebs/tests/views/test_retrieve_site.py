@@ -38,10 +38,10 @@ class RetrieveSiteTestCase(TestCase):
 
     def test_site_view_with_sheets(self):
         """Tests that site displays sheet links if sheets exist"""
-        wq_sheet_1 = Water_Quality.objects.create_water_quality(  # NOQA
+        wq_sheet_1 = Water_Quality.test_objects.create_water_quality(  # NOQA
             self.site, '2016-08-25', 'Test School', 'E', 45, 45, 'False', 0, 0,  # NOQA
             'Fahrenheit', 'Fahrenheit')  # NOQA
-        wq_sheet_2 = Water_Quality.objects.create_water_quality(  # NOQA
+        wq_sheet_2 = Water_Quality.test_objects.create_water_quality(  # NOQA
             self.site, '2016-07-25', 'Test School', 'E', 45, 45, 'False', 0, 0,
             'Fahrenheit', 'Fahrenheit')  # NOQA
 
@@ -57,8 +57,8 @@ class RetrieveSiteTestCase(TestCase):
         new_response = self.client.get(reverse(
             'streamwebs:site', kwargs={'site_slug': self.site.site_slug}))
 
-        self.assertContains(new_response, 'Water quality data: 08-25-2016')
-        self.assertContains(new_response, 'Water quality data: 07-25-2016')
+        self.assertContains(new_response, '08-25-2016')
+        self.assertContains(new_response, '07-25-2016')
         self.assertContains(
             new_response, 'Macroinvertebrates data: 07-11-2016')
         self.assertContains(

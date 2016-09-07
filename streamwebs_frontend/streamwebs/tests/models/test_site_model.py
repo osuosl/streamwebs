@@ -88,13 +88,13 @@ class SiteTestCase(TestCase):
         site = Site.test_objects.create_site('Cool Creek')
         self.assertEqual(site.site_name, 'Cool Creek')
         self.assertEqual(site.site_slug, 'cool-creek')
-        self.assertEqual(site.location.coords, (44.0612385, -121.3846841))
+        self.assertEqual(site.location.coords, (-121.3846841, 44.0612385))
         self.assertEqual(site.description, '')
         self.assertEqual(site.image, None)
 
     def test_obj_creation_opt_fields(self):
         """Sites should be created successfully with both req and opt fields"""
-        point = Point(44.3910532, -120.2684184)
+        point = Point(-120.2684184, 44.3910532)
         temp_photo = tempfile.NamedTemporaryFile(suffix='.jpg').name
 
         site = Site.test_objects.create_site('Cool Creek', point,
@@ -102,6 +102,6 @@ class SiteTestCase(TestCase):
 
         self.assertEqual(site.site_name, 'Cool Creek')
         self.assertEqual(site.site_slug, 'cool-creek')
-        self.assertEqual(site.location.coords, (44.3910532, -120.2684184))
+        self.assertEqual(site.location.coords, (-120.2684184, 44.3910532))
         self.assertEqual(site.description, 'A very cool creek')
         self.assertEqual(site.image, temp_photo)
