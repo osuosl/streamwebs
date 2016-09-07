@@ -38,6 +38,9 @@ RECAPTCHA_PRIVATE_KEY = '6Lep3yQTAAAAAMRW7tnIDr2NUV77CWPRJ96wmWo3'
 # Captcha type: one-click
 NOCAPTCHA = True
 
+# Google maps API key
+GOOGLE_MAPS_API = 'AIzaSyCHaUYTiJJ2RZtqstos6VAFFUxN5I6saIA'
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 

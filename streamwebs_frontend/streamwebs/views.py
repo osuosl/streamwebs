@@ -9,6 +9,7 @@ from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from django.forms import inlineformset_factory, modelformset_factory
 from django.core.urlresolvers import reverse
+from django.conf import settings
 
 from streamwebs.forms import (
     UserForm, UserProfileForm, RiparianTransectForm, MacroinvertebratesForm,
@@ -57,6 +58,7 @@ def sites(request):
     site_list = Site.objects.filter(active=True)
     return render(request, 'streamwebs/sites.html', {
         'sites': site_list,
+        'maps_api': settings.GOOGLE_MAPS_API
     })
 
 
