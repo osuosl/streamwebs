@@ -1,12 +1,14 @@
 # coding=UTF-8
 from __future__ import print_function
 from django.http import HttpResponse, HttpResponseRedirect
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from django.forms import inlineformset_factory, modelformset_factory
+from django.core.urlresolvers import reverse
 
 from streamwebs.forms import (
     UserForm, UserProfileForm, RiparianTransectForm, MacroinvertebratesForm,
@@ -14,6 +16,7 @@ from streamwebs.forms import (
 from streamwebs.models import (
     Macroinvertebrates, Site, Water_Quality, WQ_Sample, RiparianTransect,
     TransectZone, Canopy_Cover)
+
 from datetime import datetime
 import json
 import copy
@@ -37,6 +40,10 @@ def create_site(request):
             site = site_form.save()
             site.save()
             created = True
+            messages.success(request,
+                             'You have successfully added a new site.')
+            return redirect(reverse('streamwebs:site',
+                            kwargs={'site_slug': site.site_slug}))
 
     else:
         site_form = SiteForm()
@@ -47,7 +54,7 @@ def create_site(request):
 
 def sites(request):
     """ View for streamwebs/sites """
-    site_list = Site.objects.filter()
+    site_list = Site.objects.filter(active=True)
     return render(request, 'streamwebs/sites.html', {
         'sites': site_list,
     })

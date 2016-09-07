@@ -9,6 +9,12 @@
 
 {% block content %}
 
+{% if messages %}
+    {% for message in messages %}
+    <strong>{{ message }}</strong>
+    {% endfor %}
+{% endif %}
+
 <!-- site info -->
 <div class="site_data">
     <p>Description: {{ site.description }}</p>

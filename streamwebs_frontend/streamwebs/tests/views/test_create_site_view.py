@@ -33,12 +33,9 @@ class CreateSiteTestCase(TestCase):
             'location': 'POINT(-121.3846841 44.0612385)',
             'image': temp_photo})
 
-        self.assertTemplateUsed(response, 'streamwebs/create_site.html')
-        self.assertEqual(response.status_code, 200)
-        self.assertTrue(response.context['created'])
-        self.assertContains(
-            response, 'You have successfully added a new StreamWebs site.'
-        )
+        self.assertRedirects(response, reverse('streamwebs:site',
+                             kwargs={'site_slug': 'cool-creek'}),
+                             status_code=302, target_status_code=200)
 
     def test_view_with_not_logged_in_user(self):
         """Tests that the user can't submit data if they're not logged in"""
