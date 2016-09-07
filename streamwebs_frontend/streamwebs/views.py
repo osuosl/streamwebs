@@ -10,8 +10,7 @@ from django.forms import inlineformset_factory, modelformset_factory
 
 from streamwebs.forms import (
     UserForm, UserProfileForm, RiparianTransectForm, MacroinvertebratesForm,
-    WQSampleForm, WQSampleFormReadOnly, WQForm, WQFormReadOnly
-    SiteForm)
+    WQSampleForm, WQSampleFormReadOnly, WQForm, WQFormReadOnly, SiteForm)
 from streamwebs.models import (
     Macroinvertebrates, Site, Water_Quality, WQ_Sample, RiparianTransect,
     TransectZone, Canopy_Cover)
@@ -39,9 +38,6 @@ def create_site(request):
             site.save()
             created = True
 
-#        else:
-#            print site_form.errors
-
     else:
         site_form = SiteForm()
 
@@ -62,9 +58,12 @@ def site(request, site_slug):
     """ View an individual site """
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     wq_sheets = Water_Quality.objects.filter(site_id=site.id).order_by('-date')
-    macro_sheets = Macroinvertebrates.objects.filter(site_id=site.id).order_by('-date')
-    transect_sheets = RiparianTransect.objects.filter(site_id=site.id).order_by('-date')
-    canopy_sheets = Canopy_Cover.objects.filter(site_id=site.id).order_by('-date')
+    macro_sheets = Macroinvertebrates.objects.filter(site_id=site.id)
+    macro_sheets = macro_sheets.order_by('-date_time')
+    transect_sheets = RiparianTransect.objects.filter(site_id=site.id)
+    transect_sheets = transect_sheets.order_by('-date_time')
+    canopy_sheets = Canopy_Cover.objects.filter(site_id=site.id)
+    canopy_sheets = canopy_sheets.order_by('-date_time')
 
     return render(request, 'streamwebs/site_detail.html', {
         'site': site,
@@ -77,7 +76,7 @@ def site(request, site_slug):
 
 def update_site(request, site_slug):
     updated = False
-    site = Site.objects.get(site_slug=site_slug)
+    site = Site.objects.filter(active=True).get(site_slug=site_slug)
     temp = copy.copy(site)
 
     if request.method == 'POST':
@@ -181,7 +180,7 @@ def graph_water(request, site_slug):
 
 
 def graph_macros(request, site_slug):
-    site = Site.objects.get(site_slug=site_slug)
+    site = Site.objects.filter(active=True).get(site_slug=site_slug)
     macros = Macroinvertebrates.objects.filter(site=site)
     summary = {
         _timestamp(m.date_time): {
@@ -199,7 +198,7 @@ def graph_macros(request, site_slug):
 
 
 def macroinvertebrate(request, site_slug, data_id):
-    site = Site.objects.get(site_slug=site_slug)
+    site = Site.objects.filter(active=True).get(site_slug=site_slug)
     data = Macroinvertebrates.objects.get(id=data_id)
     return render(
         request,
@@ -213,7 +212,7 @@ def macroinvertebrate_edit(request, site_slug):
     """
     The view for the submission of a new macroinvertebrate data sheet.
     """
-    site = Site.objects.get(site_slug=site_slug)
+    site = Site.objects.filter(active=True).get(site_slug=site_slug)
     added = False
     if request.method == 'POST':
         macro_form = MacroinvertebratesForm(data=request.POST)
@@ -233,7 +232,7 @@ def macroinvertebrate_edit(request, site_slug):
 
 
 def riparian_transect_view(request, site_slug, data_id):
-    site = Site.objects.get(site_slug=site_slug)
+    site = Site.objects.filter(active=True).get(site_slug=site_slug)
     transect = RiparianTransect.objects.filter(site_id=site.id).get(id=data_id)
     zones = TransectZone.objects.filter(transect_id=transect)
 
@@ -256,7 +255,7 @@ def riparian_transect_edit(request, site_slug):
     The view for the submission of a new riparian transect data sheet.
     """
     added = False
-    site = Site.objects.get(site_slug=site_slug)
+    site = Site.objects.filter(active=True).get(site_slug=site_slug)
     transect = RiparianTransect()
     TransectZoneInlineFormSet = inlineformset_factory(
         RiparianTransect, TransectZone,
@@ -297,7 +296,7 @@ def riparian_transect_edit(request, site_slug):
 
 def water_quality(request, site_slug, data_id):
     """ View a water quality sample """
-    site = Site.objects.get(site_slug=site_slug)
+    site = Site.objects.filter(active=True).get(site_slug=site_slug)
     wq_form = WQFormReadOnly(instance=Water_Quality.objects.get(id=data_id))
 
     WQInlineFormSet = modelformset_factory(
@@ -314,7 +313,6 @@ def water_quality(request, site_slug, data_id):
     return render(
         request, 'streamwebs/datasheets/water_quality.html',
         {
-            'page_title': 'View Water Sample - Streamwebs',
             'editable': False,
             'site': site,
             'wq_form': wq_form,
@@ -326,7 +324,7 @@ def water_quality(request, site_slug, data_id):
 def water_quality_edit(request, site_slug):
     """ Add a new water quality sample """
     added = False       # flag for the page to see if we added a sample
-    site = Site.objects.get(site_slug=site_slug)
+    site = Site.objects.filter(active=True).get(site_slug=site_slug)
     WQInlineFormSet = inlineformset_factory(
         Water_Quality, WQ_Sample,
         form=WQSampleForm,
@@ -358,7 +356,6 @@ def water_quality_edit(request, site_slug):
     return render(
         request, 'streamwebs/datasheets/water_quality.html',
         {
-            'page_title': 'Add Water Sample - Streamwebs',
             'editable': True,
             'added': added,
             'site': site,

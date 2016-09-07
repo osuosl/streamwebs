@@ -17,7 +17,7 @@ class SiteManager(models.Manager):
     """
     Manager for the site class - creates a site to be used in tests
     """
-    default = 'POINT(44.0612385 -121.3846841)'
+    default = 'POINT(-121.3846841 44.0612385)'
 
     def create_site(self, site_name, location=default,
                     description='', image=None, active=True):
@@ -48,10 +48,10 @@ class Site(models.Model):
     site_slug = models.SlugField(unique=True, max_length=50, editable=False)
 
     # Geo Django fields to store a point
-    location = models.PointField(default='POINT(44.0612385 -121.3846841)',
+    location = models.PointField(default='POINT(-121.3846841 44.0612385)',
                                  verbose_name=_('location'),
                                  validators=[validate_Site_location])
-    image = models.ImageField(null=True, blank=True, verbose_name=_('image')),
+    image = models.ImageField(null=True, blank=True, verbose_name=_('image'),
                               upload_to='site_photos/')
     active = models.BooleanField(default=True)
 
@@ -155,13 +155,11 @@ class WaterQualityManager(models.Manager):
 
 def validate_WaterQuality_latitude(latitude):
     if abs(latitude) > 90:
-        pass
         raise ValidationError(_('Latitude is not within valid range.'))
 
 
 def validate_WaterQuality_longitude(longitude):
     if abs(longitude) > 180:
-        pass
         raise ValidationError(_('Longitude is not within valid range.'))
 
 
@@ -193,7 +191,7 @@ class Water_Quality(models.Model):
 
     site = models.ForeignKey(
         Site, null=True, on_delete=models.CASCADE,
-        verbose_name=_('Stream/Site name')
+        verbose_name=_('Stream/Site name'), limit_choices_to={'active': True}
     )
     date = models.DateField(
         default=datetime.date.today, verbose_name=_('date')
@@ -454,7 +452,8 @@ class Macroinvertebrates(models.Model):
                                      verbose_name=_('date and time'))
     weather = models.CharField(max_length=250,
                                verbose_name=_('weather'))
-    site = models.ForeignKey(Site, null=True, on_delete=models.CASCADE)
+    site = models.ForeignKey(Site, null=True, on_delete=models.CASCADE,
+                             limit_choices_to={'active': True})
     time_spent = models.PositiveIntegerField(
         default=None, null=True,
         verbose_name=_('time spent sorting/identifying')
@@ -633,7 +632,8 @@ class RiparianTransect(models.Model):
     weather = models.CharField(max_length=255, blank=True,
                                verbose_name=_('weather'))
     site = models.ForeignKey(Site, null=True, on_delete=models.CASCADE,
-                             verbose_name=_('site'))
+                             verbose_name=_('site'),
+                             limit_choices_to={'active': True})
     slope = models.DecimalField(
         blank=True, null=True, max_digits=5, decimal_places=3,
         verbose_name=_('slope of stream bank (rise over run)')
@@ -797,7 +797,8 @@ class Canopy_Cover(models.Model):
     date_time = models.DateTimeField(default=timezone.now,
                                      verbose_name=_('date and time'))
     site = models.ForeignKey(Site, null=True, on_delete=models.CASCADE,
-                             verbose_name=_('site'))
+                             verbose_name=_('site'),
+                             limit_choices_to={'active': True})
     weather = models.CharField(max_length=250, verbose_name=_('weather'))
     north = models.ForeignKey(CC_Cardinal, on_delete=models.CASCADE,
                               related_name='north', null=True,
