@@ -17,8 +17,13 @@ class SiteManager(models.Manager):
     """
     Manager for the site class - creates a site to be used in tests
     """
-    def create_site(self, site_name, site_type):
-        site = self.create(site_name=site_name, site_type=site_type)
+    default = 'POINT(-121.3846841 44.0612385)'
+
+    def create_site(self, site_name, location=default,
+                    description='', image=None, active=True):
+
+        site = self.create(site_name=site_name, location=location,
+                           description=description, image=image, active=active)
         return site
 
 
@@ -37,26 +42,24 @@ class Site(models.Model):
     text description of entry.
     """
 
-    site_name = models.CharField(
-        max_length=250, blank=False, verbose_name=_('site name')
-    )
-    site_type = models.CharField(max_length=250, blank=True)
-    description = models.TextField(blank=True)
-    site_slug = models.SlugField(
-        unique=True, blank=False, max_length=50, editable=False
-    )
+    site_name = models.CharField(max_length=250, verbose_name=_('site name'))
+    description = models.TextField(blank=True,
+                                   verbose_name=_('site description'))
+    site_slug = models.SlugField(unique=True, max_length=50, editable=False)
 
     # Geo Django fields to store a point
-    location = models.PointField(
-        null=True, blank=True, validators=[validate_Site_location]
-    )
-    # objects = models.GeoManager()
+    location = models.PointField(default='POINT(-121.3846841 44.0612385)',
+                                 verbose_name=_('location'),
+                                 validators=[validate_Site_location])
+    image = models.ImageField(null=True, blank=True, verbose_name=_('image'),
+                              upload_to='site_photos/')
+    active = models.BooleanField(default=True)
 
     created = models.DateTimeField(default=timezone.now)
     modified = models.DateTimeField(default=timezone.now)
 
-    test_objects = SiteManager()
-    objects = models.Manager()
+    objects = models.Manager()  # default manager
+    test_objects = SiteManager()  # custom manager for use in writing tests
 
     def __str__(self):
         return self.site_name
@@ -152,13 +155,11 @@ class WaterQualityManager(models.Manager):
 
 def validate_WaterQuality_latitude(latitude):
     if abs(latitude) > 90:
-        pass
         raise ValidationError(_('Latitude is not within valid range.'))
 
 
 def validate_WaterQuality_longitude(longitude):
     if abs(longitude) > 180:
-        pass
         raise ValidationError(_('Longitude is not within valid range.'))
 
 
@@ -190,7 +191,7 @@ class Water_Quality(models.Model):
 
     site = models.ForeignKey(
         Site, null=True, on_delete=models.CASCADE,
-        verbose_name=_('Stream/Site name')
+        verbose_name=_('Stream/Site name'), limit_choices_to={'active': True}
     )
     date = models.DateField(
         default=datetime.date.today, verbose_name=_('date')
@@ -238,7 +239,7 @@ class Water_Quality(models.Model):
     objects = models.Manager()
 
     def __str__(self):
-        return self.site.site_name
+        return self.site.site_name + ' data sheet ' + str(self.id)
 
     class Meta:
         verbose_name = 'water quality'
@@ -388,8 +389,8 @@ class WQ_Sample(models.Model):
     objects = models.Manager()
 
     def __str__(self):
-        # return "test"
-        return str(self.water_quality.id)
+        return self.water_quality.site.site_name + ' sheet ' + \
+               str(self.water_quality.id) + ' sample ' + str(self.id)
 
     class Meta:
         verbose_name = 'water quality sample'
@@ -451,7 +452,8 @@ class Macroinvertebrates(models.Model):
                                      verbose_name=_('date and time'))
     weather = models.CharField(max_length=250,
                                verbose_name=_('weather'))
-    site = models.ForeignKey(Site, null=True, on_delete=models.CASCADE)
+    site = models.ForeignKey(Site, null=True, on_delete=models.CASCADE,
+                             limit_choices_to={'active': True})
     time_spent = models.PositiveIntegerField(
         default=None, null=True,
         verbose_name=_('time spent sorting/identifying')
@@ -524,7 +526,7 @@ class Macroinvertebrates(models.Model):
     objects = MacroinvertebratesManager()
 
     def __str__(self):
-        return self.site.site_name
+        return self.site.site_name + ' sheet ' + str(self.id)
 
     def clean(self):
         if ((self.caddisfly + self.mayfly + self.riffle_beetle +
@@ -630,7 +632,8 @@ class RiparianTransect(models.Model):
     weather = models.CharField(max_length=255, blank=True,
                                verbose_name=_('weather'))
     site = models.ForeignKey(Site, null=True, on_delete=models.CASCADE,
-                             verbose_name=_('site'))
+                             verbose_name=_('site'),
+                             limit_choices_to={'active': True})
     slope = models.DecimalField(
         blank=True, null=True, max_digits=5, decimal_places=3,
         verbose_name=_('slope of stream bank (rise over run)')
@@ -794,7 +797,8 @@ class Canopy_Cover(models.Model):
     date_time = models.DateTimeField(default=timezone.now,
                                      verbose_name=_('date and time'))
     site = models.ForeignKey(Site, null=True, on_delete=models.CASCADE,
-                             verbose_name=_('site'))
+                             verbose_name=_('site'),
+                             limit_choices_to={'active': True})
     weather = models.CharField(max_length=250, verbose_name=_('weather'))
     north = models.ForeignKey(CC_Cardinal, on_delete=models.CASCADE,
                               related_name='north', null=True,
@@ -814,7 +818,7 @@ class Canopy_Cover(models.Model):
         )
 
     def __str__(self):
-        return self.site.site_name
+        return self.site.site_name + ' sheet ' + str(self.id)
 
     class Meta:
         verbose_name = 'canopy cover survey'

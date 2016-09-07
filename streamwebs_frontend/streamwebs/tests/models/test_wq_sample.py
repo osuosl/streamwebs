@@ -50,7 +50,7 @@ class WQSampleTestCase(TestCase):
             'fecal_coliform',
         }
 
-        site = Site.test_objects.create_site('test site', 'test site type')
+        site = Site.test_objects.create_site('test site')
 
         self.water_quality = Water_Quality.test_objects.create_water_quality(
             site, '2016-08-03', 'a', 'A', 90, 123,

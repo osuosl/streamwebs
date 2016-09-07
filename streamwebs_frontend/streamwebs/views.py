@@ -1,22 +1,26 @@
 # coding=UTF-8
 from __future__ import print_function
 from django.http import HttpResponse, HttpResponseRedirect
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from django.forms import inlineformset_factory, modelformset_factory
+from django.core.urlresolvers import reverse
+from django.conf import settings
 
 from streamwebs.forms import (
     UserForm, UserProfileForm, RiparianTransectForm, MacroinvertebratesForm,
-    WQSampleForm, WQSampleFormReadOnly, WQForm, WQFormReadOnly
-    )
+    WQSampleForm, WQSampleFormReadOnly, WQForm, WQFormReadOnly, SiteForm)
 from streamwebs.models import (
     Macroinvertebrates, Site, Water_Quality, WQ_Sample, RiparianTransect,
-    TransectZone,
-    )
+    TransectZone, Canopy_Cover)
+
 from datetime import datetime
 import json
+import copy
 
 
 def _timestamp(dt):
@@ -27,22 +31,109 @@ def index(request):
     return render(request, 'streamwebs/index.html', {})
 
 
+def create_site(request):
+    created = False
+
+    if request.method == 'POST':
+        site_form = SiteForm(request.POST, request.FILES)
+
+        if site_form.is_valid():
+            site = site_form.save()
+            site.save()
+            created = True
+            messages.success(request,
+                             'You have successfully added a new site.')
+            return redirect(reverse('streamwebs:site',
+                            kwargs={'site_slug': site.site_slug}))
+
+    else:
+        site_form = SiteForm()
+
+    return render(request, 'streamwebs/create_site.html', {
+        'site_form': site_form, 'created': created})
+
+
 def sites(request):
     """ View for streamwebs/sites """
-    site_list = Site.objects.filter()
+    site_list = Site.objects.filter(active=True)
     return render(request, 'streamwebs/sites.html', {
         'sites': site_list,
+        'maps_api': settings.GOOGLE_MAPS_API
     })
 
 
+# view-view for individual specified site
 def site(request, site_slug):
     """ View an individual site """
-    site = Site.objects.get(site_slug=site_slug)
-    # Sort samples descending by date
-    samples = Water_Quality.objects.filter(site_id=site.id).order_by('-date')
+    site = Site.objects.filter(active=True).get(site_slug=site_slug)
+    wq_sheets = Water_Quality.objects.filter(site_id=site.id).order_by('-date')
+    macro_sheets = Macroinvertebrates.objects.filter(site_id=site.id)
+    macro_sheets = macro_sheets.order_by('-date_time')
+    transect_sheets = RiparianTransect.objects.filter(site_id=site.id)
+    transect_sheets = transect_sheets.order_by('-date_time')
+    canopy_sheets = Canopy_Cover.objects.filter(site_id=site.id)
+    canopy_sheets = canopy_sheets.order_by('-date_time')
+
     return render(request, 'streamwebs/site_detail.html', {
         'site': site,
-        'samples': samples,
+        'wq_sheets': wq_sheets,
+        'macro_sheets': macro_sheets,
+        'transect_sheets': transect_sheets,
+        'canopy_sheets': canopy_sheets,
+    })
+
+
+def update_site(request, site_slug):
+    updated = False
+    site = Site.objects.filter(active=True).get(site_slug=site_slug)
+    temp = copy.copy(site)
+
+    if request.method == 'POST':
+        site_form = SiteForm(request.POST, request.FILES, instance=site)
+
+        if site_form.is_valid():
+            if (site.site_name != temp.site_name or
+                    site.description != temp.description or
+                    site.location != temp.location or
+                    site.image != temp.image):
+                site = site_form.save(commit=False)
+                site.modified = timezone.now()
+                site.save()
+
+            updated = True
+
+    else:
+        site_form = SiteForm(initial={'site_name': site.site_name,
+                                      'description': site.description,
+                                      'location': site.location,
+                                      'image': site.image})
+
+    return render(request, 'streamwebs/update_site.html', {
+        'site': site,
+        'site_form': site_form,
+        'modified_time': site.modified,
+        'updated': updated
+    })
+
+
+def deactivate_site(request, site_slug):
+    deactivated = False
+    site = Site.objects.filter(active=True).get(site_slug=site_slug)
+
+    if not(Water_Quality.objects.filter(site_id=site.id).exists() or
+            Macroinvertebrates.objects.filter(site_id=site.id).exists() or
+            RiparianTransect.objects.filter(site_id=site.id).exists() or
+            Canopy_Cover.objects.filter(site_id=site.id).exists()):
+
+        site.active = False
+        site.modified = timezone.now()
+        site.save()
+        deactivated = True
+
+    return render(request, 'streamwebs/deactivate_site.html', {
+        'site': site,
+        'modified_time': site.modified,
+        'deactivated': deactivated
     })
 
 
@@ -98,7 +189,7 @@ def graph_water(request, site_slug):
 
 
 def graph_macros(request, site_slug):
-    site = Site.objects.get(site_slug=site_slug)
+    site = Site.objects.filter(active=True).get(site_slug=site_slug)
     macros = Macroinvertebrates.objects.filter(site=site)
     summary = {
         _timestamp(m.date_time): {
@@ -116,8 +207,7 @@ def graph_macros(request, site_slug):
 
 
 def macroinvertebrate(request, site_slug, data_id):
-    site = Site.objects.get(site_slug=site_slug)
-    # data = Macroinvertebrates.objects.filter(site_id=site.id).get(id=data_id)
+    site = Site.objects.filter(active=True).get(site_slug=site_slug)
     data = Macroinvertebrates.objects.get(id=data_id)
     return render(
         request,
@@ -131,7 +221,7 @@ def macroinvertebrate_edit(request, site_slug):
     """
     The view for the submission of a new macroinvertebrate data sheet.
     """
-    site = Site.objects.get(site_slug=site_slug)
+    site = Site.objects.filter(active=True).get(site_slug=site_slug)
     added = False
     if request.method == 'POST':
         macro_form = MacroinvertebratesForm(data=request.POST)
@@ -151,7 +241,7 @@ def macroinvertebrate_edit(request, site_slug):
 
 
 def riparian_transect_view(request, site_slug, data_id):
-    site = Site.objects.get(site_slug=site_slug)
+    site = Site.objects.filter(active=True).get(site_slug=site_slug)
     transect = RiparianTransect.objects.filter(site_id=site.id).get(id=data_id)
     zones = TransectZone.objects.filter(transect_id=transect)
 
@@ -174,7 +264,7 @@ def riparian_transect_edit(request, site_slug):
     The view for the submission of a new riparian transect data sheet.
     """
     added = False
-    site = Site.objects.get(site_slug=site_slug)
+    site = Site.objects.filter(active=True).get(site_slug=site_slug)
     transect = RiparianTransect()
     TransectZoneInlineFormSet = inlineformset_factory(
         RiparianTransect, TransectZone,
@@ -215,7 +305,7 @@ def riparian_transect_edit(request, site_slug):
 
 def water_quality(request, site_slug, data_id):
     """ View a water quality sample """
-    site = Site.objects.get(site_slug=site_slug)
+    site = Site.objects.filter(active=True).get(site_slug=site_slug)
     wq_form = WQFormReadOnly(instance=Water_Quality.objects.get(id=data_id))
 
     WQInlineFormSet = modelformset_factory(
@@ -232,7 +322,6 @@ def water_quality(request, site_slug, data_id):
     return render(
         request, 'streamwebs/datasheets/water_quality.html',
         {
-            'page_title': 'View Water Sample - Streamwebs',
             'editable': False,
             'site': site,
             'wq_form': wq_form,
@@ -244,7 +333,7 @@ def water_quality(request, site_slug, data_id):
 def water_quality_edit(request, site_slug):
     """ Add a new water quality sample """
     added = False       # flag for the page to see if we added a sample
-    site = Site.objects.get(site_slug=site_slug)
+    site = Site.objects.filter(active=True).get(site_slug=site_slug)
     WQInlineFormSet = inlineformset_factory(
         Water_Quality, WQ_Sample,
         form=WQSampleForm,
@@ -276,7 +365,6 @@ def water_quality_edit(request, site_slug):
     return render(
         request, 'streamwebs/datasheets/water_quality.html',
         {
-            'page_title': 'Add Water Sample - Streamwebs',
             'editable': True,
             'added': added,
             'site': site,

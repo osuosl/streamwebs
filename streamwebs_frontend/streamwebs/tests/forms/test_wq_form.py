@@ -37,7 +37,7 @@ class WQFormTestCase(TestCase):
                 wq_form.base_fields[field].required, False)
 
     def test_WQForm_isValid(self):
-        site = Site.test_objects.create_site('Site Name', 'Site Type')
+        site = Site.test_objects.create_site('Site Name')
         good_data = {
             'DEQ_dq_level': u'A',
             'air_temp_unit': u'Fahrenheit',
