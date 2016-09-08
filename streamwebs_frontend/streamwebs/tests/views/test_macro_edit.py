@@ -11,8 +11,7 @@ class MacroFormTestCase(TestCase):
         self.user = User.objects.create_user('john', 'john@example.com',
                                              'johnpassword')
         self.client.login(username='john', password='johnpassword')
-        self.site = Site.objects.create_site('Site Name!', 'Site Type!',
-                                             'site_slug')
+        self.site = Site.objects.create_site('Site Name!', 'Site Type!')
         self.expected_fields = ('school', 'date_time', 'weather', 'site',
                                 'time_spent', 'num_people', 'riffle', 'pool',
                                 'caddisfly', 'mayfly', 'riffle_beetle',
@@ -30,12 +29,11 @@ class MacroFormTestCase(TestCase):
         When the user tries to submit a bad (blank) form, the form errors
         should be displayed
         """
-        test_site = Site.test_objects.create_site('test site',
-                                                  'test site type',
-                                                  'test_site_slug')
+        test_site = Site.test_objects.create_site('test site')
         response = self.client.post(
             reverse('streamwebs:macroinvertebrate_edit', kwargs={
-                'site_slug': test_site.id}), {}
+                'site_slug': test_site.site_slug
+                }), {}
         )
         self.assertFormError(response, 'macro_form', 'school',
                              'This field is required.')
@@ -47,12 +45,10 @@ class MacroFormTestCase(TestCase):
         appropriately, the user should see a success message
         """
         # TODO MAKE sample site
-        test_site = Site.test_objects.create_site('test site',
-                                                  'test site type',
-                                                  'test_site_slug')
+        test_site = Site.test_objects.create_site('test site')
         response = self.client.post(
             reverse('streamwebs:macroinvertebrate_edit', kwargs={
-                'site_slug': test_site.id}), {
+                'site_slug': 'test-site'}), {
                 'school': "aaaa",
                 'date_time': '2016-07-11 14:09',
                 'weather': "aaaa",
@@ -99,12 +95,12 @@ class MacroFormTestCase(TestCase):
         """
         When the user is not logged in, they cannot view the data entry page
         """
-        test_site = Site.test_objects.create_site('test site',
-                                                  'test site type',
-                                                  'test_site_slug')
+        test_site = Site.test_objects.create_site('test site')
         self.client.logout()
         response = self.client.post(
             reverse('streamwebs:macroinvertebrate_edit', kwargs={
-                'site_slug': test_site.id}))
+                'site_slug': test_site.site_slug
+            })
+        )
         self.assertContains(response, 'You must be logged in to submit data.')
         self.assertEqual(response.status_code, 200)
