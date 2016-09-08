@@ -5,7 +5,7 @@ import sys
 import csv
 
 from django.core.wsgi import get_wsgi_application
-
+from datetime import datetime
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "streamwebs_frontend.settings")
 proj_path = "/opt/streamwebs/streamwebs_frontend/"
@@ -46,8 +46,9 @@ with open('../csvs/users1.csv', 'r') as csvfile:
 
                     if row2["Date of birth"]:
                         dob = row2["Date of birth"]
+                        dob = datetime.strptime(row2["Date of birth"], '%B %d, %Y')
                     else:
-                        dob = ""
+                        dob = "1970-1-1"
 
                     if row2["School"]:
                         users_school = row2["School"]
@@ -61,7 +62,7 @@ with open('../csvs/users1.csv', 'r') as csvfile:
                                         email=email,
                                         date_joined=created
                                         )
-        school = School.get(name=users_school)
+        school = School.objects.filter(name=users_school)
         userprofile = UserProfile.objects.create(user=user,
                                                  school=school,
                                                  birthdate=dob)
