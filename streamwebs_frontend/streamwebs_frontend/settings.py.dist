@@ -24,6 +24,7 @@ STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 LOCALE_PATHS = [
     '../locale/',
 ]
+MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
@@ -32,10 +33,13 @@ SECRET_KEY = '9$b3ov_dw6+&_(9w89p7&_&bsxzohtsf_7k!qyn-33696w#3&h'
 
 # Google ('no-captcha') recaptcha
 RECAPTCHA_PUBLIC_KEY = '6Lep3yQTAAAAANSLTu1MzZQzFD_KNpwYlfp3tPzM'
-RECAPTCHA_PRIVATE_KEY= '6Lep3yQTAAAAAMRW7tnIDr2NUV77CWPRJ96wmWo3'
+RECAPTCHA_PRIVATE_KEY = '6Lep3yQTAAAAAMRW7tnIDr2NUV77CWPRJ96wmWo3'
 
 # Captcha type: one-click
 NOCAPTCHA = True
+
+# Google maps API key
+GOOGLE_MAPS_API = 'AIzaSyCHaUYTiJJ2RZtqstos6VAFFUxN5I6saIA'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -146,6 +150,11 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# Media files (user-uploaded files, esp. images)
+# https://docs.djangoproject.com/en/1.9/ref/models/fields/#django.db.models.FileField.storage
+
+MEDIA_URL = '/media/'
 
 # List of schools
 # Format: each school listed in the SCHOOL_CHOICES tuple should be a tuple of

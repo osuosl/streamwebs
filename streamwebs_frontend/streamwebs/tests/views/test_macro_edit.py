@@ -29,7 +29,7 @@ class MacroFormTestCase(TestCase):
         When the user tries to submit a bad (blank) form, the form errors
         should be displayed
         """
-        test_site = Site.test_objects.create_site('test site', 'test type')
+        test_site = Site.test_objects.create_site('test site')
         response = self.client.post(
             reverse('streamwebs:macroinvertebrate_edit', kwargs={
                 'site_slug': test_site.site_slug
@@ -45,7 +45,7 @@ class MacroFormTestCase(TestCase):
         appropriately, the user should see a success message
         """
         # TODO MAKE sample site
-        test_site = Site.test_objects.create_site('test site', 'test type')
+        test_site = Site.test_objects.create_site('test site')
         response = self.client.post(
             reverse('streamwebs:macroinvertebrate_edit', kwargs={
                 'site_slug': 'test-site'}), {
@@ -95,8 +95,7 @@ class MacroFormTestCase(TestCase):
         """
         When the user is not logged in, they cannot view the data entry page
         """
-        test_site = Site.test_objects.create_site('test site', 'test type')
-
+        test_site = Site.test_objects.create_site('test site')
         self.client.logout()
         response = self.client.post(
             reverse('streamwebs:macroinvertebrate_edit', kwargs={

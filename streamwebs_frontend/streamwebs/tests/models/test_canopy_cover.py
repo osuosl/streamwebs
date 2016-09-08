@@ -48,7 +48,7 @@ class CanopyCovTestCase(TestCase):
         """Tests that a datasheet correctly corresponds to is specified site"""
         default_dt = timezone.now()
 
-        site = Site.test_objects.create_site('test', 'some_type')
+        site = Site.test_objects.create_site('test')
 
         canopyc = Canopy_Cover.objects.create(
             school='School A', date_time=default_dt, site=site,
@@ -80,7 +80,6 @@ class CanopyCovTestCase(TestCase):
         )
 
         self.assertEqual(canopyc.site.site_name, 'test')
-        self.assertEqual(canopyc.site.site_type, 'some_type')
         self.assertEqual(canopyc.site.site_slug, 'test')
 
     def test_datasheet_CreateCanopyCover(self):
@@ -88,7 +87,7 @@ class CanopyCovTestCase(TestCase):
            the correct (shaded) value is received from the CC_Cardinal model"""
         default_dt = timezone.now()
 
-        site = Site.test_objects.create_site('test', 'some_type')
+        site = Site.test_objects.create_site('test')
 
         canopyc = Canopy_Cover.objects.create(
             school='School A', date_time=default_dt, site=site,
@@ -193,7 +192,7 @@ class CanopyCovTestCase(TestCase):
         """Tests that est_canopy_cover is in between 0-96."""
         default_dt = timezone.now()
 
-        site = Site.test_objects.create_site('test', 'some_type')
+        site = Site.test_objects.create_site('test')
 
         canopyc = Canopy_Cover.objects.create(
             school='School A', date_time=default_dt, site=site,
@@ -232,7 +231,7 @@ class CanopyCovTestCase(TestCase):
 
         default_dt = timezone.now()
 
-        site = Site.test_objects.create_site('test', 'some_type')
+        site = Site.test_objects.create_site('test')
 
         canopyc = Canopy_Cover.objects.create(
             school='School A', date_time=default_dt, site=site,
