@@ -442,7 +442,7 @@ class CameraPointManager(models.Manager):
 
 class CameraPoint(models.Model):
     site = models.ForeignKey(Site, on_delete=models.CASCADE, null=True)
-    letter = models.CharField(null=True, max_length=5)
+    letter = models.CharField(null=True, max_length=5, editable=False)
     cp_date = models.DateField(default=datetime.date.today,
                                verbose_name=_('date established'))
     location = models.PointField(null=True, verbose_name=_('location'))
@@ -455,7 +455,7 @@ class CameraPoint(models.Model):
     objects = models.Manager()
 
     def __str__(self):
-        return ('Camera point ' + str(self.id) + ' for site ' +
+        return ('Camera point ' + self.letter + ' for site ' +
                 self.site.site_name)
 
     def save(self, **kwargs):
@@ -489,7 +489,7 @@ class PhotoPointManager(models.Manager):
 class PhotoPoint(models.Model):
     camera_point = models.ForeignKey(CameraPoint, on_delete=models.CASCADE,
                                      null=True, related_name='camera_point')
-    number = models.PositiveSmallIntegerField(null=True)
+    number = models.PositiveSmallIntegerField(null=True, editable=False)
     pp_date = models.DateField(default=datetime.date.today,
                                verbose_name=_('date established'))
     compass_bearing = models.PositiveSmallIntegerField(
@@ -505,8 +505,8 @@ class PhotoPoint(models.Model):
     objects = models.Manager()
 
     def __str__(self):
-        return ('Photo point ' + str(self.id) + ' for camera point ' +
-                str(self.camera_point.id))
+        return ('Photo point ' + str(self.number) + ' for camera point ' +
+                self.camera_point.letter)
 
     def save(self, **kwargs):
         if not self.number:
@@ -531,8 +531,8 @@ class PhotoPointImage(models.Model):
                             verbose_name=_('date taken'))
 
     def __str__(self):
-        return ('Image ' + str(self.id) + ' for photo point ' +
-                str(self.photo_point.id))
+        return (str(self.date) + ' for photo point ' +
+                str(self.photo_point.number))
 
     def clean(self):
         p = PhotoPointImage.objects.filter(photo_point_id=self.photo_point.id)
