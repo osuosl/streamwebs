@@ -534,6 +534,12 @@ class PhotoPointImage(models.Model):
         return ('Image ' + str(self.id) + ' for photo point ' +
                 str(self.photo_point.id))
 
+    def clean(self):
+        p = PhotoPointImage.objects.filter(photo_point_id=self.photo_point.id)
+        if p.exclude(id=self.id).filter(date=self.date).exists():
+            raise ValidationError(_('A photo for %(date)s already exists.'),
+                                  code='duplicate', params={'date': self.date})
+
     class Meta:
         verbose_name = 'photo point image'
         verbose_name_plural = 'photo point images'

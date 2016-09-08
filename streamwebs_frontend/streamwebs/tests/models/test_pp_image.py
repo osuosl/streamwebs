@@ -1,7 +1,8 @@
 from django.test import TestCase
 from django.contrib.gis.db import models
+from django.core.exceptions import ValidationError
 from itertools import chain
-from streamwebs.models import Site, CameraPoint, PhotoPoint, PhotoPointImage
+from streamwebs.models import (Site, CameraPoint, PhotoPoint, PhotoPointImage)
 import tempfile
 
 
@@ -19,12 +20,13 @@ class PhotoPointImageTestCase(TestCase):
         site = Site.test_objects.create_site('Test site')
         camera_point = CameraPoint.test_objects.create_camera_point(
             site, '2016-07-29', 'POINT(-121.393401 44.061437)')
-        photo_point = PhotoPoint.test_objects.create_photo_point(
+        self.photo_point = PhotoPoint.test_objects.create_photo_point(
             camera_point, '2016-07-30', 45, 4, 5)
         self.temp_photo = tempfile.NamedTemporaryFile(suffix='.jpg').name
-        self.pp_image = PhotoPointImage(photo_point=photo_point,
-                                        date='2016-08-30',
-                                        image=self.temp_photo)
+        self.pp_image = PhotoPointImage.objects.create(
+            photo_point=self.photo_point,
+            date='2016-08-30',
+            image=self.temp_photo)
 
     def test_fields_exist(self):
         for field, field_type in self.expected_fields.items():
@@ -55,3 +57,23 @@ class PhotoPointImageTestCase(TestCase):
             self.pp_image.photo_point.camera_point.cp_date, '2016-07-29')
         self.assertEqual(
             self.pp_image.photo_point.camera_point.site.site_name, 'Test site')
+
+    def test_create_pp_img_with_existing_date(self):
+        new_pp_img = PhotoPointImage.objects.create(
+            photo_point=self.photo_point,
+            date='2016-08-30',
+            image=self.temp_photo)
+
+        with self.assertRaises(ValidationError):
+            new_pp_img.clean()
+
+    def test_create_pp_img_with_new_date(self):
+        new_pp_img = PhotoPointImage.objects.create(
+            photo_point=self.photo_point,
+            date='2016-08-31',
+            image=self.temp_photo)
+
+        try:
+            new_pp_img.clean()
+        except:
+            self.fail('An exception was raised.')
