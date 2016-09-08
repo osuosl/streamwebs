@@ -66,7 +66,7 @@ class CCCardinalTestCase(TestCase):
         """Check that num_shaded is in between 0-24"""
         default_dt = timezone.now()
 
-        site = Site.test_objects.create_site('Test', 'Type')
+        site = Site.test_objects.create_site('Test')
 
         canopyc = Canopy_Cover.objects.create(
             school='School A', date_time=default_dt, site=site,
@@ -86,7 +86,7 @@ class CCCardinalTestCase(TestCase):
            is too large"""
         default_dt = timezone.now()
 
-        site = Site.test_objects.create_site('Test', 'Type')
+        site = Site.test_objects.create_site('Test')
 
         canopyc = Canopy_Cover.objects.create(
             school='School A', date_time=default_dt, site=site,
@@ -107,7 +107,7 @@ class CCCardinalTestCase(TestCase):
            the number shaded does not match the number of Trues."""
         default_dt = timezone.now()
 
-        site = Site.test_objects.create_site('Test', 'Type')
+        site = Site.test_objects.create_site('Test')
 
         canopyc = Canopy_Cover.objects.create(
             school='School A', date_time=default_dt, site=site,
@@ -128,7 +128,7 @@ class CCCardinalTestCase(TestCase):
            the number shaded matches the number of Trues."""
         default_dt = timezone.now()
 
-        site = Site.test_objects.create_site('Test', 'Type')
+        site = Site.test_objects.create_site('Test')
 
         canopyc = Canopy_Cover.objects.create(
             school='School A', date_time=default_dt, site=site,

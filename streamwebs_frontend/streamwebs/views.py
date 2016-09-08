@@ -303,6 +303,26 @@ def riparian_transect_edit(request, site_slug):
         }
     )
 
+
+def canopy_cover_view(request, site_slug, data_id):
+    site = Site.objects.filter(active=True).get(site_slug=site_slug)
+    canopy_cover = Canopy_Cover.objects.filter(site_id=site.id).get(id=data_id)
+    cardinals = CC_Cardinal.objects.filter(canopy_cover_id=canopy_cover)
+
+    # Invoking the database by evaluating the queryset before passing it to the
+    # template is necessary in order to pass Travis tests.
+    # https://docs.djangoproject.com/en/1.9/ref/models/querysets/#when-querysets-are-evaluated
+    cardinals = list(cardinals)
+
+    return render(
+        request, 'streamwebs/datasheets/canopy_cover_view.html', {
+            'canopy_cover': canopy_cover,
+            'cardinals': cardinals,
+            'site': site
+            }
+        )
+
+
 def canopy_cover_edit(request, site_slug):
     """
     The view for the submission of a new canopy cover data sheet.
@@ -326,14 +346,14 @@ def canopy_cover_edit(request, site_slug):
 
         if (cardinal_formset.is_valid() and canopy_cover_form.is_valid()):
 
-            canopy_cover = canopy_cover_form.save()             # save form to object
-            canopy_cover.save()                             # save object
+            canopy_cover = canopy_cover_form.save()
+            canopy_cover.save()
 
-            cardinals = cardinal_formset.save(commit=False)     # save forms to objs
+            cardinals = cardinal_formset.save(commit=False)
 
-            for cardinal in cardinals:                          # for each zone,
-                cardinal.canopy_cover = canopy_cover               # assign the transect
-                cardinal.save()                             # save the zone obj
+            for cardinal in cardinals:
+                cardinal.canopy_cover = canopy_cover
+                cardinal.save()
 
             added = True
 
@@ -347,6 +367,9 @@ def canopy_cover_edit(request, site_slug):
             'canopy_cover_form': canopy_cover_form,
             'cardinal_formset': cardinal_formset,
             'added': added, 'site': site
+        }
+    )
+
 
 def water_quality(request, site_slug, data_id):
     """ View a water quality sample """

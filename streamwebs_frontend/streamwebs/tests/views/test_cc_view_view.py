@@ -6,7 +6,7 @@ from streamwebs.models import Site, Canopy_Cover, CC_Cardinal
 class ViewCanopyCoverTestCase(TestCase):
 
     def test_data_sheet_view(self):
-        site = Site.test_objects.create_site('Test', 'Type')
+        site = Site.test_objects.create_site('Test')
         canopy = Canopy_Cover.objects.create(
             school='School Name', date_time='2016-09-01 11:54', 
             site=site, weather='Pleasant', est_canopy_cover=45
@@ -31,10 +31,9 @@ class ViewCanopyCoverTestCase(TestCase):
             False, True, True, False, True, True, False, False, True, True,
             False, False, True, True, False, 13, canopy
         )
-
         response = self.client.get(
             reverse(
-                'streamwebs:canopy_cover_view',
+                'streamwebs:canopy_cover',
                 kwargs={'data_id': canopy.id,
                         'site_slug': canopy.site.site_slug
                         }
@@ -46,7 +45,7 @@ class ViewCanopyCoverTestCase(TestCase):
         )
 
     def test_data_sheet_view_content(self):
-        site = Site.test_objects.create_site('Test', 'Type')
+        site = Site.test_objects.create_site('Test')
         canopy = Canopy_Cover.objects.create(
             school='School Name', date_time='2016-09-01 11:54', site=site,
             weather='Pleasant', est_canopy_cover=45
@@ -74,17 +73,17 @@ class ViewCanopyCoverTestCase(TestCase):
 
         response = self.client.get(
             reverse(
-                'streamwebs.canopy_cover_view',
+                'streamwebs:canopy_cover',
                 kwargs={'data_id': canopy.id,
                         'site_slug': site.site_slug
                        }
             )
         )
 
-        self.assertTempaltedUsed(
+        self.assertTemplateUsed(
             response, 'streamwebs/datasheets/canopy_cover_view.html'
         )
-        self.assertContains(response, 'Canopy Cover')
+        self.assertContains(response, 'Canopy Cover Survey')
         self.assertContains(response, 'School Name')
         self.assertContains(response, 'September 1, 2016, 11:54 a.m.')
         self.assertContains(response, 'Test')  # Site name

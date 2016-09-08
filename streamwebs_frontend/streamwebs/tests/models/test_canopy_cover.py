@@ -24,7 +24,7 @@ class CanopyCovTestCase(TestCase):
             'est_canopy_cover': models.PositiveIntegerField,
             'id': models.AutoField,
 
-            'cc_cardinal': models.ManyToOneRel
+            'canopy_cover': models.ManyToOneRel
         }
 
     def test_fields_exist(self):
@@ -41,7 +41,6 @@ class CanopyCovTestCase(TestCase):
             (field.name,) for field in Canopy_Cover._meta.get_fields()
             if not (field.many_to_one and field.related_model is None)
         )))
-
         self.assertEqual(sorted(fields), sorted(self.expected_fields.keys()))
 
     def test_datasheet_ManyToOneSite(self):
@@ -128,7 +127,7 @@ class CanopyCovTestCase(TestCase):
            cardinal box"""
         default_dt = timezone.now()
 
-        site = Site.test_objects.create_site('test', 'some_type')
+        site = Site.test_objects.create_site('test')
 
         canopyc = Canopy_Cover.objects.create(
             school='School A', date_time=default_dt, site=site,
