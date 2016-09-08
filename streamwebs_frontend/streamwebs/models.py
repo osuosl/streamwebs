@@ -433,29 +433,43 @@ class MacroinvertebratesManager(models.Manager):
 
 class CameraPointManager(models.Manager):
 
-    def create_camera_point(self, site, letter, cp_date, location,
-                            map_datum='', description=''):
+    def create_camera_point(self, site, cp_date, location, map_datum='',
+                            description=''):
 
-        return self.create(site=site, letter=letter, cp_date=cp_date,
-                           location=location, map_datum=map_datum,
-                           description=description)
+        return self.create(site=site, cp_date=cp_date, location=location,
+                           map_datum=map_datum, description=description)
 
 
 class CameraPoint(models.Model):
     site = models.ForeignKey(Site, on_delete=models.CASCADE, null=True)
-    letter = models.CharField(null=True, max_length=2)
+    letter = models.CharField(null=True, max_length=5)
     cp_date = models.DateField(default=datetime.date.today,
                                verbose_name=_('date established'))
     location = models.PointField(null=True, verbose_name=_('location'))
     map_datum = models.CharField(max_length=255, blank=True,
                                  verbose_name=_('map datum'))
     description = models.TextField(blank=True, verbose_name=_('description'))
+    created = models.DateTimeField(default=timezone.now)
 
     test_objects = CameraPointManager()
+    objects = models.Manager()
 
     def __str__(self):
         return ('Camera point ' + str(self.id) + ' for site ' +
                 self.site.site_name)
+
+    def save(self, **kwargs):
+        if not self.letter:
+            if not CameraPoint.objects.all().exists():
+                self.letter = 'A'
+            else:
+                prev_letter = CameraPoint.objects.latest('created').letter
+                max_len = len(prev_letter)
+                if prev_letter[0] == 'Z':
+                    self.letter = (max_len + 1) * 'A'
+                else:
+                    self.letter = max_len * chr(ord(prev_letter[0]) + 1)
+        super(CameraPoint, self).save()
 
     class Meta:
         verbose_name = 'camera point'
@@ -464,30 +478,44 @@ class CameraPoint(models.Model):
 
 class PhotoPointManager(models.Manager):
 
-    def create_photo_point(self, camera_point, number, pp_date,
-                           compass_bearing, distance, camera_height, notes=''):
+    def create_photo_point(self, camera_point, pp_date, compass_bearing,
+                           distance, camera_height, notes=''):
 
-        return self.create(camera_point=camera_point, number=number,
-                           pp_date=pp_date, compass_bearing=compass_bearing,
-                           distance=distance, camera_height=camera_height,
-                           notes=notes)
+        return self.create(camera_point=camera_point, pp_date=pp_date,
+                           compass_bearing=compass_bearing, distance=distance,
+                           camera_height=camera_height, notes=notes)
 
 
 class PhotoPoint(models.Model):
     camera_point = models.ForeignKey(CameraPoint, on_delete=models.CASCADE,
                                      null=True, related_name='camera_point')
     number = models.PositiveSmallIntegerField(null=True)
-    pp_date = models.DateField(default=datetime.date.today)
-    compass_bearing = models.PositiveSmallIntegerField()
-    distance = models.DecimalField(max_digits=3, decimal_places=0)
-    camera_height = models.DecimalField(max_digits=3, decimal_places=0)
-    notes = models.TextField(blank=True)
+    pp_date = models.DateField(default=datetime.date.today,
+                               verbose_name=_('date established'))
+    compass_bearing = models.PositiveSmallIntegerField(
+        verbose_name=_('compass bearing'))
+    distance = models.DecimalField(
+        max_digits=3, decimal_places=0,
+        verbose_name=_('distance from camera point'))
+    camera_height = models.DecimalField(max_digits=3, decimal_places=0,
+                                        verbose_name=_('camera height'))
+    notes = models.TextField(blank=True, verbose_name=_('notes'))
 
     test_objects = PhotoPointManager()
+    objects = models.Manager()
 
     def __str__(self):
         return ('Photo point ' + str(self.id) + ' for camera point ' +
                 str(self.camera_point.id))
+
+    def save(self, **kwargs):
+        if not self.number:
+            if not PhotoPoint.objects.all().exists():
+                self.number = 1
+            else:
+                prev_num = PhotoPoint.objects.latest('number').number
+                self.number = prev_num + 1
+        super(PhotoPoint, self).save()
 
     class Meta:
         verbose_name = 'photo point'
@@ -497,8 +525,10 @@ class PhotoPoint(models.Model):
 class PhotoPointImage(models.Model):
     photo_point = models.ForeignKey(PhotoPoint, on_delete=models.CASCADE,
                                     null=True, related_name='photo_point')
-    image = models.ImageField(null=True, blank=True, upload_to='pp_photos/')
-    date = models.DateField(default=datetime.date.today)
+    image = models.ImageField(null=True, blank=True, upload_to='pp_photos/',
+                              verbose_name=_('photo'))
+    date = models.DateField(default=datetime.date.today,
+                            verbose_name=_('date taken'))
 
     def __str__(self):
         return ('Image ' + str(self.id) + ' for photo point ' +

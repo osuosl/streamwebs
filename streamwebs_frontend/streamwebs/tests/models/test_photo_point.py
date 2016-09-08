@@ -25,9 +25,9 @@ class PhotoPointTestCase(TestCase):
             'notes': models.TextField
         }
 
-        site = Site.test_objects.create_site('test site c', 'test site type c')
+        site = Site.test_objects.create_site('test site c')
         self.camera_point = CameraPoint.test_objects.create_camera_point(
-            site, 'A', '2016-07-05', 'POINT(-121.393401 44.061437)')
+            site, '2016-07-05', 'POINT(-121.393401 44.061437)')
 
     def test_fields_exist(self):
         """
@@ -68,7 +68,7 @@ class PhotoPointTestCase(TestCase):
         """
 
         photo_point = PhotoPoint.test_objects.create_photo_point(
-            self.camera_point, 1, '2016-07-06', 140, 4.5, 2.3)
+            self.camera_point, '2016-07-06', 140, 4.5, 2.3)
 
         self.assertEqual(photo_point.camera_point.site.site_name,
                          'test site c')
@@ -83,13 +83,12 @@ class PhotoPointTestCase(TestCase):
         are provided.
         """
         photo_point = PhotoPoint.test_objects.create_photo_point(
-            self.camera_point, 2, '2016-07-04', 270, 2.3, camera_height=0.5)
+            self.camera_point, '2016-07-04', 270, 2.3, 0.5)
 
         # Required
         self.assertEqual(photo_point.camera_point.site.site_name,
                          'test site c')
         self.assertEqual(photo_point.camera_point.cp_date, '2016-07-05')
-        self.assertEqual(photo_point.number, 2)
         self.assertEqual(photo_point.pp_date, '2016-07-04')
         self.assertEqual(photo_point.compass_bearing, 270)
         self.assertEqual(photo_point.distance, 2.3)
@@ -104,16 +103,41 @@ class PhotoPointTestCase(TestCase):
         optional fields are provided.
         """
         photo_point = PhotoPoint.test_objects.create_photo_point(
-            self.camera_point, 3, '2016-07-02', 1.62, 4.1, 5.3,
+            self.camera_point, '2016-07-02', 1.62, 4.1, 5.3,
             'Notes on photo point for test site c')
 
         self.assertEqual(photo_point.camera_point.site.site_name,
                          'test site c')
         self.assertEqual(photo_point.camera_point.cp_date, '2016-07-05')
-        self.assertEqual(photo_point.number, 3)
         self.assertEqual(photo_point.pp_date, '2016-07-02')
         self.assertEqual(photo_point.compass_bearing, 1.62)
         self.assertEqual(photo_point.distance, 4.1)
         self.assertEqual(photo_point.camera_height, 5.3)
         self.assertEqual(photo_point.notes,
                          'Notes on photo point for test site c')
+
+    def test_number_assign_for_first_pp(self):
+        photo_point = PhotoPoint.test_objects.create_photo_point(
+            self.camera_point, '2016-07-04', 270, 2.3, 0.5)
+        self.assertEqual(photo_point.number, 1)
+
+    def test_number_assign_for_regular_pp(self):
+        photo_point = PhotoPoint.test_objects.create_photo_point(
+            self.camera_point, '2016-07-04', 270, 2.3, 0.5)
+
+        self.assertEqual(photo_point.number, 1)
+
+        photo_point_2 = PhotoPoint.test_objects.create_photo_point(
+            self.camera_point, '2016-07-04', 270, 2.3, 0.5)
+
+        self.assertEqual(photo_point_2.number, 2)
+
+        photo_point_2.number = 44
+        photo_point_2.save()
+
+        self.assertEqual(photo_point_2.number, 44)
+
+        photo_point_3 = PhotoPoint.test_objects.create_photo_point(
+            self.camera_point, '2016-07-04', 270, 2.3, 0.5)
+
+        self.assertEqual(photo_point_3.number, 45)

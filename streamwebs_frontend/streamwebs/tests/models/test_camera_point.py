@@ -18,6 +18,7 @@ class CameraPointTestCase(TestCase):
             'location': models.PointField,
             'map_datum': models.CharField,
             'description': models.TextField,
+            'created': models.DateTimeField,
             'id': models.AutoField,
 
             'camera_point': models.ManyToOneRel
@@ -28,8 +29,7 @@ class CameraPointTestCase(TestCase):
             'description': models.TextField
         }
 
-        self.site = Site.test_objects.create_site('test site a',
-                                                  'test site type a')
+        self.site = Site.test_objects.create_site('test site a')
 
     def test_fields_exist(self):
         model = apps.get_model('streamwebs', 'camerapoint')
@@ -58,14 +58,10 @@ class CameraPointTestCase(TestCase):
         cp_date = datetime.date.today()
 
         camera_point = CameraPoint.test_objects.create_camera_point(
-            site=self.site,
-            letter='A',
-            cp_date=cp_date,
-            location='POINT(-121.393401 44.061437)'
+            self.site, cp_date, 'POINT(-121.393401 44.061437)'
         )
 
         self.assertEqual(camera_point.site.site_name, 'test site a')
-        self.assertEqual(camera_point.site.site_type, 'test site type a')
 
     def test_obj_exists_req_fields(self):
         """
@@ -73,15 +69,11 @@ class CameraPointTestCase(TestCase):
         required fields are provided.
         """
         camera_point = CameraPoint.test_objects.create_camera_point(
-            site=self.site,
-            letter='B',
-            cp_date='2016-07-07',
-            location='POINT(-121.393401 44.061437)'
+            self.site, '2016-07-07', 'POINT(-121.393401 44.061437)'
         )
 
         # Required fields
         self.assertEqual(camera_point.site.site_name, 'test site a')
-        self.assertEqual(camera_point.letter, 'B')
         self.assertEqual(camera_point.cp_date, '2016-07-07')
 
         # Optional fields
@@ -96,17 +88,12 @@ class CameraPointTestCase(TestCase):
         required and optional fields are provided.
         """
         camera_point = CameraPoint.test_objects.create_camera_point(
-            site=self.site,
-            letter='C',
-            cp_date='2016-07-08',
-            location=Point(-120.2684184, 44.3910532),
-            map_datum='WGS84',
-            description='Notes on this camera point for test site a'
+            self.site, '2016-07-08', Point(-120.2684184, 44.3910532), 'WGS84',
+            'Notes on this camera point for test site a'
         )
 
         # Required fields
         self.assertEqual(camera_point.site.site_name, 'test site a')
-        self.assertEqual(camera_point.letter, 'C')
         self.assertEqual(camera_point.cp_date, '2016-07-08')
 
         # Optional fields
@@ -115,3 +102,34 @@ class CameraPointTestCase(TestCase):
         self.assertEqual(camera_point.map_datum, 'WGS84')
         self.assertEqual(camera_point.description,
                          'Notes on this camera point for test site a')
+
+    def test_letter_assign_for_first_cp(self):
+        camera_point = CameraPoint.test_objects.create_camera_point(
+            self.site, '2016-07-08', Point(-120.2684184, 44.3910532),
+        )
+        self.assertEqual(camera_point.letter, 'A')
+
+    def test_letter_assign_for_regular_cp(self):
+        camera_point = CameraPoint.test_objects.create_camera_point(
+            self.site, '2016-07-08', Point(-120.2684184, 44.3910532),
+        )
+        self.assertEqual(camera_point.letter, 'A')
+
+        camera_point_2 = CameraPoint.test_objects.create_camera_point(
+            self.site, '2016-07-08', Point(-120.2684184, 44.3910532),
+        )
+        self.assertEqual(camera_point_2.letter, 'B')
+
+    def test_letter_assign_for_end_of_alphabet(self):
+        camera_point = CameraPoint.test_objects.create_camera_point(
+            self.site, '2016-07-08', Point(-120.2684184, 44.3910532),
+        )
+        camera_point.letter = 'ZZ'
+        camera_point.save()
+
+        self.assertEqual(camera_point.letter, 'ZZ')
+
+        camera_point_2 = CameraPoint.test_objects.create_camera_point(
+            self.site, '2016-07-08', Point(-120.2684184, 44.3910532)
+        )
+        self.assertEqual(camera_point_2.letter, 'AAA')
