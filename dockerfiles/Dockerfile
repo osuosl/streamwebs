@@ -9,7 +9,9 @@ RUN yum -y install gdal-python\
                    nodejs\
                    npm\
                    vim\
-                   libjpeg-devel
+                   freetype-devel\
+                   libjpeg-devel\
+                   libpng-devel
 
 RUN npm install -g bower
 
