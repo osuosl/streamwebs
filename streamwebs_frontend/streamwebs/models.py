@@ -460,10 +460,11 @@ class CameraPoint(models.Model):
 
     def save(self, **kwargs):
         if not self.letter:
-            if not CameraPoint.objects.all().exists():
+            site_cps = CameraPoint.objects.filter(site_id=self.site.id)
+            if not site_cps.exists():
                 self.letter = 'A'
             else:
-                prev_letter = CameraPoint.objects.latest('created').letter
+                prev_letter = site_cps.latest('created').letter
                 max_len = len(prev_letter)
                 if prev_letter[0] == 'Z':
                     self.letter = (max_len + 1) * 'A'
@@ -510,10 +511,11 @@ class PhotoPoint(models.Model):
 
     def save(self, **kwargs):
         if not self.number:
-            if not PhotoPoint.objects.all().exists():
+            p = PhotoPoint.objects.filter(camera_point_id=self.camera_point.id)
+            if not p.exists():
                 self.number = 1
             else:
-                prev_num = PhotoPoint.objects.latest('number').number
+                prev_num = p.latest('number').number
                 self.number = prev_num + 1
         super(PhotoPoint, self).save()
 

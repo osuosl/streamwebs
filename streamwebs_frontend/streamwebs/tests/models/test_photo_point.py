@@ -141,3 +141,21 @@ class PhotoPointTestCase(TestCase):
             self.camera_point, '2016-07-04', 270, 2.3, 0.5)
 
         self.assertEqual(photo_point_3.number, 45)
+
+    def test_restart_numbering_for_new_cp(self):
+        site = Site.test_objects.create_site('test site c')
+        camera_point = CameraPoint.test_objects.create_camera_point(
+            site, '2016-07-05', 'POINT(-121.393401 44.061437)')
+        camera_point_2 = CameraPoint.test_objects.create_camera_point(
+            site, '2016-07-05', 'POINT(-121.393401 44.061437)')
+        photo_point = PhotoPoint.test_objects.create_photo_point(
+            camera_point, '2016-07-04', 270, 2.3, 0.5)
+        photo_point_2 = PhotoPoint.test_objects.create_photo_point(
+            camera_point_2, '2016-07-04', 270, 2.3, 0.5)
+
+        self.assertEqual(camera_point.site.site_name,
+                         camera_point_2.site.site_name)
+        self.assertEqual(camera_point.letter, 'A')
+        self.assertEqual(camera_point_2.letter, 'B')
+        self.assertEqual(photo_point.number, 1)
+        self.assertEqual(photo_point_2.number, 1)

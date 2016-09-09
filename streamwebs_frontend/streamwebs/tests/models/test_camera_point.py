@@ -133,3 +133,15 @@ class CameraPointTestCase(TestCase):
             self.site, '2016-07-08', Point(-120.2684184, 44.3910532)
         )
         self.assertEqual(camera_point_2.letter, 'AAA')
+
+    def test_restart_lettering_for_new_site(self):
+        camera_point = CameraPoint.test_objects.create_camera_point(
+            self.site, '2016-07-08', Point(-120.2684184, 44.3910532),
+        )
+        self.assertEqual(camera_point.letter, 'A')
+
+        site_2 = Site.test_objects.create_site('Second site')
+        camera_point_2 = CameraPoint.test_objects.create_camera_point(
+            site_2, '2016-07-08', Point(-120.2684184, 44.3910532),
+        )
+        self.assertEqual(camera_point_2.letter, 'A')
