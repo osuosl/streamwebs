@@ -194,7 +194,7 @@ class Water_Quality(models.Model):
         verbose_name=_('latitude'), validators=[validate_WaterQuality_latitude]
     )
     longitude = models.DecimalField(
-        default=0, null=True, max_digits=9, decimal_places=6, 
+        default=0, null=True, max_digits=9, decimal_places=6,
         verbose_name=_('longitude'),
         validators=[validate_WaterQuality_longitude]
     )
