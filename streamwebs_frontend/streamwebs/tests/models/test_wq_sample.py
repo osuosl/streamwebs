@@ -61,7 +61,7 @@ class WQSampleTestCase(TestCase):
 
         # Object to test pH
         self.sample_data = WQ_Sample.test_objects.create_sample(
-            self.water_quality, 35, 'Manual', 70, 'Manual', 6, 'Manual',
+            self.water_quality, 1, 35, 'Manual', 70, 'Manual', 6, 'Manual',
             16, 'Vernier', 0.879, 'Manual', 8.8, 'Vernier', 15, 10, 7, 0.93,
             2.1, 1.9, 14.5, 13
         )
@@ -92,15 +92,14 @@ class WQSampleTestCase(TestCase):
 
     def test_Sample_ManyToOneWaterQuality(self):
         sample_1 = WQ_Sample.test_objects.create_sample(
-            self.water_quality, 34, 'Vernier', 55, 'Manual', 4.2, 'Vernier',
+            self.water_quality, 1, 34, 'Vernier', 55, 'Manual', 4.2, 'Vernier',
             9, 'Manual', 0.44, 'Manual', 5.6, 'Vernier'
         )
         sample_2 = WQ_Sample.test_objects.create_sample(
-            self.water_quality, 23, 'Vernier', 65, 'Manual', 2.5, 'Vernier',
+            self.water_quality, 2, 23, 'Vernier', 65, 'Manual', 2.5, 'Vernier',
             9, 'Manual', 0.41, 'Manual', 7.6, 'Vernier'
         )
 
-        print sample_1.water_quality.site.site_name
         self.assertEqual(sample_1.water_quality.school, 'a')
         self.assertEqual(sample_1.water_quality.date, '2016-08-03')
         self.assertEqual(sample_1.water_quality.site.site_name, 'test site')
@@ -111,7 +110,7 @@ class WQSampleTestCase(TestCase):
 
     def test_sample_creation_req_fields(self):
         sample = WQ_Sample.test_objects.create_sample(
-            self.water_quality, 23, 'Vernier', 65, 'Manual', 2.5, 'Vernier',
+            self.water_quality, 1, 23, 'Vernier', 65, 'Manual', 2.5, 'Vernier',
             9, 'Manual', 0.41, 'Manual', 7.6, 'Vernier'
         )
 
@@ -142,24 +141,25 @@ class WQSampleTestCase(TestCase):
 
     def test_sample_creation_opt_fields(self):
         sample = WQ_Sample.test_objects.create_sample(
-            self.water_quality, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 35, 2, 0.34, 3.23, 12, 37, 0.34, 1.45
+            self.water_quality, 1, 0, 'Manual', 0, 'Vernier', 0, 'Vernier', 0,
+            'Vernier', 0, 'Manual', 0, 'Vernier', 35, 2, 0.34, 3.23, 12, 37,
+            0.34, 1.45
         )
 
         # Required
         self.assertEqual(sample.water_quality.site.site_name, 'test site')
         self.assertEqual(sample.water_temperature, 0)
-        self.assertEqual(sample.water_temp_tool, 0)
+        self.assertEqual(sample.water_temp_tool, 'Manual')
         self.assertEqual(sample.air_temperature, 0)
-        self.assertEqual(sample.air_temp_tool, 0)
+        self.assertEqual(sample.air_temp_tool, 'Vernier')
         self.assertEqual(sample.dissolved_oxygen, 0)
-        self.assertEqual(sample.oxygen_tool, 0)
+        self.assertEqual(sample.oxygen_tool, 'Vernier')
         self.assertEqual(sample.pH, 0)
-        self.assertEqual(sample.pH_tool, 0)
+        self.assertEqual(sample.pH_tool, 'Vernier')
         self.assertEqual(sample.turbidity, 0)
-        self.assertEqual(sample.turbid_tool, 0)
+        self.assertEqual(sample.turbid_tool, 'Manual')
         self.assertEqual(sample.salinity, 0)
-        self.assertEqual(sample.salt_tool, 0)
+        self.assertEqual(sample.salt_tool, 'Vernier')
 
         # Optional
         self.assertEqual(sample.conductivity, 35)

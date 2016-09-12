@@ -5,6 +5,7 @@ import sys
 import csv
 
 from django.core.wsgi import get_wsgi_application
+from datetime import datetime
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "streamwebs_frontend.settings")
 proj_path = "/opt/streamwebs/streamwebs_frontend/"
@@ -29,7 +30,8 @@ with open('../csvs/wq_csvs/small/wq.csv', 'r') as csvfile:
                     row[i] = None
 
             # Strip ``Collected date`` to be YYYY-MM-DD
-            collected = row[2].strip('MonTuesWdhurFiSat(Aly), ')
+            temp_date = row[2].strip('MonTuesWdhurFiSat(Aly), ')
+            collected = temp_date[:10]
 
             waterq.date = collected
 

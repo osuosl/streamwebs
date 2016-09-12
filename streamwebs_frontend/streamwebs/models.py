@@ -183,11 +183,11 @@ class Water_Quality(models.Model):
         default=datetime.date.today, verbose_name=_('date')
     )
     DEQ_dq_level = models.CharField(
-        max_length=1, choices=DEQ_DQ_CHOICES,
+        max_length=10, choices=DEQ_DQ_CHOICES,
         default=None, null=True, verbose_name=_('DEQ data quality level')
     )
     school = models.CharField(
-        max_length=250, null=Rrue, verbose_name=_('school')
+        max_length=250, null=True, verbose_name=_('school')
     )
     latitude = models.DecimalField(
         default=0, null=True, max_digits=9, decimal_places=6,
@@ -335,7 +335,7 @@ class WQ_Sample(models.Model):
         max_length=255, choices=TOOL_CHOICES, default=0, null=True,
     )
     pH = models.DecimalField(
-        validators=[validate_pH], default=0, null=True
+        validators=[validate_pH], default=0, null=True,
         max_digits=5, decimal_places=2, verbose_name=_('pH')
     )
     pH_tool = models.CharField(

@@ -46,6 +46,7 @@ with open('../csvs/wq_csvs/small/air.csv', 'r') as csvfile:
             air_temp.save()
 
 csvfile.close()
+print 'Air temperature loaded.'
 
 # Water Temperature, Type, Nid, Water Temp (delta)
 with open('../csvs/wq_csvs/small/water.csv', 'r') as csvfile:
@@ -77,6 +78,7 @@ with open('../csvs/wq_csvs/small/water.csv', 'r') as csvfile:
             water_temp_4.save()
 
 csvfile.close()
+print 'Water temperature loaded.'
 
 # Dissolved Oxygen, Type, Nid, D_Oxygen (delta)
 with open('../csvs/wq_csvs/small/oxygen.csv', 'r') as csvfile:
@@ -108,6 +110,7 @@ with open('../csvs/wq_csvs/small/oxygen.csv', 'r') as csvfile:
             oxygen_4.save()
 
 csvfile.close()
+print 'Dissolved oxygen loaded.'
 
 # pH, Type, Nid, pH (delta)
 with open('../csvs/wq_csvs/small/pH.csv', 'r') as csvfile:
@@ -139,6 +142,7 @@ with open('../csvs/wq_csvs/small/pH.csv', 'r') as csvfile:
             pH_4.save()
 
 csvfile.close()
+print 'pH loaded.'
 
 # Turbidity, Type, Nid, Turbidity (delta)
 with open('../csvs/wq_csvs/small/turbid.csv', 'r') as csvfile:
@@ -170,6 +174,7 @@ with open('../csvs/wq_csvs/small/turbid.csv', 'r') as csvfile:
             turbidity_4.save()
 
 csvfile.close()
+print 'Turbidity loaded.'
 
 # Salinity, Type, Nid, salt (delta)
 with open('../csvs/wq_csvs/small/salt.csv', 'r') as csvfile:
@@ -201,5 +206,4 @@ with open('../csvs/wq_csvs/small/salt.csv', 'r') as csvfile:
             salt_4.save()
 
 csvfile.close()
-
-print 'Loaded.'
+print 'Salinity loaded.'

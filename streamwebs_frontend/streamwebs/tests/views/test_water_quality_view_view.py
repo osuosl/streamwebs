@@ -22,9 +22,9 @@ class AddWaterQualityTestCase(TestCase):
         )
         for i in range(4):
             WQ_Sample.test_objects.create_sample(
-                location, u'27', u'Manual', u'32', u'Vernier', u'1', u'Manual',
-                u'5.4', u'Manual', u'10', u'Manual',  u'10', u'Manual',
-                0, 0, 0, 0, 0, 0, 0, 0
+                location, u'1', u'27', u'Manual', u'32', u'Vernier', u'1',
+                u'Manual', u'5.4', u'Manual', u'10', u'Manual',  u'10',
+                u'Manual', 0, 0, 0, 0, 0, 0, 0, 0
             )
         response = self.client.get(
             reverse(

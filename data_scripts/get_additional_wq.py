@@ -44,6 +44,7 @@ with open('../csvs/wq_csvs/small/conduct.csv', 'r') as csvfile:
             conduct_4.save()
 
 csvfile.close()
+print 'Conductivity loaded.'
 
 # Total Solids, Type, Nid, delta
 with open('../csvs/wq_csvs/small/total_sol.csv', 'r') as csvfile:
@@ -75,6 +76,7 @@ with open('../csvs/wq_csvs/small/total_sol.csv', 'r') as csvfile:
             total_solids_4.save()
 
 csvfile.close()
+print 'Total solids loaded.'
 
 # BOD, Type, Nid, delta
 with open('../csvs/wq_csvs/small/bod.csv', 'r') as csvfile:
@@ -106,6 +108,7 @@ with open('../csvs/wq_csvs/small/bod.csv', 'r') as csvfile:
             bod_4.save()
 
 csvfile.close()
+print 'BOD loaded.'
 
 # Ammonia, Type, Nid, delta
 with open('../csvs/wq_csvs/small/ammonia.csv', 'r') as csvfile:
@@ -137,6 +140,7 @@ with open('../csvs/wq_csvs/small/ammonia.csv', 'r') as csvfile:
             ammonia_4.save()
 
 csvfile.close()
+print 'Ammonia loaded.'
 
 # Nitrite, Type, Nid, delta
 with open('../csvs/wq_csvs/small/nitrite.csv', 'r') as csvfile:
@@ -168,6 +172,7 @@ with open('../csvs/wq_csvs/small/nitrite.csv', 'r') as csvfile:
             nitrite_4.save()
 
 csvfile.close()
+print 'Nitrite loaded.'
 
 # Nitrate, Type, Nid, delta
 with open('../csvs/wq_csvs/small/nitrate.csv', 'r') as csvfile:
@@ -199,6 +204,7 @@ with open('../csvs/wq_csvs/small/nitrate.csv', 'r') as csvfile:
             nitrate_4.save()
 
 csvfile.close()
+print 'Nitrate loaded.'
 
 # Phosphates, Type, Nid, delta
 with open('../csvs/wq_csvs/small/phosphates.csv', 'r') as csvfile:
@@ -230,6 +236,7 @@ with open('../csvs/wq_csvs/small/phosphates.csv', 'r') as csvfile:
             phosphates_4.save()
 
 csvfile.close()
+print 'Phophates loaded.'
 
 # Fecal Coliform, Type, Nid, delta
 with open('../csvs/wq_csvs/small/fecal_col.csv', 'r') as csvfile:
@@ -261,5 +268,4 @@ with open('../csvs/wq_csvs/small/fecal_col.csv', 'r') as csvfile:
             fecal_col_4.save()
 
 csvfile.close()
-
-print 'Loaded.'
+print 'Fecal coliform loaded.'
