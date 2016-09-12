@@ -5,7 +5,6 @@ import sys
 import csv
 
 from django.core.wsgi import get_wsgi_application
-from datetime import datetime
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "streamwebs_frontend.settings")
 proj_path = "/opt/streamwebs/streamwebs_frontend/"
