@@ -1,0 +1,26 @@
+{% extends 'streamwebs/base.html' %}
+{% load i18n %}
+{% load staticfiles %}
+
+{% block scripts %}
+<script src="//maps.google.com/maps/api/js?callback=initMap" async defer></script>
+<script type="application/javascript" src="{% static 'streamwebs/js/create_site.js' %}"></script>
+{% endblock %}
+
+{% block title %} Add a New Site {% endblock %}
+{% block body_title %} Add a New Site {% endblock %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+        <form id='site_form' method='post' enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ site_form.media }}
+            {{ site_form.as_p }}
+
+            <input type='submit' name='submit' value='{% trans 'Add new site' %}'/>
+        </form>
+    {% else %}
+    <strong>You must be logged in to submit data.</strong>
+
+    {% endif %}
+{% endblock %}

@@ -1,11 +1,12 @@
-
 {% extends "streamwebs/base.html" %}
 {% load staticfiles %}
 {% block title %}Sites -{% endblock %}
 {% load i18n %}
 {% block scripts %}
 
-<script src="//maps.google.com/maps/api/js"></script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key={{ maps_api }}"></script>
+
 <script type="application/javascript">
     var sites = [];
     {% for site in sites %}

@@ -10,15 +10,19 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 from django.utils.text import slugify
-from django.conf import settings
 
 
 class SiteManager(models.Manager):
     """
     Manager for the site class - creates a site to be used in tests
     """
-    def create_site(self, site_name, site_type):
-        site = self.create(site_name=site_name, site_type=site_type)
+    default = 'POINT(-121.3846841 44.0612385)'
+
+    def create_site(self, site_name, location=default,
+                    description='', image=None, active=True):
+
+        site = self.create(site_name=site_name, location=location,
+                           description=description, image=image, active=active)
         return site
 
 
@@ -37,26 +41,24 @@ class Site(models.Model):
     text description of entry.
     """
 
-    site_name = models.CharField(
-        max_length=250, blank=False, verbose_name=_('site name')
-    )
-    site_type = models.CharField(max_length=250, blank=True)
-    description = models.TextField(blank=True)
-    site_slug = models.SlugField(
-        unique=True, blank=False, max_length=50, editable=False
-    )
+    site_name = models.CharField(max_length=250, verbose_name=_('site name'))
+    description = models.TextField(blank=True,
+                                   verbose_name=_('site description'))
+    site_slug = models.SlugField(unique=True, max_length=50, editable=False)
 
     # Geo Django fields to store a point
-    location = models.PointField(
-        null=True, blank=True, validators=[validate_Site_location]
-    )
-    # objects = models.GeoManager()
+    location = models.PointField(default='POINT(-121.3846841 44.0612385)',
+                                 verbose_name=_('location'),
+                                 validators=[validate_Site_location])
+    image = models.ImageField(null=True, blank=True, verbose_name=_('image'),
+                              upload_to='site_photos/')
+    active = models.BooleanField(default=True)
 
     created = models.DateTimeField(default=timezone.now)
     modified = models.DateTimeField(default=timezone.now)
 
-    test_objects = SiteManager()
-    objects = models.Manager()
+    objects = models.Manager()  # default manager
+    test_objects = SiteManager()  # custom manager for use in writing tests
 
     def __str__(self):
         return self.site_name
@@ -91,11 +93,6 @@ class School(models.Model):
         return self.name
 
 
-def validate_UserProfile_school(school):
-    if school not in dict(settings.SCHOOL_CHOICES):
-        raise ValidationError(_('That school is not in the list.'))
-
-
 def validate_UserProfile_birthdate(birthdate):
     today = datetime.datetime.now()
     if birthdate.year > today.year - 13:
@@ -110,17 +107,9 @@ def validate_UserProfile_birthdate(birthdate):
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    school = models.CharField(
-        max_length=255,
-        choices=settings.SCHOOL_CHOICES,
-        default='',
-        validators=[validate_UserProfile_school],
-        verbose_name=_('school')
-    )
-    birthdate = models.DateField(
-        validators=[validate_UserProfile_birthdate],
-        verbose_name=_('birthdate')
-    )
+    school = models.ForeignKey(School, on_delete=models.CASCADE)
+    birthdate = models.DateField(validators=[validate_UserProfile_birthdate],
+                                 verbose_name=_('birthdate'))
 
     def __unicode__(self):
         return self.user.username
@@ -152,13 +141,11 @@ class WaterQualityManager(models.Manager):
 
 def validate_WaterQuality_latitude(latitude):
     if abs(latitude) > 90:
-        pass
         raise ValidationError(_('Latitude is not within valid range.'))
 
 
 def validate_WaterQuality_longitude(longitude):
     if abs(longitude) > 180:
-        pass
         raise ValidationError(_('Longitude is not within valid range.'))
 
 
@@ -190,7 +177,7 @@ class Water_Quality(models.Model):
 
     site = models.ForeignKey(
         Site, null=True, on_delete=models.CASCADE,
-        verbose_name=_('Stream/Site name')
+        verbose_name=_('Stream/Site name'), limit_choices_to={'active': True}
     )
     date = models.DateField(
         default=datetime.date.today, verbose_name=_('date')
@@ -236,7 +223,7 @@ class Water_Quality(models.Model):
     objects = models.Manager()
 
     def __str__(self):
-        return self.site.site_name
+        return self.site.site_name + ' data sheet ' + str(self.id)
 
     class Meta:
         verbose_name = 'water quality'
@@ -312,8 +299,6 @@ class WQ_Sample(models.Model):
     TWO = 2
     THREE = 3
     FOUR = 4
-<<<<<<< 7ed8ac6bf0a35e5347914ea7fb0ccd1951cff0a8
-=======
     TOOL_CHOICES = ((NOT_ACCESSED, None),
                     (MANUAL, 'Manual'),
                     (VERNIER, 'Vernier'),)
@@ -322,7 +307,6 @@ class WQ_Sample(models.Model):
                       (TWO, 2),
                       (THREE, 3),
                       (FOUR, 4),)
->>>>>>> Flake8
 
     # These are required fields
     water_quality = models.ForeignKey(Water_Quality, on_delete=models.CASCADE,
@@ -412,7 +396,8 @@ class WQ_Sample(models.Model):
     objects = models.Manager()
 
     def __str__(self):
-        return str(self.nid)
+        return self.water_quality.site.site_name + ' sheet ' + \
+               str(self.water_quality.id) + ' sample ' + str(self.id)
 
     class Meta:
         verbose_name = 'water quality sample'
@@ -467,6 +452,122 @@ class MacroinvertebratesManager(models.Manager):
         return info
 
 
+class CameraPointManager(models.Manager):
+
+    def create_camera_point(self, site, cp_date, location, map_datum='',
+                            description=''):
+
+        return self.create(site=site, cp_date=cp_date, location=location,
+                           map_datum=map_datum, description=description)
+
+
+class CameraPoint(models.Model):
+    site = models.ForeignKey(Site, on_delete=models.CASCADE, null=True)
+    letter = models.CharField(null=True, max_length=5, editable=False)
+    cp_date = models.DateField(default=datetime.date.today,
+                               verbose_name=_('date established'))
+    location = models.PointField(null=True, verbose_name=_('location'))
+    map_datum = models.CharField(max_length=255, blank=True,
+                                 verbose_name=_('map datum'))
+    description = models.TextField(blank=True, verbose_name=_('description'))
+    created = models.DateTimeField(default=timezone.now)
+
+    test_objects = CameraPointManager()
+    objects = models.Manager()
+
+    def __str__(self):
+        return ('Camera point ' + self.letter + ' for site ' +
+                self.site.site_name)
+
+    def save(self, **kwargs):
+        if not self.letter:
+            site_cps = CameraPoint.objects.filter(site_id=self.site.id)
+            if not site_cps.exists():
+                self.letter = 'A'
+            else:
+                prev_letter = site_cps.latest('created').letter
+                max_len = len(prev_letter)
+                if prev_letter[0] == 'Z':
+                    self.letter = (max_len + 1) * 'A'
+                else:
+                    self.letter = max_len * chr(ord(prev_letter[0]) + 1)
+        super(CameraPoint, self).save()
+
+    class Meta:
+        verbose_name = 'camera point'
+        verbose_name_plural = 'camera points'
+
+
+class PhotoPointManager(models.Manager):
+
+    def create_photo_point(self, camera_point, pp_date, compass_bearing,
+                           distance, camera_height, notes=''):
+
+        return self.create(camera_point=camera_point, pp_date=pp_date,
+                           compass_bearing=compass_bearing, distance=distance,
+                           camera_height=camera_height, notes=notes)
+
+
+class PhotoPoint(models.Model):
+    camera_point = models.ForeignKey(CameraPoint, on_delete=models.CASCADE,
+                                     null=True, related_name='camera_point')
+    number = models.PositiveSmallIntegerField(null=True, editable=False)
+    pp_date = models.DateField(default=datetime.date.today,
+                               verbose_name=_('date established'))
+    compass_bearing = models.PositiveSmallIntegerField(
+        verbose_name=_('compass bearing'))
+    distance = models.DecimalField(
+        max_digits=3, decimal_places=0,
+        verbose_name=_('distance from camera point'))
+    camera_height = models.DecimalField(max_digits=3, decimal_places=0,
+                                        verbose_name=_('camera height'))
+    notes = models.TextField(blank=True, verbose_name=_('notes'))
+
+    test_objects = PhotoPointManager()
+    objects = models.Manager()
+
+    def __str__(self):
+        return ('Photo point ' + str(self.number) + ' for camera point ' +
+                self.camera_point.letter)
+
+    def save(self, **kwargs):
+        if not self.number:
+            p = PhotoPoint.objects.filter(camera_point_id=self.camera_point.id)
+            if not p.exists():
+                self.number = 1
+            else:
+                prev_num = p.latest('number').number
+                self.number = prev_num + 1
+        super(PhotoPoint, self).save()
+
+    class Meta:
+        verbose_name = 'photo point'
+        verbose_name_plural = 'photo points'
+
+
+class PhotoPointImage(models.Model):
+    photo_point = models.ForeignKey(PhotoPoint, on_delete=models.CASCADE,
+                                    null=True, related_name='photo_point')
+    image = models.ImageField(null=True, blank=True, upload_to='pp_photos/',
+                              verbose_name=_('photo'))
+    date = models.DateField(default=datetime.date.today,
+                            verbose_name=_('date taken'))
+
+    def __str__(self):
+        return (str(self.date) + ' for photo point ' +
+                str(self.photo_point.number))
+
+    def clean(self):
+        p = PhotoPointImage.objects.filter(photo_point_id=self.photo_point.id)
+        if p.exclude(id=self.id).filter(date=self.date).exists():
+            raise ValidationError(_('A photo for %(date)s already exists.'),
+                                  code='duplicate', params={'date': self.date})
+
+    class Meta:
+        verbose_name = 'photo point image'
+        verbose_name_plural = 'photo point images'
+
+
 @python_2_unicode_compatible
 class Macroinvertebrates(models.Model):
     school = models.CharField(max_length=250, verbose_name=_('school'))
@@ -474,7 +575,8 @@ class Macroinvertebrates(models.Model):
                                      verbose_name=_('date and time'))
     weather = models.CharField(max_length=250,
                                verbose_name=_('weather'))
-    site = models.ForeignKey(Site, null=True, on_delete=models.CASCADE)
+    site = models.ForeignKey(Site, null=True, on_delete=models.CASCADE,
+                             limit_choices_to={'active': True})
     time_spent = models.PositiveIntegerField(
         default=None, null=True,
         verbose_name=_('time spent sorting/identifying')
@@ -547,7 +649,7 @@ class Macroinvertebrates(models.Model):
     objects = MacroinvertebratesManager()
 
     def __str__(self):
-        return self.site.site_name
+        return self.site.site_name + ' sheet ' + str(self.id)
 
     def clean(self):
         if ((self.caddisfly + self.mayfly + self.riffle_beetle +
@@ -653,7 +755,8 @@ class RiparianTransect(models.Model):
     weather = models.CharField(max_length=255, blank=True,
                                verbose_name=_('weather'))
     site = models.ForeignKey(Site, null=True, on_delete=models.CASCADE,
-                             verbose_name=_('site'))
+                             verbose_name=_('site'),
+                             limit_choices_to={'active': True})
     slope = models.DecimalField(
         blank=True, null=True, max_digits=5, decimal_places=3,
         verbose_name=_('slope of stream bank (rise over run)')
@@ -817,7 +920,8 @@ class Canopy_Cover(models.Model):
     date_time = models.DateTimeField(default=timezone.now,
                                      verbose_name=_('date and time'))
     site = models.ForeignKey(Site, null=True, on_delete=models.CASCADE,
-                             verbose_name=_('site'))
+                             verbose_name=_('site'),
+                             limit_choices_to={'active': True})
     weather = models.CharField(max_length=250, verbose_name=_('weather'))
     north = models.ForeignKey(CC_Cardinal, on_delete=models.CASCADE,
                               related_name='north', null=True,
@@ -837,7 +941,7 @@ class Canopy_Cover(models.Model):
         )
 
     def __str__(self):
-        return self.site.site_name
+        return self.site.site_name + ' sheet ' + str(self.id)
 
     class Meta:
         verbose_name = 'canopy cover survey'

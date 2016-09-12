@@ -6,7 +6,7 @@ from streamwebs.models import Site, TransectZone, RiparianTransect
 class ViewTransectTestCase(TestCase):
 
     def test_data_sheet_view(self):
-        site = Site.test_objects.create_site('site name', 'Site Type')
+        site = Site.test_objects.create_site('site name')
         transect = RiparianTransect.objects.create_transect(
             'School Name', '2016-07-22 15:04:00', site
         )
@@ -22,10 +22,9 @@ class ViewTransectTestCase(TestCase):
                                                   'This is zone 5')  # NOQA
         response = self.client.get(
                 reverse(
-                    'streamwebs:riparian_transect_view',
-                    kwargs={'data_id': transect.id,
-                            'site_slug': transect.site.site_slug
-                            }
+                    'streamwebs:riparian_transect',
+                    kwargs={'site_slug': transect.site.site_slug,
+                            'data_id': transect.id}
                 )
         )
         self.assertEqual(response.status_code, 200)
@@ -34,7 +33,7 @@ class ViewTransectTestCase(TestCase):
         )
 
     def test_data_sheet_view_content(self):
-        site = Site.test_objects.create_site('Site Name', 'Site Type')
+        site = Site.test_objects.create_site('Site Name')
         transect = RiparianTransect.objects.create_transect(
             'School Name', '2016-07-22 15:04:00', site
         )
@@ -50,10 +49,9 @@ class ViewTransectTestCase(TestCase):
                                                   'This is zone 5')  # NOQA
         response = self.client.get(
                 reverse(
-                    'streamwebs:riparian_transect_view',
-                    kwargs={'data_id': transect.id,
-                            'site_slug': site.site_slug
-                            }
+                    'streamwebs:riparian_transect',
+                    kwargs={'site_slug': transect.site.site_slug,
+                            'data_id': transect.id}
                 )
         )
 

@@ -8,21 +8,65 @@
 {% block body_title %}{{site.site_name}}{% endblock %}
 
 {% block content %}
-<div class="site_data">
-    {% if samples %}
-        <h6>Samples taken near {{site.site_name}}:</h6>
-        {% for s in samples %}
-            <p><a href="{% url 'streamwebs:water_quality' site.site_slug s.id %}">
-                {{ s.date }}</a>, {{ s.school }}, Lat/Long: ({{ s.latitude }},
-                {{ s.longitude }})</p>
-        {% endfor %}
-    {% else %}
-        <h6>No samples found near {{site.site_name}}.</h6>
-    {% endif %}
-</div>
 
+{% if messages %}
+    {% for message in messages %}
+    <strong>{{ message }}</strong>
+    {% endfor %}
+{% endif %}
+
+<!-- site info -->
+<div class="site_data">
+    <p>Description: {{ site.description }}</p>
+    <p>Location: {{ site.location }}</p>
+    <p>Created: {{ site.created|date:"m-d-Y" }} {{ site.created|time:"H:i T" }}</p>
+    <p>Modified: {{ site.modified|date:"m-d-Y" }} {{ site.modified|time:"H:i T" }}</p>
+    {% if site.image %}
+    <img src="{{ site.image.url }}" alt="site image" />
+    {% endif %}
+
+    <!-- existing sheets: lists site's sheets for each existing type -->
+    {% if wq_sheets %}
+    <p>Water Quality data sheets:</p>
+        {% for sheet in wq_sheets %}
+        <p><a href="{% url 'streamwebs:water_quality' site.site_slug sheet.id %}">
+            {{ sheet.date|date:"m-d-Y" }}</a>, {{ sheet.school }}, Lat/Long: ({{ sheet.latitude }},
+            {{ sheet.longitude }})</p>
+
+        {% endfor %}
+    {% endif %}
+
+    {% if macro_sheets %}
+    <p>Macroinvertebrates data sheets:</p>
+        {% for sheet in macro_sheets %}
+        <p><a href="{% url 'streamwebs:macroinvertebrate_view' site.site_slug sheet.id %}">
+            Macroinvertebrates data: {{ sheet.date_time|date:"m-d-Y" }}</a></p>
+        {% endfor %}
+    {% endif %}
+
+    {% if transect_sheets %}
+    <p>Riparian transect data sheets:</p>
+        {% for sheet in transect_sheets %}
+        <p><a href="{% url 'streamwebs:riparian_transect' site.site_slug sheet.id %}">
+            Riparian transect data: {{ sheet.date_time|date:"m-d-Y" }}</a></p>
+        {% endfor %}
+    {% endif %}
+
+    <!-- No views, templates for canopy cover yet, so no links to sheets --> 
+    {% if canopy_sheets %}
+    <p>Canopy cover data sheets:</p>
+        {% for sheet in canopy_sheets %}
+        <p>Canopy cover data: {{ sheet.date_time|date:"m-d-Y" }}</p>
+        {% endfor %}
+    {% endif %}
+</div>   
+
+<!-- links to create new data sheets for each type -->
 <div class="new_data">
-<p><a href="{% url 'streamwebs:water_quality_edit' site_slug=site.site_slug %}">
-Add New Sample</a></p>
+    <h4>Add data for this site: </h4>
+    <p><a href="{% url 'streamwebs:water_quality_edit' site_slug=site.site_slug %}">Water quality</a></p>
+    <p><a href="{% url 'streamwebs:macroinvertebrate_edit' site.site_slug %}">Macroinvertebrates</a></p>
+    <p><a href="{% url 'streamwebs:riparian_transect_edit' site.site_slug %}">Riparian transect</a></p>
+    <p>Canopy cover (coming soon)</p>
 </div>
 {% endblock %}
