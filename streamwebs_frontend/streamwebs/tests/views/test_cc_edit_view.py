@@ -1,7 +1,7 @@
 from django.test import Client, TestCase
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
-from streamwebs.models import Site
+from streamwebs.models import Site, School
 
 
 class AddCanopyCoverTestCase(TestCase):
@@ -17,8 +17,9 @@ class AddCanopyCoverTestCase(TestCase):
         """
         site = Site.test_objects.create_site('Test')
         response = self.client.post(
-            reverse('streamwebs:canopy_cover_edit',
-                    kwargs={'site_slug': site.site_slug}
+            reverse(
+                'streamwebs:canopy_cover_edit',
+                kwargs={'site_slug': site.site_slug}
             ), {
                 'canopy_cover-TOTAL_FORMS': '4',
                 'canopy_cover-INITIAL_FORMS': '0',
@@ -37,12 +38,13 @@ class AddCanopyCoverTestCase(TestCase):
         appropriately, return a success message
         """
         site = Site.test_objects.create_site('Testoo')
+        school = School.test_objects.create_school('School of Cool')
         response = self.client.post(
             reverse(
                 'streamwebs:canopy_cover_edit',
                 kwargs={'site_slug': site.site_slug}
             ), {
-                'school': 'School of Cool',
+                'school': school.id,
                 'date_time': '2016-08-31 12:30:00',
                 'site': site.id,
                 'weather': 'Gray',
@@ -157,15 +159,17 @@ class AddCanopyCoverTestCase(TestCase):
                 'canopy_cover-3-V': True,
                 'canopy_cover-3-W': True,
                 'canopy_cover-3-X': True,
-                'canopy_cover-3-num_shaded': 14
+                'canopy_cover-3-num_shaded': 14,
+
+                'est_canopy_cover': 49
                }
         )
         self.assertTemplateUsed(
             response,
             'streamwebs/datasheets/canopy_cover_edit.html'
         )
-#        self.assertTrue(response.context['added'])
-#        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.context['added'])
+        self.assertEqual(response.status_code, 200)
 
     def test_view_with_not_logged_in_user(self):
         """
@@ -174,8 +178,9 @@ class AddCanopyCoverTestCase(TestCase):
         self.client.logout()
         site = Site.test_objects.create_site('Test')
         response = self.client.get(
-            reverse('streamwebs:canopy_cover_edit',
-                    kwargs={'site_slug': site.site_slug}
+            reverse(
+                'streamwebs:canopy_cover_edit',
+                kwargs={'site_slug': site.site_slug}
             )
         )
         self.assertContains(

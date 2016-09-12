@@ -13,7 +13,7 @@ from django.conf import settings
 
 from streamwebs.forms import (
     UserForm, UserProfileForm, RiparianTransectForm, MacroinvertebratesForm,
-    Canopy_Cover_Form, CC_Cardinal_Form, WQSampleForm, WQSampleFormReadOnly,
+    Canopy_Cover_Form, WQSampleForm, WQSampleFormReadOnly,
     WQForm, WQFormReadOnly, SiteForm)
 from streamwebs.models import (
     Macroinvertebrates, Site, Water_Quality, WQ_Sample, RiparianTransect,
@@ -328,14 +328,14 @@ def canopy_cover_edit(request, site_slug):
     The view for the submission of a new canopy cover data sheet.
     """
     added = False
-    site = Site.objects.get(site_slug=site_slug)
+    site = Site.objects.filter(active=True).get(site_slug=site_slug)
     canopy_cover = Canopy_Cover()
     CardinalInlineFormSet = inlineformset_factory(
         Canopy_Cover, CC_Cardinal,
         fields=(
             'direction', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
-            'K', 'L', 'M', 'N','O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'X',
-            'num_shaded'), extra=4
+            'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W',
+            'X', 'num_shaded'), extra=4
     )
 
     if request.method == 'POST':

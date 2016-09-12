@@ -6,7 +6,8 @@ from django.core.exceptions import ValidationError
 from itertools import chain
 from django.utils import timezone
 
-from streamwebs.models import Site, Canopy_Cover, CC_Cardinal, validate_shaded
+from streamwebs.models import (Site, Canopy_Cover, CC_Cardinal, School,
+                               validate_shaded)
 
 
 class CCCardinalTestCase(TestCase):
@@ -67,9 +68,10 @@ class CCCardinalTestCase(TestCase):
         default_dt = timezone.now()
 
         site = Site.test_objects.create_site('Test')
+        school = School.test_objects.create_school('School A')
 
         canopyc = Canopy_Cover.objects.create(
-            school='School A', date_time=default_dt, site=site,
+            school=school, date_time=default_dt, site=site,
             weather='bright', est_canopy_cover=50
         )
 
@@ -87,9 +89,10 @@ class CCCardinalTestCase(TestCase):
         default_dt = timezone.now()
 
         site = Site.test_objects.create_site('Test')
+        school = School.test_objects.create_school('School A')
 
         canopyc = Canopy_Cover.objects.create(
-            school='School A', date_time=default_dt, site=site,
+            school=school, date_time=default_dt, site=site,
             weather='bright', est_canopy_cover=50
         )
 
@@ -108,9 +111,10 @@ class CCCardinalTestCase(TestCase):
         default_dt = timezone.now()
 
         site = Site.test_objects.create_site('Test')
+        school = School.test_objects.create_school('School A')
 
         canopyc = Canopy_Cover.objects.create(
-            school='School A', date_time=default_dt, site=site,
+            school=school, date_time=default_dt, site=site,
             weather='bright', est_canopy_cover=50
         )
 
@@ -129,9 +133,10 @@ class CCCardinalTestCase(TestCase):
         default_dt = timezone.now()
 
         site = Site.test_objects.create_site('Test')
+        school = School.test_objects.create_school('School A')
 
         canopyc = Canopy_Cover.objects.create(
-            school='School A', date_time=default_dt, site=site,
+            school=school, date_time=default_dt, site=site,
             weather='bright', est_canopy_cover=50
         )
 
