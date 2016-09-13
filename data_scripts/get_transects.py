@@ -13,7 +13,7 @@ application = get_wsgi_application()
 
 from streamwebs.models import Site  # NOQA
 from streamwebs.models import RiparianTransect  # NOQA
-from streamwebs.models import TransectZone
+from streamwebs.models import TransectZone  # NOQA
 
 # Nid, Collected, Site Name, Estimated Slope, Field Notes
 with open('../csvs/rip_transect.csv', 'r') as csvfile:
@@ -92,7 +92,7 @@ with open('../csvs/transect_zones.csv', 'r') as csvfile:
             rip_transect = RiparianTransect.objects.get(nid=row[0])
             zone.transect_id = rip_transect.id
 
-            #zone.save()
+            zone.save()
 
 csvfile.close()
 print 'Zone 2 loaded.'
@@ -171,5 +171,3 @@ with open('../csvs/transect_zones.csv', 'r') as csvfile:
 
 csvfile.close()
 print 'Zone 5 loaded.'
-
-
