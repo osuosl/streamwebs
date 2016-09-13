@@ -312,7 +312,7 @@ def canopy_cover_view(request, site_slug, data_id):
     # Invoking the database by evaluating the queryset before passing it to the
     # template is necessary in order to pass Travis tests.
     # https://docs.djangoproject.com/en/1.9/ref/models/querysets/#when-querysets-are-evaluated
-    cardinals = list(cardinals)
+    # cardinals = list(cardinals)
 
     return render(
         request, 'streamwebs/datasheets/canopy_cover_view.html', {

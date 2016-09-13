@@ -20,6 +20,7 @@
         <p>Placeholder for Canopy Cover graph</p>
     </div>
 
-    <p><strong>Estimated Canopy Cover</strong>: {{ canopy_cover.est_canopy_cover }}/96</p>
+    <p><strong>Estimated Canopy Cover</strong>:
+        {{ canopy_cover.est_canopy_cover | get_cc_percentage }}%</p>
 
 {% endblock %}

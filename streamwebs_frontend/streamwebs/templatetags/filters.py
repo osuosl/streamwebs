@@ -56,9 +56,7 @@ def get_zone_labels(category):
 
 
 @register.filter
-def get_cardinal_labels(category):
-    """Grabs translatable cardinal-table header string"""
-    if category == 'direction':
-        return _('Cardinal Direction')
-    elif category == 'box':
-        return _('Cardinal Box')
+def get_cc_percentage(est_cc):
+    """Calculates a percentage for the estimated canopy cover"""
+    percentage = ((float(est_cc) / 96) * 100)
+    return ("{0:.2f}".format(percentage))
