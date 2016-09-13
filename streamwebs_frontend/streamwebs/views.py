@@ -249,7 +249,7 @@ def riparian_transect_view(request, site_slug, data_id):
     # Invoking the database by evaluating the queryset before passing it to the
     # template is necessary in order to pass Travis tests.
     # https://docs.djangoproject.com/en/1.9/ref/models/querysets/#when-querysets-are-evaluated
-    zones = list(zones)
+    # zones = list(zones)
 
     return render(
         request, 'streamwebs/datasheets/riparian_transect_view.html', {
