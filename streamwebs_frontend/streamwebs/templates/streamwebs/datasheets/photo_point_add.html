@@ -1,0 +1,11 @@
+{% extends 'streamwebs/base.html' %}
+{% load i18n %}
+{% load filters %}
+{% block content %}
+
+<form id='pp_form' method='post'>
+    {% csrf_token %}
+    {{ pp_form.as_p }}
+    <input type='submit', name='submit', value='Submit' />
+</form>
+{% endblock %}

@@ -13,8 +13,8 @@ from django.conf import settings
 
 from streamwebs.forms import (
     UserForm, UserProfileForm, RiparianTransectForm, MacroinvertebratesForm,
-    Canopy_Cover_Form, WQSampleForm, WQSampleFormReadOnly, WQForm,
-    WQFormReadOnly, SiteForm, CameraPointForm)
+    PhotoPointImageForm, PhotoPointForm, CameraPointForm, WQSampleForm,
+    WQSampleFormReadOnly, WQForm, WQFormReadOnly, SiteForm, Canopy_Cover_Form)
 
 from streamwebs.models import (
     Macroinvertebrates, Site, Water_Quality, WQ_Sample, RiparianTransect,
@@ -368,48 +368,102 @@ def canopy_cover_edit(request, site_slug):
 
 
 def add_camera_point(request, site_slug):
-    """View for submitting new PP Monitoring sheet: 1 CP with 3 PPs"""
+    """Add new CP and redirect to PP-creation view"""
     added = False
     site = Site.objects.get(site_slug=site_slug)
     camera = CameraPoint()
-    PhotoPointInlineFormSet = inlineformset_factory(
-        CameraPoint, PhotoPoint,
-        fields=('pp_date', 'compass_bearing', 'distance', 'camera_height',
-                'notes'), extra=3)
 
     if request.method == 'POST':
-        pp_formset = PhotoPointInlineFormSet(
-            data=request.POST, instance=camera
-        )
-        camera_form = CameraPointForm(data=request.POST)
+        camera_form = CameraPointForm(request.POST)
 
-        if (pp_formset.is_valid() and camera_form.is_valid()):
-
-            camera = camera_form.save(commit=False)             # save form to object
-            camera.letter = 'A'
-            camera.save()                             # save object
-
-            photo_points = pp_formset.save(commit=False)     # save forms to objs
-
-            for pp in photo_points:                          # for each zone,
-                pp.camera_point = camera                # assign the transect
-                pp.number = 1
-                pp.save()                             # save the zone obj
-
+        if camera_form.is_valid():
+            camera = camera_form.save()                   # save form to object
+            camera.save()                                 # save object
             added = True
+            messages.success(request,
+                             'You have successfully added a new camera point.')
+            return redirect(reverse('streamwebs:photo_point_add',
+                            kwargs={'site_slug': site.site_slug,
+                                    'cp_id': camera.id}))
 
     else:
-        pp_formset = PhotoPointInlineFormSet(instance=camera)
         camera_form = CameraPointForm()
 
     return render(
         request,
         'streamwebs/datasheets/camera_point_add.html', {
-            'camera_form': camera_form, 'pp_formset': pp_formset,
-            'added': added, 'site': site
+            'camera_form': camera_form,
+            'added': added,
+            'site': site
         }
     )
 
+
+def add_photo_point(request, site_slug, cp_id):
+    """Add a photo point to a specific camera point"""
+    added = False
+    cp = CameraPoint.objects.get(id=cp_id)
+
+    if request.method == 'POST':
+        print ('post')
+        pp_form = PhotoPointForm(request.POST)
+
+        if pp_form.is_valid():
+            print ('yeah')
+            pp = pp_form.save(commit=False)
+            pp.camera_point = cp
+            pp.save()
+
+            added = True
+            messages.success(request, 'successful pp add')
+            return redirect(reverse('streamwebs:pp_image_add',
+                            kwargs={'site_slug': site_slug,
+                                    'cp_id': cp_id,
+                                    'pp_id': pp.id}))
+
+        else:
+            print (pp_form.errors)
+
+    else:
+        pp_form = PhotoPointForm()
+
+    return render(
+        request,
+        'streamwebs/datasheets/photo_point_add.html', {
+            'pp_form': pp_form,
+            'added': added
+        }
+    )
+
+
+def add_pp_image(request, site_slug, cp_id, pp_id):
+    added = False
+    pp = PhotoPoint.objects.get(id=pp_id)
+
+    if request.method == 'POST':
+        ppi_form = PhotoPointImageForm(request.POST, request.FILES)
+
+        if ppi_form.is_valid():
+            ppi = ppi_form.save(commit=False)
+            ppi.photo_point = pp
+            ppi.save()
+
+            added = True
+            return HttpResponse('successful ppi add')
+
+        else:
+            print (ppi_form.errors)
+
+    else:
+        ppi_form = PhotoPointImageForm()
+
+    return render(
+        request,
+        'streamwebs/datasheets/ppi_image_add.html', {
+            'ppi_form': ppi_form,
+            'added': added
+        }
+    )
 
 
 def water_quality(request, site_slug, data_id):

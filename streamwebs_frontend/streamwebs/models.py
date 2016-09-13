@@ -544,12 +544,15 @@ class PhotoPoint(models.Model):
 class PhotoPointImage(models.Model):
     photo_point = models.ForeignKey(PhotoPoint, on_delete=models.CASCADE,
                                     null=True, related_name='photo_point')
-    image = models.ImageField(null=True, blank=True, upload_to='pp_photos/')
-    date = models.DateField(default=datetime.date.today)
+    image = models.ImageField(null=True, upload_to='pp_photos/',
+                              verbose_name=_('photo'))
+    date = models.DateField(default=datetime.date.today,
+                            verbose_name=_('date taken'))
+    objects = models.Manager()
 
     def __str__(self):
-        return ('Image ' + str(self.id) + ' for photo point ' +
-                str(self.photo_point.id))
+        return (str(self.date) + ' for photo point ' +
+                str(self.photo_point.number))
 
     class Meta:
         verbose_name = 'photo point image'
