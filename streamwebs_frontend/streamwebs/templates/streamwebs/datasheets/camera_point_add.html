@@ -11,10 +11,13 @@
         <strong>{% trans "You have successfully added a new camera point." %}</strong>
 
         {% else %}
-        <form id='pp_monitoring_form' method='post'>
+        <form id='pp_monitoring_form' method='post', enctype='multipart/form-data'>
             {% csrf_token %}
             {{ camera_form.media }}
             {{ camera_form.as_p }}
+            {{ pp_formset.as_p }}
+            {{ ppi_formset.as_p }}
+
             <input type='submit', name='submit', value='Submit' />
         </form>
         {% endif %}
