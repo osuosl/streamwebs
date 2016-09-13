@@ -249,7 +249,7 @@ def riparian_transect_view(request, site_slug, data_id):
     # Invoking the database by evaluating the queryset before passing it to the
     # template is necessary in order to pass Travis tests.
     # https://docs.djangoproject.com/en/1.9/ref/models/querysets/#when-querysets-are-evaluated
-    # zones = list(zones)
+    zones = list(zones)
 
     return render(
         request, 'streamwebs/datasheets/riparian_transect_view.html', {
@@ -308,11 +308,6 @@ def canopy_cover_view(request, site_slug, data_id):
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     canopy_cover = Canopy_Cover.objects.filter(site_id=site.id).get(id=data_id)
     cardinals = CC_Cardinal.objects.filter(canopy_cover_id=canopy_cover)
-
-    # Invoking the database by evaluating the queryset before passing it to the
-    # template is necessary in order to pass Travis tests.
-    # https://docs.djangoproject.com/en/1.9/ref/models/querysets/#when-querysets-are-evaluated
-    # cardinals = list(cardinals)
 
     return render(
         request, 'streamwebs/datasheets/canopy_cover_view.html', {
