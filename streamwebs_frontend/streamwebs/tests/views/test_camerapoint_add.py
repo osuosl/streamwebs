@@ -1,8 +1,22 @@
 from django.test import Client, TestCase
 from django.core.urlresolvers import reverse
+from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.contrib.auth.models import User
 from streamwebs.models import Site
-import tempfile
+from PIL import Image
+import StringIO
+
+
+def get_temporary_image():
+    io = StringIO.StringIO()
+    size = (200, 200)
+    color = (255, 0, 0, 0)
+    image = Image.new('RGBA', size, color)
+    image.save(io, format='JPEG')
+    image_file = InMemoryUploadedFile(io, None, 'foo.jpg', 'jpeg', io.len,
+                                      None)
+    image_file.seek(0)
+    return image_file
 
 
 class AddCameraPointTestCase(TestCase):
@@ -21,10 +35,13 @@ class AddCameraPointTestCase(TestCase):
                     ), {
                 'camera_point-TOTAL_FORMS': '3',  # 3 for now
                 'camera_point-INITIAL_FORMS': '0',  # none are prefilled
-                'camera_point-MAX_NUM_FORMS': '',  # unlimited
+                'camera_point-MAX_NUM_FORMS': '3',
+                'camera_point-MIN_NUM_FORMS': '3',
+
                 'form-TOTAL_FORMS': '3',  # 3 for now
                 'form-INITIAL_FORMS': '0',  # none are prefilled
-                'form-MAX_NUM_FORMS': ''  # unlimited
+                'form-MAX_NUM_FORMS': '3',
+                'form-MIN_NUM_FORMS': '3',
                 }
         )
         self.assertFormError(response, 'camera_form', 'cp_date',
@@ -37,9 +54,9 @@ class AddCameraPointTestCase(TestCase):
         """If user submits form with good data, success message displayed"""
         site = Site.test_objects.create_site('site name')
 
-        img_1 = tempfile.NamedTemporaryFile(suffix='.jpg').name
-        img_2 = tempfile.NamedTemporaryFile(suffix='.jpg').name
-        img_3 = tempfile.NamedTemporaryFile(suffix='.jpg').name
+        img_1 = get_temporary_image()
+        img_2 = get_temporary_image()
+        img_3 = get_temporary_image()
 
         response = self.client.post(
             reverse('streamwebs:camera_point_add',
@@ -54,7 +71,8 @@ class AddCameraPointTestCase(TestCase):
                         # photo point formset
                         'camera_point-TOTAL_FORMS': '3',  # 3 for now
                         'camera_point-INITIAL_FORMS': '0',  # none prefilled
-                        'camera_point-MAX_NUM_FORMS': '',  # unlimited
+                        'camera_point-MAX_NUM_FORMS': '3',
+                        'camera_point-MIN_NUM_FORMS': '3',
 
                         'camera_point-0-pp_date': '2016-09-01',
                         'camera_point-0-compass_bearing': 45,
@@ -77,7 +95,8 @@ class AddCameraPointTestCase(TestCase):
                         # photo point image formset
                         'form-TOTAL_FORMS': '3',  # 3 for now
                         'form-INITIAL_FORMS': '0',  # none prefilled
-                        'form-MAX_NUM_FORMS': '',  # unlimited
+                        'form-MAX_NUM_FORMS': '3',
+                        'form-MIN_NUM_FORMS': '3',
 
                         'form-0-image': img_1,
                         'form-0-date': '2016-09-06',
@@ -89,13 +108,13 @@ class AddCameraPointTestCase(TestCase):
                         'form-2-date': '2016-09-04',
                     }
         )
-#        self.assertTemplateUsed(
-#            response,
-#            'streamwebs/datasheets/camera_point_add.html'
-#        )
+        self.assertTemplateUsed(
+            response,
+            'streamwebs/datasheets/camera_point_add.html'
+        )
 
-#        self.assertTrue(response.context['added'])
-#        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.context['added'])
+        self.assertEqual(response.status_code, 200)
 
     def test_view_with_not_logged_in_user(self):
         """If not logged in, user can't view data entry page"""

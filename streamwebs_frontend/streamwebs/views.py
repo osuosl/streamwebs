@@ -368,6 +368,27 @@ def canopy_cover_edit(request, site_slug):
     )
 
 
+def camera_point_view(request, site_slug, cp_id):
+    """View a site's CP: includes all of its PPs/PPIs"""
+    site = Site.objects.filter(active=True).get(site_slug=site_slug)
+    cp = CameraPoint.objects.get(id=cp_id)
+    pps = PhotoPoint.objects.filter(camera_point_id=cp)
+    all_images = dict()
+
+    for pp in pps:
+        pp_images = PhotoPointImage.objects.filter(photo_point_id=pp.id)
+        all_images[pp.number] = pp_images
+
+    return render(
+        request, 'streamwebs/datasheets/camera_point_view.html', {
+            'site': site,
+            'cp': cp,
+            'pps': pps,
+            'pp_images': all_images
+        }
+    )
+
+
 def add_camera_point(request, site_slug):
     """Add new CP to site + 3 PPs and respective photos"""
     added = False
@@ -409,10 +430,6 @@ def add_camera_point(request, site_slug):
                 ppi.save()
 
             added = True
-            return HttpResponse('success cp + 3 PPs + 3 PPIs')
-
-        else:
-            print(camera_form.errors, pp_formset.errors, ppi_formset.errors)
 
     else:
         camera_form = CameraPointForm()
@@ -431,73 +448,6 @@ def add_camera_point(request, site_slug):
             'site': site
         }
     )
-
-
-# def add_photo_point(request, site_slug, cp_id):
-#     """Add a photo point to a specific camera point"""
-#     added = False
-#     cp = CameraPoint.objects.get(id=cp_id)
-# 
-#     if request.method == 'POST':
-#         print ('post')
-#         pp_form = PhotoPointForm(request.POST)
-# 
-#         if pp_form.is_valid():
-#             print ('yeah')
-#             pp = pp_form.save(commit=False)
-#             pp.camera_point = cp
-#             pp.save()
-# 
-#             added = True
-#             messages.success(request, 'successful pp add')
-#             return redirect(reverse('streamwebs:pp_image_add',
-#                             kwargs={'site_slug': site_slug,
-#                                     'cp_id': cp_id,
-#                                     'pp_id': pp.id}))
-# 
-#         else:
-#             print (pp_form.errors)
-# 
-#     else:
-#         pp_form = PhotoPointForm()
-# 
-#     return render(
-#         request,
-#         'streamwebs/datasheets/photo_point_add.html', {
-#             'pp_form': pp_form,
-#             'added': added
-#         }
-#     )
-# 
-# 
-# def add_pp_image(request, site_slug, cp_id, pp_id):
-#     added = False
-#     pp = PhotoPoint.objects.get(id=pp_id)
-# 
-#     if request.method == 'POST':
-#         ppi_form = PhotoPointImageForm(request.POST, request.FILES)
-# 
-#         if ppi_form.is_valid():
-#             ppi = ppi_form.save(commit=False)
-#             ppi.photo_point = pp
-#             ppi.save()
-# 
-#             added = True
-#             return HttpResponse('successful ppi add')
-# 
-#         else:
-#             print (ppi_form.errors)
-# 
-#     else:
-#         ppi_form = PhotoPointImageForm()
-# 
-#     return render(
-#         request,
-#         'streamwebs/datasheets/ppi_image_add.html', {
-#             'ppi_form': ppi_form,
-#             'added': added
-#         }
-#     )
 
 
 def water_quality(request, site_slug, data_id):

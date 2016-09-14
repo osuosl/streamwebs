@@ -548,7 +548,6 @@ class PhotoPointImage(models.Model):
                               verbose_name=_('photo'))
     date = models.DateField(default=datetime.date.today,
                             verbose_name=_('date taken'))
-    # objects = models.Manager()
 
     def __str__(self):
         return (str(self.date) + ' for photo point ' +

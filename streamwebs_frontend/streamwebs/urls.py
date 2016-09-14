@@ -51,6 +51,9 @@ urlpatterns = [
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/camera/edit/',
         views.add_camera_point, name='camera_point_add'),
 
+    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/camera/(?P<cp_id>\d+)/',
+        views.camera_point_view, name='camera_point'),
+
     # url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/camera/(?P<cp_id>\d+)/photo/'
     #     r'edit/', views.add_photo_point, name='photo_point_add'),
 
