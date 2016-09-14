@@ -53,3 +53,10 @@ def get_zone_labels(category):
         return _('Shrubs')
     elif category == 'comments':
         return _('Comments')
+
+
+@register.filter
+def get_cc_percentage(est_cc):
+    """Calculates a percentage for the estimated canopy cover"""
+    percentage = ((float(est_cc) / 96) * 100)
+    return ("{0:.2f}".format(percentage))

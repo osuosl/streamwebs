@@ -45,6 +45,12 @@ urlpatterns = [
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/transect/edit/',
         views.riparian_transect_edit, name='riparian_transect_edit'),
 
+    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/canopy/(?P<data_id>\d+)/',
+        views.canopy_cover_view, name='canopy_cover'),
+
+    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/canopy/edit',
+        views.canopy_cover_edit, name='canopy_cover_edit'),
+
     url(r'^register/$', views.register, name='register'),
     url(r'^login/$', views.user_login, name='login'),
     url(r'^logout/$', views.user_logout, name='logout')
