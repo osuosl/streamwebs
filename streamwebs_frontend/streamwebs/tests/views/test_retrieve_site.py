@@ -49,9 +49,9 @@ class RetrieveSiteTestCase(TestCase):
         macro_sheet_2 = Macroinvertebrates.objects.create_macro(self.site)  # NOQA
         macro_sheet_2.date_time = '2016-08-11 14:09'  # NOQA
 
-        transect_sheet_1 = RiparianTransect.objects.create_transect(  # NOQA
+        transect_sheet_1 = RiparianTransect.test_objects.create_transect(  # NOQA
             'Test School', '2016-06-25 10:20', self.site)  # NOQA
-        transect_sheet_2 = RiparianTransect.objects.create_transect(  # NOQA
+        transect_sheet_2 = RiparianTransect.test_objects.create_transect(  # NOQA
             'Test School', '2016-05-25 10:20', self.site)  # NOQA
 
         new_response = self.client.get(reverse(
