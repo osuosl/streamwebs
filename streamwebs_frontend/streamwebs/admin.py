@@ -12,6 +12,8 @@ from .models import TransectZone
 from .models import RiparianTransect
 from .models import Canopy_Cover
 from .models import CC_Cardinal
+from .models import Resource
+
 
 admin.site.register(Site)
 admin.site.register(Water_Quality)
@@ -21,7 +23,7 @@ admin.site.register(TransectZone)
 admin.site.register(RiparianTransect)
 admin.site.register(Canopy_Cover)
 admin.site.register(CC_Cardinal)
-
+admin.site.register(Resource)
 
 # The following will add a profile model's files to the user page in the
 # admin panel

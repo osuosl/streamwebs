@@ -6,15 +6,15 @@ class Data_Sheet_TestCase(TestCase):
 
     def setUp(self):
         self.expected_fields = (
-            'id',
+            # 'id',
+            # 'sort_order'
             'name',
             'res_type',
             'downloadable',
-            'thumbnail',
-            'sort_order'
+            'thumbnail'
         )
 
-        self.optional_fields = ('downloadable', 'thumbnail', 'sort_order')
+        self.optional_fields = ('downloadable', 'thumbnail')
 
     def test_DSForm_fields_exist(self):
         ds_form = Resource_Data_Sheet_Form()
