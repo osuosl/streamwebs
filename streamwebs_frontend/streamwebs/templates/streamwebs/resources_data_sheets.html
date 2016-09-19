@@ -3,29 +3,34 @@
 {% load i18n %}
 
 {% block content %}
-{% trans "Data Sheets" %}<p>
-{% for sheet in data %}
-    {% if perms.resources.can_add %}
-        <!-- Should include javascript to move elements up/down. -->
-        <!-- See model.Resource.sort_order -->
-    {% endif %}
-    <p><a href={{ sheet.downloadable.url }}>
-        <img src={{ sheet.thumbnail.url }}><br>
-        {{ sheet.name }}
-    </a>
-{% endfor %}
+<div class="container">
+  <h1>{% trans "Data Sheets" %}</h1>
 
-{% if perms.resources.can_add %}
-    <hr>
-    {% if added %}
-        Resource Added.
-    {% endif %}
-    <form id='add-resource-form' action='' method='POST'
-        enctype="multipart/form-data">
-    {% trans "Add new data sheet:" %}
-    {% csrf_token %}
-    {{ resource_form.as_p }}
-    <input type="submit" value="Add Resource">
-    </form>
-{% endif %}
+  <table class="bordered centered responsive-table">
+    <thead>
+      <tr>
+          <th data-field="name">Name</th>
+          <th data-field="Thumbnail">Link</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for sheet in data %}
+        <tr>
+          <td>
+            <h4>
+              {{ sheet.name }}
+
+              </h4>
+          </td>
+          <td>
+            <a href={{ sheet.downloadable.url }}>
+              <img src={{ sheet.thumbnail.url }}>
+            </a>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+</table>
+</div>
 {% endblock %}
