@@ -10,12 +10,18 @@ from captcha.fields import ReCaptchaField
 
 
 class UserForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput()) \
-        .label = _('Password')
+    password = forms.CharField(
+        widget=forms.PasswordInput(),
+        label=_('Password'))
+
     password_check = forms.CharField(
         widget=forms.PasswordInput(),
         label='Repeat your password')
+
     email = forms.CharField(required=True)
+    first_name = forms.CharField(
+        widget=forms.TextInput()
+    )
 
     class Meta:
         model = User
@@ -36,7 +42,9 @@ class UserForm(forms.ModelForm):
 
 class UserProfileForm(forms.ModelForm):
     captcha = ReCaptchaField()
-
+    birthdate = forms.DateField(
+        widget=forms.DateInput(attrs={'class': 'datepicker'}),
+    )
     class Meta:
         model = UserProfile
         fields = ('school', 'birthdate')
