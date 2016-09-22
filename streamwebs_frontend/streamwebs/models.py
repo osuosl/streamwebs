@@ -982,11 +982,11 @@ class Soil_Survey(models.Model):
         ('other', 'Other')
     ]
 
-    landscape_pos = models.CharField(max_length=1, default=None,
+    landscape_pos = models.CharField(max_length=11, default=None,
                                      choices=landscape_pos_choices)
-    cover_type = models.CharField(max_length=1, default=None,
+    cover_type = models.CharField(max_length=9, default=None,
                                   choices=cover_type_choices)
-    land_use = models.CharField(max_length=1, default=None,
+    land_use = models.CharField(max_length=12, default=None,
                                 choices=land_use_choices)
 
     distance = models.CharField(max_length=250, null=True,
@@ -1005,7 +1005,7 @@ class Soil_Survey(models.Model):
         ('heavy_clay', 'Heavy Clay')
     ]
 
-    soil_type = models.CharField(max_length=1, default=None,
+    soil_type = models.CharField(max_length=10, default=None,
                                  choices=soil_type_choices)
 
     def __str__(self):
