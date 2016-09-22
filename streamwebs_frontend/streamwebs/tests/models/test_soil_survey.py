@@ -13,6 +13,7 @@ class SoilSurveyTestCase(TestCase):
     def setUp(self):
         self.expected_fields = {
             'school': models.ForeignKey,
+            'school_id': models.ForeignKey,
             'date': models.DateTimeField,
             'weather': models.CharField,
             'site': models.ForeignKey,
@@ -33,9 +34,7 @@ class SoilSurveyTestCase(TestCase):
             'site_char'
         }
 
-        self.site = Site.test_objects.create_site('test site',
-                                                  'test site type',
-                                                  'test_site_slug')
+        self.site = Site.test_objects.create_site('test site')
 
     def test_fields_exist(self):
         """Tests that all fields are successfully created"""
