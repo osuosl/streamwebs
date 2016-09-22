@@ -758,8 +758,10 @@ class RiparianTransect(models.Model):
         verbose_name=_('slope of stream bank (rise over run)')
     )
     notes = models.TextField(blank=True, verbose_name=_('notes'))
+    nid = models.PositiveIntegerField(blank=True, null=True)
 
-    objects = RipTransectManager()
+    test_objects = RipTransectManager()
+    objects = models.Manager()
 
     def __str__(self):
         return 'Transect ' + str(self.id) + ' for site ' + self.site.site_name
@@ -784,21 +786,31 @@ class TransectZone(models.Model):
     """
     Each Riparian Transect datasheet requires five zones.
     """
+    ZONE_1 = 1
+    ZONE_2 = 2
+    ZONE_3 = 3
+    ZONE_4 = 4
+    ZONE_5 = 5
+
+    ZONES = ((ZONE_1, 1), (ZONE_2, 2), (ZONE_3, 3), (ZONE_4, 4), (ZONE_5, 5))
+
     transect = models.ForeignKey(RiparianTransect, on_delete=models.CASCADE,
                                  related_name='transect', null=True)
-    conifers = models.PositiveSmallIntegerField(default=0,
+    zone_num = models.CharField(max_length=1, default=0, choices=ZONES)
+    conifers = models.PositiveSmallIntegerField(default=0, null=True,
                                                 verbose_name=_('conifers'))
-    hardwoods = models.PositiveSmallIntegerField(default=0,
+    hardwoods = models.PositiveSmallIntegerField(default=0, null=True,
                                                  verbose_name=_('hardwoods'))
-    shrubs = models.PositiveSmallIntegerField(default=0,
+    shrubs = models.PositiveSmallIntegerField(default=0, null=True,
                                               verbose_name=_('shrubs'))
-    comments = models.TextField(blank=True,
+    comments = models.TextField(blank=True, null=True,
                                 verbose_name=_('additional comments'))
 
-    objects = TransectZoneManager()
+    test_objects = TransectZoneManager()
+    objects = models.Manager()
 
     def __str__(self):
-        return ('Zone ' + str(self.id) + ' for transect ' +
+        return ('Zone ' + str(self.zone_num) + ' for transect ' +
                 str(self.transect.id))
 
     class Meta:

@@ -13,7 +13,7 @@ sys.path.append(proj_path)
 application = get_wsgi_application()
 
 from django.contrib.auth.models import User  # NOQA
-from streamwebs.models import UserProfile, School
+from streamwebs.models import UserProfile, School  # NOQA
 
 
 with open('../csvs/users1.csv', 'r') as csvfile:
@@ -46,7 +46,8 @@ with open('../csvs/users1.csv', 'r') as csvfile:
 
                     if row2["Date of birth"]:
                         dob = row2["Date of birth"]
-                        dob = datetime.strptime(row2["Date of birth"], '%B %d, %Y')
+                        dob = datetime.strptime(row2["Date of birth"],
+                                                '%B %d, %Y')
                     else:
                         dob = "1970-1-1"
 
