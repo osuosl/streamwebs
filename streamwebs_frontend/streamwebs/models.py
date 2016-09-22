@@ -951,7 +951,6 @@ class CC_Cardinal(models.Model):
 class Soil_Survey(models.Model):
     school = models.ForeignKey(School, null=True, on_delete=models.CASCADE,
                                verbose_name=_('school'))
-    teacher = models.CharField(max_length=250)
     date = models.DateTimeField(default=timezone.now,
                                 verbose_name=_('date and time'))
     weather = models.CharField(max_length=250, verbose_name=_('weather'))

@@ -13,7 +13,6 @@ class SoilSurveyTestCase(TestCase):
     def setUp(self):
         self.expected_fields = {
             'school': models.ForeignKey,
-            'teacher': models.CharField,
             'date': models.DateTimeField,
             'weather': models.CharField,
             'site': models.ForeignKey,
