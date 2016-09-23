@@ -4,8 +4,10 @@ from django.contrib.gis.db import models
 from django.apps import apps
 from django.core.exceptions import ValidationError
 from itertools import chain
+from django.utils import timezone
 
-from streamwebs.models import CC_Cardinal, validate_shaded
+from streamwebs.models import (Site, Canopy_Cover, CC_Cardinal, School,
+                               validate_shaded)
 
 
 class CCCardinalTestCase(TestCase):
@@ -40,11 +42,8 @@ class CCCardinalTestCase(TestCase):
             'num_shaded': models.PositiveIntegerField,
             'id': models.AutoField,
 
-            # Foreign key relations
-            'north': models.ManyToOneRel,
-            'east': models.ManyToOneRel,
-            'south': models.ManyToOneRel,
-            'west': models.ManyToOneRel
+            'canopy_cover': models.ForeignKey,
+            'canopy_cover_id': models.ForeignKey
         }
 
     def test_fields_exist(self):
@@ -66,26 +65,42 @@ class CCCardinalTestCase(TestCase):
 
     def test_validate_shaded_good(self):
         """Check that num_shaded is in between 0-24"""
-        north = CC_Cardinal.objects.create_shade('North', True, True, False,
-                                                 False, False, True, False,
-                                                 False, True, True, True,
-                                                 False, True, False, False,
-                                                 False, True, False, True,
-                                                 True, False, True, False,
-                                                 False, 11)
+        default_dt = timezone.now()
+
+        site = Site.test_objects.create_site('Test')
+        school = School.test_objects.create_school('School A')
+
+        canopyc = Canopy_Cover.objects.create(
+            school=school, date_time=default_dt, site=site,
+            weather='bright', est_canopy_cover=50
+        )
+
+        north = CC_Cardinal.test_objects.create_shade(
+            'North', True, True, False, False, False, True, False, False, True,
+            True, True, False, True, False, False, False, True, False, True,
+            True, False, True, False, False, 11, canopyc
+        )
 
         self.assertEqual(validate_shaded(north.num_shaded), None)
 
     def test_validate_shaded_too_large(self):
         """Check that validation error is risen when num_shaded
            is too large"""
-        north = CC_Cardinal.objects.create_shade('North', True, True, False,
-                                                 False, False, True, False,
-                                                 False, True, True, True,
-                                                 False, True, False, False,
-                                                 False, True, False, True,
-                                                 True, False, True, False,
-                                                 False, 45)
+        default_dt = timezone.now()
+
+        site = Site.test_objects.create_site('Test')
+        school = School.test_objects.create_school('School A')
+
+        canopyc = Canopy_Cover.objects.create(
+            school=school, date_time=default_dt, site=site,
+            weather='bright', est_canopy_cover=50
+        )
+
+        north = CC_Cardinal.test_objects.create_shade(
+            'North', True, True, False, False, False, True, False, False, True,
+            True, True, False, True, False, False, False, True, False, True,
+            True, False, True, False, False, 45, canopyc
+        )
 
         with self.assertRaises(ValidationError):
             validate_shaded(north.num_shaded)
@@ -93,13 +108,21 @@ class CCCardinalTestCase(TestCase):
     def test_clean_with_error(self):
         """Check that validation error is risen with clean() method when
            the number shaded does not match the number of Trues."""
-        north = CC_Cardinal.objects.create_shade('North', True, True, False,
-                                                 False, False, True, False,
-                                                 False, True, True, True,
-                                                 False, True, False, False,
-                                                 False, True, False, True,
-                                                 True, False, True, False,
-                                                 False, 21)
+        default_dt = timezone.now()
+
+        site = Site.test_objects.create_site('Test')
+        school = School.test_objects.create_school('School A')
+
+        canopyc = Canopy_Cover.objects.create(
+            school=school, date_time=default_dt, site=site,
+            weather='bright', est_canopy_cover=50
+        )
+
+        north = CC_Cardinal.test_objects.create_shade(
+            'North', True, True, False, False, False, True, False, False, True,
+            True, True, False, True, False, False, False, True, False, True,
+            True, False, True, False, False, 21, canopyc
+        )
 
         with self.assertRaises(ValidationError):
             north.clean()
@@ -107,13 +130,21 @@ class CCCardinalTestCase(TestCase):
     def test_clean_no_error(self):
         """Checks that no validation error is risen with clean() method when
            the number shaded matches the number of Trues."""
-        north = CC_Cardinal.objects.create_shade('North', True, True, False,
-                                                 False, False, True, False,
-                                                 False, True, True, True,
-                                                 False, True, False, False,
-                                                 False, True, False, True,
-                                                 True, False, True, False,
-                                                 False, 11)
+        default_dt = timezone.now()
+
+        site = Site.test_objects.create_site('Test')
+        school = School.test_objects.create_school('School A')
+
+        canopyc = Canopy_Cover.objects.create(
+            school=school, date_time=default_dt, site=site,
+            weather='bright', est_canopy_cover=50
+        )
+
+        north = CC_Cardinal.test_objects.create_shade(
+            'North', True, True, False, False, False, True, False, False, True,
+            True, True, False, True, False, False, False, True, False, True,
+            True, False, True, False, False, 11, canopyc
+        )
 
         raised = False
         try:

@@ -1,0 +1,26 @@
+{% extends 'streamwebs/base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+{% load filters %}
+{% block title %}{% trans "View Canopy Cover Survey" %}{% endblock %}
+{% block body_title %}{% trans "Canopy Cover Survey: " %}{{ canopy_cover.date_time }}{% endblock %}
+{% block content %}
+    <div>
+        <table>
+            <tr>
+                <th align='left'>{% trans "School" %}</th>
+                <td>{{ canopy_cover.school }}</td>
+            </tr>
+            <tr>
+                <th align='left'>{% trans "Site" %}</th>
+                <td>{{ site.site_name }}</td>
+            </tr>
+        </table>
+    </div>
+        <p>Placeholder for Canopy Cover graph</p>
+    </div>
+
+    <p><strong>Estimated Canopy Cover</strong>:
+        {{ canopy_cover.est_canopy_cover | get_cc_percentage }}%</p>
+
+{% endblock %}

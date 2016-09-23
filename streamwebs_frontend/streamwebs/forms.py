@@ -2,10 +2,11 @@
 from __future__ import unicode_literals
 from streamwebs.models import UserProfile, WQ_Sample, Water_Quality, \
     Macroinvertebrates, Canopy_Cover, CC_Cardinal, TransectZone, \
-    RiparianTransect
+    RiparianTransect, Site
 from django.contrib.auth.models import User
 from django import forms
 from django.utils.translation import ugettext_lazy as _
+from django.utils.safestring import mark_safe
 from captcha.fields import ReCaptchaField
 
 
@@ -45,6 +46,7 @@ class UserProfileForm(forms.ModelForm):
     birthdate = forms.DateField(
         widget=forms.DateInput(attrs={'class': 'datepicker'}),
     )
+
     class Meta:
         model = UserProfile
         fields = ('school', 'birthdate')
@@ -64,29 +66,75 @@ class MacroinvertebratesForm(forms.ModelForm):
                   'tolerant_total')
 
 
+class HorizontalRadioRenderer(forms.RadioSelect.renderer):
+    ''' Renders radio buttons horizontally '''
+    def render(self):
+        return mark_safe(u'\n'.join([u'%s\n' % w for w in self]))
+
+
 class WQForm(forms.ModelForm):
     class Meta:
         model = Water_Quality
-        fields = ('site', 'date', 'DEQ_dq_level', 'latitude',
-                  'longitude', 'fish_present', 'live_fish',
-                  'dead_fish', 'water_temp_unit',
-                  'air_temp_unit', 'notes')
+        widgets = {
+            'fish_present':
+                forms.RadioSelect(renderer=HorizontalRadioRenderer),
+            'water_temp_unit':
+                forms.RadioSelect(renderer=HorizontalRadioRenderer),
+            'air_temp_unit':
+                forms.RadioSelect(renderer=HorizontalRadioRenderer)
+        }
+        fields = (
+            'site', 'date', 'DEQ_dq_level', 'school',
+            'latitude', 'longitude', 'fish_present', 'live_fish',
+            'dead_fish', 'water_temp_unit', 'air_temp_unit', 'notes'
+        )
+
+
+class WQFormReadOnly(WQForm):
+    def __init__(self, *args, **kwargs):
+        super(WQFormReadOnly, self).__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].widget.attrs.update({'disabled': True})
 
 
 class WQSampleForm(forms.ModelForm):
     class Meta:
         model = WQ_Sample
-        fields = ('water_temperature', 'air_temperature', 'dissolved_oxygen',
-                  'pH', 'turbidity', 'salinity', 'conductivity',
-                  'total_solids', 'bod', 'ammonia', 'nitrite',
-                  'nitrate', 'phosphates', 'fecal_coliform')
+        widgets = {
+            'water_temp_tool':
+                forms.RadioSelect(renderer=HorizontalRadioRenderer),
+            'air_temp_tool':
+                forms.RadioSelect(renderer=HorizontalRadioRenderer),
+            'oxygen_tool': forms.RadioSelect(renderer=HorizontalRadioRenderer),
+            'pH_tool': forms.RadioSelect(renderer=HorizontalRadioRenderer),
+            'turbid_tool': forms.RadioSelect(renderer=HorizontalRadioRenderer),
+            'salt_tool': forms.RadioSelect(renderer=HorizontalRadioRenderer)
+        }
+        fields = (
+            'water_temperature', 'water_temp_tool',
+            'air_temperature', 'air_temp_tool',
+            'dissolved_oxygen', 'oxygen_tool',
+            'pH', 'pH_tool',
+            'turbidity', 'turbid_tool',
+            'salinity', 'salt_tool',
+            'conductivity', 'total_solids',
+            'bod', 'ammonia',
+            'nitrite', 'nitrate',
+            'phosphates', 'fecal_coliform'
+        )
+
+
+class WQSampleFormReadOnly(WQSampleForm):
+    def __init__(self, *args, **kwargs):
+        super(WQSampleFormReadOnly, self).__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].widget.attrs.update({'disabled': True})
 
 
 class Canopy_Cover_Form(forms.ModelForm):
     class Meta:
         model = Canopy_Cover
-        fields = ('school', 'date_time', 'site', 'weather', 'north', 'east',
-                  'south', 'west', 'est_canopy_cover')
+        fields = ('school', 'date_time', 'site', 'weather', 'est_canopy_cover')
 
 
 class CC_Cardinal_Form(forms.ModelForm):
@@ -107,3 +155,9 @@ class RiparianTransectForm(forms.ModelForm):
     class Meta:
         model = RiparianTransect
         fields = ('school', 'date_time', 'weather', 'site', 'slope', 'notes')
+
+
+class SiteForm(forms.ModelForm):
+    class Meta:
+        model = Site
+        fields = ('site_name', 'description', 'location', 'image')

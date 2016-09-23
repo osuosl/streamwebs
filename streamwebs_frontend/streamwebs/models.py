@@ -10,16 +10,27 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 from django.utils.text import slugify
-from django.conf import settings
 
 
 class SiteManager(models.Manager):
     """
     Manager for the site class - creates a site to be used in tests
     """
-    def create_site(self, site_name, site_type):
-        site = self.create(site_name=site_name, site_type=site_type)
+    default = 'POINT(-121.3846841 44.0612385)'
+
+    def create_site(self, site_name, location=default,
+                    description='', image=None, active=True):
+
+        site = self.create(site_name=site_name, location=location,
+                           description=description, image=image, active=active)
         return site
+
+
+def validate_Site_location(location):
+    if location.x > 180 or location.x < -180:
+        raise ValidationError(_('Longitude is not within valid range.'))
+    if location.y > 90 or location.y < -90:
+        raise ValidationError(_('Latitude is not within valid range.'))
 
 
 @python_2_unicode_compatible
@@ -29,21 +40,25 @@ class Site(models.Model):
     location as a pair of latitudinal/longitudinal coordinates and an optional
     text description of entry.
     """
-    site_name = models.CharField(max_length=250, blank=False)
-    site_type = models.CharField(max_length=250, blank=True)
-    description = models.TextField(blank=True)
-    site_slug = models.SlugField(
-        unique=True, blank=False, max_length=50, editable=False
-    )
+
+    site_name = models.CharField(max_length=250, verbose_name=_('site name'))
+    description = models.TextField(blank=True,
+                                   verbose_name=_('site description'))
+    site_slug = models.SlugField(unique=True, max_length=50, editable=False)
 
     # Geo Django fields to store a point
-    location = models.PointField(null=True, blank=True)
-    objects = models.GeoManager()
+    location = models.PointField(default='POINT(-121.3846841 44.0612385)',
+                                 verbose_name=_('location'),
+                                 validators=[validate_Site_location])
+    image = models.ImageField(null=True, blank=True, verbose_name=_('image'),
+                              upload_to='site_photos/')
+    active = models.BooleanField(default=True)
 
     created = models.DateTimeField(default=timezone.now)
     modified = models.DateTimeField(default=timezone.now)
 
-    test_objects = SiteManager()
+    objects = models.Manager()  # default manager
+    test_objects = SiteManager()  # custom manager for use in writing tests
 
     def __str__(self):
         return self.site_name
@@ -61,6 +76,20 @@ class Site(models.Model):
         super(Site, self).save()
 
 
+class SchoolManager(models.Manager):
+    """
+    Manager for the school class - creates a school to be used in tests
+    """
+    def create_school(self, name, school_type='Test', address='12345 Foo St',
+                      city='Bar', province='Baz', zipcode='54321',
+                      active=True):
+
+        school = self.create(name=name, school_type=school_type,
+                             address=address, city=city, province=province,
+                             zipcode=zipcode, active=active)
+        return school
+
+
 @python_2_unicode_compatible
 class School(models.Model):
     name = models.CharField(max_length=250)
@@ -74,13 +103,11 @@ class School(models.Model):
     created = models.DateTimeField(default=timezone.now)
     modified = models.DateTimeField(default=timezone.now)
 
+    test_objects = SchoolManager()
+    objects = models.Manager()
+
     def __str__(self):
         return self.name
-
-
-def validate_UserProfile_school(school):
-    if school not in dict(settings.SCHOOL_CHOICES):
-        raise ValidationError(_('That school is not in the list.'))
 
 
 def validate_UserProfile_birthdate(birthdate):
@@ -97,13 +124,7 @@ def validate_UserProfile_birthdate(birthdate):
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    school = models.CharField(
-        max_length=255,
-        choices=settings.SCHOOL_CHOICES,
-        default='',
-        validators=[validate_UserProfile_school],
-        verbose_name=_('school')
-    )
+    school = models.ForeignKey(School, on_delete=models.CASCADE)
     birthdate = models.DateField(validators=[validate_UserProfile_birthdate],
                                  verbose_name=_('birthdate'))
 
@@ -135,8 +156,22 @@ class WaterQualityManager(models.Manager):
         return wq_info
 
 
+def validate_WaterQuality_latitude(latitude):
+    if abs(latitude) > 90:
+        raise ValidationError(_('Latitude is not within valid range.'))
+
+
+def validate_WaterQuality_longitude(longitude):
+    if abs(longitude) > 180:
+        raise ValidationError(_('Longitude is not within valid range.'))
+
+
 @python_2_unicode_compatible
 class Water_Quality(models.Model):
+    """
+    The Water Quality model corresponds to the Water Quality datasheet. Each
+    object has a one-to-one relationship with its specified Site.
+    """
     LEVEL_A = 'A'   # Define DEQ water quality levels
     LEVEL_B = 'B'
     LEVEL_C = 'C'
@@ -154,51 +189,60 @@ class Water_Quality(models.Model):
         (LEVEL_E, 'Level E'),
     )
 
-    BOOL_CHOICES = ((True, _('Yes')), (False, _('No')), (None, '-----'),)
-    UNIT_CHOICES = ((None, '-----'),
-                    (FAHRENHEIT, _('Fahrenheit')),
-                    (CELSIUS, _('Celsius')),)
+    BOOL_CHOICES = (('True', _('Yes')), ('False', _('No')))
+    UNIT_CHOICES = ((FAHRENHEIT, _('Fahrenheit')), (CELSIUS, _('Celsius')))
 
-    """
-    The Water Quality model corresponds to the Water Quality datasheet. Each
-    object has a one-to-one relationship with its specified Site.
-    """
-    site = models.ForeignKey(Site, null=True, on_delete=models.CASCADE)
-    DEQ_dq_level = models.CharField(max_length=1, choices=DEQ_DQ_CHOICES,
-                                    default=None,
-                                    verbose_name=_('DEQ data quality level'))
-    date = models.DateField(default=datetime.date.today,
-                            verbose_name=_('date'))
-    school = models.CharField(max_length=250, verbose_name=_('school'))
-    latitude = models.DecimalField(default=0, max_digits=9, decimal_places=6,
-                                   verbose_name=_('latitude'))
-    longitude = models.DecimalField(default=0, max_digits=9, decimal_places=6,
-                                    verbose_name=_('longitude'))
-    fish_present = models.BooleanField(choices=BOOL_CHOICES,
-                                       default=None,
-                                       verbose_name=_('any fish present?'))
+    site = models.ForeignKey(
+        Site, null=True, on_delete=models.CASCADE,
+        verbose_name=_('Stream/Site name'), limit_choices_to={'active': True}
+    )
+    date = models.DateField(
+        default=datetime.date.today, verbose_name=_('date')
+    )
+    DEQ_dq_level = models.CharField(
+        max_length=1, choices=DEQ_DQ_CHOICES,
+        default=None, verbose_name=_('DEQ data quality level')
+    )
+    school = models.CharField(
+        max_length=250, verbose_name=_('school')
+    )
+    latitude = models.DecimalField(
+        default=0, max_digits=9, decimal_places=6, verbose_name=_('latitude'),
+        validators=[validate_WaterQuality_latitude]
+    )
+    longitude = models.DecimalField(
+        default=0, max_digits=9, decimal_places=6, verbose_name=_('longitude'),
+        validators=[validate_WaterQuality_longitude]
+
+    )
+    fish_present = models.CharField(
+        max_length=255, choices=BOOL_CHOICES, default=0,
+        verbose_name=_('any fish present?')
+    )
     live_fish = models.PositiveSmallIntegerField(
         default=0, verbose_name=_('number of live fish')
-        )
+    )
     dead_fish = models.PositiveSmallIntegerField(
         default=0, verbose_name=_('number of dead fish')
-        )
-    air_temp_unit = models.CharField(max_length=255, choices=UNIT_CHOICES,
-                                     default=UNIT_CHOICES[0],
-                                     verbose_name=_('air temperature units'))
+    )
     water_temp_unit = models.CharField(
-        max_length=255, choices=UNIT_CHOICES, default=UNIT_CHOICES[0],
+        max_length=255, choices=UNIT_CHOICES, default=0,
         verbose_name=_('water temperature units')
-        )
+    )
+    air_temp_unit = models.CharField(
+        max_length=255, choices=UNIT_CHOICES, default=0,
+        verbose_name=_('air temperature units')
+    )
     notes = models.TextField(blank=True, verbose_name=_('notes'))
 
     # Add some logic in which the datasheet object is only created when
     # the Site in which it corresponds to actually exists
 
-    objects = WaterQualityManager()
+    test_objects = WaterQualityManager()
+    objects = models.Manager()
 
     def __str__(self):
-        return self.site.site_name
+        return self.site.site_name + ' data sheet ' + str(self.id)
 
     class Meta:
         verbose_name = 'water quality'
@@ -210,32 +254,36 @@ class WQSampleManager(models.Manager):
     Manager for the water quality samples - creates both the required and
     additional field data for the Water Quality datasheet tests
     """
-    def create_sample(self, water_quality, water_temp, water_temp_tool,
-                      air_temp, air_temp_tool, oxygen,
-                      oxygen_tool, pH, pH_tool,
-                      turbidity, turbid_tool, salinity, salt_tool,
-                      conductivity=None, tot_sol=None, bod=None,
-                      ammonia=None, nitrite=None, nitrate=None,
-                      phosphates=None, fecal_col=None):
-
-        info = self.create(water_quality=water_quality,
-                           water_temperature=water_temp,
-                           water_temp_tool=water_temp_tool,
-                           air_temperature=air_temp,
-                           air_temp_tool=air_temp_tool,
-                           dissolved_oxygen=oxygen,
-                           oxygen_tool=oxygen_tool,
-                           pH=pH, pH_tool=pH_tool,
-                           turbidity=turbidity, turbid_tool=turbid_tool,
-                           salinity=salinity, salt_tool=salt_tool,
-                           conductivity=conductivity,
-                           total_solids=tot_sol,
-                           bod=bod,
-                           ammonia=ammonia,
-                           nitrite=nitrite,
-                           nitrate=nitrate,
-                           phosphates=phosphates,
-                           fecal_coliform=fecal_col)
+    def create_sample(
+        self, water_quality, water_temperature, water_temp_tool,
+        air_temperature, air_temp_tool, dissolved_oxygen, oxygen_tool, pH,
+        pH_tool, turbidity, turbid_tool, salinity, salt_tool,
+        conductivity=None, total_solids=None, bod=None, ammonia=None,
+        nitrite=None, nitrate=None, phosphates=None, fecal_coliform=None
+    ):
+        info = self.create(
+            water_quality=water_quality,
+            water_temperature=water_temperature,
+            water_temp_tool=water_temp_tool,
+            air_temperature=air_temperature,
+            air_temp_tool=air_temp_tool,
+            dissolved_oxygen=dissolved_oxygen,
+            oxygen_tool=oxygen_tool,
+            pH=pH,
+            pH_tool=pH_tool,
+            turbidity=turbidity,
+            turbid_tool=turbid_tool,
+            salinity=salinity,
+            salt_tool=salt_tool,
+            conductivity=conductivity,
+            total_solids=total_solids,
+            bod=bod,
+            ammonia=ammonia,
+            nitrite=nitrite,
+            nitrate=nitrate,
+            phosphates=phosphates,
+            fecal_coliform=fecal_coliform
+        )
         return info
 
 
@@ -244,84 +292,108 @@ def validate_pH(ph):
         raise ValidationError(
             '%(ph)s is not 0-14.',
             params={'ph': ph},
-            )
+        )
 
 
 @python_2_unicode_compatible
 class WQ_Sample(models.Model):
+    """
+    The WQ_Sample model describes each water quality sample
+    """
     NOT_ACCESSED = 'N/A'
-    VERNIER = 'Vernier'
-    MANUAL = 'Manual'
-    TOOL_CHOICES = ((NOT_ACCESSED, 'N/A'),
-                    (MANUAL, 'Manual'),
-                    (VERNIER, 'Vernier'),)
+    VERNIER = _('Vernier')
+    MANUAL = _('Manual')
+    TOOL_CHOICES = ((MANUAL, _('Manual')), (VERNIER, _('Vernier')),)
 
     # These are required fields
-    water_quality = models.ForeignKey(Water_Quality, on_delete=models.CASCADE,
-                                      related_name='water_quality', null=True)
+    water_quality = models.ForeignKey(
+        Water_Quality,
+        on_delete=models.CASCADE,
+        related_name='water_quality',
+        null=True
+    )
     water_temperature = models.DecimalField(
         default=0, max_digits=5, decimal_places=2,
         verbose_name=_('water temperature')
         )
-    water_temp_tool = models.CharField(max_length=255, choices=TOOL_CHOICES,
-                                       default=TOOL_CHOICES[0])
-    air_temperature = models.DecimalField(default=0, max_digits=5,
-                                          decimal_places=2,
-                                          verbose_name=_('air temperature'))
-    air_temp_tool = models.CharField(max_length=255, choices=TOOL_CHOICES,
-                                     default=TOOL_CHOICES[0])
+    water_temp_tool = models.CharField(
+        max_length=255, choices=TOOL_CHOICES, default=0,
+    )
+    air_temperature = models.DecimalField(
+        default=0, max_digits=5, decimal_places=2,
+        verbose_name=_('air temperature')
+    )
+    air_temp_tool = models.CharField(
+        max_length=255, choices=TOOL_CHOICES, default=0,
+    )
     dissolved_oxygen = models.DecimalField(
         default=0, max_digits=5, decimal_places=2,
         verbose_name=_('dissolved oxygen (mg/L)')
-        )
-    oxygen_tool = models.CharField(max_length=255, choices=TOOL_CHOICES,
-                                   default=TOOL_CHOICES[0])
-    pH = models.DecimalField(validators=[validate_pH], default=0, max_digits=5,
-                             decimal_places=2, verbose_name=_('pH'))
-    pH_tool = models.CharField(max_length=255, choices=TOOL_CHOICES,
-                               default=TOOL_CHOICES[0])
-    turbidity = models.DecimalField(default=0, max_digits=5, decimal_places=2,
-                                    verbose_name=_('turbidity (NTU)'))
-    turbid_tool = models.CharField(max_length=255, choices=TOOL_CHOICES,
-                                   default=TOOL_CHOICES[0])
-    salinity = models.DecimalField(default=0, max_digits=5, decimal_places=2,
-                                   verbose_name=_('salinity (PSU) PPT'))
-    salt_tool = models.CharField(max_length=255, choices=TOOL_CHOICES,
-                                 default=TOOL_CHOICES[0])
-
+    )
+    oxygen_tool = models.CharField(
+        max_length=255, choices=TOOL_CHOICES, default=0,
+    )
+    pH = models.DecimalField(
+        validators=[validate_pH], default=0,
+        max_digits=5, decimal_places=2, verbose_name=_('pH')
+    )
+    pH_tool = models.CharField(
+        max_length=255, choices=TOOL_CHOICES, default=0,
+    )
+    turbidity = models.DecimalField(
+        default=0, max_digits=5, decimal_places=2,
+        verbose_name=_('turbidity (NTU)')
+    )
+    turbid_tool = models.CharField(
+        max_length=255, choices=TOOL_CHOICES, default=0,
+    )
+    salinity = models.DecimalField(
+        default=0, max_digits=5, decimal_places=2,
+        verbose_name=_('salinity (PSU) PPT')
+    )
+    salt_tool = models.CharField(
+        max_length=255, choices=TOOL_CHOICES, default=0,
+    )
     # The following are optional fields
-    conductivity = models.DecimalField(default=0, max_digits=5,
-                                       decimal_places=2, blank=True, null=True,
-                                       verbose_name=_('conductivity (µS/cm)'))
-    total_solids = models.DecimalField(default=0, max_digits=5,
-                                       decimal_places=2, blank=True, null=True,
-                                       verbose_name=_('total solids (mg/L)'))
-    bod = models.DecimalField(default=0, max_digits=5, decimal_places=2,
-                              blank=True, null=True,
-                              verbose_name=_('BOD (mg/L)'))
-    ammonia = models.DecimalField(default=0, max_digits=5, decimal_places=2,
-                                  blank=True, null=True,
-                                  verbose_name=_('ammonia (mg/L)'))
-    nitrite = models.DecimalField(default=0, max_digits=5, decimal_places=2,
-                                  blank=True, null=True,
-                                  verbose_name=_('nitrite (mg/L)'))
-    nitrate = models.DecimalField(default=0, max_digits=5, decimal_places=2,
-                                  blank=True, null=True,
-                                  verbose_name=_('nitrate (mg/L)'))
-    phosphates = models.DecimalField(default=0, max_digits=5, decimal_places=2,
-                                     blank=True, null=True,
-                                     verbose_name=_('phosphates (mg/L)'))
+    conductivity = models.DecimalField(
+        default=0, max_digits=5, decimal_places=2, blank=True,
+        null=True, verbose_name=_('conductivity (µS/cm)')
+    )
+    total_solids = models.DecimalField(
+        default=0, max_digits=5, decimal_places=2, blank=True,
+        null=True, verbose_name=_('total solids (mg/L)')
+    )
+    bod = models.DecimalField(
+        default=0, max_digits=5, decimal_places=2, blank=True,
+        null=True, verbose_name=_('BOD (mg/L)')
+    )
+    ammonia = models.DecimalField(
+        default=0, max_digits=5, decimal_places=2, blank=True,
+        null=True, verbose_name=_('ammonia (mg/L)')
+    )
+    nitrite = models.DecimalField(
+        default=0, max_digits=5, decimal_places=2, blank=True,
+        null=True, verbose_name=_('nitrite (mg/L)')
+    )
+    nitrate = models.DecimalField(
+        default=0, max_digits=5, decimal_places=2, blank=True,
+        null=True, verbose_name=_('nitrate (mg/L)')
+    )
+    phosphates = models.DecimalField(
+        default=0, max_digits=5, decimal_places=2, blank=True,
+        null=True, verbose_name=_('phosphates (mg/L)')
+    )
     fecal_coliform = models.DecimalField(
-        default=0, max_digits=5,
-        decimal_places=2, blank=True,
-        null=True,
-        verbose_name=_('fecal coliform (CFU/100 mL)')
-        )
+        default=0, max_digits=5, decimal_places=2, blank=True,
+        null=True, verbose_name=_('fecal coliform (CFU/100 mL)')
+    )
 
-    objects = WQSampleManager()
+    test_objects = WQSampleManager()
+    objects = models.Manager()
 
     def __str__(self):
-        return self.site.site_name
+        return self.water_quality.site.site_name + ' sheet ' + \
+               str(self.water_quality.id) + ' sample ' + str(self.id)
 
     class Meta:
         verbose_name = 'water quality sample'
@@ -376,6 +448,122 @@ class MacroinvertebratesManager(models.Manager):
         return info
 
 
+class CameraPointManager(models.Manager):
+
+    def create_camera_point(self, site, cp_date, location, map_datum='',
+                            description=''):
+
+        return self.create(site=site, cp_date=cp_date, location=location,
+                           map_datum=map_datum, description=description)
+
+
+class CameraPoint(models.Model):
+    site = models.ForeignKey(Site, on_delete=models.CASCADE, null=True)
+    letter = models.CharField(null=True, max_length=5, editable=False)
+    cp_date = models.DateField(default=datetime.date.today,
+                               verbose_name=_('date established'))
+    location = models.PointField(null=True, verbose_name=_('location'))
+    map_datum = models.CharField(max_length=255, blank=True,
+                                 verbose_name=_('map datum'))
+    description = models.TextField(blank=True, verbose_name=_('description'))
+    created = models.DateTimeField(default=timezone.now)
+
+    test_objects = CameraPointManager()
+    objects = models.Manager()
+
+    def __str__(self):
+        return ('Camera point ' + self.letter + ' for site ' +
+                self.site.site_name)
+
+    def save(self, **kwargs):
+        if not self.letter:
+            site_cps = CameraPoint.objects.filter(site_id=self.site.id)
+            if not site_cps.exists():
+                self.letter = 'A'
+            else:
+                prev_letter = site_cps.latest('created').letter
+                max_len = len(prev_letter)
+                if prev_letter[0] == 'Z':
+                    self.letter = (max_len + 1) * 'A'
+                else:
+                    self.letter = max_len * chr(ord(prev_letter[0]) + 1)
+        super(CameraPoint, self).save()
+
+    class Meta:
+        verbose_name = 'camera point'
+        verbose_name_plural = 'camera points'
+
+
+class PhotoPointManager(models.Manager):
+
+    def create_photo_point(self, camera_point, pp_date, compass_bearing,
+                           distance, camera_height, notes=''):
+
+        return self.create(camera_point=camera_point, pp_date=pp_date,
+                           compass_bearing=compass_bearing, distance=distance,
+                           camera_height=camera_height, notes=notes)
+
+
+class PhotoPoint(models.Model):
+    camera_point = models.ForeignKey(CameraPoint, on_delete=models.CASCADE,
+                                     null=True, related_name='camera_point')
+    number = models.PositiveSmallIntegerField(null=True, editable=False)
+    pp_date = models.DateField(default=datetime.date.today,
+                               verbose_name=_('date established'))
+    compass_bearing = models.PositiveSmallIntegerField(
+        verbose_name=_('compass bearing'))
+    distance = models.DecimalField(
+        max_digits=3, decimal_places=0,
+        verbose_name=_('distance from camera point'))
+    camera_height = models.DecimalField(max_digits=3, decimal_places=0,
+                                        verbose_name=_('camera height'))
+    notes = models.TextField(blank=True, verbose_name=_('notes'))
+
+    test_objects = PhotoPointManager()
+    objects = models.Manager()
+
+    def __str__(self):
+        return ('Photo point ' + str(self.number) + ' for camera point ' +
+                self.camera_point.letter)
+
+    def save(self, **kwargs):
+        if not self.number:
+            p = PhotoPoint.objects.filter(camera_point_id=self.camera_point.id)
+            if not p.exists():
+                self.number = 1
+            else:
+                prev_num = p.latest('number').number
+                self.number = prev_num + 1
+        super(PhotoPoint, self).save()
+
+    class Meta:
+        verbose_name = 'photo point'
+        verbose_name_plural = 'photo points'
+
+
+class PhotoPointImage(models.Model):
+    photo_point = models.ForeignKey(PhotoPoint, on_delete=models.CASCADE,
+                                    null=True, related_name='photo_point')
+    image = models.ImageField(null=True, blank=True, upload_to='pp_photos/',
+                              verbose_name=_('photo'))
+    date = models.DateField(default=datetime.date.today,
+                            verbose_name=_('date taken'))
+
+    def __str__(self):
+        return (str(self.date) + ' for photo point ' +
+                str(self.photo_point.number))
+
+    def clean(self):
+        p = PhotoPointImage.objects.filter(photo_point_id=self.photo_point.id)
+        if p.exclude(id=self.id).filter(date=self.date).exists():
+            raise ValidationError(_('A photo for %(date)s already exists.'),
+                                  code='duplicate', params={'date': self.date})
+
+    class Meta:
+        verbose_name = 'photo point image'
+        verbose_name_plural = 'photo point images'
+
+
 @python_2_unicode_compatible
 class Macroinvertebrates(models.Model):
     school = models.CharField(max_length=250, verbose_name=_('school'))
@@ -383,7 +571,8 @@ class Macroinvertebrates(models.Model):
                                      verbose_name=_('date and time'))
     weather = models.CharField(max_length=250,
                                verbose_name=_('weather'))
-    site = models.ForeignKey(Site, null=True, on_delete=models.CASCADE)
+    site = models.ForeignKey(Site, null=True, on_delete=models.CASCADE,
+                             limit_choices_to={'active': True})
     time_spent = models.PositiveIntegerField(
         default=None, null=True,
         verbose_name=_('time spent sorting/identifying')
@@ -456,7 +645,7 @@ class Macroinvertebrates(models.Model):
     objects = MacroinvertebratesManager()
 
     def __str__(self):
-        return self.site.site_name
+        return self.site.site_name + ' sheet ' + str(self.id)
 
     def clean(self):
         if ((self.caddisfly + self.mayfly + self.riffle_beetle +
@@ -562,14 +751,17 @@ class RiparianTransect(models.Model):
     weather = models.CharField(max_length=255, blank=True,
                                verbose_name=_('weather'))
     site = models.ForeignKey(Site, null=True, on_delete=models.CASCADE,
-                             verbose_name=_('site'))
+                             verbose_name=_('site'),
+                             limit_choices_to={'active': True})
     slope = models.DecimalField(
         blank=True, null=True, max_digits=5, decimal_places=3,
         verbose_name=_('slope of stream bank (rise over run)')
     )
     notes = models.TextField(blank=True, verbose_name=_('notes'))
+    nid = models.PositiveIntegerField(blank=True, null=True)
 
-    objects = RipTransectManager()
+    test_objects = RipTransectManager()
+    objects = models.Manager()
 
     def __str__(self):
         return 'Transect ' + str(self.id) + ' for site ' + self.site.site_name
@@ -594,26 +786,66 @@ class TransectZone(models.Model):
     """
     Each Riparian Transect datasheet requires five zones.
     """
+    ZONE_1 = 1
+    ZONE_2 = 2
+    ZONE_3 = 3
+    ZONE_4 = 4
+    ZONE_5 = 5
+
+    ZONES = ((ZONE_1, 1), (ZONE_2, 2), (ZONE_3, 3), (ZONE_4, 4), (ZONE_5, 5))
+
     transect = models.ForeignKey(RiparianTransect, on_delete=models.CASCADE,
                                  related_name='transect', null=True)
-    conifers = models.PositiveSmallIntegerField(default=0,
+    zone_num = models.CharField(max_length=1, default=0, choices=ZONES)
+    conifers = models.PositiveSmallIntegerField(default=0, null=True,
                                                 verbose_name=_('conifers'))
-    hardwoods = models.PositiveSmallIntegerField(default=0,
+    hardwoods = models.PositiveSmallIntegerField(default=0, null=True,
                                                  verbose_name=_('hardwoods'))
-    shrubs = models.PositiveSmallIntegerField(default=0,
+    shrubs = models.PositiveSmallIntegerField(default=0, null=True,
                                               verbose_name=_('shrubs'))
-    comments = models.TextField(blank=True,
+    comments = models.TextField(blank=True, null=True,
                                 verbose_name=_('additional comments'))
 
-    objects = TransectZoneManager()
+    test_objects = TransectZoneManager()
+    objects = models.Manager()
 
     def __str__(self):
-        return ('Zone ' + str(self.id) + ' for transect ' +
+        return ('Zone ' + str(self.zone_num) + ' for transect ' +
                 str(self.transect.id))
 
     class Meta:
         verbose_name = 'zone'
         verbose_name_plural = 'zones'
+
+
+def validate_cover(est_canopy_cover):
+    if not(0 <= est_canopy_cover and est_canopy_cover <= 96):
+        raise ValidationError(
+            '%(est_canopy_cover)s is not 0-96.',
+            params={'est_canopy_cover': est_canopy_cover},
+            )
+
+
+@python_2_unicode_compatible
+class Canopy_Cover(models.Model):
+    school = models.ForeignKey(School, null=True, on_delete=models.CASCADE,
+                               verbose_name=_('school'))
+    date_time = models.DateTimeField(default=timezone.now,
+                                     verbose_name=_('date and time'))
+    site = models.ForeignKey(Site, null=True, on_delete=models.CASCADE,
+                             verbose_name=_('site'))
+    weather = models.CharField(max_length=250, verbose_name=_('weather'))
+    est_canopy_cover = models.PositiveIntegerField(
+        default=0, validators=[validate_cover],
+        verbose_name=_('estimated canopy cover')
+        )
+
+    def __str__(self):
+        return(str(self.date_time) + ' ' + self.site.site_name)
+
+    class Meta:
+        verbose_name = 'canopy cover survey'
+        verbose_name_plural = 'canopy cover surveys'
 
 
 class CardinalManager(models.Manager):
@@ -622,12 +854,12 @@ class CardinalManager(models.Manager):
     data for each of the cardinal directions
     """
     def create_shade(self, direction, A, B, C, D, E, F, G, H, I, J, K, L, M, N,
-                     O, P, Q, R, S, T, U, V, W, X, num_shaded):
+                     O, P, Q, R, S, T, U, V, W, X, num_shaded, canopyc):
 
         cc_info = self.create(direction=direction, A=A, B=B, C=C, D=D, E=E,
                               F=F, G=G, H=H, I=I, J=J, K=K, L=L, M=M, N=N, O=O,
                               P=P, Q=Q, R=R, S=S, T=T, U=U, V=V, W=W, X=X,
-                              num_shaded=num_shaded)
+                              num_shaded=num_shaded, canopy_cover=canopyc)
         return cc_info
 
 
@@ -684,11 +916,14 @@ class CC_Cardinal(models.Model):
     num_shaded = models.PositiveIntegerField(default=0,
                                              validators=[validate_shaded],
                                              verbose_name=_('# shaded boxes'))
+    canopy_cover = models.ForeignKey(Canopy_Cover, on_delete=models.CASCADE,
+                                     null=True, related_name='canopy_cover')
 
-    objects = CardinalManager()
+    objects = models.Manager()
+    test_objects = CardinalManager()
 
     def __str__(self):
-        return self.direction
+        return(self.canopy_cover.site.site_name + ' - ' + self.direction)
 
     class Meta:
         verbose_name = 'cardinal direction'
@@ -710,44 +945,3 @@ class CC_Cardinal(models.Model):
                 _('%(num_shaded)s is not the correct total'),
                 params={'num_shaded': self.num_shaded},
             )
-
-
-def validate_cover(est_canopy_cover):
-    if not(0 <= est_canopy_cover and est_canopy_cover <= 96):
-        raise ValidationError(
-            '%(est_canopy_cover)s is not 0-96.',
-            params={'est_canopy_cover': est_canopy_cover},
-            )
-
-
-@python_2_unicode_compatible
-class Canopy_Cover(models.Model):
-    school = models.CharField(max_length=250, verbose_name=_('school'))
-    date_time = models.DateTimeField(default=timezone.now,
-                                     verbose_name=_('date and time'))
-    site = models.ForeignKey(Site, null=True, on_delete=models.CASCADE,
-                             verbose_name=_('site'))
-    weather = models.CharField(max_length=250, verbose_name=_('weather'))
-    north = models.ForeignKey(CC_Cardinal, on_delete=models.CASCADE,
-                              related_name='north', null=True,
-                              verbose_name=_('north'))
-    east = models.ForeignKey(CC_Cardinal, on_delete=models.CASCADE,
-                             related_name='east', null=True,
-                             verbose_name=_('east'))
-    south = models.ForeignKey(CC_Cardinal, on_delete=models.CASCADE,
-                              related_name='south', null=True,
-                              verbose_name=_('south'))
-    west = models.ForeignKey(CC_Cardinal, on_delete=models.CASCADE,
-                             related_name='west', null=True,
-                             verbose_name=_('west'))
-    est_canopy_cover = models.PositiveIntegerField(
-        default=0, validators=[validate_cover],
-        verbose_name=_('estimated canopy cover')
-        )
-
-    def __str__(self):
-        return self.site.site_name
-
-    class Meta:
-        verbose_name = 'canopy cover survey'
-        verbose_name_plural = 'canopy cover surveys'

@@ -21,6 +21,8 @@ class SchoolTestCase(TestCase):
             'modified': models.DateTimeField,
 
             'id': models.AutoField,
+            'userprofile': models.ManyToOneRel,
+            'canopy_cover': models.ManyToOneRel
         }
 
     def test_fields_exist(self):
