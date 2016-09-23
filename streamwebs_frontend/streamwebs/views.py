@@ -450,6 +450,102 @@ def add_camera_point(request, site_slug):
     )
 
 
+def view_pp_and_add_img(request, site_slug, cp_id, pp_id):
+    """View a specific photopoint and add photos while you're at it"""
+    added = False
+    pp = PhotoPoint.objects.get(id=pp_id)
+    PPImageModelFormset = modelformset_factory(
+        PhotoPointImage,
+        form=PhotoPointImageForm,
+        extra=1, max_num=1, min_num=1
+    )
+
+    if request.method == 'POST':
+        ppi_formset = PPImageModelFormset(
+            request.POST, request.FILES,
+            queryset=PhotoPointImage.objects.none()
+        )
+        if ppi_formset.is_valid():
+            new_images = ppi_formset.save(commit=False)
+            prev_images = PhotoPointImage.objects.filter(photo_point_id=pp_id)
+
+            for (new_ppi, old_ppi) in zip(new_images, prev_images):
+                if old_ppi.date != new_ppi.date:
+                    new_ppi = PhotoPointImage(
+                        photo_point=pp, image=new_ppi.image, date=new_ppi.date)
+                    new_ppi.save()
+                    added = True
+
+                else:
+                    messages.add_message(
+                        request, messages.INFO,
+                        'A photo from that date already exists for this photo \
+                        point.',
+                    )
+    else:
+        ppi_formset = PPImageModelFormset(
+            queryset=PhotoPointImage.objects.none()
+        )
+
+    all_images = PhotoPointImage.objects.filter(photo_point_id=pp_id)
+
+    return render(
+        request,
+        'streamwebs/datasheets/photo_point_view.html', {
+            'pp': pp,
+            'ppi_formset': ppi_formset,
+            'pp_images': all_images,
+            'added': added,
+        }
+    )
+
+
+def add_photo_point(request, site_slug, cp_id):
+    """Add new PP to existing CP + respective photo(s)"""
+    added = False
+    site = Site.objects.get(site_slug=site_slug)
+    cp = CameraPoint.objects.get(id=cp_id)
+    photo_point = PhotoPoint()
+    photo_point.camera_point = cp
+
+    PPImageInlineFormset = inlineformset_factory(
+        PhotoPoint, PhotoPointImage,
+        form=PhotoPointImageForm,
+        extra=1, max_num=1, min_num=1
+    )
+
+    if request.method == 'POST':
+        pp_form = PhotoPointForm(request.POST)
+        ppi_formset = PPImageInlineFormset(request.POST, request.FILES,
+                                           instance=photo_point)
+        if pp_form.is_valid() and ppi_formset.is_valid():
+            photo_point = pp_form.save(commit=False)
+            photo_point.camera_point = cp
+            photo_point.save()
+
+            pp_images = ppi_formset.save(commit=False)
+
+            for ppi in pp_images:
+                ppi.photo_point = photo_point
+                ppi.save()
+
+            added = True
+    else:
+        pp_form = PhotoPointForm()
+        ppi_formset = PPImageInlineFormset(instance=photo_point)
+
+    return render(
+        request,
+        'streamwebs/datasheets/photo_point_add.html', {
+            'site': site,
+            'cp': cp,
+            'pp_form': pp_form,
+            'ppi_formset': ppi_formset,
+            'added': added,
+        }
+    )
+
+
 def water_quality(request, site_slug, data_id):
     """ View a water quality sample """
     site = Site.objects.filter(active=True).get(site_slug=site_slug)

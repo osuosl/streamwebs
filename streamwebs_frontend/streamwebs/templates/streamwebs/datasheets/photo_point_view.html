@@ -1,0 +1,43 @@
+{% extends 'streamwebs/base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+{% load filters %}
+{% block body_title %}Photo point {{ pp.camera_point.letter }}{{ pp.number }}{% endblock %}
+{% block content %}
+
+<!-- PP info -->
+<div>
+    <strong>{{ pp.camera_point.site.site_name }}</strong>
+    <p>Date established: {{ pp.pp_date|date:"m-d-Y" }}</p>
+    <p>Compass bearing: {{ pp.compass_bearing }}</p>
+    <p>Distance from camera point {{ pp.camera_point.letter }}: {{ pp.distance }}</p>
+    <p>Camera height: {{ pp.camera_height }}</p>
+    <p>Notes: {{ pp.notes }}</p>
+    
+    <strong>Photos for this photo point:</strong>
+    {% for img in pp_images %}
+    <p>{{ img.date|date:"m-d-Y" }}</p>
+    <p><img src="{{ img.image.url }}" alt="pp image" /></p>
+    {% endfor %}
+</div>
+
+<!-- New photo upload -->
+<div>
+    {% if user.is_authenticated %}
+        {% if messages %}
+            {% for msg in messages %}
+            {{ msg }}
+            {% endfor %}
+        {% endif %}
+
+        <form id='ppi_form', method='post', enctype='multipart/form-data'>
+            {% csrf_token %}
+            {{ ppi_formset.as_p}}
+            <input type='submit', name='submit', value='Submit' />
+        </form>
+
+    {% else %}
+    <p>You must be logged in to submit data.</p>
+    {% endif %}
+</div>
+{% endblock %}
