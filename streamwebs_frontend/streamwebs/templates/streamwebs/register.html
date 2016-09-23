@@ -20,6 +20,9 @@
     .nav-wrapper {
       background-color: #03A9F4;
     }
+    .errorlist{
+      color:red;
+    }
   </style>
 {% endblock %}
 {% block body_title %}{% trans "Register" %}{% endblock %}
@@ -56,9 +59,9 @@
 
         </div>
         <div class="input-field col s12">
-          <label for="{{ profile_form.school.id_for_label }}">School:</label>
           {{ profile_form.school }}
           {{ profile_form.school.errors }}
+          <label for="{{ profile_form.school.id_for_label }}">School:</label>
         </div>
 
         <div class="input-field col s12">
@@ -95,10 +98,14 @@
     </form>
     {% endif %}
     <script>
+    $('select').material_select();
     $('.datepicker').pickadate({
+      today: '',
       selectMonths: true, // Creates a dropdown to control month
       selectYears: 100, // Creates a dropdown of 15 years to control year
-      max: true
+      max: true, // set max to today
+      format: 'yyyy-dd-mm',
     })
+
     </script>
 {% endblock %}

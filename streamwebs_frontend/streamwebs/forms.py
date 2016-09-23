@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 from streamwebs.models import UserProfile, WQ_Sample, Water_Quality, \
     Macroinvertebrates, Canopy_Cover, CC_Cardinal, TransectZone, \
-    RiparianTransect, Site
+    RiparianTransect, Site, School
 from django.contrib.auth.models import User
 from django import forms
 from django.utils.translation import ugettext_lazy as _
@@ -46,6 +46,7 @@ class UserProfileForm(forms.ModelForm):
     birthdate = forms.DateField(
         widget=forms.DateInput(attrs={'class': 'datepicker'}),
     )
+    school = forms.ModelChoiceField(queryset=School.objects.all())
 
     class Meta:
         model = UserProfile
