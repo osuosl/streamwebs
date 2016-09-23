@@ -13,7 +13,7 @@ sys.path.append(proj_path)
 application = get_wsgi_application()
 
 from django.contrib.auth.models import User  # NOQA
-from streamwebs.models import UserProfile, School  # NOQA 
+from streamwebs.models import UserProfile, School  # NOQA
 
 
 with open('../csvs/users1.csv', 'r') as csvfile:

@@ -13,10 +13,11 @@ from django.conf import settings
 
 from streamwebs.forms import (
     UserForm, UserProfileForm, RiparianTransectForm, MacroinvertebratesForm,
-    WQSampleForm, WQSampleFormReadOnly, WQForm, WQFormReadOnly, SiteForm)
+    Canopy_Cover_Form, WQSampleForm, WQSampleFormReadOnly,
+    WQForm, WQFormReadOnly, SiteForm)
 from streamwebs.models import (
     Macroinvertebrates, Site, Water_Quality, WQ_Sample, RiparianTransect,
-    TransectZone, Canopy_Cover)
+    TransectZone, Canopy_Cover, CC_Cardinal)
 
 from datetime import datetime
 import json
@@ -298,6 +299,68 @@ def riparian_transect_edit(request, site_slug):
         request,
         'streamwebs/datasheets/riparian_transect_edit.html', {
             'transect_form': transect_form, 'zone_formset': zone_formset,
+            'added': added, 'site': site
+        }
+    )
+
+
+def canopy_cover_view(request, site_slug, data_id):
+    site = Site.objects.filter(active=True).get(site_slug=site_slug)
+    canopy_cover = Canopy_Cover.objects.filter(site_id=site.id).get(id=data_id)
+    cardinals = CC_Cardinal.objects.filter(canopy_cover_id=canopy_cover)
+
+    return render(
+        request, 'streamwebs/datasheets/canopy_cover_view.html', {
+            'canopy_cover': canopy_cover,
+            'cardinals': cardinals,
+            'site': site
+            }
+        )
+
+
+def canopy_cover_edit(request, site_slug):
+    """
+    The view for the submission of a new canopy cover data sheet.
+    """
+    added = False
+    site = Site.objects.filter(active=True).get(site_slug=site_slug)
+    canopy_cover = Canopy_Cover()
+    CardinalInlineFormSet = inlineformset_factory(
+        Canopy_Cover, CC_Cardinal,
+        fields=(
+            'direction', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
+            'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W',
+            'X', 'num_shaded'), extra=4
+    )
+
+    if request.method == 'POST':
+        cardinal_formset = CardinalInlineFormSet(
+            data=request.POST, instance=canopy_cover
+        )
+        canopy_cover_form = Canopy_Cover_Form(data=request.POST)
+
+        if (cardinal_formset.is_valid() and canopy_cover_form.is_valid()):
+
+            canopy_cover = canopy_cover_form.save()
+            canopy_cover.save()
+
+            cardinals = cardinal_formset.save(commit=False)
+
+            for cardinal in cardinals:
+                cardinal.canopy_cover = canopy_cover
+                cardinal.save()
+
+            added = True
+
+    else:
+        cardinal_formset = CardinalInlineFormSet(instance=canopy_cover)
+        canopy_cover_form = Canopy_Cover_Form()
+
+    return render(
+        request,
+        'streamwebs/datasheets/canopy_cover_edit.html', {
+            'canopy_cover_form': canopy_cover_form,
+            'cardinal_formset': cardinal_formset,
             'added': added, 'site': site
         }
     )

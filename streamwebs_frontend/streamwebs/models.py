@@ -76,6 +76,20 @@ class Site(models.Model):
         super(Site, self).save()
 
 
+class SchoolManager(models.Manager):
+    """
+    Manager for the school class - creates a school to be used in tests
+    """
+    def create_school(self, name, school_type='Test', address='12345 Foo St',
+                      city='Bar', province='Baz', zipcode='54321',
+                      active=True):
+
+        school = self.create(name=name, school_type=school_type,
+                             address=address, city=city, province=province,
+                             zipcode=zipcode, active=active)
+        return school
+
+
 @python_2_unicode_compatible
 class School(models.Model):
     name = models.CharField(max_length=250)
@@ -88,6 +102,9 @@ class School(models.Model):
 
     created = models.DateTimeField(default=timezone.now)
     modified = models.DateTimeField(default=timezone.now)
+
+    test_objects = SchoolManager()
+    objects = models.Manager()
 
     def __str__(self):
         return self.name
@@ -762,8 +779,10 @@ class RiparianTransect(models.Model):
         verbose_name=_('slope of stream bank (rise over run)')
     )
     notes = models.TextField(blank=True, verbose_name=_('notes'))
+    nid = models.PositiveIntegerField(blank=True, null=True)
 
-    objects = RipTransectManager()
+    test_objects = RipTransectManager()
+    objects = models.Manager()
 
     def __str__(self):
         return 'Transect ' + str(self.id) + ' for site ' + self.site.site_name
@@ -788,26 +807,66 @@ class TransectZone(models.Model):
     """
     Each Riparian Transect datasheet requires five zones.
     """
+    ZONE_1 = 1
+    ZONE_2 = 2
+    ZONE_3 = 3
+    ZONE_4 = 4
+    ZONE_5 = 5
+
+    ZONES = ((ZONE_1, 1), (ZONE_2, 2), (ZONE_3, 3), (ZONE_4, 4), (ZONE_5, 5))
+
     transect = models.ForeignKey(RiparianTransect, on_delete=models.CASCADE,
                                  related_name='transect', null=True)
-    conifers = models.PositiveSmallIntegerField(default=0,
+    zone_num = models.CharField(max_length=1, default=0, choices=ZONES)
+    conifers = models.PositiveSmallIntegerField(default=0, null=True,
                                                 verbose_name=_('conifers'))
-    hardwoods = models.PositiveSmallIntegerField(default=0,
+    hardwoods = models.PositiveSmallIntegerField(default=0, null=True,
                                                  verbose_name=_('hardwoods'))
-    shrubs = models.PositiveSmallIntegerField(default=0,
+    shrubs = models.PositiveSmallIntegerField(default=0, null=True,
                                               verbose_name=_('shrubs'))
-    comments = models.TextField(blank=True,
+    comments = models.TextField(blank=True, null=True,
                                 verbose_name=_('additional comments'))
 
-    objects = TransectZoneManager()
+    test_objects = TransectZoneManager()
+    objects = models.Manager()
 
     def __str__(self):
-        return ('Zone ' + str(self.id) + ' for transect ' +
+        return ('Zone ' + str(self.zone_num) + ' for transect ' +
                 str(self.transect.id))
 
     class Meta:
         verbose_name = 'zone'
         verbose_name_plural = 'zones'
+
+
+def validate_cover(est_canopy_cover):
+    if not(0 <= est_canopy_cover and est_canopy_cover <= 96):
+        raise ValidationError(
+            '%(est_canopy_cover)s is not 0-96.',
+            params={'est_canopy_cover': est_canopy_cover},
+            )
+
+
+@python_2_unicode_compatible
+class Canopy_Cover(models.Model):
+    school = models.ForeignKey(School, null=True, on_delete=models.CASCADE,
+                               verbose_name=_('school'))
+    date_time = models.DateTimeField(default=timezone.now,
+                                     verbose_name=_('date and time'))
+    site = models.ForeignKey(Site, null=True, on_delete=models.CASCADE,
+                             verbose_name=_('site'))
+    weather = models.CharField(max_length=250, verbose_name=_('weather'))
+    est_canopy_cover = models.PositiveIntegerField(
+        default=0, validators=[validate_cover],
+        verbose_name=_('estimated canopy cover')
+        )
+
+    def __str__(self):
+        return(str(self.date_time) + ' ' + self.site.site_name)
+
+    class Meta:
+        verbose_name = 'canopy cover survey'
+        verbose_name_plural = 'canopy cover surveys'
 
 
 class CardinalManager(models.Manager):
@@ -816,12 +875,12 @@ class CardinalManager(models.Manager):
     data for each of the cardinal directions
     """
     def create_shade(self, direction, A, B, C, D, E, F, G, H, I, J, K, L, M, N,
-                     O, P, Q, R, S, T, U, V, W, X, num_shaded):
+                     O, P, Q, R, S, T, U, V, W, X, num_shaded, canopyc):
 
         cc_info = self.create(direction=direction, A=A, B=B, C=C, D=D, E=E,
                               F=F, G=G, H=H, I=I, J=J, K=K, L=L, M=M, N=N, O=O,
                               P=P, Q=Q, R=R, S=S, T=T, U=U, V=V, W=W, X=X,
-                              num_shaded=num_shaded)
+                              num_shaded=num_shaded, canopy_cover=canopyc)
         return cc_info
 
 
@@ -878,11 +937,14 @@ class CC_Cardinal(models.Model):
     num_shaded = models.PositiveIntegerField(default=0,
                                              validators=[validate_shaded],
                                              verbose_name=_('# shaded boxes'))
+    canopy_cover = models.ForeignKey(Canopy_Cover, on_delete=models.CASCADE,
+                                     null=True, related_name='canopy_cover')
 
-    objects = CardinalManager()
+    objects = models.Manager()
+    test_objects = CardinalManager()
 
     def __str__(self):
-        return self.direction
+        return(self.canopy_cover.site.site_name + ' - ' + self.direction)
 
     class Meta:
         verbose_name = 'cardinal direction'
@@ -904,45 +966,3 @@ class CC_Cardinal(models.Model):
                 _('%(num_shaded)s is not the correct total'),
                 params={'num_shaded': self.num_shaded},
             )
-
-
-def validate_cover(est_canopy_cover):
-    if not(0 <= est_canopy_cover and est_canopy_cover <= 96):
-        raise ValidationError(
-            '%(est_canopy_cover)s is not 0-96.',
-            params={'est_canopy_cover': est_canopy_cover},
-            )
-
-
-@python_2_unicode_compatible
-class Canopy_Cover(models.Model):
-    school = models.CharField(max_length=250, verbose_name=_('school'))
-    date_time = models.DateTimeField(default=timezone.now,
-                                     verbose_name=_('date and time'))
-    site = models.ForeignKey(Site, null=True, on_delete=models.CASCADE,
-                             verbose_name=_('site'),
-                             limit_choices_to={'active': True})
-    weather = models.CharField(max_length=250, verbose_name=_('weather'))
-    north = models.ForeignKey(CC_Cardinal, on_delete=models.CASCADE,
-                              related_name='north', null=True,
-                              verbose_name=_('north'))
-    east = models.ForeignKey(CC_Cardinal, on_delete=models.CASCADE,
-                             related_name='east', null=True,
-                             verbose_name=_('east'))
-    south = models.ForeignKey(CC_Cardinal, on_delete=models.CASCADE,
-                              related_name='south', null=True,
-                              verbose_name=_('south'))
-    west = models.ForeignKey(CC_Cardinal, on_delete=models.CASCADE,
-                             related_name='west', null=True,
-                             verbose_name=_('west'))
-    est_canopy_cover = models.PositiveIntegerField(
-        default=0, validators=[validate_cover],
-        verbose_name=_('estimated canopy cover')
-        )
-
-    def __str__(self):
-        return self.site.site_name + ' sheet ' + str(self.id)
-
-    class Meta:
-        verbose_name = 'canopy cover survey'
-        verbose_name_plural = 'canopy cover surveys'

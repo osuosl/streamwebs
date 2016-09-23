@@ -17,6 +17,7 @@ class RiparianTransectTestCase(TestCase):
             'slope': models.DecimalField,
             'notes': models.TextField,
             'id': models.AutoField,
+            'nid': models.PositiveIntegerField,
 
             'transect': models.ManyToOneRel,
         }
@@ -50,7 +51,7 @@ class RiparianTransectTestCase(TestCase):
     def test_validate_slope_good(self):
         site = Site.test_objects.create_site('test site')
 
-        transect = RiparianTransect.objects.create_transect(
+        transect = RiparianTransect.test_objects.create_transect(
             'School of Cool', '2016-07-11 14:09', site, 'Cloudy, no meatballs',
             1.11, 'Notes on transect')
         self.assertEqual(validate_slope(transect.slope), None)
@@ -58,7 +59,7 @@ class RiparianTransectTestCase(TestCase):
     def test_validate_slope_bad(self):
         site = Site.test_objects.create_site('test site')
 
-        transect = RiparianTransect.objects.create_transect(
+        transect = RiparianTransect.test_objects.create_transect(
             'School of Cool', '2016-07-11 14:09', site, 'Cloudy, no meatballs',
             -1.11, 'Notes on transect')
         with self.assertRaises(ValidationError):
@@ -69,14 +70,14 @@ class RiparianTransectTestCase(TestCase):
         A datasheet should correctly correspond to a single site.
         """
 
-        transect = RiparianTransect.objects.create_transect(
+        transect = RiparianTransect.test_objects.create_transect(
             'School of Cool', '2016-07-11 14:09', self.site)
 
         self.assertEqual(transect.site.site_name, 'test site')
         self.assertEqual(transect.site.site_slug, 'test-site')
 
     def test_transect_creation_req_fields(self):
-        transect = RiparianTransect.objects.create_transect(
+        transect = RiparianTransect.test_objects.create_transect(
             'School of Cool', '2016-07-11 14:09', self.site)
 
         # Required
@@ -90,7 +91,7 @@ class RiparianTransectTestCase(TestCase):
         self.assertEqual(transect.notes, '')
 
     def test_transect_creation_opt_fields(self):
-        transect = RiparianTransect.objects.create_transect(
+        transect = RiparianTransect.test_objects.create_transect(
             'School of Cool', '2016-07-11 14:09', self.site,
             'Cloudy, no meatballs', 1.11, 'Notes on transect')
         # Required

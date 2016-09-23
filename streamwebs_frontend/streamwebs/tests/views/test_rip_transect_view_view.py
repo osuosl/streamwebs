@@ -7,19 +7,24 @@ class ViewTransectTestCase(TestCase):
 
     def test_data_sheet_view(self):
         site = Site.test_objects.create_site('site name')
-        transect = RiparianTransect.objects.create_transect(
+        transect = RiparianTransect.test_objects.create_transect(
             'School Name', '2016-07-22 15:04:00', site
         )
-        zone_1 = TransectZone.objects.create_zone(transect, 1, 2, 3,  # NOQA
-                                                  'This is zone 1')  # NOQA
-        zone_2 = TransectZone.objects.create_zone(transect, 1, 2, 3,  # NOQA
-                                                  'This is zone 2')  # NOQA
-        zone_3 = TransectZone.objects.create_zone(transect, 1, 2, 3,  # NOQA
-                                                  'This is zone 3')  # NOQA
-        zone_4 = TransectZone.objects.create_zone(transect, 1, 2, 3,  # NOQA
-                                                  'This is zone 4')  # NOQA
-        zone_5 = TransectZone.objects.create_zone(transect, 1, 2, 3,  # NOQA
-                                                  'This is zone 5')  # NOQA
+        zone_1 = TransectZone.test_objects.create_zone(  # NOQA
+            transect, 1, 2, 3, 'This is zone 1'
+        )
+        zone_2 = TransectZone.test_objects.create_zone(  # NOQA
+            transect, 1, 2, 3, 'This is zone 2'
+        )
+        zone_3 = TransectZone.test_objects.create_zone(  # NOQA
+            transect, 1, 2, 3, 'This is zone 3'
+        )
+        zone_4 = TransectZone.test_objects.create_zone(  # NOQA
+            transect, 1, 2, 3, 'This is zone 4'
+        )
+        zone_5 = TransectZone.test_objects.create_zone(  # NOQA
+            transect, 1, 2, 3, 'This is zone 5'
+        )
         response = self.client.get(
                 reverse(
                     'streamwebs:riparian_transect',
@@ -34,19 +39,24 @@ class ViewTransectTestCase(TestCase):
 
     def test_data_sheet_view_content(self):
         site = Site.test_objects.create_site('Site Name')
-        transect = RiparianTransect.objects.create_transect(
+        transect = RiparianTransect.test_objects.create_transect(
             'School Name', '2016-07-22 15:04:00', site
         )
-        zone_1 = TransectZone.objects.create_zone(transect, 1, 2, 3,  # NOQA
-                                                  'This is zone 1')  # NOQA
-        zone_2 = TransectZone.objects.create_zone(transect, 1, 2, 3,  # NOQA
-                                                  'This is zone 2')  # NOQA
-        zone_3 = TransectZone.objects.create_zone(transect, 1, 2, 3,  # NOQA
-                                                  'This is zone 3')  # NOQA
-        zone_4 = TransectZone.objects.create_zone(transect, 1, 2, 3,  # NOQA
-                                                  'This is zone 4')  # NOQA
-        zone_5 = TransectZone.objects.create_zone(transect, 1, 2, 3,  # NOQA
-                                                  'This is zone 5')  # NOQA
+        zone_1 = TransectZone.test_objects.create_zone(  # NOQA
+            transect, 1, 2, 3, 'This is zone 1'
+        )
+        zone_2 = TransectZone.test_objects.create_zone(  # NOQA
+            transect, 1, 2, 3, 'This is zone 2'
+        )
+        zone_3 = TransectZone.test_objects.create_zone(  # NOQA
+            transect, 1, 2, 3, 'This is zone 3'
+        )
+        zone_4 = TransectZone.test_objects.create_zone(  # NOQA
+            transect, 1, 2, 3, 'This is zone 4'
+        )
+        zone_5 = TransectZone.test_objects.create_zone(  # NOQA
+            transect, 1, 2, 3, 'This is zone 5'
+        )
         response = self.client.get(
                 reverse(
                     'streamwebs:riparian_transect',
