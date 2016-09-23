@@ -18,7 +18,7 @@ from streamwebs.models import Water_Quality  # NOQA
 # Stream/Site name, DEQ Data Quality, Collected, School, Any fish present?
 # num alive, num dead, Air Temp units, Water Temp units, Lat, Long, Nid
 
-with open('../csvs/wq_csvs/small/wq.csv', 'r') as csvfile:
+with open('../csvs/wq_csvs/water_quality.csv', 'r') as csvfile:
     wqreader = csv.reader(csvfile)
     for row in wqreader:
         if row[0] != 'Stream/Site name':  # Skip header

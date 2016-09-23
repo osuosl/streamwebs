@@ -16,7 +16,7 @@ from streamwebs.models import WQ_Sample  # NOQA
 
 
 # Stream/Site name, Type, Nid, Air Temp, Air Temp (delta)
-with open('../csvs/wq_csvs/small/air.csv', 'r') as csvfile:
+with open('../csvs/wq_csvs/WQ_air_temp.csv', 'r') as csvfile:
     airreader = csv.reader(csvfile)
     for row in airreader:
         if row[0] != 'Stream/Site name':  # Skip the header
@@ -49,7 +49,7 @@ csvfile.close()
 print 'Air temperature loaded.'
 
 # Water Temperature, Type, Nid, Water Temp (delta)
-with open('../csvs/wq_csvs/small/water.csv', 'r') as csvfile:
+with open('../csvs/wq_csvs/WQ_water_temp.csv', 'r') as csvfile:
     waterreader = csv.reader(csvfile)
     for row in waterreader:
         if row[0] != 'Water Temperature ':  # Skip the header
@@ -81,7 +81,7 @@ csvfile.close()
 print 'Water temperature loaded.'
 
 # Dissolved Oxygen, Type, Nid, D_Oxygen (delta)
-with open('../csvs/wq_csvs/small/oxygen.csv', 'r') as csvfile:
+with open('../csvs/wq_csvs/WQ_oxygen.csv', 'r') as csvfile:
     oxygenreader = csv.reader(csvfile)
     for row in oxygenreader:
         if row[0] != 'Dissolved Oxygen (mg/L)':  # Skip the header
@@ -113,7 +113,7 @@ csvfile.close()
 print 'Dissolved oxygen loaded.'
 
 # pH, Type, Nid, pH (delta)
-with open('../csvs/wq_csvs/small/pH.csv', 'r') as csvfile:
+with open('../csvs/wq_csvs/WQ_pH.csv', 'r') as csvfile:
     pHreader = csv.reader(csvfile)
     for row in pHreader:
         if row[0] != 'pH':  # Skip the header
@@ -145,7 +145,7 @@ csvfile.close()
 print 'pH loaded.'
 
 # Turbidity, Type, Nid, Turbidity (delta)
-with open('../csvs/wq_csvs/small/turbid.csv', 'r') as csvfile:
+with open('../csvs/wq_csvs/WQ_turbidity.csv', 'r') as csvfile:
     turbidreader = csv.reader(csvfile)
     for row in turbidreader:
         if row[0] != 'Turbidity (NTU)':  # Skip the header
@@ -177,7 +177,7 @@ csvfile.close()
 print 'Turbidity loaded.'
 
 # Salinity, Type, Nid, salt (delta)
-with open('../csvs/wq_csvs/small/salt.csv', 'r') as csvfile:
+with open('../csvs/wq_csvs/WQ_salinity.csv', 'r') as csvfile:
     saltreader = csv.reader(csvfile)
     for row in saltreader:
         if row[0] != 'Salinity (PSU) PPT':  # Skip the header
