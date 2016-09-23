@@ -76,6 +76,7 @@ def site(request, site_slug):
     transect_sheets = transect_sheets.order_by('-date_time')
     canopy_sheets = Canopy_Cover.objects.filter(site_id=site.id)
     canopy_sheets = canopy_sheets.order_by('-date_time')
+    ppm_sheets = CameraPoint.objects.filter(site_id=site.id).order_by('letter')
 
     return render(request, 'streamwebs/site_detail.html', {
         'site': site,
@@ -83,6 +84,7 @@ def site(request, site_slug):
         'macro_sheets': macro_sheets,
         'transect_sheets': transect_sheets,
         'canopy_sheets': canopy_sheets,
+        'ppm_sheets': ppm_sheets
     })
 
 
@@ -126,7 +128,8 @@ def deactivate_site(request, site_slug):
     if not(Water_Quality.objects.filter(site_id=site.id).exists() or
             Macroinvertebrates.objects.filter(site_id=site.id).exists() or
             RiparianTransect.objects.filter(site_id=site.id).exists() or
-            Canopy_Cover.objects.filter(site_id=site.id).exists()):
+            Canopy_Cover.objects.filter(site_id=site.id).exists() or
+            CameraPoint.objects.filter(site_id=site.id).exists()):
 
         site.active = False
         site.modified = timezone.now()

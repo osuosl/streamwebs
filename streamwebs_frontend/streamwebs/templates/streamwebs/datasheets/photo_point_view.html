@@ -7,7 +7,7 @@
 
 <!-- PP info -->
 <div>
-    <strong>{{ pp.camera_point.site.site_name }}</strong>
+    <strong><a href="{% url 'streamwebs:camera_point' pp.camera_point.site.site_slug pp.camera_point.id %}">{{ pp.camera_point.site.site_name }}: camera point {{ pp.camera_point.letter }}</a></strong>
     <p>Date established: {{ pp.pp_date|date:"m-d-Y" }}</p>
     <p>Compass bearing: {{ pp.compass_bearing }}</p>
     <p>Distance from camera point {{ pp.camera_point.letter }}: {{ pp.distance }}</p>
