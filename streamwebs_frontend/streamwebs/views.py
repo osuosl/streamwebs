@@ -354,10 +354,10 @@ def canopy_cover_edit(request, site_slug):
 
             added = True
 
-        else:
-            cardinal_formset = CardinalInlineFormSet(instance=canopy_cover)
-            canopy_cover_form = Canopy_Cover_Form()
-        
+    else:
+        cardinal_formset = CardinalInlineFormSet(instance=canopy_cover)
+        canopy_cover_form = Canopy_Cover_Form()
+
     return render(
         request,
         'streamwebs/datasheets/canopy_cover_edit.html', {

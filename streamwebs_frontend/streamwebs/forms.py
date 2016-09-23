@@ -173,9 +173,3 @@ class SiteForm(forms.ModelForm):
     class Meta:
         model = Site
         fields = ('site_name', 'description', 'location', 'image')
-
-
-class CameraPointForm(forms.ModelForm):
-    class Meta:
-        model = CameraPoint
-        fields = ('site', 'cp_date', 'location', 'map_datum', 'description')
