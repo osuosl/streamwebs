@@ -39,7 +39,7 @@
 
                             <div class="search-results collection">
                             {% for site in sites %}
-                                <a href="site/{{site.slug}}" class="collection-item search-item {{site.site_type}} cyan-text hide">{{site.name}}</a>
+                                <a href="site/{{site.site_slug}}" class="collection-item search-item {{site.site_type}} cyan-text hide">{{site.site_name}}</a>
                             {% endfor %}
                             </div>
                         </div>
@@ -73,7 +73,7 @@
             <a href="#!" class="dropdown-button btn select-button cyan" data-activates='dropdown'>{% trans "Select Site" %}<i class="material-icons right">arrow_drop_down</i></a>
             <ul id="dropdown" class="dropdown-content">
             {% for site in sites %}
-                <li><a href="site/{{site.slug}}" class="cyan-text">{{site.name}}</a></li>
+                <li><a href="site/{{site.site_slug}}" class="cyan-text">{{site.site_name}}</a></li>
             {% endfor %}
             </ul>
         </div>
