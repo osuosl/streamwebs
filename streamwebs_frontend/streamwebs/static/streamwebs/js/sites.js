@@ -75,29 +75,39 @@ function initialize() {
 
     var latSum = 0, lngSum = 0;
 
-    for (let site of sites) {
-        site.marker = new google.maps.Marker({
+    var markerList = [];
+    var infoWindows = [];
+
+    for (var i = 0; i < sites.length; i++) {
+        var site = sites[i];
+
+        markerList[i] = new google.maps.Marker({
             map: map,
-            position: new google.maps.LatLng(site.lat, site.lng),
+            position: new google.maps.LatLng(site.lng, site.lat),
             title: site.name,
             icon: markers[site.type],
         });
-        site.infoWindow = new google.maps.InfoWindow({
+
+        markerList[i].index = i;
+
+        infoWindows[i] = new google.maps.InfoWindow({
             content: '<p><a href="javascript:submit_map(\'' + site.slug + '\')">' + site.name + '</a></p><p>' + site.description + '</p>',
         });
-        site.marker.addListener('click', function () {
-            for (let otherSite of sites) {
-                otherSite.infoWindow.close();
+
+        markerList[i].addListener('click', function () {
+            for (let otherWindow of infoWindows) {
+                otherWindow.close();
             }
-            site.infoWindow.open(map, site.marker);
+
+            infoWindows[this.index].open(map, markerList[this.index]);
         });
 
-        latSum += site.lat;
-        lngSum += site.lng;
+        lngSum += site.lat;
+        latSum += site.lng;
     }
 
-    map.setCenter(new google.maps.LatLng(latSum / sites.length,
-                                         lngSum / sites.length));
+    // map.setCenter(new google.maps.LatLng(lngSum / sites.length,
+    //                                      latSum / sites.length));
 }
 
 $(document).ready(function () {
