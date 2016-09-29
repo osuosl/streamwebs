@@ -240,7 +240,10 @@ class Water_Quality(models.Model):
     objects = models.Manager()
 
     def __str__(self):
-        return self.site.site_name + ' data sheet ' + str(self.id)
+        if self.site is not None:
+            return self.site.site_name + ' data sheet ' + str(self.id)
+        else:
+            return 'Unspecified site for data sheet ' + str(self.id)
 
     class Meta:
         verbose_name = 'water quality'
