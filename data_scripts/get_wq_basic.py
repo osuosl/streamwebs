@@ -37,7 +37,7 @@ with open('../csvs/wq_csvs/water_quality.csv', 'r') as csvfile:
 
             # Formate datetime object for query
             if len(t_date) > 10:
-                datet =\
+                date_time =\
                     datetime.datetime.strptime(t_date, '%Y-%m-%d %H:%M').date()
 
             # Format date object
@@ -75,28 +75,19 @@ with open('../csvs/wq_csvs/water_quality.csv', 'r') as csvfile:
                 try:
                     site = Site.objects.get(site_name=row[0])
                     waterq.site_id = site.id
-
-                #    raise SiteQueryError(
-                #        'streamwebs.models.MultipleObjectsReturned: \
-                #        get() returned more than one Site -- it returned 2!')
-                    print row[0]
-                except:
-                    if datet >= agate1_date:
+                except:  # for the one site_name exception...
+                    if date_time >= agate1_date:
                         site = Site.objects.get(
                             site_name=row[0], site_slug='agate-beach1')
                         waterq.site_id = site.id
                     else:
-                        print row[0]
                         site = Site.objects.get(
                             site_name=row[0], site_slug='agate-beach')
                         waterq.site_id = site.id                       
-                #except:
-                #    site = Site.objects.get(site_name=row[0])
-                #    waterq.site_id = site.id
             else:
                 waterq.site_id = None
 
-            #waterq.save()
+            waterq.save()
 
 csvfile.close()
 
