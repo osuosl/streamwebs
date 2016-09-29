@@ -3,6 +3,7 @@
 import os
 import sys
 import csv
+import datetime
 
 from django.core.wsgi import get_wsgi_application
 
@@ -14,6 +15,9 @@ application = get_wsgi_application()
 from streamwebs.models import Site  # NOQA
 from streamwebs.models import Water_Quality  # NOQA
 
+
+class SiteQueryError(Exception):
+    pass
 
 # Stream/Site name, DEQ Data Quality, Collected, School, Any fish present?
 # num alive, num dead, Air Temp units, Water Temp units, Lat, Long, Nid
@@ -29,10 +33,22 @@ with open('../csvs/wq_csvs/water_quality.csv', 'r') as csvfile:
                     row[i] = None
 
             # Strip ``Collected date`` to be YYYY-MM-DD
-            temp_date = row[2].strip('MonTuesWdhurFiSat(Aly), ')
-            collected = temp_date[:10]
+            t_date = row[2].strip('MonTuesWdhurFiSat(Aly), ')
+
+            # Formate datetime object for query
+            if len(t_date) > 10:
+                datet =\
+                    datetime.datetime.strptime(t_date, '%Y-%m-%d %H:%M').date()
+
+            # Format date object
+            collected =\
+                datetime.datetime.strptime(t_date[:10], '%Y-%m-%d').date()
 
             waterq.date = collected
+
+            # Date to compare ``collected`` to
+            agate1_date =\
+                 datetime.datetime.strptime('2014-06-09', '%Y-%m-%d').date()
 
             waterq.DEQ_dq_level = row[1]
             waterq.school = row[3]
@@ -55,10 +71,32 @@ with open('../csvs/wq_csvs/water_quality.csv', 'r') as csvfile:
 
             waterq.nid = row[11]
 
-            site = Site.objects.get(site_name=row[0])
-            waterq.site_id = site.id
+            if row[0] != None:
+                try:
+                    site = Site.objects.get(site_name=row[0])
+                    waterq.site_id = site.id
 
-            waterq.save()
+                #    raise SiteQueryError(
+                #        'streamwebs.models.MultipleObjectsReturned: \
+                #        get() returned more than one Site -- it returned 2!')
+                    print row[0]
+                except:
+                    if datet >= agate1_date:
+                        site = Site.objects.get(
+                            site_name=row[0], site_slug='agate-beach1')
+                        waterq.site_id = site.id
+                    else:
+                        print row[0]
+                        site = Site.objects.get(
+                            site_name=row[0], site_slug='agate-beach')
+                        waterq.site_id = site.id                       
+                #except:
+                #    site = Site.objects.get(site_name=row[0])
+                #    waterq.site_id = site.id
+            else:
+                waterq.site_id = None
+
+            #waterq.save()
 
 csvfile.close()
 
