@@ -16,9 +16,6 @@ from streamwebs.models import Site  # NOQA
 from streamwebs.models import Water_Quality  # NOQA
 
 
-class SiteQueryError(Exception):
-    pass
-
 # Stream/Site name, DEQ Data Quality, Collected, School, Any fish present?
 # num alive, num dead, Air Temp units, Water Temp units, Lat, Long, Nid
 
