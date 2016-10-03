@@ -45,7 +45,7 @@ with open('../csvs/wq_csvs/water_quality.csv', 'r') as csvfile:
 
             # Date to compare ``collected`` to
             agate1_date =\
-                 datetime.datetime.strptime('2014-06-09', '%Y-%m-%d').date()
+                datetime.datetime.strptime('2014-06-09', '%Y-%m-%d').date()
 
             waterq.DEQ_dq_level = row[1]
             waterq.school = row[3]
@@ -68,7 +68,7 @@ with open('../csvs/wq_csvs/water_quality.csv', 'r') as csvfile:
 
             waterq.nid = row[11]
 
-            if row[0] != None:
+            if row[0] is not None:
                 try:
                     site = Site.objects.get(site_name=row[0])
                     waterq.site_id = site.id
@@ -80,7 +80,7 @@ with open('../csvs/wq_csvs/water_quality.csv', 'r') as csvfile:
                     else:
                         site = Site.objects.get(
                             site_name=row[0], site_slug='agate-beach')
-                        waterq.site_id = site.id                       
+                        waterq.site_id = site.id
             else:
                 waterq.site_id = None
 
