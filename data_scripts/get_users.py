@@ -63,7 +63,7 @@ with open('../csvs/users1.csv', 'r') as csvfile:
                                         email=email,
                                         date_joined=created
                                         )
-        school = School.objects.filter(name=users_school)
+        school = School.objects.get(name=users_school)
         userprofile = UserProfile.objects.create(user=user,
                                                  school=school,
                                                  birthdate=dob)
