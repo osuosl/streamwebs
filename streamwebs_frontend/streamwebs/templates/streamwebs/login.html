@@ -1,24 +1,7 @@
 {% extends 'streamwebs/base.html' %}
 {% load staticfiles %}
 {% load i18n %}
-{% block scripts %}
-  <!--Import Google Icon Font-->
-  <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <!--Import materialize.css-->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
-  <!--Import jQuery before materialize.js-->
-  <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
-
-  <style>
-    .material-icons{
-      font-size: 1.5em;
-    }
-    .nav-wrapper {
-      background-color: #03A9F4;
-    }
-  </style>
-{% endblock %}
+{% block stylesheets %}{% endblock %}
 {% block title %}Log In -{% endblock %}
 {% block body_title %}{% trans "Log In" %}{% endblock %}
 {% block content %}

@@ -2,15 +2,7 @@
 {% load staticfiles %}
 {% load i18n %}
 {% block title %}{% endblock %}
-{% block scripts %}
-  <!--Import Google Icon Font-->
-  <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <!--Import materialize.css-->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
-  <!--Import jQuery before materialize.js-->
-  <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
-
+{% block stylesheets %}
   <style>
     #index-banner{
       min-height: 380px;
@@ -24,14 +16,10 @@
     #index-banner #banner-text{
       color: white;
       vertical-align: middle;
-
       top: 75%;
     }
     .material-icons{
       font-size: 1.5em;
-    }
-    .nav-wrapper {
-      background-color: #03A9F4;
     }
   </style>
 {% endblock %}
@@ -49,7 +37,7 @@
           <div class="row">
             <div class="col s12 m4">
               <div class="icon-block">
-                <h2 class="center light-blue-text"><i class="material-icons">directions_walk</i></h2>
+                <h2 class="center"><i class="material-icons">directions_walk</i></h2>
                 <h5 class="center">### engaged students</h5>
                 <p class="light center">We have this many students active</p>
               </div>
@@ -57,7 +45,7 @@
 
             <div class="col s12 m4">
               <div class="icon-block">
-                <h2 class="center light-blue-text"><i class="material-icons">school</i></h2>
+                <h2 class="center"><i class="material-icons">school</i></h2>
                 <h5 class="center">### data driven schools</h5>
                 <p class="light center">There are this many schools participating</p>
               </div>
@@ -65,7 +53,7 @@
 
             <div class="col s12 m4">
               <div class="icon-block">
-                <h2 class="center light-blue-text"><i class="material-icons">public</i></h2>
+                <h2 class="center"><i class="material-icons">public</i></h2>
                 <h5 class="center">### accessible datasheets</h5>
                 <p class="light center">Mi data es tu data.</p>
               </div>
