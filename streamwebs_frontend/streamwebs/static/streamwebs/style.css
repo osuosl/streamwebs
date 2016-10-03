@@ -172,3 +172,7 @@ i {
 .collapse-btn {
     cursor: pointer;
 }
+
+.infogroup .row {
+    margin-bottom: 0;
+}

@@ -74,7 +74,9 @@ class WQForm(forms.ModelForm):
             'water_temp_unit':
                 forms.RadioSelect(renderer=HorizontalRadioRenderer),
             'air_temp_unit':
-                forms.RadioSelect(renderer=HorizontalRadioRenderer)
+                forms.RadioSelect(renderer=HorizontalRadioRenderer),
+            'notes':
+                forms.Textarea(attrs={'class': 'materialize-textarea'})
         }
         fields = (
             'site', 'date', 'DEQ_dq_level', 'school',

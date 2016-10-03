@@ -207,11 +207,11 @@ class Water_Quality(models.Model):
         max_length=250, null=True, verbose_name=_('school')
     )
     latitude = models.DecimalField(
-        default=0, null=True, max_digits=9, decimal_places=6,
+        null=True, max_digits=9, decimal_places=6,
         verbose_name=_('latitude'), validators=[validate_WaterQuality_latitude]
     )
     longitude = models.DecimalField(
-        default=0, null=True, max_digits=9, decimal_places=6,
+        null=True, max_digits=9, decimal_places=6,
         verbose_name=_('longitude'),
         validators=[validate_WaterQuality_longitude]
     )
