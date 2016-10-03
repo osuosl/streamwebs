@@ -1,7 +1,13 @@
 @charset "UTF-8";
 
-body {
-    font-family: sans-serif
+/* WebKit/Blink Browsers */
+::selection {
+    background: #b9dce8;
+}
+
+/* Gecko Browsers */
+::-moz-selection {
+    background: #b9dce8;
 }
 
 .title {
@@ -13,96 +19,77 @@ body {
     line-height: 2.5em;
 }
 
+html body {
+    background-color: #fafafa;
+}
+
 #map {
-    width: 500px;
-    height: 300px;
+    width: 100%;
+    height: 500px;
+    margin-bottom: 10px;
 }
 
-#search_bar {
-    width: 352px; /* Fits with 300-wide dropdown + 50px padding + 1px border */
-    height: 25px;
+.search-nav {
+    /* Make the search bar behave as if it were not in a navbar */
+
+    padding: 0 0 0 0 !important;
+    margin-left: 0.75rem !important;
+    margin-right: -0.75rem !important;
+    margin-bottom: 0 !important;
 }
 
-.search_item {
-    background-color: white;
-    color: black;
-    border: thin solid black;
-    width: 300px;
-    padding-left: 50px;
-    height: 40px;
-    vertical-align: middle;
+#search {
+    margin-bottom: 0;
+}
+
+/* Search placeholder color */
+::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color: #fff;
+}
+
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+   color: #fff;
+   opacity: 1;
+}
+
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+   color: #fff;
+   opacity: 1;
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+   color: #fff;
+}
+
+.search-results {
+    margin-top: 0;
     position: absolute;
     z-index: 10;
-    margin-bottom: -1px;
-    cursor: auto;
+    width: 100%;
 }
 
-.search_item:hover {
-    background-color: rgb(196, 196, 196);
-    color: black;
-    cursor: pointer;
+nav {
+    margin-bottom: 25px;
 }
 
-.datasheet-title {
-  color: rgb(16, 66, 87);
+#date {
+    margin-bottom: 5px;
 }
 
-.datasheet {
-  width: 100%;
+.rowchk {
+    margin-top: 23px;
 }
 
-.datasheet table {
-  margin: 0 auto;
-  padding: 10px 5px 10px 20px;
-}
-
-.datasheet form table {
-  margin: 0 auto;
-  padding: 10px 5px 10px 20px;
-}
-
-#water-quality-temp-units {
-  margin-bottom: 0;
-}
-
-#water-quality-data-table {
-  margin-top: 0;
-}
-
-.field-label {
-  font-weight: bold;
-}
-
-.inline-form-options {
-  padding: 0 10px;
-}
-
-td.triplet:nth-child(odd) {
-  border-left: 1px solid black;
-  border-right: 1px solid black;
-}
-
-td.pair:nth-child(odd) {
-  border-left: 1px solid black;
-  border-right: 1px solid black;
-}
-
-td.pair:nth-child(even) {
-  border-right: 1px solid black;
-}
-
-.data-table {
-  border: 1px solid black;
-  background-color: rgb(231, 241, 243);
-  padding: 5px 30px 5px 10px;
+.rowchk > label {
+    margin-right: 15px;
 }
 
 .data-table td {
-  font-weight: bold;
+    font-weight: bold;
 }
 
 .form-cell {
-  min-width: 300px;
+    min-width: 300px;
 }
 
 /* CSS for D3 graphs; ALL FREE TO BE CHANGED */
@@ -152,4 +139,36 @@ div.graph .line {
     fill: none;
     stroke: black;
     shape-rendering: crispEdges;
+}
+
+table input {
+    width: 90% !important;
+}
+
+table .row {
+    margin: 0 !important;
+}
+
+i {
+    vertical-align: middle;
+}
+
+.collapse {
+    opacity: 0;
+    height: 0;
+    padding: 0 8px;
+    overflow: hidden;
+    -webkit-transition: all .3s ease .15s;
+    -o-transition: all .3s ease .15s;
+    transition: all .3s ease .15s;
+}
+
+.uncollapse {
+    opacity: 1;
+    height: auto;
+    padding: 8px;
+}
+
+.collapse-btn {
+    cursor: pointer;
 }
