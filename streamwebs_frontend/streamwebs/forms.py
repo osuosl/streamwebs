@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 from streamwebs.models import UserProfile, WQ_Sample, Water_Quality, \
     Macroinvertebrates, Canopy_Cover, CC_Cardinal, TransectZone, \
-    RiparianTransect, PhotoPointImage, PhotoPoint, CameraPoint, Site
+    RiparianTransect, PhotoPointImage, PhotoPoint, CameraPoint, Site, School
 from django.contrib.auth.models import User
 from django import forms
 from django.utils.translation import ugettext_lazy as _
@@ -45,10 +45,19 @@ class UserProfileForm(forms.ModelForm):
         fields = ('school', 'birthdate')
 
 
+class HorizontalRadioRenderer(forms.RadioSelect.renderer):
+    ''' Renders radio buttons horizontally '''
+    def render(self):
+        return mark_safe(u'\n'.join([u'%s\n' % w for w in self]))
+
+
 class MacroinvertebratesForm(forms.ModelForm):
+    school = forms.ModelChoiceField(queryset=School.objects.all())
+    site = forms.ModelChoiceField(queryset=Site.objects.filter(active=True))
+
     class Meta:
         model = Macroinvertebrates
-        fields = ('school', 'date_time', 'weather', 'site', 'time_spent',
+        fields = ('site', 'school', 'date_time', 'weather', 'time_spent',
                   'num_people', 'riffle', 'pool', 'caddisfly', 'mayfly',
                   'riffle_beetle', 'stonefly', 'water_penny', 'dobsonfly',
                   'clam_or_mussel', 'crane_fly', 'crayfish',
@@ -57,12 +66,6 @@ class MacroinvertebratesForm(forms.ModelForm):
                   'snail', 'mosquito_larva', 'wq_rating',
                   'somewhat_sensitive_total', 'sensitive_total',
                   'tolerant_total')
-
-
-class HorizontalRadioRenderer(forms.RadioSelect.renderer):
-    ''' Renders radio buttons horizontally '''
-    def render(self):
-        return mark_safe(u'\n'.join([u'%s\n' % w for w in self]))
 
 
 class WQForm(forms.ModelForm):

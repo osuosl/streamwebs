@@ -1,7 +1,7 @@
 from django.test import Client, TestCase
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
-from streamwebs.models import Site
+from streamwebs.models import Site, School
 
 
 class MacroFormTestCase(TestCase):
@@ -46,13 +46,15 @@ class MacroFormTestCase(TestCase):
         """
         # TODO MAKE sample site
         test_site = Site.test_objects.create_site('test site')
+        test_school = School.test_objects.create_school('test school')
+
         response = self.client.post(
             reverse('streamwebs:macroinvertebrate_edit', kwargs={
                 'site_slug': 'test-site'}), {
-                'school': "aaaa",
+                'site': test_site.id,
+                'school': test_school.id,
                 'date_time': '2016-07-11 14:09',
                 'weather': "aaaa",
-                'site': test_site.id,
                 'time_spent': 1,
                 'num_people': 2,
                 'riffle': True,
@@ -63,7 +65,6 @@ class MacroFormTestCase(TestCase):
                 'stonefly': 2,
                 'water_penny': 1,
                 'dobsonfly': 2,
-                'sensitive_total': 27,
                 'clam_or_mussel': 2,
                 'crane_fly': 1,
                 'crayfish': 2,
@@ -73,13 +74,14 @@ class MacroFormTestCase(TestCase):
                 'fishfly': 2,
                 'alderfly': 1,
                 'mite': 2,
-                'somewhat_sensitive_total': 28,
                 'aquatic_worm': 2,
                 'blackfly': 1,
                 'leech': 2,
                 'midge': 1,
                 'snail': 1,
                 'mosquito_larva': 2,
+                'sensitive_total': 27,
+                'somewhat_sensitive_total': 28,
                 'tolerant_total': 9,
                 'wq_rating': 64,
             }

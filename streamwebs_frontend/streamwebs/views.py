@@ -231,15 +231,29 @@ def macroinvertebrate_edit(request, site_slug):
     added = False
     if request.method == 'POST':
         macro_form = MacroinvertebratesForm(data=request.POST)
+
+        # the following are the form's fields broken up into chunks to
+        # facilitate CSS manipulation in the template
+        intolerant = list(macro_form)[8:14]
+        somewhat = list(macro_form)[14:23]
+        tolerant = list(macro_form)[23:29]
+
         if macro_form.is_valid():
             macro_form = macro_form.save()
             added = True
     else:
         macro_form = MacroinvertebratesForm()
 
+        intolerant = list(macro_form)[8:14]
+        somewhat = list(macro_form)[14:23]
+        tolerant = list(macro_form)[23:29]
+
     return render(
         request, 'streamwebs/datasheets/macroinvertebrate_edit.html', {
             'macro_form': macro_form,
+            'intolerant': intolerant,
+            'somewhat': somewhat,
+            'tolerant': tolerant,
             'added': added,
             'site': site
         }

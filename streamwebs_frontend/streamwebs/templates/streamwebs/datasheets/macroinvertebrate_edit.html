@@ -3,27 +3,186 @@
 {% load i18n %}
 {% load filters %}
 {% block title %}{% trans "Macroinvertebrates Data Edit" %}{% endblock %}
+{% block scripts %}
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
 
+
+<style>
+  .material-icons {
+    font-size: 1.5em;
+  }
+
+  .errorlist {
+    color:red;
+  }
+</style>
+{% endblock %}
 {% block content %}
+<div class="container">  
+    {% if user.is_authenticated %}
+        {% if added %}
+        <strong>{% trans "You have successfully submitted your Macroinvertebrate data sheet." %}.</strong>
 
-  {% if user.is_authenticated %}
-      {% if added %}
-      <strong>{% trans "You have successfully submitted your Macroinvertebrate data sheet." %}.</strong>
+        {% else %}
+        <form id='macro_form' method='post' action='{{ request.path }}'>
+            {% csrf_token %}
 
-      {% else %}
-      <form id='macro_form' method='post' action='{{ request.path }}'>
-          {% csrf_token %}
+            <div class="row">
+                <div class="col s6">  <!-- site, school, datetime column -->
+                    <p>{{ macro_form.site.label }}</p>
+                    <p>{{ macro_form.site }}</p>
+                    <p>{{ macro_form.site.errors }}</p>
+                    <p>{{ macro_form.school.label }}</p>
+                    <p>{{ macro_form.school }}</p>
+                    <p>{{ macro_form.school.errors }}</p>
+                    <p>{{ macro_form.date_time.label }}</p>
+                    <p>{{ macro_form.date_time }}</p>
+                    <p>{{ macro_form.date_time.errors }}</p>
+                </div>
 
-          <!-- Individual fields will be formatted prettily later -->
-          {{ macro_form }}
+                <div class="col s6">  <!-- weather, time, ppl, riff/pool col -->
+                    <p>{{ macro_form.weather.label }}</p>
+                    <p>{{ macro_form.weather }}</p>
+                    <p>{{ macro_form.weather.errors }}</p>
 
-          <input type='submit', name='submit', value='Submit' />
-      </form>
-      {% endif %}
+                    <div class="col s6">
+                        <p>{{ macro_form.time_spent.label }}</p>
+                        <p>{{ macro_form.time_spent }}</p>
+                        <p>{{ macro_form.time_spent.errors }}</p>
 
-  {% else %}
-      <p>{% trans "You must be logged in to submit data." %}</p>
-      <a href='/streamwebs/login/'>{% trans "Log in here." %}</a>
-  {% endif %}
+                        <div class="input-field">
+                            {{ macro_form.riffle }}
+                            <label for="{{ macro_form.riffle.id_for_label }}">Riffle</label>
+                            {{ macro_form.riffle.errors }}
+                        </div>
+                    </div>
+
+                    <div class="col s6">
+                        <p>{{ macro_form.num_people.label }}</p>
+                        <p>{{ macro_form.num_people }}</p>
+                        <p>{{ macro_form.num_people.errors }}</p>
+
+                        <div class="input-field">
+                            {{ macro_form.pool }}
+                            <label for="{{ macro_form.pool.id_for_label }}">Pool</label>
+                            {{ macro_form.pool.errors }}
+                        </div>
+                    </div>  <!-- end subcol -->
+                </div>  <!-- end weather, time, ppl, riff/pool col -->
+            </div>  <!-- end sheet info row -->
+
+            <div class="row">
+                <div class="col s3">
+                    <h6 align=center>Sensitive/intolerant</h6>
+                    <table>
+                        {% for bug in intolerant %}
+                        <tr>
+                            <td>
+                                {{ bug.label }}<br>
+                                {% with bug.label|lower|strtoul|slashtoul as buggy %}
+                                    {% with 'macro_images/macro_'|add:buggy|add:'.png' as bug_img %}
+                                        <img src="{% static bug_img %}">
+                                    {% endwith %}
+                                {% endwith %}
+                            </td>
+                            <td>
+                                {{ bug }}
+                                {{ bug.errors }}
+                            </td>
+                        </tr>
+                        {% endfor %}
+
+                    </table>
+                </div>  <!-- end sensitive/intolerant -->
+
+                <div class="col s3 offset-s1">
+                    <h6 align=center>Somewhat sensitive</h6>
+                    <table>
+                        {% for bug in somewhat %}
+                        <tr>
+                            <td>
+                                {{ bug.label }}<br>
+                                {% with bug.label|lower|strtoul|slashtoul as buggy %}
+                                    {% with 'macro_images/macro_'|add:buggy|add:'.png' as bug_img %}
+                                        <img src="{% static bug_img %}">
+                                    {% endwith %}
+                                {% endwith %}
+                            </td>
+                            <td>
+                                {{ bug }}
+                                {{ bug.errors }}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>  <!-- end somewhat sensitive -->
+
+                <div class="col s3 offset-s1">
+                    <h6 align=center>Tolerant</h6>
+                    <table>
+                        {% for bug in tolerant %}
+                        <tr>
+                            <td>
+                                {{ bug.label }}</br>
+                                {% with bug.label|lower|strtoul|slashtoul as buggy %}
+                                    {% with 'macro_images/macro_'|add:buggy|add:'.png' as bug_img %}
+                                        <img src="{% static bug_img %}">
+                                    {% endwith %}
+                                {% endwith %}
+                            </td>
+                            <td>
+                                {{ bug }}
+                                {{ bug.errors }}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </table>  <!-- end tolerant table -->
+
+                    <!-- manual totals (may be removed) -->
+                    <table>
+                        <tr>
+                            <td></td>
+                            <td>{{ macro_form.sensitive_total }}</td>
+                            <td>{{ macro_form.sensitive_total.label }}</td>
+                            <td>{{ macro_form.sensitive_total.errors }}</td>
+                        </tr>
+                        <tr>
+                            <td>+</td>
+                            <td>{{ macro_form.somewhat_sensitive_total }}</td>
+                            <td>{{ macro_form.somewhat_sensitive_total.label }}</td>
+                            <td>{{ macro_form.somewhat_sensitive_total.errors }}</td>
+                        </tr>
+                        <tr>
+                            <td>+</td>
+                            <td>{{ macro_form.tolerant_total }}</td>
+                            <td>{{ macro_form.tolerant_total.label }}</td>
+                            <td>{{ macro_form.tolerant_total.errors }}</td>
+                        </tr>
+                        <tr>
+                            <td>=</td>
+                            <td>{{ macro_form.wq_rating }}</td>
+                            <td>{{ macro_form.wq_rating.label }}</td>
+                            <td>{{ macro_form.wq_rating.errors }}</td>
+                        </tr>
+                    </table>
+                </div>  <!-- end tolerant/totals -->
+            </div> <!-- end macros row -->
+
+            <input class="waves-effect waves-light btn" type='submit', name='submit', value='Submit' />
+        </form>
+        {% endif %}
+
+    {% else %}
+        <p>{% trans "You must be logged in to submit data." %}</p>
+        <a href='/streamwebs/login/'>{% trans "Log in here." %}</a>
+    {% endif %}
+    </div>  <!-- end container -->
+
+    <script>
+    $('select').material_select();
+    </script>
 
 {% endblock %}
