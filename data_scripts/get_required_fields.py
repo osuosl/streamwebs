@@ -15,70 +15,70 @@ from streamwebs.models import Water_Quality  # NOQA
 from streamwebs.models import WQ_Sample  # NOQA
 
 
-# Stream/Site name, Type, Nid, Air Temp, Air Temp (delta)
+# Water Temperature, Type, Nid, Water Temp (delta)
+with open('../csvs/wq_csvs/WQ_water_temp.csv', 'r') as csvfile:
+    waterreader = csv.DictReader(csvfile)
+    for row in waterreader:
+        # if row[0] != 'Water Temperature':  # Skip the header
+            water_temp = WQ_Sample()
+
+            # Check delta values and assign sample numbers
+            if row['Delta'] == '':
+                water_temp.sample = 1
+            elif row['Delta'] == '1':
+                water_temp.sample = 2
+            elif row['Delta'] == '2':
+                water_temp.sample = 3
+            else:
+                water_temp.sample = 4
+
+            # Set to null if value is not specified
+            if row['Water Temperature'] == '':
+                row['Water Temperature'] = None
+
+            water_temp.water_temperature = row['Water Temperature']
+            water_temp.nid = row['Nid']
+
+            # Create foreign key relation between samples and parent datasheet
+            waterq = Water_Quality.objects.get(nid=row['Nid'])
+            water_temp.water_quality_id = waterq.id
+
+            water_temp.save()
+
+csvfile.close()
+print 'Water temperature loaded.'
+
+# Stream/Site name, Type, Nid, Air Temperature, Air Temp (delta)
 with open('../csvs/wq_csvs/WQ_air_temp.csv', 'r') as csvfile:
     airreader = csv.reader(csvfile)
     for row in airreader:
         if row[0] != 'Stream/Site name':  # Skip the header
-            air_temp = WQ_Sample()
-
-            # Check delta values and assign sample numbers
-            if row[4] == '':
-                air_temp.sample = 1
-            elif row[4] == '1':
-                air_temp.sample = 2
-            elif row[4] == '2':
-                air_temp.sample = 3
-            else:
-                air_temp.sample = 4
+            # Search for matching Nid and sample
+            air_temp_1 = WQ_Sample.objects.get(nid=row[2], sample=1)
+            air_temp_2 = WQ_Sample.objects.get(nid=row[2], sample=2)
+            air_temp_3 = WQ_Sample.objects.get(nid=row[2], sample=3)
+            air_temp_4 = WQ_Sample.objects.get(nid=row[2], sample=4)
 
             # Set to null if value is not specified
             if row[3] == '':
                 row[3] = None
 
-            air_temp.air_temperature = row[3]
-            air_temp.nid = row[2]
+            if row[4] == '':
+                air_temp_1.air_temperature = row[3]
+            elif row[4] == '1':
+                air_temp_2.air_temperature = row[3]
+            elif row[4] == '2':
+                air_temp_3.air_temperature = row[3]
+            else:
+                air_temp_4.air_temperature = row[3]
 
-            # Create foreign key relation between samples and parent datasheet
-            waterq = Water_Quality.objects.get(nid=row[2])
-            air_temp.water_quality_id = waterq.id
-
-            air_temp.save()
+            air_temp_1.save()
+            air_temp_2.save()
+            air_temp_3.save()
+            air_temp_4.save()
 
 csvfile.close()
 print 'Air temperature loaded.'
-
-# Water Temperature, Type, Nid, Water Temp (delta)
-with open('../csvs/wq_csvs/WQ_water_temp.csv', 'r') as csvfile:
-    waterreader = csv.reader(csvfile)
-    for row in waterreader:
-        if row[0] != 'Water Temperature ':  # Skip the header
-            # Search for matching Nid and sample
-            water_temp_1 = WQ_Sample.objects.get(nid=row[2], sample=1)
-            water_temp_2 = WQ_Sample.objects.get(nid=row[2], sample=2)
-            water_temp_3 = WQ_Sample.objects.get(nid=row[2], sample=3)
-            water_temp_4 = WQ_Sample.objects.get(nid=row[2], sample=4)
-
-            # Set to null if value is not specified
-            if row[0] == '':
-                row[0] = None
-
-            if row[3] == '':
-                water_temp_1.water_temperature = row[0]
-            elif row[3] == '1':
-                water_temp_2.water_temperature = row[0]
-            elif row[3] == '2':
-                water_temp_3.water_temperature = row[0]
-            else:
-                water_temp_4.water_temperature = row[0]
-
-            water_temp_1.save()
-            water_temp_2.save()
-            water_temp_3.save()
-            water_temp_4.save()
-
-csvfile.close()
-print 'Water temperature loaded.'
 
 # Dissolved Oxygen, Type, Nid, D_Oxygen (delta)
 with open('../csvs/wq_csvs/WQ_oxygen.csv', 'r') as csvfile:
