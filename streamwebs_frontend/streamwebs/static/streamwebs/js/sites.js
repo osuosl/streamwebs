@@ -26,7 +26,7 @@ function search() {
 }
 
 function goto(slug) {
-    window.location.href = "/streamwebs/site/" + slug;
+    window.location.href = "/streamwebs/sites/" + slug;
 }
 
 function submit_search(ptag) {

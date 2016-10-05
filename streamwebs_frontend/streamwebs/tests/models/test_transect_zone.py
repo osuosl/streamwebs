@@ -9,6 +9,7 @@ class TransectZoneTestCase(TestCase):
 
     def setUp(self):
         self.expected_fields = {
+            'zone_num': models.CharField,
             'conifers': models.PositiveSmallIntegerField,
             'hardwoods': models.PositiveSmallIntegerField,
             'shrubs': models.PositiveSmallIntegerField,
@@ -23,9 +24,8 @@ class TransectZoneTestCase(TestCase):
             'comments': models.TextField,
         }
 
-        site = Site.test_objects.create_site('test site', 'test site type',
-                                             'test_site_slug')
-        self.transect = RiparianTransect.objects.create_transect(
+        site = Site.test_objects.create_site('test site')
+        self.transect = RiparianTransect.test_objects.create_transect(
             'School of Cool', '2016-07-27 10:14', site)
 
     def test_fields_exist(self):
@@ -47,10 +47,10 @@ class TransectZoneTestCase(TestCase):
                              True)
 
     def test_Zone_ManyToOneTransect(self):
-        zone_1 = TransectZone.objects.create_zone(self.transect)
-        zone_2 = TransectZone.objects.create_zone(self.transect, 1, 1, 1,
-                                                  'Second zone')
-
+        zone_1 = TransectZone.test_objects.create_zone(self.transect)
+        zone_2 = TransectZone.test_objects.create_zone(
+            self.transect, 1, 1, 1, 'Second zone'
+        )
         self.assertEqual(zone_1.transect.school, 'School of Cool')
         self.assertEqual(zone_1.transect.date_time, '2016-07-27 10:14')
         self.assertEqual(zone_1.transect.site.site_name, 'test site')
@@ -60,7 +60,7 @@ class TransectZoneTestCase(TestCase):
         self.assertEqual(zone_2.transect.site.site_name, 'test site')
 
     def test_zone_creation_req_fields(self):
-        zone = TransectZone.objects.create_zone(self.transect)
+        zone = TransectZone.test_objects.create_zone(self.transect)
 
         # Required
         self.assertEqual(zone.transect.site.site_name, 'test site')
@@ -72,8 +72,9 @@ class TransectZoneTestCase(TestCase):
         self.assertEqual(zone.comments, '')
 
     def test_zone_creation_opt_fields(self):
-        zone = TransectZone.objects.create_zone(self.transect, 1, 2, 3,
-                                                'zone comment')
+        zone = TransectZone.test_objects.create_zone(
+            self.transect, 1, 2, 3, 'zone comment'
+        )
         # Required
         self.assertEqual(zone.transect.site.site_name, 'test site')
         self.assertEqual(zone.conifers, 1)

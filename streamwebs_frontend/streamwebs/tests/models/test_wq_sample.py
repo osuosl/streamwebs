@@ -12,6 +12,7 @@ class WQSampleTestCase(TestCase):
 
     def setUp(self):
         self.expected_fields = {
+            'sample': models.CharField,
             'water_temperature': models.DecimalField,
             'water_temp_tool': models.CharField,
             'air_temperature': models.DecimalField,
@@ -32,6 +33,7 @@ class WQSampleTestCase(TestCase):
             'nitrate': models.DecimalField,
             'phosphates': models.DecimalField,
             'fecal_coliform': models.DecimalField,
+            'nid': models.PositiveIntegerField,
             'id': models.AutoField,
 
             # List the foreign key relation here
@@ -50,20 +52,17 @@ class WQSampleTestCase(TestCase):
             'fecal_coliform',
         }
 
-        site = Site.test_objects.create_site('test site', 'test site type',
-                                             'test_site_slug')
+        site = Site.test_objects.create_site('test site')
 
-        self.water_quality = Water_Quality.objects.create_water_quality(
-                             site, '2016-08-03', 'a', 'A', 90, 123,
-                             False, 0, 0, 'Fahrenheit', 'Fahrenheit')
+        self.water_quality = Water_Quality.test_objects.create_water_quality(
+            site, '2016-08-03', 'a', 'A', 90, 123,
+            False, 0, 0, 'Fahrenheit', 'Fahrenheit'
+        )
 
         # Object to test pH
-        self.sample_data = WQ_Sample.objects.create_sample(
-            self.water_quality, 35, 'Manual', 70,
-            'Manual', 6, 'Manual',
-            16, 'Vernier', 0.879,
-            'Manual', 8.8, 'Vernier',
-            15, 10, 7, 0.93,
+        self.sample_data = WQ_Sample.test_objects.create_sample(
+            self.water_quality, 1, 35, 'Manual', 70, 'Manual', 6, 'Manual',
+            16, 'Vernier', 0.879, 'Manual', 8.8, 'Vernier', 15, 10, 7, 0.93,
             2.1, 1.9, 14.5, 13
         )
 
@@ -72,7 +71,8 @@ class WQSampleTestCase(TestCase):
         model = apps.get_model('streamwebs', 'wq_sample')
         for field, field_type in self.expected_fields.items():
             self.assertEqual(
-                field_type, type(model._meta.get_field(field)))
+                field_type, type(model._meta.get_field(field))
+            )
 
     def test_no_extra_fields(self):
         """Checks for discrepancies between the actual model and is expected
@@ -88,24 +88,17 @@ class WQSampleTestCase(TestCase):
         """Tests that optional fields default to true when left blank"""
         sample = apps.get_model('streamwebs', 'wq_sample')
         for field in self.optional_fields:
-            self.assertEqual(
-                sample._meta.get_field(field).blank, True)
+            self.assertEqual(sample._meta.get_field(field).blank, True)
 
     def test_Sample_ManyToOneWaterQuality(self):
-        sample_1 = WQ_Sample.objects.create_sample(self.water_quality, 34,
-                                                   'Vernier',
-                                                   55, 'Manual',
-                                                   4.2, 'Vernier',
-                                                   9, 'Manual',
-                                                   0.44, 'Manual',
-                                                   5.6, 'Vernier')
-        sample_2 = WQ_Sample.objects.create_sample(self.water_quality, 23,
-                                                   'Vernier',
-                                                   65, 'Manual',
-                                                   2.5, 'Vernier',
-                                                   9, 'Manual',
-                                                   0.41, 'Manual',
-                                                   7.6, 'Vernier')
+        sample_1 = WQ_Sample.test_objects.create_sample(
+            self.water_quality, 1, 34, 'Vernier', 55, 'Manual', 4.2, 'Vernier',
+            9, 'Manual', 0.44, 'Manual', 5.6, 'Vernier'
+        )
+        sample_2 = WQ_Sample.test_objects.create_sample(
+            self.water_quality, 2, 23, 'Vernier', 65, 'Manual', 2.5, 'Vernier',
+            9, 'Manual', 0.41, 'Manual', 7.6, 'Vernier'
+        )
 
         self.assertEqual(sample_1.water_quality.school, 'a')
         self.assertEqual(sample_1.water_quality.date, '2016-08-03')
@@ -116,13 +109,10 @@ class WQSampleTestCase(TestCase):
         self.assertEqual(sample_2.water_quality.site.site_name, 'test site')
 
     def test_sample_creation_req_fields(self):
-        sample = WQ_Sample.objects.create_sample(self.water_quality, 23,
-                                                 'Vernier',
-                                                 65, 'Manual',
-                                                 2.5, 'Vernier',
-                                                 9, 'Manual',
-                                                 0.41, 'Manual',
-                                                 7.6, 'Vernier')
+        sample = WQ_Sample.test_objects.create_sample(
+            self.water_quality, 1, 23, 'Vernier', 65, 'Manual', 2.5, 'Vernier',
+            9, 'Manual', 0.41, 'Manual', 7.6, 'Vernier'
+        )
 
         # Required
         self.assertEqual(sample.water_quality.site.site_name, 'test site')
@@ -150,25 +140,26 @@ class WQSampleTestCase(TestCase):
         self.assertEqual(sample.fecal_coliform, None)
 
     def test_sample_creation_opt_fields(self):
-        sample = WQ_Sample.objects.create_sample(self.water_quality, 0, 0,
-                                                 0, 0, 0, 0, 0, 0, 0, 0,
-                                                 0, 0, 35, 2, 0.34, 3.23,
-                                                 12, 37, 0.34, 1.45)
+        sample = WQ_Sample.test_objects.create_sample(
+            self.water_quality, 1, 0, 'Manual', 0, 'Vernier', 0, 'Vernier', 0,
+            'Vernier', 0, 'Manual', 0, 'Vernier', 35, 2, 0.34, 3.23, 12, 37,
+            0.34, 1.45
+        )
 
         # Required
         self.assertEqual(sample.water_quality.site.site_name, 'test site')
         self.assertEqual(sample.water_temperature, 0)
-        self.assertEqual(sample.water_temp_tool, 0)
+        self.assertEqual(sample.water_temp_tool, 'Manual')
         self.assertEqual(sample.air_temperature, 0)
-        self.assertEqual(sample.air_temp_tool, 0)
+        self.assertEqual(sample.air_temp_tool, 'Vernier')
         self.assertEqual(sample.dissolved_oxygen, 0)
-        self.assertEqual(sample.oxygen_tool, 0)
+        self.assertEqual(sample.oxygen_tool, 'Vernier')
         self.assertEqual(sample.pH, 0)
-        self.assertEqual(sample.pH_tool, 0)
+        self.assertEqual(sample.pH_tool, 'Vernier')
         self.assertEqual(sample.turbidity, 0)
-        self.assertEqual(sample.turbid_tool, 0)
+        self.assertEqual(sample.turbid_tool, 'Manual')
         self.assertEqual(sample.salinity, 0)
-        self.assertEqual(sample.salt_tool, 0)
+        self.assertEqual(sample.salt_tool, 'Vernier')
 
         # Optional
         self.assertEqual(sample.conductivity, 35)

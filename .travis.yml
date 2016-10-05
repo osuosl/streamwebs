@@ -12,6 +12,7 @@ install:
   - bower install
 
 script:
+  - flake8 data_scripts
   - flake8 streamwebs_frontend/ --exclude streamwebs_frontend/streamwebs/migrations
   - ./runtests.sh
 
@@ -21,4 +22,4 @@ addons:
 before_script:
   - psql -c 'create database streamwebs;' -U postgres
   - psql -U postgres -c "create extension postgis"
-  - cp streamwebs_frontend/streamwebs_frontend/settings.py.dist streamwebs_frontend/streamwebs_frontend/settings.py 
+  - cp streamwebs_frontend/streamwebs_frontend/settings.py.dist streamwebs_frontend/streamwebs_frontend/settings.py

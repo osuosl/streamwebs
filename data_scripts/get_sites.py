@@ -44,7 +44,7 @@ with open('../csvs/ll_site_data.csv', 'r') as csvfile:
             lat = num(row[5])
             lng = num(row[6])
             if (lat != '' and lng != ''):  # Skip if there are no coordinates
-                pnt = Point(lat, lng)
+                pnt = Point(lng, lat)
             site.location = pnt
 
             # Save site data to django db

@@ -7,6 +7,7 @@ from django.utils import timezone
 from django.core.exceptions import ValidationError
 
 from streamwebs.models import Site
+from streamwebs.models import School
 from streamwebs.models import Canopy_Cover
 from streamwebs.models import CC_Cardinal
 from streamwebs.models import validate_cover
@@ -16,23 +17,17 @@ class CanopyCovTestCase(TestCase):
 
     def setUp(self):
         self.expected_fields = {
-            'school': models.CharField,
+            'school': models.ForeignKey,
+            'school_id': models.ForeignKey,
             'date_time': models.DateTimeField,
             'site': models.ForeignKey,
             'site_id': models.ForeignKey,
             'weather': models.CharField,
-            'north': models.ForeignKey,
-            'east': models.ForeignKey,
-            'south': models.ForeignKey,
-            'west': models.ForeignKey,
             'est_canopy_cover': models.PositiveIntegerField,
             'id': models.AutoField,
 
-            # Corresponding cardinal direction (id for CC_Cardinal)
-            'north_id': models.ForeignKey,
-            'east_id': models.ForeignKey,
-            'south_id': models.ForeignKey,
-            'west_id': models.ForeignKey
+            'canopy_cover': models.ManyToOneRel
+
         }
 
     def test_fields_exist(self):
@@ -55,102 +50,46 @@ class CanopyCovTestCase(TestCase):
         """Tests that a datasheet correctly corresponds to is specified site"""
         default_dt = timezone.now()
 
-        site = Site.test_objects.create_site('test', 'some_type', 'some_slug')
+        site = Site.test_objects.create_site('test')
+        school = School.test_objects.create_school('School A')
 
-        north = CC_Cardinal.objects.create_shade('North', True, True, False,
-                                                 False, False, True, False,
-                                                 False, True, True, True,
-                                                 False, True, False, False,
-                                                 False, True, False, True,
-                                                 True, False, True, False,
-                                                 False, 11)
-
-        east = CC_Cardinal.objects.create_shade('East', True, True, False,
-                                                False, False, True, False,
-                                                False, True, True, True, False,
-                                                True, False, False, False,
-                                                False, False, True, True,
-                                                False, False, False, False, 8)
-
-        south = CC_Cardinal.objects.create_shade('South', True, True, True,
-                                                 False, False, True, False,
-                                                 False, True, True, True, True,
-                                                 True, False, False, False,
-                                                 True, False, True, True,
-                                                 False, True, False, True, 14)
-
-        west = CC_Cardinal.objects.create_shade('West', True, True, False,
-                                                True, False, True, True, False,
-                                                True, True, True, True, True,
-                                                False, False, True, True,
-                                                False, True, True, True, True,
-                                                True, False, 17)
-
-        canopyc = Canopy_Cover.objects.create(school='School A',
-                                              date_time=default_dt, site=site,
-                                              weather='cloudy', north=north,
-                                              east=east, south=south,
-                                              west=west, est_canopy_cover=50)
+        canopyc = Canopy_Cover.objects.create(
+            school=school, date_time=default_dt, site=site,
+            weather='cloudy', est_canopy_cover=50
+        )
 
         self.assertEqual(canopyc.site.site_name, 'test')
-        self.assertEqual(canopyc.site.site_type, 'some_type')
-        self.assertEqual(canopyc.site.site_slug, 'some_slug')
+        self.assertEqual(canopyc.site.site_slug, 'test')
 
     def test_datasheet_CreateCanopyCover(self):
         """Tests that a Canopy Cover object is actually created, checks that
            the correct (shaded) value is received from the CC_Cardinal model"""
         default_dt = timezone.now()
 
-        site = Site.test_objects.create_site('test', 'some_type', 'some_slug')
+        site = Site.test_objects.create_site('test')
+        school = School.test_objects.create_school('School A')
 
-        north = CC_Cardinal.objects.create_shade('North', True, True, False,
-                                                 False, False, True, False,
-                                                 False, True, True, True,
-                                                 False, True, False, False,
-                                                 False, True, False, True,
-                                                 True, False, True, False,
-                                                 False, 11)
+        canopyc = Canopy_Cover.objects.create(
+            school=school, date_time=default_dt, site=site,
+            weather='cloudy', est_canopy_cover=50
+        )
 
-        east = CC_Cardinal.objects.create_shade('East', True, True, False,
-                                                False, False, True, False,
-                                                False, True, True, True, False,
-                                                True, False, False, False,
-                                                False, False, True, True,
-                                                False, False, False, False, 8)
-
-        south = CC_Cardinal.objects.create_shade('South', True, True, True,
-                                                 False, False, True, False,
-                                                 False, True, True, True, True,
-                                                 True, False, False, False,
-                                                 True, False, True, True,
-                                                 False, True, False, True, 14)
-
-        west = CC_Cardinal.objects.create_shade('West', True, True, False,
-                                                True, False, True, True, False,
-                                                True, True, True, True, True,
-                                                False, False, True, True,
-                                                False, True, True, True, True,
-                                                True, False, 17)
-
-        canopyc = Canopy_Cover.objects.create(school='School A',
-                                              date_time=default_dt, site=site,
-                                              weather='cloudy', north=north,
-                                              east=east, south=south,
-                                              west=west, est_canopy_cover=50)
-
-        self.assertEqual(canopyc.school, 'School A')
+        self.assertEqual(canopyc.school.name, 'School A')
         self.assertEqual(canopyc.date_time, default_dt)
         self.assertEqual(canopyc.weather, 'cloudy')
-        self.assertEqual(canopyc.north.num_shaded, 11)
-        self.assertEqual(canopyc.east.num_shaded, 8)
-        self.assertEqual(canopyc.south.num_shaded, 14)
-        self.assertEqual(canopyc.west.num_shaded, 17)
         self.assertEqual(canopyc.est_canopy_cover, 50)
 
     def test_datasheet_CC_CardinalInfo(self):
         """Tests that boolean values are correctly assigned in a
            cardinal box"""
         default_dt = timezone.now()
+
+        site = Site.test_objects.create_site('test')
+        school = School.test_objects.create_school('School A')
+
+        canopyc = Canopy_Cover.objects.create(
+            school=school, date_time=default_dt, site=site,
+            weather='cloudy', est_canopy_cover=50)
 
         north_bools = [True, True, False, False, False, True, False, False,
                        True, True, True, False, True, False, False, False,
@@ -168,88 +107,39 @@ class CanopyCovTestCase(TestCase):
                       True, True, True, True, True, False, False, True, True,
                       False, True, True, True, True, True, False]
 
-        site = Site.test_objects.create_site('test', 'some_type', 'some_slug')
+        north = CC_Cardinal.test_objects.create_shade(
+            'North', *(north_bools + [11] + [canopyc])
+        )
 
-        north = CC_Cardinal.objects.create_shade('North',
-                                                 *(north_bools + [11]))
+        east = CC_Cardinal.test_objects.create_shade(
+            'East', *(east_bools + [8] + [canopyc])
+        )
 
-        east = CC_Cardinal.objects.create_shade('East',
-                                                *(east_bools + [8]))
+        south = CC_Cardinal.test_objects.create_shade(
+            'South', *(south_bools + [14] + [canopyc])
+        )
 
-        south = CC_Cardinal.objects.create_shade('South',
-                                                 *(south_bools + [14]))
+        west = CC_Cardinal.test_objects.create_shade(
+            'West', *(west_bools + [17] + [canopyc])
+        )
 
-        west = CC_Cardinal.objects.create_shade('West',
-                                                *(west_bools + [17]))
-
-        canopyc = Canopy_Cover.objects.create(school='School A',
-                                              date_time=default_dt, site=site,
-                                              weather='cloudy', north=north,
-                                              east=east, south=south,
-                                              west=west, est_canopy_cover=50)
-
-        for i in range(len(north_bools)):
-            north_var = 'canopyc.' + 'north.' + str(chr(i + 65))
-            self.assertEqual(eval(north_var), north_bools[i])
-
-        for j in range(len(east_bools)):
-            east_var = 'canopyc.' + 'east.' + str(chr(j + 65))
-            self.assertEqual(eval(east_var), east_bools[j])
-
-        for k in range(len(south_bools)):
-            south_var = 'canopyc.' + 'south.' + str(chr(k + 65))
-            self.assertEqual(eval(south_var), south_bools[k])
-
-        for l in range(len(west_bools)):
-            west_var = 'canopyc.' + 'west.' + str(chr(l + 65))
-            self.assertEqual(eval(west_var), west_bools[l])
-
-        # Check that the direction field is correct for each cardinal box
-        self.assertEqual(canopyc.north.direction, 'North')
-        self.assertEqual(canopyc.east.direction, 'East')
-        self.assertEqual(canopyc.south.direction, 'South')
-        self.assertEqual(canopyc.west.direction, 'West')
+        # Check that each cardinal direction corresponds to canopy_cover
+        self.assertEqual(north.canopy_cover_id, canopyc.id)
+        self.assertEqual(east.canopy_cover_id, canopyc.id)
+        self.assertEqual(south.canopy_cover_id, canopyc.id)
+        self.assertEqual(west.canopy_cover_id, canopyc.id)
 
     def test_validate_cover_good(self):
         """Tests that est_canopy_cover is in between 0-96."""
         default_dt = timezone.now()
 
-        site = Site.test_objects.create_site('test', 'some_type', 'some_slug')
+        site = Site.test_objects.create_site('test')
+        school = School.test_objects.create_school('School A')
 
-        north = CC_Cardinal.objects.create_shade('North', True, True, False,
-                                                 False, False, True, False,
-                                                 False, True, True, True,
-                                                 False, True, False, False,
-                                                 False, True, False, True,
-                                                 True, False, True, False,
-                                                 False, 11)
-
-        east = CC_Cardinal.objects.create_shade('East', True, True, False,
-                                                False, False, True, False,
-                                                False, True, True, True, False,
-                                                True, False, False, False,
-                                                False, False, True, True,
-                                                False, False, False, False, 9)
-
-        south = CC_Cardinal.objects.create_shade('South', True, True, True,
-                                                 False, False, True, False,
-                                                 False, True, True, True, True,
-                                                 True, False, False, False,
-                                                 True, False, True, True,
-                                                 False, True, False, True, 14)
-
-        west = CC_Cardinal.objects.create_shade('West', True, True, False,
-                                                True, False, True, True, False,
-                                                True, True, True, True, True,
-                                                False, False, True, True,
-                                                False, True, True, True, True,
-                                                True, False, 17)
-
-        canopyc = Canopy_Cover.objects.create(school='School A',
-                                              date_time=default_dt, site=site,
-                                              weather='cloudy', north=north,
-                                              east=east, south=south,
-                                              west=west, est_canopy_cover=51)
+        canopyc = Canopy_Cover.objects.create(
+            school=school, date_time=default_dt, site=site,
+            weather='cloudy', est_canopy_cover=51
+        )
 
         self.assertEqual(validate_cover(canopyc.est_canopy_cover), None)
 
@@ -259,42 +149,13 @@ class CanopyCovTestCase(TestCase):
 
         default_dt = timezone.now()
 
-        site = Site.test_objects.create_site('test', 'some_type', 'some_slug')
+        site = Site.test_objects.create_site('test')
+        school = School.test_objects.create_school('School A')
 
-        north = CC_Cardinal.objects.create_shade('North', True, True, False,
-                                                 False, False, True, False,
-                                                 False, True, True, True,
-                                                 False, True, False, False,
-                                                 False, True, False, True,
-                                                 True, False, True, False,
-                                                 False, 11)
-
-        east = CC_Cardinal.objects.create_shade('East', True, True, False,
-                                                False, False, True, False,
-                                                False, True, True, True, False,
-                                                True, False, False, False,
-                                                False, False, True, True,
-                                                False, False, False, False, 8)
-
-        south = CC_Cardinal.objects.create_shade('South', True, True, True,
-                                                 False, False, True, False,
-                                                 False, True, True, True, True,
-                                                 True, False, False, False,
-                                                 True, False, True, True,
-                                                 False, True, False, True, 14)
-
-        west = CC_Cardinal.objects.create_shade('West', True, True, False,
-                                                True, False, True, True, False,
-                                                True, True, True, True, True,
-                                                False, False, True, True,
-                                                False, True, True, True, True,
-                                                True, False, 17)
-
-        canopyc = Canopy_Cover.objects.create(school='School A',
-                                              date_time=default_dt, site=site,
-                                              weather='cloudy', north=north,
-                                              east=east, south=south,
-                                              west=west, est_canopy_cover=100)
+        canopyc = Canopy_Cover.objects.create(
+            school=school, date_time=default_dt, site=site,
+            weather='cloudy', est_canopy_cover=100
+        )
 
         with self.assertRaises(ValidationError):
             validate_cover(canopyc.est_canopy_cover)
