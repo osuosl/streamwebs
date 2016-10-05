@@ -260,7 +260,7 @@ def resources_data_sheets(request):
             resource_form.save()
             added = True
         else:
-            print resource_form.errors
+            print(resource_form.errors)
 
     return render(
         request, 'streamwebs/resources_data_sheets.html', {
@@ -285,7 +285,7 @@ def resources_publications(request):
             resource_form.save()
             added = True
         else:
-            print resource_form.errors
+            print(resource_form.errors)
 
     return render(
         request, 'streamwebs/resources_publications.html', {
@@ -313,7 +313,7 @@ def resources_tutorials(request):
             resource_form.save()
             added = True
         else:
-            print resource_form.errors
+            print(resource_form.errors)
 
     return render(
         request, 'streamwebs/resources_tutorial_videos.html', {
