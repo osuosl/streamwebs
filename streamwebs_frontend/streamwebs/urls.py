@@ -48,6 +48,19 @@ urlpatterns = [
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/canopy/(?P<data_id>\d+)/',
         views.canopy_cover_view, name='canopy_cover'),
 
+    url(r'^resources/$', views.resources, name='resources'),
+
+    url(r'^resources/data-sheets/', views.resources_data_sheets,
+        name='resources-data-sheets'),
+
+    url(r'^resources/curriculum-guides/', views.resources_publications,
+        name='resources-publications'),
+
+    url(r'^resources/tutorial-videos/', views.resources_tutorials,
+        name='resources-tutorials'),
+
+    url(r'^login/$', views.user_login, name='login'),
+
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/canopy/edit',
         views.canopy_cover_edit, name='canopy_cover_edit'),
 

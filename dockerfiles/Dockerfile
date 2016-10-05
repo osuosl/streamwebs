@@ -3,6 +3,7 @@ RUN yum -y update
 
 RUN yum -y install gdal-python\
                    geos-python\
+                   libjpeg-devel\
                    proj\
                    proj-nad\
                    postgresql-devel\

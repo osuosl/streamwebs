@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 from streamwebs.models import UserProfile, WQ_Sample, Water_Quality, \
     Macroinvertebrates, Canopy_Cover, CC_Cardinal, TransectZone, \
-    RiparianTransect, Site
+    RiparianTransect, Site, Resource
 from django.contrib.auth.models import User
 from django import forms
 from django.utils.translation import ugettext_lazy as _
@@ -142,6 +142,24 @@ class TransectZoneForm(forms.ModelForm):
     class Meta:
         model = TransectZone
         fields = ('conifers', 'hardwoods', 'shrubs', 'comments')
+
+
+class Resource_Data_Sheet_Form(forms.ModelForm):
+    class Meta:
+        model = Resource
+        fields = ('name', 'res_type', 'downloadable', 'thumbnail')
+
+
+class Resource_Publication_Form(forms.ModelForm):
+    class Meta:
+        model = Resource
+        fields = ('name', 'res_type', 'downloadable', 'thumbnail')
+
+
+class Resource_Video_Tutorial_Form(forms.ModelForm):
+    class Meta:
+        model = Resource
+        fields = ('name', 'res_type', 'downloadable', 'thumbnail')
 
 
 class RiparianTransectForm(forms.ModelForm):

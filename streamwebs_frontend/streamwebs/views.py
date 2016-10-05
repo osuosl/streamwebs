@@ -13,11 +13,12 @@ from django.conf import settings
 
 from streamwebs.forms import (
     UserForm, UserProfileForm, RiparianTransectForm, MacroinvertebratesForm,
-    Canopy_Cover_Form, WQSampleForm, WQSampleFormReadOnly,
-    WQForm, WQFormReadOnly, SiteForm)
+    Canopy_Cover_Form, WQSampleForm, WQSampleFormReadOnly, WQForm,
+    WQFormReadOnly, SiteForm, Resource_Data_Sheet_Form,
+    Resource_Publication_Form, Resource_Video_Tutorial_Form)
 from streamwebs.models import (
     Macroinvertebrates, Site, Water_Quality, WQ_Sample, RiparianTransect,
-    TransectZone, Canopy_Cover, CC_Cardinal)
+    TransectZone, Canopy_Cover, CC_Cardinal, Resource)
 
 from datetime import datetime
 import json
@@ -237,6 +238,88 @@ def macroinvertebrate_edit(request, site_slug):
             'macro_form': macro_form,
             'added': added,
             'site': site
+        }
+    )
+
+
+def resources(request):
+    return render(request, 'streamwebs/resources.html')
+
+
+def resources_data_sheets(request):
+    """ View for data_sheet resources """
+    data = Resource.objects.filter(res_type='data_sheet').order_by(
+        'sort_order', 'name'
+    )
+    resource_form = Resource_Data_Sheet_Form()
+    added = False
+
+    if request.method == 'POST':
+        resource_form = Resource_Data_Sheet_Form(request.POST, request.FILES)
+        if resource_form.is_valid():
+            resource_form.save()
+            added = True
+        else:
+            print(resource_form.errors)
+
+    return render(
+        request, 'streamwebs/resources_data_sheets.html', {
+            'added': added,
+            'data': data,
+            'resource_form': resource_form
+        }
+    )
+
+
+def resources_publications(request):
+    """ View for publication resources """
+    data = Resource.objects.filter(res_type='publication').order_by(
+        'sort_order', 'name'
+    )
+    resource_form = Resource_Publication_Form()
+    added = False
+
+    if request.method == 'POST':
+        resource_form = Resource_Publication_Form(request.POST, request.FILES)
+        if resource_form.is_valid():
+            resource_form.save()
+            added = True
+        else:
+            print(resource_form.errors)
+
+    return render(
+        request, 'streamwebs/resources_publications.html', {
+            'added': added,
+            'data': data,
+            'resource_form': resource_form
+        }
+    )
+
+
+def resources_tutorials(request):
+    """ View for video tutorial resources """
+    data = Resource.objects.filter(res_type='video-tutorial').order_by(
+        'sort_order', 'name'
+    )
+    resource_form = Resource_Video_Tutorial_Form()
+    resource_form.res_type = 'Tutorial Video'
+    added = False
+
+    if request.method == 'POST':
+        resource_form = Resource_Video_Tutorial_Form(
+            request.POST, request.FILES
+        )
+        if resource_form.is_valid():
+            resource_form.save()
+            added = True
+        else:
+            print(resource_form.errors)
+
+    return render(
+        request, 'streamwebs/resources_tutorial_videos.html', {
+            'added': added,
+            'data': data,
+            'resource_form': resource_form
         }
     )
 

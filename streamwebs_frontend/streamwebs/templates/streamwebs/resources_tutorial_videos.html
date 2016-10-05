@@ -1,0 +1,32 @@
+{% extends "streamwebs/base.html" %}
+{% load staticfiles %}
+{% load i18n %}
+
+{% block content %}
+{% trans "Tutorial Videos" %}<p>
+(Work in progress!)
+{% for tutorial in data %}
+    {% if perms.resources.can_add %}
+        <!-- Should include javascript to move elements up/down. -->
+        <!-- See model.Resource.sort_order -->
+    {% endif %}
+    <p><a href={{ tutorial.downloadable.url }}>
+        <img src={{ tutorial.thumbnail.url }}><br>
+        {{ tutorial.name }}
+    </a>
+{% endfor %}
+
+{% if perms.resources.can_add %}
+    <hr>
+    {% if added %}
+        Resource Added.
+    {% endif %}
+    <form id='add-resource-form' action='' method='POST'
+        enctype="multipart/form-data">
+    {% trans "Add new video tutorial:" %}
+    {% csrf_token %}
+    {{ resource_form.as_p }}
+    <input type="submit" value="Add Resource">
+    </form>
+{% endif %}
+{% endblock %}

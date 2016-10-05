@@ -743,6 +743,45 @@ class Macroinvertebrates(models.Model):
         }
 
 
+class ResourceManager(models.Model):
+    """ Manager for the Resources model """
+    def create_resource(
+        self, name, res_type, downloadable, thumbnail, sort_order
+    ):
+        return self.create(
+            name=name, res_type=res_type, downloadable=downloadable,
+            thumbnail=thumbnail, sort_order=sort_order
+        )
+
+
+class Resource(models.Model):
+    """ This model organizes Resources like pdfs or videos """
+    TYPE_CHOICES = (
+        (None, '-----'),
+        ('data_sheet', _('Data Sheet')),
+        ('publication', _('Publication')),
+        ('tutorial_video', _('Tutorial Video')),
+    )
+    name = models.CharField(max_length=255, blank=False)
+    res_type = models.CharField(
+        max_length=255, blank=False, choices=TYPE_CHOICES
+    )
+    # bad way to handle upload_to!  It should be based on res_type
+    downloadable = models.FileField(upload_to='assets/', blank=True)
+    thumbnail = models.ImageField(upload_to='assets/thumbnails/', blank=True)
+    sort_order = models.PositiveSmallIntegerField(default=1000)
+
+    objects = models.Manager()
+    test_objects = ResourceManager()
+
+    class Meta:
+        verbose_name = 'resource'
+        verbose_name_plural = 'resources'
+
+    def __str__(self):
+        return 'Resource name ' + self.name
+
+
 class RipTransectManager(models.Manager):
     """
     Manager for the RiparianTransect model/datasheet.

@@ -1,0 +1,36 @@
+{% extends "streamwebs/base.html" %}
+{% load staticfiles %}
+{% load i18n %}
+
+{% block content %}
+<div class="container">
+  <h1>{% trans "Data Sheets" %}</h1>
+
+  <table class="bordered centered responsive-table">
+    <thead>
+      <tr>
+          <th data-field="name">Name</th>
+          <th data-field="Thumbnail">Link</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for sheet in data %}
+        <tr>
+          <td>
+            <h4>
+              {{ sheet.name }}
+
+              </h4>
+          </td>
+          <td>
+            <a href={{ sheet.downloadable.url }}>
+              <img src={{ sheet.thumbnail.url }}>
+            </a>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+</table>
+</div>
+{% endblock %}
