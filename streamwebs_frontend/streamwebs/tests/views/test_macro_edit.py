@@ -12,17 +12,6 @@ class MacroFormTestCase(TestCase):
                                              'johnpassword')
         self.client.login(username='john', password='johnpassword')
         self.site = Site.objects.create_site('Site Name!', 'Site Type!')
-        self.expected_fields = ('school', 'date_time', 'weather', 'site',
-                                'time_spent', 'num_people', 'riffle', 'pool',
-                                'caddisfly', 'mayfly', 'riffle_beetle',
-                                'stonefly', 'water_penny', 'dobsonfly',
-                                'sensitive_total', 'clam_or_mussel',
-                                'crane_fly', 'crayfish', 'damselfly',
-                                'dragonfly', 'scud', 'fishfly', 'alderfly',
-                                'mite', 'somewhat_sensitive_total',
-                                'aquatic_worm', 'blackfly', 'leech', 'midge',
-                                'snail', 'mosquito_larva', 'tolerant_total',
-                                'wq_rating')
 
     def test_edit_view_with_bad_blank_data(self):
         """
@@ -44,14 +33,12 @@ class MacroFormTestCase(TestCase):
         When the user submits a form with all required fields filled
         appropriately, the user should see a success message
         """
-        # TODO MAKE sample site
-        test_site = Site.test_objects.create_site('test site')
+        test_site = Site.test_objects.create_site('test site')  # NOQA
         test_school = School.test_objects.create_school('test school')
 
         response = self.client.post(
             reverse('streamwebs:macroinvertebrate_edit', kwargs={
                 'site_slug': 'test-site'}), {
-                'site': test_site.id,
                 'school': test_school.id,
                 'date_time': '2016-07-11 14:09',
                 'weather': "aaaa",
@@ -80,10 +67,6 @@ class MacroFormTestCase(TestCase):
                 'midge': 1,
                 'snail': 1,
                 'mosquito_larva': 2,
-                'sensitive_total': 27,
-                'somewhat_sensitive_total': 28,
-                'tolerant_total': 9,
-                'wq_rating': 64,
             }
         )
         self.assertTemplateUsed(response,

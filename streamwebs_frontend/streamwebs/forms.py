@@ -53,19 +53,16 @@ class HorizontalRadioRenderer(forms.RadioSelect.renderer):
 
 class MacroinvertebratesForm(forms.ModelForm):
     school = forms.ModelChoiceField(queryset=School.objects.all())
-    site = forms.ModelChoiceField(queryset=Site.objects.filter(active=True))
 
     class Meta:
         model = Macroinvertebrates
-        fields = ('site', 'school', 'date_time', 'weather', 'time_spent',
+        fields = ('school', 'date_time', 'weather', 'time_spent',
                   'num_people', 'riffle', 'pool', 'caddisfly', 'mayfly',
                   'riffle_beetle', 'stonefly', 'water_penny', 'dobsonfly',
                   'clam_or_mussel', 'crane_fly', 'crayfish',
                   'damselfly', 'dragonfly', 'scud', 'fishfly', 'alderfly',
                   'mite', 'aquatic_worm', 'blackfly', 'leech', 'midge',
-                  'snail', 'mosquito_larva', 'wq_rating',
-                  'somewhat_sensitive_total', 'sensitive_total',
-                  'tolerant_total')
+                  'snail', 'mosquito_larva')
 
 
 class WQForm(forms.ModelForm):

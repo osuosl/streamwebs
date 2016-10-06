@@ -7,8 +7,8 @@ class MacroViewTestCase(TestCase):
     def setUp(self):
         self.site = Site.test_objects.create_site('site name')
         self.macro = Macroinvertebrates.objects.create_macro(
-            self.site, 2, 3, True, True, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5,
-            6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8)
+            self.site, 2, 3, True, True, 4, 5, 6, 7, 8, 9, 1, 2, 3, 4, 5,
+            6, 7, 8, 9, 1, 2, 3, 4, 5, 6)
         self.response = self.client.get(
             reverse(
                 'streamwebs:macroinvertebrate_view',

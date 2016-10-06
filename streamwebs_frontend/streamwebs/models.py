@@ -537,12 +537,11 @@ class MacroinvertebratesManager(models.Manager):
     """
     def create_macro(self, site, time_spent=0, num_people=0, riffle=False,
                      pool=False, caddisfly=0, mayfly=0, riffle_beetle=0,
-                     stonefly=0, water_penny=0, dobsonfly=0, sensitive_total=0,
-                     clam_or_mussel=0, crane_fly=0, crayfish=0, damselfly=0,
-                     dragonfly=0, scud=0, fishfly=0, alderfly=0, mite=0,
-                     sw_sensitive_total=0, aquatic_worm=0, blackfly=0,
-                     leech=0, midge=0, snail=0, mosquito_larva=0,
-                     tolerant_total=0, wq_rating=0):
+                     stonefly=0, water_penny=0, dobsonfly=0, clam_or_mussel=0,
+                     crane_fly=0, crayfish=0, damselfly=0, dragonfly=0, scud=0,
+                     fishfly=0, alderfly=0, mite=0, aquatic_worm=0, blackfly=0,
+                     leech=0, midge=0, snail=0, mosquito_larva=0):
+
         info = self.create(school='aaaa',
                            date_time='2016-07-11 14:09',
                            weather="bbbb",
@@ -557,7 +556,6 @@ class MacroinvertebratesManager(models.Manager):
                            stonefly=stonefly,
                            water_penny=water_penny,
                            dobsonfly=dobsonfly,
-                           sensitive_total=sensitive_total,
                            clam_or_mussel=clam_or_mussel,
                            crane_fly=crane_fly,
                            crayfish=crayfish,
@@ -567,15 +565,12 @@ class MacroinvertebratesManager(models.Manager):
                            fishfly=fishfly,
                            alderfly=alderfly,
                            mite=mite,
-                           somewhat_sensitive_total=sw_sensitive_total,
                            aquatic_worm=aquatic_worm,
                            blackfly=blackfly,
                            leech=leech,
                            midge=midge,
                            snail=snail,
-                           mosquito_larva=mosquito_larva,
-                           tolerant_total=tolerant_total,
-                           wq_rating=wq_rating,)
+                           mosquito_larva=mosquito_larva)
         return info
 
 
@@ -662,35 +657,24 @@ class Macroinvertebrates(models.Model):
     def __str__(self):
         return self.site.site_name + ' sheet ' + str(self.id)
 
-    def clean(self):
-        if ((self.caddisfly + self.mayfly + self.riffle_beetle +
-             self.stonefly + self.water_penny +
-             self.dobsonfly) * 3) != self.sensitive_total:
-                raise ValidationError(
-                    _('%(sensitive_total)s is not the correct total'),
-                    params={'sensitive_total': self.sensitive_total},
-                )
+    def save(self, **kwargs):
+        self.sensitive_total = (self.caddisfly + self.mayfly +
+                                self.riffle_beetle + self.stonefly +
+                                self.water_penny + self.dobsonfly) * 3
 
-        if ((self.clam_or_mussel + self.crane_fly + self.crayfish +
-             self.damselfly + self.dragonfly + self.scud + self.fishfly +
-             self.alderfly + self.mite) * 2) != self.somewhat_sensitive_total:
-                raise ValidationError(
-                    _('%(some_sensitive)s is not the correct total'),
-                    params={'some_sensitive': self.somewhat_sensitive_total},
-                )
+        self.somewhat_sensitive_total = (self.clam_or_mussel + self.crane_fly +
+                                         self.crayfish + self.damselfly +
+                                         self.dragonfly + self.scud +
+                                         self.fishfly + self.alderfly +
+                                         self.mite) * 2
 
-        if (self.aquatic_worm + self.blackfly + self.leech + self.midge +
-                self.snail + self.mosquito_larva) != self.tolerant_total:
-                raise ValidationError(
-                    _('%(tolerant_total)s is not the correct total'),
-                    params={'tolerant_total': self.tolerant_total},
-                )
-        if(self.sensitive_total + self.somewhat_sensitive_total +
-                self.tolerant_total) != self.wq_rating:
-                raise ValidationError(
-                    _('%(wq_rating)s is not the correct total'),
-                    params={'wq_rating': self.wq_rating},
-                )
+        self.tolerant_total = (self.aquatic_worm + self.blackfly + self.leech +
+                               self.midge + self.snail + self.mosquito_larva)
+
+        self.wq_rating = (self.sensitive_total +
+                          self.somewhat_sensitive_total + self.tolerant_total)
+
+        super(Macroinvertebrates, self).save()
 
     class Meta:
         verbose_name = 'macroinvertebrate'
