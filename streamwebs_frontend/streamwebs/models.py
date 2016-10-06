@@ -374,39 +374,39 @@ class WQ_Sample(models.Model):
     )
     # The following are optional fields
     conductivity = models.DecimalField(
-        default=0, max_digits=5, decimal_places=2, blank=True,
+        max_digits=5, decimal_places=2, blank=True,
         null=True, verbose_name=_('conductivity (µS/cm)')
     )
     total_solids = models.DecimalField(
-        default=0, max_digits=5, decimal_places=2, blank=True,
+        max_digits=5, decimal_places=2, blank=True,
         null=True, verbose_name=_('total solids (mg/L)')
     )
     bod = models.DecimalField(
-        default=0, max_digits=5, decimal_places=2, blank=True,
+        max_digits=5, decimal_places=2, blank=True,
         null=True, verbose_name=_('BOD (mg/L)')
     )
     ammonia = models.DecimalField(
-        default=0, max_digits=5, decimal_places=2, blank=True,
+        max_digits=5, decimal_places=2, blank=True,
         null=True, verbose_name=_('ammonia (mg/L)')
     )
     nitrite = models.DecimalField(
-        default=0, max_digits=5, decimal_places=2, blank=True,
+        max_digits=5, decimal_places=2, blank=True,
         null=True, verbose_name=_('nitrite (mg/L)')
     )
     nitrate = models.DecimalField(
-        default=0, max_digits=5, decimal_places=2, blank=True,
+        max_digits=5, decimal_places=2, blank=True,
         null=True, verbose_name=_('nitrate (mg/L)')
     )
     phosphates = models.DecimalField(
-        default=0, max_digits=5, decimal_places=2, blank=True,
+        max_digits=5, decimal_places=2, blank=True,
         null=True, verbose_name=_('phosphates (mg/L)')
     )
     fecal_coliform = models.DecimalField(
-        default=0, max_digits=5,
+        max_digits=5,
         decimal_places=2, blank=True,
         null=True,
         verbose_name=_('fecal coliform (CFU/100 mL)')
-        )
+    )
     nid = models.PositiveIntegerField(blank=True, null=True)
 
     test_objects = WQSampleManager()
