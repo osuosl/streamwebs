@@ -13,11 +13,13 @@ from django.conf import settings
 
 from streamwebs.forms import (
     UserForm, UserProfileForm, RiparianTransectForm, MacroinvertebratesForm,
-    Canopy_Cover_Form, WQSampleForm, WQSampleFormReadOnly,
-    WQForm, WQFormReadOnly, SiteForm)
+    PhotoPointImageForm, PhotoPointForm, CameraPointForm, WQSampleForm,
+    WQSampleFormReadOnly, WQForm, WQFormReadOnly, SiteForm, Canopy_Cover_Form)
+
 from streamwebs.models import (
     Macroinvertebrates, Site, Water_Quality, WQ_Sample, RiparianTransect,
-    TransectZone, Canopy_Cover, CC_Cardinal)
+    TransectZone, Canopy_Cover, CC_Cardinal, CameraPoint, PhotoPoint,
+    PhotoPointImage)
 
 from datetime import datetime
 import json
@@ -74,6 +76,7 @@ def site(request, site_slug):
     transect_sheets = transect_sheets.order_by('-date_time')
     canopy_sheets = Canopy_Cover.objects.filter(site_id=site.id)
     canopy_sheets = canopy_sheets.order_by('-date_time')
+    ppm_sheets = CameraPoint.objects.filter(site_id=site.id).order_by('letter')
 
     return render(request, 'streamwebs/site_detail.html', {
         'site': site,
@@ -81,6 +84,7 @@ def site(request, site_slug):
         'macro_sheets': macro_sheets,
         'transect_sheets': transect_sheets,
         'canopy_sheets': canopy_sheets,
+        'ppm_sheets': ppm_sheets
     })
 
 
@@ -124,7 +128,8 @@ def deactivate_site(request, site_slug):
     if not(Water_Quality.objects.filter(site_id=site.id).exists() or
             Macroinvertebrates.objects.filter(site_id=site.id).exists() or
             RiparianTransect.objects.filter(site_id=site.id).exists() or
-            Canopy_Cover.objects.filter(site_id=site.id).exists()):
+            Canopy_Cover.objects.filter(site_id=site.id).exists() or
+            CameraPoint.objects.filter(site_id=site.id).exists()):
 
         site.active = False
         site.modified = timezone.now()
@@ -362,6 +367,184 @@ def canopy_cover_edit(request, site_slug):
             'canopy_cover_form': canopy_cover_form,
             'cardinal_formset': cardinal_formset,
             'added': added, 'site': site
+        }
+    )
+
+
+def camera_point_view(request, site_slug, cp_id):
+    """View a site's CP: includes all of its PPs/PPIs"""
+    site = Site.objects.filter(active=True).get(site_slug=site_slug)
+    cp = CameraPoint.objects.get(id=cp_id)
+    pps = PhotoPoint.objects.filter(camera_point_id=cp)
+    all_images = dict()
+
+    for pp in pps:
+        pp_images = PhotoPointImage.objects.filter(photo_point_id=pp.id)
+        all_images[pp.number] = pp_images
+
+    return render(
+        request, 'streamwebs/datasheets/camera_point_view.html', {
+            'site': site,
+            'cp': cp,
+            'pps': pps,
+            'pp_images': all_images
+        }
+    )
+
+
+def add_camera_point(request, site_slug):
+    """Add new CP to site + 3 PPs and respective photos"""
+    added = False
+    site = Site.objects.get(site_slug=site_slug)
+    camera = CameraPoint()
+    PhotoPointInlineFormset = inlineformset_factory(  # photo point formset (3)
+        CameraPoint, PhotoPoint,
+        form=PhotoPointForm,
+        extra=3, max_num=3, min_num=3                 # three PPs per CP
+    )
+    PPImageModelFormset = modelformset_factory(       # pp image formset (3)
+        PhotoPointImage,
+        form=PhotoPointImageForm,
+        extra=3, max_num=3, min_num=3                 # one PPI for each PP
+    )
+
+    if request.method == 'POST':
+        camera_form = CameraPointForm(request.POST)
+        pp_formset = PhotoPointInlineFormset(request.POST, instance=camera)
+        ppi_formset = PPImageModelFormset(
+            request.POST, request.FILES,
+            queryset=PhotoPointImage.objects.none()
+        )
+
+        if (camera_form.is_valid() and pp_formset.is_valid() and
+                ppi_formset.is_valid()):
+            camera = camera_form.save()
+            camera.save()
+
+            photo_points = pp_formset.save(commit=False)
+            pp_images = ppi_formset.save(commit=False)
+
+            for (pp, ppi) in zip(photo_points, pp_images):
+                pp.camera_point = camera
+                pp.save()
+
+                ppi = PhotoPointImage(photo_point=pp, image=ppi.image,
+                                      date=ppi.date)
+                ppi.save()
+
+            added = True
+
+    else:
+        camera_form = CameraPointForm()
+        pp_formset = PhotoPointInlineFormset(instance=camera)
+        ppi_formset = PPImageModelFormset(
+            queryset=PhotoPointImage.objects.none()
+        )
+
+    return render(
+        request,
+        'streamwebs/datasheets/camera_point_add.html', {
+            'camera_form': camera_form,
+            'pp_formset': pp_formset,
+            'ppi_formset': ppi_formset,
+            'added': added,
+            'site': site
+        }
+    )
+
+
+def view_pp_and_add_img(request, site_slug, cp_id, pp_id):
+    """View a specific photopoint and add photos while you're at it"""
+    added = False
+    pp = PhotoPoint.objects.get(id=pp_id)
+    PPImageModelFormset = modelformset_factory(
+        PhotoPointImage,
+        form=PhotoPointImageForm,
+        extra=1, max_num=1, min_num=1
+    )
+
+    if request.method == 'POST':
+        ppi_formset = PPImageModelFormset(
+            request.POST, request.FILES,
+            queryset=PhotoPointImage.objects.none()
+        )
+        if ppi_formset.is_valid():
+            new_images = ppi_formset.save(commit=False)
+            prev_images = PhotoPointImage.objects.filter(photo_point_id=pp_id)
+
+            for (new_ppi, old_ppi) in zip(new_images, prev_images):
+                if old_ppi.date != new_ppi.date:
+                    new_ppi = PhotoPointImage(
+                        photo_point=pp, image=new_ppi.image, date=new_ppi.date)
+                    new_ppi.save()
+                    added = True
+
+                else:
+                    messages.add_message(
+                        request, messages.INFO,
+                        'A photo from that date already exists for this photo \
+                        point.',
+                    )
+    else:
+        ppi_formset = PPImageModelFormset(
+            queryset=PhotoPointImage.objects.none()
+        )
+
+    all_images = PhotoPointImage.objects.filter(photo_point_id=pp_id)
+
+    return render(
+        request,
+        'streamwebs/datasheets/photo_point_view.html', {
+            'pp': pp,
+            'ppi_formset': ppi_formset,
+            'pp_images': all_images,
+            'added': added,
+        }
+    )
+
+
+def add_photo_point(request, site_slug, cp_id):
+    """Add new PP to existing CP + respective photo(s)"""
+    added = False
+    site = Site.objects.get(site_slug=site_slug)
+    cp = CameraPoint.objects.get(id=cp_id)
+    photo_point = PhotoPoint()
+    photo_point.camera_point = cp
+
+    PPImageInlineFormset = inlineformset_factory(
+        PhotoPoint, PhotoPointImage,
+        form=PhotoPointImageForm,
+        extra=1, max_num=1, min_num=1
+    )
+
+    if request.method == 'POST':
+        pp_form = PhotoPointForm(request.POST)
+        ppi_formset = PPImageInlineFormset(request.POST, request.FILES,
+                                           instance=photo_point)
+        if pp_form.is_valid() and ppi_formset.is_valid():
+            photo_point = pp_form.save(commit=False)
+            photo_point.camera_point = cp
+            photo_point.save()
+
+            pp_images = ppi_formset.save(commit=False)
+
+            for ppi in pp_images:
+                ppi.photo_point = photo_point
+                ppi.save()
+
+            added = True
+    else:
+        pp_form = PhotoPointForm()
+        ppi_formset = PPImageInlineFormset(instance=photo_point)
+
+    return render(
+        request,
+        'streamwebs/datasheets/photo_point_add.html', {
+            'site': site,
+            'cp': cp,
+            'pp_form': pp_form,
+            'ppi_formset': ppi_formset,
+            'added': added,
         }
     )
 

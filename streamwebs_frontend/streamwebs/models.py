@@ -565,7 +565,7 @@ class PhotoPoint(models.Model):
 class PhotoPointImage(models.Model):
     photo_point = models.ForeignKey(PhotoPoint, on_delete=models.CASCADE,
                                     null=True, related_name='photo_point')
-    image = models.ImageField(null=True, blank=True, upload_to='pp_photos/',
+    image = models.ImageField(null=True, upload_to='pp_photos/',
                               verbose_name=_('photo'))
     date = models.DateField(default=datetime.date.today,
                             verbose_name=_('date taken'))
@@ -573,12 +573,6 @@ class PhotoPointImage(models.Model):
     def __str__(self):
         return (str(self.date) + ' for photo point ' +
                 str(self.photo_point.number))
-
-    def clean(self):
-        p = PhotoPointImage.objects.filter(photo_point_id=self.photo_point.id)
-        if p.exclude(id=self.id).filter(date=self.date).exists():
-            raise ValidationError(_('A photo for %(date)s already exists.'),
-                                  code='duplicate', params={'date': self.date})
 
     class Meta:
         verbose_name = 'photo point image'
