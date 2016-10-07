@@ -65,7 +65,8 @@ with open('../csvs/macros.csv', 'r') as csvfile:
             macros.water_penny = row[11]
             macros.dobsonfly = row[12]
             for i in range(7, 12+1):
-                macros.sensitive_total += int(row[i])
+                macros.sensitive_total += int(row[i])*3
+            
 
             # Somewhat Sensitive
             macros.clam_or_mussel = row[13]
@@ -78,7 +79,7 @@ with open('../csvs/macros.csv', 'r') as csvfile:
             macros.alderfly = row[20]
             macros.mite = row[21]
             for i in range(13, 21+1):
-                macros.somewhat_sensitive_total += int(row[i])
+                macros.somewhat_sensitive_total += int(row[i])*2
 
             # Tolerant
             macros.aquatic_worm = row[22]
