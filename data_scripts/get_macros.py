@@ -66,7 +66,6 @@ with open('../csvs/macros.csv', 'r') as csvfile:
             macros.dobsonfly = row[12]
             for i in range(7, 12+1):
                 macros.sensitive_total += int(row[i])*3
-            
 
             # Somewhat Sensitive
             macros.clam_or_mussel = row[13]
