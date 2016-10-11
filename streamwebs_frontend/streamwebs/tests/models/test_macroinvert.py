@@ -20,8 +20,8 @@ class MacroTestCase(TestCase):
             'site_id': models.ForeignKey,
             'time_spent': models.PositiveIntegerField,  # in minutes
             'num_people': models.PositiveIntegerField,
-            'riffle': models.BooleanField,
-            'pool': models.BooleanField,
+            'water_type': models.CharField,
+            'notes': models.TextField,
             'id': models.AutoField,
 
             # Sensitive/intolerant to pollution
@@ -85,8 +85,7 @@ class MacroTestCase(TestCase):
                                                    weather='sunny',
                                                    time_spent=45,
                                                    num_people=17,
-                                                   riffle=False,
-                                                   pool=True,
+                                                   water_type='pool',
                                                    caddisfly=0,
                                                    mayfly=2, riffle_beetle=1,
                                                    stonefly=1, water_penny=3,
@@ -99,7 +98,7 @@ class MacroTestCase(TestCase):
                                                    aquatic_worm=12,
                                                    blackfly=9, leech=8,
                                                    midge=7, snail=5,
-                                                   mosquito_larva=11)
+                                                   mosquito_larva=11, notes='')
 
         self.assertEqual(macros.site.site_name, 'test')
         self.assertEqual(macros.site.site_slug, 'test')
@@ -115,8 +114,7 @@ class MacroTestCase(TestCase):
                                                    weather='sunny',
                                                    time_spent=45,
                                                    num_people=17,
-                                                   riffle=False,
-                                                   pool=True,
+                                                   water_type='riff',
                                                    caddisfly=0,
                                                    mayfly=2, riffle_beetle=1,
                                                    stonefly=1, water_penny=3,
@@ -129,15 +127,14 @@ class MacroTestCase(TestCase):
                                                    aquatic_worm=12,
                                                    blackfly=9, leech=8,
                                                    midge=7, snail=5,
-                                                   mosquito_larva=11)
+                                                   mosquito_larva=11, notes='')
 
         # General datasheet info
         self.assertEqual(macros.date_time, default_dt)
         self.assertEqual(macros.weather, 'sunny')
         self.assertEqual(macros.time_spent, 45)
         self.assertEqual(macros.num_people, 17)
-        self.assertEqual(macros.riffle, False)
-        self.assertEqual(macros.pool, True)
+        self.assertEqual(macros.water_type, 'riff')
 
         # Checks the values for sensitive/intolerant macroinvertebrates
         self.assertEqual(macros.caddisfly, 0)
@@ -171,3 +168,5 @@ class MacroTestCase(TestCase):
 
         # Overall water quality rating
         self.assertEqual(macros.wq_rating, 171)
+
+        self.assertEqual(macros.notes, '')

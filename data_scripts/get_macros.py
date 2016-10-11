@@ -46,7 +46,7 @@ with open('../csvs/macros.csv', 'r') as csvfile:
 
             # Determine water/type here
             if row[6] == 'Riffle':
-                macros.water_type = 'riff' 
+                macros.water_type = 'riff'
             elif row[6] == 'Pool':
                 macros.water_type = 'pool'
             else:

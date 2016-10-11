@@ -535,12 +535,12 @@ class MacroinvertebratesManager(models.Manager):
     """
     Manager for the Macroinvertebrates model.
     """
-    def create_macro(self, site, time_spent=0, num_people=0, riffle=False,
-                     pool=False, caddisfly=0, mayfly=0, riffle_beetle=0,
-                     stonefly=0, water_penny=0, dobsonfly=0, clam_or_mussel=0,
-                     crane_fly=0, crayfish=0, damselfly=0, dragonfly=0, scud=0,
-                     fishfly=0, alderfly=0, mite=0, aquatic_worm=0, blackfly=0,
-                     leech=0, midge=0, snail=0, mosquito_larva=0):
+    def create_macro(self, site, time_spent=0, num_people=0, water_type='riff',
+                     caddisfly=0, mayfly=0, riffle_beetle=0, stonefly=0,
+                     water_penny=0, dobsonfly=0, clam_or_mussel=0, crane_fly=0,
+                     crayfish=0, damselfly=0, dragonfly=0, scud=0, fishfly=0,
+                     alderfly=0, mite=0, aquatic_worm=0, blackfly=0, leech=0,
+                     midge=0, snail=0, mosquito_larva=0, notes=''):
 
         info = self.create(school='aaaa',
                            date_time='2016-07-11 14:09',
@@ -548,8 +548,7 @@ class MacroinvertebratesManager(models.Manager):
                            site=site,
                            time_spent=time_spent,
                            num_people=num_people,
-                           riffle=riffle,
-                           pool=pool,
+                           water_type=water_type,
                            caddisfly=caddisfly,
                            mayfly=mayfly,
                            riffle_beetle=riffle_beetle,
@@ -570,12 +569,22 @@ class MacroinvertebratesManager(models.Manager):
                            leech=leech,
                            midge=midge,
                            snail=snail,
-                           mosquito_larva=mosquito_larva)
+                           mosquito_larva=mosquito_larva,
+                           notes=notes)
         return info
 
 
 @python_2_unicode_compatible
 class Macroinvertebrates(models.Model):
+    RIFFLE = 'riff'
+    POOL = 'pool'
+
+    WATER_TYPE_CHOICES = (
+        (None, '-----'),
+        (RIFFLE, _('riffle')),
+        (POOL, _('pool')),
+    )
+
     school = models.CharField(max_length=250, verbose_name=_('school'))
     date_time = models.DateTimeField(default=timezone.now,
                                      verbose_name=_('date and time'))
@@ -591,8 +600,9 @@ class Macroinvertebrates(models.Model):
         default=None, null=True,
         verbose_name=_('# of people sorting/identifying')
         )
-    riffle = models.BooleanField(default=False, verbose_name=_('riffle'))
-    pool = models.BooleanField(default=False, verbose_name=_('pool'))
+    water_type = models.CharField(max_length=4, verbose_name=_('water type'),
+                                  choices=WATER_TYPE_CHOICES, default=None)
+    notes = models.TextField(blank=True, verbose_name=_('field notes'))
 
     # Sensitive/intolerant to pollution
     caddisfly = models.PositiveIntegerField(default=0,
@@ -652,24 +662,30 @@ class Macroinvertebrates(models.Model):
         default=0, verbose_name=_('water quality rating')
         )
 
-    objects = MacroinvertebratesManager()
+    objects = models.Manager()
+    test_objects = MacroinvertebratesManager()
 
     def __str__(self):
         return self.site.site_name + ' sheet ' + str(self.id)
 
     def save(self, **kwargs):
-        self.sensitive_total = (self.caddisfly + self.mayfly +
-                                self.riffle_beetle + self.stonefly +
-                                self.water_penny + self.dobsonfly) * 3
+        self.sensitive_total = ((int(self.caddisfly) + int(self.mayfly) +
+                                int(self.riffle_beetle) + int(self.stonefly) +
+                                int(self.water_penny) + int(self.dobsonfly)) *
+                                3)
 
-        self.somewhat_sensitive_total = (self.clam_or_mussel + self.crane_fly +
-                                         self.crayfish + self.damselfly +
-                                         self.dragonfly + self.scud +
-                                         self.fishfly + self.alderfly +
-                                         self.mite) * 2
+        self.somewhat_sensitive_total = ((int(self.clam_or_mussel) +
+                                         int(self.crane_fly) +
+                                         int(self.crayfish) +
+                                         int(self.damselfly) +
+                                         int(self.dragonfly) +
+                                         int(self.scud) + int(self.fishfly) +
+                                         int(self.alderfly) + int(self.mite)) *
+                                         2)
 
-        self.tolerant_total = (self.aquatic_worm + self.blackfly + self.leech +
-                               self.midge + self.snail + self.mosquito_larva)
+        self.tolerant_total = (int(self.aquatic_worm) + int(self.blackfly) +
+                               int(self.leech) + int(self.midge) +
+                               int(self.snail) + int(self.mosquito_larva))
 
         self.wq_rating = (self.sensitive_total +
                           self.somewhat_sensitive_total + self.tolerant_total)
