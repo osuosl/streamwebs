@@ -215,10 +215,30 @@ def graph_macros(request, site_slug):
 def macroinvertebrate(request, site_slug, data_id):
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     data = Macroinvertebrates.objects.get(id=data_id)
+
+    if data.wq_rating > 22:
+        rating = "Excellent"
+    elif data.wq_rating >= 17 and data.wq_rating <= 22:
+        rating = "Good"
+    elif data.wq_rating >= 11 and data.wq_rating <= 16:
+        rating = "Fair"
+    else:
+        rating = "Poor"
+
+    bug_count = ((data.sensitive_total / 3) +
+                 (data.somewhat_sensitive_total / 2) + data.tolerant_total)
+
+    if bug_count == 0:
+        EPT = 0
+
+    else:
+        EPT = 100 * (float(data.caddisfly + data.mayfly + data.stonefly) /
+                     float(bug_count))
+
     return render(
         request,
         'streamwebs/datasheets/macroinvertebrate_view.html', {
-            'data': data, 'site': site
+            'data': data, 'site': site, 'rating': rating, 'EPT': EPT,
         }
     )
 
@@ -233,9 +253,9 @@ def macroinvertebrate_edit(request, site_slug):
 
     # the following are the form's fields broken up into chunks to
     # facilitate CSS manipulation in the template
-    intolerant = list(macro_form)[7:13]
-    somewhat = list(macro_form)[13:22]
-    tolerant = list(macro_form)[22:28]
+    intolerant = list(macro_form)[6:12]
+    somewhat = list(macro_form)[12:21]
+    tolerant = list(macro_form)[21:27]
 
     if request.method == 'POST':
         macro_form = MacroinvertebratesForm(data=request.POST)

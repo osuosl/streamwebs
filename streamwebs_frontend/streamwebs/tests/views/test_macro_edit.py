@@ -6,22 +6,35 @@ from streamwebs.models import Site, School
 
 class MacroFormTestCase(TestCase):
 
-    def setup(self):
+    def setUp(self):
         self.client = Client()
         self.user = User.objects.create_user('john', 'john@example.com',
                                              'johnpassword')
         self.client.login(username='john', password='johnpassword')
-        self.site = Site.objects.create_site('Site Name!', 'Site Type!')
+        self.site = Site.test_objects.create_site('Site Name!')
+
+    def test_correct_categories_rendered(self):
+        """Tests that the form slices rendered contain the correct macros"""
+        response = self.client.get(
+            reverse('streamwebs:macroinvertebrate_edit', kwargs={
+                'site_slug': self.site.site_slug}))
+
+        self.assertEqual(response.context['intolerant'][0].label, 'Caddisfly')
+        self.assertEqual(response.context['intolerant'][5].label, 'Dobsonfly')
+        self.assertEqual(response.context['somewhat'][0].label, 'Clam/mussel')
+        self.assertEqual(response.context['somewhat'][8].label, 'Mite')
+        self.assertEqual(response.context['tolerant'][0].label, 'Aquatic worm')
+        self.assertEqual(response.context['tolerant'][5].label,
+                         'Mosquito larva')
 
     def test_edit_view_with_bad_blank_data(self):
         """
         When the user tries to submit a bad (blank) form, the form errors
         should be displayed
         """
-        test_site = Site.test_objects.create_site('test site')
         response = self.client.post(
             reverse('streamwebs:macroinvertebrate_edit', kwargs={
-                'site_slug': test_site.site_slug
+                'site_slug': self.site.site_slug
                 }), {}
         )
         self.assertFormError(response, 'macro_form', 'school',
@@ -33,19 +46,17 @@ class MacroFormTestCase(TestCase):
         When the user submits a form with all required fields filled
         appropriately, the user should see a success message
         """
-        test_site = Site.test_objects.create_site('test site')  # NOQA
         test_school = School.test_objects.create_school('test school')
 
         response = self.client.post(
             reverse('streamwebs:macroinvertebrate_edit', kwargs={
-                'site_slug': 'test-site'}), {
+                'site_slug': self.site.site_slug}), {
                 'school': test_school.id,
                 'date_time': '2016-07-11 14:09',
                 'weather': "aaaa",
                 'time_spent': 1,
                 'num_people': 2,
-                'riffle': True,
-                'pool': False,
+                'water_type': 'riff',
                 'caddisfly': 1,
                 'mayfly': 2,
                 'riffle_beetle': 1,
@@ -67,6 +78,7 @@ class MacroFormTestCase(TestCase):
                 'midge': 1,
                 'snail': 1,
                 'mosquito_larva': 2,
+                'notes': ''
             }
         )
         self.assertTemplateUsed(response,
@@ -80,11 +92,10 @@ class MacroFormTestCase(TestCase):
         """
         When the user is not logged in, they cannot view the data entry page
         """
-        test_site = Site.test_objects.create_site('test site')
         self.client.logout()
         response = self.client.post(
             reverse('streamwebs:macroinvertebrate_edit', kwargs={
-                'site_slug': test_site.site_slug
+                'site_slug': self.site.site_slug
             })
         )
         self.assertContains(response, 'You must be logged in to submit data.')

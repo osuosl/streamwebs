@@ -27,54 +27,51 @@
         <strong>{% trans "You have successfully submitted your Macroinvertebrate data sheet." %}.</strong>
 
         {% else %}
+        <h3 align="center">{{ site.site_name }}</h3>
+        <h4 align="center">{% trans "New macroinvertebrate sampling" %}</h4>
         <form id='macro_form' method='post' action='{{ request.path }}'>
             {% csrf_token %}
 
             <div class="row">
-                <div class="col s6">  <!-- site, school, datetime column -->
-                    <p>{{ macro_form.site.label }}</p>
-                    <p>{{ macro_form.site }}</p>
-                    <p>{{ macro_form.site.errors }}</p>
+                <div class="col s6">  
                     <p>{{ macro_form.school.label }}</p>
                     <p>{{ macro_form.school }}</p>
                     <p>{{ macro_form.school.errors }}</p>
+                </div>
+                <div class="col s6">
+                    <p>{{ macro_form.time_spent.label }} (minutes)</p>
+                    <p>{{ macro_form.time_spent }}</p>
+                    <p>{{ macro_form.time_spent.errors }}</p>
+                </div>
+                <div class="col s6">
                     <p>{{ macro_form.date_time.label }}</p>
                     <p>{{ macro_form.date_time }}</p>
                     <p>{{ macro_form.date_time.errors }}</p>
                 </div>
-
-                <div class="col s6">  <!-- weather, time, ppl, riff/pool col -->
+                <div class="col s6">
+                    <p>{{ macro_form.num_people.label }}</p>
+                    <p>{{ macro_form.num_people }}</p>
+                    <p>{{ macro_form.num_people.errors }}</p>
+                </div>
+                <div class="col s6">
                     <p>{{ macro_form.weather.label }}</p>
                     <p>{{ macro_form.weather }}</p>
                     <p>{{ macro_form.weather.errors }}</p>
-
-                    <div class="col s6">
-                        <p>{{ macro_form.time_spent.label }}</p>
-                        <p>{{ macro_form.time_spent }}</p>
-                        <p>{{ macro_form.time_spent.errors }}</p>
-
-                        <div class="input-field">
-                            {{ macro_form.riffle }}
-                            <label for="{{ macro_form.riffle.id_for_label }}">Riffle</label>
-                            {{ macro_form.riffle.errors }}
-                        </div>
-                    </div>
-
-                    <div class="col s6">
-                        <p>{{ macro_form.num_people.label }}</p>
-                        <p>{{ macro_form.num_people }}</p>
-                        <p>{{ macro_form.num_people.errors }}</p>
-
-                        <div class="input-field">
-                            {{ macro_form.pool }}
-                            <label for="{{ macro_form.pool.id_for_label }}">Pool</label>
-                            {{ macro_form.pool.errors }}
-                        </div>
-                    </div>  <!-- end subcol -->
-                </div>  <!-- end weather, time, ppl, riff/pool col -->
-            </div>  <!-- end sheet info row -->
+                </div>
+                <div class="col s6">
+                    <p>{{ macro_form.water_type.label }}</p>
+                    <p>{{ macro_form.water_type }}</p>
+                    <p>{{ macro_form.water_type.errors }}</p>
+                </div>
+                <div class="col s12">
+                    <p>{{ macro_form.notes.label }}</p>
+                    <p>{{ macro_form.notes }}</p>
+                    <p>{{ macro_form.notes.errors }}</p>
+                </div>
+            </div>
 
             <div class="row">
+                <h5 align=center>Sensitivity to pollution</h5>
                 <div class="col s3">
                     <h6 align=center>Sensitive/intolerant</h6>
                     <table>
@@ -139,36 +136,8 @@
                             </td>
                         </tr>
                         {% endfor %}
-                    </table>  <!-- end tolerant table -->
-
-                    <!-- manual totals (may be removed) -->
-                    <table>
-                        <tr>
-                            <td></td>
-                            <td>{{ macro_form.sensitive_total }}</td>
-                            <td>{{ macro_form.sensitive_total.label }}</td>
-                            <td>{{ macro_form.sensitive_total.errors }}</td>
-                        </tr>
-                        <tr>
-                            <td>+</td>
-                            <td>{{ macro_form.somewhat_sensitive_total }}</td>
-                            <td>{{ macro_form.somewhat_sensitive_total.label }}</td>
-                            <td>{{ macro_form.somewhat_sensitive_total.errors }}</td>
-                        </tr>
-                        <tr>
-                            <td>+</td>
-                            <td>{{ macro_form.tolerant_total }}</td>
-                            <td>{{ macro_form.tolerant_total.label }}</td>
-                            <td>{{ macro_form.tolerant_total.errors }}</td>
-                        </tr>
-                        <tr>
-                            <td>=</td>
-                            <td>{{ macro_form.wq_rating }}</td>
-                            <td>{{ macro_form.wq_rating.label }}</td>
-                            <td>{{ macro_form.wq_rating.errors }}</td>
-                        </tr>
                     </table>
-                </div>  <!-- end tolerant/totals -->
+                </div>  <!-- end tolerant -->
             </div> <!-- end macros row -->
 
             <input class="waves-effect waves-light btn" type='submit', name='submit', value='Submit' />

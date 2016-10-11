@@ -3,145 +3,191 @@
 {% load i18n %}
 {% load filters %}
 {% block title %}{% trans "View Macroinvertebrates Data" %}{% endblock %}
+ 
+{% block scripts %}
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
+
+    <style>
+      .material-icons {
+        font-size: 1.5em;
+      }
+    </style>
+{% endblock %}
 
 {% block content %}
-    <h2>Site: {{ site.site_name }} </h2>
-    <h2>Data ID: {{ data.id }} </h2>
+<div class="container">
+    <h3 align="center">{{ data.site.site_name }}</h3>
+    <h4 align="center">Macroinvertebrate data: {{ data.date_time|date:"m-d-Y" }}</h4>
+   
+    <div class="row">
+        <div class="col s6">
+            <p>Water quality: {{ rating }}</p>
+        </div>
+        <div class="col s6">
+            <p># of people sorting/identifying: {{ data.num_people }}</p>
+        </div>
+        <div class="col s6">
+            <p>Water type: {{ data.get_water_type_display }}</p>
+        </div>
+        <div class="col s6">
+            <p>Time spent sorting/identifying: {{ data.time_spent }} minutes</p>
+        </div>
+        <div class="col s6">
+            <p>Percent EPT: {{ EPT|floatformat:2 }}%</p>
+        </div>
+        <div class="col s6">
+            <p>Weather: {{ data.weather }}</p>
+        </div>
+        <div class="col s12">
+            {% if data.notes %}
+            <p>Field notes: {{ data.notes }}</p>
+            {% endif %}
+        </div>
+    </div>
+    <div class="row">
+        <h5 align="center">Sensitivity to pollution</h5>
+        <div class="col s3">
+            <table class="bordered">
+                <thead>
+                        <h6 align=center>{% trans "Sensitive/Intolerant" %}</h6>
+                    <tr>
+                        <th></th>
+                        <th>Count</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="label">
+                            Caddisfly<br>
+                            <img src="{% static 'macro_images/macro_caddisfly.png' %}">
+                        </td>
 
-    <div class="macroinvertebrate-count clear-block">
-        <table border="1">
-          <caption>{% trans "Sensitive/Intolerant" %}</caption>
-          <tbody><tr>
-            <th colspan="2">{% trans "Count:" %}</th>
-          </tr>
+                        <td class="value">{{ data.caddisfly }}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">
+                        Mayfly<br>
+                        <img src="{% static 'macro_images/macro_mayfly.png' %}">
+                        </td>
+                        
+                        <td class="value">{{ data.mayfly }}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">
+                        Riffle beetle<br>
+                        <img src="{% static 'macro_images/macro_riffle_beetle.png' %}">
+                    </td>
+                        <td class="value">{{ data.riffle_beetle }}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">
+                        Stonefly<br>
+                        <img src="{% static 'macro_images/macro_stonefly.png' %}">
+                        </td>
+                        <td class="value">{{ data.stonefly }}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">
+                        Water penny<br>
+                        <img src="{% static 'macro_images/macro_water_penny.png' %}">
+                        </td>
+                        <td class="value">{{ data.water_penny }}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">
+                        Dobsonfly<br>
+                        <img src="{% static 'macro_images/macro_dobsonfly.png' %}">
+                        </td>
+                        <td class="value">{{ data.dobsonfly }}</td>
+                    </tr>
+                    <tr>
+                        <td class="label total">{% trans "Sensitive total" %}<br></td>
+                        <td class="value total">{{ data.sensitive_total }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    <div class="col s3 offset-s1">
+        <table class="bordered">
+            <thead>
+                <h6 align="center">{% trans "Somewhat Sensitive" %}</h6>
+                <tr>
+                    <th></th>
+                    <th>Count</th>
+                </tr>
+            </thead>
+          <tbody>
           <tr>
             <td class="label">
-              caddisfly
-              <br>
-              <img src="{% static 'macro_images/macro_caddisfly.png' %}">
-            </td>
-
-            <td class="value">{{ data.caddisfly }}</td>
-          </tr>
-          <tr>
-            <td class="label" style="background-position:10px -80px">
-              mayfly
-              <br>
-              <img src="{% static 'macro_images/macro_mayfly.png' %}">
-            </td>
-            <td class="value">{{ data.mayfly }}</td>
-          </tr>
-          <tr>
-            <td class="label" style="background-position:10px -180px">
-              riffle beetle
-              <br>
-              <img src="{% static 'macro_images/macro_riffle_beetle.png' %}">
-            </td>
-            <td class="value">{{ data.riffle_beetle }}</td>
-          </tr>
-          <tr>
-            <td class="label" style="background-position:10px -280px">
-              stonefly
-              <br>
-              <img src="{% static 'macro_images/macro_stonefly.png' %}">
-            </td>
-            <td class="value">{{ data.stonefly }}</td>
-          </tr>
-          <tr>
-            <td class="label" style="background-position:10px -380px">
-              water penny
-              <br>
-              <img src="{% static 'macro_images/macro_water_penny.png' %}">
-            </td>
-            <td class="value">{{ data.water_penny }}</td>
-          </tr>
-          <tr>
-            <td class="label" style="background-position:10px -480px">
-              dobsonfly
-              <br>
-              <img src="{% static 'macro_images/macro_dobsonfly.png' %}">
-            </td>
-            <td class="value">{{ data.dobsonfly }}</td>
-          </tr>
-          <tr>
-            <td class="label total">{% trans "Sensitive total" %}<br>
-              </td>
-            <td class="value total">{{ data.sensitive_total }}</td>
-          </tr>
-        </tbody></table>
-
-        <table border="1" class="col2">
-          <caption>{% trans "Somewhat Sensitive" %}</caption>
-          <tbody><tr>
-            <th colspan="2">{% trans "Count:" %}</th>
-          </tr>
-          <tr>
-            <td class="label" style="background-position: -110px 20px">
-              clam/mussel
+              Clam/mussel
               <br>
               <img src="{% static 'macro_images/macro_clam_mussel.png' %}">
             </td>
             <td class="value">{{ data.clam_or_mussel }}</td>
           </tr>
           <tr>
-            <td class="label" style="background-position: -110px -80px">
-              crane fly
+            <td class="label">
+              Crane fly
               <br>
               <img src="{% static 'macro_images/macro_crane_fly.png' %}">
             </td>
             <td class="value">{{ data.crane_fly }}</td>
           </tr>
           <tr>
-            <td class="label" style="background-position: -110px -180px">
-              crayfish
+            <td class="label">
+              Crayfish
               <br>
               <img src="{% static 'macro_images/macro_crayfish.png' %}">
             </td>
             <td class="value">{{ data.crayfish }}</td>
           </tr>
           <tr>
-            <td class="label" style="background-position: -110px -280px">
-              damselfly
+            <td class="label">
+              Damselfly
               <br>
               <img src="{% static 'macro_images/macro_damselfly.png' %}">
             </td>
             <td class="value">{{ data.damselfly }}</td>
           </tr>
           <tr>
-            <td class="label" style="background-position: -110px -380px">
-              dragonfly
+            <td class="label">
+              Dragonfly
               <br>
               <img src="{% static 'macro_images/macro_dragonfly.png' %}">
             </td>
             <td class="value">{{ data.dragonfly }}</td>
           </tr>
           <tr>
-            <td class="label" style="background-position: -110px -480px">
-              scud
+            <td class="label">
+              Scud
               <br>
               <img src="{% static 'macro_images/macro_scud.png' %}">
             </td>
             <td class="value">{{ data.scud }}</td>
           </tr>
           <tr>
-            <td class="label" style="background-position: -110px -580px">
-              fishfly
+            <td class="label">
+              Fishfly
               <br>
               <img src="{% static 'macro_images/macro_fishfly.png' %}">
             </td>
             <td class="value">{{ data.fishfly }}</td>
           </tr>
           <tr>
-            <td class="label" style="background-position: -110px -680px">
-              alderfly
+            <td class="label">
+              Alderfly
               <br>
               <img src="{% static 'macro_images/macro_alderfly.png' %}">
             </td>
             <td class="value">{{ data.alderfly }}</td>
           </tr>
           <tr>
-            <td class="label" style="background-position: -110px -780px">
-              water mite
+            <td class="label">
+              Water mite
               <br>
               <img src="{% static 'macro_images/macro_mite.png' %}">
             </td>
@@ -149,60 +195,64 @@
           </tr>
           <tr>
             <td class="label total">
-              {% trans "Somewhat Sensitive Total = " %}<br>
+              {% trans "Somewhat sensitive total" %}<br>
             </td>
             <td class="value total">{{ data.somewhat_sensitive_total }}</td>
           </tr>
-        </tbody></table>
-
-        <table border="1">
-          <caption>{% trans "Tolerant " %}</caption>
-          <tbody><tr>
-            <th colspan="2">{% trans "Count:" %}</th>
-          </tr>
+          </tbody></table></div>
+        <div class="col s3 offset-s1">
+        <table class="bordered">
+            <thead>
+            <h6 align="center">{% trans "Tolerant " %}</h6>
+            <tr>
+                <th></th>
+                <th>Count</th>
+            </tr>
+            </thead>
+          <tbody>
           <tr>
-            <td class="label" style="background-position: -270px 20px">
-              aquatic worm
+            <td class="label">
+              Aquatic worm
               <br>
               <img src="{% static 'macro_images/macro_aquatic_worm.png' %}">
             </td>
             <td class="value">{{ data.aquatic_worm }}</td>
           </tr>
           <tr>
-            <td class="label" style="background-position: -270px -80px">
-              blackfly
+            <td class="label">
+              Blackfly
               <br>
               <img src="{% static 'macro_images/macro_blackfly.png' %}">
             </td>
             <td class="value">{{ data.blackfly }}</td>
           </tr>
           <tr>
-            <td class="label" style="background-position: -270px -180px">
-              leech
+            <td class="label">
+              Leech
               <br>
               <img src="{% static 'macro_images/macro_leech.png' %}">
             </td>
             <td class="value">{{ data.leech }}</td>
           </tr>
           <tr>
-            <td class="label" style="background-position: -270px -280px">
-              midge
+            <td class="label">
+              Midge
               <br>
               <img src="{% static 'macro_images/macro_midge.png' %}">
             </td>
             <td class="value">{{ data.midge }}</td>
           </tr>
           <tr>
-            <td class="label" style="background-position: -270px -380px">
-              snail
+            <td class="label">
+              Snail
               <br>
               <img src="{% static 'macro_images/macro_snail.png' %}">
             </td>
             <td class="value">{{ data.snail }}</td>
           </tr>
           <tr>
-            <td class="label" style="background-position: -270px -480px">
-              mosquito larva
+            <td class="label">
+              Mosquito larva
               <br>
               <img src="{% static 'macro_images/macro_mosquito_larva.png' %}">
             </td>
@@ -210,10 +260,12 @@
           </tr>
           <tr>
             <td class="label total">
-              {% trans "Tolerant Total = " %}<br>
+              {% trans "Tolerant total" %}<br>
             </td>
             <td class="value total">{{ data.tolerant_total }}</td>
           </tr>
-        </tbody></table>
+          </tbody></table></div>
       </div>
+    </div>
+</div>
 {% endblock %}
