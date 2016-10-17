@@ -3,21 +3,13 @@ function search() {
     console.log('Searched!');
 
     var search_value = $('#search').val().toLowerCase();
-    var stewards = $('#steward_box').prop('checked');
-    var salmon = $('#salmon_box').prop('checked');
-    var available = $('#available_box').prop('checked');
-    var none = !stewards && !salmon && !available;
     dropdownShown = 0;
 
     $('.search-item').each(function () {
         var name = $(this).text().toLowerCase();
         var search_point = $('#search').offset().top + parseInt($('#search').css('height'));
 
-        if ((none ||
-            (stewards && $(this).hasClass('steward')) ||
-            (salmon && $(this).hasClass('salmon')) ||
-            (available && $(this).hasClass('available'))) &&
-        search_value && name.includes(search_value)) {
+        if (search_value && name.includes(search_value)) {
             $(this).removeClass('hide');
             $(this).css("top", search_point + (dropdownShown * 40));
             $(this).css("left", $('#search').offset().left);
@@ -26,14 +18,6 @@ function search() {
             $(this).addClass('hide');
         }
     });
-}
-
-function goto(slug) {
-    window.location.href = "/streamwebs/sites/" + slug;
-}
-
-function submit_map(site) {
-    goto(site);
 }
 
 var map;
@@ -83,7 +67,7 @@ function initialize() {
 
         markerList[i] = new google.maps.Marker({
             map: map,
-            position: new google.maps.LatLng(site.lng, site.lat),
+            position: new google.maps.LatLng(site.lat, site.lng),
             title: site.name,
             icon: markers[site.type],
         });
@@ -91,7 +75,7 @@ function initialize() {
         markerList[i].index = i;
 
         infoWindows[i] = new google.maps.InfoWindow({
-            content: '<p><a href="javascript:submit_map(\'' + site.slug + '\')">' + site.name + '</a></p><p>' + site.description + '</p>',
+            content: '<p><a href="' + site.slug + '">' + site.name + '</a></p><p>' + site.description + '</p>',
         });
 
         markerList[i].addListener('click', function () {
@@ -102,8 +86,8 @@ function initialize() {
             infoWindows[this.index].open(map, markerList[this.index]);
         });
 
-        lngSum += site.lat;
-        latSum += site.lng;
+        lngSum += site.lng;
+        latSum += site.lat;
     }
 
     // map.setCenter(new google.maps.LatLng(lngSum / sites.length,

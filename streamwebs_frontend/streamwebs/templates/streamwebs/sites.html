@@ -39,29 +39,12 @@
 
                             <div class="search-results collection">
                             {% for site in sites %}
-                                <a href="site/{{site.site_slug}}" class="collection-item search-item {{site.site_type}} cyan-text hide">{{site.site_name}}</a>
+                                <a href="{{site.site_slug}}" class="collection-item search-item {{site.site_type}} cyan-text hide">{{site.site_name}}</a>
                             {% endfor %}
                             </div>
                         </div>
                     </div>
                 </nav>
-
-                <div class="cbox col s4 push-s1">
-                    <div>
-                        <input type="checkbox" id="steward_box" name="stewardship" value="steward" onchange="search()" />
-                        <label for="steward_box">{% trans "Student Stewardship Project" %}</label>
-                    </div>
-
-                    <div>
-                        <input type="checkbox" id="salmon_box" name="salmon_watch" value="salmon" onchange="search()" />
-                        <label for="salmon_box">{% trans "Salmon Watch" %}</label>
-                    </div>
-
-                    <div>
-                        <input type="checkbox" id="available_box" name="available" value="available" onchange="search()" />
-                        <label for="available_box">{% trans "Available Project" %}</label>
-                    </div>
-                </div>
             </div>
         </div>
 
@@ -73,7 +56,7 @@
             <a href="#!" class="dropdown-button btn select-button cyan" data-activates='dropdown'>{% trans "Select Site" %}<i class="material-icons right">arrow_drop_down</i></a>
             <ul id="dropdown" class="dropdown-content">
             {% for site in sites %}
-                <li><a href="site/{{site.site_slug}}" class="cyan-text">{{site.site_name}}</a></li>
+                <li><a href="{{site.site_slug}}" class="cyan-text">{{site.site_name}}</a></li>
             {% endfor %}
             </ul>
         </div>
