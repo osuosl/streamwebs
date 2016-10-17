@@ -3,13 +3,7 @@
 {% load i18n %}
 {% load filters %}
 {% block title %}{% trans "Macroinvertebrates Data Edit" %}{% endblock %}
-{% block scripts %}
-    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
-    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
-
-
+{% block stylesheets %}
 <style>
   .material-icons {
     font-size: 1.5em;
@@ -149,9 +143,13 @@
         <a href='/streamwebs/login/'>{% trans "Log in here." %}</a>
     {% endif %}
     </div>  <!-- end container -->
+{% endblock %}
 
+{% block scripts %}
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
     <script>
     $('select').material_select();
     </script>
-
 {% endblock %}
