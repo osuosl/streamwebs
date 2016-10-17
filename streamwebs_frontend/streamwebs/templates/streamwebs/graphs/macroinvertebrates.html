@@ -3,49 +3,91 @@
 {% block title %}Macroinvertebrates - {{site.site_name}} -{% endblock %}
 {% load i18n %}
 
+{% block stylesheets %}
+<style>
+  .material-icons {
+    font-size: 1.5em;
+  }
+</style>
+{% endblock %}
+
 {% block scripts %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
+<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pickadate.js/3.5.6/compressed/picker.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pickadate.js/3.5.6/compressed/picker.date.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
+<script>
+$('select').material_select();
+$('.datepicker').pickadate({
+    today: '',
+    selectMonths: true, // Creates a dropdown to control month
+    selectYears: 100, // Creates a dropdown of 15 years to control year
+    max: true, // set max to today
+    format: 'yyyy-mm-dd',
+});
+</script>
+
 <script type="application/javascript">
     window.data_time = {{data.time|safe}};
     window.data_summ = {{data.summary|safe}};
     const siteId = '{{site.site_slug}}';
 </script>
-
-<script type="application/javascript"
-        src="{% static 'streamwebs/js/graphs/macros.js' %}">
-</script>
+<script type="application/javascript" src="{% static 'streamwebs/js/graphs/macros.js' %}"></script>
 {% endblock %}
 
 {% block body_title %}<a href="{% url 'streamwebs:site' site.site_slug %}">{{site.site_name}}</a>:
 {% trans "Macroinvertebrates" %}{% endblock %}
 
 {% block content %}
-<form action="">
-    <div id="type">
-        <p>{% trans "Graph Type:" %}</p>
-        <label for="type-line">{% trans "Time" %}</label>
-        <input type="radio" name="type" id="type-line" value="line" />
-        <label for="type-bar">{% trans "Summary" %}</label>
-        <input type="radio" name="type" id="type-bar" value="bar" checked />
-    </div>
+<div class="container">
+    <div class="row">
+        <form action="">
+            <div id="dates">
+                <div class="col s2 offset-s1">
+                    <h5>{% trans "Date range:" %}</h5>
+                </div>
+                <div class="col s4">
+                    <label for="date-start">{% trans "After" %}</label>
+                    <input type="date" name="date" id="date-start" class="datepicker hasDatepicker" value="" />
+                </div>
+                <div class="col s4">
+                    <label for="date-end">{% trans "Before" %}</label>
+                    <input type="date" name="date" id="date-end" class="datepicker" value="" />
+                </div>
+            </div>
+            <div id="type">
+                <div class="col s2 offset-s1">
+                    <h5>{% trans "Graph type:" %}</h5>
+                </div>
+                <div class="col s4">
+                    <input type="radio" name="type" id="type-bar" value="bar" checked />
+                    <label for="type-bar">{% trans "Summary" %}</label>
+                </div>
+                <div class="col s4">
+                    <input type="radio" name="type" id="type-line" value="line" />
+                    <label for="type-line">{% trans "Time" %}</label>
+                </div>
+            </div>
+        </form>
+    </div>  <!-- end date range/graph type row -->
 
-    <div id="dates">
-        <p>{% trans "Date Range:" %}</p>
-        <label for="date-start">{% trans "After" %}</label>
-        <input type="date" name="date" id="date-start" value="" />
-        <label for="date-end">{% trans "Before" %}</label>
-        <input type="date" name="date" id="date-end" value="" />
-    </div>
-</form>
-
-<h3 style="display:none" class="graph-header">Macroinvertebrates Over Time</h3>
-<div id="graph-{{site.site_slug}}" class="graph line">
-    <h3 style="display:none" class="graph-header">Sensitive Species</h3>
-    <div id="graph-{{site.site_slug}}-sensitive" class="graph sensitive"></div>
-    <h3 style="display:none" class="graph-header">Somewhat Sensitive Species</h3>
-    <div id="graph-{{site.site_slug}}-somewhat" class="graph somewhat"></div>
-    <h3 style="display:none" class="graph-header">Tolerant Species</h3>
-    <div id="graph-{{site.site_slug}}-tolerant" class="graph tolerant"></div>
-    <h3 style="display:none" class="graph-header">Species Type Breakdown</h3>
-    <div id="graph-{{site.site_slug}}-pie" class="graph pie"></div>
+    <div class="row">
+        <h3 style="display:none" class="graph-header">Macroinvertebrates Over Time</h3>
+        <div id="graph-{{site.site_slug}}" class="graph line">
+        <div class="col s6"> 
+        <h3 style="display:none" class="graph-header">Sensitive species</h3>
+        <div id="graph-{{site.site_slug}}-sensitive" class="graph sensitive"></div>
+        </div>
+        <div class="col s6"> 
+        <h3 style="display:none" class="graph-header">Somewhat sensitive species</h3>
+        <div id="graph-{{site.site_slug}}-somewhat" class="graph somewhat"></div>
+        </div>
+        <h3 style="display:none" class="graph-header">Tolerant species</h3>
+        <div id="graph-{{site.site_slug}}-tolerant" class="graph tolerant"></div>
+    
+        <h3 style="display:none" class="graph-header">Species type breakdown</h3>
+        <div id="graph-{{site.site_slug}}-pie" class="graph pie"></div>
+    </div> <!-- end graphs row -->
 </div>
 {% endblock %}
