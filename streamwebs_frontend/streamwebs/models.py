@@ -240,7 +240,10 @@ class Water_Quality(models.Model):
     objects = models.Manager()
 
     def __str__(self):
-        return self.site.site_name + ' data sheet ' + str(self.id)
+        if self.site is not None:
+            return self.site.site_name + ' data sheet ' + str(self.id)
+        else:
+            return 'Unspecified site for data sheet ' + str(self.id)
 
     class Meta:
         verbose_name = 'water quality'
@@ -413,8 +416,12 @@ class WQ_Sample(models.Model):
     objects = models.Manager()
 
     def __str__(self):
-        return self.water_quality.site.site_name + ' sheet ' + \
-               str(self.water_quality.id) + ' sample ' + str(self.id)
+        if self.water_quality.site is not None:
+            return self.water_quality.site.site_name + ' sheet ' + \
+                str(self.water_quality.id) + ' sample ' + str(self.sample)
+        else:
+            return ' Unspecified site: sheet ' + \
+                str(self.water_quality.id) + ' sample ' + str(self.sample)
 
     class Meta:
         verbose_name = 'water quality sample'

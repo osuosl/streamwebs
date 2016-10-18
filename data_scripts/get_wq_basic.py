@@ -3,6 +3,7 @@
 import os
 import sys
 import csv
+import datetime
 
 from django.core.wsgi import get_wsgi_application
 
@@ -29,10 +30,22 @@ with open('../csvs/wq_csvs/water_quality.csv', 'r') as csvfile:
                     row[i] = None
 
             # Strip ``Collected date`` to be YYYY-MM-DD
-            temp_date = row[2].strip('MonTuesWdhurFiSat(Aly), ')
-            collected = temp_date[:10]
+            t_date = row[2].strip('MonTuesWdhurFiSat(Aly), ')
+
+            # Formate datetime object for query
+            if len(t_date) > 10:
+                date_time =\
+                    datetime.datetime.strptime(t_date, '%Y-%m-%d %H:%M').date()
+
+            # Format date object
+            collected =\
+                datetime.datetime.strptime(t_date[:10], '%Y-%m-%d').date()
 
             waterq.date = collected
+
+            # Date to compare ``collected`` to
+            agate1_date =\
+                datetime.datetime.strptime('2014-06-09', '%Y-%m-%d').date()
 
             waterq.DEQ_dq_level = row[1]
             waterq.school = row[3]
@@ -55,8 +68,21 @@ with open('../csvs/wq_csvs/water_quality.csv', 'r') as csvfile:
 
             waterq.nid = row[11]
 
-            site = Site.objects.get(site_name=row[0])
-            waterq.site_id = site.id
+            if row[0] is not None:
+                try:
+                    site = Site.objects.get(site_name=row[0])
+                    waterq.site_id = site.id
+                except:  # for the one site_name exception...
+                    if date_time >= agate1_date:
+                        site = Site.objects.get(
+                            site_name=row[0], site_slug='agate-beach1')
+                        waterq.site_id = site.id
+                    else:
+                        site = Site.objects.get(
+                            site_name=row[0], site_slug='agate-beach')
+                        waterq.site_id = site.id
+            else:
+                waterq.site_id = None
 
             waterq.save()
 
