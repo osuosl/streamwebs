@@ -48,6 +48,20 @@ urlpatterns = [
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/canopy/(?P<data_id>\d+)/',
         views.canopy_cover_view, name='canopy_cover'),
 
+    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/camera/(?P<cp_id>\d+)/photo/' +
+        '(?P<pp_id>\d+)/?$', views.view_pp_and_add_img, name='photo_point'),
+
+    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/camera/(?P<cp_id>\d+)/photo/' +
+        'edit/?$', views.add_photo_point, name='photo_point_add'),
+
+    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/camera/(?P<cp_id>\d+)/$',
+        views.camera_point_view, name='camera_point'),
+
+    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/camera/edit/',
+        views.add_camera_point, name='camera_point_add'),
+
+    url(r'^register/$', views.register, name='register'),
+
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/canopy/edit',
         views.canopy_cover_edit, name='canopy_cover_edit'),
 

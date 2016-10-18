@@ -24,12 +24,14 @@ class WaterQualityTestCase(TestCase):
             'water_temp_unit': models.CharField,
             'air_temp_unit': models.CharField,
             'notes': models.TextField,
+            'nid': models.PositiveIntegerField,
             'id': models.AutoField,
             'water_quality': models.ManyToOneRel,
         }
 
         self.optional_fields = {
-            'notes'
+            'notes',
+            'nid'
         }
 
         self.site = Site.test_objects.create_site('test site')

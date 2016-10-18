@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 from streamwebs.models import UserProfile, WQ_Sample, Water_Quality, \
     Macroinvertebrates, Canopy_Cover, CC_Cardinal, TransectZone, \
-    RiparianTransect, Site
+    RiparianTransect, PhotoPointImage, PhotoPoint, CameraPoint, Site
 from django.contrib.auth.models import User
 from django import forms
 from django.utils.translation import ugettext_lazy as _
@@ -148,6 +148,25 @@ class RiparianTransectForm(forms.ModelForm):
     class Meta:
         model = RiparianTransect
         fields = ('school', 'date_time', 'weather', 'site', 'slope', 'notes')
+
+
+class PhotoPointImageForm(forms.ModelForm):
+    class Meta:
+        model = PhotoPointImage
+        fields = ('image', 'date')
+
+
+class PhotoPointForm(forms.ModelForm):
+    class Meta:
+        model = PhotoPoint
+        fields = ('camera_point', 'pp_date', 'compass_bearing', 'distance',
+                  'camera_height', 'notes')
+
+
+class CameraPointForm(forms.ModelForm):
+    class Meta:
+        model = CameraPoint
+        fields = ('site', 'cp_date', 'location', 'map_datum', 'description')
 
 
 class SiteForm(forms.ModelForm):

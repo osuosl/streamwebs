@@ -161,12 +161,11 @@ const useLineGraph = function useLineGraph() {
         .datum((d) => {
             return {name: d.name, value: d.values[d.values.length - 1]}
         })
-        .attr('transform', (d) => {
-            return 'translate(' + x(d.value.date) + ',' + y(d.value.value) + ')';
-        })
-        .attr('x', 3)
-        .attr('dy', '0.35em')
-        .style('font', '10px sans-serif')
+        .attr('x', (d) => {return x(d.value.date);})
+        .attr('y', (d,i) =>{return margin.top/5+10*i;})
+        .attr('text-anchor',"end")
+        .style('font', '12px sans-serif')
+        .style('fill', function(d){return z(d.name);})
         .text((d) => { return d.name });
 };
 
@@ -367,7 +366,7 @@ const useBarGraph = function useBarGraph() {
     .append('g')
         .attr('class', 'legend')
         .attr('transform', (d,i) => { return 'translate(0, ' + i*20 + ')'; })
-        .style('font', '10px sans-serif');
+        .style('font', '12px sans-serif');
 
     legend.append('rect')
         .attr('x', width - 18)
