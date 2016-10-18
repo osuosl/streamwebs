@@ -2,7 +2,8 @@
 from __future__ import unicode_literals
 from streamwebs.models import UserProfile, WQ_Sample, Water_Quality, \
     Macroinvertebrates, Canopy_Cover, CC_Cardinal, TransectZone, \
-    RiparianTransect, PhotoPointImage, PhotoPoint, CameraPoint, Site
+    RiparianTransect, PhotoPointImage, PhotoPoint, CameraPoint, Site, \
+    Soil_Survey
 from django.contrib.auth.models import User
 from django import forms
 from django.utils.translation import ugettext_lazy as _
@@ -173,3 +174,11 @@ class SiteForm(forms.ModelForm):
     class Meta:
         model = Site
         fields = ('site_name', 'description', 'location', 'image')
+
+
+class SoilSurveyForm(forms.ModelForm):
+    class Meta:
+        model = Soil_Survey
+        fields = ('school', 'date', 'weather', 'site', 'landscape_pos',
+                  'cover_type', 'land_use', 'distance', 'site_char',
+                  'soil_type')
