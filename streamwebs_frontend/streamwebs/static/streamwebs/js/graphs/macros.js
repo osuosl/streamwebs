@@ -69,7 +69,7 @@ const useLineGraph = function useLineGraph() {
 
     data = JSON.parse(JSON.stringify(window.data_time)); // Copy the data so we don't change the original
 
-    const formatted = [];
+    let formatted = [];
 
     for (let key in data) {
         const date = parseInt(key, 10) * 1000; // Convert from seconds to millis
@@ -91,8 +91,52 @@ const useLineGraph = function useLineGraph() {
         formatted.push(data[key]);
     }
 
+    formatted = formatted.map((x) => {
+      const key = x.date.toISOString().substring(0, 10);
+
+      return {
+        date: key,
+        Sensitive: x.Sensitive,
+        'Somewhat Sensitive': x['Somewhat Sensitive'],
+        Tolerant: x.Tolerant,
+        Total: x.Total,
+      };
+    }).reduce((prev, curr) => {
+      let data = prev.map((x, i) => { x['idx'] = i; return x; })
+                     .filter((x) => { return x.date === curr.date; });
+      if (data === [] || data.length === 0) {
+        prev.push({
+          date: curr.date,
+          Sensitive: curr.Sensitive,
+          'Somewhat Sensitive': curr['Somewhat Sensitive'],
+          Tolerant: curr.Tolerant,
+          Total: curr.Total,
+          count: 1,
+        });
+      } else {
+        data = data[0];
+        prev[data.idx] = {
+          date: curr.date,
+          Sensitive: data.Sensitive + curr.Sensitive,
+          'Somewhat Sensitive': data['Somewhat Sensitive'] + curr['Somewhat Sensitive'],
+          Tolerant: data.Tolerant + curr.Tolerant,
+          Total: data.Total + curr.Total,
+          count: data.count + 1,
+        }
+      }
+      return prev;
+    }, []).map((value) => {
+      return {
+        date: value.date,
+        Sensitive: value.Sensitive / value.count,
+        'Somewhat Sensitive': value['Somewhat Sensitive'] / value.count,
+        Tolerant: value.Tolerant / value.count,
+        Total: value.Total / value.count,
+      };
+    });
+
     formatted.sort((a, b) => {
-        return a.date - b.date;
+        return (a.date < b.date ? -1 : (a.date > b.date ? 1 : 0));
     });
 
     formatted.columns = ['date', 'Tolerant', 'Somewhat Sensitive', 'Sensitive', 'Total'];
@@ -108,12 +152,18 @@ const useLineGraph = function useLineGraph() {
 
     const container = outerContainer;
     const margin = {top: 20, right: 150, bottom: 30, left: 40};
-    const width = (container.width() * 0.5) - margin.left - margin.right;
+    const width = (container.width() * 0.7) - margin.left - margin.right;
     const height = 192 - margin.top - margin.bottom;
 
     const x = d3.scaleTime()
-        .domain(d3.extent(formatted, (d) => { return d.date }))
         .range([0, width]);
+
+    x.domain([
+      date_range[0] !== 0 ? new Date(date_range[0]) :
+        d3.min(formatted, (d) => { return new Date(d.date) }),
+      date_range[1] !== Number.MAX_SAFE_INTEGER ? new Date(date_range[1]) :
+        d3.max(formatted, (d) => { return new Date(d.date) }),
+    ]);
     const y = d3.scaleLinear()
         .domain([0,
             d3.max(types, (c) => {
@@ -126,8 +176,8 @@ const useLineGraph = function useLineGraph() {
         .range(['#869099', '#8c7853', '#007d4a', '#e24431']);
 
     const line = d3.line()
-        .curve(d3.curveBasis)
-        .x((d) => { return x(d.date) })
+        .curve(d3.curveLinear)
+        .x((d) => { return x(new Date(d.date)) })
         .y((d) => { return y(d.value) });
 
     const svg = d3.select('#graph-' + siteId).append('svg')
@@ -146,27 +196,44 @@ const useLineGraph = function useLineGraph() {
         .attr('class', 'axis axis--y')
         .call(d3.axisLeft(y));
 
-    const type = g.selectAll('.type')
-        .data(types)
-        .enter()
-    .append('g')
-        .attr('class', 'type');
+    if (formatted.length > 0) {
+      const type = g.selectAll('.type')
+          .data(types)
+          .enter()
+      .append('g')
+          .attr('class', 'type');
 
-    type.append('path')
-        .attr('class', 'line')
-        .attr('d', (d) => { return line(d.values) })
-        .style('stroke', (d) => { return z(d.name) });
+      type.append('path')
+          .attr('class', 'line')
+          .attr('d', (d) => { return line(d.values) })
+          .style('stroke', (d) => { return z(d.name) });
 
-    type.append('text')
-        .datum((d) => {
-            return {name: d.name, value: d.values[d.values.length - 1]}
-        })
-        .attr('x', (d) => {return x(d.value.date);})
-        .attr('y', (d,i) =>{return margin.top/5+10*i;})
-        .attr('text-anchor',"end")
-        .style('font', '12px sans-serif')
-        .style('fill', function(d){return z(d.name);})
-        .text((d) => { return d.name });
+      type.selectAll('dot')
+          .data((d) => {
+            return d.values.map((e) => { e['name'] = d.name; return e});
+          })
+        .enter().append('circle')
+          .attr('r', 3.5)
+          .attr('cx', (d) => {
+            return x(new Date(d.date))
+          })
+          .attr('cy', (d) => { return y(d.value)})
+          .style('stroke', (d) => { return z(d.name) })
+          .style('fill', (d) => { return z(d.name) })
+
+      type.append('text')
+          .datum((d) => {
+              return {name: d.name, value: d.values[d.values.length - 1]}
+          })
+          .attr('x', (d) => {
+            return x(new Date(d.value.date))+5;
+          })
+          .attr('y', (d,i) =>{ return y(d.value.value) })
+          .attr('text-anchor',"start")
+          .style('font', '12px sans-serif')
+          .style('fill', function(d){return z(d.name);})
+          .text((d) => { return d.name });
+    }
 };
 
 const useBarGraph = function useBarGraph() {
