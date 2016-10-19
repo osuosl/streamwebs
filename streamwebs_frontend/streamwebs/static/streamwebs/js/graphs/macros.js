@@ -35,6 +35,7 @@ const changeRangeStart = function changeRangeStart() {
         date_range[0] = date;
     }
 
+    // Reload the graph with the new ranges.
     if ($('input[type=radio]:checked').val() == 'line') {
         useLineGraph();
     } else {
@@ -54,6 +55,7 @@ const changeRangeEnd = function changeRangeEnd() {
         date_range[1] = date;
     }
 
+    // Reload the graph with the new ranges.
     if ($('input[type=radio]:checked').val() == 'line') {
         useLineGraph();
     } else {
@@ -67,7 +69,8 @@ const useLineGraph = function useLineGraph() {
     $('.graph-header').show();
     outerContainer.find('.graph-header').hide();
 
-    data = JSON.parse(JSON.stringify(window.data_time)); // Copy the data so we don't change the original
+    // Copy the data so we don't change the original
+    data = JSON.parse(JSON.stringify(window.data_time));
 
     let formatted = [];
 
@@ -91,7 +94,34 @@ const useLineGraph = function useLineGraph() {
         formatted.push(data[key]);
     }
 
+    /*
+     * This section is a little confusing. What we want to do is take our data
+     * and reduce it down to an average per day for which we have data.
+     * So if we have 5 points on 2016-10-05, and 3 on 2016-10-19, we condense it
+     * to one point for 2016-10-05 that's the average of those 5, and one points
+     * for 2016-10-19 that's the average of those 3.
+     *
+     * So currently `formatted` looks like this:
+     *
+     * [
+     *   {
+     *     date: Date(...),
+     *     Sensitive: ...,
+     *     'Somewhat Sensitive': ...,
+     *     Tolerant: ...,
+     *     Total: ...,
+     *   },
+     *   {
+     *     ...
+     *   },
+     *   ...
+     * ]
+     */
     formatted = formatted.map((x) => {
+      /*
+       * First we'll map the data to remove any extraneous values just in case,
+       * and to change the date to a string of just the date.
+       */
       const key = x.date.toISOString().substring(0, 10);
 
       return {
@@ -102,9 +132,23 @@ const useLineGraph = function useLineGraph() {
         Total: x.Total,
       };
     }).reduce((prev, curr) => {
+      /*
+       * Next, we'll reduce it down to sums per day.
+       */
+
+      /*
+       * `data` here represents the existing data for the day we're looking at,
+       * if it exists. It contains all of the sums we've already calculated for
+       * this day, plus its own index in the list so we can find it later.
+       */
       let data = prev.map((x, i) => { x['idx'] = i; return x; })
                      .filter((x) => { return x.date === curr.date; });
       if (data === [] || data.length === 0) {
+        /*
+         * If this is the first data point we've found for this day, then we'll
+         * add it as it is to the list. Also add a `count` value so we can
+         * calculate the average from the sums.
+         */
         prev.push({
           date: curr.date,
           Sensitive: curr.Sensitive,
@@ -114,6 +158,11 @@ const useLineGraph = function useLineGraph() {
           count: 1,
         });
       } else {
+        /*
+         * Data now holds the existing data for the day. It's technically a list
+         * of size one, so get the first element out. Now modify the list to add
+         * our new values to the existing ones, and to increment the count.
+         */
         data = data[0];
         prev[data.idx] = {
           date: curr.date,
@@ -126,6 +175,29 @@ const useLineGraph = function useLineGraph() {
       }
       return prev;
     }, []).map((value) => {
+      /*
+       * Now our list should look like this:
+       *
+       * [
+       *   {
+       *     date: '...',
+       *     Sensitive: ...,
+       *     'Somewhat Sensitive': ...,
+       *     Tolerant: ...,
+       *     Total: ...,
+       *     count: ...,
+       *     idx: 1,
+       *   },
+       *   {
+       *     ...
+       *   },
+       *   ...
+       * ]
+       *
+       * So, we mostly have the format we want. We just need to divide the sums
+       * by the count to get our averages, and filter the counts and indexes out
+       * of our data.
+       */
       return {
         date: value.date,
         Sensitive: value.Sensitive / value.count,
@@ -139,9 +211,9 @@ const useLineGraph = function useLineGraph() {
         return (a.date < b.date ? -1 : (a.date > b.date ? 1 : 0));
     });
 
-    formatted.columns = ['date', 'Tolerant', 'Somewhat Sensitive', 'Sensitive', 'Total'];
+    columns = ['date', 'Tolerant', 'Somewhat Sensitive', 'Sensitive', 'Total'];
 
-    const types = formatted.columns.slice(1).map((name) => {
+    const types = columns.slice(1).map((name) => {
         return {
             name: name,
             values: formatted.map((d) => {
@@ -242,7 +314,8 @@ const useBarGraph = function useBarGraph() {
     $('.graph-header').hide();
     outerContainer.find('.graph-header').show();
 
-    data = JSON.parse(JSON.stringify(window.data_summ)); // Copy the data so we don't change the original
+    // Copy the data so we don't change the original
+    data = JSON.parse(JSON.stringify(window.data_summ));
 
     const categories = {'tolerant': [], 'somewhat': [], 'sensitive': [], 'total': []};
 
