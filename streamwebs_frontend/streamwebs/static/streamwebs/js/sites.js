@@ -27,29 +27,6 @@ var path = "m 0,0 c -7.08163,-14.59707 -5.50487,-20.97294 5.18667,-20.97294 " +
            "10.69154,0 12.2683,6.37587 5.18667,20.97294 -2.4156,4.97919 " +
            "-4.74961,9.05306 -5.18667,9.05306 -0.43706,0 -2.77107,-4.07387 " +
            "-5.18667,-9.05306 z";
-var markers = {
-    steward: {
-        path: path,
-        fillColor: "#0000FF",
-        fillOpacity: 1,
-        strokeColor: "#000000",
-        strokeWeight: 2,
-    },
-    salmon: {
-        path: path,
-        fillColor: "#FF7F00",
-        fillOpacity: 1,
-        strokeColor: "#000000",
-        strokeWeight: 2,
-    },
-    available: {
-        path: path,
-        fillColor: "#FF0000",
-        fillOpacity: 1,
-        strokeColor: "#000000",
-        strokeWeight: 2,
-    },
-}
 
 function initialize() {
     map = new google.maps.Map(document.getElementById('map'), {
@@ -70,7 +47,13 @@ function initialize() {
             map: map,
             position: new google.maps.LatLng(site.lat, site.lng),
             title: site.name,
-            icon: markers[site.type],
+            icon: {
+              path: path,
+              fillColor: "#FF0000",
+              fillOpacity: 1,
+              strokeColor: "#000000",
+              strokeWeight: 2,
+            },
         });
 
         markerList[i].index = i;
