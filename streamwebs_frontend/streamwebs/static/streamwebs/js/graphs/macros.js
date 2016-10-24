@@ -223,7 +223,7 @@ const useLineGraph = function useLineGraph() {
     });
 
     const container = outerContainer;
-    const margin = {top: 20, right: 150, bottom: 30, left: 40};
+    const margin = {top: 20, right: 200, bottom: 30, left: 40};
     const width = (container.width() * 0.7) - margin.left - margin.right;
     const height = 192 - margin.top - margin.bottom;
 
@@ -293,18 +293,29 @@ const useLineGraph = function useLineGraph() {
           .style('stroke', (d) => { return z(d.name) })
           .style('fill', (d) => { return z(d.name) })
 
-      type.append('text')
-          .datum((d) => {
-              return {name: d.name, value: d.values[d.values.length - 1]}
+      const legend = g.selectAll('.legend')
+          .data(types)
+          .enter()
+      .append('g')
+          .attr('class', 'legend')
+          .attr('transform', (d,i) => {
+            return 'translate(' + (width + margin.left + 5) + ', ' + i*20 + ')';
           })
-          .attr('x', (d) => {
-            return x(new Date(d.value.date))+5;
-          })
-          .attr('y', (d,i) =>{ return y(d.value.value) })
-          .attr('text-anchor',"start")
-          .style('font', '12px sans-serif')
-          .style('fill', function(d){return z(d.name);})
-          .text((d) => { return d.name });
+          .style('border', '1px solid black')
+          .style('font', '12px sans-serif');
+
+      legend.append('rect')
+          .attr('x', 2)
+          .attr('width', 18)
+          .attr('height', 2)
+          .attr('fill', (d) => { return z(d.name); });
+
+      legend.append('text')
+          .attr('x', 25)
+          .attr('dy', '.35em')
+          .attr('text-anchor', 'begin')
+          .attr('fill', (d) => { return z(d.name); })
+          .text((d) => { return d.name; });
     }
 };
 
