@@ -1,6 +1,8 @@
 from django.test import Client, TestCase
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
+from streamwebs.models import Site
+from streamwebs.models import School
 from streamwebs.models import Soil_Survey
 
 
@@ -38,20 +40,22 @@ class AddSoilSurveyTestCase(TestCase):
         appropriately, the user should see a success message
         """
         site = Site.test_objects.create_site('A site')
+        school = School.test_objects.create_school('rahrahrah')
         response = self.client.post(
             reverse(
                 'streamwebs.soil_survey_edit',
-                kwargs={'site_slug': site.site_slug
+                kwargs={'site_slug': site.site_slug,
                         'school': 'rahrahrah',
                         'date': '2016-10-19 15:25',
                         'weather': 'gray',
-                        'landscape_pos': 'summit',
-                        'cover_type': 'trees',
-                        'land_use': 'wilderness',
+                        'landscape_pos': 'Summit',
+                        'cover_type': 'Trees',
+                        'land_use': 'Wilderness',
                         'distance': '30',
                         'site_char': 'Pretty distinguishable',
-                        'soil_type': 'clay loam',
+                        'soil_type': 'Clay Loam',
                 }
+            )
         )
         self.assertTemplateUsed(response,
                                 'streamwebs/datasheets/soil_survey_edit.html')
@@ -70,5 +74,5 @@ class AddSoilSurveyTestCase(TestCase):
                 kwargs={'site_slug': site.site_slug}
             )
         )
-        self.aasertContains(respone, 'You must be logged in to submit data.')
+        self.aasertContains(response, 'You must be logged in to submit data.')
         self.assertEqual(response.status_code, 200)
