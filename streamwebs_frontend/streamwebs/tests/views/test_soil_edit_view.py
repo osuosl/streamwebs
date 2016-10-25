@@ -26,7 +26,7 @@ class AddSoilSurveyTestCase(TestCase):
         site = Site.test_objects.create_site('A site')
         response = self.client.post(
             reverse(
-                'streamwebs:soil_survey_edit',
+                'streamwebs:soil_edit',
                 kwargs={'site_slug': site.site_slug}
             ), {}
         )
@@ -43,23 +43,23 @@ class AddSoilSurveyTestCase(TestCase):
         school = School.test_objects.create_school('rahrahrah')
         response = self.client.post(
             reverse(
-                'streamwebs.soil_survey_edit',
-                kwargs={'site_slug': site.site_slug,
-                        'school': 'rahrahrah',
-                        'date': '2016-10-19 15:25',
-                        'weather': 'gray',
-                        'landscape_pos': 'Summit',
-                        'cover_type': 'Trees',
-                        'land_use': 'Wilderness',
-                        'distance': '30',
-                        'site_char': 'Pretty distinguishable',
-                        'soil_type': 'Clay Loam',
+                'streamwebs:soil_edit',
+                kwargs={'site_slug': site.site_slug}
+            ), {
+                  'school': 'rahrahrah',
+                  'date': '2016-10-19 15:25',
+                  'weather': 'gray',
+                  'landscape_pos': 'Summit',
+                  'cover_type': 'Trees',
+                  'land_use': 'Wilderness',
+                  'distance': '30',
+                  'site_char': 'Pretty distinguishable',
+                  'soil_type': 'Clay Loam',
                 }
-            )
         )
         self.assertTemplateUsed(response,
-                                'streamwebs/datasheets/soil_survey_edit.html')
-        self.assertTrue(resonse.context['added'])
+                                'streamwebs/datasheets/soil_edit.html')
+        self.assertTrue(response.context['added'])
         self.assertEqual(response.status_code, 200)
 
     def test_edit_view_with_not_logged_in_user(self):
@@ -70,9 +70,9 @@ class AddSoilSurveyTestCase(TestCase):
         self.client.logout()
         response = self.client.post(
             reverse(
-                'streamwebs:soil_survey_edit',
+                'streamwebs:soil_edit',
                 kwargs={'site_slug': site.site_slug}
             )
         )
-        self.aasertContains(response, 'You must be logged in to submit data.')
+        self.assertContains(response, 'You must be logged in to submit data.')
         self.assertEqual(response.status_code, 200)

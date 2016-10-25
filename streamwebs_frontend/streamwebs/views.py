@@ -623,10 +623,10 @@ def water_quality_edit(request, site_slug):
 
 def soil_survey(request, site_slug, data_id):
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
-    data = Soil_Survey.objects.get(id=data_id)
+    soil = Soil_Survey.objects.filter(site_id=site.id).get(id=data_id)
     return render(
         request, 'streamwebs/datasheets/soil_view.html', {
-            'data': data, 'site': site
+            'soil': soil, 'site': site
         }
     )
 

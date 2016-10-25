@@ -179,5 +179,6 @@ class SiteForm(forms.ModelForm):
 class SoilSurveyForm(forms.ModelForm):
     class Meta:
         model = Soil_Survey
-        fields = ('school', 'date', 'weather', 'landscape_pos', 'cover_type',
-                  'land_use', 'distance', 'site_char', 'soil_type')
+        fields = ('site', 'school', 'date', 'weather', 'landscape_pos',
+                  'cover_type', 'land_use', 'distance', 'site_char',
+                  'soil_type')
