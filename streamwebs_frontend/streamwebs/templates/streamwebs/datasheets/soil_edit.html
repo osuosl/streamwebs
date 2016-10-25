@@ -1,0 +1,32 @@
+{% extends 'streamwebs/base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+{% load filters %}
+{% block title %}{% trans "Add/Edit Soil Survey" %}{% endblock %}
+{% block body_title %}{{ site.site_name }}{% trans ": Soil Survey"%}{% endblock %}
+
+{% block content %}
+
+    {% if user.is_authenticated %}
+        {% if added %}
+            <strong>{% trans "You have successfully submitted your Soil Survey data sheet." %}</strong>
+
+        {% else %}
+            <form id='soil_from' method='post' action'{{ request.path }}'>
+            {% csrf_token %}
+            <table>
+
+                {{ soil_form }}
+
+            </table>
+            <input type='submit', name='submit', value='Submit' />
+
+        {% endif %}
+
+    {% else %}
+        <p>{% trans "You must be logged in to submit data." %}</p>
+        <a href='/streamwebs/login/'>{% trans "Log in here." %}</a>\
+
+    {% endif %}
+
+{% endblock %}

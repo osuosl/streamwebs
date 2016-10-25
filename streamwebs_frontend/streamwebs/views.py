@@ -14,12 +14,13 @@ from django.conf import settings
 from streamwebs.forms import (
     UserForm, UserProfileForm, RiparianTransectForm, MacroinvertebratesForm,
     PhotoPointImageForm, PhotoPointForm, CameraPointForm, WQSampleForm,
-    WQSampleFormReadOnly, WQForm, WQFormReadOnly, SiteForm, Canopy_Cover_Form)
+    WQSampleFormReadOnly, WQForm, WQFormReadOnly, SiteForm, Canopy_Cover_Form,
+    SoilSurveyForm)
 
 from streamwebs.models import (
     Macroinvertebrates, Site, Water_Quality, WQ_Sample, RiparianTransect,
     TransectZone, Canopy_Cover, CC_Cardinal, CameraPoint, PhotoPoint,
-    PhotoPointImage)
+    PhotoPointImage, Soil_Survey)
 
 from datetime import datetime
 import json
@@ -616,5 +617,39 @@ def water_quality_edit(request, site_slug):
             'site': site,
             'wq_form': wq_form,
             'sample_formset': sample_formset
+        }
+    )
+
+
+def soil_survey(request, site_slug, data_id):
+    site = Site.objects.filter(active=True).get(site_slug=site_slug)
+    data = Soil_Survey.objects.get(id=data_id)
+    return render(
+        request, 'streamwebs/datasheets/soil_view.html', {
+            'data': data, 'site': site
+        }
+    )
+
+
+def soil_survey_edit(request, site_slug):
+    """
+    The view for the submistion of a new Soil Survey (data sheet)
+    """
+    site = Site.objects.filter(active=True).get(site_slug=site_slug)
+    added = False
+    if request.method == 'POST':
+        soil_form = SoilSurveyForm(data=request.POST)
+        if soil_form.is_valid():
+            soil_form = soil_form.save()
+            added = True
+
+    else:
+        soil_form = SoilSurveyForm()
+
+    return render(
+        request, 'streamwebs/datasheets/soil_edit.html', {
+            'soil_form': soil_form,
+            'added': added,
+            'site': site
         }
     )
