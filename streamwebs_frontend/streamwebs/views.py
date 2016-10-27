@@ -638,10 +638,15 @@ def soil_survey_edit(request, site_slug):
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     added = False
     if request.method == 'POST':
+        print("Post method")
         soil_form = SoilSurveyForm(data=request.POST)
         if soil_form.is_valid():
+            print("valid method")
             soil_form = soil_form.save()
             added = True
+        else:
+            #print("Things are never that easy")
+            print(soil_form)
 
     else:
         soil_form = SoilSurveyForm()

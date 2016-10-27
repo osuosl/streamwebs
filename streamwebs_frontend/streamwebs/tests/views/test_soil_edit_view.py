@@ -46,19 +46,21 @@ class AddSoilSurveyTestCase(TestCase):
                 'streamwebs:soil_edit',
                 kwargs={'site_slug': site.site_slug}
             ), {
-                  'school': 'rahrahrah',
+                  'site': site,
+                  'school': school,
                   'date': '2016-10-19 15:25',
                   'weather': 'gray',
-                  'landscape_pos': 'Summit',
-                  'cover_type': 'Trees',
-                  'land_use': 'Wilderness',
+                  'landscape_pos': 'summit',
+                  'cover_type': 'trees',
+                  'land_use': 'wilderness',
                   'distance': '30',
                   'site_char': 'Pretty distinguishable',
-                  'soil_type': 'Clay Loam',
+                  'soil_type': 'clay_loam',
                 }
         )
         self.assertTemplateUsed(response,
                                 'streamwebs/datasheets/soil_edit.html')
+        #print(response)
         self.assertTrue(response.context['added'])
         self.assertEqual(response.status_code, 200)
 

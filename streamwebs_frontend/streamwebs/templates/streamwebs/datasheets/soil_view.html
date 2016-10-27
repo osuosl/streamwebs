@@ -1,0 +1,54 @@
+{% extends 'streamwebs/base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+{% load filters %}
+{% block title %}{% trans "View Soil Survey Data" %}{% endblock %}
+{% block body_title %}{% trans "Soil Survey: "%}{{ soil.date }}{% endblock %}
+
+{% block content %}
+    <div>
+        <table>
+            <tr>
+                <th align='left'>{% trans "Site" %}</th>
+                <td>{{ soil.site }}</td>
+            </tr>
+        </table>
+    </div>
+    <div>
+        <table>
+            <tr>
+                <th align='left'>{% trans "School" %}</th>
+                <td>{{ soil.school }}</td>
+            </tr>
+            <tr>
+                <th align='left'>{% trans "Weather" %}</th>
+                <td>{{ soil.weather }}</td>
+            </tr>
+            <tr>
+                <th align='left'>{% trans "Landscape Position" %}</th>
+                <td>{{ soil.landscape_pos }}</td>
+            </tr>
+            <tr>
+                <th align='left'>{% trans "Cover Type" %}</th>
+                <td>{{ soil.cover_type }}</td>
+            </tr>
+            <tr>
+                <th align='left'>{% trans "Land Use" %}</th>
+                <td>{{ soil.land_use }}</td>
+            </tr>
+            <tr>
+                <th align='left'>{% trans "Distance" %}</th>
+                <td>{{ soil.distance }}</td>
+            </tr>
+            <tr>
+                <th align='left'>{% trans "Site Characteristics" %}</th>
+                <td>{{ soil.site_char }}</td>
+            </tr>
+            <tr>
+                <th align='left'>{% trans "Soil Type" %}</th>
+                <td>{{ soil.soil_type }}</td>
+            </tr>
+        </table>
+    </div>
+
+{% endblock %}
