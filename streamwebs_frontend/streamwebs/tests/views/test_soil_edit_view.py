@@ -1,9 +1,7 @@
 from django.test import Client, TestCase
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
-from streamwebs.models import Site
-from streamwebs.models import School
-from streamwebs.models import Soil_Survey
+from streamwebs.models import Site, School
 
 
 class AddSoilSurveyTestCase(TestCase):
@@ -12,7 +10,7 @@ class AddSoilSurveyTestCase(TestCase):
         self.user = User.objects.create_user('john', 'john@example.com',
                                              'johnpassword')
         self.client.login(username='john', password='johnpassword')
-        self.site = Site.test_objects.create_site('A site')        
+        self.site = Site.test_objects.create_site('A site')
         self.expected_fields = ('school', 'date', 'weather', 'site',
                                 'landscape_pos', 'cover_type', 'land_use',
                                 'distance', 'site_char', 'soil_type')
@@ -46,8 +44,8 @@ class AddSoilSurveyTestCase(TestCase):
                 'streamwebs:soil_edit',
                 kwargs={'site_slug': site.site_slug}
             ), {
-                  'site': site,
-                  'school': school,
+                  'site': site.id,
+                  'school': school.id,
                   'date': '2016-10-19 15:25',
                   'weather': 'gray',
                   'landscape_pos': 'summit',
@@ -60,7 +58,6 @@ class AddSoilSurveyTestCase(TestCase):
         )
         self.assertTemplateUsed(response,
                                 'streamwebs/datasheets/soil_edit.html')
-        #print(response)
         self.assertTrue(response.context['added'])
         self.assertEqual(response.status_code, 200)
 

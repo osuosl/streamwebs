@@ -1,5 +1,4 @@
-from django.test import Client, TestCase
-from django.contrib.auth.models import User
+from django.test import TestCase
 from django.core.urlresolvers import reverse
 from streamwebs.models import Site, School, Soil_Survey
 
@@ -9,16 +8,17 @@ class ViewSoilSurveyTestCase(TestCase):
         self.site = Site.test_objects.create_site('Another site')
         self.school = School.test_objects.create_school('rahrahrah')
         self.soil_survey = Soil_Survey.objects.create(
-            site=self.site, school=self.school, date='2016-10-20 14:28', 
+            site=self.site, school=self.school, date='2016-10-20 14:28',
             weather='cloudy', landscape_pos='Stream Bank', cover_type='Shrubs',
-            land_use='Other', distance="2 ft from water's edge", 
+            land_use='Other', distance="2 ft from water's edge",
             site_char='Lots of rocks around', soil_type='Silt Loam')
 
         self.response = self.client.get(
             reverse(
                 'streamwebs:soil',
-                kwargs={'data_id': self.soil_survey.id,
-                        'site_slug': self.site.site_slug
+                kwargs={
+                    'data_id': self.soil_survey.id,
+                    'site_slug': self.site.site_slug
                 }
             )
         )
