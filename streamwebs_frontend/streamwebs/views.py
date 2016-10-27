@@ -78,6 +78,8 @@ def site(request, site_slug):
     canopy_sheets = Canopy_Cover.objects.filter(site_id=site.id)
     canopy_sheets = canopy_sheets.order_by('-date_time')
     ppm_sheets = CameraPoint.objects.filter(site_id=site.id).order_by('letter')
+    soil_sheets = Soil_Survey.objects.filter(site_id=site.id)
+    soil_sheets = soil_sheets.order_by('-date')
 
     return render(request, 'streamwebs/site_detail.html', {
         'site': site,
@@ -85,7 +87,8 @@ def site(request, site_slug):
         'macro_sheets': macro_sheets,
         'transect_sheets': transect_sheets,
         'canopy_sheets': canopy_sheets,
-        'ppm_sheets': ppm_sheets
+        'ppm_sheets': ppm_sheets,
+        'soil_sheets': soil_sheets
     })
 
 
