@@ -1,22 +1,101 @@
 {% extends 'streamwebs/base.html' %}
 {% load i18n %}
 {% block title %}Register -{% endblock %}
+{% block stylesheets %}
+  <style>
+    .errorlist{
+      color:red;
+    }
+  </style>
+{% endblock %}
 {% block body_title %}{% trans "Register" %}{% endblock %}
 {% block content %}
+    <div class="container">
+      <div class="row">
+
+
     {% if registered %}
     <strong>{% trans "You have successfully created a StreamWebs account." %}</strong>
     <a href='/streamwebs/'>{% trans "Return to home" %}</a><br />
 
     {% else %}
-    <strong>{% trans "Create an account." %}</strong><br />
 
-    <form id='user_form' method='post' action='/streamwebs/register/'>
+    <form class="col s8 offset-s2" id='user_form' method='post' action='/streamwebs/register/'>
+      <strong>{% trans "Create an account." %}</strong><br />
         {% csrf_token %}
+        <div class="input-field col s6">
+          <label for="{{ user_form.first_name.id_for_label }}">First Name:</label>
+          {{ user_form.first_name }}
+          {{ user_form.first_name.errors }}
 
-        {{ user_form.as_p }}
-        {{ profile_form.as_p }}
+        </div>
+        <div class="input-field col s6">
+          <label for="{{ user_form.last_name.id_for_label }}">Last Name:</label>
+          {{ user_form.last_name }}
+          {{ user_form.last_name.errors }}
+        </div>
 
-        <input type='submit' name='submit' value='{% trans "Create Account"%}' />
+        <div class="input-field col s12">
+          <label for="{{ profile_form.birthdate.id_for_label }}">Birthdate</label>
+          {{ profile_form.birthdate }}
+          {{ profile_form.birthdate.errors }}
+
+        </div>
+        <div class="input-field col s12">
+          {{ profile_form.school }}
+          {{ profile_form.school.errors }}
+          <label for="{{ profile_form.school.id_for_label }}">School:</label>
+        </div>
+
+        <div class="input-field col s12">
+          <label for="{{ user_form.username.id_for_label }}">Username:</label>
+          {{ user_form.username }}
+          {{ user_form.username.errors }}
+        </div>
+
+        <div class="input-field col s12">
+          <label for="{{ user_form.email.id_for_label }}">Email:</label>
+          {{ user_form.email }}
+          {{ user_form.email.errors }}
+        </div>
+
+        <div class="input-field col s12">
+          <label for="{{ user_form.password.id_for_label }}">Password:</label>
+          {{ user_form.password }}
+          {{ user_form.password.errors }}
+        </div>
+
+        <div class="input-field col s12">
+          <label for="{{ user_form.password_check.id_for_label }}">Password (again):</label>
+          {{ user_form.password_check }}
+          {{ user_form.password_check.errors }}
+        </div>
+        <div class="input-field col s12">
+          <label for="{{ profile_form.captcha.id_for_label }}"></label>
+          {{ profile_form.captcha }}
+          {{ profile_form.captcha.errors }}
+        </div>
+        <br>
+
+        <input class="waves-effect waves-light btn" type='submit' name='submit' value='{% trans "Create Account"%}' />
     </form>
     {% endif %}
+    {% block scripts %}
+    <!--Import jQuery before materialize.js-->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pickadate.js/3.5.6/compressed/picker.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pickadate.js/3.5.6/compressed/picker.date.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
+    <script>
+    $('select').material_select();
+    $('.datepicker').pickadate({
+      today: '',
+      selectMonths: true, // Creates a dropdown to control month
+      selectYears: 100, // Creates a dropdown of 15 years to control year
+      max: true, // set max to today
+      format: 'yyyy-dd-mm',
+    })
+    </script>
+    {% endblock %}
+
 {% endblock %}
