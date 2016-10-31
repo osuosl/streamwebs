@@ -66,7 +66,6 @@ class PhotoPointTestCase(TestCase):
         """
         A photo point should correspond to a single camera point.
         """
-
         photo_point = PhotoPoint.test_objects.create_photo_point(
             self.camera_point, '2016-07-06', 140, 4.5, 2.3)
 

@@ -15,6 +15,7 @@ from .models import CC_Cardinal
 from .models import School
 from .models import CameraPoint
 from .models import PhotoPoint, PhotoPointImage
+from .models import Soil_Survey
 
 admin.site.register(Site)
 admin.site.register(Water_Quality)
@@ -28,6 +29,7 @@ admin.site.register(School)
 admin.site.register(CameraPoint)
 admin.site.register(PhotoPoint)
 admin.site.register(PhotoPointImage)
+admin.site.register(Soil_Survey)
 
 
 # The following will add a profile model's files to the user page in the

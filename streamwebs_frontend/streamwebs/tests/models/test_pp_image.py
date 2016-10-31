@@ -1,8 +1,7 @@
 from django.test import TestCase
 from django.contrib.gis.db import models
-from django.core.exceptions import ValidationError
 from itertools import chain
-from streamwebs.models import (Site, CameraPoint, PhotoPoint, PhotoPointImage)
+from streamwebs.models import Site, CameraPoint, PhotoPoint, PhotoPointImage
 import tempfile
 
 
@@ -57,23 +56,3 @@ class PhotoPointImageTestCase(TestCase):
             self.pp_image.photo_point.camera_point.cp_date, '2016-07-29')
         self.assertEqual(
             self.pp_image.photo_point.camera_point.site.site_name, 'Test site')
-
-    def test_create_pp_img_with_existing_date(self):
-        new_pp_img = PhotoPointImage.objects.create(
-            photo_point=self.photo_point,
-            date='2016-08-30',
-            image=self.temp_photo)
-
-        with self.assertRaises(ValidationError):
-            new_pp_img.clean()
-
-    def test_create_pp_img_with_new_date(self):
-        new_pp_img = PhotoPointImage.objects.create(
-            photo_point=self.photo_point,
-            date='2016-08-31',
-            image=self.temp_photo)
-
-        try:
-            new_pp_img.clean()
-        except:
-            self.fail('An exception was raised.')
