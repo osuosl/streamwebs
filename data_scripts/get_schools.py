@@ -26,4 +26,4 @@ with open('../csvs/schools_info.csv', 'r') as csvfile:
         school.zipcode = row['Postal Code']
         school.save()
 
-print "Data loaded."
+print "Schools loaded."

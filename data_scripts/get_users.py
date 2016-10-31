@@ -69,4 +69,4 @@ with open('../csvs/users1.csv', 'r') as csvfile:
                                                  birthdate=dob)
 
 
-print "Data loaded."
+print "Users loaded."

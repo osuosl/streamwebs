@@ -96,4 +96,4 @@ with open('../csvs/macros.csv', 'r') as csvfile:
 
             macros.save()
 
-print 'Data loaded.'
+print 'Macroinvertebrates loaded.'

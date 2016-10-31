@@ -50,4 +50,4 @@ with open('../csvs/ll_site_data.csv', 'r') as csvfile:
             # Save site data to django db
             site.save()
 
-print "Data loaded."
+print "Sites loaded."
