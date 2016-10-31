@@ -10,8 +10,8 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 from django.utils.text import slugify
-from django.conf import settings
 from django.utils.dateformat import format
+
 
 def _timestamp(dt):
     return int(format(dt, 'U'))
@@ -474,7 +474,7 @@ class WQ_Sample(models.Model):
     def to_dict(self):
         return {
             'water_temperature': _temp_conv(float(self.water_temperature),
-                                            self.water_quality.water_temp_unit),
+                                          self.water_quality.water_temp_unit),
             'water_temp_tool': self.water_temp_tool,
             'air_temperature': _temp_conv(float(self.air_temperature),
                                           self.water_quality.air_temp_unit),
