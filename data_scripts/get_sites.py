@@ -30,12 +30,6 @@ with open('../csvs/ll_site_data.csv', 'r') as csvfile:
         if row[0] != '':  # Skip the header
             site = Site()
 
-            # Reassign colored marker to its corresponding site type
-            if row[3] == 'small blue':
-                site.site_type = 'Student Stewardship Project'
-            if row[3] == 'small orange':
-                site.site_type = 'Salmon Watch'
-
             site.site_name = row[0]
             site.created = row[1]
             site.modified = row[2]
