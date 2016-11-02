@@ -1,7 +1,7 @@
 from django.test import Client, TestCase
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
-from streamwebs.models import Site, School
+from streamwebs.models import Site, School, Macroinvertebrates
 
 
 class MacroFormTestCase(TestCase):
@@ -81,12 +81,12 @@ class MacroFormTestCase(TestCase):
                 'notes': ''
             }
         )
-        self.assertTemplateUsed(response,
-                                'streamwebs/datasheets/' +
-                                'macroinvertebrate_edit.html')
-        self.assertTrue(response.context['added'])
+        macro = Macroinvertebrates.test_objects.order_by('-id')[0]
 
-        self.assertEqual(response.status_code, 200)
+        self.assertRedirects(response, reverse(
+            'streamwebs:macroinvertebrate_view',
+            kwargs={'site_slug': self.site.site_slug, 'data_id': macro.id}),
+            status_code=302, target_status_code=200)
 
     def test_edit_view_with_not_logged_in_user(self):
         """

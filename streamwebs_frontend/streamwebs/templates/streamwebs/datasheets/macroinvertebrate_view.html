@@ -19,6 +19,11 @@
 
 {% block content %}
 <div class="container">
+    {% if messages %}
+        {% for message in messages %}
+        <strong>{{ message }}</strong>
+        {% endfor %}
+    {% endif %}
     <h3 align="center">{{ data.site.site_name }}</h3>
     <h4 align="center">Macroinvertebrate data: {{ data.date_time|date:"m-d-Y" }}</h4>
    

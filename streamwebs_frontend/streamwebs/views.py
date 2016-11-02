@@ -267,8 +267,14 @@ def macroinvertebrate_edit(request, site_slug):
             macro = macro_form.save(commit=False)
             macro.site = site
             macro.save()
-
             added = True
+            messages.success(
+                request,
+                'You have successfully added a new macroinvertebrates ' +
+                'data sheet.')
+            return redirect(reverse('streamwebs:macroinvertebrate_view',
+                            kwargs={'site_slug': site.site_slug,
+                                    'data_id': macro.id}))
 
     return render(
         request, 'streamwebs/datasheets/macroinvertebrate_edit.html', {
