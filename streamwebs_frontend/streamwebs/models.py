@@ -669,24 +669,34 @@ class Macroinvertebrates(models.Model):
         return self.site.site_name + ' sheet ' + str(self.id)
 
     def save(self, **kwargs):
-        self.sensitive_total = ((int(self.caddisfly) + int(self.mayfly) +
-                                int(self.riffle_beetle) + int(self.stonefly) +
-                                int(self.water_penny) + int(self.dobsonfly)) *
-                                3)
+        self.sensitive_total = 0
+        self.somewhat_sensitive_total = 0
 
-        self.somewhat_sensitive_total = ((int(self.clam_or_mussel) +
-                                         int(self.crane_fly) +
-                                         int(self.crayfish) +
-                                         int(self.damselfly) +
-                                         int(self.dragonfly) +
-                                         int(self.scud) + int(self.fishfly) +
-                                         int(self.alderfly) + int(self.mite)) *
-                                         2)
+        # divvy up indiv count values into three arrays
+        sensitive = [self.caddisfly, self.mayfly, self.riffle_beetle,
+                     self.stonefly, self.water_penny, self.dobsonfly]
+        somewhat = [self.clam_or_mussel, self.crane_fly, self.crayfish,
+                    self.damselfly, self.dragonfly, self.scud, self.fishfly,
+                    self.alderfly, self.mite]
+        tolerant = [self.aquatic_worm, self.blackfly, self.leech, self.midge,
+                    self.snail, self.mosquito_larva]
 
-        self.tolerant_total = (int(self.aquatic_worm) + int(self.blackfly) +
-                               int(self.leech) + int(self.midge) +
-                               int(self.snail) + int(self.mosquito_larva))
+        # loop thru each array-- if a bug's count is at least one, that bug
+        # gets n points towards its category's final score (n = 3 for
+        # sensitive, n = 2 for somewhat sensitive, n = 1 for tolerant)
+        for count in sensitive:
+            if count > 0:
+                self.sensitive_total += 3
 
+        for count in somewhat:
+            if count > 0:
+                self.somewhat_sensitive_total += 2
+
+        for count in tolerant:
+            if count > 0:
+                self.tolerant_total += 1
+
+        # the water quality rating is just the sum of the three scores
         self.wq_rating = (self.sensitive_total +
                           self.somewhat_sensitive_total + self.tolerant_total)
 
@@ -730,10 +740,26 @@ class Macroinvertebrates(models.Model):
         ]
 
     def get_totals(self):
+        # total number of somewhat sensitive macros found:
+        somewhat = (int(self.clam_or_mussel) + int(self.crane_fly) +
+                    int(self.crayfish) + int(self.damselfly) +
+                    int(self.dragonfly) + int(self.scud) + int(self.fishfly) +
+                    int(self.alderfly) + int(self.mite))
+
+        # total number of sensitive macros found:
+        sensitive = (int(self.caddisfly) + int(self.mayfly) +
+                     int(self.riffle_beetle) + int(self.stonefly) +
+                     int(self.water_penny) + int(self.dobsonfly))
+
+        # total number of tolerant macros found:
+        tolerant = (int(self.aquatic_worm) + int(self.blackfly) +
+                    int(self.leech) + int(self.midge) + int(self.snail) +
+                    int(self.mosquito_larva))
+
         return {
-            'Tolerant': self.tolerant_total,
-            'Somewhat Sensitive': self.somewhat_sensitive_total,
-            'Sensitive': self.sensitive_total
+            'Tolerant': tolerant,
+            'Somewhat Sensitive': somewhat,
+            'Sensitive': sensitive
         }
 
 

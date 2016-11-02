@@ -225,12 +225,15 @@ def macroinvertebrate(request, site_slug, data_id):
     else:
         rating = "Poor"
 
-    bug_count = ((data.sensitive_total / 3) +
-                 (data.somewhat_sensitive_total / 2) + data.tolerant_total)
+    counts = data.get_totals()
+    bug_count = (counts['Tolerant'] + counts['Somewhat Sensitive'] +
+                 counts['Sensitive'])
 
+    # thwart divide-by-0 error
     if bug_count == 0:
         EPT = 0
 
+    # The EPT is the proportion of caddisflies, mayflies, and stoneflies found
     else:
         EPT = 100 * (float(data.caddisfly + data.mayfly + data.stonefly) /
                      float(bug_count))
