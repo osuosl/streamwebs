@@ -63,8 +63,6 @@ with open('../csvs/macros.csv', 'r') as csvfile:
             macros.stonefly = row[10]
             macros.water_penny = row[11]
             macros.dobsonfly = row[12]
-            for i in range(7, 12+1):
-                macros.sensitive_total += int(row[i])*3
 
             # Somewhat Sensitive
             macros.clam_or_mussel = row[13]
@@ -76,8 +74,6 @@ with open('../csvs/macros.csv', 'r') as csvfile:
             macros.fishfly = row[19]
             macros.alderfly = row[20]
             macros.mite = row[21]
-            for i in range(13, 21+1):
-                macros.somewhat_sensitive_total += int(row[i])*2
 
             # Tolerant
             macros.aquatic_worm = row[22]
@@ -86,8 +82,6 @@ with open('../csvs/macros.csv', 'r') as csvfile:
             macros.midge = row[25]
             macros.snail = row[26]
             macros.mosquito_larva = row[27]
-            for i in range(22, 27+1):
-                macros.tolerant_total += int(row[i])
 
             # Create the foreign key relation between datasheet and site
             site = Site.objects.get(site_name=row[0])
