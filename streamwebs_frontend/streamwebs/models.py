@@ -83,7 +83,6 @@ class Site(models.Model):
             'site_name': self.site_name,
             'site_slug': self.site_slug,
             'description': self.description,
-            'site_type': self.site_type,
             'location': {
                 'x': self.location.x,
                 'y': self.location.y
@@ -281,8 +280,8 @@ class Water_Quality(models.Model):
             'date': _timestamp(self.date),
             'school': self.school,
             'location': {
-                'x': float(self.longitude),
-                'y': float(self.latitude)
+                'x': str(self.longitude),
+                'y': str(self.latitude)
             },
             'fish_present': self.fish_present,
             'live_fish': self.live_fish,
@@ -473,28 +472,28 @@ class WQ_Sample(models.Model):
 
     def to_dict(self):
         return {
-            'water_temperature': _temp_conv(float(self.water_temperature),
-                                          self.water_quality.water_temp_unit),
+            'water_temperature': str(_temp_conv(self.water_temperature,
+                                     self.water_quality.water_temp_unit)),
             'water_temp_tool': self.water_temp_tool,
-            'air_temperature': _temp_conv(float(self.air_temperature),
-                                          self.water_quality.air_temp_unit),
+            'air_temperature': str(_temp_conv(self.air_temperature,
+                                   self.water_quality.air_temp_unit)),
             'air_temp_tool': self.air_temp_tool,
-            'dissolved_oxygen': float(self.dissolved_oxygen),
+            'dissolved_oxygen': str(self.dissolved_oxygen),
             'oxygen_tool': self.oxygen_tool,
-            'pH': float(self.pH),
+            'pH': str(self.pH),
             'pH_tool': self.pH_tool,
-            'turbidity': float(self.turbidity),
+            'turbidity': str(self.turbidity),
             'turbid_tool': self.turbid_tool,
-            'salinity': float(self.salinity),
+            'salinity': str(self.salinity),
             'salt_tool': self.salt_tool,
-            'conductivity': float(self.conductivity),
-            'total_solids': float(self.total_solids),
-            'bod': float(self.bod),
-            'ammonia': float(self.ammonia),
-            'nitrite': float(self.nitrite),
-            'nitrate': float(self.nitrate),
-            'phosphates': float(self.phosphates),
-            'fecal_coliform': float(self.fecal_coliform)
+            'conductivity': str(self.conductivity),
+            'total_solids': str(self.total_solids),
+            'bod': str(self.bod),
+            'ammonia': str(self.ammonia),
+            'nitrite': str(self.nitrite),
+            'nitrate': str(self.nitrate),
+            'phosphates': str(self.phosphates),
+            'fecal_coliform': str(self.fecal_coliform)
         }
 
     class Meta:

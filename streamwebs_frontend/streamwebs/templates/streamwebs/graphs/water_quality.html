@@ -29,21 +29,23 @@
 
 <h2 class="graph-header">Water Quality Over Time</h2>
 <div id="graph-{{site.site_slug}}-container">
-    <h3 class="graph-header">Temperature</h3>
+    <h3 class="graph-header">Temperature (°C)</h3>
     <div id="graph-{{site.site_slug}}-temperature" class="graph line temperature"></div>
-    <h3 class="graph-header">Dissolved Oxygen</h3>
+    <h3 class="graph-header">Dissolved Oxygen (mg/L)</h3>
     <div id="graph-{{site.site_slug}}-oxygen" class="graph line oxygen"></div>
     <h3 class="graph-header">pH</h3>
     <div id="graph-{{site.site_slug}}-ph" class="graph line ph"></div>
-    <h3 class="graph-header">Turbidity</h3>
+    <h3 class="graph-header">Turbidity (NTU)</h3>
     <div id="graph-{{site.site_slug}}-turbidity" class="graph line turbidity"></div>
-    <h3 class="graph-header">Salinity</h3>
+    <h3 class="graph-header">Salinity (PSU or PPT)</h3> <!-- TODO: You need to ask Renee about this! -->
     <div id="graph-{{site.site_slug}}-salinity" class="graph line salinity"></div>
-    <h3 class="graph-header">Conductivity</h3>
+    <h3 class="graph-header">Conductivity (µS/cm)</h3>
     <div id="graph-{{site.site_slug}}-conductivity" class="graph line conductivity"></div>
-    <h3 class="graph-header">Dissolved Matter</h3>
+    <h3 class="graph-header">Dissolved Matter (mg/L)</h3>
     <div id="graph-{{site.site_slug}}-dissolved" class="graph line dissolved"></div>
-    <h3 class="graph-header">Fecal Coliform</h3>
-    <div id="graph-{{site.site_slug}}-fecal" class="graph line fecal"></div>
+    <h3 class="graph-header">Biochemical Oxygen Demand (mg/L)</h3>
+    <div id="graph-{{site.site_slug}}-bod" class="graph line bod"></div>
+    <h3 class="graph-header">Fecal Coliform (CFU / 100 mL)</h3>
+    <div id="graph-{{site.site_slug}}-coliform" class="graph line coliform"></div>
 </div>
 {% endblock %}
