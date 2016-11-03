@@ -7,12 +7,19 @@ import csv
 from django.core.wsgi import get_wsgi_application
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "streamwebs_frontend.settings")
-proj_path = "/opt/streamwebs/streamwebs_frontend/"
+proj_path = "/home/centos/streamwebs/streamwebs_frontend/"
 sys.path.append(proj_path)
 application = get_wsgi_application()
 
 from streamwebs.models import Site  # NOQA
 from streamwebs.models import Macroinvertebrates  # NOQA
+
+
+if os.path.isdir("/home/cnetos/streamwebs/streamwebs_frontend/sw_data/"):
+    datafile = '../sw_data/ll_site_data.csv'
+else:
+    datafile = '../csvs/ll_site_data.csv'
+
 
 # Site, school, Collected, Post date, Time spent, # of peeps,
 # Water Type (riffle/pool), caddisfly, mayfly, riffle beetle, stonefly,
