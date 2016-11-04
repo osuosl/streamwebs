@@ -8,15 +8,22 @@ from django.core.wsgi import get_wsgi_application
 from datetime import datetime
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "streamwebs_frontend.settings")
-proj_path = "/opt/streamwebs/streamwebs_frontend/"
+proj_path = "/home/centos/streamwebs/streamwebs_frontend/"
 sys.path.append(proj_path)
 application = get_wsgi_application()
 
 from django.contrib.auth.models import User  # NOQA
 from streamwebs.models import UserProfile, School  # NOQA
 
+if os.path.isdir("/home/centos/streamwebs/streamwebs_frontend/sw_data/"):
+    users_list1 = '../sw_data/users1.csv'
+    users_list2 = '../sw_data/users2.csv'
+else:
+    users_list1 = '../csvs/users1.csv'
+    users_list2 = '../csvs/users2.csv'
 
-with open('../csvs/users1.csv', 'r') as csvfile:
+
+with open(users_list1, 'r') as csvfile:
     sitereader = csv.DictReader(csvfile)
     for row in sitereader:
         # print row
@@ -37,7 +44,7 @@ with open('../csvs/users1.csv', 'r') as csvfile:
             roles = "Student"
 
         # row["# of Submissions"]
-        with open('../csvs/users2.csv', 'r') as csvfile2:
+        with open(users_list2, 'r') as csvfile2:
             sitereader2 = csv.DictReader(csvfile2)
             for row2 in sitereader2:
                 if row["Uid"] == row2["Uid"]:

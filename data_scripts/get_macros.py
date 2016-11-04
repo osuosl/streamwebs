@@ -15,7 +15,7 @@ from streamwebs.models import Site  # NOQA
 from streamwebs.models import Macroinvertebrates  # NOQA
 
 
-if os.path.isdir("/home/cnetos/streamwebs/streamwebs_frontend/sw_data/"):
+if os.path.isdir("/home/centos/streamwebs/streamwebs_frontend/sw_data/"):
     datafile = '../sw_data/ll_site_data.csv'
 else:
     datafile = '../csvs/ll_site_data.csv'
@@ -27,7 +27,7 @@ else:
 # dragonfly, scud, fishfly, adlerfly, mite, aquatic worm, blackfly, leech,
 # midge, snail, mosquito
 
-with open('../csvs/macros.csv', 'r') as csvfile:
+with open(datafile, 'r') as csvfile:
     macroreader = csv.reader(csvfile)
     for row in macroreader:
         if row[0] != 'Stream/Site name':  # Skip the header

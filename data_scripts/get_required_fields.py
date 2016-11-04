@@ -7,7 +7,7 @@ import csv
 from django.core.wsgi import get_wsgi_application
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "streamwebs_frontend.settings")
-proj_path = "/opt/streamwebs/streamwebs_frontend/"
+proj_path = "/home/centos/streamwebs/streamwebs_frontend/"
 sys.path.append(proj_path)
 application = get_wsgi_application()
 
@@ -15,8 +15,22 @@ from streamwebs.models import Water_Quality  # NOQA
 from streamwebs.models import WQ_Sample  # NOQA
 
 
+if os.path.isdir("/home/centos/streamwebs/streamwebs_frontend/sw_data/"):
+    datapath = '../sw_data/wq_csvs'
+else:
+    datapath = '../csvs/wq_csvs'
+
+
+watertemp = datapath + 'WQ_water_temp.csv'
+airtemp = datapath + 'WQ_air_temp.csv'
+oxygen = datapath + 'WQ_oxygen.csv'
+pH = datapath + 'WQ_pH.csv'
+turbidity = datapath + 'WQ_turbidity.csv'
+salinity = datapath + 'WQ_salinity.csv'
+
+
 # Water Temperature, Type, Nid, Water Temp (delta)
-with open('../csvs/wq_csvs/WQ_water_temp.csv', 'r') as csvfile:
+with open(watertemp, 'r') as csvfile:
     waterreader = csv.DictReader(csvfile)
     for row in waterreader:
         # if row[0] != 'Water Temperature':  # Skip the header
@@ -46,7 +60,7 @@ csvfile.close()
 print 'Water temperature loaded.'
 
 # Stream/Site name, Type, Nid, Air Temperature, Air Temp (delta)
-with open('../csvs/wq_csvs/WQ_air_temp.csv', 'r') as csvfile:
+with open(airtemp, 'r') as csvfile:
     airreader = csv.reader(csvfile)
     for row in airreader:
         if row[0] != 'Stream/Site name':  # Skip the header
@@ -74,7 +88,7 @@ csvfile.close()
 print 'Air temperature loaded.'
 
 # Dissolved Oxygen, Type, Nid, D_Oxygen (delta)
-with open('../csvs/wq_csvs/WQ_oxygen.csv', 'r') as csvfile:
+with open(oxygen, 'r') as csvfile:
     oxygenreader = csv.reader(csvfile)
     for row in oxygenreader:
         if row[0] != 'Dissolved Oxygen (mg/L)':  # Skip the header
@@ -101,7 +115,7 @@ csvfile.close()
 print 'Dissolved oxygen loaded.'
 
 # pH, Type, Nid, pH (delta)
-with open('../csvs/wq_csvs/WQ_pH.csv', 'r') as csvfile:
+with open(pH, 'r') as csvfile:
     pHreader = csv.reader(csvfile)
     for row in pHreader:
         if row[0] != 'pH':  # Skip the header
@@ -128,7 +142,7 @@ csvfile.close()
 print 'pH loaded.'
 
 # Turbidity, Type, Nid, Turbidity (delta)
-with open('../csvs/wq_csvs/WQ_turbidity.csv', 'r') as csvfile:
+with open(turbidity, 'r') as csvfile:
     turbidreader = csv.reader(csvfile)
     for row in turbidreader:
         if row[0] != 'Turbidity (NTU)':  # Skip the header
@@ -155,7 +169,7 @@ csvfile.close()
 print 'Turbidity loaded.'
 
 # Salinity, Type, Nid, salt (delta)
-with open('../csvs/wq_csvs/WQ_salinity.csv', 'r') as csvfile:
+with open(salinity, 'r') as csvfile:
     saltreader = csv.reader(csvfile)
     for row in saltreader:
         if row[0] != 'Salinity (PSU) PPT':  # Skip the header

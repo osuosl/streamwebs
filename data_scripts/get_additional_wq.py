@@ -7,15 +7,30 @@ import csv
 from django.core.wsgi import get_wsgi_application
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "streamwebs_frontend.settings")
-proj_path = "/opt/streamwebs/streamwebs_frontend/"
+proj_path = "/home/centos/streamwebs/streamwebs_frontend/"
 sys.path.append(proj_path)
 application = get_wsgi_application()
 
 from streamwebs.models import WQ_Sample  # NOQA
 
 
+if os.path.isdir("/home/centos/streamwebs/streamwebs_frontend/sw_data/"):
+    datapath = '../sw_data/wq_csvs/'
+else:
+    datapath = '../csvs/wq_csvs/'
+
+
+conductivity = datapath + 'WQ_conductivity.csv'
+total_solids = datapath + 'WQ_total_solids.csv'
+bod_data = datapath + 'WQ_bod.csv'
+ammonia_data = datapath + 'WQ_ammonia.csv'
+nitrite_data = datapath + 'WQ_nitrite.csv'
+nitrate_data = datapath + 'WQ_nitrate.csv'
+phosphate_data = datapath + 'WQ_phosphates.csv'
+fecal_coliform = datapath + 'WQ_fecal_col.csv'
+
 # Conductivity, Type, Nid, delta
-with open('../csvs/wq_csvs/WQ_conductivity.csv', 'r') as csvfile:
+with open(conductivity, 'r') as csvfile:
     reader = csv.reader(csvfile)
     for row in reader:
         if 'Conductivity' not in row[0]:  # Skip the header
@@ -42,7 +57,7 @@ csvfile.close()
 print 'Conductivity loaded.'
 
 # Total Solids, Type, Nid, delta
-with open('../csvs/wq_csvs/WQ_total_solids.csv', 'r') as csvfile:
+with open(total_solids, 'r') as csvfile:
     reader = csv.reader(csvfile)
     for row in reader:
         if row[0] != 'Total Solids (mg/L)':  # Skip the header
@@ -72,7 +87,7 @@ csvfile.close()
 print 'Total solids loaded.'
 
 # BOD, Type, Nid, delta
-with open('../csvs/wq_csvs/WQ_bod.csv', 'r') as csvfile:
+with open(bod_data, 'r') as csvfile:
     reader = csv.reader(csvfile)
     for row in reader:
         if row[0] != 'BOD (mg/L)':  # Skip the header
@@ -98,7 +113,7 @@ csvfile.close()
 print 'BOD loaded.'
 
 # Ammonia, Type, Nid, delta
-with open('../csvs/wq_csvs/WQ_ammonia.csv', 'r') as csvfile:
+with open(ammonia_data, 'r') as csvfile:
     reader = csv.reader(csvfile)
     for row in reader:
         if row[0] != 'Ammonia (mg/L)':  # Skip the header
@@ -124,7 +139,7 @@ csvfile.close()
 print 'Ammonia loaded.'
 
 # Nitrite, Type, Nid, delta
-with open('../csvs/wq_csvs/WQ_nitrite.csv', 'r') as csvfile:
+with open(nitrite_data, 'r') as csvfile:
     reader = csv.reader(csvfile)
     for row in reader:
         if row[0] != 'Nitrite (mg/L)':  # Skip the header
@@ -150,7 +165,7 @@ csvfile.close()
 print 'Nitrite loaded.'
 
 # Nitrate, Type, Nid, delta
-with open('../csvs/wq_csvs/WQ_nitrate.csv', 'r') as csvfile:
+with open(nitrate_data, 'r') as csvfile:
     reader = csv.reader(csvfile)
     for row in reader:
         if row[0] != 'Nitrate (mg/L)':  # Skip the header
@@ -176,7 +191,7 @@ csvfile.close()
 print 'Nitrate loaded.'
 
 # Phosphates, Type, Nid, delta
-with open('../csvs/wq_csvs/WQ_phosphates.csv', 'r') as csvfile:
+with open(phosphate_data, 'r') as csvfile:
     reader = csv.reader(csvfile)
     for row in reader:
         if row[0] != 'Phosphates (mg/L)':  # Skip the header
@@ -202,7 +217,7 @@ csvfile.close()
 print 'Phophates loaded.'
 
 # Fecal Coliform, Type, Nid, delta
-with open('../csvs/wq_csvs/WQ_fecal_col.csv', 'r') as csvfile:
+with open(fecal_coliform, 'r') as csvfile:
     reader = csv.reader(csvfile)
     for row in reader:
         if row[0] != 'Fecal Coliform (CFU/100mL)':  # Skip the header

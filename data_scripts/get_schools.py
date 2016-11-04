@@ -7,13 +7,19 @@ import csv
 from django.core.wsgi import get_wsgi_application
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "streamwebs_frontend.settings")
-proj_path = "/opt/streamwebs/streamwebs_frontend/"
+proj_path = "/home/centos/streamwebs/streamwebs_frontend/"
 sys.path.append(proj_path)
 application = get_wsgi_application()
 
 from streamwebs.models import School  # NOQA
 
-with open('../csvs/schools_info.csv', 'r') as csvfile:
+if os.path.isdir("/home/centos/streamwebs/streamwebs_frontend/sw_data/"):
+    datafile = '../sw_data/schools_info.csv'
+else:
+    datafile = '../csvs/schools_info.csv'
+
+
+with open(datafile, 'r') as csvfile:
     sitereader = csv.DictReader(csvfile)
     for row in sitereader:
         school = School()
