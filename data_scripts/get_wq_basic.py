@@ -25,7 +25,7 @@ else:
 # Stream/Site name, DEQ Data Quality, Collected, School, Any fish present?
 # num alive, num dead, Air Temp units, Water Temp units, Lat, Long, Nid
 
-with open(datafiles, 'r') as csvfile:
+with open(datafile, 'r') as csvfile:
     wqreader = csv.reader(csvfile)
     for row in wqreader:
         if row[0] != 'Stream/Site name':  # Skip header
