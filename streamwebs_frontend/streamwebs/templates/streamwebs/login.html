@@ -1,17 +1,21 @@
 {% extends 'streamwebs/base.html' %}
 {% load staticfiles %}
 {% load i18n %}
+{% block stylesheets %}{% endblock %}
 {% block title %}Log In -{% endblock %}
 {% block body_title %}{% trans "Log In" %}{% endblock %}
 {% block content %}
-
-        <form id='login_form' method='post' action='/streamwebs/login/'>
+  <div class="container">
+    <div class="row">
+        <form class="col s4 offset-s4" id='login_form' method='post' action='/streamwebs/login/'>
             {% csrf_token %}
             {% trans "Username:" %}<input type='text' name='username' value='' size='50' />
             <br />
             {% trans "Password:" %}<input type='password' name='password' value='' size='50' />
             <br />
 
-            <input type='submit' name='submit' value='{% trans "Log in" %}' />
+            <input class="waves-effect waves-light btn" type='submit' name='submit' value='{% trans "Log in" %}' />
+
         </form>
+  </div>
 {% endblock %}

@@ -9,6 +9,7 @@
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{% static 'streamwebs/style.css' %}" />
     <link rel="shortcut icon" href="{% static 'streamwebs/images/favicon.ico' %}" />
+
 </head>
 
 <body>
@@ -26,6 +27,8 @@
     <nav class="cyan">
         <div class="nav-wrapper">
             <a href="#!" class="brand-logo center">{% block body_title %}Streamwebs{% endblock %}</a>
+
+            {% include "streamwebs/navigation.html" %}
 
             <ul class="right">
                 <li>

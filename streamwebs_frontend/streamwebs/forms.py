@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 from streamwebs.models import UserProfile, WQ_Sample, Water_Quality, \
     Macroinvertebrates, Canopy_Cover, CC_Cardinal, TransectZone, \
-    RiparianTransect, PhotoPointImage, PhotoPoint, CameraPoint, Site
+    RiparianTransect, PhotoPointImage, PhotoPoint, CameraPoint, Site, School
 from django.contrib.auth.models import User
 from django import forms
 from django.utils.translation import ugettext_lazy as _
@@ -12,13 +12,17 @@ from captcha.fields import ReCaptchaField
 
 class UserForm(forms.ModelForm):
     password = forms.CharField(
-        widget=forms.PasswordInput()
-    ).label = _('Password')
+        widget=forms.PasswordInput(),
+        label=_('Password'))
+
     password_check = forms.CharField(
         widget=forms.PasswordInput(),
-        label='Repeat your password'
-    )
+        label='Repeat your password')
+
     email = forms.CharField(required=True)
+    first_name = forms.CharField(
+        widget=forms.TextInput()
+    )
 
     class Meta:
         model = User
@@ -39,6 +43,10 @@ class UserForm(forms.ModelForm):
 
 class UserProfileForm(forms.ModelForm):
     captcha = ReCaptchaField()
+    birthdate = forms.DateField(
+        widget=forms.DateInput(attrs={'class': 'datepicker'}),
+    )
+    school = forms.ModelChoiceField(queryset=School.objects.all())
 
     class Meta:
         model = UserProfile

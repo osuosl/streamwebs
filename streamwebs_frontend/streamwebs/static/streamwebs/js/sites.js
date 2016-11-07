@@ -3,6 +3,7 @@ function search() {
     console.log('Searched!');
 
     var search_value = $('#search').val().toLowerCase();
+
     dropdownShown = 0;
 
     $('.search-item').each(function () {
