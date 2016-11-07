@@ -132,7 +132,7 @@ with open(zones, 'r') as csvfile:
 csvfile.close()
 print 'Zone 3 loaded.'
 
-with open(zone, 'r') as csvfile:
+with open(zones, 'r') as csvfile:
     reader = csv.reader(csvfile)
     for row in reader:
         if row[0] != 'Nid':

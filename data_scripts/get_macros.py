@@ -16,9 +16,9 @@ from streamwebs.models import Macroinvertebrates  # NOQA
 
 
 if os.path.isdir("/home/centos/streamwebs/streamwebs_frontend/sw_data/"):
-    datafile = '../sw_data/ll_site_data.csv'
+    datafile = '../sw_data/macros.csv'
 else:
-    datafile = '../csvs/ll_site_data.csv'
+    datafile = '../csvs/macros.csv'
 
 
 # Site, school, Collected, Post date, Time spent, # of peeps,

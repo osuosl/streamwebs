@@ -16,9 +16,9 @@ from streamwebs.models import WQ_Sample  # NOQA
 
 
 if os.path.isdir("/home/centos/streamwebs/streamwebs_frontend/sw_data/"):
-    datapath = '../sw_data/wq_csvs'
+    datapath = '../sw_data/wq_csvs/'
 else:
-    datapath = '../csvs/wq_csvs'
+    datapath = '../csvs/wq_csvs/'
 
 
 watertemp = datapath + 'WQ_water_temp.csv'
