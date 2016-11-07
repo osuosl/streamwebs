@@ -68,7 +68,7 @@ function initialize() {
 
         markerList[i] = new google.maps.Marker({
             map: map,
-            position: new google.maps.LatLng(site.lng, site.lat),
+            position: new google.maps.LatLng(site.lat, site.lng),
             title: site.name,
             icon: markers[site.type],
         });

@@ -14,7 +14,7 @@
   </form>
   <nav class="cyan">
     <div class="nav-wrapper">
-      <a href="#!" class="brand-logo center">{% block body_title %}Streamwebs{% endblock %}</a>
+      <!--<a href="#!" class="brand-logo center">{% block body_title %}Streamwebs{% endblock %}</a>-->
       <ul class="right">
         <li><a href="{% url 'streamwebs:sites' %}">Sites</a></li>
         <li><a href="{% url 'streamwebs:index' %}">Resources</a></li>
@@ -24,7 +24,7 @@
             <li><a href="{% url 'streamwebs:login' %}">Login</a></li>
             <li><a href="{% url 'streamwebs:register' %}">Create Account</a></li>
         {% endif %}
-        <li>
+        <!--<li>
             <a href="#!" class="dropdown-button" data-activates="languages">
                 {% for lang in LANGUAGES %}
                     {% if lang.0 == LANGUAGE_CODE %}
@@ -33,15 +33,15 @@
                 {% endfor %}
                 <i class="material-icons right">arrow_drop_down</i>
             </a>
-        </li>
+        </li>-->
       </ul>
     </div>
   </nav>
 </div>
-<script>
+<!--<script>
     // Language submission
     function submitLang(language) {
         $('#lang_input').val(language);
         $('#langform').submit();
     }
-</script>
+</script>-->
