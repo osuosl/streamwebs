@@ -5,13 +5,14 @@ import sys
 import csv
 
 from django.core.wsgi import get_wsgi_application
-from streamwebs.models import Soil_Survey, Site
-from streamwebs.util.ft_to_m import feet_to_meters
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "streamwebs_frontend.settings")
 proj_path = "/opt/streamwebs/streamwebs_frontend/"
 sys.path.append(proj_path)
 application = get_wsgi_application()
+
+from streamwebs.models import Soil_Survey, Site  # NOQA
+from streamwebs.util.ft_to_m import feet_to_meters  # NOQA
 
 # Collected, Stream/Site name, Landscape Position, Cover Type, Land Use,
 # Distance From Stream, Distinguishing Site Characteristics, My Soil Type Is
@@ -65,16 +66,14 @@ with open('../csvs/soil_survey.csv', 'r') as csvfile:  # 'r' is for read
         soil.site_char = row['Distinguishing Site Characteristics']
 
         soil_type = row['My Soil Type Is'].lower().replace(' ', '_')
-        if soil_type[len(soil_type)-1] == ')':
-            soil_type = soil_type[:len(soil_type)-4]
+        if soil_type[-1] == ')':
+            soil_type = soil_type[:-4]
         types = ['sand', 'loamy_sand', 'silt_loam', 'loam', 'clay_loam',
                  'light_clay', 'heavy_clay']
-        match = False
         for s_type in types:
             if soil_type == s_type:         # if soil type matches valid,
-                match = True                # immediately assign
                 break                       # cancel loop
-        if match is False:                  # if doesn't match valid option,
+        else:
             soil_type = 'other'             # assign "other"
         soil.soil_type = soil_type          # otherwise assign valid type
 
