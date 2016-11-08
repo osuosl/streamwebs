@@ -10,7 +10,8 @@ from django.contrib.gis.geos import Point
 
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "streamwebs_frontend.settings")
-proj_path = "/home/centos/streamwebs/streamwebs_frontend/"
+# Set proj path to be relative to data_scripts directory
+proj_path = "../streamwebs_frontend/"
 sys.path.append(proj_path)
 application = get_wsgi_application()
 
@@ -25,7 +26,7 @@ def num(x):
         return x
 
 
-if os.path.isdir("/home/centos/streamwebs/streamwebs_frontend/sw_data/"):
+if os.path.isdir("../streamwebs_frontend/sw_data/"):
     datafile = '../sw_data/ll_site_data.csv'
 else:
     datafile = '../csvs/ll_site_data.csv'

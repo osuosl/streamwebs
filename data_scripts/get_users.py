@@ -8,14 +8,14 @@ from django.core.wsgi import get_wsgi_application
 from datetime import datetime
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "streamwebs_frontend.settings")
-proj_path = "/home/centos/streamwebs/streamwebs_frontend/"
+proj_path = "../streamwebs_frontend/"
 sys.path.append(proj_path)
 application = get_wsgi_application()
 
 from django.contrib.auth.models import User  # NOQA
 from streamwebs.models import UserProfile, School  # NOQA
 
-if os.path.isdir("/home/centos/streamwebs/streamwebs_frontend/sw_data/"):
+if os.path.isdir("../streamwebs_frontend/sw_data/"):
     users_list1 = '../sw_data/users1.csv'
     users_list2 = '../sw_data/users2.csv'
 else:

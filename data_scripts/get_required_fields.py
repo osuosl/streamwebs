@@ -7,7 +7,7 @@ import csv
 from django.core.wsgi import get_wsgi_application
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "streamwebs_frontend.settings")
-proj_path = "/home/centos/streamwebs/streamwebs_frontend/"
+proj_path = "../streamwebs_frontend/"
 sys.path.append(proj_path)
 application = get_wsgi_application()
 
@@ -15,7 +15,7 @@ from streamwebs.models import Water_Quality  # NOQA
 from streamwebs.models import WQ_Sample  # NOQA
 
 
-if os.path.isdir("/home/centos/streamwebs/streamwebs_frontend/sw_data/"):
+if os.path.isdir("../streamwebs_frontend/sw_data/"):
     datapath = '../sw_data/wq_csvs/'
 else:
     datapath = '../csvs/wq_csvs/'

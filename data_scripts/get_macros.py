@@ -7,7 +7,7 @@ import csv
 from django.core.wsgi import get_wsgi_application
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "streamwebs_frontend.settings")
-proj_path = "/home/centos/streamwebs/streamwebs_frontend/"
+proj_path = "../streamwebs_frontend/"
 sys.path.append(proj_path)
 application = get_wsgi_application()
 
@@ -15,7 +15,7 @@ from streamwebs.models import Site  # NOQA
 from streamwebs.models import Macroinvertebrates  # NOQA
 
 
-if os.path.isdir("/home/centos/streamwebs/streamwebs_frontend/sw_data/"):
+if os.path.isdir("../streamwebs_frontend/sw_data/"):
     datafile = '../sw_data/macros.csv'
 else:
     datafile = '../csvs/macros.csv'
