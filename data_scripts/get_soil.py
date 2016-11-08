@@ -69,10 +69,13 @@ with open('../csvs/soil_survey.csv', 'r') as csvfile:  # 'r' is for read
         if soil_type[-1] == ')':
             soil_type = soil_type[:-4]
         types = ['sand', 'loamy_sand', 'silt_loam', 'loam', 'clay_loam',
-                 'light_clay', 'heavy_clay']
+                 'light_clay', 'heavy_clay', 'n/a']
         for s_type in types:
             if soil_type == s_type:         # if soil type matches valid,
                 break                       # cancel loop
+            elif soil_type == 'not_our_system':
+                soil_type = 'n/a'
+                break
         else:
             soil_type = 'other'             # assign "other"
         soil.soil_type = soil_type          # otherwise assign valid type

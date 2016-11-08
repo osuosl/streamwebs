@@ -1019,6 +1019,7 @@ class Soil_Survey(models.Model):
         ('clay_loam', 'Clay Loam'),
         ('light_clay', 'Light Clay'),
         ('heavy_clay', 'Heavy Clay'),
+        ('n/a', 'N/A'),
         ('other', 'Other')
     ]
 
