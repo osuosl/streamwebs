@@ -34,7 +34,7 @@ class DeactivateSiteTestCase(TestCase):
 
     def test_unsuccessful_deactivate(self):
         """Tests that user can't deactivate site if the site has data."""
-        data = Macroinvertebrates.objects.create_macro(self.site)  # NOQA
+        data = Macroinvertebrates.test_objects.create_macro(self.site)  # NOQA
         response = self.client.get(reverse(
             'streamwebs:deactivate_site',
             kwargs={'site_slug': self.site.site_slug}))

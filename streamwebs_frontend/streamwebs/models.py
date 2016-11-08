@@ -421,54 +421,6 @@ class WQ_Sample(models.Model):
         verbose_name_plural = 'water quality samples'
 
 
-class MacroinvertebratesManager(models.Manager):
-    """
-    Manager for the Macroinvertebrates model.
-    """
-    def create_macro(self, site, time_spent=0, num_people=0, riffle=False,
-                     pool=False, caddisfly=0, mayfly=0, riffle_beetle=0,
-                     stonefly=0, water_penny=0, dobsonfly=0, sensitive_total=0,
-                     clam_or_mussel=0, crane_fly=0, crayfish=0, damselfly=0,
-                     dragonfly=0, scud=0, fishfly=0, alderfly=0, mite=0,
-                     sw_sensitive_total=0, aquatic_worm=0, blackfly=0,
-                     leech=0, midge=0, snail=0, mosquito_larva=0,
-                     tolerant_total=0, wq_rating=0):
-        info = self.create(school='aaaa',
-                           date_time='2016-07-11 14:09',
-                           weather="bbbb",
-                           site=site,
-                           time_spent=time_spent,
-                           num_people=num_people,
-                           riffle=riffle,
-                           pool=pool,
-                           caddisfly=caddisfly,
-                           mayfly=mayfly,
-                           riffle_beetle=riffle_beetle,
-                           stonefly=stonefly,
-                           water_penny=water_penny,
-                           dobsonfly=dobsonfly,
-                           sensitive_total=sensitive_total,
-                           clam_or_mussel=clam_or_mussel,
-                           crane_fly=crane_fly,
-                           crayfish=crayfish,
-                           damselfly=damselfly,
-                           dragonfly=dragonfly,
-                           scud=scud,
-                           fishfly=fishfly,
-                           alderfly=alderfly,
-                           mite=mite,
-                           somewhat_sensitive_total=sw_sensitive_total,
-                           aquatic_worm=aquatic_worm,
-                           blackfly=blackfly,
-                           leech=leech,
-                           midge=midge,
-                           snail=snail,
-                           mosquito_larva=mosquito_larva,
-                           tolerant_total=tolerant_total,
-                           wq_rating=wq_rating,)
-        return info
-
-
 class CameraPointManager(models.Manager):
 
     def create_camera_point(self, site, cp_date, location, map_datum='',
@@ -579,8 +531,60 @@ class PhotoPointImage(models.Model):
         verbose_name_plural = 'photo point images'
 
 
+class MacroinvertebratesManager(models.Manager):
+    """
+    Manager for the Macroinvertebrates model.
+    """
+    def create_macro(self, site, time_spent=0, num_people=0, water_type='riff',
+                     caddisfly=0, mayfly=0, riffle_beetle=0, stonefly=0,
+                     water_penny=0, dobsonfly=0, clam_or_mussel=0, crane_fly=0,
+                     crayfish=0, damselfly=0, dragonfly=0, scud=0, fishfly=0,
+                     alderfly=0, mite=0, aquatic_worm=0, blackfly=0, leech=0,
+                     midge=0, snail=0, mosquito_larva=0, notes=''):
+
+        info = self.create(school='aaaa',
+                           date_time='2016-07-11 14:09',
+                           weather="bbbb",
+                           site=site,
+                           time_spent=time_spent,
+                           num_people=num_people,
+                           water_type=water_type,
+                           caddisfly=caddisfly,
+                           mayfly=mayfly,
+                           riffle_beetle=riffle_beetle,
+                           stonefly=stonefly,
+                           water_penny=water_penny,
+                           dobsonfly=dobsonfly,
+                           clam_or_mussel=clam_or_mussel,
+                           crane_fly=crane_fly,
+                           crayfish=crayfish,
+                           damselfly=damselfly,
+                           dragonfly=dragonfly,
+                           scud=scud,
+                           fishfly=fishfly,
+                           alderfly=alderfly,
+                           mite=mite,
+                           aquatic_worm=aquatic_worm,
+                           blackfly=blackfly,
+                           leech=leech,
+                           midge=midge,
+                           snail=snail,
+                           mosquito_larva=mosquito_larva,
+                           notes=notes)
+        return info
+
+
 @python_2_unicode_compatible
 class Macroinvertebrates(models.Model):
+    RIFFLE = 'riff'
+    POOL = 'pool'
+
+    WATER_TYPE_CHOICES = (
+        (None, '-----'),
+        (RIFFLE, _('riffle')),
+        (POOL, _('pool')),
+    )
+
     school = models.CharField(max_length=250, verbose_name=_('school'))
     date_time = models.DateTimeField(default=timezone.now,
                                      verbose_name=_('date and time'))
@@ -596,8 +600,9 @@ class Macroinvertebrates(models.Model):
         default=None, null=True,
         verbose_name=_('# of people sorting/identifying')
         )
-    riffle = models.BooleanField(default=False, verbose_name=_('riffle'))
-    pool = models.BooleanField(default=False, verbose_name=_(' pool'))
+    water_type = models.CharField(max_length=4, verbose_name=_('water type'),
+                                  choices=WATER_TYPE_CHOICES, default=None)
+    notes = models.TextField(blank=True, verbose_name=_('field notes'))
 
     # Sensitive/intolerant to pollution
     caddisfly = models.PositiveIntegerField(default=0,
@@ -657,40 +662,45 @@ class Macroinvertebrates(models.Model):
         default=0, verbose_name=_('water quality rating')
         )
 
-    objects = MacroinvertebratesManager()
+    objects = models.Manager()
+    test_objects = MacroinvertebratesManager()
 
     def __str__(self):
         return self.site.site_name + ' sheet ' + str(self.id)
 
-    def clean(self):
-        if ((self.caddisfly + self.mayfly + self.riffle_beetle +
-             self.stonefly + self.water_penny +
-             self.dobsonfly) * 3) != self.sensitive_total:
-                raise ValidationError(
-                    _('%(sensitive_total)s is not the correct total'),
-                    params={'sensitive_total': self.sensitive_total},
-                )
+    def save(self, **kwargs):
+        self.sensitive_total = 0
+        self.somewhat_sensitive_total = 0
 
-        if ((self.clam_or_mussel + self.crane_fly + self.crayfish +
-             self.damselfly + self.dragonfly + self.scud + self.fishfly +
-             self.alderfly + self.mite) * 2) != self.somewhat_sensitive_total:
-                raise ValidationError(
-                    _('%(some_sensitive)s is not the correct total'),
-                    params={'some_sensitive': self.somewhat_sensitive_total},
-                )
+        # divvy up indiv count values into three arrays
+        sensitive = [self.caddisfly, self.mayfly, self.riffle_beetle,
+                     self.stonefly, self.water_penny, self.dobsonfly]
+        somewhat = [self.clam_or_mussel, self.crane_fly, self.crayfish,
+                    self.damselfly, self.dragonfly, self.scud, self.fishfly,
+                    self.alderfly, self.mite]
+        tolerant = [self.aquatic_worm, self.blackfly, self.leech, self.midge,
+                    self.snail, self.mosquito_larva]
 
-        if (self.aquatic_worm + self.blackfly + self.leech + self.midge +
-                self.snail + self.mosquito_larva) != self.tolerant_total:
-                raise ValidationError(
-                    _('%(tolerant_total)s is not the correct total'),
-                    params={'tolerant_total': self.tolerant_total},
-                )
-        if(self.sensitive_total + self.somewhat_sensitive_total +
-                self.tolerant_total) != self.wq_rating:
-                raise ValidationError(
-                    _('%(wq_rating)s is not the correct total'),
-                    params={'wq_rating': self.wq_rating},
-                )
+        # loop thru each array-- if a bug's count is at least one, that bug
+        # gets n points towards its category's final score (n = 3 for
+        # sensitive, n = 2 for somewhat sensitive, n = 1 for tolerant)
+        for count in sensitive:
+            if count > 0:
+                self.sensitive_total += 3
+
+        for count in somewhat:
+            if count > 0:
+                self.somewhat_sensitive_total += 2
+
+        for count in tolerant:
+            if count > 0:
+                self.tolerant_total += 1
+
+        # the water quality rating is just the sum of the three scores
+        self.wq_rating = (self.sensitive_total +
+                          self.somewhat_sensitive_total + self.tolerant_total)
+
+        super(Macroinvertebrates, self).save()
 
     class Meta:
         verbose_name = 'macroinvertebrate'
@@ -730,10 +740,26 @@ class Macroinvertebrates(models.Model):
         ]
 
     def get_totals(self):
+        # total number of somewhat sensitive macros found:
+        somewhat = (int(self.clam_or_mussel) + int(self.crane_fly) +
+                    int(self.crayfish) + int(self.damselfly) +
+                    int(self.dragonfly) + int(self.scud) + int(self.fishfly) +
+                    int(self.alderfly) + int(self.mite))
+
+        # total number of sensitive macros found:
+        sensitive = (int(self.caddisfly) + int(self.mayfly) +
+                     int(self.riffle_beetle) + int(self.stonefly) +
+                     int(self.water_penny) + int(self.dobsonfly))
+
+        # total number of tolerant macros found:
+        tolerant = (int(self.aquatic_worm) + int(self.blackfly) +
+                    int(self.leech) + int(self.midge) + int(self.snail) +
+                    int(self.mosquito_larva))
+
         return {
-            'Tolerant': self.tolerant_total,
-            'Somewhat Sensitive': self.somewhat_sensitive_total,
-            'Sensitive': self.sensitive_total
+            'Tolerant': tolerant,
+            'Somewhat Sensitive': somewhat,
+            'Sensitive': sensitive
         }
 
 

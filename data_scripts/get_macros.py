@@ -46,12 +46,11 @@ with open('../csvs/macros.csv', 'r') as csvfile:
 
             # Determine water/type here
             if row[6] == 'Riffle':
-                macros.riffle = True
+                macros.water_type = 'riff'
             elif row[6] == 'Pool':
-                macros.pool = True
+                macros.water_type = 'pool'
             else:
-                macros.riffle = False
-                macros.pool = False
+                macros.water_type = None
 
             for i in range(7, 28):
                 if row[i] == '':  # Convert '' -> 0
@@ -90,4 +89,4 @@ with open('../csvs/macros.csv', 'r') as csvfile:
 
             macros.save()
 
-print 'Data loaded.'
+print ('Data loaded.')

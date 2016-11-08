@@ -53,24 +53,24 @@ class UserProfileForm(forms.ModelForm):
         fields = ('school', 'birthdate')
 
 
-class MacroinvertebratesForm(forms.ModelForm):
-    class Meta:
-        model = Macroinvertebrates
-        fields = ('school', 'date_time', 'weather', 'site', 'time_spent',
-                  'num_people', 'riffle', 'pool', 'caddisfly', 'mayfly',
-                  'riffle_beetle', 'stonefly', 'water_penny', 'dobsonfly',
-                  'clam_or_mussel', 'crane_fly', 'crayfish',
-                  'damselfly', 'dragonfly', 'scud', 'fishfly', 'alderfly',
-                  'mite', 'aquatic_worm', 'blackfly', 'leech', 'midge',
-                  'snail', 'mosquito_larva', 'wq_rating',
-                  'somewhat_sensitive_total', 'sensitive_total',
-                  'tolerant_total')
-
-
 class HorizontalRadioRenderer(forms.RadioSelect.renderer):
     ''' Renders radio buttons horizontally '''
     def render(self):
         return mark_safe(u'\n'.join([u'%s\n' % w for w in self]))
+
+
+class MacroinvertebratesForm(forms.ModelForm):
+    school = forms.ModelChoiceField(queryset=School.objects.all())
+
+    class Meta:
+        model = Macroinvertebrates
+        fields = ('school', 'date_time', 'weather', 'time_spent',
+                  'num_people', 'water_type', 'caddisfly', 'mayfly',
+                  'riffle_beetle', 'stonefly', 'water_penny', 'dobsonfly',
+                  'clam_or_mussel', 'crane_fly', 'crayfish',
+                  'damselfly', 'dragonfly', 'scud', 'fishfly', 'alderfly',
+                  'mite', 'aquatic_worm', 'blackfly', 'leech', 'midge',
+                  'snail', 'mosquito_larva', 'notes')
 
 
 class WQForm(forms.ModelForm):
