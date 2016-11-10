@@ -3,27 +3,153 @@
 {% load i18n %}
 {% load filters %}
 {% block title %}{% trans "Macroinvertebrates Data Edit" %}{% endblock %}
+{% block stylesheets %}
+<style>
+  .material-icons {
+    font-size: 1.5em;
+  }
 
+  .errorlist {
+    color:red;
+  }
+</style>
+{% endblock %}
 {% block content %}
+<div class="container">  
+    {% if user.is_authenticated %}
+        {% if added %}
+        <strong>{% trans "You have successfully submitted your Macroinvertebrate data sheet." %}.</strong>
 
-  {% if user.is_authenticated %}
-      {% if added %}
-      <strong>{% trans "You have successfully submitted your Macroinvertebrate data sheet." %}.</strong>
+        {% else %}
+        <h3 align="center">{{ site.site_name }}</h3>
+        <h4 align="center">{% trans "New macroinvertebrate sampling" %}</h4>
+        <form id='macro_form' method='post' action='{{ request.path }}'>
+            {% csrf_token %}
 
-      {% else %}
-      <form id='macro_form' method='post' action='{{ request.path }}'>
-          {% csrf_token %}
+            <div class="row">
+                <div class="col s6">  
+                    <p>{{ macro_form.school.label }}</p>
+                    <p>{{ macro_form.school }}</p>
+                    <p>{{ macro_form.school.errors }}</p>
+                </div>
+                <div class="col s6">
+                    <p>{{ macro_form.time_spent.label }} (minutes)</p>
+                    <p>{{ macro_form.time_spent }}</p>
+                    <p>{{ macro_form.time_spent.errors }}</p>
+                </div>
+                <div class="col s6">
+                    <p>{{ macro_form.date_time.label }}</p>
+                    <p>{{ macro_form.date_time }}</p>
+                    <p>{{ macro_form.date_time.errors }}</p>
+                </div>
+                <div class="col s6">
+                    <p>{{ macro_form.num_people.label }}</p>
+                    <p>{{ macro_form.num_people }}</p>
+                    <p>{{ macro_form.num_people.errors }}</p>
+                </div>
+                <div class="col s6">
+                    <p>{{ macro_form.weather.label }}</p>
+                    <p>{{ macro_form.weather }}</p>
+                    <p>{{ macro_form.weather.errors }}</p>
+                </div>
+                <div class="col s6">
+                    <p>{{ macro_form.water_type.label }}</p>
+                    <p>{{ macro_form.water_type }}</p>
+                    <p>{{ macro_form.water_type.errors }}</p>
+                </div>
+                <div class="col s12">
+                    <p>{{ macro_form.notes.label }}</p>
+                    <p>{{ macro_form.notes }}</p>
+                    <p>{{ macro_form.notes.errors }}</p>
+                </div>
+            </div>
 
-          <!-- Individual fields will be formatted prettily later -->
-          {{ macro_form }}
+            <div class="row">
+                <h5 align=center>Sensitivity to pollution</h5>
+                <div class="col s3">
+                    <h6 align=center>Sensitive/intolerant</h6>
+                    <table>
+                        {% for bug in intolerant %}
+                        <tr>
+                            <td>
+                                {{ bug.label }}<br>
+                                {% with bug.label|lower|strtoul|slashtoul as buggy %}
+                                    {% with 'macro_images/macro_'|add:buggy|add:'.png' as bug_img %}
+                                        <img src="{% static bug_img %}">
+                                    {% endwith %}
+                                {% endwith %}
+                            </td>
+                            <td>
+                                {{ bug }}
+                                {{ bug.errors }}
+                            </td>
+                        </tr>
+                        {% endfor %}
 
-          <input type='submit', name='submit', value='Submit' />
-      </form>
-      {% endif %}
+                    </table>
+                </div>  <!-- end sensitive/intolerant -->
 
-  {% else %}
-      <p>{% trans "You must be logged in to submit data." %}</p>
-      <a href='/streamwebs/login/'>{% trans "Log in here." %}</a>
-  {% endif %}
+                <div class="col s3 offset-s1">
+                    <h6 align=center>Somewhat sensitive</h6>
+                    <table>
+                        {% for bug in somewhat %}
+                        <tr>
+                            <td>
+                                {{ bug.label }}<br>
+                                {% with bug.label|lower|strtoul|slashtoul as buggy %}
+                                    {% with 'macro_images/macro_'|add:buggy|add:'.png' as bug_img %}
+                                        <img src="{% static bug_img %}">
+                                    {% endwith %}
+                                {% endwith %}
+                            </td>
+                            <td>
+                                {{ bug }}
+                                {{ bug.errors }}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>  <!-- end somewhat sensitive -->
 
+                <div class="col s3 offset-s1">
+                    <h6 align=center>Tolerant</h6>
+                    <table>
+                        {% for bug in tolerant %}
+                        <tr>
+                            <td>
+                                {{ bug.label }}</br>
+                                {% with bug.label|lower|strtoul|slashtoul as buggy %}
+                                    {% with 'macro_images/macro_'|add:buggy|add:'.png' as bug_img %}
+                                        <img src="{% static bug_img %}">
+                                    {% endwith %}
+                                {% endwith %}
+                            </td>
+                            <td>
+                                {{ bug }}
+                                {{ bug.errors }}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>  <!-- end tolerant -->
+            </div> <!-- end macros row -->
+
+            <input class="waves-effect waves-light btn" type='submit', name='submit', value='Submit' />
+        </form>
+        {% endif %}
+
+    {% else %}
+        <p>{% trans "You must be logged in to submit data." %}</p>
+        <a href='/streamwebs/login/'>{% trans "Log in here." %}</a>
+    {% endif %}
+    </div>  <!-- end container -->
+{% endblock %}
+
+{% block scripts %}
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
+    <script>
+    $('select').material_select();
+    </script>
 {% endblock %}

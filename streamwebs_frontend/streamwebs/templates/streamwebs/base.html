@@ -4,31 +4,63 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>{% block title %}{% endblock %} StreamWebs</title>
+    <title>{% block title %}StreamWebs{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'streamwebs/bower_components/materialize/dist/css/materialize.css' %}" />
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{% static 'streamwebs/style.css' %}" />
     <link rel="shortcut icon" href="{% static 'streamwebs/images/favicon.ico' %}" />
-    <script src="{% static 'streamwebs/bower_components/jquery/dist/jquery.js' %}"></script>
-    <script src="{% static 'streamwebs/bower_components/d3/d3.js' %}"></script>
-    {% block scripts %}{% endblock %}
+
 </head>
 
 <body>
-    <form action="/i18n/setlang/" method="post">
-       {% csrf_token %}
+    <form id="langform" action="/i18n/setlang/" method="post">
+        {% csrf_token %}
         <input name="next" type="hidden" value="{{ request.path }}" />
-        <select name="language">
-              {% for lang in LANGUAGES %}
-              <option value="{{ lang.0 }}">{{ lang.1 }}</option>
-              {% endfor %}
-        </select>
-        <input type="submit" value="{% trans 'Go' %}" />
+        <input id="lang_input" name="language" type="hidden" />
+        <ul id="languages" class="dropdown-content">
+            {% for lang in LANGUAGES %}
+                <li><a href="#!" onclick="submitLang('{{ lang.0 }}');">{{ lang.1 }}</a></li>
+            {% endfor %}
+        </ul>
     </form>
-    {% include "streamwebs/navigation.html" %}
-    <span class="title">
-        {% block body_title %}{% endblock %}
-    </span>
+
+    <nav class="cyan">
+        <div class="nav-wrapper">
+            <a href="#!" class="brand-logo center">{% block body_title %}Streamwebs{% endblock %}</a>
+
+            {% include "streamwebs/navigation.html" %}
+
+            <ul class="right">
+                <li>
+                    <a href="#!" class="dropdown-button" data-activates="languages">
+                        {% for lang in LANGUAGES %}
+                            {% if lang.0 == LANGUAGE_CODE %}
+                                {{ lang.1 }}
+                            {% endif %}
+                        {% endfor %}
+
+                        <i class="material-icons right">arrow_drop_down</i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
     <div class="content">
         {% block content %}{% endblock %}
     </div>
+
+    <script src="{% static 'streamwebs/bower_components/jquery/dist/jquery.js' %}"></script>
+    <script src="{% static 'streamwebs/bower_components/d3/d3.js' %}"></script>
+    <script src="{% static 'streamwebs/bower_components/materialize/dist/js/materialize.js' %}"></script>
+    {% block scripts %}{% endblock %}
+
+    <script>
+        // Language submission
+        function submitLang(language) {
+            $('#lang_input').val(language);
+            $('#langform').submit();
+        }
+    </script>
 </body>
 </html>
