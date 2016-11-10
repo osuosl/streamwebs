@@ -6,9 +6,9 @@ from streamwebs.models import Site, Macroinvertebrates
 class MacroViewTestCase(TestCase):
     def setUp(self):
         self.site = Site.test_objects.create_site('site name')
-        self.macro = Macroinvertebrates.objects.create_macro(
-            self.site, 2, 3, True, True, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5,
-            6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8)
+        self.macro = Macroinvertebrates.test_objects.create_macro(
+            self.site, 2, 3, 'pool', 4, 5, 6, 7, 8, 9, 1, 2, 3, 4, 5,
+            6, 7, 8, 9, 1, 2, 3, 4, 5, 6, 'wow, bugs')
         self.response = self.client.get(
             reverse(
                 'streamwebs:macroinvertebrate_view',
@@ -33,3 +33,12 @@ class MacroViewTestCase(TestCase):
         self.assertContains(self.response, 'dobsonfly')
         self.assertContains(self.response, 'damselfly')
         self.assertContains(self.response, 'dragonfly')
+        self.assertContains(self.response, 'wow, bugs')
+        self.assertContains(self.response, 'bbbb')
+        self.assertContains(self.response, self.macro.site.site_name)
+
+    def test_wq_rating_adjective(self):
+        self.assertEqual(self.response.context['rating'], 'Excellent')
+
+    def test_EPT(self):
+        self.assertContains(self.response, 'Percent EPT: 15.24%')

@@ -1,0 +1,523 @@
+{% extends "streamwebs/data_view.html" %}
+
+{% load staticfiles %}
+
+{% block title %}Water Quality - {{data.site.name}} - Streamwebs{% endblock %}
+
+{% block body_title %}<a href='{% url 'streamwebs:site' data.site.slug %}'>{{data.site.name}}</a>
+» Water Quality ({{data.date}}){% endblock %}
+
+{% block scripts %}
+<script type="application/javascript" src="{% static 'streamwebs/js/data.js' %}"></script>
+<script type="application/javascript" src="{% static 'streamwebs/js/data/view/water_quality.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <p>Stream/Site name: {{data.site.name}}</p>
+        <div class="row">
+            <div class="col s6">
+                <div class="input-field">
+                    <label for="date">Date</label>
+                    <input id="date" type="text" value="{{data.date}}" disabled>
+                </div>
+
+                <div class="input-field">
+                    <label for="lat">Latitude</label>
+                    <input id="lat" type="text" value="{{data.site.location.y}}" disabled>
+                </div>
+            </div>
+
+            <div class="col s6">
+                <div class="input-field">
+                    <select disabled>
+                        <option value="Level A" {% if data.DEQ_wq_level == 'A' %}selected{% endif %}>Level A</option>
+                        <option value="Level B" {% if data.DEQ_wq_level == 'B' %}selected{% endif %}>Level B</option>
+                        <option value="Level C" {% if data.DEQ_wq_level == 'C' %}selected{% endif %}>Level C</option>
+                        <option value="Level D" {% if data.DEQ_wq_level == 'D' %}selected{% endif %}>Level D</option>
+                        <option value="Level E" {% if data.DEQ_wq_level == 'E' %}selected{% endif %}>Level E</option>
+                    </select>
+                    <label>DEQ Data Quality Level</label>
+                </div>
+
+                <div class="input-field">
+                    <label for="long">Longitude</label>
+                    <input id="long" type="text" value="{{data.site.location.x}}" disabled>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col s4">
+                <p>Any fish present?</p>
+                <div class="rowchk">
+                    <input type="checkbox" id="yfish" checked="checked" disabled="disabled" />
+                    <label for="yfish">Yes</label>
+                    <input type="checkbox" id="nfish" disabled="disabled" />
+                    <label for="nfish">No</label>
+                </div>
+            </div>
+
+            <div class="col s4">
+                <p>Number of live fish:</p>
+                <input type="text" value="{{data.live_fish}}" disabled>
+            </div>
+
+            <div class="col s4">
+                <p>Number of dead fish:</p>
+                <input type="text" value="{{data.dead_fish}}" disabled>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col s6">
+                <p>Water Temperature Units</p>
+                <div class="rowchk">
+                    <input type="checkbox" id="fahr" checked="checked" disabled="disabled" />
+                    <label for="fahr">Fahrenheit</label>
+                    <input type="checkbox" id="cels" disabled="disabled" />
+                    <label for="cels">Celsius</label>
+                </div>
+            </div>
+
+            <div class="col s6">
+                <p>Air Temperature Units</p>
+                <div class="rowchk">
+                    <input type="checkbox" id="afahr" checked="checked" disabled="disabled" />
+                    <label for="afahr">Fahrenheit</label>
+                    <input type="checkbox" id="acels" disabled="disabled" />
+                    <label for="acels">Celsius</label>
+                </div>
+            </div>
+        </div>
+
+        <table>
+            <thead>
+                <th data-field="test"></th>
+                <th data-field="sample1">Sample 1</th>
+                <th data-field="sample2">Sample 2</th>
+                <th data-field="sample3">Sample 3</th>
+                <th data-field="sample4">Sample 4</th>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td>Water Temperature</td>
+                    <td>
+                        <div class="row">
+                            <div class="input-field"><input type="text" value="{{data.sample_1.water_temperature}}" disabled class="data"></div>
+                        </div>
+                        <div class="row">
+                            <input type="radio" disabled {% if data.sample_1.water_temp_tool == 'Vernier' %} checked="checked" {% endif %} id="vradio1">
+                            <label for="vradio1">Vernier</label>
+                            <input type="radio" disabled {% if data.sample_1.water_temp_tool == 'Manual' %} checked="checked" {% endif %} id="mradio1">
+                            <label for="mradio1">manual</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="row">
+                            <div class="input-field"><input type="text" value="{{data.sample_2.water_temperature}}" disabled class="data"></div>
+                        </div>
+                        <div class="row">
+                            <input type="radio" disabled {% if data.sample_2.water_temp_tool == 'Vernier' %} checked="checked" {% endif %} id="vradio2">
+                            <label for="vradio2">Vernier</label>
+                            <input type="radio" disabled {% if data.sample_2.water_temp_tool == 'Manual' %} checked="checked" {% endif %} id="mradio2">
+                            <label for="mradio2">manual</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="row">
+                            <div class="input-field"><input type="text" value="{{data.sample_3.water_temperature}}" disabled class="data"></div>
+                        </div>
+                        <div class="row">
+                            <input type="radio" disabled {% if data.sample_3.water_temp_tool == 'Vernier' %} checked="checked" {% endif %} id="vradio3">
+                            <label for="vradio3">Vernier</label>
+                            <input type="radio" disabled {% if data.sample_3.water_temp_tool == 'Manual' %} checked="checked" {% endif %} id="mradio3">
+                            <label for="mradio3">manual</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="row">
+                            <div class="input-field"><input type="text" value="{{data.sample_4.water_temperature}}" disabled class="data"></div>
+                        </div>
+                        <div class="row">
+                            <input type="radio" disabled {% if data.sample_4.water_temp_tool == 'Vernier' %} checked="checked" {% endif %} id="vradio4">
+                            <label for="vradio4">Vernier</label>
+                            <input type="radio" disabled {% if data.sample_4.water_temp_tool == 'Manual' %} checked="checked" {% endif %} id="mradio4">
+                            <label for="mradio4">manual</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Air Temperature</td>
+                    <td>
+                        <div class="row">
+                            <div class="input-field"><input type="text" value="{{data.sample_1.air_temperature}}" disabled class="data"></div>
+                        </div>
+                        <div class="row">
+                            <input type="radio" disabled {% if data.sample_1.air_temp_tool == 'Vernier' %} checked="checked" {% endif %} id="vradio1">
+                            <label for="vradio1">Vernier</label>
+                            <input type="radio" disabled {% if data.sample_1.air_temp_tool == 'Manual' %} checked="checked" {% endif %} id="mradio1">
+                            <label for="mradio1">manual</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="row">
+                            <div class="input-field"><input type="text" value="{{data.sample_2.air_temperature}}" disabled class="data"></div>
+                        </div>
+                        <div class="row">
+                            <input type="radio" disabled {% if data.sample_2.air_temp_tool == 'Vernier' %} checked="checked" {% endif %} id="vradio2">
+                            <label for="vradio2">Vernier</label>
+                            <input type="radio" disabled {% if data.sample_2.air_temp_tool == 'Manual' %} checked="checked" {% endif %} id="mradio2">
+                            <label for="mradio2">manual</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="row">
+                            <div class="input-field"><input type="text" value="{{data.sample_3.air_temperature}}" disabled class="data"></div>
+                        </div>
+                        <div class="row">
+                            <input type="radio" disabled {% if data.sample_3.air_temp_tool == 'Vernier' %} checked="checked" {% endif %} id="vradio3">
+                            <label for="vradio3">Vernier</label>
+                            <input type="radio" disabled {% if data.sample_3.air_temp_tool == 'Manual' %} checked="checked" {% endif %} id="mradio3">
+                            <label for="mradio3">manual</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="row">
+                            <div class="input-field"><input type="text" value="{{data.sample_4.air_temperature}}" disabled class="data"></div>
+                        </div>
+                        <div class="row">
+                            <input type="radio" disabled {% if data.sample_4.air_temp_tool == 'Vernier' %} checked="checked" {% endif %} id="vradio4">
+                            <label for="vradio4">Vernier</label>
+                            <input type="radio" disabled {% if data.sample_4.air_temp_tool == 'Manual' %} checked="checked" {% endif %} id="mradio4">
+                            <label for="mradio4">manual</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Dissolved Oxygen (mg/L)</td>
+                    <td>
+                        <div class="row">
+                            <div class="input-field"><input type="text" value="{{data.sample_1.dissolved_oxygen}}" disabled class="data"></div>
+                        </div>
+                        <div class="row">
+                            <input type="radio" disabled {% if data.sample_1.oxygen_tool == 'Vernier' %} checked="checked" {% endif %} id="vradio1">
+                            <label for="vradio1">Vernier</label>
+                            <input type="radio" disabled {% if data.sample_1.oxygen_tool == 'Manual' %} checked="checked" {% endif %} id="mradio1">
+                            <label for="mradio1">manual</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="row">
+                            <div class="input-field"><input type="text" value="{{data.sample_2.dissolved_oxygen}}" disabled class="data"></div>
+                        </div>
+                        <div class="row">
+                            <input type="radio" disabled {% if data.sample_2.oxygen_tool == 'Vernier' %} checked="checked" {% endif %} id="vradio2">
+                            <label for="vradio2">Vernier</label>
+                            <input type="radio" disabled {% if data.sample_2.oxygen_tool == 'Manual' %} checked="checked" {% endif %} id="mradio2">
+                            <label for="mradio2">manual</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="row">
+                            <div class="input-field"><input type="text" value="{{data.sample_3.dissolved_oxygen}}" disabled class="data"></div>
+                        </div>
+                        <div class="row">
+                            <input type="radio" disabled {% if data.sample_3.oxygen_tool == 'Vernier' %} checked="checked" {% endif %} id="vradio3">
+                            <label for="vradio3">Vernier</label>
+                            <input type="radio" disabled {% if data.sample_3.oxygen_tool == 'Manual' %} checked="checked" {% endif %} id="mradio3">
+                            <label for="mradio3">manual</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="row">
+                            <div class="input-field"><input type="text" value="{{data.sample_4.dissolved_oxygen}}" disabled class="data"></div>
+                        </div>
+                        <div class="row">
+                            <input type="radio" disabled {% if data.sample_4.oxygen_tool == 'Vernier' %} checked="checked" {% endif %} id="vradio4">
+                            <label for="vradio4">Vernier</label>
+                            <input type="radio" disabled {% if data.sample_4.oxygen_tool == 'Manual' %} checked="checked" {% endif %} id="mradio4">
+                            <label for="mradio4">manual</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>pH</td>
+                    <td>
+                        <div class="row">
+                            <div class="input-field"><input type="text" value="{{data.sample_1.pH}}" disabled class="data"></div>
+                        </div>
+                        <div class="row">
+                            <input type="radio" disabled {% if data.sample_1.pH_tool == 'Vernier' %} checked="checked" {% endif %} id="vradio1">
+                            <label for="vradio1">Vernier</label>
+                            <input type="radio" disabled {% if data.sample_1.pH_tool == 'Manual' %} checked="checked" {% endif %} id="mradio1">
+                            <label for="mradio1">manual</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="row">
+                            <div class="input-field"><input type="text" value="{{data.sample_2.pH}}" disabled class="data"></div>
+                        </div>
+                        <div class="row">
+                            <input type="radio" disabled {% if data.sample_2.pH_tool == 'Vernier' %} checked="checked" {% endif %} id="vradio2">
+                            <label for="vradio2">Vernier</label>
+                            <input type="radio" disabled {% if data.sample_2.pH_tool == 'Manual' %} checked="checked" {% endif %} id="mradio2">
+                            <label for="mradio2">manual</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="row">
+                            <div class="input-field"><input type="text" value="{{data.sample_3.pH}}" disabled class="data"></div>
+                        </div>
+                        <div class="row">
+                            <input type="radio" disabled {% if data.sample_3.pH_tool == 'Vernier' %} checked="checked" {% endif %} id="vradio3">
+                            <label for="vradio3">Vernier</label>
+                            <input type="radio" disabled {% if data.sample_3.pH_tool == 'Manual' %} checked="checked" {% endif %} id="mradio3">
+                            <label for="mradio3">manual</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="row">
+                            <div class="input-field"><input type="text" value="{{data.sample_4.pH}}" disabled class="data"></div>
+                        </div>
+                        <div class="row">
+                            <input type="radio" disabled {% if data.sample_4.pH_tool == 'Vernier' %} checked="checked" {% endif %} id="vradio4">
+                            <label for="vradio4">Vernier</label>
+                            <input type="radio" disabled {% if data.sample_4.pH_tool == 'Manual' %} checked="checked" {% endif %} id="mradio4">
+                            <label for="mradio4">manual</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Turbidity (NTU)</td>
+                    <td>
+                        <div class="row">
+                            <div class="input-field"><input type="text" value="{{data.sample_1.turbidity}}" disabled class="data"></div>
+                        </div>
+                        <div class="row">
+                            <input type="radio" disabled {% if data.sample_1.turbid_tool == 'Vernier' %} checked="checked" {% endif %} id="vradio1">
+                            <label for="vradio1">Vernier</label>
+                            <input type="radio" disabled {% if data.sample_1.turbid_tool == 'Manual' %} checked="checked" {% endif %} id="mradio1">
+                            <label for="mradio1">manual</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="row">
+                            <div class="input-field"><input type="text" value="{{data.sample_2.turbidity}}" disabled class="data"></div>
+                        </div>
+                        <div class="row">
+                            <input type="radio" disabled {% if data.sample_2.turbid_tool == 'Vernier' %} checked="checked" {% endif %} id="vradio2">
+                            <label for="vradio2">Vernier</label>
+                            <input type="radio" disabled {% if data.sample_2.turbid_tool == 'Manual' %} checked="checked" {% endif %} id="mradio2">
+                            <label for="mradio2">manual</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="row">
+                            <div class="input-field"><input type="text" value="{{data.sample_3.turbidity}}" disabled class="data"></div>
+                        </div>
+                        <div class="row">
+                            <input type="radio" disabled {% if data.sample_3.turbid_tool == 'Vernier' %} checked="checked" {% endif %} id="vradio3">
+                            <label for="vradio3">Vernier</label>
+                            <input type="radio" disabled {% if data.sample_3.turbid_tool == 'Manual' %} checked="checked" {% endif %} id="mradio3">
+                            <label for="mradio3">manual</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="row">
+                            <div class="input-field"><input type="text" value="{{data.sample_4.turbidity}}" disabled class="data"></div>
+                        </div>
+                        <div class="row">
+                            <input type="radio" disabled {% if data.sample_4.turbid_tool == 'Vernier' %} checked="checked" {% endif %} id="vradio4">
+                            <label for="vradio4">Vernier</label>
+                            <input type="radio" disabled {% if data.sample_4.turbid_tool == 'Manual' %} checked="checked" {% endif %} id="mradio4">
+                            <label for="mradio4">manual</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Salinity (PSU) PPT</td>
+                    <td>
+                        <div class="row">
+                            <div class="input-field"><input type="text" value="{{data.sample_1.salinity}}" disabled class="data"></div>
+                        </div>
+                        <div class="row">
+                            <input type="radio" disabled {% if data.sample_1.salt_tool == 'Vernier' %} checked="checked" {% endif %} id="vradio1">
+                            <label for="vradio1">Vernier</label>
+                            <input type="radio" disabled {% if data.sample_1.salt_tool == 'Manual' %} checked="checked" {% endif %} id="mradio1">
+                            <label for="mradio1">manual</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="row">
+                            <div class="input-field"><input type="text" value="{{data.sample_2.salinity}}" disabled class="data"></div>
+                        </div>
+                        <div class="row">
+                            <input type="radio" disabled {% if data.sample_2.salt_tool == 'Vernier' %} checked="checked" {% endif %} id="vradio2">
+                            <label for="vradio2">Vernier</label>
+                            <input type="radio" disabled {% if data.sample_2.salt_tool == 'Manual' %} checked="checked" {% endif %} id="mradio2">
+                            <label for="mradio2">manual</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="row">
+                            <div class="input-field"><input type="text" value="{{data.sample_3.salinity}}" disabled class="data"></div>
+                        </div>
+                        <div class="row">
+                            <input type="radio" disabled {% if data.sample_3.salt_tool == 'Vernier' %} checked="checked" {% endif %} id="vradio3">
+                            <label for="vradio3">Vernier</label>
+                            <input type="radio" disabled {% if data.sample_3.salt_tool == 'Manual' %} checked="checked" {% endif %} id="mradio3">
+                            <label for="mradio3">manual</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="row">
+                            <div class="input-field"><input type="text" value="{{data.sample_4.salinity}}" disabled class="data"></div>
+                        </div>
+                        <div class="row">
+                            <input type="radio" disabled {% if data.sample_4.salt_tool == 'Vernier' %} checked="checked" {% endif %} id="vradio4">
+                            <label for="vradio4">Vernier</label>
+                            <input type="radio" disabled {% if data.sample_4.salt_tool == 'Manual' %} checked="checked" {% endif %} id="mradio4">
+                            <label for="mradio4">manual</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr class="collapse-btn">
+                    <th>Additional parameters <i class="material-icons">arrow_drop_down</i></th>
+                </tr>
+            </tbody>
+        </table>
+        <div class="collapse">
+            <table>
+                <tbody>
+                    <tr>
+                        <td>Conductivity (µS/cm)</td>
+                        <td>
+                            <div class="input-field"><input type="text" value="{{data.sample_1.conductivity}}" disabled class="data"></div>
+                        </td>
+                        <td>
+                            <div class="input-field"><input type="text" value="{{data.sample_2.conductivity}}" disabled class="data"></div>
+                        </td>
+                        <td>
+                            <div class="input-field"><input type="text" value="{{data.sample_3.conductivity}}" disabled class="data"></div>
+                        </td>
+                        <td>
+                            <div class="input-field"><input type="text" value="{{data.sample_4.conductivity}}" disabled class="data"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Total Solids (mg/L)</td>
+                        <td>
+                            <div class="input-field"><input type="text" value="{{data.sample_1.total_solids}}" disabled class="data"></div>
+                        </td>
+                        <td>
+                            <div class="input-field"><input type="text" value="{{data.sample_2.total_solids}}" disabled class="data"></div>
+                        </td>
+                        <td>
+                            <div class="input-field"><input type="text" value="{{data.sample_3.total_solids}}" disabled class="data"></div>
+                        </td>
+                        <td>
+                            <div class="input-field"><input type="text" value="{{data.sample_4.total_solids}}" disabled class="data"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>BOD (mg/L)</td>
+                        <td>
+                            <div class="input-field"><input type="text" value="{{data.sample_1.bod}}" disabled class="data"></div>
+                        </td>
+                        <td>
+                            <div class="input-field"><input type="text" value="{{data.sample_2.bod}}" disabled class="data"></div>
+                        </td>
+                        <td>
+                            <div class="input-field"><input type="text" value="{{data.sample_3.bod}}" disabled class="data"></div>
+                        </td>
+                        <td>
+                            <div class="input-field"><input type="text" value="{{data.sample_4.bod}}" disabled class="data"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Ammonia (mg/L)</td>
+                        <td>
+                            <div class="input-field"><input type="text" value="{{data.sample_1.ammonia}}" disabled class="data"></div>
+                        </td>
+                        <td>
+                            <div class="input-field"><input type="text" value="{{data.sample_2.ammonia}}" disabled class="data"></div>
+                        </td>
+                        <td>
+                            <div class="input-field"><input type="text" value="{{data.sample_3.ammonia}}" disabled class="data"></div>
+                        </td>
+                        <td>
+                            <div class="input-field"><input type="text" value="{{data.sample_4.ammonia}}" disabled class="data"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Nitrite (mg/L)</td>
+                        <td>
+                            <div class="input-field"><input type="text" value="{{data.sample_1.nitrite}}" disabled class="data"></div>
+                        </td>
+                        <td>
+                            <div class="input-field"><input type="text" value="{{data.sample_2.nitrite}}" disabled class="data"></div>
+                        </td>
+                        <td>
+                            <div class="input-field"><input type="text" value="{{data.sample_3.nitrite}}" disabled class="data"></div>
+                        </td>
+                        <td>
+                            <div class="input-field"><input type="text" value="{{data.sample_4.nitrite}}" disabled class="data"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Nitrate (mg/L)</td>
+                        <td>
+                            <div class="input-field"><input type="text" value="{{data.sample_1.nitrate}}" disabled class="data"></div>
+                        </td>
+                        <td>
+                            <div class="input-field"><input type="text" value="{{data.sample_2.nitrate}}" disabled class="data"></div>
+                        </td>
+                        <td>
+                            <div class="input-field"><input type="text" value="{{data.sample_3.nitrate}}" disabled class="data"></div>
+                        </td>
+                        <td>
+                            <div class="input-field"><input type="text" value="{{data.sample_4.nitrate}}" disabled class="data"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Phosphates (mg/L)</td>
+                        <td>
+                            <div class="input-field"><input type="text" value="{{data.sample_1.phosphates}}" disabled class="data"></div>
+                        </td>
+                        <td>
+                            <div class="input-field"><input type="text" value="{{data.sample_2.phosphates}}" disabled class="data"></div>
+                        </td>
+                        <td>
+                            <div class="input-field"><input type="text" value="{{data.sample_3.phosphates}}" disabled class="data"></div>
+                        </td>
+                        <td>
+                            <div class="input-field"><input type="text" value="{{data.sample_4.phosphates}}" disabled class="data"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Fecal Coliform (CFU/100 mL)</td>
+                        <td>
+                            <div class="input-field"><input type="text" value="{{data.sample_1.fecal_coliform}}" disabled class="data"></div>
+                        </td>
+                        <td>
+                            <div class="input-field"><input type="text" value="{{data.sample_2.fecal_coliform}}" disabled class="data"></div>
+                        </td>
+                        <td>
+                            <div class="input-field"><input type="text" value="{{data.sample_3.fecal_coliform}}" disabled class="data"></div>
+                        </td>
+                        <td>
+                            <div class="input-field"><input type="text" value="{{data.sample_4.fecal_coliform}}" disabled class="data"></div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="input-field">
+            <label for="field-notes">Field notes</label>
+            <textarea id="#field-notes" class="materialize-textarea" disabled>{{data.notes}}</textarea>
+        </div>
+    </div>
+{% endblock %}

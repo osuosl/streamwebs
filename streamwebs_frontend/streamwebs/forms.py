@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 from streamwebs.models import UserProfile, WQ_Sample, Water_Quality, \
     Macroinvertebrates, Canopy_Cover, CC_Cardinal, TransectZone, \
-    RiparianTransect, PhotoPointImage, PhotoPoint, CameraPoint, Site
+    RiparianTransect, PhotoPointImage, PhotoPoint, CameraPoint, Site, School
 from django.contrib.auth.models import User
 from django import forms
 from django.utils.translation import ugettext_lazy as _
@@ -12,13 +12,17 @@ from captcha.fields import ReCaptchaField
 
 class UserForm(forms.ModelForm):
     password = forms.CharField(
-        widget=forms.PasswordInput()
-    ).label = _('Password')
+        widget=forms.PasswordInput(),
+        label=_('Password'))
+
     password_check = forms.CharField(
         widget=forms.PasswordInput(),
-        label='Repeat your password'
-    )
+        label='Repeat your password')
+
     email = forms.CharField(required=True)
+    first_name = forms.CharField(
+        widget=forms.TextInput()
+    )
 
     class Meta:
         model = User
@@ -39,30 +43,34 @@ class UserForm(forms.ModelForm):
 
 class UserProfileForm(forms.ModelForm):
     captcha = ReCaptchaField()
+    birthdate = forms.DateField(
+        widget=forms.DateInput(attrs={'class': 'datepicker'}),
+    )
+    school = forms.ModelChoiceField(queryset=School.objects.all())
 
     class Meta:
         model = UserProfile
         fields = ('school', 'birthdate')
 
 
-class MacroinvertebratesForm(forms.ModelForm):
-    class Meta:
-        model = Macroinvertebrates
-        fields = ('school', 'date_time', 'weather', 'site', 'time_spent',
-                  'num_people', 'riffle', 'pool', 'caddisfly', 'mayfly',
-                  'riffle_beetle', 'stonefly', 'water_penny', 'dobsonfly',
-                  'clam_or_mussel', 'crane_fly', 'crayfish',
-                  'damselfly', 'dragonfly', 'scud', 'fishfly', 'alderfly',
-                  'mite', 'aquatic_worm', 'blackfly', 'leech', 'midge',
-                  'snail', 'mosquito_larva', 'wq_rating',
-                  'somewhat_sensitive_total', 'sensitive_total',
-                  'tolerant_total')
-
-
 class HorizontalRadioRenderer(forms.RadioSelect.renderer):
     ''' Renders radio buttons horizontally '''
     def render(self):
         return mark_safe(u'\n'.join([u'%s\n' % w for w in self]))
+
+
+class MacroinvertebratesForm(forms.ModelForm):
+    school = forms.ModelChoiceField(queryset=School.objects.all())
+
+    class Meta:
+        model = Macroinvertebrates
+        fields = ('school', 'date_time', 'weather', 'time_spent',
+                  'num_people', 'water_type', 'caddisfly', 'mayfly',
+                  'riffle_beetle', 'stonefly', 'water_penny', 'dobsonfly',
+                  'clam_or_mussel', 'crane_fly', 'crayfish',
+                  'damselfly', 'dragonfly', 'scud', 'fishfly', 'alderfly',
+                  'mite', 'aquatic_worm', 'blackfly', 'leech', 'midge',
+                  'snail', 'mosquito_larva', 'notes')
 
 
 class WQForm(forms.ModelForm):
@@ -74,7 +82,9 @@ class WQForm(forms.ModelForm):
             'water_temp_unit':
                 forms.RadioSelect(renderer=HorizontalRadioRenderer),
             'air_temp_unit':
-                forms.RadioSelect(renderer=HorizontalRadioRenderer)
+                forms.RadioSelect(renderer=HorizontalRadioRenderer),
+            'notes':
+                forms.Textarea(attrs={'class': 'materialize-textarea'})
         }
         fields = (
             'site', 'date', 'DEQ_dq_level', 'school',

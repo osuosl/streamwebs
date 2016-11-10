@@ -11,6 +11,12 @@ def strtoul(value):
 
 
 @register.filter
+def slashtoul(value):
+    """Converts slash into underline in a string"""
+    return value.replace('/', '_')
+
+
+@register.filter
 def namespace(value):
     """Converts URL references to namespaced references"""
     return "streamwebs:" + value
