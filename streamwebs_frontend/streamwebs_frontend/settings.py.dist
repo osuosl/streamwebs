@@ -58,7 +58,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.gis',
     'captcha',
-    'pipeline',
     'streamwebs',
 ]
 
@@ -156,6 +155,11 @@ STATIC_URL = '/static/'
 
 MEDIA_URL = '/media/'
 
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder'
+)
+
 # List of schools
 # Format: each school listed in the SCHOOL_CHOICES tuple should be a tuple of
 # two elements, the first being the value to be set on the user model and the
@@ -168,29 +172,6 @@ SCHOOL_CHOICES = (
     # Example:
     ('a', 'School A'),
 )
-
-# Pipeline settings for static files
-# Used to package, compress, and minimize our bower dependencies (e.g. JQuery)
-# https://axiacore.com/blog/effective-dependency-management-django-using-bower/
-# http://django-pipeline.readthedocs.io/en/latest/installation.html
-
-STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
-STATICFILES_FINDERS = (
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'pipeline.finders.PipelineFinder',
-)
-
-PIPELINE = {
-    'JAVASCRIPT': {
-        'libraries': {
-            'source_filenames': {
-                'streamwebs/bower_components/jquery/dist/jquery.js',
-            },
-            'output_filename': 'streamwebs/js/libs.min.js',
-        }
-    }
-}
 
 LANGUAGES = [
     ('en-us', 'English'),
