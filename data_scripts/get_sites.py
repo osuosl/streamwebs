@@ -23,6 +23,7 @@ def num(x):
     except ValueError:
         return x
 
+
 # Title, Post date, Updated date, Marker, Coordinates, Lat, Long
 with open('../csvs/ll_site_data.csv', 'r') as csvfile:
     sitereader = csv.reader(csvfile)
