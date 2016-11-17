@@ -7,12 +7,18 @@ import csv
 from django.core.wsgi import get_wsgi_application
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "streamwebs_frontend.settings")
-proj_path = "/opt/streamwebs/streamwebs_frontend/"
+proj_path = "../streamwebs_frontend/"
 sys.path.append(proj_path)
 application = get_wsgi_application()
 
 from streamwebs.models import Site  # NOQA
 from streamwebs.models import WQ_Sample  # NOQA
+
+
+if os.path.isdir("../streamwebs_frontend/sw_data/"):
+    datafile = '../sw_data/wq_csvs/WQ_sample_tools'
+else:
+    datafile = '../csvs/wq_csvs/WQ_sample_tools'
 
 
 # Water Temp 1, 2, 4, 3

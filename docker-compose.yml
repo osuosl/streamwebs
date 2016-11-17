@@ -8,9 +8,9 @@ services:
       context: .
       dockerfile: dockerfiles/Dockerfile
     volumes:
-      - .:/opt/streamwebs
-    working_dir: /opt/streamwebs
-    command: /opt/streamwebs/dockerfiles/startup.sh
+      - .:/home/centos/streamwebs
+    working_dir: /home/centos/streamwebs
+    command: /home/centos/streamwebs/dockerfiles/startup.sh
     ports:
       - "8000:8000"
     links:

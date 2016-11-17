@@ -7,7 +7,7 @@ import csv
 from django.core.wsgi import get_wsgi_application
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "streamwebs_frontend.settings")
-proj_path = "/opt/streamwebs/streamwebs_frontend/"
+proj_path = "../streamwebs_frontend/"
 sys.path.append(proj_path)
 application = get_wsgi_application()
 
@@ -15,8 +15,18 @@ from streamwebs.models import Site  # NOQA
 from streamwebs.models import RiparianTransect  # NOQA
 from streamwebs.models import TransectZone  # NOQA
 
+
+if os.path.isdir("../streamwebs_frontend/sw_data/"):
+    datapath = '../sw_data/'
+else:
+    datapath = '../csvs/'
+
+
+transects = datapath + 'rip_transect.csv'
+zones = datapath + 'transect_zones.csv'
+
 # Nid, Collected, Site Name, Estimated Slope, Field Notes
-with open('../csvs/rip_transect.csv', 'r') as csvfile:
+with open(transects, 'r') as csvfile:
     reader = csv.reader(csvfile)
     for row in reader:
         if row[0] != 'Nid':  # Skip the header
@@ -47,7 +57,7 @@ print 'Riparian Transects loaded.'
 # 3 - Conifers, Hardwoods, Shrubs, Comments
 # 4 - Conifers, Hardwoods, Shrubs, Comments
 # 5 - Conifers, Hardwoods, Shrubs, Comments
-with open('../csvs/transect_zones.csv', 'r') as csvfile:
+with open(zones, 'r') as csvfile:
     reader = csv.reader(csvfile)
     for row in reader:
         if row[0] != 'Nid':
@@ -72,7 +82,7 @@ with open('../csvs/transect_zones.csv', 'r') as csvfile:
 csvfile.close()
 print 'Zone 1 loaded.'
 
-with open('../csvs/transect_zones.csv', 'r') as csvfile:
+with open(zones, 'r') as csvfile:
     reader = csv.reader(csvfile)
     for row in reader:
         if row[0] != 'Nid':
@@ -97,7 +107,7 @@ with open('../csvs/transect_zones.csv', 'r') as csvfile:
 csvfile.close()
 print 'Zone 2 loaded.'
 
-with open('../csvs/transect_zones.csv', 'r') as csvfile:
+with open(zones, 'r') as csvfile:
     reader = csv.reader(csvfile)
     for row in reader:
         if row[0] != 'Nid':
@@ -122,7 +132,7 @@ with open('../csvs/transect_zones.csv', 'r') as csvfile:
 csvfile.close()
 print 'Zone 3 loaded.'
 
-with open('../csvs/transect_zones.csv', 'r') as csvfile:
+with open(zones, 'r') as csvfile:
     reader = csv.reader(csvfile)
     for row in reader:
         if row[0] != 'Nid':
@@ -147,7 +157,7 @@ with open('../csvs/transect_zones.csv', 'r') as csvfile:
 csvfile.close()
 print 'Zone 4 loaded.'
 
-with open('../csvs/transect_zones.csv', 'r') as csvfile:
+with open(zones, 'r') as csvfile:
     reader = csv.reader(csvfile)
     for row in reader:
         if row[0] != 'Nid':

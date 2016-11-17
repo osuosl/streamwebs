@@ -15,8 +15,8 @@ RUN yum -y install gdal-python\
 
 RUN npm install -g bower
 
-COPY requirements.txt /opt/
+COPY requirements.txt /home/centos/
 
-RUN pip install -r /opt/requirements.txt
+RUN pip install -r /home/centos/requirements.txt
 
 #RUN echo 'source /opt/streamwebs/dockerfiles/startup.sh' >> /root/.bashrc

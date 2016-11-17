@@ -7,12 +7,19 @@ import csv
 from django.core.wsgi import get_wsgi_application
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "streamwebs_frontend.settings")
-proj_path = "/opt/streamwebs/streamwebs_frontend/"
+proj_path = "../streamwebs_frontend/"
 sys.path.append(proj_path)
 application = get_wsgi_application()
 
 from streamwebs.models import Site  # NOQA
 from streamwebs.models import Macroinvertebrates  # NOQA
+
+
+if os.path.isdir("../streamwebs_frontend/sw_data/"):
+    datafile = '../sw_data/macros.csv'
+else:
+    datafile = '../csvs/macros.csv'
+
 
 # Site, school, Collected, Post date, Time spent, # of peeps,
 # Water Type (riffle/pool), caddisfly, mayfly, riffle beetle, stonefly,
@@ -20,7 +27,7 @@ from streamwebs.models import Macroinvertebrates  # NOQA
 # dragonfly, scud, fishfly, adlerfly, mite, aquatic worm, blackfly, leech,
 # midge, snail, mosquito
 
-with open('../csvs/macros.csv', 'r') as csvfile:
+with open(datafile, 'r') as csvfile:
     macroreader = csv.reader(csvfile)
     for row in macroreader:
         if row[0] != 'Stream/Site name':  # Skip the header
@@ -89,4 +96,4 @@ with open('../csvs/macros.csv', 'r') as csvfile:
 
             macros.save()
 
-print ('Data loaded.')
+print 'Macroinvertebrates loaded.'
