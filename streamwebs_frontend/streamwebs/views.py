@@ -20,7 +20,6 @@ from streamwebs.models import (
     Macroinvertebrates, Site, Water_Quality, WQ_Sample, RiparianTransect,
     TransectZone, Canopy_Cover, CC_Cardinal, CameraPoint, PhotoPoint,
     PhotoPointImage)
-
 from datetime import datetime
 import json
 import copy
@@ -190,8 +189,14 @@ def user_logout(request):
 
 
 def graph_water(request, site_slug):
-    # TODO: actual lookup
-    return render(request, 'streamwebs/graphs/water_quality.html')
+    site = Site.objects.get(site_slug=site_slug)
+    wq_data = Water_Quality.objects.filter(site=site)
+    data = [m.to_dict() for m in wq_data]
+    return render(request, 'streamwebs/graphs/water_quality.html', {
+        'data': json.dumps(data),
+        'site': site,
+        'site_js': json.dumps(site.to_dict())
+    })
 
 
 def graph_macros(request, site_slug):

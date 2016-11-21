@@ -10,6 +10,21 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 from django.utils.text import slugify
+from django.utils.dateformat import format
+
+
+def _timestamp(dt):
+    return int(format(dt, 'U'))
+
+
+def _temp_conv(temp, unit):
+    if unit != _('Celsius') and unit != _('Fahrenheit'):
+        raise ValueError(_('Invalid unit'))
+
+    if unit == _('Celsius'):
+        return temp
+
+    return 5/9 * (temp - 32)
 
 
 class SiteManager(models.Manager):
@@ -62,6 +77,19 @@ class Site(models.Model):
 
     def __str__(self):
         return self.site_name
+
+    def to_dict(self):
+        return {
+            'site_name': self.site_name,
+            'site_slug': self.site_slug,
+            'description': self.description,
+            'location': {
+                'x': self.location.x,
+                'y': self.location.y
+            },
+            'created': _timestamp(self.created),
+            'modified': _timestamp(self.modified)
+        }
 
     def save(self, **kwargs):
         'Ensure site_slug is a unique, not-null field'
@@ -245,6 +273,25 @@ class Water_Quality(models.Model):
         else:
             return 'Unspecified site for data sheet ' + str(self.id)
 
+    def to_dict(self):
+        samples = WQ_Sample.objects.filter(water_quality=self)
+        return {
+            'DEQ_dq_level': self.DEQ_dq_level,
+            'date': _timestamp(self.date),
+            'school': self.school,
+            'location': {
+                'x': str(self.longitude),
+                'y': str(self.latitude)
+            },
+            'fish_present': self.fish_present,
+            'live_fish': self.live_fish,
+            'dead_fish': self.dead_fish,
+            'air_temp_unit': self.air_temp_unit,
+            'water_temp_unit': self.water_temp_unit,
+            'notes': self.notes,
+            'samples': [m.to_dict() for m in samples]
+        }
+
     class Meta:
         verbose_name = 'water quality'
         verbose_name_plural = 'water quality'
@@ -422,6 +469,32 @@ class WQ_Sample(models.Model):
         else:
             return ' Unspecified site: sheet ' + \
                 str(self.water_quality.id) + ' sample ' + str(self.sample)
+
+    def to_dict(self):
+        return {
+            'water_temperature': str(_temp_conv(self.water_temperature,
+                                     self.water_quality.water_temp_unit)),
+            'water_temp_tool': self.water_temp_tool,
+            'air_temperature': str(_temp_conv(self.air_temperature,
+                                   self.water_quality.air_temp_unit)),
+            'air_temp_tool': self.air_temp_tool,
+            'dissolved_oxygen': str(self.dissolved_oxygen),
+            'oxygen_tool': self.oxygen_tool,
+            'pH': str(self.pH),
+            'pH_tool': self.pH_tool,
+            'turbidity': str(self.turbidity),
+            'turbid_tool': self.turbid_tool,
+            'salinity': str(self.salinity),
+            'salt_tool': self.salt_tool,
+            'conductivity': str(self.conductivity),
+            'total_solids': str(self.total_solids),
+            'bod': str(self.bod),
+            'ammonia': str(self.ammonia),
+            'nitrite': str(self.nitrite),
+            'nitrate': str(self.nitrate),
+            'phosphates': str(self.phosphates),
+            'fecal_coliform': str(self.fecal_coliform)
+        }
 
     class Meta:
         verbose_name = 'water quality sample'
