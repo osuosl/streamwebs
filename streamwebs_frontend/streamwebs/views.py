@@ -618,7 +618,8 @@ def water_quality(request, site_slug, data_id):
             'editable': False,
             'site': site,
             'wq_form': wq_form,
-            'sample_formset': sample_formset
+            'sample_formset': sample_formset,
+            'title': _('Water Quality Data')
         }
     )
 
@@ -662,6 +663,7 @@ def water_quality_edit(request, site_slug):
             'added': added,
             'site': site,
             'wq_form': wq_form,
-            'sample_formset': sample_formset
+            'sample_formset': sample_formset,
+            'title': _('Add water quality sample')
         }
     )

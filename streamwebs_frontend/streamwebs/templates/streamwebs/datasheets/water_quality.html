@@ -2,8 +2,9 @@
 {% load staticfiles %}
 {% load i18n %}
 {% load filters %}
-{% block title %}{% trans "Add water quality sample" %}{% endblock %}
-{% block body_title %}{% trans "Add water quality sample" %}{% endblock %}
+
+{% block title %}{{ title }}{% endblock %}
+{% block body_title %}{{ title }}{% endblock %}
 
 {% block scripts %}
 <script type="application/javascript" src="{% static 'streamwebs/js/data.js' %}"></script>
