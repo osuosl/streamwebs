@@ -9,6 +9,7 @@
     <div class="row">
         <form class="col s4 offset-s4" id='login_form' method='post' action='/streamwebs/login/'>
             {% csrf_token %}
+            <input type="hidden" name="next" value="{{ request.GET.next }}" />
             {% trans "Username:" %}<input type='text' name='username' value='' size='50' />
             <br />
             {% trans "Password:" %}<input type='password' name='password' value='' size='50' />
