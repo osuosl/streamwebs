@@ -1074,7 +1074,8 @@ class Soil_Survey(models.Model):
                                verbose_name=_('school'))
     date = models.DateTimeField(default=timezone.now,
                                 verbose_name=_('date and time'))
-    weather = models.CharField(max_length=250, verbose_name=_('weather'))
+    weather = models.CharField(max_length=250, verbose_name=_('weather'),
+                               blank=True)
     site = models.ForeignKey(Site, null=True, on_delete=models.CASCADE,
                              verbose_name=_('site'))
 
@@ -1109,20 +1110,23 @@ class Soil_Survey(models.Model):
     land_use = models.CharField(max_length=12, default=None,
                                 choices=land_use_choices)
 
-    distance = models.CharField(max_length=250, null=True,
-                                verbose_name=_('distance from stream'))
+    distance = models.DecimalField(max_digits=5, decimal_places=2, null=True,
+                                   verbose_name=_('distance from stream'))
     site_char = models.TextField(blank=True,
                                  verbose_name=_('distinguishing site \
                                  characteristics'))
 
     soil_type_choices = [
+        (None, '-----'),
         ('sand', 'Sand'),
         ('loamy_sand', 'Loamy Sand'),
         ('silt_loam', 'Silt Loam'),
         ('loam', 'Loam'),
         ('clay_loam', 'Clay Loam'),
         ('light_clay', 'Light Clay'),
-        ('heavy_clay', 'Heavy Clay')
+        ('heavy_clay', 'Heavy Clay'),
+        ('n/a', 'N/A'),
+        ('other', 'Other')
     ]
 
     soil_type = models.CharField(max_length=10, default=None,

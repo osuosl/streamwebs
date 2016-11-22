@@ -23,7 +23,7 @@ class SoilSurveyTestCase(TestCase):
             'cover_type': models.CharField,
             'land_use': models.CharField,
 
-            'distance': models.CharField,
+            'distance': models.DecimalField,
             'site_char': models.TextField,
             'soil_type': models.CharField,
 
