@@ -59,7 +59,7 @@ function initialize() {
         markerList[i].index = i;
 
         infoWindows[i] = new google.maps.InfoWindow({
-            content: '<p><a href="javascript:submit_map(\'' + site.slug + '\')">' + site.name + '</a></p><p>' + site.description + '</p>',
+            content: '<p><a href="' + site.slug + '">' + site.name + '</a></><p>' + site.description + '</p>',
         });
 
         markerList[i].addListener('click', function () {
