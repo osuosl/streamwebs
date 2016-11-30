@@ -92,6 +92,7 @@ def site(request, site_slug):
     })
 
 
+@login_required
 def update_site(request, site_slug):
     updated = False
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
@@ -173,16 +174,21 @@ def register(request):
 
 
 def user_login(request):
+    redirect_to = request.POST.get('next', '')
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(username=username, password=password)
-
         if user:
             login(request, user)
-            return HttpResponseRedirect('/')
+            print("redirect_to is" + redirect_to)
+            if redirect_to != '':
+                return HttpResponseRedirect(redirect_to)
+            else:
+                return redirect(reverse('streamwebs:index'))
         else:
-            return HttpResponse(_('Invalid credentials'))
+            messages.error(request, 'Invalid username or password.')
+            return redirect(reverse('streamwebs:login'))
     else:
         return render(request, 'streamwebs/login.html')
 

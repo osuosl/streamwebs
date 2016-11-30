@@ -6,10 +6,18 @@
 {% block body_title %}{% trans "Log In" %}{% endblock %}
 {% block content %}
   <div class="container">
+    {% if messages %}
+        {% for message in messages %}
+        <strong>{{ message }}</strong>
+        {% endfor %}
+    {% else %}
+        No messages???
+    {% endif %}
     <div class="row">
-        <form class="col s4 offset-s4" id='login_form' method='post' action='/streamwebs/login/'>
+        <form class="col s4 offset-s4" id='login_form' method='post' action='./?next={{ redirect_to }}'>
             {% csrf_token %}
             <input type="hidden" name="next" value="{{ request.GET.next }}" />
+            Will return to: {{ request.GET.next }}
             {% trans "Username:" %}<input type='text' name='username' value='' size='50' />
             <br />
             {% trans "Password:" %}<input type='password' name='password' value='' size='50' />
