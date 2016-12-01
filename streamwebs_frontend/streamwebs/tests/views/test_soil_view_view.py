@@ -10,7 +10,7 @@ class ViewSoilSurveyTestCase(TestCase):
         self.soil_survey = Soil_Survey.objects.create(
             site=self.site, school=self.school, date='2016-10-20 14:28',
             weather='cloudy', landscape_pos='Stream Bank', cover_type='Shrubs',
-            land_use='Other', distance="2 ft from water's edge",
+            land_use='Other', distance=2,
             site_char='Lots of rocks around', soil_type='Silt Loam')
 
         self.response = self.client.get(
