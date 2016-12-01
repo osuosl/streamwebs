@@ -189,6 +189,14 @@ class SiteForm(forms.ModelForm):
 class SoilSurveyForm(forms.ModelForm):
     class Meta:
         model = Soil_Survey
-        fields = ('site', 'school', 'date', 'weather', 'landscape_pos',
-                  'cover_type', 'land_use', 'distance', 'site_char',
-                  'soil_type')
+        widgets = {
+            'landscape_pos': forms.RadioSelect(),
+            'cover_type': forms.RadioSelect(),
+            'land_use': forms.RadioSelect(),
+            'site_char':
+                forms.Textarea(attrs={'class': 'materialize-textarea'})
+        }
+        fields = (
+            'school', 'date', 'weather', 'landscape_pos', 'cover_type',
+            'land_use', 'distance', 'site_char', 'soil_type'
+        )
