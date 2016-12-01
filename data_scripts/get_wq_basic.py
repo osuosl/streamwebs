@@ -8,7 +8,7 @@ import datetime
 from django.core.wsgi import get_wsgi_application
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "streamwebs_frontend.settings")
-proj_path = "/opt/streamwebs/streamwebs_frontend/"
+proj_path = "../streamwebs_frontend/"
 sys.path.append(proj_path)
 application = get_wsgi_application()
 
@@ -16,10 +16,16 @@ from streamwebs.models import Site  # NOQA
 from streamwebs.models import Water_Quality  # NOQA
 
 
+if os.path.isdir("../streamwebs_frontend/sw_data/"):
+    datafile = '../sw_data/wq_csvs/water_quality.csv'
+else:
+    datafile = '../csvs/wq_csvs/water_quality.csv'
+
+
 # Stream/Site name, DEQ Data Quality, Collected, School, Any fish present?
 # num alive, num dead, Air Temp units, Water Temp units, Lat, Long, Nid
 
-with open('../csvs/wq_csvs/water_quality.csv', 'r') as csvfile:
+with open(datafile, 'r') as csvfile:
     wqreader = csv.reader(csvfile)
     for row in wqreader:
         if row[0] != 'Stream/Site name':  # Skip header

@@ -194,8 +194,14 @@ def user_logout(request):
 
 
 def graph_water(request, site_slug):
-    # TODO: actual lookup
-    return render(request, 'streamwebs/graphs/water_quality.html')
+    site = Site.objects.get(site_slug=site_slug)
+    wq_data = Water_Quality.objects.filter(site=site)
+    data = [m.to_dict() for m in wq_data]
+    return render(request, 'streamwebs/graphs/water_quality.html', {
+        'data': json.dumps(data),
+        'site': site,
+        'site_js': json.dumps(site.to_dict())
+    })
 
 
 def graph_macros(request, site_slug):
@@ -219,10 +225,33 @@ def graph_macros(request, site_slug):
 def macroinvertebrate(request, site_slug, data_id):
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     data = Macroinvertebrates.objects.get(id=data_id)
+
+    if data.wq_rating > 22:
+        rating = "Excellent"
+    elif data.wq_rating >= 17 and data.wq_rating <= 22:
+        rating = "Good"
+    elif data.wq_rating >= 11 and data.wq_rating <= 16:
+        rating = "Fair"
+    else:
+        rating = "Poor"
+
+    counts = data.get_totals()
+    bug_count = (counts['Tolerant'] + counts['Somewhat Sensitive'] +
+                 counts['Sensitive'])
+
+    # thwart divide-by-0 error
+    if bug_count == 0:
+        EPT = 0
+
+    # The EPT is the proportion of caddisflies, mayflies, and stoneflies found
+    else:
+        EPT = 100 * (float(data.caddisfly + data.mayfly + data.stonefly) /
+                     float(bug_count))
+
     return render(
         request,
         'streamwebs/datasheets/macroinvertebrate_view.html', {
-            'data': data, 'site': site
+            'data': data, 'site': site, 'rating': rating, 'EPT': EPT,
         }
     )
 
@@ -233,17 +262,36 @@ def macroinvertebrate_edit(request, site_slug):
     """
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     added = False
+    macro_form = MacroinvertebratesForm()
+
+    # the following are the form's fields broken up into chunks to
+    # facilitate CSS manipulation in the template
+    intolerant = list(macro_form)[6:12]
+    somewhat = list(macro_form)[12:21]
+    tolerant = list(macro_form)[21:27]
+
     if request.method == 'POST':
         macro_form = MacroinvertebratesForm(data=request.POST)
+
         if macro_form.is_valid():
-            macro_form = macro_form.save()
+            macro = macro_form.save(commit=False)
+            macro.site = site
+            macro.save()
             added = True
-    else:
-        macro_form = MacroinvertebratesForm()
+            messages.success(
+                request,
+                'You have successfully added a new macroinvertebrates ' +
+                'data sheet.')
+            return redirect(reverse('streamwebs:macroinvertebrate_view',
+                            kwargs={'site_slug': site.site_slug,
+                                    'data_id': macro.id}))
 
     return render(
         request, 'streamwebs/datasheets/macroinvertebrate_edit.html', {
             'macro_form': macro_form,
+            'intolerant': intolerant,
+            'somewhat': somewhat,
+            'tolerant': tolerant,
             'added': added,
             'site': site
         }
@@ -575,7 +623,8 @@ def water_quality(request, site_slug, data_id):
             'editable': False,
             'site': site,
             'wq_form': wq_form,
-            'sample_formset': sample_formset
+            'sample_formset': sample_formset,
+            'title': _('Water Quality Data')
         }
     )
 
@@ -619,7 +668,8 @@ def water_quality_edit(request, site_slug):
             'added': added,
             'site': site,
             'wq_form': wq_form,
-            'sample_formset': sample_formset
+            'sample_formset': sample_formset,
+            'title': _('Add water quality sample')
         }
     )
 

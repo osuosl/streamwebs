@@ -1,6 +1,6 @@
 {% extends "streamwebs/base.html" %}
 {% load staticfiles %}
-{% block title %}Sites -{% endblock %}
+{% block title %}Sites - StreamWebs{% endblock %}
 {% load i18n %}
 {% block scripts %}
 
@@ -14,7 +14,6 @@
             id:   "{{site.id}}",
             slug: "{{site.site_slug}}",
             name: "{{site.site_name}}",
-            type: "{{site.site_type}}",
             description: "{{site.description}}",
             lat: {{site.location.y}},
             lng: {{site.location.x}},
@@ -27,35 +26,38 @@
 {% block body_title %}{% trans "Sites" %}{% endblock %}
 
 {% block content %}
+    <div class="container">
+        <div id="site_search">
+            <div class="row">
+                <nav class="search-nav col s8 cyan">
+                    <div class="nav-wrapper">
+                        <div class="input-field">
+                            <input id="search" type="search" autocomplete="off" placeholder="{% trans 'Search sites' %}" oninput="search()">
+                            <label for="search"><i class="material-icons">search</i></label>
+                            <i class="material-icons">close</i>
 
-    <div id="site_search">
-        <label for="search_bar">{% trans "Search sites:" %}</label>
-        <input type="search" id="search_bar" name="search" oninput="search()" />
-        <label for="steward_box">{% trans "Student Stewardship Project" %}</label>
-        <input type="checkbox" id="steward_box" name="stewardship" value="steward" onchange="search()" />
-        <label for="salmon_box">{% trans "Salmon Watch" %}</label>
-        <input type="checkbox" id="salmon_box" name="salmon_watch" value="salmon" onchange="search()" />
-        <label for="available_box">{% trans "Available Project" %}</label>
-        <input type="checkbox" id="available_box" name="available" value="available" onchange="search()" />
-        <div id="search_dropdown">
-        {% for site in sites %}
-            <div name="{{site.slug}}" class="search_item {{site.site_type}}" style="display: none">
-                <p name="{{site.slug}}" onclick="submit_search(this)">{{site.name}}</p>
+                            <div class="search-results collection">
+                            {% for site in sites %}
+                                <a href="{{site.site_slug}}" class="collection-item search-item {{site.site_type}} cyan-text hide">{{site.site_name}}</a>
+                            {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </nav>
             </div>
-        {% endfor %}
         </div>
-    </div>
 
-    <div id="site_map">
-        <div id="map"></div>
-    </div>
+        <div id="site_map">
+            <div id="map"></div>
+        </div>
 
-    <div id="site_select">
-        <select id="site_list" name="site" required="true">
-        {% for site in sites %}
-            <option value="{{site.slug}}">{{site.name}}</option>
-        {% endfor %}
-        </select>
-        <input type="submit" name="Submit" class="Submit" value="{% trans "Select" %}" onclick="submit_select()" />
+        <div id="site_select">
+            <a href="#!" class="dropdown-button btn select-button cyan" data-activates='dropdown'>{% trans "Select Site" %}<i class="material-icons right">arrow_drop_down</i></a>
+            <ul id="dropdown" class="dropdown-content">
+            {% for site in sites %}
+                <li><a href="{{site.site_slug}}" class="cyan-text">{{site.site_name}}</a></li>
+            {% endfor %}
+            </ul>
+        </div>
     </div>
 {% endblock %}

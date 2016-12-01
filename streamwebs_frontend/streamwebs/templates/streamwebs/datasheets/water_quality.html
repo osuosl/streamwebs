@@ -2,343 +2,367 @@
 {% load staticfiles %}
 {% load i18n %}
 {% load filters %}
-{% block title %}{% trans "Add water quality sample" %}{% endblock %}
-{% block body_title %}{% trans "Add water quality sample" %}{% endblock %}
+
+{% block title %}{{ title }}{% endblock %}
+{% block body_title %}{{ title }}{% endblock %}
+
+{% block scripts %}
+<script type="application/javascript" src="{% static 'streamwebs/js/data.js' %}"></script>
+{% endblock %}
+
 {% block content %}
-
-{% if user.is_authenticated %}
-    {% if added == True %}
-        <strong>debugging: success msg</strong>
-        <p>Display message about adding another sample?</p>
-    {% endif %}
-
-    <!-- Display errors, if any (should be improved/more CSS friendly) -->
-    <!-- {% for field in wq_form %}
-        {% if field.errors %}
-            <br>{{ field.label }}</br>
-            {% for error in field.errors %}
-                <br>...{{ error }}</br>
-            {% endfor %}
-        {% endif %}
-    {% endfor %}
-    {% for field in sample_formset %}
-        {% if field.errors %}
-            <br>{{ field.label }}</br>
-            {% for error in field.errors %}
-                <br>,,,{{ error }}</br>
-            {% endfor %}
-        {% endif %}
-    {% endfor %} -->
-
-
-    <form id="water_quality_form" action="" method="POST">
-        {% csrf_token %}
-        <table class="datasheet">
-        <tr><td><table>
-            <tr>
-                <td>
-                    {{ wq_form.site.label }}
-                    {% if wq_form.site.errors %}
-                        <!-- This should probably have a css class? -->
-                        <br>{{ wq_form.site.errors|striptags }}
-                    {% endif %}
-                    <br>{{ wq_form.site }}</br>
-                </td>
-                <td></td>
-                <td>
-                    {{ wq_form.DEQ_dq_level.label }}
-                    {% if wq_form.DEQ_dq_level.errors %}
-                        <!-- This should probably have a css class? -->
-                        <br>{{ wq_form.DEQ_dq_level.errors|striptags }}
-                    {% endif %}
-                    <br>{{ wq_form.DEQ_dq_level }}</br>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    {{ wq_form.school.label }}
-                    {% if wq_form.school.errors %}
-                        <!-- This should probably have a css class? -->
-                        <br>{{ wq_form.school.errors|striptags }}
-                    {% endif %}
-                    <br>{{ wq_form.school }}</br>
-                </td>
-                <td></td>
-                <td>
-                    {{ wq_form.date.label }}
-                    {% if wq_form.date.errors %}
-                        <!-- This should probably have a css class? -->
-                        <br>{{ wq_form.date.errors|striptags }}
-                    {% endif %}
-                    <br>{{ wq_form.date }}</br>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    {{ wq_form.latitude.label }}
-                    {% if wq_form.latitude.errors %}
-                        <!-- This should probably have a css class? -->
-                        <br>{{ wq_form.latitude.errors|striptags }}
-                    {% endif %}
-                    <br>{{ wq_form.latitude }}</br>
-                </td>
-                <td></td>
-                <td>
-                    {{ wq_form.longitude.label }}
-                    {% if wq_form.longitude.errors %}
-                        <!-- This should probably have a css class? -->
-                        <br>{{ wq_form.longitude.errors|striptags }}
-                    {% endif %}
-                    <br>{{ wq_form.longitude }}</br>
-                </td>
-            </tr>
-        </table></td></tr>
-        <tr><td><table>
-            <tr>
-                <td>
-                    {{ wq_form.fish_present.label }}
-                    {% if wq_form.fish_present.errors %}
-                        <!-- This should probably have a css class? -->
-                        <br>{{ wq_form.fish_present.errors|striptags }}
-                    {% endif %}
-                    <br>{{ wq_form.fish_present }}</br>
-                </td>
-                <td></td>
-                <td>
-                    {{ wq_form.live_fish.label }}
-                    {% if wq_form.live_fish.errors %}
-                        <!-- This should probably have a css class? -->
-                        <br>{{ wq_form.live_fish.errors|striptags }}
-                    {% endif %}
-                    <br>{{ wq_form.live_fish }}</br>
-                </td>
-                <td>
-                    {{ wq_form.dead_fish.label }}
-                    {% if wq_form.dead_fish.errors %}
-                        <!-- This should probably have a css class? -->
-                        <br>{{ wq_form.dead_fish.errors|striptags }}
-                    {% endif %}
-                    <br>{{ wq_form.dead_fish }}</br>
-                </td>
-            </tr>
-        </table></td></tr>
-        <tr><td><table>
-            <tr>
-                <td>
-                    {{ wq_form.water_temp_unit.label }}
-                    {% if wq_form.water_temp_unit.errors %}
-                        <!-- This should probably have a css class? -->
-                        <br>{{ wq_form.water_temp_unit.errors|striptags }}
-                    {% endif %}
-                    <br>{{ wq_form.water_temp_unit }}</br>
-                </td>
-                <td></td>
-                <td>
-                    {{ wq_form.air_temp_unit.label }}
-                    {% if wq_form.air_temp_unit.errors %}
-                        <!-- This should probably have a css class? -->
-                        <br>{{ wq_form.air_temp_unit.errors|striptags }}
-                    {% endif %}
-                    <br>{{ wq_form.air_temp_unit }}</br>
-                </td>
-            </tr>
-        </table></td></tr>
-        <tr><td><table>
-
-            <!-- formset section begins -->
-            {{ sample_formset.management_form }}
-            <!-- {{ formset.management_form }} -->
-
-            <tr>
-                <th></th>
-                <th>Sample 1</th>
-                <th>Sample 2</th>
-                <th>Sample 3</th>
-                <th>Sample 4</th>
-            </tr>
-            <tr>
-                {% for sample in sample_formset %}
-                    {% if forloop.first %}
-                        <td>{{sample.water_temperature.label}}</td>
-                    {% endif %}
-                    <td>
-                        {{ sample.water_temperature }}
-                        {% if sample.water_temp_tool.errors %}
-                            <!-- This should probably have a css class? -->
-                            <br>{{ sample.water_temp_tool.errors|striptags }}
-                        {% endif %}
-                        <br>{{sample.water_temp_tool}}<br>
-                    </td>
-                {% endfor %}
-            </tr>
-
-            <tr>
-                {% for sample in sample_formset %}
-                    {% if forloop.first %}
-                        <td>{{sample.air_temperature.label}}</td>
-                    {% endif %}
-                    <td>
-                        {{ sample.air_temperature }}
-                        {% if sample.air_temp_tool.errors %}
-                            <!-- This should probably have a css class? -->
-                            <br>{{ sample.air_temp_tool.errors|striptags }}
-                        {% endif %}
-                        <br>{{sample.air_temp_tool}}<br>
-                    </td>
-                {% endfor %}
-            </tr>
-
-            <tr>
-                {% for sample in sample_formset %}
-                    {% if forloop.first %}
-                        <td>{{sample.dissolved_oxygen.label}}</td>
-                    {% endif %}
-                    <td>
-                        {{ sample.dissolved_oxygen }}
-                        {% if sample.oxygen_tool.errors %}
-                            <!-- This should probably have a css class? -->
-                            <br>{{ sample.oxygen_tool.errors|striptags }}
-                        {% endif %}
-                        <br>{{sample.oxygen_tool}}<br>
-                    </td>
-                {% endfor %}
-            </tr>
-
-            <tr>
-                {% for sample in sample_formset %}
-                    {% if forloop.first %}
-                        <td>{{sample.pH.label}}</td>
-                    {% endif %}
-                    <td>
-                        {{ sample.pH }}
-                        {% if sample.pH_tool.errors %}
-                            <!-- This should probably have a css class? -->
-                            <br>{{ sample.pH_tool.errors|striptags }}
-                        {% endif %}
-                        <br>{{sample.pH_tool}}<br>
-                    </td>
-                {% endfor %}
-            </tr>
-
-            <tr>
-                {% for sample in sample_formset %}
-                    {% if forloop.first %}
-                        <td>{{sample.turbidity.label}}</td>
-                    {% endif %}
-                    <td>
-                        {{ sample.turbidity }}
-                        {% if sample.turbid_tool.errors %}
-                            <!-- This should probably have a css class? -->
-                            <br>{{ sample.turbid_tool.errors|striptags }}
-                        {% endif %}
-                        <br>{{sample.turbid_tool}}<br>
-                    </td>
-                {% endfor %}
-            </tr>
-
-            <tr>
-                {% for sample in sample_formset %}
-                    {% if forloop.first %}
-                        <td>{{sample.salinity.label}}</td>
-                    {% endif %}
-                    <td>
-                        {{ sample.salinity }}
-                        {% if sample.salt_tool.errors %}
-                            <!-- This should probably have a css class? -->
-                            <br>{{ sample.salt_tool.errors|striptags }}
-                        {% endif %}
-                        <br>{{sample.salt_tool}}<br>
-                    </td>
-                {% endfor %}
-            </tr>
-
-            <!-- lower section -->
-            <tr><td>Additional Parameters</td></tr>
-            <tr>
-                {% for sample in sample_formset %}
-                {% if forloop.first %}
-                    <td>{{sample.conductivity.label}}</td>
-                {% endif %}
-                    <td>{{sample.conductivity}}</td>
-                {% endfor %}
-            </tr>
-            <tr>
-                {% for sample in sample_formset %}
-                {% if forloop.first %}
-                    <td>{{sample.total_solids.label}}</td>
-                {% endif %}
-                    <td>{{sample.total_solids}}</td>
-                {% endfor %}
-            </tr>
-            <tr>
-                {% for sample in sample_formset %}
-                {% if forloop.first %}
-                    <td>{{sample.bod.label}}</td>
-                {% endif %}
-                    <td>{{sample.bod}}</td>
-                {% endfor %}
-            </tr>
-            <tr>
-                {% for sample in sample_formset %}
-                {% if forloop.first %}
-                    <td>{{sample.ammonia.label}}</td>
-                {% endif %}
-                    <td>{{sample.ammonia}}</td>
-                {% endfor %}
-            </tr>
-            <tr>
-                {% for sample in sample_formset %}
-                {% if forloop.first %}
-                    <td>{{sample.nitrite.label}}</td>
-                {% endif %}
-                    <td>{{sample.nitrite}}</td>
-                {% endfor %}
-            </tr>
-            <tr>
-                {% for sample in sample_formset %}
-                {% if forloop.first %}
-                    <td>{{sample.nitrate.label}}</td>
-                {% endif %}
-                    <td>{{sample.nitrate}}</td>
-                {% endfor %}
-            </tr>
-            <tr>
-                {% for sample in sample_formset %}
-                {% if forloop.first %}
-                    <td>{{sample.phosphates.label}}</td>
-                {% endif %}
-                    <td>{{sample.phosphates}}</td>
-                {% endfor %}
-            </tr>
-            <tr>
-                {% for sample in sample_formset %}
-                {% if forloop.first %}
-                    <td>{{sample.fecal_coliform.label}}</td>
-                {% endif %}
-                    <td>{{sample.fecal_coliform}}</td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>
-                    {{ wq_form.notes.label }}
-                    {% if wq_form.notes.errors %}
-                        <!-- This should probably have a css class? -->
-                        <br>{{ wq_form.notes.errors|striptags }}
-                    {% endif %}
-                </td>
-                <td colspan="4">{{ wq_form.notes }}</td>
-            </tr>
-            <tr>
-                {% if editable %}
-                    <!-- This should probably have a css class? -->
-                    <td><input type="submit" value="Submit" /></td>
-                {% endif %}
-            </tr>
-        </table></td></tr>
-    </table>
-    </form>
-{% else %}
+{% if not user.is_authenticated and editable %}
     <p>{% trans "You must be logged in to submit data." %}</p>
     <a href='/streamwebs/login/'>{% trans "Log in here." %}</a>
+{% else %}
+    {% if user.is_authenticated and added %}
+        <strong>Success!</strong>
+
+        <!-- Display errors, if any (should be improved/more CSS friendly) -->
+        <!-- {% for field in wq_form %}
+            {% if field.errors %}
+                <br>{{ field.label }}</br>
+                {% for error in field.errors %}
+                    <br>...{{ error }}</br>
+                {% endfor %}
+            {% endif %}
+        {% endfor %}
+        {% for field in sample_formset %}
+            {% if field.errors %}
+                <br>{{ field.label }}</br>
+                {% for error in field.errors %}
+                    <br>,,,{{ error }}</br>
+                {% endfor %}
+            {% endif %}
+        {% endfor %} -->
+    {% endif %}
+
+    <div class="container">
+        <form id="water_quality_form" action="" method="POST">
+            {% csrf_token %}
+            <div class="infogroup">
+                <div class="row">
+                    <div class="col s6">
+                        <div class="input-field">
+                            {{ wq_form.site.label }}
+
+                            <!-- TODO: Style errors -->
+                            {{ wq_form.site.errors | striptags }}
+                            {{ wq_form.site }}
+                        </div>
+                    </div>
+
+                    <div class="col s6">
+                        <div class="input-field">
+                            {{ wq_form.DEQ_dq_level.label }}
+
+                            {{ wq_form.DEQ_dq_level.errors | striptags }}
+                            {{ wq_form.DEQ_dq_level }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col s6">
+                        <div class="input-field">
+                            <label for="{{ wq_form.school.id_for_label }}">{{ wq_form.school.label }}</label>
+
+                            {{ wq_form.school.errors | striptags }}
+                            {{ wq_form.school }}
+                        </div>
+                    </div>
+                    <div class="col s6">
+                        <div class="input-field">
+                            <label for="{{ wq_form.date.id_for_label }}">{{ wq_form.date.label }}</label>
+
+                            {{ wq_form.date.errors | striptags }}
+                            {{ wq_form.date }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col s6">
+                        <div class="input-field">
+                            <label for="{{ wq_form.latitude.id_for_label }}">{{ wq_form.latitude.label }}</label>
+
+                            {{ wq_form.latitude.errors | striptags }}
+                            {{ wq_form.latitude }}
+                        </div>
+                    </div>
+
+                    <div class="col s6">
+                        <div class="input-field">
+                            <label for="{{ wq_form.longitude.id_for_label }}">{{ wq_form.longitude.label }}</label>
+
+                            {{ wq_form.longitude.errors | striptags }}
+                            {{ wq_form.longitude }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s4">
+                    <p>{{ wq_form.fish_present.label }}</p>
+                    {{ wq_form.fish_present.errors | striptags }}
+                    <div class="input-field">
+                        {% for radio in wq_form.fish_present %}
+                            {{ radio.tag }}
+                            <label for="{{ radio.id_for_label }}">{{ radio.choice_label }}</label>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="col s4">
+                    <p>{{ wq_form.live_fish.label }}</p>
+
+                    {{ wq_form.live_fish.errors | striptags }}
+                    {{ wq_form.live_fish }}
+                </div>
+
+                <div class="col s4">
+                    <p>{{ wq_form.dead_fish.label }}</p>
+
+                    {{ wq_form.dead_fish.errors | striptags }}
+                    {{ wq_form.dead_fish }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s6">
+                    <p>{{ wq_form.water_temp_unit.label }}</p>
+                    {{ wq_form.water_temp_unit.errors | striptags }}
+                    <div class="input-field">
+                        {% for radio in wq_form.water_temp_unit %}
+                            {{ radio.tag }}
+                            <label for="{{ radio.id_for_label }}">{{ radio.choice_label }}</label>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="col s6">
+                    <p>{{ wq_form.air_temp_unit.label }}</p>
+                    {{ wq_form.air_temp_unit.errors | striptags }}
+                    <div class="input-field">
+                        {% for radio in wq_form.air_temp_unit %}
+                            {{ radio.tag }}
+                            <label for="{{ radio.id_for_label }}">{{ radio.choice_label }}</label>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <table>
+                {{ sample_formset.management_form }}
+
+                <thead>
+                    <th data-field="test"></th>
+                    <th data-field="sample1">Sample 1</th>
+                    <th data-field="sample2">Sample 2</th>
+                    <th data-field="sample3">Sample 3</th>
+                    <th data-field="sample4">Sample 4</th>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        {% for sample in sample_formset %}
+                            {% if forloop.first %}
+                                <td>{{ sample.water_temperature.label }}</td>
+                            {% endif %}
+
+                            <td>
+                                <div class="input-field">{{ sample.water_temperature }}</div>
+                                {{ sample.water_temp_tool.errors | striptags }}
+
+                                {% for radio in sample.water_temp_tool %}
+                                    {{ radio.tag }}
+                                    <label for="{{ radio.id_for_label }}">{{ radio.choice_label }}</label>
+                                {% endfor %}
+                            </td>
+                        {% endfor %}
+                    </tr>
+
+                    <tr>
+                        {% for sample in sample_formset %}
+                            {% if forloop.first %}
+                                <td>{{ sample.air_temperature.label }}</td>
+                            {% endif %}
+
+                            <td>
+                                <div class="input-field">{{ sample.air_temperature }}</div>
+                                {{ sample.air_temp_tool.errors | striptags }}
+
+                                {% for radio in sample.air_temp_tool %}
+                                    {{ radio.tag }}
+                                    <label for="{{ radio.id_for_label }}">{{ radio.choice_label }}</label>
+                                {% endfor %}
+                            </td>
+                        {% endfor %}
+                    </tr>
+
+                    <tr>
+                        {% for sample in sample_formset %}
+                            {% if forloop.first %}
+                                <td>{{ sample.dissolved_oxygen.label }}</td>
+                            {% endif %}
+
+                            <td>
+                                <div class="input-field">{{ sample.dissolved_oxygen }}</div>
+                                {{ sample.oxygen_tool.errors | striptags }}
+
+                                {% for radio in sample.oxygen_tool %}
+                                    {{ radio.tag }}
+                                    <label for="{{ radio.id_for_label }}">{{ radio.choice_label }}</label>
+                                {% endfor %}
+                            </td>
+                        {% endfor %}
+                    </tr>
+
+                    <tr>
+                        {% for sample in sample_formset %}
+                            {% if forloop.first %}
+                                <td>{{ sample.pH.label }}</td>
+                            {% endif %}
+
+                            <td>
+                                <div class="input-field">{{ sample.pH }}</div>
+                                {{ sample.pH_tool.errors | striptags }}
+
+                                {% for radio in sample.pH_tool %}
+                                    {{ radio.tag }}
+                                    <label for="{{ radio.id_for_label }}">{{ radio.choice_label }}</label>
+                                {% endfor %}
+                            </td>
+                        {% endfor %}
+                    </tr>
+
+                    <tr>
+                        {% for sample in sample_formset %}
+                            {% if forloop.first %}
+                                <td>{{ sample.turbidity.label }}</td>
+                            {% endif %}
+
+                            <td>
+                                <div class="input-field">{{ sample.turbidity }}</div>
+                                {{ sample.turbid_tool.errors | striptags }}
+
+                                {% for radio in sample.turbid_tool %}
+                                    {{ radio.tag }}
+                                    <label for="{{ radio.id_for_label }}">{{ radio.choice_label }}</label>
+                                {% endfor %}
+                            </td>
+                        {% endfor %}
+                    </tr>
+
+                    <tr>
+                        {% for sample in sample_formset %}
+                            {% if forloop.first %}
+                                <td>{{ sample.salinity.label }}</td>
+                            {% endif %}
+
+                            <td>
+                                <div class="input-field">{{ sample.salinity }}</div>
+                                {{ sample.salt_tool.errors | striptags }}
+
+                                {% for radio in sample.salt_tool %}
+                                    {{ radio.tag }}
+                                    <label for="{{ radio.id_for_label }}">{{ radio.choice_label }}</label>
+                                {% endfor %}
+                            </td>
+                        {% endfor %}
+                    </tr>
+
+                    <tr class="collapse-btn">
+                        <th>Additional parameters <i class="material-icons">arrow_drop_down</i></th>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="collapse">
+                <table>
+                    <tr>
+                        {% for sample in sample_formset %}
+                            {% if forloop.first %}
+                                <td>{{ sample.conductivity.label }}</td>
+                            {% endif %}
+
+                            <td><div class="input-field">{{ sample.conductivity }}</div></td>
+                        {% endfor %}
+                    </tr>
+
+                    <tr>
+                        {% for sample in sample_formset %}
+                            {% if forloop.first %}
+                                <td>{{ sample.total_solids.label }}</td>
+                            {% endif %}
+
+                            <td><div class="input-field">{{ sample.total_solids }}</div></td>
+                        {% endfor %}
+                    </tr>
+
+                    <tr>
+                        {% for sample in sample_formset %}
+                            {% if forloop.first %}
+                                <td>{{ sample.bod.label }}</td>
+                            {% endif %}
+
+                            <td><div class="input-field">{{ sample.bod }}</div></td>
+                        {% endfor %}
+                    </tr>
+
+                    <tr>
+                        {% for sample in sample_formset %}
+                            {% if forloop.first %}
+                                <td>{{ sample.ammonia.label }}</td>
+                            {% endif %}
+
+                            <td><div class="input-field">{{ sample.ammonia }}</div></td>
+                        {% endfor %}
+                    </tr>
+
+                    <tr>
+                        {% for sample in sample_formset %}
+                            {% if forloop.first %}
+                                <td>{{ sample.nitrite.label }}</td>
+                            {% endif %}
+
+                            <td><div class="input-field">{{ sample.nitrite }}</div></td>
+                        {% endfor %}
+                    </tr>
+
+                    <tr>
+                        {% for sample in sample_formset %}
+                            {% if forloop.first %}
+                                <td>{{ sample.phosphates.label }}</td>
+                            {% endif %}
+
+                            <td><div class="input-field">{{ sample.phosphates }}</div></td>
+                        {% endfor %}
+                    </tr>
+
+                    <tr>
+                        {% for sample in sample_formset %}
+                            {% if forloop.first %}
+                                <td>{{ sample.fecal_coliform.label }}</td>
+                            {% endif %}
+
+                            <td><div class="input-field">{{ sample.fecal_coliform }}</div></td>
+                        {% endfor %}
+                    </tr>
+                </table>
+            </div>
+
+            <div class="input-field">
+                <label for="{{ wq_form.notes.id_for_label }}">{{ wq_form.notes.label }}</label>
+                {{ wq_form.notes.errors | striptags }}
+                {{ wq_form.notes }}
+            </div>
+
+            {% if user.is_authenticated and editable %}
+                <input class="waves-effect btn" type="submit" value="Submit">
+            {% endif %}
+        </form>
+    </div>
 {% endif %}
 {% endblock %}

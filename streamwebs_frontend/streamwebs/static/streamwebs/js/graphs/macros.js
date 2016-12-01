@@ -35,6 +35,7 @@ const changeRangeStart = function changeRangeStart() {
         date_range[0] = date;
     }
 
+    // Reload the graph with the new ranges.
     if ($('input[type=radio]:checked').val() == 'line') {
         useLineGraph();
     } else {
@@ -54,6 +55,7 @@ const changeRangeEnd = function changeRangeEnd() {
         date_range[1] = date;
     }
 
+    // Reload the graph with the new ranges.
     if ($('input[type=radio]:checked').val() == 'line') {
         useLineGraph();
     } else {
@@ -67,9 +69,10 @@ const useLineGraph = function useLineGraph() {
     $('.graph-header').show();
     outerContainer.find('.graph-header').hide();
 
-    data = JSON.parse(JSON.stringify(window.data_time)); // Copy the data so we don't change the original
+    // Copy the data so we don't change the original
+    data = JSON.parse(JSON.stringify(window.data_time));
 
-    const formatted = [];
+    let formatted = [];
 
     for (let key in data) {
         const date = parseInt(key, 10) * 1000; // Convert from seconds to millis
@@ -91,13 +94,126 @@ const useLineGraph = function useLineGraph() {
         formatted.push(data[key]);
     }
 
-    formatted.sort((a, b) => {
-        return a.date - b.date;
+    /*
+     * This section is a little confusing. What we want to do is take our data
+     * and reduce it down to an average per day for which we have data.
+     * So if we have 5 points on 2016-10-05, and 3 on 2016-10-19, we condense it
+     * to one point for 2016-10-05 that's the average of those 5, and one points
+     * for 2016-10-19 that's the average of those 3.
+     *
+     * So currently `formatted` looks like this:
+     *
+     * [
+     *   {
+     *     date: Date(...),
+     *     Sensitive: ...,
+     *     'Somewhat Sensitive': ...,
+     *     Tolerant: ...,
+     *     Total: ...,
+     *   },
+     *   {
+     *     ...
+     *   },
+     *   ...
+     * ]
+     */
+    formatted = formatted.map((x) => {
+      /*
+       * First we'll map the data to remove any extraneous values just in case,
+       * and to change the date to a string of just the date.
+       */
+      const key = x.date.toISOString().substring(0, 10);
+
+      return {
+        date: key,
+        Sensitive: x.Sensitive,
+        'Somewhat Sensitive': x['Somewhat Sensitive'],
+        Tolerant: x.Tolerant,
+        Total: x.Total,
+      };
+    }).reduce((prev, curr) => {
+      /*
+       * Next, we'll reduce it down to sums per day.
+       */
+
+      /*
+       * `data` here represents the existing data for the day we're looking at,
+       * if it exists. It contains all of the sums we've already calculated for
+       * this day, plus its own index in the list so we can find it later.
+       */
+      let data = prev.map((x, i) => { x['idx'] = i; return x; })
+                     .filter((x) => { return x.date === curr.date; });
+      if (data === [] || data.length === 0) {
+        /*
+         * If this is the first data point we've found for this day, then we'll
+         * add it as it is to the list. Also add a `count` value so we can
+         * calculate the average from the sums.
+         */
+        prev.push({
+          date: curr.date,
+          Sensitive: curr.Sensitive,
+          'Somewhat Sensitive': curr['Somewhat Sensitive'],
+          Tolerant: curr.Tolerant,
+          Total: curr.Total,
+          count: 1,
+        });
+      } else {
+        /*
+         * Data now holds the existing data for the day. It's technically a list
+         * of size one, so get the first element out. Now modify the list to add
+         * our new values to the existing ones, and to increment the count.
+         */
+        data = data[0];
+        prev[data.idx] = {
+          date: curr.date,
+          Sensitive: data.Sensitive + curr.Sensitive,
+          'Somewhat Sensitive': data['Somewhat Sensitive'] + curr['Somewhat Sensitive'],
+          Tolerant: data.Tolerant + curr.Tolerant,
+          Total: data.Total + curr.Total,
+          count: data.count + 1,
+        }
+      }
+      return prev;
+    }, []).map((value) => {
+      /*
+       * Now our list should look like this:
+       *
+       * [
+       *   {
+       *     date: '...',
+       *     Sensitive: ...,
+       *     'Somewhat Sensitive': ...,
+       *     Tolerant: ...,
+       *     Total: ...,
+       *     count: ...,
+       *     idx: 1,
+       *   },
+       *   {
+       *     ...
+       *   },
+       *   ...
+       * ]
+       *
+       * So, we mostly have the format we want. We just need to divide the sums
+       * by the count to get our averages, and filter the counts and indexes out
+       * of our data.
+       */
+      return {
+        date: value.date,
+        Sensitive: value.Sensitive / value.count,
+        'Somewhat Sensitive': value['Somewhat Sensitive'] / value.count,
+        Tolerant: value.Tolerant / value.count,
+        Total: value.Total / value.count,
+      };
     });
 
-    formatted.columns = ['date', 'Tolerant', 'Somewhat Sensitive', 'Sensitive', 'Total'];
+    formatted.sort((a, b) => {
+        return (a.date < b.date ? -1 : (a.date > b.date ? 1 : 0));
+    });
 
-    const types = formatted.columns.slice(1).map((name) => {
+    columns = ['date', 'Tolerant', 'Somewhat Sensitive', 'Sensitive', 'Total'];
+
+    const types = columns.slice(1).map((name) => {
         return {
             name: name,
             values: formatted.map((d) => {
@@ -107,13 +223,19 @@ const useLineGraph = function useLineGraph() {
     });
 
     const container = outerContainer;
-    const margin = {top: 20, right: 150, bottom: 30, left: 40};
-    const width = (container.width() * 0.5) - margin.left - margin.right;
+    const margin = {top: 20, right: 200, bottom: 30, left: 40};
+    const width = (container.width() * 0.7) - margin.left - margin.right;
     const height = 192 - margin.top - margin.bottom;
 
     const x = d3.scaleTime()
-        .domain(d3.extent(formatted, (d) => { return d.date }))
         .range([0, width]);
+
+    x.domain([
+      date_range[0] !== 0 ? new Date(date_range[0]) :
+        d3.min(formatted, (d) => { return new Date(d.date) }),
+      date_range[1] !== Number.MAX_SAFE_INTEGER ? new Date(date_range[1]) :
+        d3.max(formatted, (d) => { return new Date(d.date) }),
+    ]);
     const y = d3.scaleLinear()
         .domain([0,
             d3.max(types, (c) => {
@@ -126,8 +248,8 @@ const useLineGraph = function useLineGraph() {
         .range(['#869099', '#8c7853', '#007d4a', '#e24431']);
 
     const line = d3.line()
-        .curve(d3.curveBasis)
-        .x((d) => { return x(d.date) })
+        .curve(d3.curveLinear)
+        .x((d) => { return x(new Date(d.date)) })
         .y((d) => { return y(d.value) });
 
     const svg = d3.select('#graph-' + siteId).append('svg')
@@ -146,27 +268,55 @@ const useLineGraph = function useLineGraph() {
         .attr('class', 'axis axis--y')
         .call(d3.axisLeft(y));
 
-    const type = g.selectAll('.type')
-        .data(types)
-        .enter()
-    .append('g')
-        .attr('class', 'type');
+    if (formatted.length > 0) {
+      const type = g.selectAll('.type')
+          .data(types)
+          .enter()
+      .append('g')
+          .attr('class', 'type');
 
-    type.append('path')
-        .attr('class', 'line')
-        .attr('d', (d) => { return line(d.values) })
-        .style('stroke', (d) => { return z(d.name) });
+      type.append('path')
+          .attr('class', 'line')
+          .attr('d', (d) => { return line(d.values) })
+          .style('stroke', (d) => { return z(d.name) });
 
-    type.append('text')
-        .datum((d) => {
-            return {name: d.name, value: d.values[d.values.length - 1]}
-        })
-        .attr('x', (d) => {return x(d.value.date);})
-        .attr('y', (d,i) =>{return margin.top/5+10*i;})
-        .attr('text-anchor',"end")
-        .style('font', '12px sans-serif')
-        .style('fill', function(d){return z(d.name);})
-        .text((d) => { return d.name });
+      type.selectAll('dot')
+          .data((d) => {
+            return d.values.map((e) => { e['name'] = d.name; return e});
+          })
+        .enter().append('circle')
+          .attr('r', 3.5)
+          .attr('cx', (d) => {
+            return x(new Date(d.date))
+          })
+          .attr('cy', (d) => { return y(d.value)})
+          .style('stroke', (d) => { return z(d.name) })
+          .style('fill', (d) => { return z(d.name) })
+
+      const legend = g.selectAll('.legend')
+          .data(types)
+          .enter()
+      .append('g')
+          .attr('class', 'legend')
+          .attr('transform', (d,i) => {
+            return 'translate(' + (width + margin.left + 5) + ', ' + i*20 + ')';
+          })
+          .style('border', '1px solid black')
+          .style('font', '12px sans-serif');
+
+      legend.append('rect')
+          .attr('x', 2)
+          .attr('width', 18)
+          .attr('height', 2)
+          .attr('fill', (d) => { return z(d.name); });
+
+      legend.append('text')
+          .attr('x', 25)
+          .attr('dy', '.35em')
+          .attr('text-anchor', 'begin')
+          .attr('fill', (d) => { return z(d.name); })
+          .text((d) => { return d.name; });
+    }
 };
 
 const useBarGraph = function useBarGraph() {
@@ -175,7 +325,8 @@ const useBarGraph = function useBarGraph() {
     $('.graph-header').hide();
     outerContainer.find('.graph-header').show();
 
-    data = JSON.parse(JSON.stringify(window.data_summ)); // Copy the data so we don't change the original
+    // Copy the data so we don't change the original
+    data = JSON.parse(JSON.stringify(window.data_summ));
 
     const categories = {'tolerant': [], 'somewhat': [], 'sensitive': [], 'total': []};
 

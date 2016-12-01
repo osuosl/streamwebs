@@ -7,7 +7,6 @@ Pygments
 Sphinx
 argparse
 docutils
-django-pipeline
 mock
 pep8
 psycopg2

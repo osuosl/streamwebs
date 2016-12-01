@@ -45,8 +45,8 @@ class RetrieveSiteTestCase(TestCase):
             self.site, '2016-07-25', 'Test School', 'E', 45, 45, 'False', 0, 0,
             'Fahrenheit', 'Fahrenheit')  # NOQA
 
-        macro_sheet_1 = Macroinvertebrates.objects.create_macro(self.site)  # NOQA
-        macro_sheet_2 = Macroinvertebrates.objects.create_macro(self.site)  # NOQA
+        macro_sheet_1 = Macroinvertebrates.test_objects.create_macro(self.site)  # NOQA
+        macro_sheet_2 = Macroinvertebrates.test_objects.create_macro(self.site)  # NOQA
         macro_sheet_2.date_time = '2016-08-11 14:09'  # NOQA
 
         transect_sheet_1 = RiparianTransect.test_objects.create_transect(  # NOQA

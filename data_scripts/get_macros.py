@@ -7,12 +7,19 @@ import csv
 from django.core.wsgi import get_wsgi_application
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "streamwebs_frontend.settings")
-proj_path = "/opt/streamwebs/streamwebs_frontend/"
+proj_path = "../streamwebs_frontend/"
 sys.path.append(proj_path)
 application = get_wsgi_application()
 
 from streamwebs.models import Site  # NOQA
 from streamwebs.models import Macroinvertebrates  # NOQA
+
+
+if os.path.isdir("../streamwebs_frontend/sw_data/"):
+    datafile = '../sw_data/macros.csv'
+else:
+    datafile = '../csvs/macros.csv'
+
 
 # Site, school, Collected, Post date, Time spent, # of peeps,
 # Water Type (riffle/pool), caddisfly, mayfly, riffle beetle, stonefly,
@@ -20,7 +27,7 @@ from streamwebs.models import Macroinvertebrates  # NOQA
 # dragonfly, scud, fishfly, adlerfly, mite, aquatic worm, blackfly, leech,
 # midge, snail, mosquito
 
-with open('../csvs/macros.csv', 'r') as csvfile:
+with open(datafile, 'r') as csvfile:
     macroreader = csv.reader(csvfile)
     for row in macroreader:
         if row[0] != 'Stream/Site name':  # Skip the header
@@ -46,12 +53,11 @@ with open('../csvs/macros.csv', 'r') as csvfile:
 
             # Determine water/type here
             if row[6] == 'Riffle':
-                macros.riffle = True
+                macros.water_type = 'riff'
             elif row[6] == 'Pool':
-                macros.pool = True
+                macros.water_type = 'pool'
             else:
-                macros.riffle = False
-                macros.pool = False
+                macros.water_type = None
 
             for i in range(7, 28):
                 if row[i] == '':  # Convert '' -> 0
@@ -64,8 +70,6 @@ with open('../csvs/macros.csv', 'r') as csvfile:
             macros.stonefly = row[10]
             macros.water_penny = row[11]
             macros.dobsonfly = row[12]
-            for i in range(7, 12+1):
-                macros.sensitive_total += int(row[i])*3
 
             # Somewhat Sensitive
             macros.clam_or_mussel = row[13]
@@ -77,8 +81,6 @@ with open('../csvs/macros.csv', 'r') as csvfile:
             macros.fishfly = row[19]
             macros.alderfly = row[20]
             macros.mite = row[21]
-            for i in range(13, 21+1):
-                macros.somewhat_sensitive_total += int(row[i])*2
 
             # Tolerant
             macros.aquatic_worm = row[22]
@@ -87,8 +89,6 @@ with open('../csvs/macros.csv', 'r') as csvfile:
             macros.midge = row[25]
             macros.snail = row[26]
             macros.mosquito_larva = row[27]
-            for i in range(22, 27+1):
-                macros.tolerant_total += int(row[i])
 
             # Create the foreign key relation between datasheet and site
             site = Site.objects.get(site_name=row[0])
@@ -96,4 +96,4 @@ with open('../csvs/macros.csv', 'r') as csvfile:
 
             macros.save()
 
-print 'Data loaded.'
+print 'Macroinvertebrates loaded.'
