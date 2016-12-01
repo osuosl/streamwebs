@@ -54,32 +54,34 @@
                     </div>
                 </div>
     
+                <!-- Container so that radio buttons render vertically -->
                 <div class="container">
                     <div class="row">
                         <div class="col s3 pull-s1">
-                            <!--<h6 align=center>Landscape Position</h6>-->
                             <p>Landscape Position</p>
                             {{ soil_form.landscape_pos.errors| striptags }}
                             <div class="input-field">
                                 {% for radio in soil_form.landscape_pos %}
                                     {{ radio.tag }}
-                                    <label for="{{radio.id_for_label }}">{{radio.choice_label }}</label>
+                                    <label for="{{radio.id_for_label }}">
+                                        {{radio.choice_label }}
+                                    </label>
                                 {% endfor %}
                             </div>
                         </div>
-                        <div class="col s3 offset-s1">
-                            <!--<h6 align=center>Landscape Position</h6>-->
+                        <div class="col s3 push-s1">
                             <p>Cover Type</p>
                             {{ soil_form.cover_type.errors| striptags }}
                             <div class="input-field">
                                 {% for radio in soil_form.cover_type %}
                                     {{ radio.tag }}
-                                    <label for="{{radio.id_for_label }}">{{radio.choice_label }}</label>
+                                    <label for="{{radio.id_for_label }}">
+                                        {{radio.choice_label }}
+                                    </label>
                                 {% endfor %}
                             </div>
                         </div>
-                        <div class="col s3 offset-s2">
-                            <!--<h6 align=center>Landscape Position</h6>-->
+                        <div class="col s3 push-s3">
                             <p>Land Use</p>
                             {{ soil_form.land_use.errors| striptags }}
                             <div class="input-field">
@@ -92,7 +94,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> <!-- end middle container -->
 
                 <br />
                 <div class="row">
@@ -115,7 +117,9 @@
 
                 <div class="row">
                     <div class="input-field">
-                        <label for="{{ soil_form.site_char.id_for_label }}">{{soil_form.site_char.label }}</label>
+                        <label for="{{ soil_form.site_char.id_for_label }}">
+                            {{soil_form.site_char.label }}
+                        </label>
                         {{ soil_form.site_char.errors | striptags }}
                         {{ soil_form.site_char }}
                     </div>
@@ -128,8 +132,7 @@
         {% else %}
             <p>{% trans "You must be logged in to submit data." %}</p>
             <a href='/streamwebs/login/'>{% trans "Log in here." %}</a>
-    
         {% endif %}
-    </div> <!-- end container -->
+    </div>  <!-- end container -->
 
 {% endblock %}
