@@ -4,10 +4,6 @@
 {% load filters %}
 {% block title %}{% trans "Add/Edit Soil Survey" %}{% endblock %}
 
-{% block scripts %}
-<script type="application/javascript" src="{% static 'streamwebs/js/data.js' %}"></script>
-{% endblock %}
-
 {% block stylesheets %}
 <style>
   .material-icons {
@@ -135,4 +131,14 @@
         {% endif %}
     </div>  <!-- end container -->
 
+{% endblock %}
+
+{% block scripts %}
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
+    <script type="application/javascript" src="{% static 'streamwebs/js/data.js' %}"></script>
+    <script>
+    $('select').material_select();
+    </script>
 {% endblock %}
