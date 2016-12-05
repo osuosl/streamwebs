@@ -29,20 +29,6 @@
             <a href="#!" class="brand-logo center">{% block body_title %}Streamwebs{% endblock %}</a>
 
             {% include "streamwebs/navigation.html" %}
-
-            <ul class="right">
-                <li>
-                    <a href="#!" class="dropdown-button" data-activates="languages">
-                        {% for lang in LANGUAGES %}
-                            {% if lang.0 == LANGUAGE_CODE %}
-                                {{ lang.1 }}
-                            {% endif %}
-                        {% endfor %}
-
-                        <i class="material-icons right">arrow_drop_down</i>
-                    </a>
-                </li>
-            </ul>
         </div>
     </nav>
 
