@@ -47,7 +47,7 @@ class LoginTestCase(TestCase):
         )
         self.assertRedirects(
             response_bad_pass,
-            reverse('streamwebs:login'),
+            reverse('streamwebs:login') + '?next=',
             status_code=302,
             target_status_code=200
         )
@@ -62,7 +62,7 @@ class LoginTestCase(TestCase):
         )
         self.assertRedirects(
             response_bad_name,
-            reverse('streamwebs:login'),
+            reverse('streamwebs:login') + '?next=',
             status_code=302,
             target_status_code=200
         )
@@ -77,7 +77,7 @@ class LoginTestCase(TestCase):
         )
         self.assertRedirects(
             response_both_bad,
-            reverse('streamwebs:login'),
+            reverse('streamwebs:login') + '?next=',
             status_code=302,
             target_status_code=200
         )

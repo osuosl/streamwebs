@@ -1,6 +1,6 @@
 # coding=UTF-8
 from __future__ import print_function
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -175,10 +175,15 @@ def register(request):
 
 def user_login(request):
     redirect_to = request.POST.get('next', '')
+
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(username=username, password=password)
+
+        # if the user is valid, log them in and redirect to the page where they
+        # clicked "Login", or to home if they accessed login directly from the
+        # url
         if user:
             login(request, user)
             print("redirect_to is" + redirect_to)
@@ -186,9 +191,15 @@ def user_login(request):
                 return HttpResponseRedirect(redirect_to)
             else:
                 return redirect(reverse('streamwebs:index'))
+
+        # otherwise, if the user is invalid, flash a message and return them to
+        # login while remembering which page to redirect them to if they login
+        # successfully this time
         else:
             messages.error(request, 'Invalid username or password.')
-            return redirect(reverse('streamwebs:login'))
+            return redirect(reverse(
+                                'streamwebs:login') + '?next=' + redirect_to)
+
     else:
         return render(request, 'streamwebs/login.html')
 
@@ -262,6 +273,7 @@ def macroinvertebrate(request, site_slug, data_id):
     )
 
 
+@login_required
 def macroinvertebrate_edit(request, site_slug):
     """
     The view for the submission of a new macroinvertebrate data sheet.
