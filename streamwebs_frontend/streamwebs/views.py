@@ -336,6 +336,7 @@ def riparian_transect_view(request, site_slug, data_id):
         )
 
 
+@login_required
 def riparian_transect_edit(request, site_slug):
     """
     The view for the submission of a new riparian transect data sheet.

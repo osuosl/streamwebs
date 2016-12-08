@@ -98,5 +98,10 @@ class AddTransectTestCase(TestCase):
                 kwargs={'site_slug': site.site_slug}
             )
         )
-        self.assertContains(response, 'You must be logged in to submit data.')
-        self.assertEqual(response.status_code, 200)
+        self.assertRedirects(
+            response,
+            (reverse('streamwebs:login') + '?next=' +
+                reverse('streamwebs:riparian_transect_edit',
+                        kwargs={'site_slug': site.site_slug})),
+            status_code=302,
+            target_status_code=200)
