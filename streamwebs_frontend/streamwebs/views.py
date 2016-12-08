@@ -394,6 +394,7 @@ def canopy_cover_view(request, site_slug, data_id):
         )
 
 
+@login_required
 def canopy_cover_edit(request, site_slug):
     """
     The view for the submission of a new canopy cover data sheet.
