@@ -42,5 +42,7 @@ class CreateSiteTestCase(TestCase):
         self.client.logout()
         response = self.client.get(reverse('streamwebs:create_site'))
 
-        self.assertContains(response, 'You must be logged in to submit data.')
-        self.assertEqual(response.status_code, 200)
+        self.assertRedirects(
+            response, reverse('streamwebs:login') + '?next=' + reverse(
+                'streamwebs:create_site'), status_code=302,
+            target_status_code=200)

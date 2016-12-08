@@ -35,6 +35,7 @@ def index(request):
     return render(request, 'streamwebs/index.html', {})
 
 
+@login_required
 def create_site(request):
     created = False
 
