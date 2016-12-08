@@ -6,7 +6,6 @@
 {% block body_title %}{{ site.site_name }}{% endblock %}
 
 {% block content %}
-    {% if user.is_authenticated %}
         {% if updated %}
         <strong>{% trans 'You have successfully updated ' %}<a href="{% url 'streamwebs:site' site.site_slug %}">{{ site.site_name }}.</a></strong>
         
@@ -19,7 +18,4 @@
             <input type='submit' name='submit' value='{% trans 'Update site' %}'/>
         </form>
         {% endif %}
-    {% else %}
-    <strong>You must be logged in to edit a site.</strong>
-    {% endif %}
 {% endblock %}

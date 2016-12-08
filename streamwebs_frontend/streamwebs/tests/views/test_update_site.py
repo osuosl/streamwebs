@@ -59,10 +59,12 @@ class UpdateSiteTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_view_with_not_logged_in_user(self):
-        """Tests that the user can't update site if they're not logged in"""
+        """Tests that user is redirected to login if they're not logged in"""
         self.client.logout()
         response = self.client.get(reverse('streamwebs:update_site',
                                    kwargs={'site_slug': self.site.site_slug}))
-
-        self.assertContains(response, 'You must be logged in to edit a site.')
-        self.assertEqual(response.status_code, 200)
+        self.assertRedirects(
+            response, reverse('streamwebs:login') + '?next=' + reverse(
+                'streamwebs:update_site',
+                kwargs={'site_slug': self.site.site_slug}), status_code=302,
+            target_status_code=200)
