@@ -11,11 +11,11 @@
 {% endblock %}
 
 {% block content %}
-{% if not user.is_authenticated and editable %}
+{% if editable %}
     <p>{% trans "You must be logged in to submit data." %}</p>
     <a href='/streamwebs/login/'>{% trans "Log in here." %}</a>
 {% else %}
-    {% if user.is_authenticated and added %}
+    {% if added %}
         <strong>Success!</strong>
 
         <!-- Display errors, if any (should be improved/more CSS friendly) -->
@@ -359,7 +359,7 @@
                 {{ wq_form.notes }}
             </div>
 
-            {% if user.is_authenticated and editable %}
+            {% if editable %}
                 <input class="waves-effect btn" type="submit" value="Submit">
             {% endif %}
         </form>

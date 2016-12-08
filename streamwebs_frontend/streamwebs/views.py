@@ -648,6 +648,7 @@ def water_quality(request, site_slug, data_id):
     )
 
 
+@login_required
 def water_quality_edit(request, site_slug):
     """ Add a new water quality sample """
     added = False       # flag for the page to see if we added a sample
