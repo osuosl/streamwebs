@@ -67,7 +67,6 @@ class ViewPhotoPointTestCase(TestCase):
             response,
             'streamwebs/datasheets/photo_point_view.html'
         )
-        print(response)
         self.assertContains(response, "<form id='ppi_form'")
         self.assertTrue(response.context['added'])
         self.assertEqual(response.status_code, 200)
