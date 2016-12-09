@@ -1,3 +1,4 @@
+{% extends 'streamwebs/base.html' %}
 {% load staticfiles %}
 {% load i18n %}
 {% load filters %}
@@ -5,10 +6,6 @@
 {% block body_title %}{% trans "Add a new camera point" %}{% endblock %}
 {% block content %}
 
-    {% if added %}
-    <strong>{% trans "You have successfully added a new camera point." %}</strong>
-
-    {% else %}
     <form id='pp_monitoring_form' method='post', enctype='multipart/form-data'>
         {% csrf_token %}
         {{ camera_form.media }}
@@ -18,6 +15,5 @@
 
         <input type='submit', name='submit', value='Submit' />
     </form>
-    {% endif %}
 
 {% endblock %}

@@ -480,7 +480,6 @@ def camera_point_view(request, site_slug, cp_id):
 @login_required
 def add_camera_point(request, site_slug):
     """Add new CP to site + 3 PPs and respective photos"""
-    added = False
     site = Site.objects.get(site_slug=site_slug)
     camera = CameraPoint()
     PhotoPointInlineFormset = inlineformset_factory(  # photo point formset (3)
@@ -518,8 +517,13 @@ def add_camera_point(request, site_slug):
                                       date=ppi.date)
                 ppi.save()
 
-            added = True
+            messages.success(
+                request,
+                'You have successfully added a new camera point.')
 
+            return redirect(reverse('streamwebs:camera_point',
+                                    kwargs={'site_slug': site.site_slug,
+                                            'cp_id': camera.id}))
     else:
         camera_form = CameraPointForm()
         pp_formset = PhotoPointInlineFormset(instance=camera)
@@ -533,7 +537,6 @@ def add_camera_point(request, site_slug):
             'camera_form': camera_form,
             'pp_formset': pp_formset,
             'ppi_formset': ppi_formset,
-            'added': added,
             'site': site
         }
     )
@@ -592,7 +595,6 @@ def view_pp_and_add_img(request, site_slug, cp_id, pp_id):
 @login_required
 def add_photo_point(request, site_slug, cp_id):
     """Add new PP to existing CP + respective photo(s)"""
-    added = False
     site = Site.objects.get(site_slug=site_slug)
     cp = CameraPoint.objects.get(id=cp_id)
     photo_point = PhotoPoint()
@@ -619,7 +621,15 @@ def add_photo_point(request, site_slug, cp_id):
                 ppi.photo_point = photo_point
                 ppi.save()
 
-            added = True
+            messages.success(
+                request,
+                'You have successfully added a new camera point.')
+
+            return redirect(reverse('streamwebs:photo_point',
+                                    kwargs={'site_slug': site.site_slug,
+                                            'cp_id': cp.id,
+                                            'pp_id': photo_point.id}))
+
     else:
         pp_form = PhotoPointForm()
         ppi_formset = PPImageInlineFormset(instance=photo_point)
@@ -631,7 +641,6 @@ def add_photo_point(request, site_slug, cp_id):
             'cp': cp,
             'pp_form': pp_form,
             'ppi_formset': ppi_formset,
-            'added': added,
         }
     )
 

@@ -5,17 +5,11 @@
 {% block title %}{% trans "New photo point" %}{% endblock %}
 {% block body_title %}{% trans "Add a new photo point for camera point" %}{% endblock %}
 {% block content %}
-
-    {% if added %}
-    <strong>{% trans "You have successfully added a new photo point" %}</strong>
-
-    {% else %}
     <form id='pp_form' method='post', enctype='multipart/form-data'>
         {% csrf_token %}
         {{ pp_form.as_p }}
         {{ ppi_formset.as_p }}
         <input type='submit', name='submit', value='Submit' />
     </form>
-    {% endif %}
 
 {% endblock %}
