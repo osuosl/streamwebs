@@ -389,7 +389,7 @@ def riparian_transect_edit(request, site_slug):
 
 def canopy_cover_view(request, site_slug, data_id):
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
-    canopy_cover = Canopy_Cover.objects.filter(site_id=site.id).get(id=data_id)
+    canopy_cover = Canopy_Cover.objects.get(id=data_id)
     cardinals = CC_Cardinal.objects.filter(canopy_cover_id=canopy_cover)
 
     return render(
@@ -406,7 +406,6 @@ def canopy_cover_edit(request, site_slug):
     """
     The view for the submission of a new canopy cover data sheet.
     """
-    added = False
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     canopy_cover = Canopy_Cover()
     CardinalInlineFormSet = inlineformset_factory(
@@ -434,7 +433,14 @@ def canopy_cover_edit(request, site_slug):
                 cardinal.canopy_cover = canopy_cover
                 cardinal.save()
 
-            added = True
+            messages.success(
+                request,
+                'You have successfully added a new canopy cover ' +
+                'data sheet.')
+
+            return redirect(reverse('streamwebs:canopy_cover',
+                                    kwargs={'site_slug': site.site_slug,
+                                            'data_id': canopy_cover.id}))
 
     else:
         cardinal_formset = CardinalInlineFormSet(instance=canopy_cover)
@@ -445,7 +451,7 @@ def canopy_cover_edit(request, site_slug):
         'streamwebs/datasheets/canopy_cover_edit.html', {
             'canopy_cover_form': canopy_cover_form,
             'cardinal_formset': cardinal_formset,
-            'added': added, 'site': site
+            'site': site
         }
     )
 

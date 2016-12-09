@@ -1,7 +1,7 @@
 from django.test import Client, TestCase
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
-from streamwebs.models import Site, School
+from streamwebs.models import Site, School, Canopy_Cover
 
 
 class AddCanopyCoverTestCase(TestCase):
@@ -30,7 +30,10 @@ class AddCanopyCoverTestCase(TestCase):
         self.assertFormError(
             response, 'canopy_cover_form', 'school', 'This field is required.'
         )
-        self.assertFalse(response.context['added'])
+        self.assertTemplateUsed(
+            response,
+            'streamwebs/datasheets/canopy_cover_edit.html'
+        )
 
     def test_view_with_good_data(self):
         """
@@ -164,12 +167,19 @@ class AddCanopyCoverTestCase(TestCase):
                 'est_canopy_cover': 49
                }
         )
-        self.assertTemplateUsed(
+        self.assertTemplateNotUsed(
             response,
             'streamwebs/datasheets/canopy_cover_edit.html'
         )
-        self.assertTrue(response.context['added'])
-        self.assertEqual(response.status_code, 200)
+
+        self.assertRedirects(
+            response,
+            reverse('streamwebs:canopy_cover',
+                    kwargs={'site_slug': site.site_slug,
+                            'data_id': Canopy_Cover.objects.last().id}
+                    ),
+            status_code=302,
+            target_status_code=200)
 
     def test_view_with_not_logged_in_user(self):
         """
@@ -183,6 +193,11 @@ class AddCanopyCoverTestCase(TestCase):
                 kwargs={'site_slug': site.site_slug}
             )
         )
+        self.assertTemplateNotUsed(
+            response,
+            'streamwebs/datasheets/canopy_cover_edit.html'
+        )
+
         self.assertRedirects(
             response,
             (reverse('streamwebs:login') + '?next=' +
