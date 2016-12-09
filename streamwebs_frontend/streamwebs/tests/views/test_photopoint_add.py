@@ -80,5 +80,12 @@ class AddPhotoPointTestCase(TestCase):
             reverse('streamwebs:photo_point_add',
                     kwargs={'site_slug': self.cp.site.site_slug,
                             'cp_id': self.cp.id}))
-        self.assertContains(response, 'You must be logged in to submit data.')
-        self.assertEqual(response.status_code, 200)
+
+        self.assertRedirects(
+            response,
+            (reverse('streamwebs:login') + '?next=' +
+                reverse('streamwebs:photo_point_add',
+                        kwargs={'site_slug': self.cp.site.site_slug,
+                                'cp_id': self.cp.id})),
+            status_code=302,
+            target_status_code=200)

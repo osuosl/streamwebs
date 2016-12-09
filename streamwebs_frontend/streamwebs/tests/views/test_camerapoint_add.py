@@ -109,5 +109,11 @@ class AddCameraPointTestCase(TestCase):
         response = self.client.get(
             reverse('streamwebs:camera_point_add',
                     kwargs={'site_slug': site.site_slug}))
-        self.assertContains(response, 'You must be logged in to submit data.')
-        self.assertEqual(response.status_code, 200)
+
+        self.assertRedirects(
+            response,
+            (reverse('streamwebs:login') + '?next=' +
+                reverse('streamwebs:camera_point_add',
+                        kwargs={'site_slug': site.site_slug})),
+            status_code=302,
+            target_status_code=200)

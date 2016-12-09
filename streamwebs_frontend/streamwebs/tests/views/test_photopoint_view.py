@@ -1,5 +1,6 @@
 from django.test import Client, TestCase
 from django.core.urlresolvers import reverse
+from django.contrib.auth.models import User
 from streamwebs.models import Site, PhotoPointImage, PhotoPoint, CameraPoint
 from streamwebs.util.temp_img import get_temporary_image
 
@@ -7,9 +8,16 @@ from streamwebs.util.temp_img import get_temporary_image
 class ViewPhotoPointTestCase(TestCase):
     def setUp(self):
         self.client = Client()
+
+        self.user = User.objects.create_user('john', 'john@example.com',
+                                             'johnpassword')
+        self.client.login(username='john', password='johnpassword')
+
         site = Site.test_objects.create_site('Paradise')
+
         cp = CameraPoint.test_objects.create_camera_point(
             site, '2016-08-13', 'POINT(-121.3846841 44.0612385)')
+
         self.pp = PhotoPoint.test_objects.create_photo_point(
             cp, '2016-08-13', 93, 6, 5)
 
@@ -36,6 +44,7 @@ class ViewPhotoPointTestCase(TestCase):
         self.assertContains(response, 93)
         self.assertContains(response, 6)
         self.assertContains(response, 5)
+        self.assertContains(response, "<form id='ppi_form'")
 
     def test_submit_new_photo(self):
         img = get_temporary_image()
@@ -58,6 +67,8 @@ class ViewPhotoPointTestCase(TestCase):
             response,
             'streamwebs/datasheets/photo_point_view.html'
         )
+        print(response)
+        self.assertContains(response, "<form id='ppi_form'")
         self.assertTrue(response.context['added'])
         self.assertEqual(response.status_code, 200)
 
@@ -79,6 +90,7 @@ class ViewPhotoPointTestCase(TestCase):
                     }
         )
         self.assertFalse(response.context['added'])
+        self.assertContains(response, "<form id='ppi_form'")
 
     def test_view_with_not_logged_in_user(self):
         """If not logged in, user can't view data entry"""
@@ -89,5 +101,7 @@ class ViewPhotoPointTestCase(TestCase):
                             'cp_id': self.pp.camera_point.id,
                             'pp_id': self.pp.id}))
 
-        self.assertContains(response, 'You must be logged in to submit data.')
+        self.assertContains(response,
+                            'Log in to add photos for this photo point.')
+        self.assertNotContains(response, "<form id='ppi_form'")
         self.assertEqual(response.status_code, 200)

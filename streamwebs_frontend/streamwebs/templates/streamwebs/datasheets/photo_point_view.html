@@ -37,7 +37,7 @@
         </form>
 
     {% else %}
-    <p>You must be logged in to submit data.</p>
+    <a href="{% url 'streamwebs:login' %}?next={{ request.path }}">Log in to add photos for this photo point.</a>
     {% endif %}
 </div>
 {% endblock %}

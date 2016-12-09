@@ -465,6 +465,7 @@ def camera_point_view(request, site_slug, cp_id):
     )
 
 
+@login_required
 def add_camera_point(request, site_slug):
     """Add new CP to site + 3 PPs and respective photos"""
     added = False
@@ -576,6 +577,7 @@ def view_pp_and_add_img(request, site_slug, cp_id, pp_id):
     )
 
 
+@login_required
 def add_photo_point(request, site_slug, cp_id):
     """Add new PP to existing CP + respective photo(s)"""
     added = False
