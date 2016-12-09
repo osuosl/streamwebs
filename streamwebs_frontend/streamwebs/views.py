@@ -655,7 +655,6 @@ def water_quality(request, site_slug, data_id):
 @login_required
 def water_quality_edit(request, site_slug):
     """ Add a new water quality sample """
-    added = False       # flag for the page to see if we added a sample
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     WQInlineFormSet = inlineformset_factory(
         Water_Quality, WQ_Sample,
@@ -677,10 +676,14 @@ def water_quality_edit(request, site_slug):
             for sample in allSamples:
                 sample.water_quality = water_quality
                 sample.save()
-            added = True
-            # ugly way of resetting the form if successful form submission
-            wq_form = WQForm()
-            sample_formset = WQInlineFormSet(instance=Water_Quality())
+            messages.success(
+                request,
+                'You have successfully added a new water quality ' +
+                'data sheet.')
+            return redirect(reverse('streamwebs:water_quality',
+                            kwargs={'site_slug': site.site_slug,
+                                    'data_id': water_quality.id}))
+
     else:
         # blank forms for normal page render
         wq_form = WQForm()
@@ -689,7 +692,6 @@ def water_quality_edit(request, site_slug):
         request, 'streamwebs/datasheets/water_quality.html',
         {
             'editable': True,
-            'added': added,
             'site': site,
             'wq_form': wq_form,
             'sample_formset': sample_formset,
