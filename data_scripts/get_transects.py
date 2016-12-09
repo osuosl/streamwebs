@@ -30,24 +30,27 @@ with open(transects, 'r') as csvfile:
     reader = csv.reader(csvfile)
     for row in reader:
         if row[0] != 'Nid':  # Skip the header
-            transect = RiparianTransect()
-
             if row[3] == '':
                 row[3] = None
 
             # Strip ``Collected date`` so that's in the correct format
-            dt = row[1].strip('MonTuesWdhurFiSat(Aly), ')
-            transect.date_time = dt
+            date_time = row[1].strip('MonTuesWdhurFiSat(Aly), ')
 
-            transect.slope = row[3]
-            transect.notes = row[4]
-            transect.nid = row[0]
+            slope = row[3]
+            notes = row[4]
+            nid = row[0]
 
             # Create the foreign key relation between datasheet and site
             site = Site.objects.get(site_name=row[2])
-            transect.site_id = site.id
+            site_id = site.id
 
-            transect.save()
+            # For some reason, the last datasheet keeps being duplicated?
+            # So check to make sure it doesn't exist before creating obj
+            if not RiparianTransect.objects.filter(nid=nid).exists():
+                transect = RiparianTransect.objects.create(
+                    date_time=date_time, slope=slope, notes=notes, nid=nid,
+                    site_id=site_id
+                )
 
 csvfile.close()
 print 'Riparian Transects loaded.'
@@ -61,23 +64,26 @@ with open(zones, 'r') as csvfile:
     reader = csv.reader(csvfile)
     for row in reader:
         if row[0] != 'Nid':
-            zone = TransectZone()
+            #zone = TransectZone()
 
             for i in range(1, 5):
                 if row[i] == '':
                     row[i] = None
 
-            zone.zone_num = 1
-            zone.conifers = row[1]
-            zone.hardwoods = row[2]
-            zone.shrubs = row[3]
-            zone.comments = row[4]
+            zone_num = 1
+            conifers = row[1]
+            hardwoods = row[2]
+            shrubs = row[3]
+            comments = row[4]
 
             # Create the foreign key relation between datasheet and site
             rip_transect = RiparianTransect.objects.get(nid=row[0])
-            zone.transect_id = rip_transect.id
+            transect_id = rip_transect.id
 
-            zone.save()
+            zone = TransectZone.objects.update_or_create(
+                zone_num=zone_num, conifers=conifers, hardwoods=hardwoods,
+                shrubs=shrubs, comments=comments, transect_id=transect_id
+            )
 
 csvfile.close()
 print 'Zone 1 loaded.'
@@ -86,23 +92,24 @@ with open(zones, 'r') as csvfile:
     reader = csv.reader(csvfile)
     for row in reader:
         if row[0] != 'Nid':
-            zone = TransectZone()
-
             for i in range(5, 9):
                 if row[i] == '':
                     row[i] = None
 
-            zone.zone_num = 2
-            zone.conifers = row[5]
-            zone.hardwoods = row[6]
-            zone.shrubs = row[7]
-            zone.comments = row[8]
+            zone_num = 2
+            conifers = row[5]
+            hardwoods = row[6]
+            shrubs = row[7]
+            comments = row[8]
 
             # Create the foreign key relation between datasheet and site
             rip_transect = RiparianTransect.objects.get(nid=row[0])
-            zone.transect_id = rip_transect.id
+            transect_id = rip_transect.id
 
-            zone.save()
+            zone = TransectZone.objects.update_or_create(
+                zone_num=zone_num, conifers=conifers, hardwoods=hardwoods,
+                shrubs=shrubs, comments=comments, transect_id=transect_id
+            )
 
 csvfile.close()
 print 'Zone 2 loaded.'
@@ -111,23 +118,24 @@ with open(zones, 'r') as csvfile:
     reader = csv.reader(csvfile)
     for row in reader:
         if row[0] != 'Nid':
-            zone = TransectZone()
-
             for i in range(9, 13):
                 if row[i] == '':
                     row[i] = None
 
-            zone.zone_num = 3
-            zone.conifers = row[9]
-            zone.hardwoods = row[10]
-            zone.shrubs = row[11]
-            zone.comments = row[12]
+            zone_num = 3
+            conifers = row[9]
+            hardwoods = row[10]
+            shrubs = row[11]
+            comments = row[12]
 
             # Create the foreign key relation between datasheet and site
             rip_transect = RiparianTransect.objects.get(nid=row[0])
-            zone.transect_id = rip_transect.id
+            transect_id = rip_transect.id
 
-            zone.save()
+            zone = TransectZone.objects.update_or_create(
+                zone_num=zone_num, conifers=conifers, hardwoods=hardwoods,
+                shrubs=shrubs, comments=comments, transect_id=transect_id
+            )
 
 csvfile.close()
 print 'Zone 3 loaded.'
@@ -136,23 +144,24 @@ with open(zones, 'r') as csvfile:
     reader = csv.reader(csvfile)
     for row in reader:
         if row[0] != 'Nid':
-            zone = TransectZone()
-
             for i in range(13, 17):
                 if row[i] == '':
                     row[i] = None
 
-            zone.zone_num = 4
-            zone.conifers = row[13]
-            zone.hardwoods = row[14]
-            zone.shrubs = row[15]
-            zone.comments = row[16]
+            zone_num = 4
+            conifers = row[13]
+            hardwoods = row[14]
+            shrubs = row[15]
+            comments = row[16]
 
             # Create the foreign key relation between datasheet and site
             rip_transect = RiparianTransect.objects.get(nid=row[0])
-            zone.transect_id = rip_transect.id
+            transect_id = rip_transect.id
 
-            zone.save()
+            zone = TransectZone.objects.update_or_create(
+                zone_num=zone_num, conifers=conifers, hardwoods=hardwoods,
+                shrubs=shrubs, comments=comments, transect_id=transect_id
+            )
 
 csvfile.close()
 print 'Zone 4 loaded.'
@@ -161,23 +170,24 @@ with open(zones, 'r') as csvfile:
     reader = csv.reader(csvfile)
     for row in reader:
         if row[0] != 'Nid':
-            zone = TransectZone()
-
             for i in range(17, 21):
                 if row[i] == '':
                     row[i] = None
 
-            zone.zone_num = 5
-            zone.conifers = row[17]
-            zone.hardwoods = row[18]
-            zone.shrubs = row[19]
-            zone.comments = row[20]
+            zone_num = 5
+            conifers = row[17]
+            hardwoods = row[18]
+            shrubs = row[19]
+            comments = row[20]
 
             # Create the foreign key relation between datasheet and site
             rip_transect = RiparianTransect.objects.get(nid=row[0])
-            zone.transect_id = rip_transect.id
+            transect_id = rip_transect.id
 
-            zone.save()
+            zone = TransectZone.objects.update_or_create(
+                zone_num=zone_num, conifers=conifers, hardwoods=hardwoods,
+                shrubs=shrubs, comments=comments, transect_id=transect_id
+            )
 
 csvfile.close()
 print 'Zone 5 loaded.'
