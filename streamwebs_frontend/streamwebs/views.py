@@ -95,7 +95,6 @@ def site(request, site_slug):
 
 @login_required
 def update_site(request, site_slug):
-    updated = False
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     temp = copy.copy(site)
 
@@ -111,7 +110,10 @@ def update_site(request, site_slug):
                 site.modified = timezone.now()
                 site.save()
 
-            updated = True
+            messages.success(request, 'You have successfully updated ' +
+                             site.site_name + '.')
+            return redirect(reverse('streamwebs:site',
+                                    kwargs={'site_slug': site.site_slug}))
 
     else:
         site_form = SiteForm(initial={'site_name': site.site_name,
@@ -123,7 +125,6 @@ def update_site(request, site_slug):
         'site': site,
         'site_form': site_form,
         'modified_time': site.modified,
-        'updated': updated
     })
 
 
