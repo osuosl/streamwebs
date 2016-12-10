@@ -188,7 +188,6 @@ def user_login(request):
         # url
         if user:
             login(request, user)
-            print("redirect_to is" + redirect_to)
             if redirect_to != '':
                 return HttpResponseRedirect(redirect_to)
             else:
