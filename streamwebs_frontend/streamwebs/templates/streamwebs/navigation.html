@@ -15,25 +15,29 @@
   <nav class="cyan">
     <div class="nav-wrapper">
       <!--<a href="#!" class="brand-logo center">{% block body_title %}Streamwebs{% endblock %}</a>-->
+      <ul class="left">
+          <li>
+              <a href="#!" class="dropdown-button" data-activates="languages">
+                  {% for lang in LANGUAGES %}
+                      {% if lang.0 == LANGUAGE_CODE %}
+                          {{ lang.1 }}
+                      {% endif %}
+                  {% endfor %}
+                  <i class="material-icons right">arrow_drop_down</i>
+              </a>
+          </li>
+      </ul>
+
       <ul class="right">
         <li><a href="{% url 'streamwebs:sites' %}">Sites</a></li>
         <li><a href="{% url 'streamwebs:index' %}">Resources</a></li>
+
         {% if user.is_authenticated %}
             <li><a href="{% url 'streamwebs:logout' %}">Logout</a></li>
         {% else %}
             <li><a href="{% url 'streamwebs:login' %}">Login</a></li>
             <li><a href="{% url 'streamwebs:register' %}">Create Account</a></li>
         {% endif %}
-        <!--<li>
-            <a href="#!" class="dropdown-button" data-activates="languages">
-                {% for lang in LANGUAGES %}
-                    {% if lang.0 == LANGUAGE_CODE %}
-                        {{ lang.1 }}
-                    {% endif %}
-                {% endfor %}
-                <i class="material-icons right">arrow_drop_down</i>
-            </a>
-        </li>-->
       </ul>
     </div>
   </nav>
