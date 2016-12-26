@@ -231,8 +231,9 @@ class Water_Quality(models.Model):
         max_length=10, choices=DEQ_DQ_CHOICES,
         default=None, null=True, verbose_name=_('DEQ data quality level')
     )
-    school = models.CharField(
-        max_length=250, null=True, verbose_name=_('school')
+    school = models.ForeignKey(
+        School, null=True, on_delete=models.CASCADE,
+        verbose_name=_('school'), limit_choices_to={'active': True}
     )
     latitude = models.DecimalField(
         null=True, max_digits=9, decimal_places=6,
