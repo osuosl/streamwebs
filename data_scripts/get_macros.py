@@ -92,7 +92,7 @@ with open(datafile, 'r') as csvfile:
             site = Site.objects.get(site_name=row[0])
             site_id = site.id
 
-            #macros.save()
+            # Create new macro entry if it DNE
             macros = Macroinvertebrates.objects.update_or_create(
                 date_time=date_time, time_spent=time_spent,
                 num_people=num_people, water_type=water_type,

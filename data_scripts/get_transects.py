@@ -64,8 +64,7 @@ with open(zones, 'r') as csvfile:
     reader = csv.reader(csvfile)
     for row in reader:
         if row[0] != 'Nid':
-            #zone = TransectZone()
-
+            # Set entry == None if value is not listed in csv
             for i in range(1, 5):
                 if row[i] == '':
                     row[i] = None

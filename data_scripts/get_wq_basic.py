@@ -53,13 +53,10 @@ with open(datafile, 'r') as csvfile:
             school = row[3]   # TODO: Figure out corr. schools
 
             if row[4] == 'Yes':
-                #waterq.fish_present = True
                 fish_present = True
             elif row[4] == 'No':
-                #waterq.fish_present = False
                 fish_present = False
             else:
-                #waterq.fish_present = row[4]
                 fish_present = row[4]
 
             live_fish = row[5]
