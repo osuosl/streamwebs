@@ -1,7 +1,7 @@
 from django.test import Client, TestCase
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
-from streamwebs.models import Site
+from streamwebs.models import Site, School
 
 
 class AddWaterQualityTestCase(TestCase):
@@ -42,6 +42,7 @@ class AddWaterQualityTestCase(TestCase):
         appropriately, the user should see a success message
         """
         site = Site.test_objects.create_site('Site Name')
+        school = School.test_objects.create_school('Somewhere Cool')
         response = self.client.post(
             reverse(
                 'streamwebs:water_quality_edit',
@@ -58,7 +59,7 @@ class AddWaterQualityTestCase(TestCase):
                 'live_fish': 5,
                 'longitude': 50,
                 'notes': u"Call your mom on Mother's Day!",
-                'school': u'Somewhere Cool',
+                'school': school.id,
                 'site': site.id,
                 'water_quality-0-air_temp_tool': u'Manual',
                 'water_quality-0-air_temperature': u'2',

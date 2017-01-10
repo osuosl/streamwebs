@@ -1,7 +1,7 @@
 from django.test import Client, TestCase
 from django.core.urlresolvers import reverse
 from streamwebs.models import (Site, Water_Quality, Macroinvertebrates,
-                               RiparianTransect)
+                               RiparianTransect, School)
 import tempfile
 
 
@@ -16,6 +16,8 @@ class RetrieveSiteTestCase(TestCase):
         self.site = Site.test_objects.create_site('Test Site', location,
                                                   'Test site description',
                                                   image)
+
+        self.school = School.test_objects.create_school('Test School')
 
         self.response = self.client.get(reverse(
             'streamwebs:site', kwargs={'site_slug': self.site.site_slug}))
@@ -39,10 +41,10 @@ class RetrieveSiteTestCase(TestCase):
     def test_site_view_with_sheets(self):
         """Tests that site displays sheet links if sheets exist"""
         wq_sheet_1 = Water_Quality.test_objects.create_water_quality(  # NOQA
-            self.site, '2016-08-25', 'Test School', 'E', 45, 45, 'False', 0, 0,  # NOQA
+            self.site, '2016-08-25', self.school, 'E', 45, 45, 'False', 0, 0,
             'Fahrenheit', 'Fahrenheit')  # NOQA
         wq_sheet_2 = Water_Quality.test_objects.create_water_quality(  # NOQA
-            self.site, '2016-07-25', 'Test School', 'E', 45, 45, 'False', 0, 0,
+            self.site, '2016-07-25', self.school, 'E', 45, 45, 'False', 0, 0,
             'Fahrenheit', 'Fahrenheit')  # NOQA
 
         macro_sheet_1 = Macroinvertebrates.test_objects.create_macro(self.site)  # NOQA

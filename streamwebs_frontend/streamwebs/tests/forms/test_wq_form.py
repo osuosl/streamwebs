@@ -1,6 +1,6 @@
 from django.test import TestCase
 from streamwebs.forms import WQForm, WQSampleForm
-from streamwebs.models import Site
+from streamwebs.models import Site, School
 
 
 class WQFormTestCase(TestCase):
@@ -38,6 +38,7 @@ class WQFormTestCase(TestCase):
 
     def test_WQForm_isValid(self):
         site = Site.test_objects.create_site('Site Name')
+        school = School.test_objects.create_school('Somewhere Cool')
         good_data = {
             'DEQ_dq_level': u'A',
             'air_temp_unit': u'Fahrenheit',
@@ -50,7 +51,7 @@ class WQFormTestCase(TestCase):
             'live_fish': 5,
             'longitude': 120,
             'notes': u"Call your mom on Mother's Day!",
-            'school': u'Somewhere Cool',
+            'school': school.id,
             'site': site.id
         }
         form = WQForm(data=good_data)

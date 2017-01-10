@@ -100,7 +100,7 @@ class WaterQualityTestCase(TestCase):
 
     def test_wq_creation_opt_fields(self):
         wq = Water_Quality.test_objects.create_water_quality(
-            self.site, '2016-08-04', 'a', 'A', 90, 123, True, 4, 5,
+            self.site, '2016-08-04', self.school, 'A', 90, 123, True, 4, 5,
             'Fahrenheit', 'Fahrenheit', 'Notes on wq'
         )
         # required
