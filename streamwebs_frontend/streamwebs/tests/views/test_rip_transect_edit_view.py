@@ -1,7 +1,7 @@
 from django.test import Client, TestCase
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
-from streamwebs.models import Site
+from streamwebs.models import Site, School
 
 
 class AddTransectTestCase(TestCase):
@@ -10,6 +10,7 @@ class AddTransectTestCase(TestCase):
         self.user = User.objects.create_user('john', 'john@example.com',
                                              'johnpassword')
         self.client.login(username='john', password='johnpassword')
+        self.school = School.test_objects.create_school('Test School')
 
     def test_view_with_bad_blank_data(self):
         """
@@ -41,7 +42,7 @@ class AddTransectTestCase(TestCase):
                 'streamwebs:riparian_transect_edit',
                 kwargs={'site_slug': site.site_slug}
             ), {
-                    'school': 'School of cool',
+                    'school': self.school.id,
                     'date_time': '2016-07-18 14:09:07',
                     'weather': 'cloudy',
                     'site': site.id,

@@ -1,6 +1,6 @@
 from django.test import TestCase
 from streamwebs.forms import WQForm, WQSampleForm
-from streamwebs.models import Site
+from streamwebs.models import Site, School
 
 
 class WQFormTestCase(TestCase):
@@ -24,6 +24,8 @@ class WQFormTestCase(TestCase):
         self.optional_fields = {
             'notes'
         }
+
+        self.school = School.test_objects.create_school('Test School')
 
     def test_WQForm_fields_exist(self):
         wq_form = WQForm()
@@ -50,7 +52,7 @@ class WQFormTestCase(TestCase):
             'live_fish': 5,
             'longitude': 120,
             'notes': u"Call your mom on Mother's Day!",
-            'school': u'Somewhere Cool',
+            'school': self.school.id,
             'site': site.id
         }
         form = WQForm(data=good_data)
@@ -109,26 +111,26 @@ class WQSampleFormTestCase(TestCase):
 
     def test_Water_QualityForm_isValid(self):
         good_data = {
-                'air_temp_tool': u'Manual',
-                'air_temperature': u'2',
-                'ammonia': u'0',
-                'bod': u'0',
-                'conductivity': u'1',
-                'dissolved_oxygen': u'1',
-                'fecal_coliform': u'0',
-                'nitrate': u'0',
-                'nitrite': u'0',
-                'oxygen_tool': u'Manual',
-                'pH': u'0',
-                'pH_tool': u'Manual',
-                'phosphates': u'2',
-                'salinity': u'0',
-                'salt_tool': u'Vernier',
-                'total_solids': u'0',
-                'turbid_tool': u'Manual',
-                'turbidity': u'0',
-                'water_temp_tool': u'Manual',
-                'water_temperature': u'1',
+            'air_temp_tool': u'Manual',
+            'air_temperature': u'2',
+            'ammonia': u'0',
+            'bod': u'0',
+            'conductivity': u'1',
+            'dissolved_oxygen': u'1',
+            'fecal_coliform': u'0',
+            'nitrate': u'0',
+            'nitrite': u'0',
+            'oxygen_tool': u'Manual',
+            'pH': u'0',
+            'pH_tool': u'Manual',
+            'phosphates': u'2',
+            'salinity': u'0',
+            'salt_tool': u'Vernier',
+            'total_solids': u'0',
+            'turbid_tool': u'Manual',
+            'turbidity': u'0',
+            'water_temp_tool': u'Manual',
+            'water_temperature': u'1',
         }
         form = WQSampleForm(data=good_data)
         self.assertTrue(form.is_valid())
