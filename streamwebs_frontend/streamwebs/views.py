@@ -175,7 +175,7 @@ def user_login(request):
 
         if user:
             login(request, user)
-            return HttpResponseRedirect('/streamwebs/')
+            return HttpResponseRedirect('/')
         else:
             return HttpResponse(_('Invalid credentials'))
     else:
@@ -185,7 +185,7 @@ def user_login(request):
 @login_required
 def user_logout(request):
     logout(request)
-    return HttpResponseRedirect('/streamwebs/')
+    return HttpResponseRedirect('/')
 
 
 def graph_water(request, site_slug):
