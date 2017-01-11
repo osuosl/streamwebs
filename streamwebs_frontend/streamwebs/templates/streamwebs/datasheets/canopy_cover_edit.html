@@ -5,14 +5,17 @@
 {% block title %}{% trans "Add Canopy Cover Survey" %}{% endblock %}
 {% block body_title %}{% trans "Add Canopy Cover Survey" %}{% endblock %}
 {% block content %}
-
     <form id='canopy_cover_form' method='post'>
         {% csrf_token %}
         <table> <!-- main cc info table -->
             <tr>{{ canopy_cover_form.non_field_errors }}</tr>
             <tr>
                 <th align='left'>{{ canopy_cover_form.site.label }}</th>
-                <td>{{ canopy_cover_form.site }}</td>
+                <td>
+                    <select>
+                        <option selected>{{ site.site_name }}</option>
+                    </select>
+                </td>
                 <td>{{ canopy_cover_form.site.errors }}</td>
             </tr>
             <tr>
@@ -56,4 +59,13 @@
 
     <input type='submit', name='submit', value='Submit' />
     </form>
+{% endblock %}
+
+{% block scripts %}
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
+    <script>
+    $('select').material_select();
+    </script>
 {% endblock %}

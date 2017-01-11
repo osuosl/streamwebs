@@ -39,8 +39,9 @@
                             {{ wq_form.site.label }}
 
                             <!-- TODO: Style errors -->
-                            {{ wq_form.site.errors | striptags }}
-                            {{ wq_form.site }}
+                            <select>
+                                <option selected>{{ site.site_name }}</option>
+                            </select>
                         </div>
                     </div>
 
