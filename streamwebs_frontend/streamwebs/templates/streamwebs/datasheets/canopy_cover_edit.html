@@ -7,75 +7,416 @@
 {% block content %}
 
 {% if user.is_authenticated %}
-{% if added %}
-<strong> "You have successfully submitted your Canopy Cover Survey." </strong>
+    {% if added %}
+        <strong> "You have successfully submitted your Canopy Cover Survey." </strong>
 
-{% else %}
-<h3 align="center">
-    <a href="{% url 'streamwebs:site' site.site_slug %}">
-        {{ site.site_name }}
-    </a>
-</h3>
-<h4 align="center">{% trans 'New Canopy Cover Sampling' %}</h4>
-<form id='canopy_cover_form' method='post'>
+    {% else %}
+    <h3 align="center">
+        <a href="{% url 'streamwebs:site' site.site_slug %}">
+            {{ site.site_name }}
+        </a>
+    </h3>
+    <h4 align="center">{% trans 'New Canopy Cover Sampling' %}</h4>
+    <form id='canopy_cover_form' method='post'>
     {% csrf_token %}
-    <table> <!-- main cc info table -->
-        <tr>{{ canopy_cover_form.non_field_errors }}</tr>
-        <tr>
-            <th align='left'>{{ canopy_cover_form.school.label }}</th>
-            <td>{{ canopy_cover_form.school }}</td>
-            <td>{{ canopy_cover_form.school.errors }}</td>
-        </tr>
-        <tr>
-            <th align='left'>{{ canopy_cover_form.date_time.label }}</th>
-            <td>{{ canopy_cover_form.date_time }}</td>
-            <td>{{ canopy_cover_form.date_time.errors }}</td>
-        </tr>
-        <tr>
-            <th align='left'>{{ canopy_cover_form.weather.label }}</th>
-            <td>{{ canopy_cover_form.weather }}</td>
-            <td>{{ canopy_cover_form.weather.errors }}</td>
-        </tr>
-
-        {{ cardinal_formset.management_form }}
-
-        <table>
-            {% for cardinal_form in cardinal_formset %}
+        <table> <!-- main cc info table -->
+            <tr>{{ canopy_cover_form.non_field_errors }}</tr>
             <tr>
-                <th></th>
-                <td>{{ cardinal_form.direction.errors }}</td>
+                <th align='left'>{{ canopy_cover_form.school.label }}</th>
+                <td>{{ canopy_cover_form.school }}</td>
+                <td>{{ canopy_cover_form.school.errors }}</td>
             </tr>
             <tr>
-                {{ cardinal_form.as_table }}
+                <th align='left'>{{ canopy_cover_form.date_time.label }}</th>
+                <td>{{ canopy_cover_form.date_time }}</td>
+                <td>{{ canopy_cover_form.date_time.errors }}</td>
             </tr>
-            {% endfor %}
+            <tr>
+                <th align='left'>{{ canopy_cover_form.weather.label }}</th>
+                <td>{{ canopy_cover_form.weather }}</td>
+                <td>{{ canopy_cover_form.weather.errors }}</td>
+            </tr>
+
+            {{ cardinal_formset.management_form }}
+
+            <table>
+                {% for cardinal_form in cardinal_formset %}
+                <tr>
+                    <th></th>
+                    <td>{{ cardinal_form.direction.errors }}</td>
+                </tr>
+                <tr>
+                    {{ cardinal_form.as_table }}
+                </tr>
+                <tr style='display: none'>
+                    <th align='left'>{{ canopy_cover_form.north_cc.label }}</th>
+                    <td id='north-form'>{{ canopy_cover_form.north_cc }}</td>
+                    <td>{{ canopy_cover_form.north_cc.errors }}</td>
+                </tr>
+                <tr style='display: none'>
+                    <th align='left'>{{ canopy_cover_form.east_cc.label }}</th>
+                    <td id='east-form'>{{ canopy_cover_form.east_cc }}</td>
+                    <td>{{ canopy_cover_form.east_cc.errors }}</td>
+                </tr>
+                <tr style='display: none'>
+                    <th align='left'>{{ canopy_cover_form.west_cc.label }}</th>
+                    <td id='west-form'>{{ canopy_cover_form.west_cc }}</td>
+                    <td>{{ canopy_cover_form.west_cc.errors }}</td>
+                </tr>
+                <tr style='display: none'>
+                    <th align='left'>{{ canopy_cover_form.south_cc.label }}</th>
+                    <td id='south-form'>{{ canopy_cover_form.south_cc }}</td>
+                    <td>{{ canopy_cover_form.south_cc.errors }}</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <style>
+                            #canopies {
+                                height: 750px;
+                                cursor: default;
+                            }
+
+                            p.header {
+                                width: 100%;
+                                text-align: center;
+                                font-weight: bold;
+                                line-height: 10px;
+                            }
+
+                            #canopy-north {
+                                margin-left: 700px;
+                                margin-bottom: -150px;
+                            }
+
+                            #canopy-west {
+                                float: left;
+                                margin-left: 475px;
+                                margin-right: 75px;
+                                margin-bottom: -150px;
+                            }
+
+                            #canopy-east {
+                                float: left;
+                                margin-left: 75px;
+                                margin-bottom: -150px;
+                            }
+
+                            #canopy-south {
+                                margin-left: 700px;
+                                margin-bottom: -300px;
+                            }
+
+                            .canopy {
+                                color: #000000;
+                                width: 300px;
+                                height: 350px;
+                                padding: 1px 1px 0 0;
+                            }
+
+                            .canopy-square {
+                                width: 50px;
+                                height: 50px;
+                                border: solid black 1px;
+                                float: left;
+                                margin: -1px -1px 0 0;
+                                padding: 0;
+
+                                text-align: center;
+                                line-height: 50px;
+                                font-size: 2em;
+                                font-weight: bold;
+                            }
+
+                            .canopy-square.hidden {
+                                visibility: hidden;
+                            }
+
+                            .canopy-square.shaded {
+                                background-color: #777777;
+                            }
+                        </style>
+
+                        <div id="canopies">
+                            <div id="canopy-north" class="canopy">
+                                <p class="header">North</p>
+                                <div class="canopy-square hidden"></div>
+                                <div class="canopy-square hidden"></div>
+                                <div class="canopy-square shown" id="square-0">A</div>
+                                <div class="canopy-square shown" id="square-1">B</div>
+                                <div class="canopy-square hidden"></div>
+                                <div class="canopy-square hidden"></div>
+
+                                <div class="canopy-square hidden"></div>
+                                <div class="canopy-square shown" id="square-2">C</div>
+                                <div class="canopy-square shown" id="square-3">D</div>
+                                <div class="canopy-square shown" id="square-4">E</div>
+                                <div class="canopy-square shown" id="square-5">F</div>
+                                <div class="canopy-square hidden"></div>
+
+                                <div class="canopy-square shown" id="square-6">G</div>
+                                <div class="canopy-square shown" id="square-7">H</div>
+                                <div class="canopy-square shown" id="square-8">I</div>
+                                <div class="canopy-square shown" id="square-9">J</div>
+                                <div class="canopy-square shown" id="square-10">K</div>
+                                <div class="canopy-square shown" id="square-11">L</div>
+
+                                <div class="canopy-square shown" id="square-12">M</div>
+                                <div class="canopy-square shown" id="square-13">N</div>
+                                <div class="canopy-square shown" id="square-14">O</div>
+                                <div class="canopy-square shown" id="square-15">P</div>
+                                <div class="canopy-square shown" id="square-16">Q</div>
+                                <div class="canopy-square shown" id="square-17">R</div>
+
+                                <div class="canopy-square hidden"></div>
+                                <div class="canopy-square shown" id="square-18">S</div>
+                                <div class="canopy-square shown" id="square-19">T</div>
+                                <div class="canopy-square shown" id="square-20">U</div>
+                                <div class="canopy-square shown" id="square-21">V</div>
+                                <div class="canopy-square hidden"></div>
+
+                                <div class="canopy-square hidden"></div>
+                                <div class="canopy-square hidden"></div>
+                                <div class="canopy-square shown" id="square-22">W</div>
+                                <div class="canopy-square shown" id="square-23">X</div>
+                                <div class="canopy-square hidden"></div>
+                                <div class="canopy-square hidden"></div>
+                            </div>
+
+                            <div id="canopy-west" class="canopy">
+                                <p class="header">West</p>
+                                <div class="canopy-square hidden"></div>
+                                <div class="canopy-square hidden"></div>
+                                <div class="canopy-square shown" id="square-0">A</div>
+                                <div class="canopy-square shown" id="square-1">B</div>
+                                <div class="canopy-square hidden"></div>
+                                <div class="canopy-square hidden"></div>
+
+                                <div class="canopy-square hidden"></div>
+                                <div class="canopy-square shown" id="square-2">C</div>
+                                <div class="canopy-square shown" id="square-3">D</div>
+                                <div class="canopy-square shown" id="square-4">E</div>
+                                <div class="canopy-square shown" id="square-5">F</div>
+                                <div class="canopy-square hidden"></div>
+
+                                <div class="canopy-square shown" id="square-6">G</div>
+                                <div class="canopy-square shown" id="square-7">H</div>
+                                <div class="canopy-square shown" id="square-8">I</div>
+                                <div class="canopy-square shown" id="square-9">J</div>
+                                <div class="canopy-square shown" id="square-10">K</div>
+                                <div class="canopy-square shown" id="square-11">L</div>
+
+                                <div class="canopy-square shown" id="square-12">M</div>
+                                <div class="canopy-square shown" id="square-13">N</div>
+                                <div class="canopy-square shown" id="square-14">O</div>
+                                <div class="canopy-square shown" id="square-15">P</div>
+                                <div class="canopy-square shown" id="square-16">Q</div>
+                                <div class="canopy-square shown" id="square-17">R</div>
+
+                                <div class="canopy-square hidden"></div>
+                                <div class="canopy-square shown" id="square-18">S</div>
+                                <div class="canopy-square shown" id="square-19">T</div>
+                                <div class="canopy-square shown" id="square-20">U</div>
+                                <div class="canopy-square shown" id="square-21">V</div>
+                                <div class="canopy-square hidden"></div>
+
+                                <div class="canopy-square hidden"></div>
+                                <div class="canopy-square hidden"></div>
+                                <div class="canopy-square shown" id="square-22">W</div>
+                                <div class="canopy-square shown" id="square-23">X</div>
+                                <div class="canopy-square hidden"></div>
+                                <div class="canopy-square hidden"></div>
+                            </div>
+
+                            <div id="canopy-east" class="canopy">
+                                <p class="header">East</p>
+                                <div class="canopy-square hidden"></div>
+                                <div class="canopy-square hidden"></div>
+                                <div class="canopy-square shown" id="square-0">A</div>
+                                <div class="canopy-square shown" id="square-1">B</div>
+                                <div class="canopy-square hidden"></div>
+                                <div class="canopy-square hidden"></div>
+
+                                <div class="canopy-square hidden"></div>
+                                <div class="canopy-square shown" id="square-2">C</div>
+                                <div class="canopy-square shown" id="square-3">D</div>
+                                <div class="canopy-square shown" id="square-4">E</div>
+                                <div class="canopy-square shown" id="square-5">F</div>
+                                <div class="canopy-square hidden"></div>
+
+                                <div class="canopy-square shown" id="square-6">G</div>
+                                <div class="canopy-square shown" id="square-7">H</div>
+                                <div class="canopy-square shown" id="square-8">I</div>
+                                <div class="canopy-square shown" id="square-9">J</div>
+                                <div class="canopy-square shown" id="square-10">K</div>
+                                <div class="canopy-square shown" id="square-11">L</div>
+
+                                <div class="canopy-square shown" id="square-12">M</div>
+                                <div class="canopy-square shown" id="square-13">N</div>
+                                <div class="canopy-square shown" id="square-14">O</div>
+                                <div class="canopy-square shown" id="square-15">P</div>
+                                <div class="canopy-square shown" id="square-16">Q</div>
+                                <div class="canopy-square shown" id="square-17">R</div>
+
+                                <div class="canopy-square hidden"></div>
+                                <div class="canopy-square shown" id="square-18">S</div>
+                                <div class="canopy-square shown" id="square-19">T</div>
+                                <div class="canopy-square shown" id="square-20">U</div>
+                                <div class="canopy-square shown" id="square-21">V</div>
+                                <div class="canopy-square hidden"></div>
+
+                                <div class="canopy-square hidden"></div>
+                                <div class="canopy-square hidden"></div>
+                                <div class="canopy-square shown" id="square-22">W</div>
+                                <div class="canopy-square shown" id="square-23">X</div>
+                                <div class="canopy-square hidden"></div>
+                                <div class="canopy-square hidden"></div>
+                            </div>
+
+                            <div id="canopy-south" class="canopy">
+                                <p class="header">South</p>
+                                <div class="canopy-square hidden"></div>
+                                <div class="canopy-square hidden"></div>
+                                <div class="canopy-square shown" id="square-0">A</div>
+                                <div class="canopy-square shown" id="square-1">B</div>
+                                <div class="canopy-square hidden"></div>
+                                <div class="canopy-square hidden"></div>
+
+                                <div class="canopy-square hidden"></div>
+                                <div class="canopy-square shown" id="square-2">C</div>
+                                <div class="canopy-square shown" id="square-3">D</div>
+                                <div class="canopy-square shown" id="square-4">E</div>
+                                <div class="canopy-square shown" id="square-5">F</div>
+                                <div class="canopy-square hidden"></div>
+
+                                <div class="canopy-square shown" id="square-6">G</div>
+                                <div class="canopy-square shown" id="square-7">H</div>
+                                <div class="canopy-square shown" id="square-8">I</div>
+                                <div class="canopy-square shown" id="square-9">J</div>
+                                <div class="canopy-square shown" id="square-10">K</div>
+                                <div class="canopy-square shown" id="square-11">L</div>
+
+                                <div class="canopy-square shown" id="square-12">M</div>
+                                <div class="canopy-square shown" id="square-13">N</div>
+                                <div class="canopy-square shown" id="square-14">O</div>
+                                <div class="canopy-square shown" id="square-15">P</div>
+                                <div class="canopy-square shown" id="square-16">Q</div>
+                                <div class="canopy-square shown" id="square-17">R</div>
+
+                                <div class="canopy-square hidden"></div>
+                                <div class="canopy-square shown" id="square-18">S</div>
+                                <div class="canopy-square shown" id="square-19">T</div>
+                                <div class="canopy-square shown" id="square-20">U</div>
+                                <div class="canopy-square shown" id="square-21">V</div>
+                                <div class="canopy-square hidden"></div>
+
+                                <div class="canopy-square hidden"></div>
+                                <div class="canopy-square hidden"></div>
+                                <div class="canopy-square shown" id="square-22">W</div>
+                                <div class="canopy-square shown" id="square-23">X</div>
+                                <div class="canopy-square hidden"></div>
+                                <div class="canopy-square hidden"></div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr></tr>
+                <tr>
+                    <th align='left'>{{ canopy_cover_form.est_canopy_cover.label }}</th>
+                    <td id="total">{{ canopy_cover_form.est_canopy_cover }}</td>
+                    <td>{{ canopy_cover_form.est_canopy_cover.errors }}</td>
+                </tr>
+            </table> <!-- end canopy cover -->
         </table>
-
-        <tr></tr>
-        <tr>
-            <th align='left'>{{ canopy_cover_form.est_canopy_cover.label }}</th>
-            <td>{{ canopy_cover_form.est_canopy_cover }}</td>
-            <td>{{ canopy_cover_form.est_canopy_cover.errors }}</td>
-        </tr>
-
-    </table> <!-- end canopy cover -->
-
-    <input type='submit' name='submit' value='Submit'/>
-</form>
-{% endif %}
+        <input type='submit' name='submit' value='Submit'/>
+    </form>
+    {% endif %}
 
 {% else %}
-<p>{% trans "You must be logged in to submit data." %}</p>
-<a href='/streamwebs/login/'>{% trans "Log in here." %}</a>
+    <p>{% trans "You must be logged in to submit data." %}</p>
+    <a href='/streamwebs/login/'>{% trans "Log in here." %}</a>
 {% endif %}
 
 {% endblock %}
 
 {% block scripts %}
-<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
-<script>
-    $('select').material_select();
-</script>
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
+    <script>
+        $('select').material_select();
+    </script>
+    <script type="application/javascript">
+        $(function () {
+            $("#total input").attr('readonly', 'true');
+            $("#total input").attr('num', 0);
+
+            $(".canopy-square").mousedown(function toggleSquare(evt) {
+                const square = $(evt.target);
+
+                square.toggleClass('shaded');
+
+                if (square.hasClass('shaded')) {
+                    let oldval = Number.parseInt($("#total input").attr('num'));
+                    $("#total input").attr('num', oldval+1);
+                    $("#total input").val((oldval+1) / 96 * 100);
+                } else {
+                    let oldval = Number.parseInt($("#total input").attr('num'));
+                    $("#total input").attr('num', oldval-1);
+                    $("#total input").val((oldval-1) / 96 * 100);
+                }
+            });
+
+            $('#submit').click(function sendData() {
+                let north = 0;
+
+                $('#canopy-north .canopy-square.shown').each((i, e) => {
+                    if ($(e).hasClass('shaded')) {
+                        let num = Number.parseInt(e.id.slice(7)); // Drop off the 'square-'
+
+                        north |= (1 << num);
+                    }
+                });
+
+                $('#north-form input').val(north);
+
+                let west = 0;
+
+                $('#canopy-west .canopy-square.shown').each((i, e) => {
+                    if ($(e).hasClass('shaded')) {
+                        let num = Number.parseInt(e.id.slice(7)); // Drop off the 'square-'
+
+                        west |= (1 << num);
+                    }
+                });
+
+                $('#west-form input').val(west);
+
+                let east = 0;
+
+                $('#canopy-east .canopy-square.shown').each((i, e) => {
+                    if ($(e).hasClass('shaded')) {
+                        let num = Number.parseInt(e.id.slice(7)); // Drop off the 'square-'
+
+                        east |= (1 << num);
+                    }
+                });
+
+                $('#east-form input').val(east);
+
+                let south = 0;
+
+                $('#canopy-south .canopy-square.shown').each((i, e) => {
+                    if ($(e).hasClass('shaded')) {
+                        let num = Number.parseInt(e.id.slice(7)); // Drop off the 'square-'
+
+                        south |= (1 << num);
+                    }
+                });
+
+                $('#south-form input').val(south);
+            });
+        });
+    </script>
 {% endblock %}
