@@ -690,13 +690,22 @@ def soil_survey_edit(request, site_slug):
     """
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     added = False
+    soil_form = SoilSurveyForm()
+
     if request.method == 'POST':
         soil_form = SoilSurveyForm(data=request.POST)
+
         if soil_form.is_valid():
-            soil_form = soil_form.save()
+            soil = soil_form.save(commit=False)
+            soil.site = site
+            soil.save()
             added = True
-    else:
-        soil_form = SoilSurveyForm()
+            messages.success(
+                request, 'You have successfully submitted a new soil survey.'
+            )
+            return redirect(reverse('streamwebs:soil',
+                            kwargs={'site_slug': site.site_slug,
+                                    'data_id': soil.id}))
 
     return render(
         request, 'streamwebs/datasheets/soil_edit.html', {

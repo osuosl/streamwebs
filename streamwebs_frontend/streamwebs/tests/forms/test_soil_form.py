@@ -9,7 +9,6 @@ class SoilSurveyFormTestCase(TestCase):
             'school',
             'date',
             'weather',
-            'site',
             'landscape_pos',
             'cover_type',
             'land_use',

@@ -1,7 +1,7 @@
 from django.test import Client, TestCase
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
-from streamwebs.models import Site, School
+from streamwebs.models import Site, School, Soil_Survey
 
 
 class AddSoilSurveyTestCase(TestCase):
@@ -37,14 +37,12 @@ class AddSoilSurveyTestCase(TestCase):
         When the user submits a form with all required fields filled
         appropriately, the user should see a success message
         """
-        site = Site.test_objects.create_site('A site')
         school = School.test_objects.create_school('rahrahrah')
         response = self.client.post(
             reverse(
                 'streamwebs:soil_edit',
-                kwargs={'site_slug': site.site_slug}
+                kwargs={'site_slug': self.site.site_slug}
             ), {
-                  'site': site.id,
                   'school': school.id,
                   'date': '2016-10-19 15:25',
                   'weather': 'gray',
@@ -56,10 +54,12 @@ class AddSoilSurveyTestCase(TestCase):
                   'soil_type': 'clay_loam',
                 }
         )
-        self.assertTemplateUsed(response,
-                                'streamwebs/datasheets/soil_edit.html')
-        self.assertTrue(response.context['added'])
-        self.assertEqual(response.status_code, 200)
+        soil = Soil_Survey.objects.order_by('-id')[0]
+
+        self.assertRedirects(response, reverse(
+            'streamwebs:soil',
+            kwargs={'site_slug': self.site.site_slug, 'data_id': soil.id}),
+            status_code=302, target_status_code=200)
 
     def test_edit_view_with_not_logged_in_user(self):
         """
