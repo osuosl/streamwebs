@@ -732,12 +732,12 @@ def soil_survey(request, site_slug, data_id):
     )
 
 
+@login_required
 def soil_survey_edit(request, site_slug):
     """
     The view for the submistion of a new Soil Survey (data sheet)
     """
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
-    added = False
     soil_form = SoilSurveyForm()
 
     if request.method == 'POST':
@@ -747,7 +747,6 @@ def soil_survey_edit(request, site_slug):
             soil = soil_form.save(commit=False)
             soil.site = site
             soil.save()
-            added = True
             messages.success(
                 request, 'You have successfully submitted a new soil survey.'
             )
@@ -758,7 +757,6 @@ def soil_survey_edit(request, site_slug):
     return render(
         request, 'streamwebs/datasheets/soil_edit.html', {
             'soil_form': soil_form,
-            'added': added,
             'site': site
         }
     )
