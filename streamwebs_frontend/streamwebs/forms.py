@@ -198,5 +198,12 @@ class SoilSurveyForm(forms.ModelForm):
         }
         fields = (
             'school', 'date', 'weather', 'landscape_pos', 'cover_type',
-            'land_use', 'distance', 'site_char', 'soil_type'
+            'land_use', 'soil_type', 'distance', 'site_char'
         )
+
+
+class SoilSurveyFormReadOnly(SoilSurveyForm):
+    def __init__(self, *args, **kwargs):
+        super(SoilSurveyFormReadOnly, self).__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].widget.attrs.update({'disabled': True})

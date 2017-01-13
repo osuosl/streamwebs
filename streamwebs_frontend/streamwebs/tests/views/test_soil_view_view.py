@@ -36,6 +36,6 @@ class ViewSoilSurveyTestCase(TestCase):
         self.assertContains(self.response, 'Landscape Position')
         self.assertContains(self.response, 'Cover Type')
         self.assertContains(self.response, 'Land Use')
+        self.assertContains(self.response, 'Soil type')
         self.assertContains(self.response, 'Distance')
-        self.assertContains(self.response, 'Site Characteristics')
-        self.assertContains(self.response, 'Soil Type')
+        self.assertContains(self.response, 'Distinguishing site')

@@ -2,53 +2,126 @@
 {% load staticfiles %}
 {% load i18n %}
 {% load filters %}
-{% block title %}{% trans "View Soil Survey Data" %}{% endblock %}
-{% block body_title %}{% trans "Soil Survey: "%}{{ soil.date }}{% endblock %}
+{% block title %}{% trans "View Soil Survey" %}{% endblock %}
+
+{% block scripts %}
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
+    <script type="application/javascript" src="{% static 'streamwebs/js/data.js' %}"></script>
+
+    <style>
+      .material-icons {
+        font-size: 1.5em;
+      }
+    
+      .errorlist {
+        color: red;
+      }
+    </style>
+{% endblock %}}
 
 {% block content %}
-    <div>
-        <table>
-            <tr>
-                <th align='left'>{% trans "Site" %}</th>
-                <td>{{ soil.site }}</td>
-            </tr>
-        </table>
-    </div>
-    <div>
-        <table>
-            <tr>
-                <th align='left'>{% trans "School" %}</th>
-                <td>{{ soil.school }}</td>
-            </tr>
-            <tr>
-                <th align='left'>{% trans "Weather" %}</th>
-                <td>{{ soil.weather }}</td>
-            </tr>
-            <tr>
-                <th align='left'>{% trans "Landscape Position" %}</th>
-                <td>{{ soil.landscape_pos }}</td>
-            </tr>
-            <tr>
-                <th align='left'>{% trans "Cover Type" %}</th>
-                <td>{{ soil.cover_type }}</td>
-            </tr>
-            <tr>
-                <th align='left'>{% trans "Land Use" %}</th>
-                <td>{{ soil.land_use }}</td>
-            </tr>
-            <tr>
-                <th align='left'>{% trans "Distance" %}</th>
-                <td>{{ soil.distance }}</td>
-            </tr>
-            <tr>
-                <th align='left'>{% trans "Site Characteristics" %}</th>
-                <td>{{ soil.site_char }}</td>
-            </tr>
-            <tr>
-                <th align='left'>{% trans "Soil Type" %}</th>
-                <td>{{ soil.soil_type }}</td>
-            </tr>
-        </table>
-    </div>
+    <div class="container">
+        {% if messages %}
+            {% for messages in messages %}
+                <strong>{{ message }}</strong>
+            {% endfor %}
+        {% endif %}
+        <h3 align="center">{{ site.site_name }}</h3>
+        <h4 align="center">{% trans "Riparian Soil Survey: " %}{{ soil.date }}</h4>
+    
+        <div class="row">
+            <div class="col s6">
+                <div class ="input-field">
+                    <p>{{ soil_form.school.label }}</p>
+                    <p>{{ soil_form.school.errors | striptags }}</p>
+                    <p>{{ soil_form.school }}</p>
+                </div>
+            </div>
+    
+            <div class="col s6">
+                <p>{{ soil_form.date.label }}</p>
+                <p>{{ soil_form.date.errors | striptags }}</p>
+                <p>{{ soil_form.date }}</p>
+            </div>
+    
+            <div class="col s12">
+                <p>{{ soil_form.weather.label }}</p>
+                <p>{{ soil_form.weather.errors | striptags }}</p>
+                <p>{{ soil_form.weather }}</p>
+            </div>
+        </div>
+    
+        <!-- Container so that radio buttons render vertically -->
+        <div class="container">
+            <div class="row">
+                <div class="col s3 pull-s1">
+                    <p>Landscape Position</p>
+                    {{ soil_form.landscape_pos.errors| striptags }}
+                    <div class="input-field">
+                        {% for radio in soil_form.landscape_pos %}
+                            {{ radio.tag }}
+                            <label for="{{radio.id_for_label }}">
+                                {{radio.choice_label }}
+                            </label>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col s3 push-s1">
+                    <p>Cover Type</p>
+                    {{ soil_form.cover_type.errors| striptags }}
+                    <div class="input-field">
+                        {% for radio in soil_form.cover_type %}
+                            {{ radio.tag }}
+                            <label for="{{radio.id_for_label }}">
+                                {{radio.choice_label }}
+                            </label>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col s3 push-s3">
+                    <p>Land Use</p>
+                    {{ soil_form.land_use.errors| striptags }}
+                    <div class="input-field">
+                        {% for radio in soil_form.land_use %}
+                            {{ radio.tag }}
+                            <label for="{{radio.id_for_label }}">
+                                {{radio.choice_label }}
+                            </label>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div> <!-- end middle container -->
+
+        <br />
+        <div class="row">
+            <div class="col s6">
+                <div class="input-field">
+                    {{ soil_form.soil_type.label }}
+                    {{ soil_form.soil_type.errors | striptags }}
+                    {{ soil_form.soil_type }}
+                </div>
+            </div>
+
+            <div class="col s6">
+                <div class="input-field">
+                    {{ soil_form.distance.label }}
+                    {{ soil_form.distance.errors | striptags }}
+                    {{ soil_form.distance }}
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="input-field">
+                {{soil_form.site_char.label }}
+                {{ soil_form.site_char.errors | striptags }}
+                {{ soil_form.site_char }}
+            </div>
+        </div>
+    
+    </div>  <!-- end container -->
 
 {% endblock %}
