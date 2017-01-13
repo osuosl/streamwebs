@@ -69,6 +69,14 @@
                 Camera point {{ sheet.letter }}</a></p>
             {% endfor %}
         {% endif %}
+
+        {% if soil_sheets %}
+        <p>Soil Survey data sheets: </p>
+            {% for sheet in soil_sheets %}
+            <p><a href="{% url 'streamwebs:soil' site.site_slug sheet.id %}">
+                Soil Survey data: {{ sheet.date|date:"m-d-Y" }}</a></p>
+            {% endfor %}
+        {% endif %}
     </div>
 
     <!-- links to create new data sheets for each type -->
@@ -79,6 +87,7 @@
         <p><a href="{% url 'streamwebs:riparian_transect_edit' site.site_slug %}">Riparian transect</a></p>
         <p><a href="{% url 'streamwebs:canopy_cover_edit' site.site_slug %}">Canopy Cover Survey</a></p>
         <p><a href="{% url 'streamwebs:camera_point_add' site_slug=site.site_slug %}">Photo point monitoring</a></p>
+        <p><a href="{% url 'streamwebs:soil_edit' site_slug=site.site_slug %}">Soil Survey</a></p>
     </div>
 </div>
 

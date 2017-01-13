@@ -1,0 +1,142 @@
+{% extends 'streamwebs/base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+{% load filters %}
+{% block title %}{% trans "Add/Edit Soil Survey" %}{% endblock %}
+
+{% block stylesheets %}
+<style>
+  .material-icons {
+    font-size: 1.5em;
+  }
+
+  .errorlist {
+    color: red;
+  }
+</style>
+{% endblock %}}
+
+{% block content %}
+    <div class="container">
+        {% if user.is_authenticated %}
+            {% if added %}
+                <strong>{% trans "You have successfully submitted your Soil Survey data sheet." %}</strong>
+    
+            {% else %}
+                <h3 align="center">{{ site.site_name }}</h3>
+                <h4 align="center">{% trans "New Riparian Soil Survey" %}</h4>
+                <form id='soil_from' method='post' action'{{ request.path }}'>
+                    {% csrf_token %}
+    
+                <div class="row">
+                    <div class="col s6">
+                        <div class ="input-field">
+                            <p>{{ soil_form.school.label }}</p>
+                            <p>{{ soil_form.school.errors | striptags }}</p>
+                            <p>{{ soil_form.school }}</p>
+                        </div>
+                    </div>
+    
+                    <div class="col s6">
+                        <p>{{ soil_form.date.label }}</p>
+                        <p>{{ soil_form.date.errors | striptags }}</p>
+                        <p>{{ soil_form.date }}</p>
+                    </div>
+    
+                    <div class="col s12">
+                        <p>{{ soil_form.weather.label }}</p>
+                        <p>{{ soil_form.weather.errors | striptags }}</p>
+                        <p>{{ soil_form.weather }}</p>
+                    </div>
+                </div>
+    
+                <!-- Container so that radio buttons render vertically -->
+                <div class="container">
+                    <div class="row">
+                        <div class="col s3 pull-s1">
+                            <p>Landscape Position</p>
+                            {{ soil_form.landscape_pos.errors| striptags }}
+                            <div class="input-field">
+                                {% for radio in soil_form.landscape_pos %}
+                                    {{ radio.tag }}
+                                    <label for="{{radio.id_for_label }}">
+                                        {{radio.choice_label }}
+                                    </label>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="col s3 push-s1">
+                            <p>Cover Type</p>
+                            {{ soil_form.cover_type.errors| striptags }}
+                            <div class="input-field">
+                                {% for radio in soil_form.cover_type %}
+                                    {{ radio.tag }}
+                                    <label for="{{radio.id_for_label }}">
+                                        {{radio.choice_label }}
+                                    </label>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="col s3 push-s3">
+                            <p>Land Use</p>
+                            {{ soil_form.land_use.errors| striptags }}
+                            <div class="input-field">
+                                {% for radio in soil_form.land_use %}
+                                    {{ radio.tag }}
+                                    <label for="{{radio.id_for_label }}">
+                                        {{radio.choice_label }}
+                                    </label>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div> <!-- end middle container -->
+
+                <br />
+                <div class="row">
+                    <div class="col s6">
+                        <div class="input-field">
+                            {{ soil_form.soil_type.label }}
+                            {{ soil_form.soil_type.errors | striptags }}
+                            {{ soil_form.soil_type }}
+                        </div>
+                    </div>
+
+                    <div class="col s6">
+                        <div class="input-field">
+                            {{ soil_form.distance.label }}
+                            {{ soil_form.distance.errors | striptags }}
+                            {{ soil_form.distance }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field">
+                        {{soil_form.site_char.label }}
+                        {{ soil_form.site_char.errors | striptags }}
+                        {{ soil_form.site_char }}
+                    </div>
+                </div>
+    
+                <input class="waves-effect btn", type='submit', name='submit', value='Submit' />
+            </form>
+            {% endif %}
+    
+        {% else %}
+            <p>{% trans "You must be logged in to submit data." %}</p>
+            <a href='/streamwebs/login/'>{% trans "Log in here." %}</a>
+        {% endif %}
+    </div>  <!-- end container -->
+
+{% endblock %}
+
+{% block scripts %}
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
+    <script type="application/javascript" src="{% static 'streamwebs/js/data.js' %}"></script>
+    <script>
+    $('select').material_select();
+    </script>
+{% endblock %}

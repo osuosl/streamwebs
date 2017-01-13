@@ -63,6 +63,12 @@ urlpatterns = [
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/canopy/edit',
         views.canopy_cover_edit, name='canopy_cover_edit'),
 
+    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/soil/edit',
+        views.soil_survey_edit, name='soil_edit'),
+
+    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/soil/(?P<data_id>\d+)/$',
+        views.soil_survey, name='soil'),
+
     url(r'^register/$', views.register, name='register'),
     url(r'^login/$', views.user_login, name='login'),
     url(r'^logout/$', views.user_logout, name='logout')

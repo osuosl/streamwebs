@@ -14,12 +14,14 @@ from django.conf import settings
 from streamwebs.forms import (
     UserForm, UserProfileForm, RiparianTransectForm, MacroinvertebratesForm,
     PhotoPointImageForm, PhotoPointForm, CameraPointForm, WQSampleForm,
-    WQSampleFormReadOnly, WQForm, WQFormReadOnly, SiteForm, Canopy_Cover_Form)
+    WQSampleFormReadOnly, WQForm, WQFormReadOnly, SiteForm, Canopy_Cover_Form,
+    SoilSurveyForm, SoilSurveyFormReadOnly)
 
 from streamwebs.models import (
     Macroinvertebrates, Site, Water_Quality, WQ_Sample, RiparianTransect,
     TransectZone, Canopy_Cover, CC_Cardinal, CameraPoint, PhotoPoint,
-    PhotoPointImage)
+    PhotoPointImage, Soil_Survey)
+
 from datetime import datetime
 import json
 import copy
@@ -76,6 +78,8 @@ def site(request, site_slug):
     canopy_sheets = Canopy_Cover.objects.filter(site_id=site.id)
     canopy_sheets = canopy_sheets.order_by('-date_time')
     ppm_sheets = CameraPoint.objects.filter(site_id=site.id).order_by('letter')
+    soil_sheets = Soil_Survey.objects.filter(site_id=site.id)
+    soil_sheets = soil_sheets.order_by('-date')
 
     return render(request, 'streamwebs/site_detail.html', {
         'site': site,
@@ -83,7 +87,8 @@ def site(request, site_slug):
         'macro_sheets': macro_sheets,
         'transect_sheets': transect_sheets,
         'canopy_sheets': canopy_sheets,
-        'ppm_sheets': ppm_sheets
+        'ppm_sheets': ppm_sheets,
+        'soil_sheets': soil_sheets
     })
 
 
@@ -665,5 +670,48 @@ def water_quality_edit(request, site_slug):
             'wq_form': wq_form,
             'sample_formset': sample_formset,
             'title': _('Add water quality sample')
+        }
+    )
+
+
+def soil_survey(request, site_slug, data_id):
+    site = Site.objects.filter(active=True).get(site_slug=site_slug)
+    soil_data = Soil_Survey.objects.get(id=data_id)
+    soil_form = SoilSurveyFormReadOnly(instance=soil_data)
+    return render(
+        request, 'streamwebs/datasheets/soil_view.html', {
+            'soil_form': soil_form, 'site': site
+        }
+    )
+
+
+def soil_survey_edit(request, site_slug):
+    """
+    The view for the submistion of a new Soil Survey (data sheet)
+    """
+    site = Site.objects.filter(active=True).get(site_slug=site_slug)
+    added = False
+    soil_form = SoilSurveyForm()
+
+    if request.method == 'POST':
+        soil_form = SoilSurveyForm(data=request.POST)
+
+        if soil_form.is_valid():
+            soil = soil_form.save(commit=False)
+            soil.site = site
+            soil.save()
+            added = True
+            messages.success(
+                request, 'You have successfully submitted a new soil survey.'
+            )
+            return redirect(reverse('streamwebs:soil',
+                            kwargs={'site_slug': site.site_slug,
+                                    'data_id': soil.id}))
+
+    return render(
+        request, 'streamwebs/datasheets/soil_edit.html', {
+            'soil_form': soil_form,
+            'added': added,
+            'site': site
         }
     )
