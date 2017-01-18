@@ -9,7 +9,7 @@ from django.core.exceptions import ValidationError
 from streamwebs.models import Site
 from streamwebs.models import School
 from streamwebs.models import Canopy_Cover
-from streamwebs.models import validate_cover
+from streamwebs.models import validate_total_cover
 
 
 class CanopyCovTestCase(TestCase):
@@ -28,9 +28,6 @@ class CanopyCovTestCase(TestCase):
             'west_cc': models.IntegerField,
             'est_canopy_cover': models.PositiveIntegerField,
             'id': models.AutoField,
-
-            'canopy_cover': models.ManyToOneRel
-
         }
 
     def test_fields_exist(self):
@@ -94,7 +91,7 @@ class CanopyCovTestCase(TestCase):
             weather='cloudy', est_canopy_cover=51
         )
 
-        self.assertEqual(validate_cover(canopyc.est_canopy_cover), None)
+        self.assertEqual(validate_total_cover(canopyc.est_canopy_cover), None)
 
     def test_validate_cover_too_large(self):
         """Tests that validation error is risen when est_canopy_cover
@@ -111,4 +108,4 @@ class CanopyCovTestCase(TestCase):
         )
 
         with self.assertRaises(ValidationError):
-            validate_cover(canopyc.est_canopy_cover)
+            validate_total_cover(canopyc.est_canopy_cover)
