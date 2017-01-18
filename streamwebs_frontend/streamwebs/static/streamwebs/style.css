@@ -19,8 +19,46 @@
     line-height: 2.5em;
 }
 
-html body {
+html,
+body {
+    width: 100%;
+    height: 100%;
+
+    overflow: auto;
     background-color: #fafafa;
+}
+
+.page-wrap {
+    width: 100%;
+    height: 100%;
+    background: url("images/bg-main.jpg");
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.header {
+    width: 74%;
+    height: 14%;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+}
+
+.header > .logo {
+    position: absolute;
+    bottom: 0;
+}
+
+.inner-wrap {
+    width: 74%;
+    margin-left: auto;
+    margin-right: auto;
+    background: #fafafa;
+}
+
+.content {
+    padding-left: 15px;
+    padding-right: 15px;
 }
 
 #map {
