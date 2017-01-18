@@ -66,7 +66,7 @@
 
 {% if user.is_authenticated %}
     {% if added %}
-        <strong> "You have successfully submitted your Canopy Cover Survey." </strong>
+        <strong>{% trans "You have successfully submitted your Canopy Cover Survey." %}</strong>
 
     {% else %}
     <h3 align="center">
@@ -315,7 +315,7 @@
 
 {% else %}
     <p>{% trans "You must be logged in to submit data." %}</p>
-    <a href='/streamwebs/login/'>{% trans "Log in here." %}</a>
+    <a href="{% url 'streamwebs:login' %}">{% trans "Log in here." %}</a>
 {% endif %}
 {% endblock %}
 
