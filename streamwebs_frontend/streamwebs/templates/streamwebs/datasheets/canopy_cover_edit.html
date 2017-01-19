@@ -24,6 +24,8 @@
     #canopy-north {
         margin-left: 700px;
         margin-bottom: -150px;
+        z-index: 20;
+        pointer-events: none;
     }
 
     #canopy-west {
@@ -31,17 +33,23 @@
         margin-left: 475px;
         margin-right: 75px;
         margin-bottom: -150px;
+        z-index: 10;
+        pointer-events: none;
     }
 
     #canopy-east {
         float: left;
         margin-left: 75px;
         margin-bottom: -150px;
+        z-index: 10;
+        pointer-events: none;
     }
 
     #canopy-south {
         margin-left: 700px;
         margin-bottom: -300px;
+        z-index: 20;
+        pointer-events: none;
     }
 
     .canopy {
@@ -58,18 +66,19 @@
         float: left;
         margin: -1px -1px 0 0;
         padding: 0;
-        z-index: 10;
 
         text-align: center;
         line-height: 50px;
         font-size: 2em;
         font-weight: bold;
+        pointer-events: all;
     }
 
     .canopy-square.hidden {
         pointer-events: none;
         z-index: -20;
         visibility: hidden;
+        pointer-events: none;
     }
 
     .canopy-square.shaded {
