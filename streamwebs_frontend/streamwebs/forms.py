@@ -155,6 +155,9 @@ class RiparianTransectForm(forms.ModelForm):
 
     class Meta:
         model = RiparianTransect
+        widgets = {
+            'notes': forms.Textarea(attrs={'class': 'materialize-textarea'})
+        }
         fields = ('school', 'date_time', 'weather', 'slope', 'notes')
 
 
