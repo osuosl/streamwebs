@@ -75,6 +75,8 @@ class MacroinvertebratesForm(forms.ModelForm):
 
 
 class WQForm(forms.ModelForm):
+    school = forms.ModelChoiceField(queryset=School.objects.all())
+
     class Meta:
         model = Water_Quality
         widgets = {
@@ -156,6 +158,8 @@ class TransectZoneForm(forms.ModelForm):
 
 
 class RiparianTransectForm(forms.ModelForm):
+    school = forms.ModelChoiceField(queryset=School.objects.all())
+
     class Meta:
         model = RiparianTransect
         fields = ('school', 'date_time', 'weather', 'site', 'slope', 'notes')
