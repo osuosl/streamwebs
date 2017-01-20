@@ -20,8 +20,12 @@
         <strong>{% trans "You have successfully submitted your Macroinvertebrate data sheet." %}.</strong>
 
         {% else %}
-        <h3 align="center">{{ site.site_name }}</h3>
-        <h4 align="center">{% trans "New macroinvertebrate sampling" %}</h4>
+            <h3 align="center">
+                <a href="{% url 'streamwebs:site_detail' '{{site.site_slug}}">
+                    {{site.site_name}}
+                </a>
+            </h3>
+            <h4 align="center">{% trans 'New Macroinvertebrate Sampling' %}</h4>
         <form id='macro_form' method='post' action='{{ request.path }}'>
             {% csrf_token %}
 
