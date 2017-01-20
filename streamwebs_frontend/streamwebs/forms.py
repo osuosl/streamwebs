@@ -147,6 +147,9 @@ class Canopy_Cover_Form(forms.ModelForm):
 class TransectZoneForm(forms.ModelForm):
     class Meta:
         model = TransectZone
+        widgets = {
+            'comments': forms.Textarea(attrs={'class': 'materialize-textarea'})
+        }
         fields = ('conifers', 'hardwoods', 'shrubs', 'comments')
 
 
