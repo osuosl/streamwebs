@@ -2,18 +2,44 @@
 {% load staticfiles %}
 {% load i18n %}
 {% load filters %}
-{% block title %}{% trans "View Riparian Transect Data" %}{% endblock %}
-{% block body_title %}{% trans "Riparian Transect: " %}{{ transect.date_time|date:"m-d-Y" }}{% endblock %}
+{% block title %}{% trans "View Riparian Area Transect Data" %}{% endblock %}
+{% block body_title %}{% trans "View Data" %}{% endblock %}
+
+{% block scripts %}
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
+
+    <style>
+      .material-icons {
+        font-size: 1.5em;
+      }
+    </style>
+{% endblock %}
+
 {% block content %}
+<div class="container">
+    {% if messages %}
+        {% for message in messages %}
+            <strong>{{ message }}</strong>
+        {% endfor %}
+    {% endif %}
+
     <h3 align="center">
         <a href="{% url 'streamwebs:site' site.site_slug %}">
             {{ site.site_name }}
         </a>
     </h3>
     <h4 align="center">Riparian Transect data: {{ transect.date_time|date:"m-d-Y" }}</h4>
-    <div>
-        <table>
-            <tr>
+
+    <div class="row">
+        <div class="input-field col s12">
+            <input disabled value="{{ transect.school }}" id="school" type="text" class="validate">
+            <label for="school">School</label>
+        </div>
+    </div>
+            <!--<tr>
                 <th align='left'>{% trans "School" %}</th>
                 <td>{{ transect.school }}</td>
             </tr>
@@ -28,9 +54,7 @@
             <tr>
                 <th align='left'>{% trans "Slope of stream bank" %}</th>
                 <td>{{ transect.slope }}</td>
-            </tr>
-        </table>
-    </div>
+            </tr>-->
         <p>Bar graph of conifers/hardwoods/shrubs goes here</p>
     </div>
     <div>
@@ -75,4 +99,5 @@
             </tr>
         </table>
     </div>
+</div>
 {% endblock %}
