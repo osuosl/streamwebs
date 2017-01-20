@@ -30,7 +30,8 @@ class AddSoilSurveyTestCase(TestCase):
         )
         self.assertFormError(response, 'soil_form', 'school',
                              'This field is required.')
-        self.assertFalse(response.context['added'])
+        self.assertTemplateUsed(response,
+                                'streamwebs/datasheets/soil_edit.html')
 
     def test_edit_view_with_good_data(self):
         """
@@ -56,6 +57,8 @@ class AddSoilSurveyTestCase(TestCase):
         )
         soil = Soil_Survey.objects.order_by('-id')[0]
 
+        self.assertTemplateNotUsed(response,
+                                   'streamwebs/datasheets/soil_edit.html')
         self.assertRedirects(response, reverse(
             'streamwebs:soil',
             kwargs={'site_slug': self.site.site_slug, 'data_id': soil.id}),
@@ -73,5 +76,10 @@ class AddSoilSurveyTestCase(TestCase):
                 kwargs={'site_slug': site.site_slug}
             )
         )
-        self.assertContains(response, 'You must be logged in to submit data.')
-        self.assertEqual(response.status_code, 200)
+        self.assertRedirects(
+            response,
+            (reverse('streamwebs:login') + '?next=' +
+                reverse('streamwebs:soil_edit',
+                        kwargs={'site_slug': site.site_slug})),
+            status_code=302,
+            target_status_code=200)

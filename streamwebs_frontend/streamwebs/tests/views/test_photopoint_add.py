@@ -1,7 +1,7 @@
 from django.test import Client, TestCase
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
-from streamwebs.models import Site, CameraPoint
+from streamwebs.models import Site, CameraPoint, PhotoPoint
 from streamwebs.util.temp_img import get_temporary_image
 
 
@@ -38,7 +38,10 @@ class AddPhotoPointTestCase(TestCase):
                              'This field is required.')
         self.assertFormError(response, 'pp_form', 'camera_height',
                              'This field is required.')
-        self.assertFalse(response.context['added'])
+        self.assertTemplateUsed(
+            response,
+            'streamwebs/datasheets/photo_point_add.html'
+        )
 
     def test_view_with_good_data(self):
         """User submits good data: """
@@ -66,12 +69,18 @@ class AddPhotoPointTestCase(TestCase):
                         'photo_point-0-date': '2016-09-21',
                     }
         )
-        self.assertTemplateUsed(
+        self.assertTemplateNotUsed(
             response,
             'streamwebs/datasheets/photo_point_add.html'
         )
-        self.assertTrue(response.context['added'])
-        self.assertEqual(response.status_code, 200)
+        self.assertRedirects(
+            response,
+            reverse('streamwebs:photo_point',
+                    kwargs={'site_slug': self.cp.site.site_slug,
+                            'cp_id': self.cp.id,
+                            'pp_id': PhotoPoint.test_objects.last().id}),
+            status_code=302,
+            target_status_code=200)
 
     def test_view_with_not_logged_in_user(self):
         """If not logged in, user can't view data entry"""
@@ -80,5 +89,12 @@ class AddPhotoPointTestCase(TestCase):
             reverse('streamwebs:photo_point_add',
                     kwargs={'site_slug': self.cp.site.site_slug,
                             'cp_id': self.cp.id}))
-        self.assertContains(response, 'You must be logged in to submit data.')
-        self.assertEqual(response.status_code, 200)
+
+        self.assertRedirects(
+            response,
+            (reverse('streamwebs:login') + '?next=' +
+                reverse('streamwebs:photo_point_add',
+                        kwargs={'site_slug': self.cp.site.site_slug,
+                                'cp_id': self.cp.id})),
+            status_code=302,
+            target_status_code=200)

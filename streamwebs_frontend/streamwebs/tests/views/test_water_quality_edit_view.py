@@ -1,7 +1,7 @@
 from django.test import Client, TestCase
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
-from streamwebs.models import Site, School
+from streamwebs.models import Site, School, Water_Quality
 
 
 class AddWaterQualityTestCase(TestCase):
@@ -35,7 +35,6 @@ class AddWaterQualityTestCase(TestCase):
             'fish_present',
             'This field is required.'
         )
-        self.assertFalse(response.context['added'])
 
     def test_view_with_good_data(self):
         """
@@ -146,11 +145,13 @@ class AddWaterQualityTestCase(TestCase):
                 'water_quality-MAX_NUM_FORMS': '4'
             }
         )
-        self.assertTemplateUsed(
-            response, 'streamwebs/datasheets/water_quality.html'
-        )
-        self.assertTrue(response.context['added'])
-        self.assertEqual(response.status_code, 200)
+        self.assertRedirects(
+            response,
+            reverse('streamwebs:water_quality',
+                    kwargs={'site_slug': site.site_slug,
+                            'data_id': Water_Quality.test_objects.last().id}),
+            status_code=302,
+            target_status_code=200)
 
     def test_view_with_not_logged_in_user(self):
         """
@@ -164,5 +165,10 @@ class AddWaterQualityTestCase(TestCase):
                 kwargs={'site_slug': site.site_slug}
             )
         )
-        self.assertContains(response, 'You must be logged in to submit data.')
-        self.assertEqual(response.status_code, 200)
+        self.assertRedirects(
+            response,
+            (reverse('streamwebs:login') + '?next=' +
+                reverse('streamwebs:water_quality_edit',
+                        kwargs={'site_slug': site.site_slug})),
+            status_code=302,
+            target_status_code=200)

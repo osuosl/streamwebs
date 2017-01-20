@@ -1,6 +1,6 @@
 # coding=UTF-8
 from __future__ import print_function
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -35,6 +35,7 @@ def index(request):
     return render(request, 'streamwebs/index.html', {})
 
 
+@login_required
 def create_site(request):
     created = False
 
@@ -92,8 +93,8 @@ def site(request, site_slug):
     })
 
 
+@login_required
 def update_site(request, site_slug):
-    updated = False
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     temp = copy.copy(site)
 
@@ -109,7 +110,10 @@ def update_site(request, site_slug):
                 site.modified = timezone.now()
                 site.save()
 
-            updated = True
+            messages.success(request, 'You have successfully updated ' +
+                             site.site_name + '.')
+            return redirect(reverse('streamwebs:site',
+                                    kwargs={'site_slug': site.site_slug}))
 
     else:
         site_form = SiteForm(initial={'site_name': site.site_name,
@@ -121,7 +125,6 @@ def update_site(request, site_slug):
         'site': site,
         'site_form': site_form,
         'modified_time': site.modified,
-        'updated': updated
     })
 
 
@@ -173,16 +176,31 @@ def register(request):
 
 
 def user_login(request):
+    redirect_to = request.POST.get('next', '')
+
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(username=username, password=password)
 
+        # if the user is valid, log them in and redirect to the page where they
+        # clicked "Login", or to home if they accessed login directly from the
+        # url
         if user:
             login(request, user)
-            return HttpResponseRedirect('/')
+            if redirect_to != '':
+                return HttpResponseRedirect(redirect_to)
+            else:
+                return redirect(reverse('streamwebs:index'))
+
+        # otherwise, if the user is invalid, flash a message and return them to
+        # login while remembering which page to redirect them to if they login
+        # successfully this time
         else:
-            return HttpResponse(_('Invalid credentials'))
+            messages.error(request, 'Invalid username or password.')
+            return redirect(reverse(
+                                'streamwebs:login') + '?next=' + redirect_to)
+
     else:
         return render(request, 'streamwebs/login.html')
 
@@ -256,6 +274,7 @@ def macroinvertebrate(request, site_slug, data_id):
     )
 
 
+@login_required
 def macroinvertebrate_edit(request, site_slug):
     """
     The view for the submission of a new macroinvertebrate data sheet.
@@ -300,7 +319,7 @@ def macroinvertebrate_edit(request, site_slug):
 
 def riparian_transect_view(request, site_slug, data_id):
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
-    transect = RiparianTransect.objects.filter(site_id=site.id).get(id=data_id)
+    transect = RiparianTransect.objects.get(id=data_id)
     zones = TransectZone.objects.filter(transect_id=transect)
 
     # Invoking the database by evaluating the queryset before passing it to the
@@ -317,11 +336,11 @@ def riparian_transect_view(request, site_slug, data_id):
         )
 
 
+@login_required
 def riparian_transect_edit(request, site_slug):
     """
     The view for the submission of a new riparian transect data sheet.
     """
-    added = False
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     transect = RiparianTransect()
     TransectZoneInlineFormSet = inlineformset_factory(
@@ -346,7 +365,14 @@ def riparian_transect_edit(request, site_slug):
                 zone.transect = transect                # assign the transect
                 zone.save()                             # save the zone obj
 
-            added = True
+            messages.success(
+                request,
+                'You have successfully added a new riparian transect ' +
+                'data sheet.')
+
+            return redirect(reverse('streamwebs:riparian_transect',
+                                    kwargs={'site_slug': site.site_slug,
+                                            'data_id': transect.id}))
 
     else:
         zone_formset = TransectZoneInlineFormSet(instance=transect)
@@ -356,14 +382,14 @@ def riparian_transect_edit(request, site_slug):
         request,
         'streamwebs/datasheets/riparian_transect_edit.html', {
             'transect_form': transect_form, 'zone_formset': zone_formset,
-            'added': added, 'site': site
+            'site': site
         }
     )
 
 
 def canopy_cover_view(request, site_slug, data_id):
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
-    canopy_cover = Canopy_Cover.objects.filter(site_id=site.id).get(id=data_id)
+    canopy_cover = Canopy_Cover.objects.get(id=data_id)
     cardinals = CC_Cardinal.objects.filter(canopy_cover_id=canopy_cover)
 
     return render(
@@ -375,11 +401,11 @@ def canopy_cover_view(request, site_slug, data_id):
         )
 
 
+@login_required
 def canopy_cover_edit(request, site_slug):
     """
     The view for the submission of a new canopy cover data sheet.
     """
-    added = False
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     canopy_cover = Canopy_Cover()
     CardinalInlineFormSet = inlineformset_factory(
@@ -407,7 +433,14 @@ def canopy_cover_edit(request, site_slug):
                 cardinal.canopy_cover = canopy_cover
                 cardinal.save()
 
-            added = True
+            messages.success(
+                request,
+                'You have successfully added a new canopy cover ' +
+                'data sheet.')
+
+            return redirect(reverse('streamwebs:canopy_cover',
+                                    kwargs={'site_slug': site.site_slug,
+                                            'data_id': canopy_cover.id}))
 
     else:
         cardinal_formset = CardinalInlineFormSet(instance=canopy_cover)
@@ -418,7 +451,7 @@ def canopy_cover_edit(request, site_slug):
         'streamwebs/datasheets/canopy_cover_edit.html', {
             'canopy_cover_form': canopy_cover_form,
             'cardinal_formset': cardinal_formset,
-            'added': added, 'site': site
+            'site': site
         }
     )
 
@@ -444,9 +477,9 @@ def camera_point_view(request, site_slug, cp_id):
     )
 
 
+@login_required
 def add_camera_point(request, site_slug):
     """Add new CP to site + 3 PPs and respective photos"""
-    added = False
     site = Site.objects.get(site_slug=site_slug)
     camera = CameraPoint()
     PhotoPointInlineFormset = inlineformset_factory(  # photo point formset (3)
@@ -484,8 +517,13 @@ def add_camera_point(request, site_slug):
                                       date=ppi.date)
                 ppi.save()
 
-            added = True
+            messages.success(
+                request,
+                'You have successfully added a new camera point.')
 
+            return redirect(reverse('streamwebs:camera_point',
+                                    kwargs={'site_slug': site.site_slug,
+                                            'cp_id': camera.id}))
     else:
         camera_form = CameraPointForm()
         pp_formset = PhotoPointInlineFormset(instance=camera)
@@ -499,7 +537,6 @@ def add_camera_point(request, site_slug):
             'camera_form': camera_form,
             'pp_formset': pp_formset,
             'ppi_formset': ppi_formset,
-            'added': added,
             'site': site
         }
     )
@@ -555,9 +592,9 @@ def view_pp_and_add_img(request, site_slug, cp_id, pp_id):
     )
 
 
+@login_required
 def add_photo_point(request, site_slug, cp_id):
     """Add new PP to existing CP + respective photo(s)"""
-    added = False
     site = Site.objects.get(site_slug=site_slug)
     cp = CameraPoint.objects.get(id=cp_id)
     photo_point = PhotoPoint()
@@ -584,7 +621,15 @@ def add_photo_point(request, site_slug, cp_id):
                 ppi.photo_point = photo_point
                 ppi.save()
 
-            added = True
+            messages.success(
+                request,
+                'You have successfully added a new camera point.')
+
+            return redirect(reverse('streamwebs:photo_point',
+                                    kwargs={'site_slug': site.site_slug,
+                                            'cp_id': cp.id,
+                                            'pp_id': photo_point.id}))
+
     else:
         pp_form = PhotoPointForm()
         ppi_formset = PPImageInlineFormset(instance=photo_point)
@@ -596,7 +641,6 @@ def add_photo_point(request, site_slug, cp_id):
             'cp': cp,
             'pp_form': pp_form,
             'ppi_formset': ppi_formset,
-            'added': added,
         }
     )
 
@@ -629,9 +673,9 @@ def water_quality(request, site_slug, data_id):
     )
 
 
+@login_required
 def water_quality_edit(request, site_slug):
     """ Add a new water quality sample """
-    added = False       # flag for the page to see if we added a sample
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     WQInlineFormSet = inlineformset_factory(
         Water_Quality, WQ_Sample,
@@ -653,10 +697,14 @@ def water_quality_edit(request, site_slug):
             for sample in allSamples:
                 sample.water_quality = water_quality
                 sample.save()
-            added = True
-            # ugly way of resetting the form if successful form submission
-            wq_form = WQForm()
-            sample_formset = WQInlineFormSet(instance=Water_Quality())
+            messages.success(
+                request,
+                'You have successfully added a new water quality ' +
+                'data sheet.')
+            return redirect(reverse('streamwebs:water_quality',
+                            kwargs={'site_slug': site.site_slug,
+                                    'data_id': water_quality.id}))
+
     else:
         # blank forms for normal page render
         wq_form = WQForm()
@@ -665,7 +713,6 @@ def water_quality_edit(request, site_slug):
         request, 'streamwebs/datasheets/water_quality.html',
         {
             'editable': True,
-            'added': added,
             'site': site,
             'wq_form': wq_form,
             'sample_formset': sample_formset,
@@ -685,12 +732,12 @@ def soil_survey(request, site_slug, data_id):
     )
 
 
+@login_required
 def soil_survey_edit(request, site_slug):
     """
     The view for the submistion of a new Soil Survey (data sheet)
     """
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
-    added = False
     soil_form = SoilSurveyForm()
 
     if request.method == 'POST':
@@ -700,7 +747,6 @@ def soil_survey_edit(request, site_slug):
             soil = soil_form.save(commit=False)
             soil.site = site
             soil.save()
-            added = True
             messages.success(
                 request, 'You have successfully submitted a new soil survey.'
             )
@@ -711,7 +757,6 @@ def soil_survey_edit(request, site_slug):
     return render(
         request, 'streamwebs/datasheets/soil_edit.html', {
             'soil_form': soil_form,
-            'added': added,
             'site': site
         }
     )

@@ -16,7 +16,6 @@
 {% endblock %}
 {% block content %}
 <div class="container">  
-    {% if user.is_authenticated %}
         {% if added %}
         <strong>{% trans "You have successfully submitted your Macroinvertebrate data sheet." %}.</strong>
 
@@ -138,10 +137,6 @@
         </form>
         {% endif %}
 
-    {% else %}
-        <p>{% trans "You must be logged in to submit data." %}</p>
-        <a href='/streamwebs/login/'>{% trans "Log in here." %}</a>
-    {% endif %}
     </div>  <!-- end container -->
 {% endblock %}
 

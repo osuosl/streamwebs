@@ -35,7 +35,7 @@
         {% if user.is_authenticated %}
             <li><a href="{% url 'streamwebs:logout' %}">Logout</a></li>
         {% else %}
-            <li><a href="{% url 'streamwebs:login' %}">Login</a></li>
+        <li><a href="{% url 'streamwebs:login' %}?next={{ request.path }}">Login</a></li>
             <li><a href="{% url 'streamwebs:register' %}">Create Account</a></li>
         {% endif %}
       </ul>

@@ -11,31 +11,23 @@
 {% endblock %}
 
 {% block content %}
-{% if not user.is_authenticated and editable %}
-    <p>{% trans "You must be logged in to submit data." %}</p>
-    <a href='/streamwebs/login/'>{% trans "Log in here." %}</a>
-{% else %}
-    {% if user.is_authenticated and added %}
-        <strong>Success!</strong>
-
-        <!-- Display errors, if any (should be improved/more CSS friendly) -->
-        <!-- {% for field in wq_form %}
-            {% if field.errors %}
-                <br>{{ field.label }}</br>
-                {% for error in field.errors %}
-                    <br>...{{ error }}</br>
-                {% endfor %}
-            {% endif %}
-        {% endfor %}
-        {% for field in sample_formset %}
-            {% if field.errors %}
-                <br>{{ field.label }}</br>
-                {% for error in field.errors %}
-                    <br>,,,{{ error }}</br>
-                {% endfor %}
-            {% endif %}
-        {% endfor %} -->
-    {% endif %}
+    <!-- Display errors, if any (should be improved/more CSS friendly) -->
+    <!-- {% for field in wq_form %}
+        {% if field.errors %}
+            <br>{{ field.label }}</br>
+            {% for error in field.errors %}
+                <br>...{{ error }}</br>
+            {% endfor %}
+        {% endif %}
+    {% endfor %}
+    {% for field in sample_formset %}
+        {% if field.errors %}
+            <br>{{ field.label }}</br>
+            {% for error in field.errors %}
+                <br>,,,{{ error }}</br>
+            {% endfor %}
+        {% endif %}
+    {% endfor %} -->
 
     <div class="container">
         <form id="water_quality_form" action="" method="POST">
@@ -359,10 +351,9 @@
                 {{ wq_form.notes }}
             </div>
 
-            {% if user.is_authenticated and editable %}
+            {% if editable %}
                 <input class="waves-effect btn" type="submit" value="Submit">
             {% endif %}
         </form>
     </div>
-{% endif %}
 {% endblock %}
