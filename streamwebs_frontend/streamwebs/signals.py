@@ -6,8 +6,6 @@ from django.db.models.signals import post_migrate
 
 @receiver(post_migrate)
 def init_groups_and_perms(sender, **kwargs):
-    print("inside init_groups_and_perms")
-
     content_type, created = ContentType.objects.get_or_create(
         app_label='streamwebs', model='unused')
 
