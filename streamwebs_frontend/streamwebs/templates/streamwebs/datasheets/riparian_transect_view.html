@@ -39,27 +39,71 @@
             <label for="school">School</label>
         </div>
     </div>
-            <!--<tr>
-                <th align='left'>{% trans "School" %}</th>
-                <td>{{ transect.school }}</td>
-            </tr>
-            <tr>
-                <th align='left'>{% trans "Date" %}</th>
-                <td> {{ transect.date_time }} </td>
-            </tr>
-            <tr>
-                <th align='left'>{% trans "Site" %}</th>
-                <td>{{ site.site_name }}</td>
-            </tr>
-            <tr>
-                <th align='left'>{% trans "Slope of stream bank" %}</th>
-                <td>{{ transect.slope }}</td>
-            </tr>-->
-        <p>Bar graph of conifers/hardwoods/shrubs goes here</p>
+
+    <div class="row">
+        <div class="input-field col s6">
+            <input disabled value="{{ transect.date_time }}" id="dt" type="text" class="validate">
+            <label for="dt">Date and time</label>
+        </div>
+        <div class="input-field col s6">
+            <input disabled value="{{ transect.weather }}" id="weather" type="text" class="validate">
+            <label for="weather">Weather</label>
+        </div>
     </div>
+
+    <div class="row">
+        <div class="input-field col s12">
+            <input disabled value="{{ transect.slope }}" id="stream bank" type="text" class="validate">
+            <label for="stream bank">Slope of stream bank</label>
+        </div>
+    </div>
+
     <div>
-        <table>
+        {{ zone_formset.management_form }}    
+        <table> <!-- zones subtable -->
             <tr>
+                <th>{{ 'zone'|get_zone_labels }}</th>
+                <th>{{ 'conifers'|get_zone_labels }}</th>
+                <th>{{ 'hardwoods'|get_zone_labels }}</th>
+                <th>{{ 'shrubs'|get_zone_labels }}</th>
+                <th>{{ 'comments'|get_zone_labels }}</th>
+            </tr>
+                    <td>{{ zones.0.zone_num }}</td>
+                    <td>{{ zones.0.conifers }}</td>
+                    <td>{{ zones.0.hardwoods }}</td>
+                    <td>{{ zones.0.shrubs }}</td>
+                    <td>{{ zones.0.comments }}</td>
+            </tr>
+            </tr>
+                    <td>{{ zones.1.zone_num }}</td>
+                    <td>{{ zones.1.conifers }}</td>
+                    <td>{{ zones.1.hardwoods }}</td>
+                    <td>{{ zones.1.shrubs }}</td>
+                    <td>{{ zones.1.comments }}</td>
+            </tr>
+            </tr>
+                    <td>{{ zones.2.zone_num }}</td>
+                    <td>{{ zones.2.conifers }}</td>
+                    <td>{{ zones.2.hardwoods }}</td>
+                    <td>{{ zones.2.shrubs }}</td>
+                    <td>{{ zones.2.comments }}</td>
+            </tr>
+            </tr>
+                    <td>{{ zones.3.zone_num }}</td>
+                    <td>{{ zones.3.conifers }}</td>
+                    <td>{{ zones.3.hardwoods }}</td>
+                    <td>{{ zones.3.shrubs }}</td>
+                    <td>{{ zones.3.comments }}</td>
+            </tr>
+            </tr>
+                    <td>{{ zones.4.zone_num }}</td>
+                    <td>{{ zones.4.conifers }}</td>
+                    <td>{{ zones.4.hardwoods }}</td>
+                    <td>{{ zones.4.shrubs }}</td>
+                    <td>{{ zones.4.comments }}</td>
+            </tr>
+
+            <!--<tr>
                 <th align='left'>{% trans "Zone 1 (0 to 20 ft) comments" %}</th>
             </tr>
             <tr>
@@ -88,16 +132,16 @@
             </tr>
             <tr>
                 <td>{{ zones.4.comments }}</td>
-            </tr>
+            </tr>-->
         </table>
     </div>
-    <div>
-        <table>
-            <tr>
-                <th align='left'>{% trans "Field notes" %}</th>
-                <td>{{ transect.notes }}</td>
-            </tr>
-        </table>
+
+    <div class="row">
+        <div class="input-field col s12">
+            <input disabled value="{{ transect.notes }}" id="notes" type="text" class="validate">
+            <label for="notes">Field notes</label>
+        </div>
     </div>
+
 </div>
 {% endblock %}
