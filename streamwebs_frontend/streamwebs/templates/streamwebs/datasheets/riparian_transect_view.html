@@ -58,83 +58,52 @@
         </div>
     </div>
 
-    <div>
-        {{ zone_formset.management_form }}    
-        <table> <!-- zones subtable -->
-            <tr>
-                <th>{{ 'zone'|get_zone_labels }}</th>
-                <th>{{ 'conifers'|get_zone_labels }}</th>
-                <th>{{ 'hardwoods'|get_zone_labels }}</th>
-                <th>{{ 'shrubs'|get_zone_labels }}</th>
-                <th>{{ 'comments'|get_zone_labels }}</th>
-            </tr>
-                    <td>{{ zones.0.zone_num }}</td>
-                    <td>{{ zones.0.conifers }}</td>
-                    <td>{{ zones.0.hardwoods }}</td>
-                    <td>{{ zones.0.shrubs }}</td>
-                    <td>{{ zones.0.comments }}</td>
-            </tr>
-            </tr>
-                    <td>{{ zones.1.zone_num }}</td>
-                    <td>{{ zones.1.conifers }}</td>
-                    <td>{{ zones.1.hardwoods }}</td>
-                    <td>{{ zones.1.shrubs }}</td>
-                    <td>{{ zones.1.comments }}</td>
-            </tr>
-            </tr>
-                    <td>{{ zones.2.zone_num }}</td>
-                    <td>{{ zones.2.conifers }}</td>
-                    <td>{{ zones.2.hardwoods }}</td>
-                    <td>{{ zones.2.shrubs }}</td>
-                    <td>{{ zones.2.comments }}</td>
-            </tr>
-            </tr>
-                    <td>{{ zones.3.zone_num }}</td>
-                    <td>{{ zones.3.conifers }}</td>
-                    <td>{{ zones.3.hardwoods }}</td>
-                    <td>{{ zones.3.shrubs }}</td>
-                    <td>{{ zones.3.comments }}</td>
-            </tr>
-            </tr>
-                    <td>{{ zones.4.zone_num }}</td>
-                    <td>{{ zones.4.conifers }}</td>
-                    <td>{{ zones.4.hardwoods }}</td>
-                    <td>{{ zones.4.shrubs }}</td>
-                    <td>{{ zones.4.comments }}</td>
-            </tr>
+    <div class="divider"></div>
+    <br>
 
-            <!--<tr>
-                <th align='left'>{% trans "Zone 1 (0 to 20 ft) comments" %}</th>
-            </tr>
-            <tr>
-                <td>{{ zones.0.comments }}</td>
-            </tr>
-            <tr>
-                <th align='left'>{% trans "Zone 2 (20 to 40 ft) comments" %}</th>
-            </tr>
-            <tr>
-                <td>{{ zones.1.comments }}</td>
-            </tr>
-            <tr>
-                <th align='left'>{% trans "Zone 3 (40 to 60 ft) comments" %}</th>
-            </tr>
-            <tr>
-                <td>{{ zones.2.comments }}</td>
-            </tr>
-            <tr>
-                <th align='left'>{% trans "Zone 4 (60 to 80 ft) comments" %}</th>
-            </tr>
-            <tr>
-                <td>{{ zones.3.comments }}</td>
-            </tr>
-            <tr>
-                <th align='left'>{% trans "Zone 5 (80 to 100 ft) comments" %}</th>
-            </tr>
-            <tr>
-                <td>{{ zones.4.comments }}</td>
-            </tr>-->
-        </table>
-    </div>
+    <table> <!-- zones subtable -->
+        <tr>
+            <th>{{ 'zone'|get_zone_labels }}</th>
+            <th>{{ 'conifers'|get_zone_labels }}</th>
+            <th>{{ 'hardwoods'|get_zone_labels }}</th>
+            <th>{{ 'shrubs'|get_zone_labels }}</th>
+            <th>{{ 'comments'|get_zone_labels }}</th>
+        </tr>
+            <td width="20%"><strong>{{ zones.0.zone_num }}<br>(0 to 20 ft)</strong></td>
+            <td>{{ zones.0.conifers }}</td>
+            <td>{{ zones.0.hardwoods }}</td>
+            <td>{{ zones.0.shrubs }}</td>
+            <td>{{ zones.0.comments }}</td>
+        </tr>
+        </tr>
+            <td><strong>{{ zones.1.zone_num }}<br>(20 to 40 ft)</strong></td>
+            <td>{{ zones.1.conifers }}</td>
+            <td>{{ zones.1.hardwoods }}</td>
+            <td>{{ zones.1.shrubs }}</td>
+            <td>{{ zones.1.comments }}</td>
+        </tr>
+        </tr>
+            <td><strong>{{ zones.2.zone_num }}<br>(40 to 60 ft)</strong></td>
+            <td>{{ zones.2.conifers }}</td>
+            <td>{{ zones.2.hardwoods }}</td>
+            <td>{{ zones.2.shrubs }}</td>
+            <td>{{ zones.2.comments }}</td>
+        </tr>
+        </tr>
+            <td><strong>{{ zones.3.zone_num }}<br>(60 to 80 ft)</strong></td>
+            <td>{{ zones.3.conifers }}</td>
+            <td>{{ zones.3.hardwoods }}</td>
+            <td>{{ zones.3.shrubs }}</td>
+            <td>{{ zones.3.comments }}</td>
+        </tr>
+        </tr>
+            <td><strong>{{ zones.4.zone_num }}<br>(80 to 100 ft)</strong></td>
+            <td>{{ zones.4.conifers }}</td>
+            <td>{{ zones.4.hardwoods }}</td>
+            <td>{{ zones.4.shrubs }}</td>
+            <td>{{ zones.4.comments }}</td>
+        </tr>
+    </table>
 
     <div class="row">
         <div class="input-field col s12">
