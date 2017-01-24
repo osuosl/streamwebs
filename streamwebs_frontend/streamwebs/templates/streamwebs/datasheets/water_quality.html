@@ -39,6 +39,7 @@
         <form id="water_quality_form" action="" method="POST">
             {% csrf_token %}
             <div class="infogroup">
+                <p>{{ wq_form.site.errors | striptags }}</p>
                 <div class="row">
                     <div class="col s6">
                         <div class="input-field">
@@ -48,13 +49,6 @@
                             {{ wq_form.date }}
                         </div>
                     </div>
-                </div>
-
-                <div class="input-field" style="display: none">
-                    {{ wq_form.site.label }}
-
-                    {{ wq_form.site.errors | striptags }}
-                    {{ wq_form.site }}
                 </div>
                 <div class="row">
                     <div class="col s6">

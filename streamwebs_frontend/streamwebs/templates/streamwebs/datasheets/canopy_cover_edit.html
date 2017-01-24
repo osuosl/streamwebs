@@ -21,11 +21,6 @@
     {% csrf_token %}
     <table> <!-- main cc info table -->
         <tr>{{ canopy_cover_form.non_field_errors }}</tr>
-        <tr style="display: none">
-            <th align='left'>{{ canopy_cover_form.site.label }}</th>
-            <td>{{ canopy_cover_form.site }}</td>
-            <td>{{ canopy_cover_form.site.errors }}</td>
-        </tr>
         <tr>
             <th align='left'>{{ canopy_cover_form.school.label }}</th>
             <td>{{ canopy_cover_form.school }}</td>

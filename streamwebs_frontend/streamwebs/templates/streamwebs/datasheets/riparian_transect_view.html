@@ -3,8 +3,14 @@
 {% load i18n %}
 {% load filters %}
 {% block title %}{% trans "View Riparian Transect Data" %}{% endblock %}
-{% block body_title %}{% trans "Riparian Transect: " %}{{ transect.date_time }}{% endblock %}
+{% block body_title %}{% trans "Riparian Transect: " %}{{ transect.date_time|date:"m-d-Y" }}{% endblock %}
 {% block content %}
+    <h3 align="center">
+        <a href="{% url 'streamwebs:site' site.site_slug %}">
+            {{ site.site_name }}
+        </a>
+    </h3>
+    <h4 align="center">Riparian Transect data: {{ transect.date_time|date:"m-d-Y" }}</h4>
     <div>
         <table>
             <tr>

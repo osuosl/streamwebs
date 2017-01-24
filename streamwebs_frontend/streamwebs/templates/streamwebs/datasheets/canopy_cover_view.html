@@ -5,6 +5,12 @@
 {% block title %}{% trans "View Canopy Cover Survey" %}{% endblock %}
 {% block body_title %}{% trans "Canopy Cover Survey: " %}{{ canopy_cover.date_time }}{% endblock %}
 {% block content %}
+    <h3 align="center">
+        <a href="{% url 'streamwebs:site' site.site_slug %}">
+            {{ site.site_name }}
+        </a>
+    </h3>
+    <h4 align="center">Canopy Cover data: {{ canopy_cover.date_time|date:"m-d-Y" }}</h4>
     <div>
         <table>
             <tr>
