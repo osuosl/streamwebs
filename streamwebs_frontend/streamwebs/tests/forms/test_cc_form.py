@@ -8,7 +8,6 @@ class Canopy_Cover_Form_TestCase(TestCase):
         self.expected_fields = (
             'school',
             'date_time',
-            'site',
             'weather',
             'est_canopy_cover'
         )
