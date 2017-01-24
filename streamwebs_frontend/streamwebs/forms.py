@@ -90,7 +90,7 @@ class WQForm(forms.ModelForm):
                 forms.Textarea(attrs={'class': 'materialize-textarea'})
         }
         fields = (
-            'site', 'date', 'DEQ_dq_level', 'school',
+            'date', 'DEQ_dq_level', 'school',
             'latitude', 'longitude', 'fish_present', 'live_fish',
             'dead_fish', 'water_temp_unit', 'air_temp_unit', 'notes'
         )
@@ -140,7 +140,7 @@ class WQSampleFormReadOnly(WQSampleForm):
 class Canopy_Cover_Form(forms.ModelForm):
     class Meta:
         model = Canopy_Cover
-        fields = ('school', 'date_time', 'site', 'weather', 'est_canopy_cover')
+        fields = ('school', 'date_time', 'weather', 'est_canopy_cover')
 
 
 class CC_Cardinal_Form(forms.ModelForm):
@@ -162,7 +162,7 @@ class RiparianTransectForm(forms.ModelForm):
 
     class Meta:
         model = RiparianTransect
-        fields = ('school', 'date_time', 'weather', 'site', 'slope', 'notes')
+        fields = ('school', 'date_time', 'weather', 'slope', 'notes')
 
 
 class PhotoPointImageForm(forms.ModelForm):

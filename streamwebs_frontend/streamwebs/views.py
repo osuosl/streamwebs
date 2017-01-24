@@ -355,8 +355,8 @@ def riparian_transect_edit(request, site_slug):
         transect_form = RiparianTransectForm(data=request.POST)
 
         if (zone_formset.is_valid() and transect_form.is_valid()):
-
             transect = transect_form.save()             # save form to object
+            transect.site = site
             transect.save()                             # save object
 
             zones = zone_formset.save(commit=False)     # save forms to objs
@@ -425,6 +425,7 @@ def canopy_cover_edit(request, site_slug):
         if (cardinal_formset.is_valid() and canopy_cover_form.is_valid()):
 
             canopy_cover = canopy_cover_form.save()
+            canopy_cover.site = site
             canopy_cover.save()
 
             cardinals = cardinal_formset.save(commit=False)
@@ -692,6 +693,7 @@ def water_quality_edit(request, site_slug):
         wq_form = WQForm(data=request.POST)
         if (sample_formset.is_valid() and wq_form.is_valid()):
             water_quality = wq_form.save()   # save form to object
+            water_quality.site = site
             water_quality.save()             # save object to db
             allSamples = sample_formset.save(commit=False)
             for sample in allSamples:
