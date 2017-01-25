@@ -1,3 +1,4 @@
+from __future__ import print_function
 from django.test import TestCase
 from streamwebs.forms import TransectZoneForm, RiparianTransectForm
 
@@ -31,14 +32,12 @@ class RiparianTransectFormTestCase(TestCase):
             'school',
             'date_time',
             'weather',
-            'site',
             'slope',
             'notes',
         )
 
         self.required_fields = (
             'school',
-            'site'
         )
 
     def test_form_fields_exist(self):

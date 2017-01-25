@@ -3,6 +3,7 @@
 {% load i18n %}
 {% load filters %}
 {% block title %}{% trans "View Macroinvertebrates Data" %}{% endblock %}
+{% block body_title %}{% trans "Macroinvertebrates: " %}{{ data.date_time|date:"m-d-Y" }}{% endblock %}
  
 {% block scripts %}
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -24,7 +25,11 @@
         <strong>{{ message }}</strong>
         {% endfor %}
     {% endif %}
-    <h3 align="center">{{ data.site.site_name }}</h3>
+    <h3 align="center">
+        <a href="{% url 'streamwebs:site' site.site_slug %}">
+            {{ site.site_name }}
+        </a>
+    </h3>
     <h4 align="center">Macroinvertebrate data: {{ data.date_time|date:"m-d-Y" }}</h4>
    
     <div class="row">

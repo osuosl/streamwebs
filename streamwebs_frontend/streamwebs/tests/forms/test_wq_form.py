@@ -7,7 +7,6 @@ class WQFormTestCase(TestCase):
 
     def setUp(self):
         self.expected_fields = (
-            'site',
             'date',
             'DEQ_dq_level',
             'school',
