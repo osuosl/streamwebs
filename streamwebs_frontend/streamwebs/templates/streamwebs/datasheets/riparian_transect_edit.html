@@ -2,8 +2,8 @@
 {% load staticfiles %}
 {% load i18n %}
 {% load filters %}
-{% block title %}{% trans "Riparian Transect" %}{% endblock %}
-{% block body_title %}{% trans "Add/Edit Riparian Area Transect" %}{% endblock %}
+{% block title %}{% trans "Riparian Area Transect" %}{% endblock %}
+{% block body_title %}{% trans "Add/Edit Data" %}{% endblock %}
 
 {% block stylesheets %}
 <style>
@@ -24,6 +24,14 @@
     <strong>{% trans "You have successfully submitted your Riparian Transect data sheet." %}</strong>
 
     {% else %}
+        <h3 align ="center">
+            <a href="{% url 'streamwebs:site' site.site_slug %}">
+                {{ site.site_name }}
+            </a>
+        </h3>
+
+        <h4 align="center">{% trans 'New Riparian Area Transect Sampling' %}</h4>
+
         <form id='rip_trans_form' method='post'>
             {% csrf_token %}
             <tr>{{ transect_form.non_field_errors }}</tr>
