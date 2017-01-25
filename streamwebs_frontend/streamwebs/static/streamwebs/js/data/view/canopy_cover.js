@@ -1,41 +1,33 @@
 $(function shadeSquares() {
-    let shades = {{ canopy_cover.north_cc }};
-
     // Iterate over each of the right-most 24 bits from right to left
     // If a bit is 1, shade that square
-    for (let i = 0; i < 24; i++, shades = shades >>> 1) {
-        if (shades & 1) {
-            $('#canopy-north > #square-' + i).addClass('shaded');
+    for (let i = 0; i < 24; i++, north_shades = north_shades >>> 1) {
+        if (north_shades & 1) {
+            $('#canopy-north > #square-0-' + i).addClass('shaded');
         }
     }
 
-    shades = {{ canopy_cover.west_cc }};
-
     // Iterate over each of the right-most 24 bits from right to left
     // If a bit is 1, shade that square
-    for (let i = 0; i < 24; i++, shades = shades >>> 1) {
-        if (shades & 1) {
-            $('#canopy-west #square-' + i).addClass('shaded');
+    for (let i = 0; i < 24; i++, west_shades = west_shades >>> 1) {
+        if (west_shades & 1) {
+            $('#canopy-west #square-1-' + i).addClass('shaded');
         }
     }
 
-    shades = {{ canopy_cover.east_cc }};
-
     // Iterate over each of the right-most 24 bits from right to left
     // If a bit is 1, shade that square
-    for (let i = 0; i < 24; i++, shades = shades >>> 1) {
-        if (shades & 1) {
-            $('#canopy-east #square-' + i).addClass('shaded');
+    for (let i = 0; i < 24; i++, east_shades = east_shades >>> 1) {
+        if (east_shades & 1) {
+            $('#canopy-east #square-2-' + i).addClass('shaded');
         }
     }
 
-    shades = {{ canopy_cover.south_cc }};
-
     // Iterate over each of the right-most 24 bits from right to left
     // If a bit is 1, shade that square
-    for (let i = 0; i < 24; i++, shades = shades >>> 1) {
-        if (shades & 1) {
-            $('#canopy-south #square-' + i).addClass('shaded');
+    for (let i = 0; i < 24; i++, south_shades = south_shades >>> 1) {
+        if (south_shades & 1) {
+            $('#canopy-south #square-3-' + i).addClass('shaded');
         }
     }
 });

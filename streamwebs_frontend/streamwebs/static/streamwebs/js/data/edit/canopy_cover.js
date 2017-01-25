@@ -25,7 +25,9 @@ $(function () {
         evt.preventDefault();
     });
 
-    $('#submit').click(function sendData() {
+    $('form').submit(function submit() {
+        input.val(input.attr('num'));
+
         let north = 0;
 
         $('#canopy-north').find('.canopy-square.shown').each((i, e) => {
