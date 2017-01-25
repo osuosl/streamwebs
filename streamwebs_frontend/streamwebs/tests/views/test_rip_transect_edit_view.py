@@ -1,7 +1,7 @@
 from django.test import Client, TestCase
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
-from streamwebs.models import Site
+from streamwebs.models import Site, School, RiparianTransect
 
 
 class AddTransectTestCase(TestCase):
@@ -10,6 +10,7 @@ class AddTransectTestCase(TestCase):
         self.user = User.objects.create_user('john', 'john@example.com',
                                              'johnpassword')
         self.client.login(username='john', password='johnpassword')
+        self.school = School.test_objects.create_school('Test School')
 
     def test_view_with_bad_blank_data(self):
         """
@@ -28,7 +29,6 @@ class AddTransectTestCase(TestCase):
         )
         self.assertFormError(response, 'transect_form', 'school',
                              'This field is required.')
-        self.assertFalse(response.context['added'])
 
     def test_view_with_good_data(self):
         """
@@ -41,7 +41,7 @@ class AddTransectTestCase(TestCase):
                 'streamwebs:riparian_transect_edit',
                 kwargs={'site_slug': site.site_slug}
             ), {
-                    'school': 'School of cool',
+                    'school': self.school.id,
                     'date_time': '2016-07-18 14:09:07',
                     'weather': 'cloudy',
                     'site': site.id,
@@ -78,12 +78,14 @@ class AddTransectTestCase(TestCase):
                     'transect-4-comments': '5 comments'
                 }
         )
-        self.assertTemplateUsed(
+        self.assertRedirects(
             response,
-            'streamwebs/datasheets/riparian_transect_edit.html'
-        )
-        self.assertTrue(response.context['added'])
-        self.assertEqual(response.status_code, 200)
+            reverse('streamwebs:riparian_transect',
+                    kwargs={'site_slug': site.site_slug,
+                            'data_id': RiparianTransect.test_objects.last().id}
+                    ),
+            status_code=302,
+            target_status_code=200)
 
     def test_view_with_not_logged_in_user(self):
         """
@@ -97,5 +99,10 @@ class AddTransectTestCase(TestCase):
                 kwargs={'site_slug': site.site_slug}
             )
         )
-        self.assertContains(response, 'You must be logged in to submit data.')
-        self.assertEqual(response.status_code, 200)
+        self.assertRedirects(
+            response,
+            (reverse('streamwebs:login') + '?next=' +
+                reverse('streamwebs:riparian_transect_edit',
+                        kwargs={'site_slug': site.site_slug})),
+            status_code=302,
+            target_status_code=200)

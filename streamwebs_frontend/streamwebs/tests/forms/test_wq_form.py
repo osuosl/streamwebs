@@ -25,6 +25,8 @@ class WQFormTestCase(TestCase):
             'notes'
         }
 
+        self.school = School.test_objects.create_school('Test School')
+
     def test_WQForm_fields_exist(self):
         wq_form = WQForm()
         self.assertEqual(set(wq_form.Meta.fields),
@@ -38,7 +40,6 @@ class WQFormTestCase(TestCase):
 
     def test_WQForm_isValid(self):
         site = Site.test_objects.create_site('Site Name')
-        school = School.test_objects.create_school('Somewhere Cool')
         good_data = {
             'DEQ_dq_level': u'A',
             'air_temp_unit': u'Fahrenheit',
@@ -51,7 +52,7 @@ class WQFormTestCase(TestCase):
             'live_fish': 5,
             'longitude': 120,
             'notes': u"Call your mom on Mother's Day!",
-            'school': school.id,
+            'school': self.school.id,
             'site': site.id
         }
         form = WQForm(data=good_data)
@@ -110,26 +111,26 @@ class WQSampleFormTestCase(TestCase):
 
     def test_Water_QualityForm_isValid(self):
         good_data = {
-                'air_temp_tool': u'Manual',
-                'air_temperature': u'2',
-                'ammonia': u'0',
-                'bod': u'0',
-                'conductivity': u'1',
-                'dissolved_oxygen': u'1',
-                'fecal_coliform': u'0',
-                'nitrate': u'0',
-                'nitrite': u'0',
-                'oxygen_tool': u'Manual',
-                'pH': u'0',
-                'pH_tool': u'Manual',
-                'phosphates': u'2',
-                'salinity': u'0',
-                'salt_tool': u'Vernier',
-                'total_solids': u'0',
-                'turbid_tool': u'Manual',
-                'turbidity': u'0',
-                'water_temp_tool': u'Manual',
-                'water_temperature': u'1',
+            'air_temp_tool': u'Manual',
+            'air_temperature': u'2',
+            'ammonia': u'0',
+            'bod': u'0',
+            'conductivity': u'1',
+            'dissolved_oxygen': u'1',
+            'fecal_coliform': u'0',
+            'nitrate': u'0',
+            'nitrite': u'0',
+            'oxygen_tool': u'Manual',
+            'pH': u'0',
+            'pH_tool': u'Manual',
+            'phosphates': u'2',
+            'salinity': u'0',
+            'salt_tool': u'Vernier',
+            'total_solids': u'0',
+            'turbid_tool': u'Manual',
+            'turbidity': u'0',
+            'water_temp_tool': u'Manual',
+            'water_temperature': u'1',
         }
         form = WQSampleForm(data=good_data)
         self.assertTrue(form.is_valid())

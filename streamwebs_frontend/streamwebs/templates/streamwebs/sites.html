@@ -2,9 +2,9 @@
 {% load staticfiles %}
 {% block title %}Sites - StreamWebs{% endblock %}
 {% load i18n %}
+
+
 {% block scripts %}
-
-
 <script src="https://maps.googleapis.com/maps/api/js?key={{ maps_api }}"></script>
 
 <script type="application/javascript">
@@ -15,8 +15,11 @@
             slug: "{{site.site_slug}}",
             name: "{{site.site_name}}",
             description: "{{site.description}}",
+
+            {% language "en-us" %}
             lat: {{site.location.y}},
             lng: {{site.location.x}},
+            {% endlanguage %}
         });
     {% endfor %}
 </script>

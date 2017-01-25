@@ -2,7 +2,8 @@
 from __future__ import unicode_literals
 from streamwebs.models import UserProfile, WQ_Sample, Water_Quality, \
     Macroinvertebrates, Canopy_Cover, CC_Cardinal, TransectZone, \
-    RiparianTransect, PhotoPointImage, PhotoPoint, CameraPoint, Site, School
+    RiparianTransect, PhotoPointImage, PhotoPoint, CameraPoint, Site, School, \
+    Soil_Survey
 from django.contrib.auth.models import User
 from django import forms
 from django.utils.translation import ugettext_lazy as _
@@ -74,6 +75,8 @@ class MacroinvertebratesForm(forms.ModelForm):
 
 
 class WQForm(forms.ModelForm):
+    school = forms.ModelChoiceField(queryset=School.objects.all())
+
     class Meta:
         model = Water_Quality
         widgets = {
@@ -155,6 +158,8 @@ class TransectZoneForm(forms.ModelForm):
 
 
 class RiparianTransectForm(forms.ModelForm):
+    school = forms.ModelChoiceField(queryset=School.objects.all())
+
     class Meta:
         model = RiparianTransect
         fields = ('school', 'date_time', 'weather', 'site', 'slope', 'notes')
@@ -183,3 +188,26 @@ class SiteForm(forms.ModelForm):
     class Meta:
         model = Site
         fields = ('site_name', 'description', 'location', 'image')
+
+
+class SoilSurveyForm(forms.ModelForm):
+    class Meta:
+        model = Soil_Survey
+        widgets = {
+            'landscape_pos': forms.RadioSelect(),
+            'cover_type': forms.RadioSelect(),
+            'land_use': forms.RadioSelect(),
+            'site_char':
+                forms.Textarea(attrs={'class': 'materialize-textarea'})
+        }
+        fields = (
+            'school', 'date', 'weather', 'landscape_pos', 'cover_type',
+            'land_use', 'soil_type', 'distance', 'site_char'
+        )
+
+
+class SoilSurveyFormReadOnly(SoilSurveyForm):
+    def __init__(self, *args, **kwargs):
+        super(SoilSurveyFormReadOnly, self).__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].widget.attrs.update({'disabled': True})

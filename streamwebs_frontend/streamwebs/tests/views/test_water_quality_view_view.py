@@ -1,7 +1,7 @@
 from django.test import Client, TestCase
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
-from streamwebs.models import Site, Water_Quality, WQ_Sample, School
+from streamwebs.models import Site, School, Water_Quality, WQ_Sample
 
 
 class AddWaterQualityTestCase(TestCase):
@@ -11,13 +11,14 @@ class AddWaterQualityTestCase(TestCase):
             'john', 'john@example.com', 'johnpassword'
         )
         self.client.login(username='john', password='johnpassword')
+        self.school = School.test_objects.create_school('Test School')
 
     def test_view_sample(self):
         """ View a sample """
         site = Site.test_objects.create_site('Site Name')
-        school = School.test_objects.create_school('Middleville Elementary')
         location = Water_Quality.test_objects.create_water_quality(
-            site, u'2016-08-22', school, u'C', 125.16, 43.12001, u'True', 4, 1,
+            site, u'2016-08-22', self.school,
+            u'C', 125.16, 43.12001, u'True', 4, 1,
             u'Fahrenheit', u'Celsius', u"Call your mom on Mothers Day!"
         )
         for i in range(4):
@@ -40,5 +41,5 @@ class AddWaterQualityTestCase(TestCase):
             response,
             'streamwebs/datasheets/water_quality.html'
         )
-        self.assertContains(response, u'Middleville Elementary')
+        self.assertContains(response, u'Test School')
         self.assertContains(response, u"Call your mom on Mothers Day!")
