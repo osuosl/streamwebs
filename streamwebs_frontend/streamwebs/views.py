@@ -421,7 +421,6 @@ def canopy_cover_edit(request, site_slug):
                 'You have successfully added a new canopy cover ' +
                 'data sheet.')
 
-            added = True
             return redirect(reverse('streamwebs:canopy_cover',
                                     kwargs={'site_slug': site.site_slug,
                                             'data_id': canopy_cover.id}))
