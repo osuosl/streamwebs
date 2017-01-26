@@ -3,16 +3,12 @@ $(function () {
     input.attr('readonly', 'true');
     input.attr('num', 0);
 
-    $(".canopy-square.hidden").mousedown(function(evt) {
-      evt.preventDefault();
-    });
-
     $(".canopy-square").mousedown(function toggleSquare(evt) {
         const square = $(evt.target);
 
-        square.toggleClass('shaded');
+        square.toggleClass('blue-grey darken-1');
 
-        if (square.hasClass('shaded')) {
+        if (square.hasClass('blue-grey darken-1')) {
             let oldval = Number.parseInt(input.attr('num'));
             input.attr('num', oldval+1);
             input.val(Math.floor((oldval+1) / 96 * 10000) / 100);
@@ -21,8 +17,6 @@ $(function () {
             input.attr('num', oldval-1);
             input.val(Math.floor((oldval-1) / 96 * 10000) / 100);
         }
-
-        evt.preventDefault();
     });
 
     $('form').submit(function submit() {
@@ -31,7 +25,7 @@ $(function () {
         let north = 0;
 
         $('#canopy-north').find('.canopy-square.shown').each((i, e) => {
-            if ($(e).hasClass('shaded')) {
+            if ($(e).hasClass('blue-grey darken-1')) {
                 let num = Number.parseInt(e.id.slice(9)); // Drop off the 'square-n-'
 
                 north |= (1 << num);
@@ -43,7 +37,7 @@ $(function () {
         let west = 0;
 
         $('#canopy-west').find('.canopy-square.shown').each((i, e) => {
-            if ($(e).hasClass('shaded')) {
+            if ($(e).hasClass('blue-grey darken-1')) {
                 let num = Number.parseInt(e.id.slice(9)); // Drop off the 'square-n-'
 
                 west |= (1 << num);
@@ -55,7 +49,7 @@ $(function () {
         let east = 0;
 
         $('#canopy-east').find('.canopy-square.shown').each((i, e) => {
-            if ($(e).hasClass('shaded')) {
+            if ($(e).hasClass('blue-grey darken-1')) {
                 let num = Number.parseInt(e.id.slice(9)); // Drop off the 'square-n-'
 
                 east |= (1 << num);
@@ -67,7 +61,7 @@ $(function () {
         let south = 0;
 
         $('#canopy-south').find('.canopy-square.shown').each((i, e) => {
-            if ($(e).hasClass('shaded')) {
+            if ($(e).hasClass('blue-grey darken-1')) {
                 let num = Number.parseInt(e.id.slice(9)); // Drop off the 'square-n-'
 
                 south |= (1 << num);

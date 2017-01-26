@@ -8,52 +8,38 @@
 {% block content %}
 <style>
     #canopies {
-        height: 750px;
         cursor: default;
     }
 
     p.header {
-        width: 50%;
         margin: 10px auto;
         text-align: center;
         font-weight: bold;
         line-height: 10px;
-        z-index: -10;
     }
 
     #canopy-north {
         margin-left: 700px;
         margin-bottom: -150px;
-        z-index: 20;
-        pointer-events: none;
     }
 
     #canopy-west {
         float: left;
         margin-left: 475px;
-        margin-right: 75px;
+        margin-right: 150px;
         margin-bottom: -150px;
-        z-index: 10;
-        pointer-events: none;
     }
 
     #canopy-east {
         float: left;
-        margin-left: 75px;
         margin-bottom: -150px;
-        z-index: 10;
-        pointer-events: none;
     }
 
     #canopy-south {
         margin-left: 700px;
-        margin-bottom: -300px;
-        z-index: 20;
-        pointer-events: none;
     }
 
     .canopy {
-        color: #000000;
         width: 300px;
         height: 350px;
         padding: 1px 1px 0 0;
@@ -65,7 +51,6 @@
         border: solid black 1px;
         float: left;
         margin: -1px -1px 0 0;
-        padding: 0;
 
         text-align: center;
         line-height: 50px;
@@ -75,13 +60,7 @@
     }
 
     .canopy-square.hidden {
-        pointer-events: none;
-        z-index: -20;
         visibility: hidden;
-    }
-
-    .canopy-square.shaded {
-        background-color: #777777;
     }
 </style>
 
