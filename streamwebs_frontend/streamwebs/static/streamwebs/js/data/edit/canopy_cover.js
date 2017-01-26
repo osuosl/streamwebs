@@ -1,7 +1,6 @@
 $(function () {
     const input = $("#total").find("input");
     const display = $("#percent");
-    input.attr('readonly', 'true');
 
     $(".canopy-square").mousedown(function toggleSquare(evt) {
         const square = $(evt.target);
@@ -20,8 +19,6 @@ $(function () {
     });
 
     $('form').submit(function submit() {
-        input.val(input.attr('num'));
-
         let north = 0;
 
         $('#canopy-north').find('.canopy-square.shown').each((i, e) => {
