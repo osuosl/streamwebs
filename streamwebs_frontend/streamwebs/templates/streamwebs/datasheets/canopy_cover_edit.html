@@ -304,7 +304,8 @@
             <tr></tr>
             <tr>
                 <th align='left'>{{ canopy_cover_form.est_canopy_cover.label }}</th>
-                <td id="total">{{ canopy_cover_form.est_canopy_cover }}</td>
+                <td style="display: none" id="total">{{ canopy_cover_form.est_canopy_cover }}</td>
+                <td><span class="grey-text" id="percent">0%</span></td>
                 <td>{{ canopy_cover_form.est_canopy_cover.errors }}</td>
             </tr>
         </table> <!-- end canopy cover -->

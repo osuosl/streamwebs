@@ -1,7 +1,7 @@
 $(function () {
     const input = $("#total").find("input");
+    const display = $("#percent");
     input.attr('readonly', 'true');
-    input.attr('num', 0);
 
     $(".canopy-square").mousedown(function toggleSquare(evt) {
         const square = $(evt.target);
@@ -9,13 +9,13 @@ $(function () {
         square.toggleClass('blue-grey darken-1');
 
         if (square.hasClass('blue-grey darken-1')) {
-            let oldval = Number.parseInt(input.attr('num'));
-            input.attr('num', oldval+1);
-            input.val(Math.floor((oldval+1) / 96 * 10000) / 100);
+            let oldval = Number.parseInt(input.val());
+            input.val(oldval+1);
+            display.text(Math.floor((oldval+1) / 96 * 10000) / 100 + "%");
         } else {
-            let oldval = Number.parseInt(input.attr('num'));
-            input.attr('num', oldval-1);
-            input.val(Math.floor((oldval-1) / 96 * 10000) / 100);
+            let oldval = Number.parseInt(input.val());
+            input.val(oldval-1);
+            display.text(Math.floor((oldval-1) / 96 * 10000) / 100 + "%");
         }
     });
 
