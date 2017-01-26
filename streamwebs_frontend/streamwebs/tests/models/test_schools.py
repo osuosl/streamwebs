@@ -22,6 +22,7 @@ class SchoolTestCase(TestCase):
 
             'id': models.AutoField,
             'userprofile': models.ManyToOneRel,
+            'water_quality': models.ManyToOneRel,
             'canopy_cover': models.ManyToOneRel,
             'soil_survey': models.ManyToOneRel
         }

@@ -29,8 +29,6 @@ with open(datafile, 'r') as csvfile:
     wqreader = csv.reader(csvfile)
     for row in wqreader:
         if row[0] != 'Stream/Site name':  # Skip header
-            waterq = Water_Quality()
-
             for i in range(0, 12):
                 if row[i] == '':
                     row[i] = None
@@ -38,7 +36,7 @@ with open(datafile, 'r') as csvfile:
             # Strip ``Collected date`` to be YYYY-MM-DD
             t_date = row[2].strip('MonTuesWdhurFiSat(Aly), ')
 
-            # Formate datetime object for query
+            # Format datetime object for query
             if len(t_date) > 10:
                 date_time =\
                     datetime.datetime.strptime(t_date, '%Y-%m-%d %H:%M').date()
@@ -47,50 +45,55 @@ with open(datafile, 'r') as csvfile:
             collected =\
                 datetime.datetime.strptime(t_date[:10], '%Y-%m-%d').date()
 
-            waterq.date = collected
-
             # Date to compare ``collected`` to
             agate1_date =\
                 datetime.datetime.strptime('2014-06-09', '%Y-%m-%d').date()
 
-            waterq.DEQ_dq_level = row[1]
-            waterq.school = row[3]
+            DEQ_dq_level = row[1]
+            school = row[3]   # TODO: Figure out corr. schools
 
             if row[4] == 'Yes':
-                waterq.fish_present = True
+                fish_present = True
             elif row[4] == 'No':
-                waterq.fish_present = False
+                fish_present = False
             else:
-                waterq.fish_present = row[4]
+                fish_present = row[4]
 
-            waterq.live_fish = row[5]
-            waterq.dead_fish = row[6]
+            live_fish = row[5]
+            dead_fish = row[6]
 
-            waterq.air_temp_unit = row[7]
-            waterq.water_temp_unit = row[8]
+            air_temp_unit = row[7]
+            water_temp_unit = row[8]
 
-            waterq.latitude = row[9]
-            waterq.longitude = row[10]
+            latitude = row[9]
+            longitude = row[10]
 
-            waterq.nid = row[11]
+            nid = row[11]
 
             if row[0] is not None:
                 try:
                     site = Site.objects.get(site_name=row[0])
-                    waterq.site_id = site.id
+                    site_id = site.id
                 except:  # for the one site_name exception...
                     if date_time >= agate1_date:
                         site = Site.objects.get(
                             site_name=row[0], site_slug='agate-beach1')
-                        waterq.site_id = site.id
+                        site_id = site.id
                     else:
                         site = Site.objects.get(
                             site_name=row[0], site_slug='agate-beach')
-                        waterq.site_id = site.id
+                        site_id = site.id
             else:
-                waterq.site_id = None
+                site_id = None
 
-            waterq.save()
+            waterq = Water_Quality.objects.update_or_create(
+                date=collected, DEQ_dq_level=DEQ_dq_level, school=school,
+                fish_present=fish_present, live_fish=live_fish,
+                dead_fish=dead_fish, air_temp_unit=air_temp_unit,
+                water_temp_unit=water_temp_unit, latitude=latitude,
+                longitude=longitude, nid=nid, site_id=site_id
+            )
+
 
 csvfile.close()
 
