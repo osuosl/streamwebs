@@ -211,3 +211,14 @@ class SoilSurveyFormReadOnly(SoilSurveyForm):
         super(SoilSurveyFormReadOnly, self).__init__(*args, **kwargs)
         for field in self.fields:
             self.fields[field].widget.attrs.update({'disabled': True})
+
+
+class StatisticsForm(forms.Form):
+    start = forms.DateField(
+        widget=forms.DateInput(attrs={'class': 'datepicker'}),
+        label=_('starting from'), required=False
+    )
+    end = forms.DateField(
+        widget=forms.DateInput(attrs={'class': 'datepicker'}),
+        label=_('ending on'), required=False
+    )
