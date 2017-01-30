@@ -17,14 +17,6 @@ from streamwebs.models import Site  # NOQA
 from streamwebs.models import Canopy_Cover  # NOQA
 
 
-# Function to convert the (string) coordinates to a float value
-def num(x):
-    try:
-        return float(x)
-    except ValueError:
-        return x
-
-
 key_val_map = {
     '1': None,
     '2': None,
@@ -65,9 +57,7 @@ key_val_map = {
 }
 
 CCs = {}
-directions = ['north'
-              # , 'east', 'south', 'west'
-              ]
+directions = ['north', 'east', 'south', 'west']
 
 for dir in directions:
     if os.path.isdir("../streamwebs_frontend/sw_data/"):
@@ -86,11 +76,21 @@ for dir in directions:
                         cc = CCs[row['Nid']]
                     else:
                         cc = Canopy_Cover()
-                        cc.site = Site.objects.get(site_name=row['Stream/Site name'])
-                        if row['Collected'][16] == '0' or row['Collected'][16] == '1' or row['Collected'][16] == '2':
-                            cc.date_time = datetime.strptime(row['Collected'], "%a, %Y-%m-%d %H:%M")
+                        cc.site = Site.objects.get(
+                            site_name=row['Stream/Site name']
+                        )
+                        if row['Collected'][16] == '0' or \
+                           row['Collected'][16] == '1' or \
+                           row['Collected'][16] == '2':
+                            cc.date_time = datetime.strptime(
+                                row['Collected'],
+                                "%a, %Y-%m-%d %H:%M"
+                            )
                         else:
-                            cc.date_time = datetime.strptime(row['Collected'][0:15], "%a, %Y-%m-%d")
+                            cc.date_time = datetime.strptime(
+                                row['Collected'][0:15],
+                                "%a, %Y-%m-%d"
+                            )
                     CCs[row['Nid']] = cc
                     count = 0
 
