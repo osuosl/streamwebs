@@ -57,6 +57,7 @@ key_val_map = {
 }
 
 CCs = {}
+
 directions = ['north', 'east', 'south', 'west']
 
 for dir in directions:
@@ -77,11 +78,11 @@ for dir in directions:
                     else:
                         cc = Canopy_Cover()
                         cc.site = Site.objects.get(
-                            site_name=row['Stream/Site name']
+                            site_name=row['Stream/Site name'].strip()
                         )
                         if row['Collected'][16] == '0' or \
-                           row['Collected'][16] == '1' or \
-                           row['Collected'][16] == '2':
+                           row['Collected'][16] == '0' or \
+                           row['Collected'][16] == '0':
                             cc.date_time = datetime.strptime(
                                 row['Collected'],
                                 "%a, %Y-%m-%d %H:%M"
@@ -94,17 +95,23 @@ for dir in directions:
                     CCs[row['Nid']] = cc
                     count = 0
 
-                if key_val_map[row[dir.capitalize()]]:
+                if key_val_map[row[dir.capitalize()]] is not None:
                     count |= (1 << key_val_map[row[dir.capitalize()]])
-                cc.north_cc = count
+                setattr(cc, dir + '_cc', count)
+                CCs['Nid'] = cc
 
 for cc in CCs.values():
-    print(cc.north_cc)
-    cc.est_canopy_cover = cc.north_cc + cc.east_cc + cc.south_cc + cc.west_cc
+    # Estimated cover = the sum of the number of bits set on each field
+    cc.est_canopy_cover = \
+        bin(cc.north_cc).count('1') + \
+        bin(cc.east_cc).count('1') + \
+        bin(cc.south_cc).count('1') + \
+        bin(cc.west_cc).count('1')
 
     Canopy_Cover.objects.update_or_create(
         site=cc.site, school=None, date_time=cc.date_time, weather='',
-        north_cc=cc.north_cc,
-        # east_cc=cc.east_cc, south_cc=cc.south_cc, west_cc=cc.west_cc,
-        est_canopy_cover=cc.est_canopy_cover
+        north_cc=cc.north_cc, east_cc=cc.east_cc, south_cc=cc.south_cc,
+        west_cc=cc.west_cc, est_canopy_cover=cc.est_canopy_cover
     )
+
+print('Canopy Covers loaded.')
