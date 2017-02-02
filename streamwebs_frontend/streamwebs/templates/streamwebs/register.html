@@ -16,11 +16,11 @@
 
     {% if registered %}
     <strong>{% trans "You have successfully created a StreamWebs account." %}</strong>
-    <a href='/streamwebs/'>{% trans "Return to home" %}</a><br />
+    <a href="{% url 'streamwebs:index' %}">{% trans "Return to home" %}</a><br />
 
     {% else %}
 
-    <form class="col s8 offset-s2" id='user_form' method='post' action='/streamwebs/register/'>
+    <form class="col s8 offset-s2" id='user_form' method='post' action="{% url 'streamwebs:register' %}">
       <strong>{% trans "Create an account." %}</strong><br />
         {% csrf_token %}
         <div class="input-field col s6">
