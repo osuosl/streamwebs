@@ -41,7 +41,8 @@
           {{ profile_form.birthdate.errors }}
 
         </div>
-        <div class="input-field col s12">
+        
+        <div class="input-field col s12 special">
           {{ profile_form.school }}
           {{ profile_form.school.errors }}
           <label for="{{ profile_form.school.id_for_label }}">School:</label>
@@ -87,14 +88,19 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pickadate.js/3.5.6/compressed/picker.date.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
     <script>
-    $('select').material_select();
-    $('.datepicker').pickadate({
-      today: '',
-      selectMonths: true, // Creates a dropdown to control month
-      selectYears: 100, // Creates a dropdown of 15 years to control year
-      max: true, // set max to today
-      format: 'yyyy-dd-mm',
-    })
+    $(document).ready(function() {
+      $('select').material_select();
+
+      $('.datepicker').pickadate({
+        today: '',
+        selectMonths: true, // Creates a dropdown to control month
+        selectYears: 100, // Creates a dropdown of 15 years to control year
+        max: true, // set max to today
+        format: 'yyyy-dd-mm',
+      });
+    });
+
+
     </script>
     {% endblock %}
 
