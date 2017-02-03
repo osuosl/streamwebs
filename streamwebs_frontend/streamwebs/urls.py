@@ -75,5 +75,5 @@ urlpatterns = [
 
     url(r'^resources/$', views.resources, name='resources'),
     url(r'^resources/data-sheets/', views.resources_data_sheets,
-         name='resources-data-sheets')
+        name='resources-data-sheets')
 ]
