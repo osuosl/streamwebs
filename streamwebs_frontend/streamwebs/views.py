@@ -20,7 +20,7 @@ from streamwebs.forms import (
 from streamwebs.models import (
     Macroinvertebrates, Site, Water_Quality, WQ_Sample, RiparianTransect,
     TransectZone, Canopy_Cover, CameraPoint, PhotoPoint,
-    PhotoPointImage, Soil_Survey)
+    PhotoPointImage, Soil_Survey, Resource)
 
 from datetime import datetime
 import json
@@ -746,3 +746,15 @@ def soil_survey_edit(request, site_slug):
 
 def resources(request):
     return render(request, 'streamwebs/resources.html')
+
+
+def resources_data_sheets(request):
+    """ View for data_sheet resources """
+    data = Resource.objects.filter(res_type='data_sheet').order_by(
+        'sort_order', 'name'
+    )
+    return render(
+        request, 'streamwebs/resources/resources_data_sheets.html', {
+            'data': data,
+        }
+    )
