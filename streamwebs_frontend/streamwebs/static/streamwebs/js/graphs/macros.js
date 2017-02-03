@@ -459,7 +459,7 @@ const useBarGraph = function useBarGraph() {
             .attr('y', 0)
             .attr('width', 125)
             .attr('height', 45)
-            .attr('xlink:href', '/static/streamwebs/images/macroinvertebrates/snail.png');
+            .attr('xlink:href', '/static/streamwebs/images/macroinvertebrates/macro_snail.png');
 
         hover.append('text')
             .attr('x', 10)
@@ -536,7 +536,7 @@ const useBarGraph = function useBarGraph() {
         const target = $(e.target);
         const g = target.siblings('.bar-img');
         g.find('image')[0].setAttributeNS('http://www.w3.org/1999/xlink', 'href',
-            '/static/streamwebs/images/macroinvertebrates/' +
+            '/static/streamwebs/images/macroinvertebrates/macro_' +
             target.attr('x-data-name').toLowerCase().replace(/[ /]/g, '_') +
             '.png'
         );
