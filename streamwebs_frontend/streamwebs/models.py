@@ -1,6 +1,8 @@
 # -*- coding: UTF-8 -*-
 from __future__ import unicode_literals
 
+from numbers import Number
+
 from django.utils import timezone
 import datetime
 
@@ -18,6 +20,9 @@ def _timestamp(dt):
 
 
 def _temp_conv(temp, unit):
+    if not isinstance(unit, str) or not isinstance(temp, Number):
+        return None
+
     if unit != _('Celsius') and unit != _('Fahrenheit'):
         raise ValueError(_('Invalid unit'))
 
