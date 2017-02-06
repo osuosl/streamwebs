@@ -231,8 +231,9 @@ class Water_Quality(models.Model):
         max_length=10, choices=DEQ_DQ_CHOICES,
         default=None, null=True, verbose_name=_('DEQ data quality level')
     )
-    school = models.CharField(
-        max_length=250, null=True, verbose_name=_('school')
+    school = models.ForeignKey(
+        School, null=True, on_delete=models.CASCADE,
+        verbose_name=_('school'), limit_choices_to={'active': True}
     )
     latitude = models.DecimalField(
         null=True, max_digits=9, decimal_places=6,
@@ -939,7 +940,15 @@ class TransectZone(models.Model):
         verbose_name_plural = 'zones'
 
 
-def validate_cover(est_canopy_cover):
+def validate_cover(canopy_cover):
+    if canopy_cover & 0b11111111000000000000000000000000 != 0:
+        raise ValidationError(
+            '%(canopy_cover)s has bad bits set.',
+            params={'canopy_cover': canopy_cover},
+            )
+
+
+def validate_total_cover(est_canopy_cover):
     if not(0 <= est_canopy_cover and est_canopy_cover <= 96):
         raise ValidationError(
             '%(est_canopy_cover)s is not 0-96.',
@@ -956,8 +965,24 @@ class Canopy_Cover(models.Model):
     site = models.ForeignKey(Site, null=True, on_delete=models.CASCADE,
                              verbose_name=_('site'))
     weather = models.CharField(max_length=250, verbose_name=_('weather'))
-    est_canopy_cover = models.PositiveIntegerField(
+    north_cc = models.IntegerField(
         default=0, validators=[validate_cover],
+        verbose_name=_('north canopy cover')
+        )
+    east_cc = models.IntegerField(
+        default=0, validators=[validate_cover],
+        verbose_name=_('east canopy cover')
+        )
+    south_cc = models.IntegerField(
+        default=0, validators=[validate_cover],
+        verbose_name=_('south canopy cover')
+        )
+    west_cc = models.IntegerField(
+        default=0, validators=[validate_cover],
+        verbose_name=_('west canopy cover')
+        )
+    est_canopy_cover = models.PositiveIntegerField(
+        default=0, validators=[validate_total_cover],
         verbose_name=_('estimated canopy cover')
         )
 
@@ -967,105 +992,6 @@ class Canopy_Cover(models.Model):
     class Meta:
         verbose_name = 'canopy cover survey'
         verbose_name_plural = 'canopy cover surveys'
-
-
-class CardinalManager(models.Manager):
-    """
-    Manager for the canopy cover survey's cardinal boxes - creates dummy data
-    data for each of the cardinal directions
-    """
-    def create_shade(self, direction, A, B, C, D, E, F, G, H, I, J, K, L, M, N,
-                     O, P, Q, R, S, T, U, V, W, X, num_shaded, canopyc):
-
-        cc_info = self.create(direction=direction, A=A, B=B, C=C, D=D, E=E,
-                              F=F, G=G, H=H, I=I, J=J, K=K, L=L, M=M, N=N, O=O,
-                              P=P, Q=Q, R=R, S=S, T=T, U=U, V=V, W=W, X=X,
-                              num_shaded=num_shaded, canopy_cover=canopyc)
-        return cc_info
-
-
-def validate_shaded(num_shaded):
-    if not(0 <= num_shaded and num_shaded <= 24):
-        raise ValidationError(
-            '%(num_shaded)s is not 0-24.',
-            params={'num_shaded': num_shaded},
-            )
-
-
-@python_2_unicode_compatible
-class CC_Cardinal(models.Model):
-    NORTH = 'North'
-    EAST = 'East'
-    SOUTH = 'South'
-    WEST = 'West'
-
-    DIRECTIONS = (
-        (None, '-----'),
-        (NORTH, 'North'),
-        (EAST, 'East'),
-        (SOUTH, 'South'),
-        (WEST, 'West'),
-    )
-
-    direction = models.CharField(max_length=255, choices=DIRECTIONS,
-                                 default=DIRECTIONS[0],
-                                 verbose_name=_('direction'))
-    A = models.BooleanField(default=False, blank=True)
-    B = models.BooleanField(default=False, blank=True)
-    C = models.BooleanField(default=False, blank=True)
-    D = models.BooleanField(default=False, blank=True)
-    E = models.BooleanField(default=False, blank=True)
-    F = models.BooleanField(default=False, blank=True)
-    G = models.BooleanField(default=False, blank=True)
-    H = models.BooleanField(default=False, blank=True)
-    I = models.BooleanField(default=False, blank=True)
-    J = models.BooleanField(default=False, blank=True)
-    K = models.BooleanField(default=False, blank=True)
-    L = models.BooleanField(default=False, blank=True)
-    M = models.BooleanField(default=False, blank=True)
-    N = models.BooleanField(default=False, blank=True)
-    O = models.BooleanField(default=False, blank=True)
-    P = models.BooleanField(default=False, blank=True)
-    Q = models.BooleanField(default=False, blank=True)
-    R = models.BooleanField(default=False, blank=True)
-    S = models.BooleanField(default=False, blank=True)
-    T = models.BooleanField(default=False, blank=True)
-    U = models.BooleanField(default=False, blank=True)
-    V = models.BooleanField(default=False, blank=True)
-    W = models.BooleanField(default=False, blank=True)
-    X = models.BooleanField(default=False, blank=True)
-    num_shaded = models.PositiveIntegerField(default=0,
-                                             validators=[validate_shaded],
-                                             verbose_name=_('# shaded boxes'))
-    canopy_cover = models.ForeignKey(Canopy_Cover, on_delete=models.CASCADE,
-                                     null=True, related_name='canopy_cover')
-
-    objects = models.Manager()
-    test_objects = CardinalManager()
-
-    def __str__(self):
-        return(self.canopy_cover.site.site_name + ' - ' + self.direction)
-
-    class Meta:
-        verbose_name = 'cardinal direction'
-        verbose_name_plural = 'cardinal directions'
-
-    def clean(self):
-        shaded = 0
-        squares = [self.A, self.B, self.C, self.D, self.E, self.F, self.G,
-                   self.H, self.I, self.J, self.K, self.L, self.M, self.N,
-                   self.O, self.P, self.Q, self.R, self.S, self.T, self.U,
-                   self.V, self.W, self.X]
-
-        for square in squares:
-            if square is True:
-                shaded += 1
-
-        if(shaded != self.num_shaded):
-            raise ValidationError(
-                _('%(num_shaded)s is not the correct total'),
-                params={'num_shaded': self.num_shaded},
-            )
 
 
 @python_2_unicode_compatible
@@ -1138,3 +1064,42 @@ class Soil_Survey(models.Model):
     class Meta:
         verbose_name = 'soil survey'
         verbose_name_plural = 'soil surveys'
+
+
+class ResourceManager(models.Model):
+    """ Manager for the Resources model """
+    def create_resource(
+        self, name, res_type, downloadable, thumbnail, sort_order
+    ):
+        return self.create(
+            name=name, res_type=res_type, downloadable=downloadable,
+            thumbnail=thumbnail, sort_order=sort_order
+        )
+
+
+class Resource(models.Model):
+    """ This model organizes Resources like pdfs or videos """
+    TYPE_CHOICES = (
+        (None, '-----'),
+        ('data_sheet', _('Data Sheet')),
+        ('publication', _('Publication')),
+        ('tutorial_video', _('Tutorial Video')),
+    )
+    name = models.CharField(max_length=255, blank=False)
+    res_type = models.CharField(
+        max_length=255, blank=False, choices=TYPE_CHOICES
+    )
+    # bad way to handle upload_to!  It should be based on res_type
+    downloadable = models.FileField(upload_to='assets/', blank=True)
+    thumbnail = models.ImageField(upload_to='assets/thumbnails/', blank=True)
+    sort_order = models.PositiveSmallIntegerField(default=1000)
+
+    objects = models.Manager()
+    test_objects = ResourceManager()
+
+    class Meta:
+        verbose_name = 'resource'
+        verbose_name_plural = 'resources'
+
+    def __str__(self):
+        return 'Resource name ' + self.name

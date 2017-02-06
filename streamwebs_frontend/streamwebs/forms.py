@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 from __future__ import unicode_literals
 from streamwebs.models import UserProfile, WQ_Sample, Water_Quality, \
-    Macroinvertebrates, Canopy_Cover, CC_Cardinal, TransectZone, \
+    Macroinvertebrates, Canopy_Cover, TransectZone, \
     RiparianTransect, PhotoPointImage, PhotoPoint, CameraPoint, Site, School, \
     Soil_Survey
 from django.contrib.auth.models import User
@@ -90,7 +90,7 @@ class WQForm(forms.ModelForm):
                 forms.Textarea(attrs={'class': 'materialize-textarea'})
         }
         fields = (
-            'site', 'date', 'DEQ_dq_level', 'school',
+            'date', 'DEQ_dq_level', 'school',
             'latitude', 'longitude', 'fish_present', 'live_fish',
             'dead_fish', 'water_temp_unit', 'air_temp_unit', 'notes'
         )
@@ -140,20 +140,16 @@ class WQSampleFormReadOnly(WQSampleForm):
 class Canopy_Cover_Form(forms.ModelForm):
     class Meta:
         model = Canopy_Cover
-        fields = ('school', 'date_time', 'site', 'weather', 'est_canopy_cover')
-
-
-class CC_Cardinal_Form(forms.ModelForm):
-    class Meta:
-        model = CC_Cardinal
-        fields = ('direction', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I',
-                  'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U',
-                  'V', 'W', 'X', 'num_shaded')
+        fields = ('school', 'date_time', 'weather', 'est_canopy_cover',
+                  'north_cc', 'west_cc', 'east_cc', 'south_cc')
 
 
 class TransectZoneForm(forms.ModelForm):
     class Meta:
         model = TransectZone
+        widgets = {
+            'comments': forms.Textarea(attrs={'class': 'materialize-textarea'})
+        }
         fields = ('conifers', 'hardwoods', 'shrubs', 'comments')
 
 
@@ -162,7 +158,10 @@ class RiparianTransectForm(forms.ModelForm):
 
     class Meta:
         model = RiparianTransect
-        fields = ('school', 'date_time', 'weather', 'site', 'slope', 'notes')
+        widgets = {
+            'notes': forms.Textarea(attrs={'class': 'materialize-textarea'})
+        }
+        fields = ('school', 'date_time', 'weather', 'slope', 'notes')
 
 
 class PhotoPointImageForm(forms.ModelForm):

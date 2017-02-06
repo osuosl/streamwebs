@@ -4,7 +4,7 @@ from django.contrib.gis.db import models
 from django.apps import apps
 from itertools import chain
 from django.core.exceptions import ValidationError
-from streamwebs.models import Water_Quality, WQ_Sample, Site
+from streamwebs.models import Water_Quality, WQ_Sample, Site, School
 from streamwebs.models import validate_pH
 
 
@@ -53,9 +53,10 @@ class WQSampleTestCase(TestCase):
         }
 
         site = Site.test_objects.create_site('test site')
+        school = School.test_objects.create_school('test school')
 
         self.water_quality = Water_Quality.test_objects.create_water_quality(
-            site, '2016-08-03', 'a', 'A', 90, 123,
+            site, '2016-08-03', school, 'A', 90, 123,
             False, 0, 0, 'Fahrenheit', 'Fahrenheit'
         )
 
@@ -100,11 +101,11 @@ class WQSampleTestCase(TestCase):
             9, 'Manual', 0.41, 'Manual', 7.6, 'Vernier'
         )
 
-        self.assertEqual(sample_1.water_quality.school, 'a')
+        self.assertEqual(sample_1.water_quality.school.name, 'test school')
         self.assertEqual(sample_1.water_quality.date, '2016-08-03')
         self.assertEqual(sample_1.water_quality.site.site_name, 'test site')
 
-        self.assertEqual(sample_2.water_quality.school, 'a')
+        self.assertEqual(sample_2.water_quality.school.name, 'test school')
         self.assertEqual(sample_2.water_quality.date, '2016-08-03')
         self.assertEqual(sample_2.water_quality.site.site_name, 'test site')
 

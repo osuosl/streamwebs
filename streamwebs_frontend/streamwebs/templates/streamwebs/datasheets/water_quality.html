@@ -11,49 +11,53 @@
 {% endblock %}
 
 {% block content %}
-    <!-- Display errors, if any (should be improved/more CSS friendly) -->
-    <!-- {% for field in wq_form %}
-        {% if field.errors %}
-            <br>{{ field.label }}</br>
-            {% for error in field.errors %}
-                <br>...{{ error }}</br>
-            {% endfor %}
-        {% endif %}
-    {% endfor %}
-    {% for field in sample_formset %}
-        {% if field.errors %}
-            <br>{{ field.label }}</br>
-            {% for error in field.errors %}
-                <br>,,,{{ error }}</br>
-            {% endfor %}
-        {% endif %}
-    {% endfor %} -->
+{% if not user.is_authenticated and editable %}
+    <p>{% trans "You must be logged in to submit data." %}</p>
+    <a href="{% url 'streamwebs:login' %}">{% trans "Log in here." %}</a>
+{% else %}
+    {% if user.is_authenticated and added %}
+        <strong>Success!</strong>
+
+        <!-- Display errors, if any (should be improved/more CSS friendly) -->
+        <!-- {% for field in wq_form %}
+            {% if field.errors %}
+                <br>{{ field.label }}</br>
+                {% for error in field.errors %}
+                    <br>...{{ error }}</br>
+                {% endfor %}
+            {% endif %}
+        {% endfor %}
+        {% for field in sample_formset %}
+            {% if field.errors %}
+                <br>{{ field.label }}</br>
+                {% for error in field.errors %}
+                    <br>,,,{{ error }}</br>
+                {% endfor %}
+            {% endif %}
+        {% endfor %} -->
+    {% endif %}
 
     <div class="container">
+        <h3 align="center">
+            <a href="{% url 'streamwebs:site' site.site_slug %}">
+                {{site.site_name}}
+            </a>
+        </h3>
+        <h4 align="center">{% trans 'New Water Quality Sampling' %}</h4>
         <form id="water_quality_form" action="" method="POST">
             {% csrf_token %}
             <div class="infogroup">
+                <p>{{ wq_form.site.errors | striptags }}</p>
                 <div class="row">
                     <div class="col s6">
                         <div class="input-field">
-                            {{ wq_form.site.label }}
+                            <label for="{{ wq_form.date.id_for_label }}">{{ wq_form.date.label }}</label>
 
-                            <!-- TODO: Style errors -->
-                            {{ wq_form.site.errors | striptags }}
-                            {{ wq_form.site }}
-                        </div>
-                    </div>
-
-                    <div class="col s6">
-                        <div class="input-field">
-                            {{ wq_form.DEQ_dq_level.label }}
-
-                            {{ wq_form.DEQ_dq_level.errors | striptags }}
-                            {{ wq_form.DEQ_dq_level }}
+                            {{ wq_form.date.errors | striptags }}
+                            {{ wq_form.date }}
                         </div>
                     </div>
                 </div>
-
                 <div class="row">
                     <div class="col s6">
                         <div class="input-field">
@@ -65,10 +69,10 @@
                     </div>
                     <div class="col s6">
                         <div class="input-field">
-                            <label for="{{ wq_form.date.id_for_label }}">{{ wq_form.date.label }}</label>
+                            {{ wq_form.DEQ_dq_level.label }}
 
-                            {{ wq_form.date.errors | striptags }}
-                            {{ wq_form.date }}
+                            {{ wq_form.DEQ_dq_level.errors | striptags }}
+                            {{ wq_form.DEQ_dq_level }}
                         </div>
                     </div>
                 </div>
@@ -356,4 +360,5 @@
             {% endif %}
         </form>
     </div>
+{% endif %}
 {% endblock %}

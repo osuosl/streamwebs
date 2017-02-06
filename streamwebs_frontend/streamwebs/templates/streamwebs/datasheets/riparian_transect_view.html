@@ -2,71 +2,116 @@
 {% load staticfiles %}
 {% load i18n %}
 {% load filters %}
-{% block title %}{% trans "View Riparian Transect Data" %}{% endblock %}
-{% block body_title %}{% trans "Riparian Transect: " %}{{ transect.date_time }}{% endblock %}
+{% block title %}{% trans "View Riparian Area Transect Data" %}{% endblock %}
+{% block body_title %}{% trans "View Data" %}{% endblock %}
+
+{% block scripts %}
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
+
+    <style>
+      .material-icons {
+        font-size: 1.5em;
+      }
+    </style>
+{% endblock %}
+
 {% block content %}
-    <div>
-        <table>
-            <tr>
-                <th align='left'>{% trans "School" %}</th>
-                <td>{{ transect.school }}</td>
-            </tr>
-            <tr>
-                <th align='left'>{% trans "Date" %}</th>
-                <td> {{ transect.date_time }} </td>
-            </tr>
-            <tr>
-                <th align='left'>{% trans "Site" %}</th>
-                <td>{{ site.site_name }}</td>
-            </tr>
-            <tr>
-                <th align='left'>{% trans "Slope of stream bank" %}</th>
-                <td>{{ transect.slope }}</td>
-            </tr>
-        </table>
+<div class="container">
+    {% if messages %}
+        {% for message in messages %}
+            <strong>{{ message }}</strong>
+        {% endfor %}
+    {% endif %}
+
+    <h3 align="center">
+        <a href="{% url 'streamwebs:site' site.site_slug %}">
+            {{ site.site_name }}
+        </a>
+    </h3>
+    <h4 align="center">Riparian Transect data: {{ transect.date_time|date:"m-d-Y" }}</h4>
+
+    <div class="row">
+        <div class="input-field col s12">
+            <input disabled value="{{ transect.school }}" id="school" type="text" class="validate">
+            <label for="school">School</label>
+        </div>
     </div>
-        <p>Bar graph of conifers/hardwoods/shrubs goes here</p>
+
+    <div class="row">
+        <div class="input-field col s6">
+            <input disabled value="{{ transect.date_time }}" id="dt" type="text" class="validate">
+            <label for="dt">Date and time</label>
+        </div>
+        <div class="input-field col s6">
+            <input disabled value="{{ transect.weather }}" id="weather" type="text" class="validate">
+            <label for="weather">Weather</label>
+        </div>
     </div>
-    <div>
-        <table>
-            <tr>
-                <th align='left'>{% trans "Zone 1 (0 to 20 ft) comments" %}</th>
-            </tr>
-            <tr>
-                <td>{{ zones.0.comments }}</td>
-            </tr>
-            <tr>
-                <th align='left'>{% trans "Zone 2 (20 to 40 ft) comments" %}</th>
-            </tr>
-            <tr>
-                <td>{{ zones.1.comments }}</td>
-            </tr>
-            <tr>
-                <th align='left'>{% trans "Zone 3 (40 to 60 ft) comments" %}</th>
-            </tr>
-            <tr>
-                <td>{{ zones.2.comments }}</td>
-            </tr>
-            <tr>
-                <th align='left'>{% trans "Zone 4 (60 to 80 ft) comments" %}</th>
-            </tr>
-            <tr>
-                <td>{{ zones.3.comments }}</td>
-            </tr>
-            <tr>
-                <th align='left'>{% trans "Zone 5 (80 to 100 ft) comments" %}</th>
-            </tr>
-            <tr>
-                <td>{{ zones.4.comments }}</td>
-            </tr>
-        </table>
+
+    <div class="row">
+        <div class="input-field col s12">
+            <input disabled value="{{ transect.slope }}" id="stream bank" type="text" class="validate">
+            <label for="stream bank">Slope of stream bank</label>
+        </div>
     </div>
-    <div>
-        <table>
-            <tr>
-                <th align='left'>{% trans "Field notes" %}</th>
-                <td>{{ transect.notes }}</td>
-            </tr>
-        </table>
+
+    <div class="divider"></div>
+    <br>
+
+    <table> <!-- zones subtable -->
+        <tr>
+            <th>{{ 'zone'|get_zone_labels }}</th>
+            <th>{{ 'conifers'|get_zone_labels }}</th>
+            <th>{{ 'hardwoods'|get_zone_labels }}</th>
+            <th>{{ 'shrubs'|get_zone_labels }}</th>
+            <th>{{ 'comments'|get_zone_labels }}</th>
+        </tr>
+            <td width="20%"><strong>{{ zones.0.zone_num }}<br>(0 to 20 ft)</strong></td>
+            <td>{{ zones.0.conifers|default_if_none:0 }}</td>
+            <td>{{ zones.0.hardwoods|default_if_none:0 }}</td>
+            <td>{{ zones.0.shrubs|default_if_none:0 }}</td>
+            <td>{{ zones.0.comments|default_if_none:"" }}</td>
+        </tr>
+        </tr>
+            <td><strong>{{ zones.1.zone_num }}<br>(20 to 40 ft)</strong></td>
+            <td>{{ zones.1.conifers|default_if_none:0 }}</td>
+            <td>{{ zones.1.hardwoods|default_if_none:0 }}</td>
+            <td>{{ zones.1.shrubs|default_if_none:0 }}</td>
+            <td>{{ zones.1.comments|default_if_none:"" }}</td>
+        </tr>
+        </tr>
+            <td><strong>{{ zones.2.zone_num }}<br>(40 to 60 ft)</strong></td>
+            <td>{{ zones.2.conifers|default_if_none:0 }}</td>
+            <td>{{ zones.2.hardwoods|default_if_none:0 }}</td>
+            <td>{{ zones.2.shrubs|default_if_none:0 }}</td>
+            <td>{{ zones.2.comments|default_if_none:"" }}</td>
+        </tr>
+        </tr>
+            <td><strong>{{ zones.3.zone_num }}<br>(60 to 80 ft)</strong></td>
+            <td>{{ zones.3.conifers|default_if_none:0 }}</td>
+            <td>{{ zones.3.hardwoods|default_if_none:0 }}</td>
+            <td>{{ zones.3.shrubs|default_if_none:0 }}</td>
+            <td>{{ zones.3.comments|default_if_none:"" }}</td>
+        </tr>
+        </tr>
+            <td><strong>{{ zones.4.zone_num }}<br>(80 to 100 ft)</strong></td>
+            <td>{{ zones.4.conifers|default_if_none:0 }}</td>
+            <td>{{ zones.4.hardwoods|default_if_none:0 }}</td>
+            <td>{{ zones.4.shrubs|default_if_none:0 }}</td>
+            <td>{{ zones.4.comments|default_if_none:"" }}</td>
+        </tr>
+    </table>
+
+    <br>
+    <div class="row">
+        <div class="input-field col s12">
+            <input disabled value="{{ transect.notes }}" id="notes" type="text" class="validate">
+            <label for="notes">Field notes</label>
+        </div>
     </div>
+
+</div>
 {% endblock %}

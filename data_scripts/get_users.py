@@ -24,8 +24,8 @@ else:
 
 
 with open(users_list1, 'r') as csvfile:
-    sitereader = csv.DictReader(csvfile)
-    for row in sitereader:
+    reader = csv.DictReader(csvfile)
+    for row in reader:
         # print row
 
         if row["Uid"]:
@@ -45,8 +45,8 @@ with open(users_list1, 'r') as csvfile:
 
         # row["# of Submissions"]
         with open(users_list2, 'r') as csvfile2:
-            sitereader2 = csv.DictReader(csvfile2)
-            for row2 in sitereader2:
+            reader2 = csv.DictReader(csvfile2)
+            for row2 in reader2:
                 if row["Uid"] == row2["Uid"]:
                     first = row2["First name"]
                     last = row2["Last name"]
@@ -63,17 +63,14 @@ with open(users_list1, 'r') as csvfile:
                     else:
                         school = ""
 
-        user = User.objects.create_user(username=username,
-                                        password="TOOHARDTOGETTOO!@#$",
-                                        first_name=first,
-                                        last_name=last,
-                                        email=email,
-                                        date_joined=created
-                                        )
-        school = School.objects.get(name=users_school)
-        userprofile = UserProfile.objects.create(user=user,
-                                                 school=school,
-                                                 birthdate=dob)
-
+        if not User.objects.filter(username=username).exists():
+            user = User.objects.create_user(
+                username=username, password="TOOHARDTOGETTOO!@#$",
+                first_name=first, last_name=last, email=email,
+                date_joined=created
+            )
+            school = School.objects.get(name=users_school)
+            userprofile = UserProfile.objects.create(
+                user=user, school=school, birthdate=dob)
 
 print "Users loaded."

@@ -12,7 +12,7 @@
         {% endfor %}
     {% endif %}
     <div class="row">
-        <form class="col s4 offset-s4" id='login_form' method='post' action='./?next={{ redirect_to }}'>
+        <form class="col s4 offset-s4" id='login_form' method='post' action="{% url 'streamwebs:login' %}?next={{ redirect_to }}">
             {% csrf_token %}
             <input type="hidden" name="next" value="{{ request.GET.next }}" />
             {% trans "Username:" %}<input type='text' name='username' value='' size='50' />

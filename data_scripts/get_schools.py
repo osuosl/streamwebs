@@ -22,14 +22,16 @@ else:
 with open(datafile, 'r') as csvfile:
     sitereader = csv.DictReader(csvfile)
     for row in sitereader:
-        school = School()
+        name = row['School name']
+        school_type = row['School type']
+        address = row['Street']
+        city = row['City']
+        province = row['Province'] + ", " + row['Country']
+        zipcode = row['Postal Code']
 
-        school.name = row['School name']
-        school.school_type = row['School type']
-        school.address = row['Street']
-        school.city = row['City']
-        school.province = row['Province'] + ", " + row['Country']
-        school.zipcode = row['Postal Code']
-        school.save()
+        school = School.objects.update_or_create(
+            name=name, school_type=school_type, address=address, city=city,
+            province=province, zipcode=zipcode
+        )
 
 print "Schools loaded."

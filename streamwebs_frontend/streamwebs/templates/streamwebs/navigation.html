@@ -12,6 +12,14 @@
           {% endfor %}
       </ul>
   </form>
+  
+  <ul id="admin-options" class="dropdown-content">
+    <!-- TODO: Real links -->
+    <li><a href="#!">View Site Statistics</a></li> 
+    <li><a href="#!">Upload Resources</a></li>
+    <li><a href="#!">Manage Users</a></li>
+  </ul>
+
   <nav class="cyan">
     <div class="nav-wrapper">
       <!--<a href="#!" class="brand-logo center">{% block body_title %}Streamwebs{% endblock %}</a>-->
@@ -33,10 +41,15 @@
         <li><a href="{% url 'streamwebs:index' %}">Resources</a></li>
 
         {% if user.is_authenticated %}
+            {% for group in user.groups.all %}
+                {% if group.name == 'admin' %}
+                    <li><a class="dropdown-button" href="#!" data-activates="admin-options">Administration<i class="material-icons right">arrow_drop_down</i></a></li>
+                {% endif %}
+            {% endfor %}
             <li><a href="{% url 'streamwebs:logout' %}">Logout</a></li>
         {% else %}
-        <li><a href="{% url 'streamwebs:login' %}?next={{ request.path }}">Login</a></li>
             <li><a href="{% url 'streamwebs:register' %}">Create Account</a></li>
+            <li><a href="{% url 'streamwebs:login' %}?next={{ request.path }}">Login</a></li>
         {% endif %}
       </ul>
     </div>

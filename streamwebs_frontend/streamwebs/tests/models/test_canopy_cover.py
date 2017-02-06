@@ -9,8 +9,7 @@ from django.core.exceptions import ValidationError
 from streamwebs.models import Site
 from streamwebs.models import School
 from streamwebs.models import Canopy_Cover
-from streamwebs.models import CC_Cardinal
-from streamwebs.models import validate_cover
+from streamwebs.models import validate_total_cover
 
 
 class CanopyCovTestCase(TestCase):
@@ -23,11 +22,12 @@ class CanopyCovTestCase(TestCase):
             'site': models.ForeignKey,
             'site_id': models.ForeignKey,
             'weather': models.CharField,
+            'north_cc': models.IntegerField,
+            'east_cc': models.IntegerField,
+            'south_cc': models.IntegerField,
+            'west_cc': models.IntegerField,
             'est_canopy_cover': models.PositiveIntegerField,
             'id': models.AutoField,
-
-            'canopy_cover': models.ManyToOneRel
-
         }
 
     def test_fields_exist(self):
@@ -79,56 +79,6 @@ class CanopyCovTestCase(TestCase):
         self.assertEqual(canopyc.weather, 'cloudy')
         self.assertEqual(canopyc.est_canopy_cover, 50)
 
-    def test_datasheet_CC_CardinalInfo(self):
-        """Tests that boolean values are correctly assigned in a
-           cardinal box"""
-        default_dt = timezone.now()
-
-        site = Site.test_objects.create_site('test')
-        school = School.test_objects.create_school('School A')
-
-        canopyc = Canopy_Cover.objects.create(
-            school=school, date_time=default_dt, site=site,
-            weather='cloudy', est_canopy_cover=50)
-
-        north_bools = [True, True, False, False, False, True, False, False,
-                       True, True, True, False, True, False, False, False,
-                       True, False, True, True, False, True, False, False]
-
-        east_bools = [True, True, False, False, False, True, False, False,
-                      True, True, True, False, True, False, False, False,
-                      False, False, True, True, False, False, False, False]
-
-        south_bools = [True, True, True, False, False, True, False, False,
-                       True, True, True, True, True, False, False, False, True,
-                       False, True, True, False, True, False, True]
-
-        west_bools = [True, True, False, True, False, True, True, False,
-                      True, True, True, True, True, False, False, True, True,
-                      False, True, True, True, True, True, False]
-
-        north = CC_Cardinal.test_objects.create_shade(
-            'North', *(north_bools + [11] + [canopyc])
-        )
-
-        east = CC_Cardinal.test_objects.create_shade(
-            'East', *(east_bools + [8] + [canopyc])
-        )
-
-        south = CC_Cardinal.test_objects.create_shade(
-            'South', *(south_bools + [14] + [canopyc])
-        )
-
-        west = CC_Cardinal.test_objects.create_shade(
-            'West', *(west_bools + [17] + [canopyc])
-        )
-
-        # Check that each cardinal direction corresponds to canopy_cover
-        self.assertEqual(north.canopy_cover_id, canopyc.id)
-        self.assertEqual(east.canopy_cover_id, canopyc.id)
-        self.assertEqual(south.canopy_cover_id, canopyc.id)
-        self.assertEqual(west.canopy_cover_id, canopyc.id)
-
     def test_validate_cover_good(self):
         """Tests that est_canopy_cover is in between 0-96."""
         default_dt = timezone.now()
@@ -141,7 +91,7 @@ class CanopyCovTestCase(TestCase):
             weather='cloudy', est_canopy_cover=51
         )
 
-        self.assertEqual(validate_cover(canopyc.est_canopy_cover), None)
+        self.assertEqual(validate_total_cover(canopyc.est_canopy_cover), None)
 
     def test_validate_cover_too_large(self):
         """Tests that validation error is risen when est_canopy_cover
@@ -158,4 +108,4 @@ class CanopyCovTestCase(TestCase):
         )
 
         with self.assertRaises(ValidationError):
-            validate_cover(canopyc.est_canopy_cover)
+            validate_total_cover(canopyc.est_canopy_cover)

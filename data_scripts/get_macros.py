@@ -31,69 +31,80 @@ with open(datafile, 'r') as csvfile:
     macroreader = csv.reader(csvfile)
     for row in macroreader:
         if row[0] != 'Stream/Site name':  # Skip the header
-            macros = Macroinvertebrates()
-
             # Strip ``Collected date`` so that's in the correct format
             dt = row[2].strip('MonTuesWdhurFiSat(Aly), ')
-            macros.date_time = dt
+            date_time = dt
 
             # Apparently, Drupal will accept any value as valid... --> parse it
             ts = row[4].strip('hrminutes. ')
             if (ts == 'NA' or ts == ''):
-                macros.time_spent = None
+                time_spent = None
             elif ts == '20-30':
-                macros.time_spent = 25
+                time_spent = 25
             else:   # In the SW model, we expect a positive integer...
-                macros.time_spent = round(float(ts))
+                time_spent = round(float(ts))
 
             if (row[5] == 'NA' or row[5] == 'UNK' or row[5] == ''):
-                macros.num_people = None
+                num_people = None
             else:
-                macros.num_people = row[5]
+                num_people = row[5]
 
             # Determine water/type here
             if row[6] == 'Riffle':
-                macros.water_type = 'riff'
+                water_type = 'riff'
             elif row[6] == 'Pool':
-                macros.water_type = 'pool'
+                water_type = 'pool'
             else:
-                macros.water_type = None
+                water_type = None
 
             for i in range(7, 28):
                 if row[i] == '':  # Convert '' -> 0
                     row[i] = 0
 
             # Sensitive
-            macros.caddisfly = row[7]
-            macros.mayfly = row[8]
-            macros.riffle_beetle = row[9]
-            macros.stonefly = row[10]
-            macros.water_penny = row[11]
-            macros.dobsonfly = row[12]
+            caddisfly = row[7]
+            mayfly = row[8]
+            riffle_beetle = row[9]
+            stonefly = row[10]
+            water_penny = row[11]
+            dobsonfly = row[12]
 
             # Somewhat Sensitive
-            macros.clam_or_mussel = row[13]
-            macros.crane_fly = row[14]
-            macros.crayfish = row[15]
-            macros.damselfly = row[16]
-            macros.dragonfly = row[17]
-            macros.scud = row[18]
-            macros.fishfly = row[19]
-            macros.alderfly = row[20]
-            macros.mite = row[21]
+            clam_or_mussel = row[13]
+            crane_fly = row[14]
+            crayfish = row[15]
+            damselfly = row[16]
+            dragonfly = row[17]
+            scud = row[18]
+            fishfly = row[19]
+            alderfly = row[20]
+            mite = row[21]
 
             # Tolerant
-            macros.aquatic_worm = row[22]
-            macros.blackfly = row[23]
-            macros.leech = row[24]
-            macros.midge = row[25]
-            macros.snail = row[26]
-            macros.mosquito_larva = row[27]
+            aquatic_worm = row[22]
+            blackfly = row[23]
+            leech = row[24]
+            midge = row[25]
+            snail = row[26]
+            mosquito_larva = row[27]
 
             # Create the foreign key relation between datasheet and site
             site = Site.objects.get(site_name=row[0])
-            macros.site_id = site.id
+            site_id = site.id
 
-            macros.save()
+            # Create new macro entry if it DNE
+            macros = Macroinvertebrates.objects.update_or_create(
+                date_time=date_time, time_spent=time_spent,
+                num_people=num_people, water_type=water_type,
+                caddisfly=caddisfly, mayfly=mayfly,
+                riffle_beetle=riffle_beetle, stonefly=stonefly,
+                water_penny=water_penny, dobsonfly=dobsonfly,
+                clam_or_mussel=clam_or_mussel, crane_fly=crane_fly,
+                crayfish=crayfish, damselfly=damselfly, dragonfly=dragonfly,
+                scud=scud, fishfly=fishfly, alderfly=alderfly, mite=mite,
+                aquatic_worm=aquatic_worm, blackfly=blackfly, leech=leech,
+                midge=midge, snail=snail, mosquito_larva=mosquito_larva,
+                site_id=site_id
+            )
 
 print 'Macroinvertebrates loaded.'

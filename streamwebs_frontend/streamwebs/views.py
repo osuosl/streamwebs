@@ -19,7 +19,7 @@ from streamwebs.forms import (
 
 from streamwebs.models import (
     Macroinvertebrates, Site, Water_Quality, WQ_Sample, RiparianTransect,
-    TransectZone, Canopy_Cover, CC_Cardinal, CameraPoint, PhotoPoint,
+    TransectZone, Canopy_Cover, CameraPoint, PhotoPoint,
     PhotoPointImage, Soil_Survey)
 
 from datetime import datetime
@@ -355,8 +355,8 @@ def riparian_transect_edit(request, site_slug):
         transect_form = RiparianTransectForm(data=request.POST)
 
         if (zone_formset.is_valid() and transect_form.is_valid()):
-
             transect = transect_form.save()             # save form to object
+            transect.site = site
             transect.save()                             # save object
 
             zones = zone_formset.save(commit=False)     # save forms to objs
@@ -389,13 +389,11 @@ def riparian_transect_edit(request, site_slug):
 
 def canopy_cover_view(request, site_slug, data_id):
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
-    canopy_cover = Canopy_Cover.objects.get(id=data_id)
-    cardinals = CC_Cardinal.objects.filter(canopy_cover_id=canopy_cover)
+    canopy_cover = Canopy_Cover.objects.filter(site_id=site.id).get(id=data_id)
 
     return render(
         request, 'streamwebs/datasheets/canopy_cover_view.html', {
             'canopy_cover': canopy_cover,
-            'cardinals': cardinals,
             'site': site
             }
         )
@@ -408,30 +406,15 @@ def canopy_cover_edit(request, site_slug):
     """
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     canopy_cover = Canopy_Cover()
-    CardinalInlineFormSet = inlineformset_factory(
-        Canopy_Cover, CC_Cardinal,
-        fields=(
-            'direction', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
-            'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W',
-            'X', 'num_shaded'), extra=4
-    )
 
     if request.method == 'POST':
-        cardinal_formset = CardinalInlineFormSet(
-            data=request.POST, instance=canopy_cover
-        )
         canopy_cover_form = Canopy_Cover_Form(data=request.POST)
 
-        if (cardinal_formset.is_valid() and canopy_cover_form.is_valid()):
+        if (canopy_cover_form.is_valid()):
 
             canopy_cover = canopy_cover_form.save()
+            canopy_cover.site = site
             canopy_cover.save()
-
-            cardinals = cardinal_formset.save(commit=False)
-
-            for cardinal in cardinals:
-                cardinal.canopy_cover = canopy_cover
-                cardinal.save()
 
             messages.success(
                 request,
@@ -443,14 +426,12 @@ def canopy_cover_edit(request, site_slug):
                                             'data_id': canopy_cover.id}))
 
     else:
-        cardinal_formset = CardinalInlineFormSet(instance=canopy_cover)
         canopy_cover_form = Canopy_Cover_Form()
 
     return render(
         request,
         'streamwebs/datasheets/canopy_cover_edit.html', {
             'canopy_cover_form': canopy_cover_form,
-            'cardinal_formset': cardinal_formset,
             'site': site
         }
     )
@@ -692,6 +673,7 @@ def water_quality_edit(request, site_slug):
         wq_form = WQForm(data=request.POST)
         if (sample_formset.is_valid() and wq_form.is_valid()):
             water_quality = wq_form.save()   # save form to object
+            water_quality.site = site
             water_quality.save()             # save object to db
             allSamples = sample_formset.save(commit=False)
             for sample in allSamples:

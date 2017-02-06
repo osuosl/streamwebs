@@ -11,11 +11,11 @@ from .models import Macroinvertebrates
 from .models import TransectZone
 from .models import RiparianTransect
 from .models import Canopy_Cover
-from .models import CC_Cardinal
 from .models import School
 from .models import CameraPoint
 from .models import PhotoPoint, PhotoPointImage
 from .models import Soil_Survey
+from .models import Resource
 
 admin.site.register(Site)
 admin.site.register(Water_Quality)
@@ -24,16 +24,16 @@ admin.site.register(Macroinvertebrates)
 admin.site.register(TransectZone)
 admin.site.register(RiparianTransect)
 admin.site.register(Canopy_Cover)
-admin.site.register(CC_Cardinal)
 admin.site.register(School)
 admin.site.register(CameraPoint)
 admin.site.register(PhotoPoint)
 admin.site.register(PhotoPointImage)
 admin.site.register(Soil_Survey)
-
+admin.site.register(Resource)
 
 # The following will add a profile model's files to the user page in the
 # admin panel
+
 
 # Define an inline admin descriptor for normal profile model
 # which acts a bit like a singleton
