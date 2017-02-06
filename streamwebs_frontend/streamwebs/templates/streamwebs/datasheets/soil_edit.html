@@ -53,7 +53,8 @@
                 <!-- Container so that radio buttons render vertically -->
                 <div class="container">
                     <div class="row">
-                        <div class="col s3 pull-s1">
+                        <!--<div class="col s3 pull-s1">-->
+                        <div class="col s4 pull-s2">
                             <p>Landscape Position</p>
                             {{ soil_form.landscape_pos.errors| striptags }}
                             <div class="input-field">
@@ -65,7 +66,8 @@
                                 {% endfor %}
                             </div>
                         </div>
-                        <div class="col s3 push-s1">
+                        <!--<div class="col s3 push-s1">-->
+                        <div class="col s4 push-s1">
                             <p>Cover Type</p>
                             {{ soil_form.cover_type.errors| striptags }}
                             <div class="input-field">
@@ -77,7 +79,8 @@
                                 {% endfor %}
                             </div>
                         </div>
-                        <div class="col s3 push-s3">
+                        <!--<div class="col s3 push-s3">-->
+                        <div class="col s4 push-s3">
                             <p>Land Use</p>
                             {{ soil_form.land_use.errors| striptags }}
                             <div class="input-field">
@@ -113,7 +116,7 @@
 
                 <div class="row">
                     <div class="input-field">
-                        {{soil_form.site_char.label }}
+                        <label for="{{soil_form.site_char.id_for_label}}">{{ soil_form.site_char.label }}</label>
                         {{ soil_form.site_char.errors | striptags }}
                         {{ soil_form.site_char }}
                     </div>
