@@ -217,3 +217,7 @@ i {
 .infogroup .row {
     margin-bottom: 0;
 }
+
+.theme-color {
+    background-color: #004d40;
+}

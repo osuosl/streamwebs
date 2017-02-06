@@ -32,7 +32,7 @@
     <div class="container">
         <div id="site_search">
             <div class="row">
-                <nav class="search-nav col s8 cyan">
+                <nav class="search-nav col s8 teal darken-4">
                     <div class="nav-wrapper">
                         <div class="input-field">
                             <input id="search" type="search" autocomplete="off" placeholder="{% trans 'Search sites' %}" oninput="search()">
@@ -41,7 +41,7 @@
 
                             <div class="search-results collection">
                             {% for site in sites %}
-                                <a href="{{site.site_slug}}" class="collection-item search-item {{site.site_type}} cyan-text hide">{{site.site_name}}</a>
+                                <a href="{{site.site_slug}}" class="collection-item search-item {{site.site_type}} teal darken-4-text hide">{{site.site_name}}</a>
                             {% endfor %}
                             </div>
                         </div>
@@ -55,10 +55,10 @@
         </div>
 
         <div id="site_select">
-            <a href="#!" class="dropdown-button btn select-button cyan" data-activates='dropdown'>{% trans "Select Site" %}<i class="material-icons right">arrow_drop_down</i></a>
+            <a href="#!" class="dropdown-button btn select-button teal darken-4" data-activates='dropdown'>{% trans "Select Site" %}<i class="material-icons right">arrow_drop_down</i></a>
             <ul id="dropdown" class="dropdown-content">
             {% for site in sites %}
-                <li><a href="{{site.site_slug}}" class="cyan-text">{{site.site_name}}</a></li>
+                <li><a href="{{site.site_slug}}" class="teal darken-4-text">{{site.site_name}}</a></li>
             {% endfor %}
             </ul>
         </div>
