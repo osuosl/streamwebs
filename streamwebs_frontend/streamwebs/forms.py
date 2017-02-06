@@ -147,6 +147,9 @@ class Canopy_Cover_Form(forms.ModelForm):
 class TransectZoneForm(forms.ModelForm):
     class Meta:
         model = TransectZone
+        widgets = {
+            'comments': forms.Textarea(attrs={'class': 'materialize-textarea'})
+        }
         fields = ('conifers', 'hardwoods', 'shrubs', 'comments')
 
 
@@ -155,6 +158,9 @@ class RiparianTransectForm(forms.ModelForm):
 
     class Meta:
         model = RiparianTransect
+        widgets = {
+            'notes': forms.Textarea(attrs={'class': 'materialize-textarea'})
+        }
         fields = ('school', 'date_time', 'weather', 'slope', 'notes')
 
 

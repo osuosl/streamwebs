@@ -68,7 +68,7 @@ class ViewTransectTestCase(TestCase):
         self.assertTemplateUsed(
             response, 'streamwebs/datasheets/riparian_transect_view.html'
         )
-        self.assertContains(response, 'Riparian Transect')
+        self.assertContains(response, 'Riparian Area Transect')
         self.assertContains(response, 'School Name')
         self.assertContains(response, 'July 22, 2016, 3:04 p.m.')
         self.assertContains(response, 'Site Name')
