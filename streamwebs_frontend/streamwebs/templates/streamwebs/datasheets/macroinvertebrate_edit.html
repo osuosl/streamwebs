@@ -78,7 +78,7 @@
                             <td>
                                 {{ bug.label }}<br>
                                 {% with bug.label|lower|strtoul|slashtoul as buggy %}
-                                    {% with 'macro_images/macro_'|add:buggy|add:'.png' as bug_img %}
+                                    {% with 'streamwebs/images/macroinvertebrates/macro_'|add:buggy|add:'.png' as bug_img %}
                                         <img src="{% static bug_img %}">
                                     {% endwith %}
                                 {% endwith %}
@@ -101,7 +101,7 @@
                             <td>
                                 {{ bug.label }}<br>
                                 {% with bug.label|lower|strtoul|slashtoul as buggy %}
-                                    {% with 'macro_images/macro_'|add:buggy|add:'.png' as bug_img %}
+                                    {% with 'streamwebs/images/macroinvertebrates/macro_'|add:buggy|add:'.png' as bug_img %}
                                         <img src="{% static bug_img %}">
                                     {% endwith %}
                                 {% endwith %}
@@ -123,7 +123,7 @@
                             <td>
                                 {{ bug.label }}</br>
                                 {% with bug.label|lower|strtoul|slashtoul as buggy %}
-                                    {% with 'macro_images/macro_'|add:buggy|add:'.png' as bug_img %}
+                                    {% with 'streamwebs/images/macroinvertebrates/macro_'|add:buggy|add:'.png' as bug_img %}
                                         <img src="{% static bug_img %}">
                                     {% endwith %}
                                 {% endwith %}
