@@ -5,6 +5,7 @@
 {% block body_title %}{% trans 'View a camera point' %}{% endblock %}
 {% block content %}
 
+<div class="container">
 <!-- CP info -->
 <div>
     <p>{{ site.site_name }}: Camera Point {{ cp.letter }}</p>
@@ -39,5 +40,6 @@
 
     {% endfor %}
 
+</div>
 </div>
 {% endblock %}

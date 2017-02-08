@@ -6,20 +6,109 @@
 {% block body_title %}{% trans "Add a new camera point" %}{% endblock %}
 {% block content %}
 
-{% if added %}
-<strong>{% trans "You have successfully added a new camera point." %}</strong>
-{% else %}
-<form id='pp_monitoring_form' method='post' enctype='multipart/form-data'>
-    {% csrf_token %}
-    {{ camera_form.media }}
-    {{ camera_form.as_p }}
-    {{ pp_formset.as_p }}
-    {{ ppi_formset.as_p }}
+<div class="container">
+    {% if user.is_authenticated %}
+        {% if added %}
+        <strong>{% trans "You have successfully added a new camera point." %}</strong>
+        {% else %}
+        <h3 align="center">
+          <a href="{% url 'streamwebs:site' site.site_slug %}">
+              {{ site.site_name }}
+          </a>
+        </h3>
+        <h4 align="center">{% trans 'New Photo Point Sampling' %}</h4>
+          <form id='pp_monitoring_form' method='post' enctype='multipart/form-data'>
+            {% csrf_token %}
 
-    <input type='submit' name='submit' value='Submit' class="btn waves-effect waves-light teal darken-4" />
-</form>
-{% endif %}
+            <p>{{ camera_form.site }}</p>
 
+            <div class="loc-input">
+              <!-- CAMERA FORM: -->
+              {{ camera_form.media }}
+              <div class="container">
+                <h5>Location Input</h5>
+                <div class ="input-field">
+                    <p>{{ camera_form.cp_date.label }}</p>
+                    <p>{{ camera_form.cp_date.errors | striptags }}</p>
+                    <p>{{ camera_form.cp_date }}</p>
+                </div>
+                <div class ="input-field">
+                    <p>{{ camera_form.description.label }}</p>
+                    <p>{{ camera_form.description.errors | striptags }}</p>
+                    <p>{{ camera_form.description }}</p>
+                </div>
+                <div class ="input-field">
+                    <p>{{ camera_form.map_datum.label }}</p>
+                    <p>{{ camera_form.map_datum.errors | striptags }}</p>
+                    <p>{{ camera_form.map_datum }}</p>
+                </div>
+                <div class ="input-field">
+                    <p>{{ camera_form.location.label }}</p>
+                    <p>{{ camera_form.location.errors | striptags }}</p>
+                    <p>{{ camera_form.location }}</p>
+                </div>
+              </div>
+              <!-- END CAMERA FORM -->
+            </div>
+            <br>
+            <br>
+            <div class="photo-input">
+              <h5>Photo Input</h5>
+              <div class="row">
+                {{ pp_formset.management_form }}
+                {% for p_form in pp_formset %}
+                <div class="col s4">
+                  <h6>Photo #{{ forloop.counter }}</h6>
+                  <div class ="input-field">
+                      <p>{{ p_form.compass_bearing.label }}</p>
+                      <p>{{ p_form.compass_bearing.errors | striptags }}</p>
+                      <p>{{ p_form.compass_bearing }}</p>
+                  </div>
+                  <div class ="input-field">
+                      <p>{{ p_form.distance.label }}</p>
+                      <p>{{ p_form.distance.errors | striptags }}</p>
+                      <p>{{ p_form.distance }}</p>
+                  </div>
+                  <div class ="input-field">
+                      <p>{{ p_form.camera_height.label }}</p>
+                      <p>{{ p_form.camera_height.errors | striptags }}</p>
+                      <p>{{ p_form.camera_height }}</p>
+                  </div>
+                  <div class ="input-field">
+                    <p>{{ p_form.notes.label }}</p>
+                    <p>{{ p_form.notes.errors | striptags }}</p>
+                    <p>{{ p_form.notes }}</p>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+              <div class="row">
+                {{ ppi_formset.management_form }}
+                {% for ppi_form in ppi_formset %}
+                <div class="col s4">
+                  <div class ="input-field">
+                      <p>{{ ppi_form.image.label }}</p>
+                      <p>{{ ppi_form.image.errors | striptags }}</p>
+                      <p>{{ ppi_form.image }}</p>
+                  </div>
+                  <div class ="input-field">
+                      <p>{{ ppi_form.date.label }}</p>
+                      <p>{{ ppi_form.date.errors | striptags }}</p>
+                      <p>{{ ppi_form.date }}</p>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+            <input type='submit' name='submit' value='Submit' class="btn waves-effect waves-light teal darken-4" />
+        </form>
+        {% endif %}
+
+    {% else %}
+    <p>{% trans "You must be logged in to submit data." %}</p>
+    <a href="{% url 'streamwebs:login' %}">{% trans "Log in here." %}</a>
+    {% endif %}
+</div>
 {% endblock %}
 
 {% block scripts %}
