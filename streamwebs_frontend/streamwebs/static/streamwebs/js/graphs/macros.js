@@ -291,7 +291,7 @@ const useLineGraph = function useLineGraph() {
           })
           .attr('cy', (d) => { return y(d.value)})
           .style('stroke', (d) => { return z(d.name) })
-          .style('fill', (d) => { return z(d.name) })
+          .style('fill', (d) => { return z(d.name) });
 
       const legend = g.selectAll('.legend')
           .data(types)
