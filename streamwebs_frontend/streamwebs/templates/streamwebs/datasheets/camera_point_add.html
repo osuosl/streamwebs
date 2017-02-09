@@ -27,3 +27,12 @@
     {% endif %}
 
 {% endblock %}
+
+{% block scripts %}
+<script type="application/javascript">
+    $(function() {
+       $('p:has(#id_site)').css('display', 'none');
+       $('#id_site').val('{{ site.id }}');
+    });
+</script>
+{% endblock %}
