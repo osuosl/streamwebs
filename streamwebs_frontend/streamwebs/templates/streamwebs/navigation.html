@@ -38,7 +38,7 @@
 
       <ul class="right">
         <li><a href="{% url 'streamwebs:sites' %}">Sites</a></li>
-        <li><a href="{% url 'streamwebs:index' %}">Resources</a></li>
+        <li><a href="{% url 'streamwebs:resources' %}">Resources</a></li>
 
         {% if user.is_authenticated %}
             {% for group in user.groups.all %}

@@ -742,3 +742,7 @@ def soil_survey_edit(request, site_slug):
             'site': site
         }
     )
+
+
+def resources(request):
+    return render(request, 'streamwebs/resources.html')
