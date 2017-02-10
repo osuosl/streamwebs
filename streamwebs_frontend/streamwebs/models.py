@@ -800,14 +800,14 @@ class Macroinvertebrates(models.Model):
     def get_somewhat_sensitive_counts(self):
         return [
             {'name': 'Mussel/Clam', 'value': self.clam_or_mussel},
-            {'name': 'Cranefly', 'value': self.crane_fly},
+            {'name': 'Crane Fly', 'value': self.crane_fly},
             {'name': 'Crayfish', 'value': self.crayfish},
             {'name': 'Damselfly', 'value': self.damselfly},
             {'name': 'Dragonfly', 'value': self.dragonfly},
             {'name': 'Scud', 'value': self.scud},
             {'name': 'Fishfly', 'value': self.fishfly},
             {'name': 'Alderfly', 'value': self.alderfly},
-            {'name': 'Water Mite', 'value': self.mite}
+            {'name': 'Mite', 'value': self.mite}
         ]
 
     def get_sensitive_counts(self):
