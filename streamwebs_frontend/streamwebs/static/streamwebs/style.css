@@ -33,7 +33,7 @@ body {
     height: 100%;
     background: url("images/bg-main.jpg");
     background-repeat: no-repeat;
-    background-size: contain;
+    background-size: cover;
 }
 
 .header {
@@ -51,10 +51,10 @@ body {
 
 .inner-wrap {
     width: 74%;
-    /* height = 100 - .header's height */
-    height: 86%;
+    min-height: 600px;
     margin-left: auto;
     margin-right: auto;
+    padding-bottom: 20px;
     background: #fafafa;
 }
 
