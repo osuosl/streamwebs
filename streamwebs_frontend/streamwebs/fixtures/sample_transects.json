@@ -1,0 +1,782 @@
+[
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 1,
+    "fields": {
+        "school": "",
+        "date_time": "2010-06-18T16:10:00",
+        "weather": "",
+        "site": 188,
+        "slope": null,
+        "notes": "This area is very overgrown with salmon berry",
+        "nid": 2362
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 2,
+    "fields": {
+        "school": "",
+        "date_time": "2010-07-22T15:22:00",
+        "weather": "",
+        "site": 188,
+        "slope": null,
+        "notes": "The forest at this site is the result of neglected and unmanaged natural regrowth from logging, probably sometime in the 1940s or 1950s. Red Alder, Douglas fir and non-native invasive plants are dominant. Doug Fir and Red Cedar are slowly taking over.",
+        "nid": 2365
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 3,
+    "fields": {
+        "school": "",
+        "date_time": "2010-07-06T14:15:00",
+        "weather": "",
+        "site": 188,
+        "slope": "6.000",
+        "notes": "Trees are all about 20-30 years old",
+        "nid": 2366
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 4,
+    "fields": {
+        "school": "",
+        "date_time": "2010-08-29T09:14:00",
+        "weather": "",
+        "site": 188,
+        "slope": "4.000",
+        "notes": "pretty nice area, not a lot of damage from farming or invasive species",
+        "nid": 2467
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 5,
+    "fields": {
+        "school": "",
+        "date_time": "2010-09-23T11:30:00",
+        "weather": "",
+        "site": 176,
+        "slope": "20.000",
+        "notes": "",
+        "nid": 2666
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 6,
+    "fields": {
+        "school": "",
+        "date_time": "2010-09-23T00:00:00",
+        "weather": "",
+        "site": 176,
+        "slope": null,
+        "notes": "",
+        "nid": 2674
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 7,
+    "fields": {
+        "school": "",
+        "date_time": "2010-11-10T12:08:00",
+        "weather": "",
+        "site": 45,
+        "slope": null,
+        "notes": "Only 2 of the four groups did this. We averaged the two groups together.",
+        "nid": 3018
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 8,
+    "fields": {
+        "school": "",
+        "date_time": "2011-01-20T11:20:00",
+        "weather": "",
+        "site": 181,
+        "slope": null,
+        "notes": "",
+        "nid": 3094
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 9,
+    "fields": {
+        "school": "",
+        "date_time": "2011-05-31T09:15:00",
+        "weather": "",
+        "site": 47,
+        "slope": "0.400",
+        "notes": "This is a revision of the Riparian Transect table.",
+        "nid": 3154
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 10,
+    "fields": {
+        "school": "",
+        "date_time": "2011-06-08T23:35:00",
+        "weather": "",
+        "site": 188,
+        "slope": "11.000",
+        "notes": "these are field notes",
+        "nid": 3157
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 11,
+    "fields": {
+        "school": "",
+        "date_time": "2012-10-24T09:00:00",
+        "weather": "",
+        "site": 73,
+        "slope": null,
+        "notes": "",
+        "nid": 4489
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 12,
+    "fields": {
+        "school": "",
+        "date_time": "2012-10-24T10:37:00",
+        "weather": "",
+        "site": 74,
+        "slope": null,
+        "notes": "",
+        "nid": 4490
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 13,
+    "fields": {
+        "school": "",
+        "date_time": "2012-11-01T09:00:00",
+        "weather": "",
+        "site": 222,
+        "slope": null,
+        "notes": "The farther you get away from the river the less plants there are.",
+        "nid": 4586
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 14,
+    "fields": {
+        "school": "",
+        "date_time": "2012-10-30T10:50:00",
+        "weather": "",
+        "site": 18,
+        "slope": null,
+        "notes": "",
+        "nid": 4592
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 15,
+    "fields": {
+        "school": "",
+        "date_time": "2012-11-01T10:12:00",
+        "weather": "",
+        "site": 18,
+        "slope": null,
+        "notes": "There are lots of potentilla when you get farther out. I also gets drier and there is less vegetation when you get farther out.",
+        "nid": 4593
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 16,
+    "fields": {
+        "school": "",
+        "date_time": "2012-11-05T10:15:00",
+        "weather": "",
+        "site": 102,
+        "slope": null,
+        "notes": "",
+        "nid": 4626
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 17,
+    "fields": {
+        "school": "",
+        "date_time": "2012-11-07T10:28:00",
+        "weather": "",
+        "site": 102,
+        "slope": null,
+        "notes": "shrubs grow closer to the water than on dry land",
+        "nid": 4629
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 18,
+    "fields": {
+        "school": "",
+        "date_time": "2012-11-05T11:23:00",
+        "weather": "",
+        "site": 103,
+        "slope": null,
+        "notes": "",
+        "nid": 4634
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 19,
+    "fields": {
+        "school": "",
+        "date_time": "2013-06-27T09:00:00",
+        "weather": "",
+        "site": 22,
+        "slope": "3.000",
+        "notes": "",
+        "nid": 4959
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 20,
+    "fields": {
+        "school": "",
+        "date_time": "2013-04-05T09:00:00",
+        "weather": "",
+        "site": 22,
+        "slope": "3.000",
+        "notes": "Transect A started at the top of the nature trail to the creek heads towards the creek at 20 foot intervals. Start coincides with Photo Point A: UTM (Nad 83) 513104 E x 4682942 N.  THis transect went all the way to the high water mark at Bear Creek.  Needed more zones! Data collected by Tallent Middle School Students. COMA2 = Poison Hemlock (Conium maculatum).",
+        "nid": 4960
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 21,
+    "fields": {
+        "school": "",
+        "date_time": "2013-10-09T11:30:00",
+        "weather": "",
+        "site": 103,
+        "slope": null,
+        "notes": "",
+        "nid": 5056
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 22,
+    "fields": {
+        "school": "",
+        "date_time": "2013-10-09T10:39:00",
+        "weather": "",
+        "site": 102,
+        "slope": null,
+        "notes": "",
+        "nid": 5061
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 23,
+    "fields": {
+        "school": "",
+        "date_time": "2013-11-05T13:00:00",
+        "weather": "",
+        "site": 222,
+        "slope": null,
+        "notes": "",
+        "nid": 5321
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 24,
+    "fields": {
+        "school": "",
+        "date_time": "2013-11-07T13:00:00",
+        "weather": "",
+        "site": 222,
+        "slope": null,
+        "notes": "",
+        "nid": 5324
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 25,
+    "fields": {
+        "school": "",
+        "date_time": "2013-11-05T13:00:00",
+        "weather": "",
+        "site": 18,
+        "slope": null,
+        "notes": "",
+        "nid": 5326
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 26,
+    "fields": {
+        "school": "",
+        "date_time": "2013-11-06T14:01:00",
+        "weather": "",
+        "site": 18,
+        "slope": null,
+        "notes": "",
+        "nid": 5328
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 27,
+    "fields": {
+        "school": "",
+        "date_time": "2014-01-27T12:58:00",
+        "weather": "",
+        "site": 41,
+        "slope": "60.600",
+        "notes": "going straight up the trail.  started at 29' from water because of thick blackberry at 20'",
+        "nid": 5473
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 28,
+    "fields": {
+        "school": "",
+        "date_time": "2014-01-27T13:58:00",
+        "weather": "",
+        "site": 41,
+        "slope": "39.700",
+        "notes": "blackberry to thick to do a full transect",
+        "nid": 5474
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 29,
+    "fields": {
+        "school": "",
+        "date_time": "2011-03-08T21:11:00",
+        "weather": "",
+        "site": 149,
+        "slope": "3.000",
+        "notes": "test",
+        "nid": 5574
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 30,
+    "fields": {
+        "school": "",
+        "date_time": "2014-02-15T16:05:00",
+        "weather": "",
+        "site": 32,
+        "slope": "50.000",
+        "notes": "test test",
+        "nid": 5596
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 31,
+    "fields": {
+        "school": "",
+        "date_time": "2014-03-12T12:09:00",
+        "weather": "",
+        "site": 86,
+        "slope": "2.000",
+        "notes": "GROUP 1",
+        "nid": 5609
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 32,
+    "fields": {
+        "school": "",
+        "date_time": "2014-03-12T13:40:00",
+        "weather": "",
+        "site": 86,
+        "slope": "2.000",
+        "notes": "GROUP 2",
+        "nid": 5615
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 33,
+    "fields": {
+        "school": "",
+        "date_time": "2014-03-12T09:30:00",
+        "weather": "",
+        "site": 86,
+        "slope": "2.000",
+        "notes": "GROUP 4",
+        "nid": 5626
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 34,
+    "fields": {
+        "school": "",
+        "date_time": "2014-03-12T10:37:00",
+        "weather": "",
+        "site": 86,
+        "slope": "2.000",
+        "notes": "GROUP 5",
+        "nid": 5632
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 35,
+    "fields": {
+        "school": "",
+        "date_time": "2014-05-29T23:17:00",
+        "weather": "",
+        "site": 136,
+        "slope": null,
+        "notes": "<p>At our spot there wasn&#39;t&nbsp;allot of hardwoods but, there was allot of shrubs, plants, ferns horsetails. we think that tomorrow&nbsp;at a different&nbsp;spot there will be allot more hardwoods, and more shrubs then today.</p>",
+        "nid": 6046
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 36,
+    "fields": {
+        "school": "",
+        "date_time": "2014-05-04T11:30:00",
+        "weather": "",
+        "site": 136,
+        "slope": "20.000",
+        "notes": "<p>This was our first spot. It&#39;s where our creek meets the little elk.</p>",
+        "nid": 6098
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 37,
+    "fields": {
+        "school": "",
+        "date_time": "2014-06-11T11:50:00",
+        "weather": "",
+        "site": 136,
+        "slope": "20.000",
+        "notes": "<p>6 hard wood 35 nettle 36 clover 8 briar 46 shrubs 7 ferns</p>",
+        "nid": 6100
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 38,
+    "fields": {
+        "school": "",
+        "date_time": "2014-05-05T11:30:00",
+        "weather": "",
+        "site": 136,
+        "slope": "20.000",
+        "notes": "<p>This was our second spot which is the second spot &nbsp;next to our first spot.</p>",
+        "nid": 6101
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 39,
+    "fields": {
+        "school": "",
+        "date_time": "2014-08-13T13:35:00",
+        "weather": "",
+        "site": 88,
+        "slope": null,
+        "notes": "",
+        "nid": 6207
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 40,
+    "fields": {
+        "school": "",
+        "date_time": "2014-08-13T13:30:00",
+        "weather": "",
+        "site": 88,
+        "slope": null,
+        "notes": "",
+        "nid": 6208
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 41,
+    "fields": {
+        "school": "",
+        "date_time": "2014-08-13T13:30:00",
+        "weather": "",
+        "site": 88,
+        "slope": null,
+        "notes": "",
+        "nid": 6209
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 42,
+    "fields": {
+        "school": "",
+        "date_time": "2014-11-21T00:00:00",
+        "weather": "",
+        "site": 159,
+        "slope": null,
+        "notes": "",
+        "nid": 6507
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 43,
+    "fields": {
+        "school": "",
+        "date_time": "2014-11-21T00:17:00",
+        "weather": "",
+        "site": 159,
+        "slope": null,
+        "notes": "",
+        "nid": 6508
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 44,
+    "fields": {
+        "school": "",
+        "date_time": "2014-11-21T11:36:00",
+        "weather": "",
+        "site": 159,
+        "slope": null,
+        "notes": "<p>Na</p>\r\n\r\n<p>&nbsp;</p>\r\n\r\n<p>&nbsp;</p>",
+        "nid": 6509
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 45,
+    "fields": {
+        "school": "",
+        "date_time": "2014-11-21T10:00:00",
+        "weather": "",
+        "site": 159,
+        "slope": null,
+        "notes": "",
+        "nid": 6511
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 46,
+    "fields": {
+        "school": "",
+        "date_time": "2014-11-21T11:36:00",
+        "weather": "",
+        "site": 55,
+        "slope": null,
+        "notes": "",
+        "nid": 6522
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 47,
+    "fields": {
+        "school": "",
+        "date_time": "2014-11-20T10:34:00",
+        "weather": "",
+        "site": 55,
+        "slope": null,
+        "notes": "",
+        "nid": 6523
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 48,
+    "fields": {
+        "school": "",
+        "date_time": "2014-12-02T00:00:00",
+        "weather": "",
+        "site": 55,
+        "slope": null,
+        "notes": "",
+        "nid": 6524
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 49,
+    "fields": {
+        "school": "",
+        "date_time": "2014-12-19T17:44:00",
+        "weather": "",
+        "site": 166,
+        "slope": "79.000",
+        "notes": "<p>test test test&nbsp;</p>",
+        "nid": 6682
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 50,
+    "fields": {
+        "school": "",
+        "date_time": "2015-03-09T13:07:00",
+        "weather": "",
+        "site": 86,
+        "slope": "1.170",
+        "notes": "<p>Group 1:&nbsp; Lyn Leckie, Jaylene Johnson, AJ Wittrig, Tyler Hoerauf, Oracio Lopez, Cale Thompson</p>",
+        "nid": 7246
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 51,
+    "fields": {
+        "school": "",
+        "date_time": "2015-03-09T14:00:00",
+        "weather": "",
+        "site": 86,
+        "slope": "1.170",
+        "notes": "<p>Group 2:&nbsp; Kayla Yarbrough, Ashley Visconti, Cassi Lien, Eva Barrett, Ryan Restay, Veronica Jorgensen</p>",
+        "nid": 7276
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 52,
+    "fields": {
+        "school": "",
+        "date_time": "2015-03-09T12:08:00",
+        "weather": "",
+        "site": 86,
+        "slope": "1.170",
+        "notes": "<p>Group 3:&nbsp; Zoey Brown, Zach Henderson, Vanessa Johnson, Juliet Gordanier, Steven Mendoza, Jessica Valdivia-Garibay</p>",
+        "nid": 7311
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 53,
+    "fields": {
+        "school": "",
+        "date_time": "2015-03-09T12:40:00",
+        "weather": "",
+        "site": 86,
+        "slope": "1.170",
+        "notes": "<p>Group 4:&nbsp; Jorjia Cole, Amber Lowe, Tiffany Evans, Justus Humble, Anna Wright</p>",
+        "nid": 7336
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 54,
+    "fields": {
+        "school": "",
+        "date_time": "2016-02-24T10:11:00",
+        "weather": "",
+        "site": 86,
+        "slope": "60.000",
+        "notes": "<p>transect done on a slope</p>",
+        "nid": 11261
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 55,
+    "fields": {
+        "school": "",
+        "date_time": "2016-02-24T10:50:00",
+        "weather": "",
+        "site": 86,
+        "slope": "66.000",
+        "notes": "<p>transect on a slope</p>",
+        "nid": 11266
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 56,
+    "fields": {
+        "school": "",
+        "date_time": "2016-02-24T08:20:00",
+        "weather": "",
+        "site": 86,
+        "slope": "60.000",
+        "notes": "<p>Transect on a slope</p>",
+        "nid": 11271
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 57,
+    "fields": {
+        "school": "",
+        "date_time": "2016-02-24T09:20:00",
+        "weather": "",
+        "site": 86,
+        "slope": "60.000",
+        "notes": "<p>Transect on a slope</p>",
+        "nid": 11276
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 58,
+    "fields": {
+        "school": "",
+        "date_time": "2016-04-28T08:54:00",
+        "weather": "",
+        "site": 226,
+        "slope": "0.020",
+        "notes": "",
+        "nid": 12046
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 59,
+    "fields": {
+        "school": "",
+        "date_time": "2016-05-03T08:45:00",
+        "weather": "",
+        "site": 226,
+        "slope": "0.048",
+        "notes": "",
+        "nid": 12066
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 67,
+    "fields": {
+        "school": "Ackerman Middle School",
+        "date_time": "2017-01-30T09:01:48",
+        "weather": "okay",
+        "site": 214,
+        "slope": "8.000",
+        "notes": "",
+        "nid": null
+    }
+}
+]

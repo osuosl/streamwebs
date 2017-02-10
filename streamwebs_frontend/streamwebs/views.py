@@ -4,6 +4,7 @@ from django.http import HttpResponseRedirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
@@ -15,16 +16,16 @@ from streamwebs.forms import (
     UserForm, UserProfileForm, RiparianTransectForm, MacroinvertebratesForm,
     PhotoPointImageForm, PhotoPointForm, CameraPointForm, WQSampleForm,
     WQSampleFormReadOnly, WQForm, WQFormReadOnly, SiteForm, Canopy_Cover_Form,
-    SoilSurveyForm, SoilSurveyFormReadOnly)
+    SoilSurveyForm, SoilSurveyFormReadOnly, StatisticsForm)
 
 from streamwebs.models import (
     Macroinvertebrates, Site, Water_Quality, WQ_Sample, RiparianTransect,
     TransectZone, Canopy_Cover, CameraPoint, PhotoPoint,
     PhotoPointImage, Soil_Survey)
 
-from datetime import datetime
 import json
 import copy
+import datetime
 
 
 def _timestamp(dt):
@@ -740,5 +741,50 @@ def soil_survey_edit(request, site_slug):
         request, 'streamwebs/datasheets/soil_edit.html', {
             'soil_form': soil_form,
             'site': site
+        }
+    )
+
+
+@login_required
+def admin_site_statistics(request):
+    """
+    The view for viewing site statistics (admin only)
+    """
+    stats_form = StatisticsForm()
+
+    # A user is defined as "active" if they have logged in w/in the last 3 yrs
+    today = datetime.date.today()
+    user_start = datetime.date(today.year - 3, today.month, today.day)
+    start = datetime.date(1970, 1, 1)
+    end = today
+
+    if request.method == 'POST':
+        stats_form = StatisticsForm(data=request.POST)
+
+        if stats_form.is_valid():
+            # if both still blank, query logins within three years
+                # start date was provided
+            if (stats_form.cleaned_data['start'] is not None or
+                    stats_form.cleaned_data['end'] is not None):
+                if stats_form.cleaned_data['start'] is not None:
+                    start = stats_form.cleaned_data['start']
+    
+                # end date was provided
+                if stats_form.cleaned_data['end'] is not None:
+                    end = stats_form.cleaned_data['end']
+    
+                users = User.objects.filter(date_joined__range=(start, end))
+            else:
+                users = User.objects.filter(last_login__range=(user_start, end))
+
+    # no form submission: default view displays "all time" total stats
+    else:
+        users = User.objects.filter(last_login__range=(user_start, end))
+    return render(request, 'streamwebs/admin/stats.html', {
+        'stats_form': stats_form,
+        'users': {'count': users.count(), 'users': users},
+        'user_start': user_start,
+        'start': start,
+        'end': end,
         }
     )

@@ -9,7 +9,7 @@ class StatisticsFormTestCase(TestCase):
             'start',
             'end'
         )
-        self.stats_form = StatisticsForm();
+        self.stats_form = StatisticsForm()
 
     def test_form_fields_exist(self):
         self.assertEqual(set(self.stats_form.fields),

@@ -1,0 +1,24 @@
+{% extends 'streamwebs/base.html' %}
+{% load i18n %}
+{% load staticfiles %}
+
+{% block title %} StreamWebs Statistics {% endblock %}
+{% block body_title %} StreamWebs Statistics {% endblock %}
+
+{% block content %}
+<form id='stats_form' method='post'>
+    {% csrf_token %}
+    {{ stats_form.as_p }}
+    <input type='submit' name='submit' value='{% trans 'Calculate' %}'/>
+</form>
+
+{% if current %}
+Number of users who have logged in within the last 3 years: {{ users.count }}
+{% else %}
+Number of users who joined between {{ start }} and {{ end }}: {{ users.count }}
+{% endif %}
+{% for user in users.users %}
+    <li>{{ user.username }}</li>
+{% endfor %}
+
+{% endblock %}

@@ -1,0 +1,3390 @@
+[
+{
+    "model": "streamwebs.site",
+    "pk": 1,
+    "fields": {
+        "site_name": "CWA Johnson Creek ----- Tolford Rd.",
+        "description": "",
+        "site_slug": "cwa-johnson-creek-tolford-rd",
+        "location": "SRID=4326;POINT (-122.4412540000000007 45.4791510000000017)",
+        "image": "",
+        "active": true,
+        "created": "2010-10-12T13:58:00",
+        "modified": "2010-10-27T11:02:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 2,
+    "fields": {
+        "site_name": "Adams Outdoor School",
+        "description": "",
+        "site_slug": "adams-outdoor-school",
+        "location": "SRID=4326;POINT (-122.4895379999999960 45.1654520000000019)",
+        "image": "",
+        "active": true,
+        "created": "2010-09-02T09:54:00",
+        "modified": "2010-09-02T10:55:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 3,
+    "fields": {
+        "site_name": "Agate Beach",
+        "description": "",
+        "site_slug": "agate-beach",
+        "location": "SRID=4326;POINT (-124.0566519999999997 44.6594029999999975)",
+        "image": "",
+        "active": true,
+        "created": "2013-01-12T14:27:00",
+        "modified": "2013-01-12T14:27:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 4,
+    "fields": {
+        "site_name": "Agate Beach",
+        "description": "",
+        "site_slug": "agate-beach1",
+        "location": "SRID=4326;POINT (-123.2226560000000006 44.0875849999999971)",
+        "image": "",
+        "active": true,
+        "created": "2014-06-09T11:43:00",
+        "modified": "2014-06-09T11:43:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 5,
+    "fields": {
+        "site_name": "Alex Delgado",
+        "description": "",
+        "site_slug": "alex-delgado",
+        "location": "SRID=4326;POINT (-123.2226560000000006 44.0875849999999971)",
+        "image": "",
+        "active": true,
+        "created": "2013-01-15T12:20:00",
+        "modified": "2013-01-15T12:20:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 6,
+    "fields": {
+        "site_name": "Amazon Creek",
+        "description": "",
+        "site_slug": "amazon-creek",
+        "location": "SRID=4326;POINT (-123.0859600000000000 44.0310709999999972)",
+        "image": "",
+        "active": true,
+        "created": "2011-08-18T13:48:00",
+        "modified": "2011-08-18T13:48:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 7,
+    "fields": {
+        "site_name": "Amazon Creek & Fox Hollow",
+        "description": "",
+        "site_slug": "amazon-creek-fox-hollow",
+        "location": "SRID=4326;POINT (-123.0762289999999979 44.0103489999999979)",
+        "image": "",
+        "active": true,
+        "created": "2013-03-10T22:09:00",
+        "modified": "2013-03-10T22:26:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 8,
+    "fields": {
+        "site_name": "Amazon Creek @ Frank Kinney Park",
+        "description": "",
+        "site_slug": "amazon-creek-frank-kinney-park",
+        "location": "SRID=4326;POINT (-123.0771730000000019 43.9978470000000002)",
+        "image": "",
+        "active": true,
+        "created": "2014-03-09T15:09:00",
+        "modified": "2014-03-09T15:09:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 9,
+    "fields": {
+        "site_name": "Amazon Headwaters - Martin Street trail",
+        "description": "",
+        "site_slug": "amazon-headwaters-martin-street-trail",
+        "location": "SRID=4326;POINT (-123.0789330000000064 43.9974759999999989)",
+        "image": "",
+        "active": true,
+        "created": "2013-10-22T05:18:00",
+        "modified": "2013-10-22T05:18:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 10,
+    "fields": {
+        "site_name": "Arrah Wanna Outdoor School",
+        "description": "",
+        "site_slug": "arrah-wanna-outdoor-school",
+        "location": "SRID=4326;POINT (-121.9767470000000031 45.3402960000000022)",
+        "image": "",
+        "active": true,
+        "created": "2010-09-02T09:55:00",
+        "modified": "2010-09-02T11:01:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 11,
+    "fields": {
+        "site_name": "Ashbrook Naturalists",
+        "description": "",
+        "site_slug": "ashbrook-naturalists",
+        "location": "SRID=4326;POINT (-123.2947539999999975 44.5514420000000015)",
+        "image": "",
+        "active": true,
+        "created": "2014-10-10T10:02:00",
+        "modified": "2014-10-10T10:02:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 12,
+    "fields": {
+        "site_name": "Ashland Creek below Ashland Treatment Plant",
+        "description": "",
+        "site_slug": "ashland-creek-below-ashland-treatment-plant",
+        "location": "SRID=4326;POINT (-122.7159230000000036 42.2145650000000003)",
+        "image": "",
+        "active": true,
+        "created": "2013-01-09T12:11:00",
+        "modified": "2013-01-09T12:11:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 13,
+    "fields": {
+        "site_name": "Ashland Middle School Wetland",
+        "description": "",
+        "site_slug": "ashland-middle-school-wetland",
+        "location": "SRID=4326;POINT (-122.6841869999999943 42.1919060000000030)",
+        "image": "",
+        "active": true,
+        "created": "2014-06-03T16:51:00",
+        "modified": "2014-06-03T16:51:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 14,
+    "fields": {
+        "site_name": "Ashland Pond",
+        "description": "",
+        "site_slug": "ashland-pond",
+        "location": "SRID=4326;POINT (-122.7177300000000031 42.2146499999999989)",
+        "image": "",
+        "active": true,
+        "created": "2014-04-06T14:48:00",
+        "modified": "2014-04-06T14:48:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 15,
+    "fields": {
+        "site_name": "Baker School / Salem Family Literacy Program",
+        "description": "",
+        "site_slug": "baker-school-salem-family-literacy-program",
+        "location": "SRID=4326;POINT (-117.8364399999999961 44.7869699999999966)",
+        "image": "",
+        "active": true,
+        "created": "2014-01-25T15:34:00",
+        "modified": "2014-05-05T16:02:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 16,
+    "fields": {
+        "site_name": "Bald Hill Farm- Mulkey Creek",
+        "description": "",
+        "site_slug": "bald-hill-farm-mulkey-creek",
+        "location": "SRID=4326;POINT (-123.3335179999999980 44.5733090000000018)",
+        "image": "",
+        "active": true,
+        "created": "2015-08-25T11:02:00",
+        "modified": "2016-06-28T13:27:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 17,
+    "fields": {
+        "site_name": "BCSD",
+        "description": "",
+        "site_slug": "bcsd",
+        "location": "SRID=4326;POINT (-123.2891750000000002 44.5564570000000018)",
+        "image": "",
+        "active": true,
+        "created": "2015-08-22T06:23:00",
+        "modified": "2015-08-22T06:23:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 18,
+    "fields": {
+        "site_name": "Bear Creek",
+        "description": "",
+        "site_slug": "bear-creek",
+        "location": "SRID=4326;POINT (-117.5518550000000033 45.5260359999999977)",
+        "image": "",
+        "active": true,
+        "created": "2010-10-12T15:40:00",
+        "modified": "2010-10-12T15:40:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 19,
+    "fields": {
+        "site_name": "Bear Creek - Cascade Christian High School",
+        "description": "",
+        "site_slug": "bear-creek-cascade-christian-high-school",
+        "location": "SRID=4326;POINT (0.0000000000000000 0.0000000000000000)",
+        "image": "",
+        "active": true,
+        "created": "2014-08-16T17:33:00",
+        "modified": "2014-08-16T17:33:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 20,
+    "fields": {
+        "site_name": "Bear Creek above Ashland Creek confluence",
+        "description": "",
+        "site_slug": "bear-creek-above-ashland-creek-confluence",
+        "location": "SRID=4326;POINT (-122.7186860000000053 42.2155029999999982)",
+        "image": "",
+        "active": true,
+        "created": "2014-02-24T17:26:00",
+        "modified": "2014-02-24T17:26:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 21,
+    "fields": {
+        "site_name": "Bear Creek above Ashland Creek confluence",
+        "description": "",
+        "site_slug": "bear-creek-above-ashland-creek-confluence1",
+        "location": "SRID=4326;POINT (-122.7186860000000053 42.2155029999999982)",
+        "image": "",
+        "active": true,
+        "created": "2014-02-24T17:28:00",
+        "modified": "2014-02-24T17:28:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 22,
+    "fields": {
+        "site_name": "Bear Creek at Coyote Trails Nature Center",
+        "description": "",
+        "site_slug": "bear-creek-at-coyote-trails-nature-center",
+        "location": "SRID=4326;POINT (-122.8412780000000026 42.2986829999999969)",
+        "image": "",
+        "active": true,
+        "created": "2013-04-01T15:11:00",
+        "modified": "2014-02-11T15:48:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 23,
+    "fields": {
+        "site_name": "Bear Creek at North Mt. Park",
+        "description": "",
+        "site_slug": "bear-creek-at-north-mt-park",
+        "location": "SRID=4326;POINT (-122.6982249999999937 42.2037150000000025)",
+        "image": "",
+        "active": true,
+        "created": "2014-08-11T21:32:00",
+        "modified": "2014-08-11T21:32:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 24,
+    "fields": {
+        "site_name": "Bear Creek at Spencer Street",
+        "description": "",
+        "site_slug": "bear-creek-at-spencer-street",
+        "location": "SRID=4326;POINT (-122.8633460000000071 42.3228229999999996)",
+        "image": "",
+        "active": true,
+        "created": "2014-04-01T21:50:00",
+        "modified": "2014-04-01T21:50:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 25,
+    "fields": {
+        "site_name": "Bear Creek at WWCLC",
+        "description": "",
+        "site_slug": "bear-creek-at-wwclc",
+        "location": "SRID=4326;POINT (-122.6915900000000050 42.2001970000000028)",
+        "image": "",
+        "active": true,
+        "created": "2013-11-21T14:56:00",
+        "modified": "2013-11-21T14:56:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 26,
+    "fields": {
+        "site_name": "Bear Creek Crater Land Lab",
+        "description": "",
+        "site_slug": "bear-creek-crater-land-lab",
+        "location": "SRID=4326;POINT (-122.9179570000000012 42.3910089999999968)",
+        "image": "",
+        "active": true,
+        "created": "2013-03-17T20:12:00",
+        "modified": "2013-03-17T20:12:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 27,
+    "fields": {
+        "site_name": "Bear Creek Riparian Restoration Project",
+        "description": "",
+        "site_slug": "bear-creek-riparian-restoration-project",
+        "location": "SRID=4326;POINT (-122.8577470000000034 42.3180350000000018)",
+        "image": "",
+        "active": true,
+        "created": "2012-03-15T15:30:00",
+        "modified": "2012-03-16T09:52:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 28,
+    "fields": {
+        "site_name": "Beaver Creek Outdoor School Experience Program",
+        "description": "",
+        "site_slug": "beaver-creek-outdoor-school-experience-program",
+        "location": "SRID=4326;POINT (-124.0609510000000029 44.4274330000000006)",
+        "image": "",
+        "active": true,
+        "created": "2014-05-30T07:50:00",
+        "modified": "2014-06-09T13:18:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 29,
+    "fields": {
+        "site_name": "Beaver Creek SNA Site 1",
+        "description": "",
+        "site_slug": "beaver-creek-sna-site-1",
+        "location": "SRID=4326;POINT (-124.0471730000000008 44.5157529999999966)",
+        "image": "",
+        "active": true,
+        "created": "2013-01-12T00:43:00",
+        "modified": "2014-06-09T13:31:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 30,
+    "fields": {
+        "site_name": "Beaver Creek SNA Site 2",
+        "description": "",
+        "site_slug": "beaver-creek-sna-site-2",
+        "location": "SRID=4326;POINT (-124.0453650000000039 44.5061850000000021)",
+        "image": "",
+        "active": true,
+        "created": "2013-05-27T10:26:00",
+        "modified": "2014-06-09T13:31:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 31,
+    "fields": {
+        "site_name": "Beaver Creek, Starker Forests",
+        "description": "",
+        "site_slug": "beaver-creek-starker-forests",
+        "location": "SRID=4326;POINT (0.0000000000000000 44.4319860000000020)",
+        "image": "",
+        "active": true,
+        "created": "2014-07-26T21:56:00",
+        "modified": "2014-07-26T21:56:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 32,
+    "fields": {
+        "site_name": "Beverly Beach",
+        "description": "",
+        "site_slug": "beverly-beach",
+        "location": "SRID=4326;POINT (-124.0301510000000036 44.7155139999999989)",
+        "image": "",
+        "active": true,
+        "created": "2014-03-13T10:08:00",
+        "modified": "2014-04-26T16:38:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 33,
+    "fields": {
+        "site_name": "Big Creek Park",
+        "description": "",
+        "site_slug": "big-creek-park",
+        "location": "SRID=4326;POINT (-124.0461590000000029 44.6543980000000005)",
+        "image": "",
+        "active": true,
+        "created": "2013-01-12T14:26:00",
+        "modified": "2013-01-12T14:26:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 34,
+    "fields": {
+        "site_name": "Big Creek Park",
+        "description": "",
+        "site_slug": "big-creek-park1",
+        "location": "SRID=4326;POINT (-124.0458349999999967 44.6546880000000002)",
+        "image": "",
+        "active": true,
+        "created": "2014-07-21T14:25:00",
+        "modified": "2014-07-21T14:25:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 35,
+    "fields": {
+        "site_name": "Blair Creek",
+        "description": "",
+        "site_slug": "blair-creek",
+        "location": "SRID=4326;POINT (-123.4095949999999959 44.5399880000000010)",
+        "image": "",
+        "active": true,
+        "created": "2009-04-20T10:02:00",
+        "modified": "2010-09-24T10:00:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 36,
+    "fields": {
+        "site_name": "Bottom Creek StreamBank Instream Wood",
+        "description": "",
+        "site_slug": "bottom-creek-streambank-instream-wood",
+        "location": "SRID=4326;POINT (-123.7166739999999976 43.3642949999999985)",
+        "image": "",
+        "active": true,
+        "created": "2012-02-23T15:41:00",
+        "modified": "2012-02-23T15:41:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 37,
+    "fields": {
+        "site_name": "Brice Creek West Trailhead",
+        "description": "",
+        "site_slug": "brice-creek-west-trailhead",
+        "location": "SRID=4326;POINT (-122.7295160000000038 43.6744520000000023)",
+        "image": "",
+        "active": true,
+        "created": "2010-09-16T22:47:00",
+        "modified": "2010-09-16T22:47:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 38,
+    "fields": {
+        "site_name": "Bridge Creek",
+        "description": "",
+        "site_slug": "bridge-creek",
+        "location": "SRID=4326;POINT (-120.2512509999999963 44.6545770000000033)",
+        "image": "",
+        "active": true,
+        "created": "2010-09-22T13:33:00",
+        "modified": "2010-09-23T10:10:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 39,
+    "fields": {
+        "site_name": "Butte Creek: Bud Netting Park",
+        "description": "",
+        "site_slug": "butte-creek-bud-netting-park",
+        "location": "SRID=4326;POINT (-122.5535200000000060 42.5398959999999988)",
+        "image": "",
+        "active": true,
+        "created": "2015-02-27T13:46:00",
+        "modified": "2015-02-27T13:47:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 40,
+    "fields": {
+        "site_name": "Calapooia Middle School, Albany, Oregon",
+        "description": "",
+        "site_slug": "calapooia-middle-school-albany-oregon",
+        "location": "SRID=4326;POINT (-123.0924509999999970 44.6171420000000012)",
+        "image": "",
+        "active": true,
+        "created": "2015-10-20T15:22:00",
+        "modified": "2015-10-20T15:22:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 41,
+    "fields": {
+        "site_name": "Camco, Inc. Restoration Project",
+        "description": "",
+        "site_slug": "camco-inc-restoration-project",
+        "location": "SRID=4326;POINT (-122.7282710000000066 44.4046769999999995)",
+        "image": "",
+        "active": true,
+        "created": "2014-01-24T15:40:00",
+        "modified": "2014-01-24T16:09:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 42,
+    "fields": {
+        "site_name": "Camp Creek",
+        "description": "",
+        "site_slug": "camp-creek",
+        "location": "SRID=4326;POINT (-116.8727300000000042 45.5547790000000035)",
+        "image": "",
+        "active": true,
+        "created": "2010-10-12T15:27:00",
+        "modified": "2010-10-12T15:27:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 43,
+    "fields": {
+        "site_name": "Cascadia",
+        "description": "",
+        "site_slug": "cascadia",
+        "location": "SRID=4326;POINT (-122.4770879999999948 44.3983440000000016)",
+        "image": "",
+        "active": true,
+        "created": "2014-10-02T10:07:00",
+        "modified": "2014-10-06T15:02:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 44,
+    "fields": {
+        "site_name": "CEC: Brown's Ferry Park",
+        "description": "",
+        "site_slug": "cec-browns-ferry-park",
+        "location": "SRID=4326;POINT (-122.7327719999999971 45.3829739999999973)",
+        "image": "",
+        "active": true,
+        "created": "2015-09-01T14:01:00",
+        "modified": "2015-09-01T14:01:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 45,
+    "fields": {
+        "site_name": "Cedar Creek",
+        "description": "",
+        "site_slug": "cedar-creek",
+        "location": "SRID=4326;POINT (-123.5626749999999987 45.5777330000000021)",
+        "image": "",
+        "active": true,
+        "created": "2010-11-11T16:48:00",
+        "modified": "2010-11-11T19:43:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 46,
+    "fields": {
+        "site_name": "Clackamas River - Ripplebrook",
+        "description": "",
+        "site_slug": "clackamas-river-ripplebrook",
+        "location": "SRID=4326;POINT (-122.0639999999999930 45.0461000000000027)",
+        "image": "",
+        "active": true,
+        "created": "2010-07-23T15:33:00",
+        "modified": "2010-07-23T15:33:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 47,
+    "fields": {
+        "site_name": "Clear Creek",
+        "description": "",
+        "site_slug": "clear-creek",
+        "location": "SRID=4326;POINT (-122.4296669999999949 45.3330819999999974)",
+        "image": "",
+        "active": true,
+        "created": "2009-11-17T17:57:00",
+        "modified": "2011-06-21T06:32:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 48,
+    "fields": {
+        "site_name": "Clemens Park - Alsea River",
+        "description": "",
+        "site_slug": "clemens-park-alsea-river",
+        "location": "SRID=4326;POINT (-123.5668299999999959 44.4048239999999979)",
+        "image": "",
+        "active": true,
+        "created": "2010-08-04T15:40:00",
+        "modified": "2010-08-04T16:59:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 49,
+    "fields": {
+        "site_name": "Coast Creek Data",
+        "description": "",
+        "site_slug": "coast-creek-data",
+        "location": "SRID=4326;POINT (-123.5758500000000026 45.1466649999999987)",
+        "image": "",
+        "active": true,
+        "created": "2014-10-08T15:30:00",
+        "modified": "2014-10-08T15:30:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 50,
+    "fields": {
+        "site_name": "Coho Creek Stream Project",
+        "description": "",
+        "site_slug": "coho-creek-stream-project",
+        "location": "SRID=4326;POINT (-123.9081860000000006 45.9863169999999997)",
+        "image": "",
+        "active": true,
+        "created": "2013-02-27T14:16:00",
+        "modified": "2013-02-27T14:16:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 51,
+    "fields": {
+        "site_name": "Community Paddle Days",
+        "description": "",
+        "site_slug": "community-paddle-days",
+        "location": "SRID=4326;POINT (0.0000000000000000 0.0000000000000000)",
+        "image": "",
+        "active": true,
+        "created": "2014-04-17T20:09:00",
+        "modified": "2014-04-17T20:09:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 52,
+    "fields": {
+        "site_name": "Confluence of Battle Ax & Opal Creeks",
+        "description": "",
+        "site_slug": "confluence-of-battle-ax-opal-creeks",
+        "location": "SRID=4326;POINT (-122.2101969999999937 44.8460320000000010)",
+        "image": "",
+        "active": true,
+        "created": "2015-03-17T13:46:00",
+        "modified": "2015-05-04T15:51:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 53,
+    "fields": {
+        "site_name": "Conifer",
+        "description": "",
+        "site_slug": "conifer",
+        "location": "SRID=4326;POINT (-122.4505230000000040 45.5205860000000015)",
+        "image": "",
+        "active": true,
+        "created": "2012-03-26T17:41:00",
+        "modified": "2012-03-29T00:31:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 54,
+    "fields": {
+        "site_name": "Council Tree",
+        "description": "",
+        "site_slug": "council-tree",
+        "location": "SRID=4326;POINT (-123.2485039999999969 44.6478350000000006)",
+        "image": "",
+        "active": true,
+        "created": "2016-06-13T12:23:00",
+        "modified": "2016-06-13T12:23:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 55,
+    "fields": {
+        "site_name": "Cox Creek",
+        "description": "",
+        "site_slug": "cox-creek",
+        "location": "SRID=4326;POINT (-123.0733969999999999 44.6455440000000010)",
+        "image": "",
+        "active": true,
+        "created": "2013-05-15T12:40:00",
+        "modified": "2014-11-03T10:42:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 56,
+    "fields": {
+        "site_name": "Crater Renaissance Land Lab",
+        "description": "",
+        "site_slug": "crater-renaissance-land-lab",
+        "location": "SRID=4326;POINT (-122.9172709999999995 42.3906279999999995)",
+        "image": "",
+        "active": true,
+        "created": "2013-05-14T13:03:00",
+        "modified": "2013-05-15T10:42:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 57,
+    "fields": {
+        "site_name": "Crescent Lake Creek",
+        "description": "",
+        "site_slug": "crescent-lake-creek",
+        "location": "SRID=4326;POINT (-123.9395569999999935 45.6360219999999970)",
+        "image": "",
+        "active": true,
+        "created": "2015-03-02T14:36:00",
+        "modified": "2015-03-02T14:36:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 58,
+    "fields": {
+        "site_name": "Crowley Creek",
+        "description": "",
+        "site_slug": "crowley-creek",
+        "location": "SRID=4326;POINT (-123.9925580000000025 45.0411130000000028)",
+        "image": "",
+        "active": true,
+        "created": "2015-11-06T15:59:00",
+        "modified": "2015-11-06T15:59:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 59,
+    "fields": {
+        "site_name": "Culvert Creek",
+        "description": "",
+        "site_slug": "culvert-creek",
+        "location": "SRID=4326;POINT (-121.5277580000000057 45.7047110000000032)",
+        "image": "",
+        "active": true,
+        "created": "2013-08-14T11:41:00",
+        "modified": "2013-08-14T11:41:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 60,
+    "fields": {
+        "site_name": "CWA  johnson creek park",
+        "description": "",
+        "site_slug": "cwa-johnson-creek-park",
+        "location": "SRID=4326;POINT (-122.6422599999999932 45.4605999999999995)",
+        "image": "",
+        "active": true,
+        "created": "2010-12-02T12:12:00",
+        "modified": "2011-01-12T12:50:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 61,
+    "fields": {
+        "site_name": "CWA  johnson creek/willamette river confluence",
+        "description": "",
+        "site_slug": "cwa-johnson-creekwillamette-river-confluence",
+        "location": "SRID=4326;POINT (-122.6500630000000029 45.4441470000000010)",
+        "image": "",
+        "active": true,
+        "created": "2010-12-29T14:13:00",
+        "modified": "2011-01-12T12:50:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 62,
+    "fields": {
+        "site_name": "CWA hogan road",
+        "description": "",
+        "site_slug": "cwa-hogan-road",
+        "location": "SRID=4326;POINT (-122.6500630000000029 45.4441470000000010)",
+        "image": "",
+        "active": true,
+        "created": "2011-01-06T13:05:00",
+        "modified": "2011-01-12T12:49:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 63,
+    "fields": {
+        "site_name": "CWA Johnson Creek --- 307th/Orient",
+        "description": "",
+        "site_slug": "cwa-johnson-creek-307thorient",
+        "location": "SRID=4326;POINT (-122.3468400000000003 45.4607630000000000)",
+        "image": "",
+        "active": true,
+        "created": "2010-11-10T12:10:00",
+        "modified": "2010-11-10T14:05:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 64,
+    "fields": {
+        "site_name": "D River",
+        "description": "",
+        "site_slug": "d-river",
+        "location": "SRID=4326;POINT (-124.0178910000000059 44.9670529999999999)",
+        "image": "",
+        "active": true,
+        "created": "2014-02-19T14:07:00",
+        "modified": "2014-02-19T14:07:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 65,
+    "fields": {
+        "site_name": "Deer Creek",
+        "description": "",
+        "site_slug": "deer-creek",
+        "location": "SRID=4326;POINT (-123.3433560000000000 43.2146219999999985)",
+        "image": "",
+        "active": true,
+        "created": "2011-10-24T13:03:00",
+        "modified": "2011-10-24T13:25:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 66,
+    "fields": {
+        "site_name": "Dharma Rain Zen Center Brownfield Restoration",
+        "description": "",
+        "site_slug": "dharma-rain-zen-center-brownfield-restoration",
+        "location": "SRID=4326;POINT (-122.5758790000000005 45.5438100000000006)",
+        "image": "",
+        "active": true,
+        "created": "2013-09-02T10:14:00",
+        "modified": "2013-09-02T10:14:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 67,
+    "fields": {
+        "site_name": "Dixon Creek",
+        "description": "",
+        "site_slug": "dixon-creek",
+        "location": "SRID=4326;POINT (0.0000000000000000 0.0000000000000000)",
+        "image": "",
+        "active": true,
+        "created": "2014-06-16T15:41:00",
+        "modified": "2014-06-16T15:41:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 68,
+    "fields": {
+        "site_name": "Drift Creek Elks Lodge",
+        "description": "",
+        "site_slug": "drift-creek-elks-lodge",
+        "location": "SRID=4326;POINT (-123.9812710000000067 44.9165819999999982)",
+        "image": "",
+        "active": true,
+        "created": "2015-11-06T16:00:00",
+        "modified": "2015-11-06T16:00:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 69,
+    "fields": {
+        "site_name": "Drift Creek Yacht Club",
+        "description": "",
+        "site_slug": "drift-creek-yacht-club",
+        "location": "SRID=4326;POINT (-124.0128140000000059 44.9269210000000001)",
+        "image": "",
+        "active": true,
+        "created": "2015-11-06T16:11:00",
+        "modified": "2015-11-06T16:11:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 70,
+    "fields": {
+        "site_name": "Eagle Creek Lower",
+        "description": "",
+        "site_slug": "eagle-creek-lower",
+        "location": "SRID=4326;POINT (-121.9265999999999934 45.6409999999999982)",
+        "image": "",
+        "active": true,
+        "created": "2010-07-23T15:35:00",
+        "modified": "2010-07-23T15:35:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 71,
+    "fields": {
+        "site_name": "Eagle Creek Upper",
+        "description": "",
+        "site_slug": "eagle-creek-upper",
+        "location": "SRID=4326;POINT (-121.9209000000000032 45.6366000000000014)",
+        "image": "",
+        "active": true,
+        "created": "2010-07-23T15:36:00",
+        "modified": "2010-07-23T15:36:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 72,
+    "fields": {
+        "site_name": "Eagle Fern Park",
+        "description": "",
+        "site_slug": "eagle-fern-park",
+        "location": "SRID=4326;POINT (-122.2866279999999932 45.3219270000000023)",
+        "image": "",
+        "active": true,
+        "created": "2010-07-23T15:32:00",
+        "modified": "2010-11-10T17:06:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 73,
+    "fields": {
+        "site_name": "Enterprise City Park",
+        "description": "",
+        "site_slug": "enterprise-city-park",
+        "location": "SRID=4326;POINT (-117.2806879999999978 45.4231189999999998)",
+        "image": "",
+        "active": true,
+        "created": "2010-09-28T09:45:00",
+        "modified": "2010-09-28T09:45:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 74,
+    "fields": {
+        "site_name": "Enterprise Marr Pond Site",
+        "description": "",
+        "site_slug": "enterprise-marr-pond-site",
+        "location": "SRID=4326;POINT (-117.2936870000000056 45.4193289999999976)",
+        "image": "",
+        "active": true,
+        "created": "2010-10-06T16:46:00",
+        "modified": "2010-10-06T16:46:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 75,
+    "fields": {
+        "site_name": "Evans Creek at Palmerton",
+        "description": "",
+        "site_slug": "evans-creek-at-palmerton",
+        "location": "SRID=4326;POINT (-123.1726649999999950 42.4398350000000022)",
+        "image": "",
+        "active": true,
+        "created": "2012-04-16T12:35:00",
+        "modified": "2014-04-22T14:01:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 76,
+    "fields": {
+        "site_name": "Evergreen Elementary School Bioswale",
+        "description": "",
+        "site_slug": "evergreen-elementary-school-bioswale",
+        "location": "SRID=4326;POINT (-123.6530180000000030 42.1694469999999981)",
+        "image": "",
+        "active": true,
+        "created": "2015-01-12T07:30:00",
+        "modified": "2015-01-12T07:35:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 77,
+    "fields": {
+        "site_name": "Evergreen Riparian Stewards 2014",
+        "description": "",
+        "site_slug": "evergreen-riparian-stewards-2014",
+        "location": "SRID=4326;POINT (-123.3725170000000020 44.5218149999999966)",
+        "image": "",
+        "active": true,
+        "created": "2014-04-22T16:44:00",
+        "modified": "2014-04-22T16:44:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 78,
+    "fields": {
+        "site_name": "Evidence of the Orphan Tsunami in Beaver Creek",
+        "description": "",
+        "site_slug": "evidence-of-the-orphan-tsunami-in-beaver-creek",
+        "location": "SRID=4326;POINT (-124.0488619999999997 44.5150259999999989)",
+        "image": "",
+        "active": true,
+        "created": "2014-11-13T13:42:00",
+        "modified": "2014-11-13T14:22:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 79,
+    "fields": {
+        "site_name": "Fall Creek - OHRC",
+        "description": "",
+        "site_slug": "fall-creek-ohrc",
+        "location": "SRID=4326;POINT (-123.7536049999999932 44.4045070000000024)",
+        "image": "",
+        "active": true,
+        "created": "2011-06-21T06:28:00",
+        "modified": "2014-06-19T11:00:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 80,
+    "fields": {
+        "site_name": "First Lake",
+        "description": "",
+        "site_slug": "first-lake",
+        "location": "SRID=4326;POINT (-123.0747649999999993 44.6455879999999965)",
+        "image": "",
+        "active": true,
+        "created": "2011-08-17T09:59:00",
+        "modified": "2011-08-17T09:59:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 81,
+    "fields": {
+        "site_name": "Fish Creek",
+        "description": "",
+        "site_slug": "fish-creek",
+        "location": "SRID=4326;POINT (-123.5797599999999932 44.1467200000000020)",
+        "image": "",
+        "active": true,
+        "created": "2010-08-04T22:31:00",
+        "modified": "2010-08-04T22:31:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 82,
+    "fields": {
+        "site_name": "Grande Ronde River",
+        "description": "",
+        "site_slug": "grande-ronde-river",
+        "location": "SRID=4326;POINT (-117.4507140000000049 45.9447339999999969)",
+        "image": "",
+        "active": true,
+        "created": "2010-10-05T15:30:00",
+        "modified": "2010-10-06T16:39:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 83,
+    "fields": {
+        "site_name": "Greasy Creek",
+        "description": "",
+        "site_slug": "greasy-creek",
+        "location": "SRID=4326;POINT (-123.4276739999999961 44.5161129999999972)",
+        "image": "",
+        "active": true,
+        "created": "2015-08-25T10:58:00",
+        "modified": "2015-08-25T11:13:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 84,
+    "fields": {
+        "site_name": "Greenleaf Creek",
+        "description": "",
+        "site_slug": "greenleaf-creek",
+        "location": "SRID=4326;POINT (-123.6166699999999992 44.1266699999999972)",
+        "image": "",
+        "active": true,
+        "created": "2010-08-04T15:41:00",
+        "modified": "2010-08-04T16:59:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 85,
+    "fields": {
+        "site_name": "Gross Creek Monitoring",
+        "description": "",
+        "site_slug": "gross-creek-monitoring",
+        "location": "SRID=4326;POINT (-124.4172910000000059 43.1143459999999976)",
+        "image": "",
+        "active": true,
+        "created": "2014-05-27T12:42:00",
+        "modified": "2014-05-27T12:42:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 86,
+    "fields": {
+        "site_name": "Hamilton Creek - LHS & Santiam Watershed Council",
+        "description": "",
+        "site_slug": "hamilton-creek-lhs-santiam-watershed-council",
+        "location": "SRID=4326;POINT (-124.4172910000000059 43.1143459999999976)",
+        "image": "",
+        "active": true,
+        "created": "2014-03-03T14:27:00",
+        "modified": "2014-03-03T14:27:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 87,
+    "fields": {
+        "site_name": "Hart Mountain",
+        "description": "",
+        "site_slug": "hart-mountain",
+        "location": "SRID=4326;POINT (-119.8086550000000017 42.5105769999999978)",
+        "image": "",
+        "active": true,
+        "created": "2014-03-12T21:32:00",
+        "modified": "2014-03-12T21:35:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 88,
+    "fields": {
+        "site_name": "Hesthavn Nature Center",
+        "description": "",
+        "site_slug": "hesthavn-nature-center",
+        "location": "SRID=4326;POINT (-123.3341499999999940 44.6012279999999990)",
+        "image": "",
+        "active": true,
+        "created": "2011-08-10T10:17:00",
+        "modified": "2014-06-09T13:46:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 89,
+    "fields": {
+        "site_name": "High Lakes",
+        "description": "",
+        "site_slug": "high-lakes",
+        "location": "SRID=4326;POINT (-121.3230939999999975 44.0573380000000014)",
+        "image": "",
+        "active": true,
+        "created": "2010-01-29T14:51:00",
+        "modified": "2010-05-05T11:39:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 90,
+    "fields": {
+        "site_name": "HMSC Training Stream",
+        "description": "",
+        "site_slug": "hmsc-training-stream",
+        "location": "SRID=4326;POINT (-124.0429500000000047 44.6215800000000016)",
+        "image": "",
+        "active": true,
+        "created": "2013-10-08T13:33:00",
+        "modified": "2014-06-09T13:29:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 91,
+    "fields": {
+        "site_name": "Hoover's Dixon Creek Water Quality",
+        "description": "",
+        "site_slug": "hoovers-dixon-creek-water-quality",
+        "location": "SRID=4326;POINT (-123.2921790000000044 44.5922089999999969)",
+        "image": "",
+        "active": true,
+        "created": "2011-04-28T14:11:00",
+        "modified": "2011-05-03T18:17:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 92,
+    "fields": {
+        "site_name": "Horse Creek",
+        "description": "",
+        "site_slug": "horse-creek",
+        "location": "SRID=4326;POINT (-122.1531999999999982 44.1616750000000025)",
+        "image": "",
+        "active": true,
+        "created": "2015-02-11T12:39:00",
+        "modified": "2015-02-11T12:39:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 93,
+    "fields": {
+        "site_name": "Howard Outdoor School",
+        "description": "",
+        "site_slug": "howard-outdoor-school",
+        "location": "SRID=4326;POINT (-122.1866839999999996 45.4453960000000023)",
+        "image": "",
+        "active": true,
+        "created": "2010-09-02T09:32:00",
+        "modified": "2010-09-02T10:59:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 94,
+    "fields": {
+        "site_name": "Humbug Creek - Camp 18",
+        "description": "",
+        "site_slug": "humbug-creek-camp-18",
+        "location": "SRID=4326;POINT (-123.6145999999999958 45.8862000000000023)",
+        "image": "",
+        "active": true,
+        "created": "2010-07-27T13:35:00",
+        "modified": "2010-11-10T17:07:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 95,
+    "fields": {
+        "site_name": "Imnaha River",
+        "description": "",
+        "site_slug": "imnaha-river",
+        "location": "SRID=4326;POINT (-116.8342870000000033 45.5596060000000023)",
+        "image": "",
+        "active": true,
+        "created": "2010-10-12T15:22:00",
+        "modified": "2010-10-12T15:22:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 96,
+    "fields": {
+        "site_name": "Jeffery's Creek",
+        "description": "",
+        "site_slug": "jefferys-creek",
+        "location": "SRID=4326;POINT (-124.0388630000000063 44.6391319999999965)",
+        "image": "",
+        "active": true,
+        "created": "2016-06-10T07:52:00",
+        "modified": "2016-06-13T14:42:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 97,
+    "fields": {
+        "site_name": "Jessie M. Honeyman Memorial State Park",
+        "description": "",
+        "site_slug": "jessie-m-honeyman-memorial-state-park",
+        "location": "SRID=4326;POINT (-124.1086999999999989 43.9271480000000025)",
+        "image": "",
+        "active": true,
+        "created": "2015-02-27T13:31:00",
+        "modified": "2015-02-27T13:31:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 98,
+    "fields": {
+        "site_name": "Jewell 4th graders on the Deschutes River at McKay Park",
+        "description": "",
+        "site_slug": "jewell-4th-graders-on-the-deschutes-river-at-mckay",
+        "location": "SRID=4326;POINT (-121.3218499999999977 44.0498430000000027)",
+        "image": "",
+        "active": true,
+        "created": "2013-03-21T12:25:00",
+        "modified": "2013-03-21T12:26:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 99,
+    "fields": {
+        "site_name": "Johnson Creek",
+        "description": "",
+        "site_slug": "johnson-creek",
+        "location": "SRID=4326;POINT (-122.4333740000000006 45.4932099999999977)",
+        "image": "",
+        "active": true,
+        "created": "2010-10-15T08:46:00",
+        "modified": "2010-10-15T08:48:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 100,
+    "fields": {
+        "site_name": "Johnson Creek - NUHS",
+        "description": "",
+        "site_slug": "johnson-creek-nuhs",
+        "location": "SRID=4326;POINT (-122.6418989999999951 45.4582550000000012)",
+        "image": "",
+        "active": true,
+        "created": "2009-06-09T16:11:00",
+        "modified": "2010-09-07T12:59:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 101,
+    "fields": {
+        "site_name": "Jones Creek - Wilson River",
+        "description": "",
+        "site_slug": "jones-creek-wilson-river",
+        "location": "SRID=4326;POINT (-123.5555999999999983 45.5880999999999972)",
+        "image": "",
+        "active": true,
+        "created": "2010-07-23T15:38:00",
+        "modified": "2010-07-23T15:38:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 102,
+    "fields": {
+        "site_name": "Joseph City Park",
+        "description": "",
+        "site_slug": "joseph-city-park",
+        "location": "SRID=4326;POINT (-117.2343350000000015 45.3475910000000013)",
+        "image": "",
+        "active": true,
+        "created": "2010-10-06T16:51:00",
+        "modified": "2010-10-06T16:53:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 103,
+    "fields": {
+        "site_name": "Joseph Prairie Creek",
+        "description": "",
+        "site_slug": "joseph-prairie-creek",
+        "location": "SRID=4326;POINT (-117.2259899999999959 45.4080399999999997)",
+        "image": "",
+        "active": true,
+        "created": "2010-10-11T21:16:00",
+        "modified": "2011-10-19T15:47:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 104,
+    "fields": {
+        "site_name": "Kimmel Park",
+        "description": "",
+        "site_slug": "kimmel-park",
+        "location": "SRID=4326;POINT (-122.4687189999999930 44.7534690000000026)",
+        "image": "",
+        "active": true,
+        "created": "2014-10-02T10:14:00",
+        "modified": "2014-10-06T15:01:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 105,
+    "fields": {
+        "site_name": "Lake Ewauna at Veteran's Park",
+        "description": "",
+        "site_slug": "lake-ewauna-at-veterans-park",
+        "location": "SRID=4326;POINT (-121.7865960000000030 42.2191630000000018)",
+        "image": "",
+        "active": true,
+        "created": "2014-12-05T13:25:00",
+        "modified": "2014-12-05T13:25:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 106,
+    "fields": {
+        "site_name": "Larson Creek North of La Loma Drive with OHES",
+        "description": "",
+        "site_slug": "larson-creek-north-of-la-loma-drive-with-ohes",
+        "location": "SRID=4326;POINT (-122.8314400000000006 42.3139729999999972)",
+        "image": "",
+        "active": true,
+        "created": "2013-01-09T12:26:00",
+        "modified": "2013-01-09T12:26:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 107,
+    "fields": {
+        "site_name": "Lebanon High School - Lebanon canal assessment",
+        "description": "",
+        "site_slug": "lebanon-high-school-lebanon-canal-assessment",
+        "location": "SRID=4326;POINT (-122.8314400000000006 42.3139729999999972)",
+        "image": "",
+        "active": true,
+        "created": "2014-02-27T21:16:00",
+        "modified": "2014-02-27T21:16:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 108,
+    "fields": {
+        "site_name": "Little River Water Quality - Glide Middle School",
+        "description": "",
+        "site_slug": "little-river-water-quality-glide-middle-school",
+        "location": "SRID=4326;POINT (-123.0757140000000049 43.2753310000000013)",
+        "image": "",
+        "active": true,
+        "created": "2013-08-25T08:35:00",
+        "modified": "2013-08-25T08:35:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 109,
+    "fields": {
+        "site_name": "Lone Pine Creek @ Table Rock Rd",
+        "description": "",
+        "site_slug": "lone-pine-creek-table-rock-rd",
+        "location": "SRID=4326;POINT (-122.8851599999999991 42.3653300000000002)",
+        "image": "",
+        "active": true,
+        "created": "2015-04-20T09:35:00",
+        "modified": "2015-04-20T09:35:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 110,
+    "fields": {
+        "site_name": "Lostine River Wolfe Ranch",
+        "description": "",
+        "site_slug": "lostine-river-wolfe-ranch",
+        "location": "SRID=4326;POINT (-117.4897799999999961 45.5518300000000025)",
+        "image": "",
+        "active": true,
+        "created": "2014-12-09T16:31:00",
+        "modified": "2014-12-09T16:39:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 111,
+    "fields": {
+        "site_name": "Lotus Isle Cove",
+        "description": "",
+        "site_slug": "lotus-isle-cove",
+        "location": "SRID=4326;POINT (-117.4897799999999961 45.5518300000000025)",
+        "image": "",
+        "active": true,
+        "created": "2009-11-14T22:41:00",
+        "modified": "2012-04-03T02:45:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 112,
+    "fields": {
+        "site_name": "Lower Yaquina River and Bay",
+        "description": "",
+        "site_slug": "lower-yaquina-river-and-bay",
+        "location": "SRID=4326;POINT (-124.0439700000000016 44.6215400000000031)",
+        "image": "",
+        "active": true,
+        "created": "2011-11-01T11:16:00",
+        "modified": "2014-06-09T13:41:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 113,
+    "fields": {
+        "site_name": "Mary's river test site",
+        "description": "",
+        "site_slug": "marys-river-test-site",
+        "location": "SRID=4326;POINT (-123.2735519999999951 44.5556160000000006)",
+        "image": "",
+        "active": true,
+        "created": "2014-04-02T14:29:00",
+        "modified": "2014-06-09T13:20:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 114,
+    "fields": {
+        "site_name": "Marys River",
+        "description": "",
+        "site_slug": "marys-river",
+        "location": "SRID=4326;POINT (-123.2792299999999983 44.5390590000000017)",
+        "image": "",
+        "active": true,
+        "created": "2015-08-25T11:00:00",
+        "modified": "2015-08-25T11:13:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 115,
+    "fields": {
+        "site_name": "Marys River Natural Area",
+        "description": "",
+        "site_slug": "marys-river-natural-area",
+        "location": "SRID=4326;POINT (0.0000000000000000 44.5389740000000032)",
+        "image": "",
+        "active": true,
+        "created": "2014-07-26T22:00:00",
+        "modified": "2014-07-26T22:00:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 116,
+    "fields": {
+        "site_name": "Matson Creek MWS Youth Program",
+        "description": "",
+        "site_slug": "matson-creek-mws-youth-program",
+        "location": "SRID=4326;POINT (-124.1384699999999981 43.3073800000000020)",
+        "image": "",
+        "active": true,
+        "created": "2012-01-13T17:57:00",
+        "modified": "2013-04-11T15:31:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 117,
+    "fields": {
+        "site_name": "Maxfield Creek 4-5",
+        "description": "",
+        "site_slug": "maxfield-creek-4-5",
+        "location": "SRID=4326;POINT (-123.4332849999999979 44.6955510000000018)",
+        "image": "",
+        "active": true,
+        "created": "2016-06-06T17:15:00",
+        "modified": "2016-06-06T17:36:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 118,
+    "fields": {
+        "site_name": "MAXFIELD CRK KVCS",
+        "description": "",
+        "site_slug": "maxfield-crk-kvcs",
+        "location": "SRID=4326;POINT (-123.4333649999999949 44.6957060000000013)",
+        "image": "",
+        "active": true,
+        "created": "2014-07-09T10:18:00",
+        "modified": "2014-07-09T10:18:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 119,
+    "fields": {
+        "site_name": "McKenzie River CGHS",
+        "description": "",
+        "site_slug": "mckenzie-river-cghs",
+        "location": "SRID=4326;POINT (-122.0512389999999954 44.2704030000000017)",
+        "image": "",
+        "active": true,
+        "created": "2010-10-25T12:34:00",
+        "modified": "2010-10-25T12:34:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 120,
+    "fields": {
+        "site_name": "Metolius River",
+        "description": "",
+        "site_slug": "metolius-river",
+        "location": "SRID=4326;POINT (-111.0937500000000000 36.5978890000000021)",
+        "image": "",
+        "active": true,
+        "created": "2014-05-08T10:58:00",
+        "modified": "2014-05-08T10:58:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 121,
+    "fields": {
+        "site_name": "Mingus Park",
+        "description": "",
+        "site_slug": "mingus-park",
+        "location": "SRID=4326;POINT (-124.2259810000000044 43.3745469999999997)",
+        "image": "",
+        "active": true,
+        "created": "2014-04-12T08:08:00",
+        "modified": "2014-04-27T07:51:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 122,
+    "fields": {
+        "site_name": "Minto County Park",
+        "description": "",
+        "site_slug": "minto-county-park",
+        "location": "SRID=4326;POINT (-122.3847200000000015 44.7541700000000020)",
+        "image": "",
+        "active": true,
+        "created": "2010-08-04T15:49:00",
+        "modified": "2010-08-05T07:25:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 123,
+    "fields": {
+        "site_name": "misc.",
+        "description": "",
+        "site_slug": "misc",
+        "location": "SRID=4326;POINT (-122.3847200000000015 44.7541700000000020)",
+        "image": "",
+        "active": true,
+        "created": "2014-01-24T11:43:00",
+        "modified": "2014-01-24T11:44:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 124,
+    "fields": {
+        "site_name": "Mountain View Creek",
+        "description": "",
+        "site_slug": "mountain-view-creek",
+        "location": "SRID=4326;POINT (-123.2409379999999999 44.6380940000000024)",
+        "image": "",
+        "active": true,
+        "created": "2013-09-23T14:41:00",
+        "modified": "2014-06-09T13:29:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 125,
+    "fields": {
+        "site_name": "Mulkey Creek",
+        "description": "",
+        "site_slug": "mulkey-creek",
+        "location": "SRID=4326;POINT (-123.3281850000000048 44.5734289999999973)",
+        "image": "",
+        "active": true,
+        "created": "2016-03-17T16:16:00",
+        "modified": "2016-03-17T16:16:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 126,
+    "fields": {
+        "site_name": "Munsel Creek 18th St.",
+        "description": "",
+        "site_slug": "munsel-creek-18th-st",
+        "location": "SRID=4326;POINT (-124.0919169999999951 43.9826020000000000)",
+        "image": "",
+        "active": true,
+        "created": "2016-01-22T14:42:00",
+        "modified": "2016-01-22T14:44:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 127,
+    "fields": {
+        "site_name": "Munsel Creek Water Quality (lake Site 1)",
+        "description": "",
+        "site_slug": "munsel-creek-water-quality-lake-site-1",
+        "location": "SRID=4326;POINT (-124.0873579999999947 44.0092909999999975)",
+        "image": "",
+        "active": true,
+        "created": "2015-04-30T15:17:00",
+        "modified": "2015-04-30T15:17:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 128,
+    "fields": {
+        "site_name": "Munsel Creek Water Quality (near hwy 126 Site 4)",
+        "description": "",
+        "site_slug": "munsel-creek-water-quality-near-hwy-126-site-4",
+        "location": "SRID=4326;POINT (-124.0994599999999934 43.9738779999999991)",
+        "image": "",
+        "active": true,
+        "created": "2014-11-25T16:38:00",
+        "modified": "2014-11-25T16:39:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 129,
+    "fields": {
+        "site_name": "Munsel Creek Water Quality (Outlet Site 5)",
+        "description": "",
+        "site_slug": "munsel-creek-water-quality-outlet-site-5",
+        "location": "SRID=4326;POINT (-124.0975279999999970 43.9712450000000032)",
+        "image": "",
+        "active": true,
+        "created": "2014-11-25T11:54:00",
+        "modified": "2014-11-25T16:25:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 130,
+    "fields": {
+        "site_name": "Munsel Creek Water Quality (Site 2)",
+        "description": "",
+        "site_slug": "munsel-creek-water-quality-site-2",
+        "location": "SRID=4326;POINT (-124.0936030000000017 43.9889170000000007)",
+        "image": "",
+        "active": true,
+        "created": "2014-12-08T14:52:00",
+        "modified": "2014-12-08T14:52:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 131,
+    "fields": {
+        "site_name": "Munsel Creek Water Quality (Site 3)",
+        "description": "",
+        "site_slug": "munsel-creek-water-quality-site-3",
+        "location": "SRID=4326;POINT (-124.0994290000000007 43.9763939999999991)",
+        "image": "",
+        "active": true,
+        "created": "2014-12-08T14:48:00",
+        "modified": "2014-12-08T14:48:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 132,
+    "fields": {
+        "site_name": "Munsel Creek Water Quality (Siuslaw River Site 6)",
+        "description": "",
+        "site_slug": "munsel-creek-water-quality-siuslaw-river-site-6",
+        "location": "SRID=4326;POINT (-124.1004039999999975 43.9676929999999970)",
+        "image": "",
+        "active": true,
+        "created": "2014-11-25T16:31:00",
+        "modified": "2014-11-25T16:33:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 133,
+    "fields": {
+        "site_name": "Namanu Outdoor School",
+        "description": "",
+        "site_slug": "namanu-outdoor-school",
+        "location": "SRID=4326;POINT (-122.2431610000000006 45.4512670000000014)",
+        "image": "",
+        "active": true,
+        "created": "2010-09-02T09:58:00",
+        "modified": "2010-09-02T10:57:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 134,
+    "fields": {
+        "site_name": "NAME training site",
+        "description": "",
+        "site_slug": "name-training-site",
+        "location": "SRID=4326;POINT (-124.4297360000000054 43.1137969999999981)",
+        "image": "",
+        "active": true,
+        "created": "2014-07-15T09:12:00",
+        "modified": "2014-07-15T09:39:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 135,
+    "fields": {
+        "site_name": "Nestucca River - Alder Glenn",
+        "description": "",
+        "site_slug": "nestucca-river-alder-glenn",
+        "location": "SRID=4326;POINT (-123.5815999999999946 45.2667000000000002)",
+        "image": "",
+        "active": true,
+        "created": "2010-07-23T15:36:00",
+        "modified": "2010-07-23T15:36:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 136,
+    "fields": {
+        "site_name": "No Name Creek at Eddyville Charter School",
+        "description": "",
+        "site_slug": "no-name-creek-at-eddyville-charter-school",
+        "location": "SRID=4326;POINT (-123.7766289999999998 44.6327190000000016)",
+        "image": "",
+        "active": true,
+        "created": "2013-04-12T13:37:00",
+        "modified": "2014-06-18T06:21:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 137,
+    "fields": {
+        "site_name": "No Name Creek Newport",
+        "description": "",
+        "site_slug": "no-name-creek-newport",
+        "location": "SRID=4326;POINT (-123.7766289999999998 44.6327190000000016)",
+        "image": "",
+        "active": true,
+        "created": "2016-05-26T13:20:00",
+        "modified": "2016-05-26T13:20:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 138,
+    "fields": {
+        "site_name": "Oak Creek 35th Street",
+        "description": "",
+        "site_slug": "oak-creek-35th-street",
+        "location": "SRID=4326;POINT (-123.2894969999999972 44.5599810000000005)",
+        "image": "",
+        "active": true,
+        "created": "2011-08-17T09:56:00",
+        "modified": "2011-08-17T09:56:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 139,
+    "fields": {
+        "site_name": "Oak Creek @ Cardwell Hill Culvert at Sheep Barn",
+        "description": "",
+        "site_slug": "oak-creek-cardwell-hill-culvert-at-sheep-barn",
+        "location": "SRID=4326;POINT (-123.3378620000000012 44.5882969999999972)",
+        "image": "",
+        "active": true,
+        "created": "2011-08-17T09:53:00",
+        "modified": "2011-08-17T10:02:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 140,
+    "fields": {
+        "site_name": "Oak Creek at 35th Street",
+        "description": "",
+        "site_slug": "oak-creek-at-35th-street",
+        "location": "SRID=4326;POINT (-123.2893679999999961 44.5601109999999991)",
+        "image": "",
+        "active": true,
+        "created": "2011-08-17T10:07:00",
+        "modified": "2011-08-17T10:07:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 141,
+    "fields": {
+        "site_name": "Oak Creek Trailhead",
+        "description": "",
+        "site_slug": "oak-creek-trailhead",
+        "location": "SRID=4326;POINT (-123.3217479999999995 44.6257700000000028)",
+        "image": "",
+        "active": true,
+        "created": "2011-08-17T09:43:00",
+        "modified": "2011-08-17T09:43:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 142,
+    "fields": {
+        "site_name": "OC Brown Park - North Fork Deer Creek",
+        "description": "",
+        "site_slug": "oc-brown-park-north-fork-deer-creek",
+        "location": "SRID=4326;POINT (-123.2292649999999981 43.2063330000000008)",
+        "image": "",
+        "active": true,
+        "created": "2016-04-28T13:39:00",
+        "modified": "2016-05-14T15:17:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 143,
+    "fields": {
+        "site_name": "Ochoco Creek",
+        "description": "",
+        "site_slug": "ochoco-creek",
+        "location": "SRID=4326;POINT (0.0000000000000000 0.0000000000000000)",
+        "image": "",
+        "active": true,
+        "created": "2015-10-29T11:46:00",
+        "modified": "2015-10-29T11:46:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 144,
+    "fields": {
+        "site_name": "Oneonta Gorge",
+        "description": "",
+        "site_slug": "oneonta-gorge",
+        "location": "SRID=4326;POINT (-122.5634770000000060 45.5217439999999982)",
+        "image": "",
+        "active": true,
+        "created": "2014-03-12T14:58:00",
+        "modified": "2014-03-12T14:58:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 145,
+    "fields": {
+        "site_name": "OR Coast Aquarium",
+        "description": "",
+        "site_slug": "or-coast-aquarium",
+        "location": "SRID=4326;POINT (-124.0448279999999954 44.6165149999999997)",
+        "image": "",
+        "active": true,
+        "created": "2012-08-28T07:08:00",
+        "modified": "2014-06-09T13:35:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 146,
+    "fields": {
+        "site_name": "Oregon 4-H Center",
+        "description": "",
+        "site_slug": "oregon-4-h-center",
+        "location": "SRID=4326;POINT (-123.1451079999999934 45.0033930000000026)",
+        "image": "",
+        "active": true,
+        "created": "2011-07-28T14:19:00",
+        "modified": "2014-06-09T13:47:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 147,
+    "fields": {
+        "site_name": "OSL Test",
+        "description": "",
+        "site_slug": "osl-test",
+        "location": "SRID=4326;POINT (-122.8848270000000014 44.5317590000000010)",
+        "image": "",
+        "active": true,
+        "created": "2016-07-25T14:04:00",
+        "modified": "2016-07-25T14:04:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 148,
+    "fields": {
+        "site_name": "OSTA Conference Site",
+        "description": "",
+        "site_slug": "osta-conference-site",
+        "location": "SRID=4326;POINT (-121.3467619999999982 44.0715840000000014)",
+        "image": "",
+        "active": true,
+        "created": "2015-10-13T09:40:00",
+        "modified": "2015-10-13T09:40:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 149,
+    "fields": {
+        "site_name": "Outer Space",
+        "description": "",
+        "site_slug": "outer-space",
+        "location": "SRID=4326;POINT (-118.9843750000000000 45.5832899999999981)",
+        "image": "",
+        "active": true,
+        "created": "2014-03-12T20:46:00",
+        "modified": "2014-06-09T13:21:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 150,
+    "fields": {
+        "site_name": "Owyhee Reservoir, near Nyssa, Oregon",
+        "description": "",
+        "site_slug": "owyhee-reservoir-near-nyssa-oregon",
+        "location": "SRID=4326;POINT (-117.2418020000000070 43.6147020000000012)",
+        "image": "",
+        "active": true,
+        "created": "2012-08-12T18:35:00",
+        "modified": "2012-08-12T18:35:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 151,
+    "fields": {
+        "site_name": "Owyhee River, 8 miles below Owyhee Dam",
+        "description": "",
+        "site_slug": "owyhee-river-8-miles-below-owyhee-dam",
+        "location": "SRID=4326;POINT (-117.2101739999999950 43.6872079999999983)",
+        "image": "",
+        "active": true,
+        "created": "2012-08-12T19:33:00",
+        "modified": "2012-08-12T19:33:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 152,
+    "fields": {
+        "site_name": "Packsaddle County Park",
+        "description": "",
+        "site_slug": "packsaddle-county-park",
+        "location": "SRID=4326;POINT (-122.3694399999999973 44.7577799999999968)",
+        "image": "",
+        "active": true,
+        "created": "2010-08-04T15:47:00",
+        "modified": "2010-08-04T16:58:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 153,
+    "fields": {
+        "site_name": "Palmerton Park",
+        "description": "",
+        "site_slug": "palmerton-park",
+        "location": "SRID=4326;POINT (-123.1733870000000053 42.4401209999999978)",
+        "image": "",
+        "active": true,
+        "created": "2013-11-02T09:16:00",
+        "modified": "2013-11-02T09:40:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 154,
+    "fields": {
+        "site_name": "Paradise Creek at Willow Wind CLC",
+        "description": "",
+        "site_slug": "paradise-creek-at-willow-wind-clc",
+        "location": "SRID=4326;POINT (-122.6910770000000070 42.1976820000000004)",
+        "image": "",
+        "active": true,
+        "created": "2013-02-28T12:06:00",
+        "modified": "2013-02-28T12:06:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 155,
+    "fields": {
+        "site_name": "Peavy Arboretum",
+        "description": "",
+        "site_slug": "peavy-arboretum",
+        "location": "SRID=4326;POINT (-155.2807620000000099 -80.5807410000000033)",
+        "image": "",
+        "active": true,
+        "created": "2015-06-03T09:52:00",
+        "modified": "2015-06-03T09:52:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 156,
+    "fields": {
+        "site_name": "Pebbel Count",
+        "description": "",
+        "site_slug": "pebbel-count",
+        "location": "SRID=4326;POINT (2.7000000000000002 3.1000000000000001)",
+        "image": "",
+        "active": true,
+        "created": "2016-06-14T08:42:00",
+        "modified": "2016-06-14T08:42:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 157,
+    "fields": {
+        "site_name": "Pebble Count",
+        "description": "",
+        "site_slug": "pebble-count",
+        "location": "SRID=4326;POINT (2.7000000000000002 3.1000000000000001)",
+        "image": "",
+        "active": true,
+        "created": "2016-06-14T08:46:00",
+        "modified": "2016-06-14T08:46:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 158,
+    "fields": {
+        "site_name": "pebel count",
+        "description": "",
+        "site_slug": "pebel-count",
+        "location": "SRID=4326;POINT (59.0625000000000000 82.0213779999999986)",
+        "image": "",
+        "active": true,
+        "created": "2016-06-14T08:39:00",
+        "modified": "2016-06-14T08:39:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 159,
+    "fields": {
+        "site_name": "Periwinkle Creek",
+        "description": "",
+        "site_slug": "periwinkle-creek",
+        "location": "SRID=4326;POINT (-123.0868250000000046 44.6407039999999995)",
+        "image": "",
+        "active": true,
+        "created": "2014-10-15T15:01:00",
+        "modified": "2014-11-03T10:38:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 160,
+    "fields": {
+        "site_name": "Peterson Ditch",
+        "description": "",
+        "site_slug": "peterson-ditch",
+        "location": "SRID=4326;POINT (-121.7272070000000070 42.1882260000000002)",
+        "image": "",
+        "active": true,
+        "created": "2014-10-15T13:41:00",
+        "modified": "2014-10-15T13:41:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 161,
+    "fields": {
+        "site_name": "Pony Creek MWS Youth Program",
+        "description": "",
+        "site_slug": "pony-creek-mws-youth-program",
+        "location": "SRID=4326;POINT (-124.2311669999999992 43.3994969999999967)",
+        "image": "",
+        "active": true,
+        "created": "2013-02-07T10:17:00",
+        "modified": "2013-02-07T10:26:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 162,
+    "fields": {
+        "site_name": "Q Street Canal",
+        "description": "",
+        "site_slug": "q-street-canal",
+        "location": "SRID=4326;POINT (-123.0211259999999953 44.0601750000000010)",
+        "image": "",
+        "active": true,
+        "created": "2011-01-11T13:13:00",
+        "modified": "2011-01-11T13:13:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 163,
+    "fields": {
+        "site_name": "Ramona Falls",
+        "description": "",
+        "site_slug": "ramona-falls",
+        "location": "SRID=4326;POINT (-122.0637700000000052 45.5895670000000024)",
+        "image": "",
+        "active": true,
+        "created": "2014-05-08T10:23:00",
+        "modified": "2014-06-09T13:18:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 164,
+    "fields": {
+        "site_name": "REALMS Bridge Creek Site",
+        "description": "",
+        "site_slug": "realms-bridge-creek-site",
+        "location": "SRID=4326;POINT (-121.5644800000000032 44.0308879999999974)",
+        "image": "",
+        "active": true,
+        "created": "2014-12-02T12:52:00",
+        "modified": "2014-12-02T12:52:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 165,
+    "fields": {
+        "site_name": "REALMS Tumalo Creek Study Site",
+        "description": "",
+        "site_slug": "realms-tumalo-creek-study-site",
+        "location": "SRID=4326;POINT (-121.5538499999999971 44.0311790000000016)",
+        "image": "",
+        "active": true,
+        "created": "2010-04-30T14:13:00",
+        "modified": "2010-05-05T15:37:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 166,
+    "fields": {
+        "site_name": "Reed Canyon",
+        "description": "",
+        "site_slug": "reed-canyon",
+        "location": "SRID=4326;POINT (-122.6295659999999970 45.4816190000000020)",
+        "image": "",
+        "active": true,
+        "created": "2014-12-19T13:27:00",
+        "modified": "2014-12-20T17:44:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 167,
+    "fields": {
+        "site_name": "River Restoration Association/Springbank Farm Survey",
+        "description": "",
+        "site_slug": "river-restoration-associationspringbank-farm-surve",
+        "location": "SRID=4326;POINT (-122.8412469999999956 44.5144689999999983)",
+        "image": "",
+        "active": true,
+        "created": "2014-04-28T10:47:00",
+        "modified": "2014-04-28T10:47:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 168,
+    "fields": {
+        "site_name": "Riverside Campground",
+        "description": "",
+        "site_slug": "riverside-campground",
+        "location": "SRID=4326;POINT (-121.6426850000000002 44.4555330000000026)",
+        "image": "",
+        "active": true,
+        "created": "2010-08-05T15:09:00",
+        "modified": "2010-08-05T15:19:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 169,
+    "fields": {
+        "site_name": "Roberts High School / Structured Learning Center (SLC)",
+        "description": "",
+        "site_slug": "roberts-high-school-structured-learning-center-slc",
+        "location": "SRID=4326;POINT (0.0000000000000000 0.0000000000000000)",
+        "image": "",
+        "active": true,
+        "created": "2014-01-25T15:37:00",
+        "modified": "2014-01-25T15:37:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 170,
+    "fields": {
+        "site_name": "Rock Creek Bridge",
+        "description": "",
+        "site_slug": "rock-creek-bridge",
+        "location": "SRID=4326;POINT (-124.0003569999999939 44.9615300000000033)",
+        "image": "",
+        "active": true,
+        "created": "2015-11-06T16:18:00",
+        "modified": "2015-11-06T16:18:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 171,
+    "fields": {
+        "site_name": "Rowdy Creek Above Culvert",
+        "description": "",
+        "site_slug": "rowdy-creek-above-culvert",
+        "location": "SRID=4326;POINT (-123.9767429999999990 45.0190180000000026)",
+        "image": "",
+        "active": true,
+        "created": "2015-11-06T16:16:00",
+        "modified": "2015-11-06T16:19:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 172,
+    "fields": {
+        "site_name": "Rowdy Creek Estuary",
+        "description": "",
+        "site_slug": "rowdy-creek-estuary",
+        "location": "SRID=4326;POINT (-123.9793769999999995 45.0223000000000013)",
+        "image": "",
+        "active": true,
+        "created": "2015-11-06T16:18:00",
+        "modified": "2015-11-06T16:18:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 173,
+    "fields": {
+        "site_name": "Ryan Meadow Student Stewardship Projects",
+        "description": "",
+        "site_slug": "ryan-meadow-student-stewardship-projects",
+        "location": "SRID=4326;POINT (-121.4171220000000062 43.9562170000000023)",
+        "image": "",
+        "active": true,
+        "created": "2010-10-05T14:15:00",
+        "modified": "2011-08-25T09:33:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 174,
+    "fields": {
+        "site_name": "Salix Park",
+        "description": "",
+        "site_slug": "salix-park",
+        "location": "SRID=4326;POINT (-122.8644850000000019 45.5179850000000030)",
+        "image": "",
+        "active": true,
+        "created": "2013-10-13T03:04:00",
+        "modified": "2013-10-13T03:04:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 175,
+    "fields": {
+        "site_name": "salmon river",
+        "description": "",
+        "site_slug": "salmon-river",
+        "location": "SRID=4326;POINT (-120.4870609999999971 44.2120000000000033)",
+        "image": "",
+        "active": true,
+        "created": "2014-03-01T15:15:00",
+        "modified": "2014-05-05T16:04:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 176,
+    "fields": {
+        "site_name": "Salmon River #1",
+        "description": "",
+        "site_slug": "salmon-river-1",
+        "location": "SRID=4326;POINT (-121.9436599999999942 45.3107339999999965)",
+        "image": "",
+        "active": true,
+        "created": "2010-07-23T10:54:00",
+        "modified": "2010-07-23T15:04:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 177,
+    "fields": {
+        "site_name": "Salmon River #2",
+        "description": "",
+        "site_slug": "salmon-river-2",
+        "location": "SRID=4326;POINT (-121.9394999999999953 45.2783999999999978)",
+        "image": "",
+        "active": true,
+        "created": "2010-07-23T15:31:00",
+        "modified": "2012-07-13T09:56:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 178,
+    "fields": {
+        "site_name": "Salmon River at Westwind - Otis, OR",
+        "description": "",
+        "site_slug": "salmon-river-at-westwind-otis-or",
+        "location": "SRID=4326;POINT (-123.9992000000000019 45.0373289999999997)",
+        "image": "",
+        "active": true,
+        "created": "2014-04-08T16:33:00",
+        "modified": "2014-04-08T16:40:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 179,
+    "fields": {
+        "site_name": "Salmon River David Douglas",
+        "description": "",
+        "site_slug": "salmon-river-david-douglas",
+        "location": "SRID=4326;POINT (-121.9729609999999980 45.3381200000000035)",
+        "image": "",
+        "active": true,
+        "created": "2009-10-05T15:23:00",
+        "modified": "2010-05-05T22:13:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 180,
+    "fields": {
+        "site_name": "salmon river side channel #1",
+        "description": "",
+        "site_slug": "salmon-river-side-channel-1",
+        "location": "SRID=4326;POINT (-122.2558590000000009 45.4890199999999965)",
+        "image": "",
+        "active": true,
+        "created": "2010-12-17T10:48:00",
+        "modified": "2010-12-17T10:48:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 181,
+    "fields": {
+        "site_name": "Salmon River Side Channel 2",
+        "description": "",
+        "site_slug": "salmon-river-side-channel-2",
+        "location": "SRID=4326;POINT (-122.0072940000000017 45.3661370000000019)",
+        "image": "",
+        "active": true,
+        "created": "2011-01-21T10:51:00",
+        "modified": "2011-06-21T06:34:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 182,
+    "fields": {
+        "site_name": "Salmon River/Side Channel #1",
+        "description": "",
+        "site_slug": "salmon-riverside-channel-1",
+        "location": "SRID=4326;POINT (-122.0199999999999960 45.3666950000000000)",
+        "image": "",
+        "active": true,
+        "created": "2010-05-20T10:39:00",
+        "modified": "2010-05-20T10:39:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 183,
+    "fields": {
+        "site_name": "Sandy HS AP Environmental Science",
+        "description": "",
+        "site_slug": "sandy-hs-ap-environmental-science",
+        "location": "SRID=4326;POINT (-121.9916079999999994 45.3494460000000004)",
+        "image": "",
+        "active": true,
+        "created": "2015-10-27T22:07:00",
+        "modified": "2015-11-01T10:37:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 184,
+    "fields": {
+        "site_name": "Sandy River Outdoor School",
+        "description": "",
+        "site_slug": "sandy-river-outdoor-school",
+        "location": "SRID=4326;POINT (-122.3382650000000069 45.5073429999999988)",
+        "image": "",
+        "active": true,
+        "created": "2009-11-02T11:40:00",
+        "modified": "2010-09-02T13:19:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 185,
+    "fields": {
+        "site_name": "Schooner Creek",
+        "description": "",
+        "site_slug": "schooner-creek",
+        "location": "SRID=4326;POINT (-124.0005929999999950 44.9307269999999974)",
+        "image": "",
+        "active": true,
+        "created": "2015-11-06T16:01:00",
+        "modified": "2015-11-06T16:01:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 186,
+    "fields": {
+        "site_name": "Schooner Creek #8 Pebble Counts",
+        "description": "",
+        "site_slug": "schooner-creek-8-pebble-counts",
+        "location": "SRID=4326;POINT (-124.0005929999999950 44.9307269999999974)",
+        "image": "",
+        "active": true,
+        "created": "2013-10-16T19:59:00",
+        "modified": "2013-10-16T19:59:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 187,
+    "fields": {
+        "site_name": "Schooner Creek Restoration Large Wood Placement #8",
+        "description": "",
+        "site_slug": "schooner-creek-restoration-large-wood-placement-8",
+        "location": "SRID=4326;POINT (-123.8970000000000056 44.9600000000000009)",
+        "image": "",
+        "active": true,
+        "created": "2013-10-15T13:31:00",
+        "modified": "2013-10-22T13:35:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 188,
+    "fields": {
+        "site_name": "SE Belmont",
+        "description": "",
+        "site_slug": "se-belmont",
+        "location": "SRID=4326;POINT (-122.5923200000000008 45.5181680000000028)",
+        "image": "",
+        "active": true,
+        "created": "2009-10-20T16:52:00",
+        "modified": "2014-12-28T10:54:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 189,
+    "fields": {
+        "site_name": "Seagrass Bed- HMSC",
+        "description": "",
+        "site_slug": "seagrass-bed-hmsc",
+        "location": "SRID=4326;POINT (-124.0458799999999968 44.6249150000000014)",
+        "image": "",
+        "active": true,
+        "created": "2016-03-30T13:34:00",
+        "modified": "2016-05-25T15:00:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 190,
+    "fields": {
+        "site_name": "Shafer Creek",
+        "description": "",
+        "site_slug": "shafer-creek",
+        "location": "SRID=4326;POINT (-123.2976699999999965 44.3095619999999997)",
+        "image": "",
+        "active": true,
+        "created": "2015-04-06T08:04:00",
+        "modified": "2015-04-06T08:04:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 191,
+    "fields": {
+        "site_name": "SHHS Biology Field Day",
+        "description": "",
+        "site_slug": "shhs-biology-field-day",
+        "location": "SRID=4326;POINT (-122.7259940000000000 44.3933189999999982)",
+        "image": "",
+        "active": true,
+        "created": "2014-05-21T20:15:00",
+        "modified": "2014-05-21T22:42:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 192,
+    "fields": {
+        "site_name": "side channel 11",
+        "description": "",
+        "site_slug": "side-channel-11",
+        "location": "SRID=4326;POINT (-121.9738200000000035 45.3384819999999991)",
+        "image": "",
+        "active": true,
+        "created": "2009-10-14T10:39:00",
+        "modified": "2010-05-05T22:36:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 193,
+    "fields": {
+        "site_name": "Simpson Park",
+        "description": "",
+        "site_slug": "simpson-park",
+        "location": "SRID=4326;POINT (-123.0756070000000051 44.6454370000000011)",
+        "image": "",
+        "active": true,
+        "created": "2011-06-01T12:34:00",
+        "modified": "2011-06-01T12:34:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 194,
+    "fields": {
+        "site_name": "Site 1 Example Mock City Data",
+        "description": "",
+        "site_slug": "site-1-example-mock-city-data",
+        "location": "SRID=4326;POINT (-158.4667970000000139 -80.8728270000000009)",
+        "image": "",
+        "active": true,
+        "created": "2015-06-03T11:16:00",
+        "modified": "2015-06-03T11:16:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 195,
+    "fields": {
+        "site_name": "Site 2 Example Mock Forest Data",
+        "description": "",
+        "site_slug": "site-2-example-mock-forest-data",
+        "location": "SRID=4326;POINT (-156.4672850000000039 -81.3182769999999948)",
+        "image": "",
+        "active": true,
+        "created": "2015-06-03T12:43:00",
+        "modified": "2015-06-03T12:43:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 196,
+    "fields": {
+        "site_name": "Siuslaw Middle School (Teachers Workshop)",
+        "description": "",
+        "site_slug": "siuslaw-middle-school-teachers-workshop",
+        "location": "SRID=4326;POINT (-124.1058330000000041 43.9919439999999966)",
+        "image": "",
+        "active": true,
+        "created": "2016-02-18T22:17:00",
+        "modified": "2016-02-18T22:19:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 197,
+    "fields": {
+        "site_name": "Soda Creek",
+        "description": "",
+        "site_slug": "soda-creek",
+        "location": "SRID=4326;POINT (-121.7120000000000033 44.0390080000000026)",
+        "image": "",
+        "active": true,
+        "created": "2015-02-11T12:30:00",
+        "modified": "2015-02-11T12:30:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 198,
+    "fields": {
+        "site_name": "South Santiam",
+        "description": "",
+        "site_slug": "south-santiam",
+        "location": "SRID=4326;POINT (-122.8191000000000059 44.4902000000000015)",
+        "image": "",
+        "active": true,
+        "created": "2015-02-11T12:13:00",
+        "modified": "2015-02-11T12:37:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 199,
+    "fields": {
+        "site_name": "Spoon Creek Trail",
+        "description": "",
+        "site_slug": "spoon-creek-trail",
+        "location": "SRID=4326;POINT (-122.8191000000000059 44.4902000000000015)",
+        "image": "",
+        "active": true,
+        "created": "2015-02-02T15:11:00",
+        "modified": "2015-02-02T15:12:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 200,
+    "fields": {
+        "site_name": "St Thomas More Salmon River #2",
+        "description": "",
+        "site_slug": "st-thomas-more-salmon-river-2",
+        "location": "SRID=4326;POINT (-121.9394999999999953 45.2783999999999978)",
+        "image": "",
+        "active": true,
+        "created": "2009-11-12T00:22:00",
+        "modified": "2010-05-05T22:34:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 201,
+    "fields": {
+        "site_name": "Stream Flow Data Form",
+        "description": "",
+        "site_slug": "stream-flow-data-form",
+        "location": "SRID=4326;POINT (-124.0428270000000026 44.6410800000000023)",
+        "image": "",
+        "active": true,
+        "created": "2016-06-14T18:59:00",
+        "modified": "2016-06-14T19:13:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 202,
+    "fields": {
+        "site_name": "Student Stewardship Summit",
+        "description": "",
+        "site_slug": "student-stewardship-summit",
+        "location": "SRID=4326;POINT (-121.7107060000000018 45.3310760000000030)",
+        "image": "",
+        "active": true,
+        "created": "2010-09-01T10:32:00",
+        "modified": "2010-09-01T10:33:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 203,
+    "fields": {
+        "site_name": "Taft Bioswale",
+        "description": "",
+        "site_slug": "taft-bioswale",
+        "location": "SRID=4326;POINT (-124.0163759999999940 44.9379040000000032)",
+        "image": "",
+        "active": true,
+        "created": "2014-03-29T10:36:00",
+        "modified": "2014-03-29T10:36:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 204,
+    "fields": {
+        "site_name": "Talent Middle School",
+        "description": "",
+        "site_slug": "talent-middle-school",
+        "location": "SRID=4326;POINT (-122.7948870000000028 42.2393530000000013)",
+        "image": "",
+        "active": true,
+        "created": "2013-01-24T18:17:00",
+        "modified": "2013-01-24T18:17:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 205,
+    "fields": {
+        "site_name": "Talking Water Gardens",
+        "description": "",
+        "site_slug": "talking-water-gardens",
+        "location": "SRID=4326;POINT (-123.0727959999999968 44.6461279999999974)",
+        "image": "",
+        "active": true,
+        "created": "2015-12-16T12:14:00",
+        "modified": "2015-12-16T12:14:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 206,
+    "fields": {
+        "site_name": "Tenino Court Site",
+        "description": "",
+        "site_slug": "tenino-court-site",
+        "location": "SRID=4326;POINT (-122.5645820000000015 45.4642920000000004)",
+        "image": "",
+        "active": true,
+        "created": "2011-10-25T13:11:00",
+        "modified": "2012-10-02T20:54:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 207,
+    "fields": {
+        "site_name": "Thompson's Mills State Heritage Site",
+        "description": "",
+        "site_slug": "thompsons-mills-state-heritage-site",
+        "location": "SRID=4326;POINT (-123.0819500000000062 44.4621830000000031)",
+        "image": "",
+        "active": true,
+        "created": "2016-04-25T15:18:00",
+        "modified": "2016-04-25T15:18:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 208,
+    "fields": {
+        "site_name": "Timber Ridge Mock Data",
+        "description": "",
+        "site_slug": "timber-ridge-mock-data",
+        "location": "SRID=4326;POINT (-123.0403380000000055 44.6478949999999983)",
+        "image": "",
+        "active": true,
+        "created": "2014-11-14T11:49:00",
+        "modified": "2014-11-14T11:49:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 209,
+    "fields": {
+        "site_name": "Toledo Elementary Forest Lab",
+        "description": "",
+        "site_slug": "toledo-elementary-forest-lab",
+        "location": "SRID=4326;POINT (-123.9218000000000046 44.6171000000000006)",
+        "image": "",
+        "active": true,
+        "created": "2014-05-12T16:19:00",
+        "modified": "2014-05-12T21:23:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 210,
+    "fields": {
+        "site_name": "Toledo Elementary Stream",
+        "description": "",
+        "site_slug": "toledo-elementary-stream",
+        "location": "SRID=4326;POINT (-123.9175999999999931 44.6167999999999978)",
+        "image": "",
+        "active": true,
+        "created": "2013-04-11T10:57:00",
+        "modified": "2013-04-11T10:57:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 211,
+    "fields": {
+        "site_name": "Trout Creek",
+        "description": "",
+        "site_slug": "trout-creek",
+        "location": "SRID=4326;POINT (-122.3469520000000017 44.4542640000000020)",
+        "image": "",
+        "active": true,
+        "created": "2015-10-06T12:06:00",
+        "modified": "2015-10-06T12:06:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 212,
+    "fields": {
+        "site_name": "Tryon Creek - 1",
+        "description": "",
+        "site_slug": "tryon-creek-1",
+        "location": "SRID=4326;POINT (-122.6760009999999994 45.4415550000000010)",
+        "image": "",
+        "active": true,
+        "created": "2010-08-04T09:33:00",
+        "modified": "2010-09-07T13:02:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 213,
+    "fields": {
+        "site_name": "Tule Lake NWR Observation Deck 1",
+        "description": "",
+        "site_slug": "tule-lake-nwr-observation-deck-1",
+        "location": "SRID=4326;POINT (-121.5621600000000058 41.9464150000000018)",
+        "image": "",
+        "active": true,
+        "created": "2014-10-15T14:50:00",
+        "modified": "2014-10-15T14:50:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 214,
+    "fields": {
+        "site_name": "Tule Lake NWR Second pond",
+        "description": "",
+        "site_slug": "tule-lake-nwr-second-pond",
+        "location": "SRID=4326;POINT (-121.5605539999999962 41.9467190000000016)",
+        "image": "",
+        "active": true,
+        "created": "2014-11-07T09:46:00",
+        "modified": "2014-11-07T09:46:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 215,
+    "fields": {
+        "site_name": "Tumalo Creek (REALMS Shevlin Park)",
+        "description": "",
+        "site_slug": "tumalo-creek-realms-shevlin-park",
+        "location": "SRID=4326;POINT (-121.3769099999999952 44.0817589999999981)",
+        "image": "",
+        "active": true,
+        "created": "2009-11-28T10:20:00",
+        "modified": "2012-01-06T16:17:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 216,
+    "fields": {
+        "site_name": "Unnamed Creek in Salmon River Estuary at Westwind",
+        "description": "",
+        "site_slug": "unnamed-creek-in-salmon-river-estuary-at-westwind",
+        "location": "SRID=4326;POINT (0.0000000000000000 0.0000000000000000)",
+        "image": "",
+        "active": true,
+        "created": "2014-04-28T15:11:00",
+        "modified": "2014-04-28T15:12:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 217,
+    "fields": {
+        "site_name": "Viking Creek 9th St.",
+        "description": "",
+        "site_slug": "viking-creek-9th-st",
+        "location": "SRID=4326;POINT (-124.1118029999999948 43.9747350000000026)",
+        "image": "",
+        "active": true,
+        "created": "2016-01-22T14:17:00",
+        "modified": "2016-01-22T14:17:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 218,
+    "fields": {
+        "site_name": "Viking Creek SHS",
+        "description": "",
+        "site_slug": "viking-creek-shs",
+        "location": "SRID=4326;POINT (-124.1065410000000071 43.9937719999999999)",
+        "image": "",
+        "active": true,
+        "created": "2016-01-22T14:47:00",
+        "modified": "2016-01-22T14:47:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 219,
+    "fields": {
+        "site_name": "vitalina",
+        "description": "",
+        "site_slug": "vitalina",
+        "location": "SRID=4326;POINT (-124.1065410000000071 43.9937719999999999)",
+        "image": "",
+        "active": true,
+        "created": "2012-01-04T19:21:00",
+        "modified": "2012-01-04T19:21:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 220,
+    "fields": {
+        "site_name": "Wagner Creek - Talent - Outdoor Discovery Program",
+        "description": "",
+        "site_slug": "wagner-creek-talent-outdoor-discovery-program",
+        "location": "SRID=4326;POINT (-122.7827309999999983 42.2416399999999967)",
+        "image": "",
+        "active": true,
+        "created": "2011-11-03T17:23:00",
+        "modified": "2011-11-03T17:24:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 221,
+    "fields": {
+        "site_name": "Wagner Creek at W. Rapp Rd. Talent OR",
+        "description": "",
+        "site_slug": "wagner-creek-at-w-rapp-rd-talent-or",
+        "location": "SRID=4326;POINT (-122.7865290000000016 42.2369380000000021)",
+        "image": "",
+        "active": true,
+        "created": "2012-04-05T13:19:00",
+        "modified": "2013-01-09T12:30:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 222,
+    "fields": {
+        "site_name": "Wallowa River Tamkaliks Site",
+        "description": "",
+        "site_slug": "wallowa-river-tamkaliks-site",
+        "location": "SRID=4326;POINT (-117.5240990000000068 45.5728670000000022)",
+        "image": "",
+        "active": true,
+        "created": "2010-10-12T15:31:00",
+        "modified": "2010-10-12T16:04:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 223,
+    "fields": {
+        "site_name": "Wallowa River Wolfe Ranch",
+        "description": "",
+        "site_slug": "wallowa-river-wolfe-ranch",
+        "location": "SRID=4326;POINT (-117.4916500000000070 45.5519600000000011)",
+        "image": "",
+        "active": true,
+        "created": "2014-12-09T16:01:00",
+        "modified": "2014-12-09T16:39:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 224,
+    "fields": {
+        "site_name": "Wells Creek",
+        "description": "",
+        "site_slug": "wells-creek",
+        "location": "SRID=4326;POINT (-123.4822630000000032 44.4685699999999997)",
+        "image": "",
+        "active": true,
+        "created": "2015-08-25T10:54:00",
+        "modified": "2015-08-25T11:14:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 225,
+    "fields": {
+        "site_name": "Wenaha River",
+        "description": "",
+        "site_slug": "wenaha-river",
+        "location": "SRID=4326;POINT (-117.4520019999999931 45.9456890000000016)",
+        "image": "",
+        "active": true,
+        "created": "2010-10-05T15:34:00",
+        "modified": "2010-10-06T16:38:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 226,
+    "fields": {
+        "site_name": "West Olalla Creek",
+        "description": "",
+        "site_slug": "west-olalla-creek",
+        "location": "SRID=4326;POINT (-123.9303000000000026 44.6793049999999994)",
+        "image": "",
+        "active": true,
+        "created": "2016-04-17T11:43:00",
+        "modified": "2016-04-17T11:48:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 227,
+    "fields": {
+        "site_name": "Whalen Island",
+        "description": "",
+        "site_slug": "whalen-island",
+        "location": "SRID=4326;POINT (2.1093750000000000 15.9613289999999992)",
+        "image": "",
+        "active": true,
+        "created": "2014-12-19T12:58:00",
+        "modified": "2014-12-19T12:58:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 228,
+    "fields": {
+        "site_name": "What I have learned",
+        "description": "",
+        "site_slug": "what-i-have-learned",
+        "location": "SRID=4326;POINT (2.1093750000000000 15.9613289999999992)",
+        "image": "",
+        "active": true,
+        "created": "2013-05-22T14:15:00",
+        "modified": "2013-05-22T14:15:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 229,
+    "fields": {
+        "site_name": "Whittaker Creek Campground",
+        "description": "",
+        "site_slug": "whittaker-creek-campground",
+        "location": "SRID=4326;POINT (-123.6600490000000008 43.9850339999999989)",
+        "image": "",
+        "active": true,
+        "created": "2010-08-04T15:44:00",
+        "modified": "2012-01-19T11:03:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 230,
+    "fields": {
+        "site_name": "Whychus Creek",
+        "description": "",
+        "site_slug": "whychus-creek",
+        "location": "SRID=4326;POINT (-121.4983610000000027 44.3267030000000020)",
+        "image": "",
+        "active": true,
+        "created": "2009-04-19T18:17:00",
+        "modified": "2010-10-06T10:35:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 231,
+    "fields": {
+        "site_name": "Wiley Creek",
+        "description": "",
+        "site_slug": "wiley-creek",
+        "location": "SRID=4326;POINT (-119.3821999999999974 44.4464570000000023)",
+        "image": "",
+        "active": true,
+        "created": "2015-02-11T12:46:00",
+        "modified": "2015-02-11T12:46:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 232,
+    "fields": {
+        "site_name": "Wiley Creek State Park",
+        "description": "",
+        "site_slug": "wiley-creek-state-park",
+        "location": "SRID=4326;POINT (-122.6739539999999948 44.4136560000000031)",
+        "image": "",
+        "active": true,
+        "created": "2013-08-27T16:21:00",
+        "modified": "2015-10-08T15:33:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 233,
+    "fields": {
+        "site_name": "Willamette River At Crystal Lake",
+        "description": "",
+        "site_slug": "willamette-river-at-crystal-lake",
+        "location": "SRID=4326;POINT (-123.2518699999999967 44.5517699999999977)",
+        "image": "",
+        "active": true,
+        "created": "2014-08-22T14:22:00",
+        "modified": "2014-08-22T14:22:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 234,
+    "fields": {
+        "site_name": "Willamette river Corvallis or",
+        "description": "",
+        "site_slug": "willamette-river-corvallis-or",
+        "location": "SRID=4326;POINT (-123.2800000000000011 44.5660000000000025)",
+        "image": "",
+        "active": true,
+        "created": "2014-08-22T13:44:00",
+        "modified": "2014-08-22T13:44:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 235,
+    "fields": {
+        "site_name": "Willamette River, Mussel bed",
+        "description": "",
+        "site_slug": "willamette-river-mussel-bed",
+        "location": "SRID=4326;POINT (0.0000000000000000 44.5849609999999998)",
+        "image": "",
+        "active": true,
+        "created": "2014-07-26T22:05:00",
+        "modified": "2014-07-26T22:05:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 236,
+    "fields": {
+        "site_name": "Williams Creek @ Hwy 238 (above Applegate River confluence)",
+        "description": "",
+        "site_slug": "williams-creek-hwy-238-above-applegate-river-confl",
+        "location": "SRID=4326;POINT (-123.2392969999999934 42.2936199999999971)",
+        "image": "",
+        "active": true,
+        "created": "2015-04-20T12:33:00",
+        "modified": "2015-04-20T12:33:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 237,
+    "fields": {
+        "site_name": "Willow Creek Nature Park",
+        "description": "",
+        "site_slug": "willow-creek-nature-park",
+        "location": "SRID=4326;POINT (-122.8525539999999978 45.5274569999999983)",
+        "image": "",
+        "active": true,
+        "created": "2013-10-13T03:13:00",
+        "modified": "2013-10-13T03:13:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 238,
+    "fields": {
+        "site_name": "Wolf Creek Assessment and Restoration",
+        "description": "",
+        "site_slug": "wolf-creek-assessment-and-restoration",
+        "location": "SRID=4326;POINT (-123.3980509999999953 42.6940600000000003)",
+        "image": "",
+        "active": true,
+        "created": "2014-11-13T16:54:00",
+        "modified": "2014-11-13T16:54:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 239,
+    "fields": {
+        "site_name": "WREN Camp Creek Site A",
+        "description": "",
+        "site_slug": "wren-camp-creek-site-a",
+        "location": "SRID=4326;POINT (-116.9629400000000032 45.5802899999999980)",
+        "image": "",
+        "active": true,
+        "created": "2014-05-12T18:34:00",
+        "modified": "2014-05-12T18:34:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 240,
+    "fields": {
+        "site_name": "WREN Camp Creek Site B",
+        "description": "",
+        "site_slug": "wren-camp-creek-site-b",
+        "location": "SRID=4326;POINT (-116.9677599999999984 45.5750200000000021)",
+        "image": "",
+        "active": true,
+        "created": "2014-05-12T18:39:00",
+        "modified": "2014-05-12T18:39:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 241,
+    "fields": {
+        "site_name": "Yellow Jacket Creek at Cispus River",
+        "description": "",
+        "site_slug": "yellow-jacket-creek-at-cispus-river",
+        "location": "SRID=4326;POINT (-121.8435999999999950 46.4407179999999968)",
+        "image": "",
+        "active": true,
+        "created": "2016-03-07T10:07:00",
+        "modified": "2016-03-07T10:07:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 242,
+    "fields": {
+        "site_name": "Zigzag River",
+        "description": "",
+        "site_slug": "zigzag-river",
+        "location": "SRID=4326;POINT (-121.9238660000000039 45.3386390000000006)",
+        "image": "",
+        "active": true,
+        "created": "2016-01-27T12:02:00",
+        "modified": "2016-01-27T12:06:00"
+    }
+}
+]
