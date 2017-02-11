@@ -28,29 +28,28 @@
               <div class="container">
                 <h5>Location Input</h5>
                 <div class ="input-field">
-                    <p>{{ camera_form.cp_date.label }}</p>
-                    <p>{{ camera_form.cp_date.errors | striptags }}</p>
-                    <p>{{ camera_form.cp_date }}</p>
+                    {{ camera_form.cp_date.label }}
+                    {{ camera_form.cp_date.errors | striptags }}
+                    {{ camera_form.cp_date }}
                 </div>
                 <div class ="input-field">
-                    <p>{{ camera_form.description.label }}</p>
-                    <p>{{ camera_form.description.errors | striptags }}</p>
-                    <p>{{ camera_form.description }}</p>
+                    {{ camera_form.description.label }}
+                    {{ camera_form.description.errors | striptags }}
+                    {{ camera_form.description }}
                 </div>
                 <div class ="input-field">
-                    <p>{{ camera_form.map_datum.label }}</p>
-                    <p>{{ camera_form.map_datum.errors | striptags }}</p>
-                    <p>{{ camera_form.map_datum }}</p>
+                    {{ camera_form.map_datum.label }}
+                    {{ camera_form.map_datum.errors | striptags }}
+                    {{ camera_form.map_datum }}
                 </div>
                 <div class ="input-field">
-                    <p>{{ camera_form.location.label }}</p>
-                    <p>{{ camera_form.location.errors | striptags }}</p>
-                    <p>{{ camera_form.location }}</p>
+                    {{ camera_form.location.label }}
+                    {{ camera_form.location.errors | striptags }}
+                    {{ camera_form.location }}
                 </div>
               </div>
               <!-- END CAMERA FORM -->
             </div>
-            <br>
             <br>
             <div class="photo-input">
               <h5>Photo Input</h5>
@@ -60,24 +59,24 @@
                 <div class="col s4">
                   <h6>Photo #{{ forloop.counter }}</h6>
                   <div class ="input-field">
-                      <p>{{ p_form.compass_bearing.label }}</p>
-                      <p>{{ p_form.compass_bearing.errors | striptags }}</p>
-                      <p>{{ p_form.compass_bearing }}</p>
+                      {{ p_form.compass_bearing.label }}
+                      {{ p_form.compass_bearing.errors | striptags }}
+                      {{ p_form.compass_bearing }}
                   </div>
                   <div class ="input-field">
-                      <p>{{ p_form.distance.label }}</p>
-                      <p>{{ p_form.distance.errors | striptags }}</p>
-                      <p>{{ p_form.distance }}</p>
+                      {{ p_form.distance.label }}
+                      {{ p_form.distance.errors | striptags }}
+                      {{ p_form.distance }}
                   </div>
                   <div class ="input-field">
-                      <p>{{ p_form.camera_height.label }}</p>
-                      <p>{{ p_form.camera_height.errors | striptags }}</p>
-                      <p>{{ p_form.camera_height }}</p>
+                      {{ p_form.camera_height.label }}
+                      {{ p_form.camera_height.errors | striptags }}
+                      {{ p_form.camera_height }}
                   </div>
                   <div class ="input-field">
-                    <p>{{ p_form.notes.label }}</p>
-                    <p>{{ p_form.notes.errors | striptags }}</p>
-                    <p>{{ p_form.notes }}</p>
+                    {{ p_form.notes.label }}
+                    {{ p_form.notes.errors | striptags }}
+                    {{ p_form.notes }}
                   </div>
                 </div>
                 {% endfor %}
@@ -87,20 +86,23 @@
                 {% for ppi_form in ppi_formset %}
                 <div class="col s4">
                   <div class ="input-field">
-                      <p>{{ ppi_form.image.label }}</p>
-                      <p>{{ ppi_form.image.errors | striptags }}</p>
-                      <p>{{ ppi_form.image }}</p>
+                      {{ ppi_form.image.label }}
+                      {{ ppi_form.image.errors | striptags }}
+                      {{ ppi_form.image }}
                   </div>
                   <div class ="input-field">
-                      <p>{{ ppi_form.date.label }}</p>
-                      <p>{{ ppi_form.date.errors | striptags }}</p>
-                      <p>{{ ppi_form.date }}</p>
+                      {{ ppi_form.date.label }}
+                      {{ ppi_form.date.errors | striptags }}
+                      {{ ppi_form.date }}
                   </div>
                 </div>
                 {% endfor %}
               </div>
             </div>
-            <input type='submit' name='submit' value='Submit' class="btn waves-effect waves-light teal darken-4" />
+            <button class="btn-large
+             waves-effect waves-light" type="submit" name="action" value='Submit'>Submit
+              <i class="material-icons right">send</i>
+            </button>
         </form>
         {% endif %}
 
