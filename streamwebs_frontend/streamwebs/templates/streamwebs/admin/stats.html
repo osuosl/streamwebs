@@ -12,13 +12,17 @@
     <input type='submit' name='submit' value='{% trans 'Calculate' %}'/>
 </form>
 
-{% if current %}
-Number of users who have logged in within the last 3 years: {{ users.count }}
+{% if all_time %}
+Users who have logged in within the last 3 years: {{ users.count }}
 {% else %}
-Number of users who joined between {{ start }} and {{ end }}: {{ users.count }}
+Users who joined between {{ start }} and {{ end }}: {{ users.count }}
 {% endif %}
 {% for user in users.users %}
     <li>{{ user.username }}</li>
+{% endfor %}
+Number of data sheets uploaded between {{ start }} and {{ end }}:
+{% for type, num in sheets.items %}
+<li> {{ type }}: {{ num }}</li>
 {% endfor %}
 
 {% endblock %}

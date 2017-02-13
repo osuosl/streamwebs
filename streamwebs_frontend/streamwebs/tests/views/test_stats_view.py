@@ -7,7 +7,8 @@ import datetime
 
 class AdminStatsTestCase(TestCase):
     fixtures = ['sample_users.json', 'sample_sites.json',
-                'sample_schools.json']
+                'sample_schools.json', 'sample_transects.json',
+                'sample_soil.json']
 
     def setUp(self):
         self.today = datetime.date.today()
@@ -32,11 +33,26 @@ class AdminStatsTestCase(TestCase):
             'range': ('KANYE_WEST',),
         }
 
+        self.expected_sheet_stats = {
+            'default': {'total': 46, 'soil': 29, 'transect': 17, 'camera': 0,
+                        'macro': 0, 'canopy': 0, 'water': 0},
+            'just_start': {'total': 37, 'soil': 25, 'transect': 12,
+                           'camera': 0, 'macro': 0, 'canopy': 0, 'water': 0},
+            'just_end': {'total': 9, 'soil': 4, 'transect': 5, 'camera': 0,
+                         'macro': 0, 'canopy': 0, 'water':0},
+            'range': {'total': 23, 'soil': 15, 'transect': 8, 'camera': 0,
+                      'macro': 0, 'canopy': 0, 'water': 0}
+        }
+
     def test_data_loaded_and_usable(self):
         sites = Site.objects.all()
         self.assertEquals(sites.count(), 242)
         schools = School.objects.all()
         self.assertEquals(schools.count(), 10)
+        transects = RiparianTransect.objects.all()
+        self.assertEquals(transects.count(), 17)
+        soil = Soil_Survey.objects.all()
+        self.assertEquals(soil.count(), 29)
 #
 #    def test_admin_user(self):
 #        user = User.objects.get(username='root')
@@ -79,7 +95,50 @@ class AdminStatsTestCase(TestCase):
         pass
 
     def test_default_total_sheets_post(self):
-        response = self.client.post
+        response = self.client.post(reverse('streamwebs:stats'), {})
+        self.assertEquals(str(response.context['start']),
+                          str(datetime.date(1970, 1, 1)))
+        self.assertEquals(str(response.context['end']), str(self.today))
+        self.assertEquals(response.context['sheets'],
+                          self.expected_sheet_stats['default'])
+
+    def test_default_total_sheets_get(self):
+        response = self.client.get(reverse('streamwebs:stats'))
+        self.assertEquals(str(response.context['start']),
+                          str(datetime.date(1970, 1, 1)))
+        self.assertEquals(str(response.context['end']), str(self.today))
+        self.assertEquals(response.context['sheets'],
+                          self.expected_sheet_stats['default'])
+
+    def test_just_start_provided_sheets(self):
+        response = self.client.post(reverse('streamwebs:stats'), {
+            'start': datetime.date(2014, 1, 1)})
+        self.assertEquals(str(response.context['start']),
+                          str(datetime.date(2014, 1, 1)))
+        self.assertEquals(str(response.context['end']), str(self.today))
+        self.assertEquals(response.context['sheets'],
+                          self.expected_sheet_stats['just_start'])
+
+    def test_just_end_provided_sheets(self):
+        response = self.client.post(reverse('streamwebs:stats'), {
+            'end': datetime.date(2014, 1, 1)})
+        self.assertEquals(str(response.context['end']),
+                          str(datetime.date(2014, 1, 1)))
+        self.assertEquals(str(response.context['start']),
+                          str(datetime.date(1970, 1, 1)))
+        self.assertEquals(response.context['sheets'],
+                          self.expected_sheet_stats['just_end'])
+
+    def test_range_provided_sheets(self):
+        response = self.client.post(reverse('streamwebs:stats'), {
+            'start': datetime.date(2014, 1, 1),
+            'end': datetime.date(2016, 1, 1)})
+        self.assertEquals(str(response.context['start']),
+                          str(datetime.date(2014, 1, 1)))
+        self.assertEquals(str(response.context['end']),
+                          str(datetime.date(2016, 1, 1)))
+        self.assertEquals(response.context['sheets'],
+                          self.expected_sheet_stats['range'])
 
     def test_default_active_users_post(self):
         """No start/end provided: Currently active users (3 yrs) returned"""
@@ -90,6 +149,7 @@ class AdminStatsTestCase(TestCase):
         self.assertEquals(str(response.context['start']),
                           str(datetime.date(1970, 1, 1)))
         self.assertEquals(str(response.context['end']), str(self.today))
+        self.assertTrue(response.context['all_time'])
         self.assertEquals(response.context['users']['count'],
                           len(self.expected_user_stats['default']))
         for user in response.context['users']['users']:
@@ -108,6 +168,7 @@ class AdminStatsTestCase(TestCase):
         self.assertEquals(str(response.context['start']),
                           str(datetime.date(1970, 1, 1)))
         self.assertEquals(str(response.context['end']), str(self.today))
+        self.assertTrue(response.context['all_time'])
         self.assertEquals(response.context['users']['count'],
                           len(self.expected_user_stats['default']))
         for user in response.context['users']['users']:
@@ -124,6 +185,7 @@ class AdminStatsTestCase(TestCase):
         self.assertEquals(str(response.context['start']),
                           str(datetime.date(2014, 1, 1)))
         self.assertEquals(str(response.context['end']), str(self.today))
+        self.assertFalse(response.context['all_time'])
         self.assertEquals(response.context['users']['count'],
                           len(self.expected_user_stats['just_start']))
         for user in response.context['users']['users']:
@@ -141,6 +203,7 @@ class AdminStatsTestCase(TestCase):
                           str(datetime.date(2014, 1, 1)))
         self.assertEquals(str(response.context['start']),
                           str(datetime.date(1970, 1, 1)))
+        self.assertFalse(response.context['all_time'])
         self.assertEquals(response.context['users']['count'],
                           len(self.expected_user_stats['just_end']))
         for user in response.context['users']['users']:
@@ -160,6 +223,7 @@ class AdminStatsTestCase(TestCase):
                           str(datetime.date(2014, 1, 1)))
         self.assertEquals(str(response.context['end']),
                           str(datetime.date(2016, 1, 1)))
+        self.assertFalse(response.context['all_time'])
         self.assertEquals(response.context['users']['count'],
                           len(self.expected_user_stats['range']))
         for user in response.context['users']['users']:

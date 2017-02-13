@@ -751,6 +751,7 @@ def admin_site_statistics(request):
     The view for viewing site statistics (admin only)
     """
     stats_form = StatisticsForm()
+    default = True
 
     # A user is defined as "active" if they have logged in w/in the last 3 yrs
     today = datetime.date.today()
@@ -762,28 +763,42 @@ def admin_site_statistics(request):
         stats_form = StatisticsForm(data=request.POST)
 
         if stats_form.is_valid():
-            # if both still blank, query logins within three years
-                # start date was provided
+            # At least one date provided:
             if (stats_form.cleaned_data['start'] is not None or
                     stats_form.cleaned_data['end'] is not None):
+                default = False
+                # start date provided:
                 if stats_form.cleaned_data['start'] is not None:
                     start = stats_form.cleaned_data['start']
-    
-                # end date was provided
+                # end date provided:
                 if stats_form.cleaned_data['end'] is not None:
                     end = stats_form.cleaned_data['end']
     
                 users = User.objects.filter(date_joined__range=(start, end))
             else:
-                users = User.objects.filter(last_login__range=(user_start, end))
+                users = User.objects.filter(
+                    last_login__range=(user_start, end))
 
     # no form submission: default view displays "all time" total stats
     else:
         users = User.objects.filter(last_login__range=(user_start, end))
+
+    num_soil = Soil_Survey.objects.filter(date__range=(start, end)).count()
+    num_transect = RiparianTransect.objects.filter(date_time__range=(start, end)).count()
+    num_camera = CameraPoint.objects.filter(cp_date__range=(start, end)).count()
+    num_macro = Macroinvertebrates.objects.filter(date_time__range=(start, end)).count()
+    num_canopy = Canopy_Cover.objects.filter(date_time__range=(start, end)).count()
+    num_water = Water_Quality.objects.filter(date__range=(start, end)).count()
+    total = num_soil + num_transect + num_camera + num_macro + num_canopy + num_water
+
     return render(request, 'streamwebs/admin/stats.html', {
         'stats_form': stats_form,
+        'all_time': default,
         'users': {'count': users.count(), 'users': users},
         'user_start': user_start,
+        'sheets': {'total': total, 'soil': num_soil, 'transect': num_transect,
+                   'camera': num_camera, 'macro': num_macro,
+                   'canopy': num_canopy, 'water': num_water},
         'start': start,
         'end': end,
         }
