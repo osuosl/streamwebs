@@ -1,5 +1,11 @@
 @charset "UTF-8";
 
+@font-face {
+    font-weight: normal;
+    font-family: 'MarkerFeltRegular';
+    src: url('Marker Felt.ttf') format('ttf');
+}
+
 /* WebKit/Blink Browsers */
 ::selection {
     background: #b9dce8;
@@ -19,8 +25,49 @@
     line-height: 2.5em;
 }
 
-html body {
-    background-color: #fafafa;
+html,
+body {
+    width: 100%;
+    height: 100%;
+
+    overflow: auto;
+    background-color: #85929a;
+}
+
+.page-wrap {
+    width: 100%;
+    height: 100%;
+    background: url("images/bg_with-logo.png");
+    background-repeat: no-repeat;
+    background-size: auto;
+}
+
+.header {
+    width: 71%;
+    height: 17%;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+}
+
+.header > .logo {
+    position: absolute;
+    bottom: 0;
+}
+
+.inner-wrap {
+    width: 74%;
+    /* height = 100 - .header's height */
+    min-height: 60%;
+    margin-left: auto;
+    margin-right: auto;
+    background: #fafafa;
+}
+
+.content {
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-bottom: 25px;
 }
 
 #map {
@@ -70,6 +117,9 @@ html body {
 
 nav {
     margin-bottom: 25px;
+    box-shadow: unset;
+    /*font-family: 'MarkerFeltRegular';*/
+    /*opacity: 1;*/
 }
 
 #date {
@@ -175,4 +225,8 @@ i {
 
 .infogroup .row {
     margin-bottom: 0;
+}
+
+.theme-color {
+    background-color: #004d40;
 }

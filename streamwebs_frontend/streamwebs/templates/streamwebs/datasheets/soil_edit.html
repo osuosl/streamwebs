@@ -23,7 +23,11 @@
                 <strong>{% trans "You have successfully submitted your Soil Survey data sheet." %}</strong>
 
             {% else %}
-                <h3 align="center">{{ site.site_name }}</h3>
+                <h3 align="center">
+                    <a href="{% url 'streamwebs:site' site.site_slug %}">
+                        {{ site.site_name }}
+                    </a>
+                </h3>
                 <h4 align="center">{% trans "New Riparian Soil Survey" %}</h4>
                 <form id='soil_from' method='post' action='{{ request.path }}'>
                     {% csrf_token %}
@@ -53,7 +57,8 @@
                 <!-- Container so that radio buttons render vertically -->
                 <div class="container">
                     <div class="row">
-                        <div class="col s3 pull-s1">
+                        <!--<div class="col s3 pull-s1">-->
+                        <div class="col s4 pull-s2">
                             <p>Landscape Position</p>
                             {{ soil_form.landscape_pos.errors| striptags }}
                             <div class="input-field">
@@ -65,7 +70,8 @@
                                 {% endfor %}
                             </div>
                         </div>
-                        <div class="col s3 push-s1">
+                        <!--<div class="col s3 push-s1">-->
+                        <div class="col s4 push-s1">
                             <p>Cover Type</p>
                             {{ soil_form.cover_type.errors| striptags }}
                             <div class="input-field">
@@ -77,7 +83,8 @@
                                 {% endfor %}
                             </div>
                         </div>
-                        <div class="col s3 push-s3">
+                        <!--<div class="col s3 push-s3">-->
+                        <div class="col s4 push-s3">
                             <p>Land Use</p>
                             {{ soil_form.land_use.errors| striptags }}
                             <div class="input-field">
@@ -113,13 +120,13 @@
 
                 <div class="row">
                     <div class="input-field">
-                        {{soil_form.site_char.label }}
+                        <label for="{{soil_form.site_char.id_for_label}}">{{ soil_form.site_char.label }}</label>
                         {{ soil_form.site_char.errors | striptags }}
                         {{ soil_form.site_char }}
                     </div>
                 </div>
 
-                <input class="waves-effect btn" type='submit' name='submit' value='Submit' />
+                <input class="waves-effect btn theme-color" type='submit' name='submit' value='Submit' />
             </form>
 
             {% endif %}
@@ -132,11 +139,14 @@
 {% endblock %}
 
 {% block scripts %}
-    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
     <script type="application/javascript" src="{% static 'streamwebs/js/data.js' %}"></script>
     <script>
     $('select').material_select();
+    </script>-->
+    <script type="application/javascript"
+        src="{% static 'streamwebs/js/data.js' %}">
     </script>
 {% endblock %}
