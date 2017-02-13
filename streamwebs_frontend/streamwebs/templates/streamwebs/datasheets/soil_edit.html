@@ -23,7 +23,11 @@
                 <strong>{% trans "You have successfully submitted your Soil Survey data sheet." %}</strong>
 
             {% else %}
-                <h3 align="center">{{ site.site_name }}</h3>
+                <h3 align="center">
+                    <a href="{% url 'streamwebs:site' site.site_slug %}">
+                        {{ site.site_name }}
+                    </a>
+                </h3>
                 <h4 align="center">{% trans "New Riparian Soil Survey" %}</h4>
                 <form id='soil_from' method='post' action='{{ request.path }}'>
                     {% csrf_token %}
@@ -122,7 +126,7 @@
                     </div>
                 </div>
 
-                <input class="waves-effect btn" type='submit' name='submit' value='Submit' />
+                <input class="waves-effect btn theme-color" type='submit' name='submit' value='Submit' />
             </form>
 
             {% endif %}
@@ -135,11 +139,14 @@
 {% endblock %}
 
 {% block scripts %}
-    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
     <script type="application/javascript" src="{% static 'streamwebs/js/data.js' %}"></script>
     <script>
     $('select').material_select();
+    </script>-->
+    <script type="application/javascript"
+        src="{% static 'streamwebs/js/data.js' %}">
     </script>
 {% endblock %}

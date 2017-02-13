@@ -5,10 +5,13 @@
 {% block title %}{% trans "View Soil Survey" %}{% endblock %}
 
 {% block scripts %}
-    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
-    <script type="application/javascript" src="{% static 'streamwebs/js/data.js' %}"></script>
+    <script type="application/javascript" src="{% static 'streamwebs/js/data.js' %}"></script>-->
+    <script type="application/javascript"
+        src="{% static 'streamwebs/js/data.js' %}">
+    </script>
 
     <style>
       .material-icons {
@@ -28,7 +31,11 @@
                 <strong>{{ message }}</strong>
             {% endfor %}
         {% endif %}
-        <h3 align="center">{{ site.site_name }}</h3>
+        <h3 align="center">
+            <a href="{% url 'streamwebs:site' site.site_slug %}">
+                {{ site.site_name }}
+            </a>
+        </h3>
         <h4 align="center">{% trans "Riparian Soil Survey: " %}{{ soil.date }}</h4>
     
         <div class="row">
