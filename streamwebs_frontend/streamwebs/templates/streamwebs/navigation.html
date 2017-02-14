@@ -22,7 +22,6 @@
 
   <nav class="grey lighten-5">
     <div class="nav-wrapper">
-      <!--<a href="#!" class="brand-logo center">{% block body_title %}Streamwebs{% endblock %}</a>-->
       <a href="#!" class="btn dropdown-button teal darken-4" data-activates="languages">
           <ul class="left">
               <li>
@@ -48,7 +47,7 @@
             {% endfor %}
             <li><a href="{% url 'streamwebs:logout' %}" class="teal-text text-darken-4">Logout</a></li>
         {% else %}
-            <li><a href="{% url 'streamwebs:register' %} class="teal-text text-darken-4"">Create Account</a></li>
+            <li><a href="{% url 'streamwebs:register' %}" class="teal-text text-darken-4">Create Account</a></li>
             <li><a href="{% url 'streamwebs:login' %}?next={{ request.path }}" class="teal-text text-darken-4">Login</a></li>
         {% endif %}
       </ul>
