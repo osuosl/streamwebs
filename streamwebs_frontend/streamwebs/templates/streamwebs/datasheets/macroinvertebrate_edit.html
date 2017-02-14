@@ -70,7 +70,7 @@
 
             <div class="row">
                 <h5 align=center>Sensitivity to pollution</h5>
-                <div class="col s3">
+                <div class="col s4">
                     <h6 align=center>Sensitive/intolerant</h6>
                     <table>
                         {% for bug in intolerant %}
@@ -93,7 +93,7 @@
                     </table>
                 </div>  <!-- end sensitive/intolerant -->
 
-                <div class="col s3 offset-s1">
+                <div class="col s4">
                     <h6 align=center>Somewhat sensitive</h6>
                     <table>
                         {% for bug in somewhat %}
@@ -115,7 +115,7 @@
                     </table>
                 </div>  <!-- end somewhat sensitive -->
 
-                <div class="col s3 offset-s1">
+                <div class="col s4">
                     <h6 align=center>Tolerant</h6>
                     <table>
                         {% for bug in tolerant %}
@@ -138,7 +138,7 @@
                 </div>  <!-- end tolerant -->
             </div> <!-- end macros row -->
 
-            <input class="waves-effect waves-light btn" type='submit' name='submit' value='Submit' />
+            <input class="btn waves-button-input teal darken-4" type='submit' name='submit' value='Submit' />
         </form>
         {% endif %}
 
