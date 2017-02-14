@@ -2,11 +2,12 @@
 {% load staticfiles %}
 {% load i18n %}
 {% load filters %}
-{% block body_title %}{{ site.site_name }}: Camera Point {{ cp.letter }}{% endblock %}
+{% block body_title %}{% trans 'View a camera point' %}{% endblock %}
 {% block content %}
 
 <!-- CP info -->
 <div>
+    <p>{{ site.site_name }}: Camera Point {{ cp.letter }}</p>
     <p>Date established: {{ cp.cp_date|date:"m-d-Y" }}</p>
     <p>Location: {{ cp.location }}</p>
     <p>Map datum: {{ cp.map_datum }} </p>

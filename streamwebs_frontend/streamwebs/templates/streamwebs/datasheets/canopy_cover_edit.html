@@ -309,7 +309,7 @@
                 <td>{{ canopy_cover_form.est_canopy_cover.errors }}</td>
             </tr>
         </table> <!-- end canopy cover -->
-        <input type='submit' name='submit' value='Submit'/>
+        <input class="btn waves-effect waves-light teal darken-4" type='submit' name='submit' value='Submit'/>
     </form>
     {% endif %}
 
@@ -320,12 +320,7 @@
 {% endblock %}
 
 {% block scripts %}
-    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
-    <script>
-        $('select').material_select();
-    </script>
+    <script type="application/javascript" src="{% static 'streamwebs/js/data.js' %}"></script>
     <script type="application/javascript"
         src="{% static 'streamwebs/js/data/edit/canopy_cover.js' %}">
     </script>

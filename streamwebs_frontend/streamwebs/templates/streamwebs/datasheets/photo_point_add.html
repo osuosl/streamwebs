@@ -13,7 +13,7 @@
             {% csrf_token %}
             {{ pp_form.as_p }}
             {{ ppi_formset.as_p }}
-            <input type='submit' name='submit' value='Submit' />
+            <input class="btn waves-effect waves-light teal darken-4" type='submit' name='submit' value='Submit' />
         </form>
         {% endif %}
 

@@ -3,14 +3,10 @@
 {% load i18n %}
 {% load filters %}
 {% block title %}{% trans "View Riparian Area Transect Data" %}{% endblock %}
-{% block body_title %}{% trans "View Data" %}{% endblock %}
+{% block body_title %}{% trans "View Ripariant Area Transect Data" %}{% endblock %}
 
 {% block scripts %}
-    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
-    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
-
+    <script type="application/javascript" src="{% static 'streamwebs/js/data.js' %}"></script>
     <style>
       .material-icons {
         font-size: 1.5em;

@@ -20,36 +20,35 @@
     <li><a href="#!">Manage Users</a></li>
   </ul>
 
-  <nav class="cyan">
+  <nav class="grey lighten-5">
     <div class="nav-wrapper">
-      <!--<a href="#!" class="brand-logo center">{% block body_title %}Streamwebs{% endblock %}</a>-->
-      <ul class="left">
-          <li>
-              <a href="#!" class="dropdown-button" data-activates="languages">
+      <a href="#!" class="btn dropdown-button teal darken-4" data-activates="languages">
+          <ul class="left">
+              <li>
                   {% for lang in LANGUAGES %}
                       {% if lang.0 == LANGUAGE_CODE %}
                           {{ lang.1 }}
                       {% endif %}
                   {% endfor %}
                   <i class="material-icons right">arrow_drop_down</i>
-              </a>
-          </li>
-      </ul>
+              </li>
+          </ul>
+      </a>
 
       <ul class="right">
-        <li><a href="{% url 'streamwebs:sites' %}">Sites</a></li>
-        <li><a href="{% url 'streamwebs:resources' %}">Resources</a></li>
+        <li><a href="{% url 'streamwebs:sites' %}" class="teal-text text-darken-4">Sites</a></li>
+        <li><a href="{% url 'streamwebs:resources' %}" class="teal-text text-darken-4">Resources</a></li>
 
         {% if user.is_authenticated %}
             {% for group in user.groups.all %}
                 {% if group.name == 'admin' %}
-                    <li><a class="dropdown-button" href="#!" data-activates="admin-options">Administration<i class="material-icons right">arrow_drop_down</i></a></li>
+                    <li><a class="teal-text text-darken-4 dropdown-button" href="#!" data-activates="admin-options">Administration<i class="material-icons right">arrow_drop_down</i></a></li>
                 {% endif %}
             {% endfor %}
-            <li><a href="{% url 'streamwebs:logout' %}">Logout</a></li>
+            <li><a href="{% url 'streamwebs:logout' %}" class="teal-text text-darken-4">Logout</a></li>
         {% else %}
-            <li><a href="{% url 'streamwebs:register' %}">Create Account</a></li>
-            <li><a href="{% url 'streamwebs:login' %}?next={{ request.path }}">Login</a></li>
+            <li><a href="{% url 'streamwebs:register' %}" class="teal-text text-darken-4">Create Account</a></li>
+            <li><a href="{% url 'streamwebs:login' %}?next={{ request.path }}" class="teal-text text-darken-4">Login</a></li>
         {% endif %}
       </ul>
     </div>
