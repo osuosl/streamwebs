@@ -36,9 +36,6 @@ urlpatterns = [
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/macro/edit/$',
         views.macroinvertebrate_edit, name='macroinvertebrate_edit'),
 
-    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/macros/$',
-        views.graph_macros, name='graph_macros'),
-
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/transect/(?P<data_id>\d+)/',
         views.riparian_transect_view, name='riparian_transect'),
 
