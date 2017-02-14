@@ -40,9 +40,6 @@ class ViewCameraPointTestCase(TestCase):
 
     def test_CameraPoint_data(self):
         """Tests that the view displays the CP's data"""
-        # Site data present
-        self.assertContains(self.response, 'Rainbows')
-
         # CP data present
         self.assertContains(self.response, 'Camera Point A')
 
