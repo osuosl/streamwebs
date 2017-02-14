@@ -29,38 +29,53 @@ body {
 }
 
 .page-wrap {
+    position: relative;
     width: 100%;
-    height: 100%;
-    background: url("images/bg-main.jpg");
-    background-repeat: no-repeat;
-    background-size: cover;
+    min-height: 100%;
+    background: url("images/bg-rocks.png") repeat;
 }
 
 .header {
     width: 74%;
-    height: 14%;
+    height: 240px;
     margin-left: auto;
     margin-right: auto;
     position: relative;
+    z-index: 1;
 }
 
 .header > .logo {
     position: absolute;
-    bottom: 0;
+    bottom: 20px;
+    left: 10%;
+}
+
+.header-img {
+    position: absolute;
+    left: 13%;
+    top: 0;
+    width: 86%;
+    height: 420px;
+    background: url("images/header-decor.png") no-repeat;
+    background-size: 100% 420px;
+    z-index: 0;
+    pointer-events: none;
 }
 
 .inner-wrap {
     width: 74%;
-    min-height: 600px;
+    min-height: 700px;
     margin-left: auto;
     margin-right: auto;
     padding-bottom: 20px;
     background: #fafafa;
+    z-index: 1;
 }
 
 .content {
     padding-left: 15px;
     padding-right: 15px;
+    z-index: 2;
 }
 
 #map {
