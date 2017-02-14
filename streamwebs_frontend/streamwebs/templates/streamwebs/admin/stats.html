@@ -24,5 +24,9 @@ Number of data sheets uploaded between {{ start }} and {{ end }}:
 {% for type, num in sheets.items %}
 <li> {{ type }}: {{ num }}</li>
 {% endfor %}
+Sites that uploaded data between {{ start }} and {{ end }}: {{ sites.total }}
+{% for site in sites.sites %}
+<li>{{ site.site_name }}<li>
+{% endfor %}
 
 {% endblock %}

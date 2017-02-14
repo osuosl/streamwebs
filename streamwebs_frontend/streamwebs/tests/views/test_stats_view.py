@@ -44,9 +44,16 @@ class AdminStatsTestCase(TestCase):
                       'macro': 0, 'canopy': 0, 'water': 0}
         }
 
+        self.expected_site_stats = {
+                'default': {'total': 3, 'sites': set((Site.objects.get(id=35), Site.objects.get(id=86), Site.objects.get(pk=188)))},
+                'just_start': {'total': 2, 'sites': set((Site.objects.get(id=86), Site.objects.get(id=188)))},
+            'just_end': {'total': 2, 'sites': set((Site.objects.get(id=35), Site.objects.get(id=188)))},
+            'range': {'total': 2, 'sites': set((Site.objects.get(id=188), Site.objects.get(id=86)))}
+        } 
+
     def test_data_loaded_and_usable(self):
         sites = Site.objects.all()
-        self.assertEquals(sites.count(), 242)
+        self.assertEquals(sites.count(), 11)
         schools = School.objects.all()
         self.assertEquals(schools.count(), 10)
         transects = RiparianTransect.objects.all()
@@ -94,53 +101,7 @@ class AdminStatsTestCase(TestCase):
         # active site = has sheets OR no sheets but "recently" created
         pass
 
-    def test_default_total_sheets_post(self):
-        response = self.client.post(reverse('streamwebs:stats'), {})
-        self.assertEquals(str(response.context['start']),
-                          str(datetime.date(1970, 1, 1)))
-        self.assertEquals(str(response.context['end']), str(self.today))
-        self.assertEquals(response.context['sheets'],
-                          self.expected_sheet_stats['default'])
-
-    def test_default_total_sheets_get(self):
-        response = self.client.get(reverse('streamwebs:stats'))
-        self.assertEquals(str(response.context['start']),
-                          str(datetime.date(1970, 1, 1)))
-        self.assertEquals(str(response.context['end']), str(self.today))
-        self.assertEquals(response.context['sheets'],
-                          self.expected_sheet_stats['default'])
-
-    def test_just_start_provided_sheets(self):
-        response = self.client.post(reverse('streamwebs:stats'), {
-            'start': datetime.date(2014, 1, 1)})
-        self.assertEquals(str(response.context['start']),
-                          str(datetime.date(2014, 1, 1)))
-        self.assertEquals(str(response.context['end']), str(self.today))
-        self.assertEquals(response.context['sheets'],
-                          self.expected_sheet_stats['just_start'])
-
-    def test_just_end_provided_sheets(self):
-        response = self.client.post(reverse('streamwebs:stats'), {
-            'end': datetime.date(2014, 1, 1)})
-        self.assertEquals(str(response.context['end']),
-                          str(datetime.date(2014, 1, 1)))
-        self.assertEquals(str(response.context['start']),
-                          str(datetime.date(1970, 1, 1)))
-        self.assertEquals(response.context['sheets'],
-                          self.expected_sheet_stats['just_end'])
-
-    def test_range_provided_sheets(self):
-        response = self.client.post(reverse('streamwebs:stats'), {
-            'start': datetime.date(2014, 1, 1),
-            'end': datetime.date(2016, 1, 1)})
-        self.assertEquals(str(response.context['start']),
-                          str(datetime.date(2014, 1, 1)))
-        self.assertEquals(str(response.context['end']),
-                          str(datetime.date(2016, 1, 1)))
-        self.assertEquals(response.context['sheets'],
-                          self.expected_sheet_stats['range'])
-
-    def test_default_active_users_post(self):
+    def test_default_stats_post(self):
         """No start/end provided: Currently active users (3 yrs) returned"""
         response = self.client.post(reverse('streamwebs:stats'), {})
         self.assertEquals(str(response.context['user_start']),
@@ -158,8 +119,12 @@ class AdminStatsTestCase(TestCase):
                             user.last_login.date() >= datetime.date(
                                 self.today.year-3, self.today.month,
                                 self.today.day))
+        self.assertEquals(response.context['sheets'],
+                          self.expected_sheet_stats['default'])
+        self.assertEquals(response.context['sites'],
+                          self.expected_site_stats['default'])
 
-    def test_default_active_users_get(self):
+    def test_default_stats_get(self):
         """No start/end provided: Currently active users (3 yrs) returned"""
         response = self.client.get(reverse('streamwebs:stats'))
         self.assertEquals(str(response.context['user_start']),
@@ -177,8 +142,12 @@ class AdminStatsTestCase(TestCase):
                             user.last_login.date() >= datetime.date(
                                 self.today.year-3, self.today.month,
                                 self.today.day))
+        self.assertEquals(response.context['sheets'],
+                          self.expected_sheet_stats['default'])
+        self.assertEquals(response.context['sites'],
+                          self.expected_site_stats['default'])
 
-    def test_just_start_provided_users(self):
+    def test_just_start_provided(self):
         """Just start provided: users who joined b/w start to today returned"""
         response = self.client.post(reverse('streamwebs:stats'), {
             'start': datetime.date(2014, 1, 1)})
@@ -194,8 +163,12 @@ class AdminStatsTestCase(TestCase):
             self.assertTrue(user.date_joined.date() <= self.today and
                             user.date_joined.date() >=
                             datetime.date(2014, 1, 1))
+        self.assertEquals(response.context['sheets'],
+                          self.expected_sheet_stats['just_start'])
+        self.assertEquals(response.context['sites'],
+                          self.expected_site_stats['just_start'])
 
-    def test_just_end_provided_users(self):
+    def test_just_end_provided(self):
         """Just end provided: users who joined b/w end to today returned"""
         response = self.client.post(reverse('streamwebs:stats'), {
             'end': datetime.date(2014, 1, 1)})
@@ -213,8 +186,12 @@ class AdminStatsTestCase(TestCase):
                             datetime.date(1970, 1, 1) and
                             user.date_joined.date() <=
                             datetime.date(2014, 1, 1))
+        self.assertEquals(response.context['sheets'],
+                          self.expected_sheet_stats['just_end'])
+        self.assertEquals(response.context['sites'],
+                          self.expected_site_stats['just_end'])
 
-    def test_range_provided_users(self):
+    def test_range_provided(self):
         """Both start/end provided: users joined b/w start to end returned"""
         response = self.client.post(reverse('streamwebs:stats'), {
             'start': datetime.date(2014, 1, 1),
@@ -233,6 +210,10 @@ class AdminStatsTestCase(TestCase):
                             datetime.date(2016, 1, 1) and
                             user.date_joined.date() >=
                             datetime.date(2014, 1, 1))
+        self.assertEquals(response.context['sheets'],
+                          self.expected_sheet_stats['range'])
+        self.assertEquals(response.context['sites'],
+                          self.expected_site_stats['range'])
 
     def test_active_schools_stats(self):
         """Tests correct num active schools is calculated/returned"""

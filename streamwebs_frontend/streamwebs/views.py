@@ -791,6 +791,14 @@ def admin_site_statistics(request):
     num_water = Water_Quality.objects.filter(date__range=(start, end)).count()
     total = num_soil + num_transect + num_camera + num_macro + num_canopy + num_water
 
+    soil_sites = set(Site.objects.filter(soil_survey__date__range=(start,end)))
+    transect_sites = set(Site.objects.filter(ripariantransect__date_time__range=(start,end)))
+    camera_sites = set(Site.objects.filter(camerapoint__cp_date__range=(start,end)))
+    macro_sites = set(Site.objects.filter(macroinvertebrates__date_time__range=(start,end)))
+    canopy_sites = set(Site.objects.filter(canopy_cover__date_time__range=(start,end)))
+    water_sites = set(Site.objects.filter(water_quality__date__range=(start,end)))
+    all_sites = soil_sites | transect_sites | camera_sites | macro_sites | canopy_sites | water_sites
+
     return render(request, 'streamwebs/admin/stats.html', {
         'stats_form': stats_form,
         'all_time': default,
@@ -799,6 +807,7 @@ def admin_site_statistics(request):
         'sheets': {'total': total, 'soil': num_soil, 'transect': num_transect,
                    'camera': num_camera, 'macro': num_macro,
                    'canopy': num_canopy, 'water': num_water},
+        'sites': {'total': len(all_sites), 'sites': all_sites},
         'start': start,
         'end': end,
         }
