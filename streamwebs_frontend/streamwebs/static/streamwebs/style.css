@@ -125,6 +125,16 @@ body {
 
 nav {
     margin-bottom: 25px;
+    box-shadow: unset;
+}
+
+nav a.btn,
+nav ul#languages {
+    margin-left: 10px;
+}
+
+.nav-wrapper i {
+    line-height: 36px !important;
 }
 
 #date {
