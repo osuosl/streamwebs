@@ -68,8 +68,8 @@ body {
     margin-left: auto;
     margin-right: auto;
     padding-bottom: 20px;
-    background: #fafafa;
     z-index: 1;
+    position: relative;
 }
 
 .content {

@@ -23,7 +23,7 @@
         <div class="header-img">
         </div>
 
-        <div class="inner-wrap">
+        <div class="inner-wrap grey lighten-5">
             <form id="langform" action="/i18n/setlang/" method="post">
                 {% csrf_token %}
                 <input name="next" type="hidden" value="{{ request.path }}" />
