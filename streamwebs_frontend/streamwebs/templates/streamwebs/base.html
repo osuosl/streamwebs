@@ -13,27 +13,40 @@
 </head>
 
 <body>
-    <form id="langform" action="/i18n/setlang/" method="post">
-        {% csrf_token %}
-        <input name="next" type="hidden" value="{{ request.path }}" />
-        <input id="lang_input" name="language" type="hidden" />
-        <ul id="languages" class="dropdown-content">
-            {% for lang in LANGUAGES %}
-                <li><a href="#!" onclick="submitLang('{{ lang.0 }}');">{{ lang.1 }}</a></li>
-            {% endfor %}
-        </ul>
-    </form>
-
-    <nav class="cyan">
-        <div class="nav-wrapper">
-            <a href="#!" class="brand-logo center">{% block body_title %}Streamwebs{% endblock %}</a>
-
-            {% include "streamwebs/navigation.html" %}
+    <div class="page-wrap">
+        <div class="header">
+            <a href="/" class="logo">
+                <img src="//streamwebs.org/sites/streamwebs.org/themes/streamwebs_110107/logo.png" alt="Home">
+            </a>
         </div>
-    </nav>
 
-    <div class="content">
-        {% block content %}{% endblock %}
+        <div class="header-img">
+        </div>
+
+        <div class="inner-wrap grey lighten-5">
+            <form id="langform" action="/i18n/setlang/" method="post">
+                {% csrf_token %}
+                <input name="next" type="hidden" value="{{ request.path }}" />
+                <input id="lang_input" name="language" type="hidden" />
+                <ul id="languages" class="dropdown-content">
+                    {% for lang in LANGUAGES %}
+                        <li><a href="#!" onclick="submitLang('{{ lang.0 }}');">{{ lang.1 }}</a></li>
+                    {% endfor %}
+                </ul>
+            </form>
+
+            <nav>
+                <div class="nav-wrapper">
+                    <a href="#!" class="brand-logo center teal-text text-darken-4">{% block body_title %}Streamwebs{% endblock %}</a>
+
+                    {% include "streamwebs/navigation.html" %}
+                </div>
+            </nav>
+
+            <div class="content">
+                {% block content %}{% endblock %}
+            </div>
+        </div>
     </div>
 
     <script src="{% static 'streamwebs/bower_components/jquery/dist/jquery.js' %}"></script>

@@ -3,6 +3,7 @@
 {% load i18n %}
 {% load filters %}
 {% block title %}{% trans "Macroinvertebrates Data Edit" %}{% endblock %}
+{% block body_title %}{% trans "Add New Macroinvertebrate Data" %}{% endblock %}
 {% block stylesheets %}
 <style>
   .material-icons {
@@ -70,7 +71,7 @@
 
             <div class="row">
                 <h5 align=center>Sensitivity to pollution</h5>
-                <div class="col s3">
+                <div class="col s4">
                     <h6 align=center>Sensitive/intolerant</h6>
                     <table>
                         {% for bug in intolerant %}
@@ -78,7 +79,7 @@
                             <td>
                                 {{ bug.label }}<br>
                                 {% with bug.label|lower|strtoul|slashtoul as buggy %}
-                                    {% with 'macro_images/macro_'|add:buggy|add:'.png' as bug_img %}
+                                    {% with 'streamwebs/images/macroinvertebrates/macro_'|add:buggy|add:'.png' as bug_img %}
                                         <img src="{% static bug_img %}">
                                     {% endwith %}
                                 {% endwith %}
@@ -93,7 +94,7 @@
                     </table>
                 </div>  <!-- end sensitive/intolerant -->
 
-                <div class="col s3 offset-s1">
+                <div class="col s4">
                     <h6 align=center>Somewhat sensitive</h6>
                     <table>
                         {% for bug in somewhat %}
@@ -101,7 +102,7 @@
                             <td>
                                 {{ bug.label }}<br>
                                 {% with bug.label|lower|strtoul|slashtoul as buggy %}
-                                    {% with 'macro_images/macro_'|add:buggy|add:'.png' as bug_img %}
+                                    {% with 'streamwebs/images/macroinvertebrates/macro_'|add:buggy|add:'.png' as bug_img %}
                                         <img src="{% static bug_img %}">
                                     {% endwith %}
                                 {% endwith %}
@@ -115,7 +116,7 @@
                     </table>
                 </div>  <!-- end somewhat sensitive -->
 
-                <div class="col s3 offset-s1">
+                <div class="col s4">
                     <h6 align=center>Tolerant</h6>
                     <table>
                         {% for bug in tolerant %}
@@ -123,7 +124,7 @@
                             <td>
                                 {{ bug.label }}</br>
                                 {% with bug.label|lower|strtoul|slashtoul as buggy %}
-                                    {% with 'macro_images/macro_'|add:buggy|add:'.png' as bug_img %}
+                                    {% with 'streamwebs/images/macroinvertebrates/macro_'|add:buggy|add:'.png' as bug_img %}
                                         <img src="{% static bug_img %}">
                                     {% endwith %}
                                 {% endwith %}
@@ -138,7 +139,7 @@
                 </div>  <!-- end tolerant -->
             </div> <!-- end macros row -->
 
-            <input class="waves-effect waves-light btn" type='submit' name='submit' value='Submit' />
+            <input class="btn waves-effect waves-light teal darken-4" type='submit' name='submit' value='Submit' />
         </form>
         {% endif %}
 
@@ -150,10 +151,5 @@
 {% endblock %}
 
 {% block scripts %}
-    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
-    <script>
-    $('select').material_select();
-    </script>
+    <script type="application/javascript" src="{% static 'streamwebs/js/data.js' %}"></script>
 {% endblock %}

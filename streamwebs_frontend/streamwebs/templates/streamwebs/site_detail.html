@@ -79,6 +79,18 @@
         {% endif %}
     </div>
 
+    {% if wq_sheets or macro_sheets %}
+    <div class="graphs">
+        <h4>Summary Graphs</h4>
+        {% if wq_sheets %}
+        <p><a href="{% url 'streamwebs:graph_water' site.site_slug %}">Water Quality</a></p>
+        {% endif %}
+        {% if macro_sheets %}
+        <p><a href="{% url 'streamwebs:graph_macros' site.site_slug %}">Macroinvertebrates</a></p>
+        {% endif %}
+    </div>
+    {% endif %}
+
     <!-- links to create new data sheets for each type -->
     <div class="new_data">
         <h4>Add data for this site: </h4>

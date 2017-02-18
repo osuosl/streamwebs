@@ -36,9 +36,6 @@ urlpatterns = [
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/macro/edit/$',
         views.macroinvertebrate_edit, name='macroinvertebrate_edit'),
 
-    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/macros/$',
-        views.graph_macros, name='graph_macros'),
-
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/transect/(?P<data_id>\d+)/',
         views.riparian_transect_view, name='riparian_transect'),
 
@@ -72,5 +69,9 @@ urlpatterns = [
     url(r'^statistics/$', views.admin_site_statistics, name='stats'),
     url(r'^register/$', views.register, name='register'),
     url(r'^login/$', views.user_login, name='login'),
-    url(r'^logout/$', views.user_logout, name='logout')
+    url(r'^logout/$', views.user_logout, name='logout'),
+
+    url(r'^resources/$', views.resources, name='resources'),
+    url(r'^resources/data-sheets/', views.resources_data_sheets,
+        name='resources-data-sheets')
 ]

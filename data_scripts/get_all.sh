@@ -11,3 +11,4 @@
 ./set_tools.py
 ./get_transects.py
 ./get_cc.py
+./get_soil.py
