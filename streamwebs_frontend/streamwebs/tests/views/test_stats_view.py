@@ -1,14 +1,14 @@
 from django.test import Client, TestCase
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User, Group, Permission
-from streamwebs.models import Site, School, Soil_Survey, RiparianTransect
+from streamwebs.models import Site, School, Soil_Survey, RiparianTransect, Canopy_Cover
 import datetime
 
 
 class AdminStatsTestCase(TestCase):
     fixtures = ['sample_users.json', 'sample_sites.json',
                 'sample_schools.json', 'sample_transects.json',
-                'sample_soil.json']
+                'sample_soil.json', 'sample_canopies.json']
 
     def setUp(self):
         self.today = datetime.date.today()
@@ -34,22 +34,54 @@ class AdminStatsTestCase(TestCase):
         }
 
         self.expected_sheet_stats = {
-            'default': {'total': 46, 'soil': 29, 'transect': 17, 'camera': 0,
-                        'macro': 0, 'canopy': 0, 'water': 0},
-            'just_start': {'total': 37, 'soil': 25, 'transect': 12,
-                           'camera': 0, 'macro': 0, 'canopy': 0, 'water': 0},
-            'just_end': {'total': 9, 'soil': 4, 'transect': 5, 'camera': 0,
-                         'macro': 0, 'canopy': 0, 'water':0},
-            'range': {'total': 23, 'soil': 15, 'transect': 8, 'camera': 0,
-                      'macro': 0, 'canopy': 0, 'water': 0}
+            'default': {'total': 60, 'soil': 29, 'transect': 17, 'camera': 0,
+                        'macro': 0, 'canopy': 14, 'water': 0},
+            'just_start': {'total': 49, 'soil': 25, 'transect': 12,
+                           'camera': 0, 'macro': 0, 'canopy': 12, 'water': 0},
+            'just_end': {'total': 11, 'soil': 4, 'transect': 5, 'camera': 0,
+                         'macro': 0, 'canopy': 2, 'water':0},
+            'range': {'total': 29, 'soil': 15, 'transect': 8, 'camera': 0,
+                      'macro': 0, 'canopy': 6, 'water': 0}
         }
 
+        blair = Site.objects.get(id=35)
+        hamilton = Site.objects.get(id=86)
+        belmont = Site.objects.get(id=188)
+
         self.expected_site_stats = {
-                'default': {'total': 3, 'sites': set((Site.objects.get(id=35), Site.objects.get(id=86), Site.objects.get(pk=188)))},
-                'just_start': {'total': 2, 'sites': set((Site.objects.get(id=86), Site.objects.get(id=188)))},
-            'just_end': {'total': 2, 'sites': set((Site.objects.get(id=35), Site.objects.get(id=188)))},
-            'range': {'total': 2, 'sites': set((Site.objects.get(id=188), Site.objects.get(id=86)))}
-        } 
+            'default': {'total': 3, 'sites': set((blair, hamilton, belmont))},
+            'just_start': {'total': 3, 'sites': set((hamilton, belmont,
+                                                     blair))},
+            'just_end': {'total': 2, 'sites': set((blair, belmont))},
+            'range': {'total': 3, 'sites': set((belmont, hamilton, blair))}
+        }
+
+        AC = School.objects.get(id=1)
+        abernethy = School.objects.get(id=2)
+        abraham = School.objects.get(id=3)
+        character = School.objects.get(id=4)
+        arts = School.objects.get(id=5)
+        international = School.objects.get(id=6)
+        ace = School.objects.get(id=7)
+        ackerman = School.objects.get(id=8)
+        # Schools 9 and 10 have no data sheets.
+
+        self.expected_school_stats = {
+            'default': {'total': 8, 'schools': set((AC, abernethy, abraham,
+                                                    character, arts,
+                                                    international, ace,
+                                                    ackerman))},
+            'just_start': {'total': 8, 'schools': set((AC, abernethy, abraham,
+                                                       character, arts,
+                                                       international, ace,
+                                                       ackerman))},
+            'just_end': {'total': 3, 'schools': set((character, international,
+                                                     AC))},
+            'range': {'total': 8, 'schools': set((AC, abernethy, abraham,
+                                                  character, arts,
+                                                  international, ace,
+                                                  ackerman))}
+        }
 
     def test_data_loaded_and_usable(self):
         sites = Site.objects.all()
@@ -60,6 +92,8 @@ class AdminStatsTestCase(TestCase):
         self.assertEquals(transects.count(), 17)
         soil = Soil_Survey.objects.all()
         self.assertEquals(soil.count(), 29)
+        canopy = Canopy_Cover.objects.all()
+        self.assertEquals(canopy.count(), 14)
 #
 #    def test_admin_user(self):
 #        user = User.objects.get(username='root')
@@ -96,11 +130,6 @@ class AdminStatsTestCase(TestCase):
 #        self.client.login(username='reg', password='regpassword')
 #        self.assertContains("Access denied")
 
-    def test_active_sites_stats(self):
-        """Tests correct num of active sites is calculated/returned"""
-        # active site = has sheets OR no sheets but "recently" created
-        pass
-
     def test_default_stats_post(self):
         """No start/end provided: Currently active users (3 yrs) returned"""
         response = self.client.post(reverse('streamwebs:stats'), {})
@@ -123,6 +152,8 @@ class AdminStatsTestCase(TestCase):
                           self.expected_sheet_stats['default'])
         self.assertEquals(response.context['sites'],
                           self.expected_site_stats['default'])
+        self.assertEquals(response.context['schools'],
+                          self.expected_school_stats['default'])
 
     def test_default_stats_get(self):
         """No start/end provided: Currently active users (3 yrs) returned"""
@@ -146,6 +177,8 @@ class AdminStatsTestCase(TestCase):
                           self.expected_sheet_stats['default'])
         self.assertEquals(response.context['sites'],
                           self.expected_site_stats['default'])
+        self.assertEquals(response.context['schools'],
+                          self.expected_school_stats['default'])
 
     def test_just_start_provided(self):
         """Just start provided: users who joined b/w start to today returned"""
@@ -167,6 +200,8 @@ class AdminStatsTestCase(TestCase):
                           self.expected_sheet_stats['just_start'])
         self.assertEquals(response.context['sites'],
                           self.expected_site_stats['just_start'])
+        self.assertEquals(response.context['schools'],
+                          self.expected_school_stats['just_start'])
 
     def test_just_end_provided(self):
         """Just end provided: users who joined b/w end to today returned"""
@@ -190,6 +225,8 @@ class AdminStatsTestCase(TestCase):
                           self.expected_sheet_stats['just_end'])
         self.assertEquals(response.context['sites'],
                           self.expected_site_stats['just_end'])
+        self.assertEquals(response.context['schools'],
+                          self.expected_school_stats['just_end'])
 
     def test_range_provided(self):
         """Both start/end provided: users joined b/w start to end returned"""
@@ -214,8 +251,5 @@ class AdminStatsTestCase(TestCase):
                           self.expected_sheet_stats['range'])
         self.assertEquals(response.context['sites'],
                           self.expected_site_stats['range'])
-
-    def test_active_schools_stats(self):
-        """Tests correct num active schools is calculated/returned"""
-        # "*as of [date]" since orig site didn't store school activity info
-        pass
+        self.assertEquals(response.context['schools'],
+                          self.expected_school_stats['range'])

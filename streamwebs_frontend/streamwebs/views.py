@@ -21,7 +21,7 @@ from streamwebs.forms import (
 from streamwebs.models import (
     Macroinvertebrates, Site, Water_Quality, WQ_Sample, RiparianTransect,
     TransectZone, Canopy_Cover, CameraPoint, PhotoPoint,
-    PhotoPointImage, Soil_Survey, Resource)
+    PhotoPointImage, Soil_Survey, Resource, School)
 
 import json
 import copy
@@ -799,6 +799,15 @@ def admin_site_statistics(request):
     water_sites = set(Site.objects.filter(water_quality__date__range=(start,end)))
     all_sites = soil_sites | transect_sites | camera_sites | macro_sites | canopy_sites | water_sites
 
+    soil_sch = set(School.objects.filter(soil_survey__date__range=(start,end)))
+#    transect_sch = set(School.objects.filter(ripariantransect__date_time__range=(start,end)))
+#    camera_sch = set(School.objects.filter(camerapoint__cp_date__range=(start,end)))
+#    macro_sch = set(School.objects.filter(macroinvertebrates__date_time__range=(start,end)))
+    canopy_sch = set(School.objects.filter(canopy_cover__date_time__range=(start,end)))
+    water_sch = set(School.objects.filter(water_quality__date__range=(start,end)))
+#    all_schools = soil_sch | transect_sch | camera_sch | macro_sch | canopy_sch | water_sch
+    all_schools = soil_sch | canopy_sch | water_sch
+
     return render(request, 'streamwebs/admin/stats.html', {
         'stats_form': stats_form,
         'all_time': default,
@@ -808,8 +817,12 @@ def admin_site_statistics(request):
                    'camera': num_camera, 'macro': num_macro,
                    'canopy': num_canopy, 'water': num_water},
         'sites': {'total': len(all_sites), 'sites': all_sites},
+        'schools': {'total': len(all_schools), 'schools': all_schools},
         'start': start,
         'end': end,
+        }
+    )
+
 
 def resources(request):
     return render(request, 'streamwebs/resources.html')
