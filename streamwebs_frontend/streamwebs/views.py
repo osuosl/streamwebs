@@ -3,7 +3,7 @@ from __future__ import print_function
 from django.http import HttpResponseRedirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.utils import timezone
@@ -746,6 +746,7 @@ def soil_survey_edit(request, site_slug):
 
 
 @login_required
+@permission_required('streamwebs.can_view_stats', raise_exception=True)
 def admin_site_statistics(request):
     """
     The view for viewing site statistics (admin only)
@@ -773,7 +774,7 @@ def admin_site_statistics(request):
                 # end date provided:
                 if stats_form.cleaned_data['end'] is not None:
                     end = stats_form.cleaned_data['end']
-    
+
                 users = User.objects.filter(date_joined__range=(start, end))
             else:
                 users = User.objects.filter(
@@ -784,28 +785,47 @@ def admin_site_statistics(request):
         users = User.objects.filter(last_login__range=(user_start, end))
 
     num_soil = Soil_Survey.objects.filter(date__range=(start, end)).count()
-    num_transect = RiparianTransect.objects.filter(date_time__range=(start, end)).count()
-    num_camera = CameraPoint.objects.filter(cp_date__range=(start, end)).count()
-    num_macro = Macroinvertebrates.objects.filter(date_time__range=(start, end)).count()
-    num_canopy = Canopy_Cover.objects.filter(date_time__range=(start, end)).count()
+    num_transect = RiparianTransect.objects.filter(
+        date_time__range=(start, end)).count()
+    num_camera = CameraPoint.objects.filter(
+        cp_date__range=(start, end)).count()
+    num_macro = Macroinvertebrates.objects.filter(
+        date_time__range=(start, end)).count()
+    num_canopy = Canopy_Cover.objects.filter(
+        date_time__range=(start, end)).count()
     num_water = Water_Quality.objects.filter(date__range=(start, end)).count()
-    total = num_soil + num_transect + num_camera + num_macro + num_canopy + num_water
+    total = (num_soil + num_transect + num_camera + num_macro + num_canopy +
+             num_water)
 
-    soil_sites = set(Site.objects.filter(soil_survey__date__range=(start,end)))
-    transect_sites = set(Site.objects.filter(ripariantransect__date_time__range=(start,end)))
-    camera_sites = set(Site.objects.filter(camerapoint__cp_date__range=(start,end)))
-    macro_sites = set(Site.objects.filter(macroinvertebrates__date_time__range=(start,end)))
-    canopy_sites = set(Site.objects.filter(canopy_cover__date_time__range=(start,end)))
-    water_sites = set(Site.objects.filter(water_quality__date__range=(start,end)))
-    all_sites = soil_sites | transect_sites | camera_sites | macro_sites | canopy_sites | water_sites
+    soil_sites = set(Site.objects.filter(
+        soil_survey__date__range=(start, end)))
+    transect_sites = set(Site.objects.filter(
+        ripariantransect__date_time__range=(start, end)))
+    camera_sites = set(Site.objects.filter(
+        camerapoint__cp_date__range=(start, end)))
+    macro_sites = set(Site.objects.filter(
+        macroinvertebrates__date_time__range=(start, end)))
+    canopy_sites = set(Site.objects.filter(
+        canopy_cover__date_time__range=(start, end)))
+    water_sites = set(Site.objects.filter(
+        water_quality__date__range=(start, end)))
+    all_sites = (soil_sites | transect_sites | camera_sites | macro_sites |
+                 canopy_sites | water_sites)
 
-    soil_sch = set(School.objects.filter(soil_survey__date__range=(start,end)))
-#    transect_sch = set(School.objects.filter(ripariantransect__date_time__range=(start,end)))
-#    camera_sch = set(School.objects.filter(camerapoint__cp_date__range=(start,end)))
-#    macro_sch = set(School.objects.filter(macroinvertebrates__date_time__range=(start,end)))
-    canopy_sch = set(School.objects.filter(canopy_cover__date_time__range=(start,end)))
-    water_sch = set(School.objects.filter(water_quality__date__range=(start,end)))
-#    all_schools = soil_sch | transect_sch | camera_sch | macro_sch | canopy_sch | water_sch
+    soil_sch = set(School.objects.filter(
+        soil_survey__date__range=(start, end)))
+    # transect_sch = set(School.objects.filter(
+    #     ripariantransect__date_time__range=(start, end)))
+    # camera_sch = set(School.objects.filter(
+    #     camerapoint__cp_date__range=(start, end)))
+    # macro_sch = set(School.objects.filter(
+    #     macroinvertebrates__date_time__range=(start, end)))
+    canopy_sch = set(School.objects.filter(
+        canopy_cover__date_time__range=(start, end)))
+    water_sch = set(School.objects.filter(
+        water_quality__date__range=(start, end)))
+    # all_schools = (soil_sch | transect_sch | camera_sch | macro_sch |
+    #                canopy_sch | water_sch)
     all_schools = soil_sch | canopy_sch | water_sch
 
     return render(request, 'streamwebs/admin/stats.html', {
