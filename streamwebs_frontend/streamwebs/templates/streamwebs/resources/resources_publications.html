@@ -1,0 +1,36 @@
+{% extends "streamwebs/base.html" %}
+{% load staticfiles %}
+{% load i18n %}
+
+{% block content %}
+  <div class="container">
+    <h1>{% trans "Curriculum Guides" %}</h1>
+
+    <table class="bordered centered responsive-table">
+      <thead>
+        <tr>
+            <th data-field="name">Name</th>
+            <th data-field="Thumbnail">Link</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for guide in data %}
+          <tr>
+            <td>
+              <h4>
+                {{ guide.name }}
+
+                </h4>
+            </td>
+            <td>
+              <a href={{ guide.downloadable.url }}>
+                <img src={{ guide.thumbnail.url }} height="200" width="200">
+              </a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

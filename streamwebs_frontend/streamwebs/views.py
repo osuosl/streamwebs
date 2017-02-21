@@ -758,3 +758,16 @@ def resources_data_sheets(request):
             'data': data,
         }
     )
+
+
+def resources_publications(request):
+    """ View for publication resources """
+    data = Resource.objects.filter(res_type='publication').order_by(
+        'sort_order', 'name'
+        )
+
+    return render(
+        request, 'streamwebs/resources/resources_publications.html', {
+            'data': data,
+        }
+    )
