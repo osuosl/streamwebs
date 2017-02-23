@@ -29,7 +29,7 @@ import datetime
 
 
 def _timestamp(dt):
-    return (dt - datetime(1970, 1, 1)).total_seconds()
+    return (dt - datetime.datetime(1970, 1, 1)).total_seconds()
 
 
 def index(request):
