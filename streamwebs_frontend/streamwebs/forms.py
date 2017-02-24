@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from streamwebs.models import UserProfile, WQ_Sample, Water_Quality, \
     Macroinvertebrates, Canopy_Cover, TransectZone, \
     RiparianTransect, PhotoPointImage, PhotoPoint, CameraPoint, Site, School, \
-    Soil_Survey
+    Soil_Survey, Resource
 from django.contrib.auth.models import User
 from django import forms
 from django.utils.translation import ugettext_lazy as _
@@ -210,3 +210,10 @@ class SoilSurveyFormReadOnly(SoilSurveyForm):
         super(SoilSurveyFormReadOnly, self).__init__(*args, **kwargs)
         for field in self.fields:
             self.fields[field].widget.attrs.update({'disabled': True})
+
+
+class ResourceForm(forms.ModelForm):
+    class Meta:
+        model = Resource
+        fields = ('name', 'res_type', 'sort_order', 'downloadable',
+                  'thumbnail')
