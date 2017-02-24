@@ -530,12 +530,25 @@ def add_camera_point(request, site_slug):
     )
 
     if request.method == 'POST':
+        # convert lat and longs into a pointfield object
+        point = ("SRID=4326;POINT(%s %s)" %
+                 (request.POST['lat'], request.POST['lng']))
+        # spoof the location request param with the point object
+        # and proceed like normal.
+        request.POST['location'] = point
+
         camera_form = CameraPointForm(request.POST)
+        camera_form.location = point
+
         pp_formset = PhotoPointInlineFormset(request.POST, instance=camera)
         ppi_formset = PPImageModelFormset(
             request.POST, request.FILES,
             queryset=PhotoPointImage.objects.none()
         )
+        # TODO: investigate why camera and pp forms arent validating
+        print(camera_form.is_valid())
+        print(pp_formset.is_valid())
+        print(ppi_formset.is_valid())
 
         if (camera_form.is_valid() and pp_formset.is_valid() and
                 ppi_formset.is_valid()):
@@ -556,6 +569,8 @@ def add_camera_point(request, site_slug):
             messages.success(
                 request,
                 'You have successfully added a new camera point.')
+
+            print("succes!")
 
             return redirect(reverse('streamwebs:camera_point',
                                     kwargs={'site_slug': site.site_slug,

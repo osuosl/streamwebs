@@ -5,6 +5,53 @@
 {% block title %}{% trans "Add a new camera point" %}{% endblock %}
 {% block body_title %}{% trans "Add a new camera point" %}{% endblock %}
 {% block content %}
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyBV71HBuAFMtHEAaSEVpRDPUQyGvJwTX1k"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script>
+    // initialize curr_marker
+    curr_marker = null;
+
+    // onload
+    $(document).ready(function() {
+        var latlng = new google.maps.LatLng("{{ site.to_dict.location.y }}", "{{ site.to_dict.location.x }}");
+        var mapOptions = {
+            zoom: 14,
+            center: latlng,
+            mapTypeControl: false,
+            navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL},
+            mapTypeId: google.maps.MapTypeId.HYBRID
+        };
+        map = new google.maps.Map($('.map')[0], mapOptions);
+
+        curr_marker = new google.maps.Marker({
+          position: {lat:{{ site.to_dict.location.y }}, lng:{{ site.to_dict.location.x }}},
+          map: map,
+          title: "Site Location"
+        });
+        // pass event to function
+        map.addListener('click', function(e) {
+          placeMarker(e.latLng, map);
+        });
+    });
+
+    function placeMarker(latlng, map){
+        // delete old marker if exists
+        if (curr_marker){
+            curr_marker.setMap(null);
+        }
+        // make new marker
+        var marker = new google.maps.Marker({
+          position: latlng,
+          map: map,
+          title: "Camera Position"
+        });
+        // set hidden form elements of lat and long to these values
+        $('#input_lat').val(latlng.lat())
+        $('#input_lng').val(latlng.lng())
+        // set prev marker to current marker
+        curr_marker = marker;
+    }
+</script>
 
 <div class="container">
     {% if user.is_authenticated %}
@@ -45,7 +92,10 @@
                 <div class ="input-field">
                     {{ camera_form.location.label }}
                     {{ camera_form.location.errors | striptags }}
-                    {{ camera_form.location }}
+                    <!-- {{ camera_form.location }} -->
+                    <div class="map col s12" style="width: 805px; height: 400px;"></div>
+                    <input type="hidden" id="input_lat" name="lat" value="{{ site.to_dict.location.y }}">
+                    <input type="hidden" id="input_lng" name="lng" value="{{ site.to_dict.location.x }}">
                 </div>
               </div>
               <!-- END CAMERA FORM -->

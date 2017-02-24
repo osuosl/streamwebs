@@ -10,7 +10,6 @@ from django.forms import BaseInlineFormSet
 from django.utils.translation import ugettext_lazy as _
 from django.utils.safestring import mark_safe
 from captcha.fields import ReCaptchaField
-from django.contrib.gis import forms as gisForms
 
 
 class UserForm(forms.ModelForm):
@@ -212,11 +211,6 @@ class CameraPointForm(forms.ModelForm):
     cp_date = forms.DateField(
         widget=forms.DateInput(attrs={'class': 'datepicker'}),
     )
-    location = gisForms.PointField(widget=gisForms.OSMWidget(
-                                        attrs={'map_width': 800,
-                                               'map_height': 500,
-                                               'default_lon': -121.3846841,
-                                               'default_lat': 44.0612385}))
 
     class Meta:
         model = CameraPoint
