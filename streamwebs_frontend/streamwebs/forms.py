@@ -195,6 +195,9 @@ class RiparianTransectForm(forms.ModelForm):
 
 
 class PhotoPointImageForm(forms.ModelForm):
+    date = forms.DateField(
+        widget=forms.DateInput(attrs={'class': 'datepicker'}),
+    )
     class Meta:
         model = PhotoPointImage
         fields = ('image', 'date')
@@ -211,7 +214,9 @@ class CameraPointForm(forms.ModelForm):
     cp_date = forms.DateField(
         widget=forms.DateInput(attrs={'class': 'datepicker'}),
     )
-
+    description = forms.CharField(
+        widget=forms.Textarea(attrs={'class': 'materialize-textarea'})
+    )
     class Meta:
         model = CameraPoint
         fields = ('site', 'cp_date', 'location', 'map_datum', 'description')

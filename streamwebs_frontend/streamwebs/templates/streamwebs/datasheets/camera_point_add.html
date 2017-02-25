@@ -74,22 +74,22 @@
               {{ camera_form.media }}
               <div class="container">
                 <h5>Location Input</h5>
-                <div class ="input-field">
-                    {{ camera_form.cp_date.label }}
-                    {{ camera_form.cp_date.errors | striptags }}
-                    {{ camera_form.cp_date }}
+                <div class="input-field col s12">
+                  <label for="{{ camera_form.cp_date.label }}">Cp Date</label>
+                  {{ camera_form.cp_date }}
+                  {{ camera_form.cp_date.errors | striptags }}
                 </div>
-                <div class ="input-field">
-                    {{ camera_form.description.label }}
-                    {{ camera_form.description.errors | striptags }}
-                    {{ camera_form.description }}
+                <div class ="input-field col s12">
+                  <label for="{{ camera_form.description.label }}">Description</label>
+                  {{ camera_form.description }}
+                  {{ camera_form.description.errors | striptags }}
                 </div>
-                <div class ="input-field">
-                    {{ camera_form.map_datum.label }}
-                    {{ camera_form.map_datum.errors | striptags }}
-                    {{ camera_form.map_datum }}
+                <div class ="input-field col s12">
+                  <label for="{{ camera_form.map_datum.label }}">Map Datum</label>
+                  {{ camera_form.map_datum }}
+                  {{ camera_form.map_datum.errors | striptags }}
                 </div>
-                <div class ="input-field">
+                <div class ="input-field col s12">
                     {{ camera_form.location.label }}
                     {{ camera_form.location.errors | striptags }}
                     <!-- {{ camera_form.location }} -->
@@ -109,24 +109,24 @@
                 <div class="col s4">
                   <h6>Photo #{{ forloop.counter }}</h6>
                   <div class ="input-field">
-                      {{ p_form.compass_bearing.label }}
-                      {{ p_form.compass_bearing.errors | striptags }}
-                      {{ p_form.compass_bearing }}
+                    <label for="{{ p_form.compass_bearing.label }}">Compass Bearing</label>
+                    {{ p_form.compass_bearing }}
+                    {{ p_form.compass_bearing.errors | striptags }}
                   </div>
                   <div class ="input-field">
-                      {{ p_form.distance.label }}
-                      {{ p_form.distance.errors | striptags }}
-                      {{ p_form.distance }}
+                    <label for="{{ p_form.distance.label }}">{{ p_form.distance.label }}</label>
+                    {{ p_form.distance }}
+                    {{ p_form.distance.errors | striptags }}
                   </div>
                   <div class ="input-field">
-                      {{ p_form.camera_height.label }}
-                      {{ p_form.camera_height.errors | striptags }}
-                      {{ p_form.camera_height }}
+                    <label for="{{ p_form.camera_height.label }}">{{ p_form.camera_height.label }}</label>
+                    {{ p_form.camera_height }}
+                    {{ p_form.camera_height.errors | striptags }}
                   </div>
                   <div class ="input-field">
-                    {{ p_form.notes.label }}
-                    {{ p_form.notes.errors | striptags }}
+                    <label for="{{ p_form.notes.label }}">{{ p_form.notes.label }}</label>
                     {{ p_form.notes }}
+                    {{ p_form.notes.errors | striptags }}
                   </div>
                 </div>
                 {% endfor %}
@@ -135,15 +135,23 @@
                 {{ ppi_formset.management_form }}
                 {% for ppi_form in ppi_formset %}
                 <div class="col s4">
-                  <div class ="input-field">
-                      {{ ppi_form.image.label }}
-                      {{ ppi_form.image.errors | striptags }}
+                  <div class ="file-field input-field">
+                    <div class="btn">
+                      <span>{{ ppi_form.image.label }}</span>
+                      <input type="file">
+                    </div>
+                    <div class="file-path-wrapper">
+                      <!-- <input class="file-path validate" type="text"> -->
                       {{ ppi_form.image }}
+                    </div>
+                    {{ ppi_form.image.errors | striptags }}
+
                   </div>
+
                   <div class ="input-field">
-                      {{ ppi_form.date.label }}
-                      {{ ppi_form.date.errors | striptags }}
-                      {{ ppi_form.date }}
+                    <label for="{{ ppi_form.date.label }}">Date</label>
+                    {{ ppi_form.date }}
+                    {{ ppi_form.date.errors | striptags }}
                   </div>
                 </div>
                 {% endfor %}
@@ -161,6 +169,20 @@
     <a href="{% url 'streamwebs:login' %}">{% trans "Log in here." %}</a>
     {% endif %}
 </div>
+<script>
+$(document).ready(function() {
+  $('select').material_select();
+
+  $('.datepicker').pickadate({
+    today: '',
+    selectMonths: true, // Creates a dropdown to control month
+    selectYears: 100, // Creates a dropdown of 15 years to control year
+    max: true, // set max to today
+    format: 'yyyy-dd-mm',
+  });
+});
+
+</script>
 {% endblock %}
 
 {% block scripts %}
