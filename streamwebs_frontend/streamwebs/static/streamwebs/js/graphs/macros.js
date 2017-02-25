@@ -223,14 +223,16 @@ const useLineGraph = function useLineGraph() {
             name: name,
             values: formatted.map((d) => {
                 return {date: d.date, value: d[name]};
+            }).filter(d => {
+                return !isNaN(d.value);
             })
         };
     });
 
     const container = outerContainer;
     const margin = {top: 20, right: 200, bottom: 30, left: 40};
-    const width = (container.width() * 0.7) - margin.left - margin.right;
-    const height = 192 - margin.top - margin.bottom;
+    const width = container.width() - margin.left - margin.right;
+    const height = 250 - margin.top - margin.bottom;
 
     const x = d3.scaleTime()
         .range([0, width]);
@@ -238,20 +240,20 @@ const useLineGraph = function useLineGraph() {
     x.domain([
         date_range[0] !== 0 ? new Date(date_range[0]) :
             d3.min(formatted, (d) => {
-                return new Date(d.date)
+                return new Date(d.date) || new Date(new Date().getTime() - 86400)
             }),
         date_range[1] !== Number.MAX_SAFE_INTEGER ? new Date(date_range[1]) :
             d3.max(formatted, (d) => {
-                return new Date(d.date)
+                return new Date(d.date) || new Date()
             }),
     ]);
     const y = d3.scaleLinear()
         .domain([0,
             d3.max(types, (c) => {
                 return d3.max(c.values, (d) => {
-                    return d.value
-                })
-            })
+                    return d.value || 1; // Prevent NaNs from spoiling the max
+                }) || 1
+            }) || 1
         ])
         .range([height, 0]);
     const z = d3.scaleOrdinal()
