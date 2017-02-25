@@ -270,21 +270,24 @@ const createGraph = function createGraph() {
                 }),
         ]);
         const water_min = d3.min(types.water_temperature, d => {
-            return d.value;
-        }) || 0;
+            // Sometimes we have NaN, null, or undefined, so remove those
+            // so that d3.min returns a numeric value
+            return d.value || 0;
+        }) || 0; // If d3.min is given an empty array, it returns Nan,
+                 // So substitute a reasonable default
         const air_min = d3.min(types.air_temperature, d => {
-            return d.value;
+            return d.value || 0;
         }) || 0;
         const water_max = d3.max(types.water_temperature, (d) => {
-            return d.value;
+            return d.value || 1;
         }) || 1;
         const air_max = d3.max(types.air_temperature, (d) => {
-            return d.value;
+            return d.value || 1;
         }) || 1;
         const y = d3.scaleLinear()
             .domain([
-                Math.floor(Math.min(0, water_min, air_min)),
-                Math.ceil(Math.max(1, water_max, air_max))
+                Math.floor(Math.min(0, water_min, air_min)) || 0,
+                Math.ceil(Math.max(1, water_max, air_max)) || 1
             ])
             .range([height, 0]);
         const z = d3.scaleOrdinal()
@@ -422,7 +425,7 @@ const createGraph = function createGraph() {
         ]);
         const y = d3.scaleLinear()
             .domain([0, Math.ceil(d3.max(types.dissolved_oxygen, (d) => {
-                return d.value;
+                return d.value || 1;
             }) || 1)
             ])
             .range([height, 0]);
@@ -599,10 +602,10 @@ const createGraph = function createGraph() {
         const y = d3.scaleLinear()
             .domain([
                 Math.floor(Math.min(0, d3.min(types.turbidity, (d) => {
-                    return d.value;
+                    return d.value || 0;
                 }) || 0)),
                 Math.ceil(d3.max(types.turbidity, (d) => {
-                    return d.value;
+                    return d.value || 1;
                 }) || 1)
             ])
             .range([height, 0]);
@@ -691,10 +694,10 @@ const createGraph = function createGraph() {
         const y = d3.scaleLinear()
             .domain([
                 Math.floor(Math.min(0, d3.min(types.salinity, (d) => {
-                    return d.value;
+                    return d.value || 0;
                 }) || 0)),
                 Math.ceil(d3.max(types.salinity, (d) => {
-                    return d.value;
+                    return d.value || 1;
                 }) || 1)
             ])
             .range([height, 0]);
@@ -783,7 +786,7 @@ const createGraph = function createGraph() {
         const y = d3.scaleLinear()
             .domain([0,
                 Math.ceil(d3.max(types.conductivity, (d) => {
-                    return d.value;
+                    return d.value || 1;
                 }) || 1)
             ])
             .range([height, 0]);
@@ -874,24 +877,24 @@ const createGraph = function createGraph() {
                 Math.floor(Math.min(
                     0,
                     d3.min(types.total_solids, (d) => {
-                        return d.value;
+                        return d.value || 0;
                     }) || 0,
                     d3.min(types.ammonia, (d) => {
-                        return d.value;
+                        return d.value || 0;
                     }) || 0,
                     d3.min(types.nitrate, (d) => {
-                        return d.value;
+                        return d.value || 0;
                     }) || 0,
                     d3.min(types.nitrite, (d) => {
-                        return d.value;
+                        return d.value || 0;
                     }) || 0,
                     d3.min(types.phosphates, (d) => {
-                        return d.value;
+                        return d.value || 0;
                     }) || 0
                 )),
                 Math.ceil(
                     d3.max(types.total_solids, (d) => {
-                        return d.value;
+                        return d.value || 1;
                     }) || 1
                 )
             ])
@@ -1033,7 +1036,7 @@ const createGraph = function createGraph() {
         const y = d3.scaleLinear()
             .domain([0,
                 Math.ceil(d3.max(types.bod, (d) => {
-                    return d.value;
+                    return d.value || 1;
                 }) || 1)
             ])
             .range([height, 0]);
@@ -1122,7 +1125,7 @@ const createGraph = function createGraph() {
         const y = d3.scaleLinear()
             .domain([0,
                 Math.ceil(d3.max(types.fecal_coliform, (d) => {
-                    return d.value;
+                    return d.value || 1;
                 }) || 1)
             ])
             .range([height, 0]);
