@@ -237,9 +237,10 @@ const createGraph = function createGraph() {
         }),
     };
 
-    const margin = {top: 20, right: 200, bottom: 30, left: 40};
+    const margin = {top: 20, right: 100, bottom: 30, left: 40};
     const defineWidth = function definedefineWidth(container) {
-        return (Math.min(container.width(), 35 * formatted.length)) -
+        return (Math.max(container.width() / 2,
+                Math.min(container.width(), 35 * formatted.length))) -
             margin.left - margin.right;
     };
 
