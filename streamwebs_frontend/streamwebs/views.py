@@ -25,9 +25,71 @@ from streamwebs.models import (
     TransectZone, Canopy_Cover, CameraPoint, PhotoPoint,
     PhotoPointImage, Soil_Survey, Resource, School)
 
+from datetime import datetime
+#from djqscsv import write_csv
 import json
 import copy
-import datetime
+import csv
+
+
+class Echo(object):
+    """An object that implements just the write method of the file-like
+    interface"""
+    def write(self, value):
+        """Write the value by returning it, instead of storing in a buffer."""
+        return value
+
+
+#def stream_macros(request, site_slug):
+#    """A view that streams a large CSV file."""
+#    # Generate a seqence of rows. The range is based on the maximum number of
+#    # rows that can be handled by a single sheet in most spreadsheet apps
+#
+#    #if request.method == 'GET':
+#    #macros = Macroinvertebrates.objects.select_related(site_slug=site_slug)
+#    macros = Macroinvertebrates.objects.all()
+#
+#    row = (["Row{}".format(idx), str(idx)] for idx in range(65536))
+#    pseudo_buffer = Echo()
+#    writer = csv.writer(pseudo_buffer)
+#    response = StreamingHttpResponse((writer.writerow(row) for row in rows),
+#                                       content_type="text/csv")
+#    response['Content-Disposition'] = 'attachment; filename="macros.csv"'
+#    return response
+
+def export_macros(request, site_slug):
+    site = Site.objects.get(site_slug=site_slug)
+    qs = Macroinvertebrates.objects.filter(site_id=site.id)
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="macros.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(['test', 'foo', 'bar', 'baz', 'fizz'])
+    writer.writerow(['b', 'r', 'v', 'a', 'here']) #, '"quotes"']) -- quoted items seem to break format?
+
+    return response
+
+#    outfile_path = site.name = '.csv'
+#
+#    model = qs.model
+#    writer = csv.writer(open(outfile_path, 'w'))
+#
+#    headers = []
+#    for field in model._meta.fields:
+#        headers.append(field.name)
+#    writer.writerow(headers)
+#
+#    for obj in qs:
+#        row = []
+#        for field in headers:
+#            val = getattr(obj, field)
+#            if callable(val):
+#                val = val()
+#            if type(val) == unicode:
+#                val = val.encode("utf-8")
+#            row.append(val)
+#        writer.writerow(row)
 
 
 def _timestamp(dt):
