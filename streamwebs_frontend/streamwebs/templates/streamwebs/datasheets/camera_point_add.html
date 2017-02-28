@@ -72,7 +72,6 @@
             <div class="loc-input">
               <!-- CAMERA FORM: -->
               {{ camera_form.media }}
-              <div class="container">
                 <h5>Location Input</h5>
                 <div class="input-field col s12">
                   <label for="{{ camera_form.cp_date.label }}">Cp Date</label>
@@ -97,7 +96,6 @@
                     <input type="hidden" id="input_lat" name="lat" value="{{ site.to_dict.location.y }}">
                     <input type="hidden" id="input_lng" name="lng" value="{{ site.to_dict.location.x }}">
                 </div>
-              </div>
               <!-- END CAMERA FORM -->
             </div>
             <br>
@@ -130,24 +128,16 @@
                   </div>
                 </div>
                 {% endfor %}
-              </div>
-              <div class="row">
+
                 {{ ppi_formset.management_form }}
                 {% for ppi_form in ppi_formset %}
                 <div class="col s4">
-                  <div class ="file-field input-field">
-                    <div class="btn">
-                      <span>{{ ppi_form.image.label }}</span>
-                      <input type="file">
-                    </div>
-                    <div class="file-path-wrapper">
-                      <!-- <input class="file-path validate" type="text"> -->
-                      {{ ppi_form.image }}
-                    </div>
+                  <div class ="input-field">
+                    {{ ppi_form.image.label }}
+                    <br>
+                    {{ ppi_form.image }}
                     {{ ppi_form.image.errors | striptags }}
-
                   </div>
-
                   <div class ="input-field">
                     <label for="{{ ppi_form.date.label }}">Date</label>
                     {{ ppi_form.date }}

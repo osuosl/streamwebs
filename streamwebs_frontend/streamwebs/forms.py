@@ -198,12 +198,17 @@ class PhotoPointImageForm(forms.ModelForm):
     date = forms.DateField(
         widget=forms.DateInput(attrs={'class': 'datepicker'}),
     )
+
     class Meta:
         model = PhotoPointImage
         fields = ('image', 'date')
 
 
 class PhotoPointForm(forms.ModelForm):
+    notes = forms.CharField(
+        widget=forms.Textarea(attrs={'class': 'materialize-textarea'})
+    )
+
     class Meta:
         model = PhotoPoint
         fields = ('camera_point', 'pp_date', 'compass_bearing', 'distance',
@@ -217,6 +222,7 @@ class CameraPointForm(forms.ModelForm):
     description = forms.CharField(
         widget=forms.Textarea(attrs={'class': 'materialize-textarea'})
     )
+
     class Meta:
         model = CameraPoint
         fields = ('site', 'cp_date', 'location', 'map_datum', 'description')
