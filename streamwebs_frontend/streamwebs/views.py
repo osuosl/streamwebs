@@ -3,7 +3,8 @@ from __future__ import print_function
 from django.http import HttpResponseRedirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
@@ -15,20 +16,20 @@ from streamwebs.forms import (
     UserForm, UserProfileForm, RiparianTransectForm, MacroinvertebratesForm,
     PhotoPointImageForm, PhotoPointForm, CameraPointForm, WQSampleForm,
     WQSampleFormReadOnly, WQForm, WQFormReadOnly, SiteForm, Canopy_Cover_Form,
-    SoilSurveyForm, SoilSurveyFormReadOnly)
+    SoilSurveyForm, SoilSurveyFormReadOnly, StatisticsForm)
 
 from streamwebs.models import (
     Macroinvertebrates, Site, Water_Quality, WQ_Sample, RiparianTransect,
     TransectZone, Canopy_Cover, CameraPoint, PhotoPoint,
-    PhotoPointImage, Soil_Survey, Resource)
+    PhotoPointImage, Soil_Survey, Resource, School)
 
-from datetime import datetime
 import json
 import copy
+import datetime
 
 
 def _timestamp(dt):
-    return (dt - datetime(1970, 1, 1)).total_seconds()
+    return (dt - datetime.datetime(1970, 1, 1)).total_seconds()
 
 
 def index(request):
@@ -740,6 +741,105 @@ def soil_survey_edit(request, site_slug):
         request, 'streamwebs/datasheets/soil_edit.html', {
             'soil_form': soil_form,
             'site': site
+        }
+    )
+
+
+@login_required
+@permission_required('streamwebs.can_view_stats', raise_exception=True)
+def admin_site_statistics(request):
+    """
+    The view for viewing site statistics (admin only)
+    """
+    stats_form = StatisticsForm()
+    default = True
+
+    # A user is defined as "active" if they have logged in w/in the last 3 yrs
+    today = datetime.date.today()
+    user_start = datetime.date(today.year - 3, today.month, today.day)
+    start = datetime.date(1970, 1, 1)
+    end = today
+
+    if request.method == 'POST':
+        stats_form = StatisticsForm(data=request.POST)
+
+        if stats_form.is_valid():
+            # At least one date provided:
+            if (stats_form.cleaned_data['start'] is not None or
+                    stats_form.cleaned_data['end'] is not None):
+                default = False
+                # start date provided:
+                if stats_form.cleaned_data['start'] is not None:
+                    start = stats_form.cleaned_data['start']
+                # end date provided:
+                if stats_form.cleaned_data['end'] is not None:
+                    end = stats_form.cleaned_data['end']
+
+                users = User.objects.filter(date_joined__range=(start, end))
+            else:
+                users = User.objects.filter(
+                    last_login__range=(user_start, end))
+
+    # no form submission: default view displays "all time" total stats
+    else:
+        users = User.objects.filter(last_login__range=(user_start, end))
+
+    num_soil = Soil_Survey.objects.filter(date__range=(start, end)).count()
+    num_transect = RiparianTransect.objects.filter(
+        date_time__range=(start, end)).count()
+    num_camera = CameraPoint.objects.filter(
+        cp_date__range=(start, end)).count()
+    num_macro = Macroinvertebrates.objects.filter(
+        date_time__range=(start, end)).count()
+    num_canopy = Canopy_Cover.objects.filter(
+        date_time__range=(start, end)).count()
+    num_water = Water_Quality.objects.filter(date__range=(start, end)).count()
+    total = (num_soil + num_transect + num_camera + num_macro + num_canopy +
+             num_water)
+
+    soil_sites = set(Site.objects.filter(
+        soil_survey__date__range=(start, end)))
+    transect_sites = set(Site.objects.filter(
+        ripariantransect__date_time__range=(start, end)))
+    camera_sites = set(Site.objects.filter(
+        camerapoint__cp_date__range=(start, end)))
+    macro_sites = set(Site.objects.filter(
+        macroinvertebrates__date_time__range=(start, end)))
+    canopy_sites = set(Site.objects.filter(
+        canopy_cover__date_time__range=(start, end)))
+    water_sites = set(Site.objects.filter(
+        water_quality__date__range=(start, end)))
+    all_sites = (soil_sites | transect_sites | camera_sites | macro_sites |
+                 canopy_sites | water_sites)
+
+    soil_sch = set(School.objects.filter(
+        soil_survey__date__range=(start, end)))
+    # transect_sch = set(School.objects.filter(
+    #     ripariantransect__date_time__range=(start, end)))
+    # camera_sch = set(School.objects.filter(
+    #     camerapoint__cp_date__range=(start, end)))
+    # macro_sch = set(School.objects.filter(
+    #     macroinvertebrates__date_time__range=(start, end)))
+    canopy_sch = set(School.objects.filter(
+        canopy_cover__date_time__range=(start, end)))
+    water_sch = set(School.objects.filter(
+        water_quality__date__range=(start, end)))
+    # all_schools = (soil_sch | transect_sch | camera_sch | macro_sch |
+    #                canopy_sch | water_sch)
+    all_schools = soil_sch | canopy_sch | water_sch
+
+    return render(request, 'streamwebs/admin/stats.html', {
+        'stats_form': stats_form,
+        'all_time': default,
+        'users': {'count': users.count(), 'users': users},
+        'user_start': user_start,
+        'sheets': {'total': total, 'soil': num_soil, 'transect': num_transect,
+                   'camera': num_camera, 'macro': num_macro,
+                   'canopy': num_canopy, 'water': num_water},
+        'sites': {'total': len(all_sites), 'sites': all_sites},
+        'schools': {'total': len(all_schools), 'schools': all_schools},
+        'start': start,
+        'end': end,
         }
     )
 

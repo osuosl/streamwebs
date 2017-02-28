@@ -66,6 +66,7 @@ urlpatterns = [
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/soil/(?P<data_id>\d+)/$',
         views.soil_survey, name='soil'),
 
+    url(r'^statistics/$', views.admin_site_statistics, name='stats'),
     url(r'^register/$', views.register, name='register'),
     url(r'^login/$', views.user_login, name='login'),
     url(r'^logout/$', views.user_logout, name='logout'),

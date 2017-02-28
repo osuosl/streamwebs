@@ -1,0 +1,152 @@
+[
+{
+    "model": "streamwebs.school",
+    "pk": 1,
+    "fields": {
+        "name": "A C Houghton Elementary School",
+        "school_type": "Elementary",
+        "address": "1105 N Main Ave",
+        "city": "Irrigon",
+        "province": "Oregon, United States",
+        "zipcode": "97844-7050",
+        "active": true,
+        "created": "2017-01-30T08:56:30.177",
+        "modified": "2017-01-30T08:56:30.177"
+    }
+},
+{
+    "model": "streamwebs.school",
+    "pk": 2,
+    "fields": {
+        "name": "Abernethy Elementary School",
+        "school_type": "Elementary",
+        "address": "2421 Se Orange Ave",
+        "city": "Portland",
+        "province": "Oregon, United States",
+        "zipcode": "97214-5398",
+        "active": true,
+        "created": "2017-01-30T08:56:30.198",
+        "modified": "2017-01-30T08:56:30.198"
+    }
+},
+{
+    "model": "streamwebs.school",
+    "pk": 3,
+    "fields": {
+        "name": "Abraham Lincoln Elementary",
+        "school_type": "Elementary",
+        "address": "3101 Mcloughlin Dr",
+        "city": "Medford",
+        "province": "Oregon, United States",
+        "zipcode": "97504-9237",
+        "active": true,
+        "created": "2017-01-30T08:56:30.211",
+        "modified": "2017-01-30T08:56:30.211"
+    }
+},
+{
+    "model": "streamwebs.school",
+    "pk": 4,
+    "fields": {
+        "name": "Academy For Character Education",
+        "school_type": "ElementaryMiddle schoolHigh school",
+        "address": "Po Box 1652",
+        "city": "Cottage Grove",
+        "province": "Oregon, United States",
+        "zipcode": "97424",
+        "active": true,
+        "created": "2017-01-30T08:56:30.220",
+        "modified": "2017-01-30T08:56:30.220"
+    }
+},
+{
+    "model": "streamwebs.school",
+    "pk": 5,
+    "fields": {
+        "name": "Academy Of Arts And Academics",
+        "school_type": "High school",
+        "address": "615 Main St",
+        "city": "Springfield",
+        "province": "Oregon, United States",
+        "zipcode": "97477-4764",
+        "active": true,
+        "created": "2017-01-30T08:56:30.228",
+        "modified": "2017-01-30T08:56:30.228"
+    }
+},
+{
+    "model": "streamwebs.school",
+    "pk": 6,
+    "fields": {
+        "name": "Academy Of International Studies (at Woodburn)",
+        "school_type": "High school",
+        "address": "",
+        "city": "",
+        "province": "Oregon, United States",
+        "zipcode": "",
+        "active": true,
+        "created": "2017-01-30T08:56:30.236",
+        "modified": "2017-01-30T08:56:30.236"
+    }
+},
+{
+    "model": "streamwebs.school",
+    "pk": 7,
+    "fields": {
+        "name": "Ace Academy",
+        "school_type": "High school",
+        "address": "",
+        "city": "",
+        "province": "Oregon, United States",
+        "zipcode": "",
+        "active": true,
+        "created": "2017-01-30T08:56:30.245",
+        "modified": "2017-01-30T08:56:30.245"
+    }
+},
+{
+    "model": "streamwebs.school",
+    "pk": 8,
+    "fields": {
+        "name": "Ackerman Middle School",
+        "school_type": "Middle school",
+        "address": "350 Se 13th Ave",
+        "city": "Canby",
+        "province": "Oregon, United States",
+        "zipcode": "97013-9701",
+        "active": true,
+        "created": "2017-01-30T08:56:30.253",
+        "modified": "2017-01-30T08:56:30.253"
+    }
+},
+{
+    "model": "streamwebs.school",
+    "pk": 9,
+    "fields": {
+        "name": "Adams Elementary School",
+        "school_type": "Elementary",
+        "address": "950 W 22nd Ave",
+        "city": "Eugene",
+        "province": "Oregon, United States",
+        "zipcode": "97405-2199",
+        "active": true,
+        "created": "2017-01-30T08:56:30.261",
+        "modified": "2017-01-30T08:56:30.261"
+    }
+},
+{
+    "model": "streamwebs.school",
+    "pk": 10,
+    "fields": {
+        "name": "Adams Elementary School",
+        "school_type": "Elementary",
+        "address": "1615 Sw 35th St",
+        "city": "Corvallis",
+        "province": "Oregon, United States",
+        "zipcode": "97333-1197",
+        "active": true,
+        "created": "2017-01-30T08:56:30.270",
+        "modified": "2017-01-30T08:56:30.270"
+    }
+}
+]

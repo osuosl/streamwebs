@@ -1,0 +1,128 @@
+[
+{
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$Q0adLsFbj2Nz$b2dMvHxMvWf0FsKcZEgsKIaLbFMuj3de2eVtUdzjX94=",
+        "last_login": "2017-01-30T09:01:48.682",
+        "is_superuser": true,
+        "username": "root",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2017-01-30T09:01:42.517",
+        "groups": [1],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 2,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$2aGP44BuFdtX$XK1kJ4UoMqD2sezFEJXM8TmDadV6Hf+d6VIHjEJf0oQ=",
+        "last_login": "2015-12-17T15:26:00",
+        "is_superuser": false,
+        "username": "KANYE_WEST",
+        "first_name": "Alex",
+        "last_name": "Win",
+        "email": "pvector@osuosl.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2014-12-17T15:26:00",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 3,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$wyW56DWEv286$OefyLnXnKbvZRHhtASyvLxSAyr4yHQ6roPsjah8qxVs=",
+        "last_login": "2012-09-14T11:02:00",
+        "is_superuser": false,
+        "username": "randy_savage",
+        "first_name": "A",
+        "last_name": "RandomStudent",
+        "email": "randy@savage.net",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2011-09-14T11:02:00",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 4,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$ioDECiKUwlvX$mQPDukGzdkdDjaWg5HvyIsxZPlGWDEcoFKAbofMRPec=",
+        "last_login": "2013-11-30T13:46:00",
+        "is_superuser": false,
+        "username": "annilee",
+        "first_name": "Annie",
+        "last_name": "Lee",
+        "email": "annilee@osuosl.info",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2013-10-31T13:46:00",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 5,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$1E4Gv7nrDQfE$oECVwE+wYm8a/whEEfSzmvwF4+TjNGxObG8Y27cpiG8=",
+        "last_login": "2011-09-15T10:59:00",
+        "is_superuser": false,
+        "username": "harambe",
+        "first_name": "Harambe",
+        "last_name": "Harambe",
+        "email": "harambe@neo4j.edu",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2011-09-14T10:59:00",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 6,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$ZSuSdEB5HP2B$nvgypbaHwqk00ZrsB55HWlnuIRdithfNuFCHw2ZgsEU=",
+        "last_login": "2014-10-31T13:45:00",
+        "is_superuser": false,
+        "username": "aithai",
+        "first_name": "aileeen",
+        "last_name": "thai",
+        "email": "aiathai@osuoal.zork",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2013-10-31T13:45:00",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 7,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$jl1cOII2kfnd$EXgp60gftDa2pqL65JLEvQam4YrPenwraiutMQy3NoM=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "freenode",
+        "first_name": "FREE",
+        "last_name": "NODE",
+        "email": "freenode@freenode.freenode",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2011-09-14T10:57:00",
+        "groups": [],
+        "user_permissions": []
+    }
+}
+]

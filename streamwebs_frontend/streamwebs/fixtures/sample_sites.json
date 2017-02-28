@@ -1,0 +1,156 @@
+[
+{
+    "model": "streamwebs.site",
+    "pk": 5,
+    "fields": {
+        "site_name": "Alex Delgado",
+        "description": "",
+        "site_slug": "alex-delgado",
+        "location": "SRID=4326;POINT (-123.2226560000000006 44.0875849999999971)",
+        "image": "",
+        "active": true,
+        "created": "2013-01-15T12:20:00",
+        "modified": "2013-01-15T12:20:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 6,
+    "fields": {
+        "site_name": "Amazon Creek",
+        "description": "",
+        "site_slug": "amazon-creek",
+        "location": "SRID=4326;POINT (-123.0859600000000000 44.0310709999999972)",
+        "image": "",
+        "active": true,
+        "created": "2011-08-18T13:48:00",
+        "modified": "2011-08-18T13:48:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 7,
+    "fields": {
+        "site_name": "Amazon Creek & Fox Hollow",
+        "description": "",
+        "site_slug": "amazon-creek-fox-hollow",
+        "location": "SRID=4326;POINT (-123.0762289999999979 44.0103489999999979)",
+        "image": "",
+        "active": true,
+        "created": "2013-03-10T22:09:00",
+        "modified": "2013-03-10T22:26:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 8,
+    "fields": {
+        "site_name": "Amazon Creek @ Frank Kinney Park",
+        "description": "",
+        "site_slug": "amazon-creek-frank-kinney-park",
+        "location": "SRID=4326;POINT (-123.0771730000000019 43.9978470000000002)",
+        "image": "",
+        "active": true,
+        "created": "2014-03-09T15:09:00",
+        "modified": "2014-03-09T15:09:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 9,
+    "fields": {
+        "site_name": "Amazon Headwaters - Martin Street trail",
+        "description": "",
+        "site_slug": "amazon-headwaters-martin-street-trail",
+        "location": "SRID=4326;POINT (-123.0789330000000064 43.9974759999999989)",
+        "image": "",
+        "active": true,
+        "created": "2013-10-22T05:18:00",
+        "modified": "2013-10-22T05:18:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 10,
+    "fields": {
+        "site_name": "Arrah Wanna Outdoor School",
+        "description": "",
+        "site_slug": "arrah-wanna-outdoor-school",
+        "location": "SRID=4326;POINT (-121.9767470000000031 45.3402960000000022)",
+        "image": "",
+        "active": true,
+        "created": "2010-09-02T09:55:00",
+        "modified": "2010-09-02T11:01:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 12,
+    "fields": {
+        "site_name": "Ashland Creek below Ashland Treatment Plant",
+        "description": "",
+        "site_slug": "ashland-creek-below-ashland-treatment-plant",
+        "location": "SRID=4326;POINT (-122.7159230000000036 42.2145650000000003)",
+        "image": "",
+        "active": true,
+        "created": "2013-01-09T12:11:00",
+        "modified": "2013-01-09T12:11:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 16,
+    "fields": {
+        "site_name": "Bald Hill Farm- Mulkey Creek",
+        "description": "",
+        "site_slug": "bald-hill-farm-mulkey-creek",
+        "location": "SRID=4326;POINT (-123.3335179999999980 44.5733090000000018)",
+        "image": "",
+        "active": true,
+        "created": "2015-08-25T11:02:00",
+        "modified": "2016-06-28T13:27:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 35,
+    "fields": {
+        "site_name": "Blair Creek",
+        "description": "",
+        "site_slug": "blair-creek",
+        "location": "SRID=4326;POINT (-123.409595 44.539988)",
+        "image": "",
+        "active": true,
+        "created": "2009-04-20T17:02:00",
+        "modified": "2010-09-24T17:00:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 86,
+    "fields": {
+        "site_name": "Hamilton Creek - LHS & Santiam Watershed Council",
+        "description": "",
+        "site_slug": "hamilton-creek-lhs-santiam-watershed-council",
+        "location": "SRID=4326;POINT (-124.4172910000000059 43.1143459999999976)",
+        "image": "",
+        "active": true,
+        "created": "2014-03-03T14:27:00",
+        "modified": "2014-03-03T14:27:00"
+    }
+},
+{
+    "model": "streamwebs.site",
+    "pk": 188,
+    "fields": {
+        "site_name": "SE Belmont",
+        "description": "",
+        "site_slug": "se-belmont",
+        "location": "SRID=4326;POINT (-122.5923200000000008 45.5181680000000028)",
+        "image": "",
+        "active": true,
+        "created": "2009-10-20T16:52:00",
+        "modified": "2014-12-28T10:54:00"
+    }
+}
+]
