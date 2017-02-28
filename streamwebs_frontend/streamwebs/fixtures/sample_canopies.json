@@ -1,0 +1,212 @@
+[
+{
+    "model": "streamwebs.canopy_cover",
+    "pk": 1,
+    "fields": {
+        "school": null,
+        "date_time": "2016-02-24T00:00:00",
+        "site": 86,
+        "weather": "",
+        "north_cc": 1015683,
+        "east_cc": 2313919,
+        "south_cc": 13427876,
+        "west_cc": 3835821,
+        "est_canopy_cover": 52
+    }
+},
+{
+    "model": "streamwebs.canopy_cover",
+    "pk": 3,
+    "fields": {
+        "school": 1,
+        "date_time": "2016-02-24T09:15:00",
+        "site": 86,
+        "weather": "",
+        "north_cc": 32,
+        "east_cc": 133120,
+        "south_cc": 16515072,
+        "west_cc": 16519168,
+        "est_canopy_cover": 16
+    }
+},
+{
+    "model": "streamwebs.canopy_cover",
+    "pk": 4,
+    "fields": {
+        "school": 1,
+        "date_time": "2016-02-24T00:00:00",
+        "site": 86,
+        "weather": "",
+        "north_cc": 3,
+        "east_cc": 32816,
+        "south_cc": 16777215,
+        "west_cc": 4,
+        "est_canopy_cover": 30
+    }
+},
+{
+    "model": "streamwebs.canopy_cover",
+    "pk": 5,
+    "fields": {
+        "school": 1,
+        "date_time": "2016-02-24T00:00:00",
+        "site": 86,
+        "weather": "",
+        "north_cc": 16777215,
+        "east_cc": 16777215,
+        "south_cc": 16774092,
+        "west_cc": 16777215,
+        "est_canopy_cover": 90
+    }
+},
+{
+    "model": "streamwebs.canopy_cover",
+    "pk": 16,
+    "fields": {
+        "school": 2,
+        "date_time": "2015-03-09T00:00:00",
+        "site": 86,
+        "weather": "",
+        "north_cc": 266304,
+        "east_cc": 2296882,
+        "south_cc": 1966079,
+        "west_cc": 71,
+        "est_canopy_cover": 35
+    }
+},
+{
+    "model": "streamwebs.canopy_cover",
+    "pk": 20,
+    "fields": {
+        "school": 3,
+        "date_time": "2014-03-12T00:00:00",
+        "site": 86,
+        "weather": "",
+        "north_cc": 16773055,
+        "east_cc": 574239,
+        "south_cc": 16777215,
+        "west_cc": 16777215,
+        "est_canopy_cover": 80
+    }
+},
+{
+    "model": "streamwebs.canopy_cover",
+    "pk": 21,
+    "fields": {
+        "school": 4,
+        "date_time": "2014-03-12T00:00:00",
+        "site": 86,
+        "weather": "",
+        "north_cc": 16777212,
+        "east_cc": 16777215,
+        "south_cc": 16777215,
+        "west_cc": 16777215,
+        "est_canopy_cover": 94
+    }
+},
+{
+    "model": "streamwebs.canopy_cover",
+    "pk": 23,
+    "fields": {
+        "school": 4,
+        "date_time": "2011-04-14T09:57:00",
+        "site": 188,
+        "weather": "",
+        "north_cc": 17152,
+        "east_cc": 280,
+        "south_cc": 11534336,
+        "west_cc": 1597440,
+        "est_canopy_cover": 13
+    }
+},
+{
+    "model": "streamwebs.canopy_cover",
+    "pk": 24,
+    "fields": {
+        "school": 5,
+        "date_time": "2014-03-12T00:00:00",
+        "site": 86,
+        "weather": "",
+        "north_cc": 16644095,
+        "east_cc": 16777215,
+        "south_cc": 16777215,
+        "west_cc": 16777213,
+        "est_canopy_cover": 93
+    }
+},
+{
+    "model": "streamwebs.canopy_cover",
+    "pk": 26,
+    "fields": {
+        "school": 6,
+        "date_time": "2010-10-14T00:00:00",
+        "site": 188,
+        "weather": "",
+        "north_cc": 0,
+        "east_cc": 1024,
+        "south_cc": 65536,
+        "west_cc": 8192,
+        "est_canopy_cover": 3
+    }
+},
+{
+    "model": "streamwebs.canopy_cover",
+    "pk": 32,
+    "fields": {
+        "school": 7,
+        "date_time": "2016-02-24T09:54:00",
+        "site": 86,
+        "weather": "",
+        "north_cc": 16252895,
+        "east_cc": 16773087,
+        "south_cc": 15958080,
+        "west_cc": 8388543,
+        "est_canopy_cover": 74
+    }
+},
+{
+    "model": "streamwebs.canopy_cover",
+    "pk": 33,
+    "fields": {
+        "school": 8,
+        "date_time": "2016-02-24T00:00:00",
+        "site": 86,
+        "weather": "",
+        "north_cc": 16777215,
+        "east_cc": 16644095,
+        "south_cc": 16710655,
+        "west_cc": 14542847,
+        "est_canopy_cover": 88
+    }
+},
+{
+    "model": "streamwebs.canopy_cover",
+    "pk": 45,
+    "fields": {
+        "school": 8,
+        "date_time": "2014-03-12T00:00:00",
+        "site": 86,
+        "weather": "",
+        "north_cc": 16777212,
+        "east_cc": 16773120,
+        "south_cc": 16777215,
+        "west_cc": 16777215,
+        "est_canopy_cover": 82
+    }
+},
+{
+    "model": "streamwebs.canopy_cover",
+    "pk": 53,
+    "fields": {
+        "school": 8,
+        "date_time": "2014-10-15T00:00:00",
+        "site": 35,
+        "weather": "",
+        "north_cc": 5009919,
+        "east_cc": 16576964,
+        "south_cc": 14480351,
+        "west_cc": 16510907,
+        "est_canopy_cover": 67
+    }
+}
+]

@@ -1,0 +1,223 @@
+[
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 1,
+    "fields": {
+        "school": "",
+        "date_time": "2010-06-18T16:10:00",
+        "weather": "",
+        "site": 188,
+        "slope": null,
+        "notes": "This area is very overgrown with salmon berry",
+        "nid": 2362
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 2,
+    "fields": {
+        "school": "",
+        "date_time": "2010-07-22T15:22:00",
+        "weather": "",
+        "site": 188,
+        "slope": null,
+        "notes": "The forest at this site is the result of neglected and unmanaged natural regrowth from logging, probably sometime in the 1940s or 1950s. Red Alder, Douglas fir and non-native invasive plants are dominant. Doug Fir and Red Cedar are slowly taking over.",
+        "nid": 2365
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 3,
+    "fields": {
+        "school": "",
+        "date_time": "2010-07-06T14:15:00",
+        "weather": "",
+        "site": 188,
+        "slope": "6.000",
+        "notes": "Trees are all about 20-30 years old",
+        "nid": 2366
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 4,
+    "fields": {
+        "school": "",
+        "date_time": "2010-08-29T09:14:00",
+        "weather": "",
+        "site": 188,
+        "slope": "4.000",
+        "notes": "pretty nice area, not a lot of damage from farming or invasive species",
+        "nid": 2467
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 10,
+    "fields": {
+        "school": "",
+        "date_time": "2011-06-08T23:35:00",
+        "weather": "",
+        "site": 188,
+        "slope": "11.000",
+        "notes": "these are field notes",
+        "nid": 3157
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 31,
+    "fields": {
+        "school": "",
+        "date_time": "2014-03-12T12:09:00",
+        "weather": "",
+        "site": 86,
+        "slope": "2.000",
+        "notes": "GROUP 1",
+        "nid": 5609
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 32,
+    "fields": {
+        "school": "",
+        "date_time": "2014-03-12T13:40:00",
+        "weather": "",
+        "site": 86,
+        "slope": "2.000",
+        "notes": "GROUP 2",
+        "nid": 5615
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 33,
+    "fields": {
+        "school": "",
+        "date_time": "2014-03-12T09:30:00",
+        "weather": "",
+        "site": 86,
+        "slope": "2.000",
+        "notes": "GROUP 4",
+        "nid": 5626
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 34,
+    "fields": {
+        "school": "",
+        "date_time": "2014-03-12T10:37:00",
+        "weather": "",
+        "site": 86,
+        "slope": "2.000",
+        "notes": "GROUP 5",
+        "nid": 5632
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 50,
+    "fields": {
+        "school": "",
+        "date_time": "2015-03-09T13:07:00",
+        "weather": "",
+        "site": 86,
+        "slope": "1.170",
+        "notes": "<p>Group 1:&nbsp; Lyn Leckie, Jaylene Johnson, AJ Wittrig, Tyler Hoerauf, Oracio Lopez, Cale Thompson</p>",
+        "nid": 7246
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 51,
+    "fields": {
+        "school": "",
+        "date_time": "2015-03-09T14:00:00",
+        "weather": "",
+        "site": 86,
+        "slope": "1.170",
+        "notes": "<p>Group 2:&nbsp; Kayla Yarbrough, Ashley Visconti, Cassi Lien, Eva Barrett, Ryan Restay, Veronica Jorgensen</p>",
+        "nid": 7276
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 52,
+    "fields": {
+        "school": "",
+        "date_time": "2015-03-09T12:08:00",
+        "weather": "",
+        "site": 86,
+        "slope": "1.170",
+        "notes": "<p>Group 3:&nbsp; Zoey Brown, Zach Henderson, Vanessa Johnson, Juliet Gordanier, Steven Mendoza, Jessica Valdivia-Garibay</p>",
+        "nid": 7311
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 53,
+    "fields": {
+        "school": "",
+        "date_time": "2015-03-09T12:40:00",
+        "weather": "",
+        "site": 86,
+        "slope": "1.170",
+        "notes": "<p>Group 4:&nbsp; Jorjia Cole, Amber Lowe, Tiffany Evans, Justus Humble, Anna Wright</p>",
+        "nid": 7336
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 54,
+    "fields": {
+        "school": "",
+        "date_time": "2016-02-24T10:11:00",
+        "weather": "",
+        "site": 86,
+        "slope": "60.000",
+        "notes": "<p>transect done on a slope</p>",
+        "nid": 11261
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 55,
+    "fields": {
+        "school": "",
+        "date_time": "2016-02-24T10:50:00",
+        "weather": "",
+        "site": 86,
+        "slope": "66.000",
+        "notes": "<p>transect on a slope</p>",
+        "nid": 11266
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 56,
+    "fields": {
+        "school": "",
+        "date_time": "2016-02-24T08:20:00",
+        "weather": "",
+        "site": 86,
+        "slope": "60.000",
+        "notes": "<p>Transect on a slope</p>",
+        "nid": 11271
+    }
+},
+{
+    "model": "streamwebs.ripariantransect",
+    "pk": 57,
+    "fields": {
+        "school": "",
+        "date_time": "2016-02-24T09:20:00",
+        "weather": "",
+        "site": 86,
+        "slope": "60.000",
+        "notes": "<p>Transect on a slope</p>",
+        "nid": 11276
+    }
+}
+]

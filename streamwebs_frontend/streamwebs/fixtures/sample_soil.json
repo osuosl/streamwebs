@@ -1,0 +1,466 @@
+[
+{
+    "model": "streamwebs.soil_survey",
+    "pk": 1,
+    "fields": {
+        "school": null,
+        "date": "2010-08-28T11:33:00",
+        "weather": "",
+        "site": 35,
+        "landscape_pos": "slope",
+        "cover_type": "shrubs",
+        "land_use": "agricultural",
+        "distance": "4.00",
+        "site_char": "",
+        "soil_type": "sand"
+    }
+},
+{
+    "model": "streamwebs.soil_survey",
+    "pk": 2,
+    "fields": {
+        "school": null,
+        "date": "2010-08-28T11:45:00",
+        "weather": "",
+        "site": 188,
+        "landscape_pos": "slope",
+        "cover_type": "rocks",
+        "land_use": "agricultural",
+        "distance": "11.00",
+        "site_char": "lots of ag run off",
+        "soil_type": "light_clay"
+    }
+},
+{
+    "model": "streamwebs.soil_survey",
+    "pk": 3,
+    "fields": {
+        "school": null,
+        "date": "2010-08-11T11:22:00",
+        "weather": "",
+        "site": 188,
+        "landscape_pos": "large_flat",
+        "cover_type": "bare_soil",
+        "land_use": "urban",
+        "distance": "10.06",
+        "site_char": "Used as a parking lot for over flow events.",
+        "soil_type": "clay_loam"
+    }
+},
+{
+    "model": "streamwebs.soil_survey",
+    "pk": 4,
+    "fields": {
+        "school": null,
+        "date": "2010-08-12T14:15:00",
+        "weather": "",
+        "site": 188,
+        "landscape_pos": "stream_bank",
+        "cover_type": "rocks",
+        "land_use": "wilderness",
+        "distance": "3.05",
+        "site_char": "dark blue water",
+        "soil_type": "loamy_sand"
+    }
+},
+{
+    "model": "streamwebs.soil_survey",
+    "pk": 16,
+    "fields": {
+        "school": null,
+        "date": "2014-03-13T21:22:00",
+        "weather": "",
+        "site": 188,
+        "landscape_pos": "slope",
+        "cover_type": "shrubs",
+        "land_use": "wilderness",
+        "distance": "6.71",
+        "site_char": "",
+        "soil_type": "heavy_clay"
+    }
+},
+{
+    "model": "streamwebs.soil_survey",
+    "pk": 18,
+    "fields": {
+        "school": null,
+        "date": "2014-03-12T10:54:00",
+        "weather": "",
+        "site": 86,
+        "landscape_pos": "stream_bank",
+        "cover_type": "grass",
+        "land_use": "agricultural",
+        "distance": "6.10",
+        "site_char": "right by the stream bank, lots of leaves, sticks, dead grass.  shaded area\r\n\r\nMoss, dead grass, loose soil, hill",
+        "soil_type": "loam"
+    }
+},
+{
+    "model": "streamwebs.soil_survey",
+    "pk": 19,
+    "fields": {
+        "school": null,
+        "date": "2014-03-12T12:05:00",
+        "weather": "",
+        "site": 86,
+        "landscape_pos": "stream_bank",
+        "cover_type": "grass",
+        "land_use": "agricultural",
+        "distance": "4.57",
+        "site_char": "near stream, sunlight, grass, plant life",
+        "soil_type": "loam"
+    }
+},
+{
+    "model": "streamwebs.soil_survey",
+    "pk": 20,
+    "fields": {
+        "school": null,
+        "date": "2014-03-12T00:00:00",
+        "weather": "",
+        "site": 86,
+        "landscape_pos": "stream_bank",
+        "cover_type": "grass",
+        "land_use": "agricultural",
+        "distance": "106.68",
+        "site_char": "shady, few trees, wet ground",
+        "soil_type": "loam"
+    }
+},
+{
+    "model": "streamwebs.soil_survey",
+    "pk": 21,
+    "fields": {
+        "school": null,
+        "date": "2014-03-12T00:00:00",
+        "weather": "",
+        "site": 86,
+        "landscape_pos": "slope",
+        "cover_type": "grass",
+        "land_use": "agricultural",
+        "distance": "21.34",
+        "site_char": "flooded low area",
+        "soil_type": "silt_loam"
+    }
+},
+{
+    "model": "streamwebs.soil_survey",
+    "pk": 22,
+    "fields": {
+        "school": null,
+        "date": "2014-03-12T00:00:00",
+        "weather": "",
+        "site": 86,
+        "landscape_pos": "slope",
+        "cover_type": "grass",
+        "land_use": "agricultural",
+        "distance": "10.97",
+        "site_char": "flooded area",
+        "soil_type": "heavy_clay"
+    }
+},
+{
+    "model": "streamwebs.soil_survey",
+    "pk": 23,
+    "fields": {
+        "school": null,
+        "date": "2014-03-12T09:42:00",
+        "weather": "",
+        "site": 86,
+        "landscape_pos": "stream_bank",
+        "cover_type": "grass",
+        "land_use": "agricultural",
+        "distance": "1.83",
+        "site_char": "by stream, clay-like, wet grassy area, covered with leaves, oak canopy",
+        "soil_type": "silt_loam"
+    }
+},
+{
+    "model": "streamwebs.soil_survey",
+    "pk": 30,
+    "fields": {
+        "school": null,
+        "date": "2015-03-09T12:38:00",
+        "weather": "",
+        "site": 86,
+        "landscape_pos": "stream_bank",
+        "cover_type": "trees",
+        "land_use": "agricultural",
+        "distance": "4.57",
+        "site_char": "shadowed and wet",
+        "soil_type": "silt_loam"
+    }
+},
+{
+    "model": "streamwebs.soil_survey",
+    "pk": 31,
+    "fields": {
+        "school": null,
+        "date": "2015-03-09T12:38:00",
+        "weather": "",
+        "site": 86,
+        "landscape_pos": "slope",
+        "cover_type": "grass",
+        "land_use": "agricultural",
+        "distance": "30.48",
+        "site_char": "",
+        "soil_type": "silt_loam"
+    }
+},
+{
+    "model": "streamwebs.soil_survey",
+    "pk": 32,
+    "fields": {
+        "school": null,
+        "date": "2015-03-09T13:07:00",
+        "weather": "",
+        "site": 86,
+        "landscape_pos": "stream_bank",
+        "cover_type": "trees",
+        "land_use": "agricultural",
+        "distance": "3.05",
+        "site_char": "Riparian, worms and ants in soil, shady",
+        "soil_type": "silt_loam"
+    }
+},
+{
+    "model": "streamwebs.soil_survey",
+    "pk": 33,
+    "fields": {
+        "school": null,
+        "date": "2015-03-09T13:07:00",
+        "weather": "",
+        "site": 86,
+        "landscape_pos": "slope",
+        "cover_type": "bare_soil",
+        "land_use": "agricultural",
+        "distance": "30.48",
+        "site_char": "There wasn't much grass, oak trees on slope, flowers",
+        "soil_type": "silt_loam"
+    }
+},
+{
+    "model": "streamwebs.soil_survey",
+    "pk": 34,
+    "fields": {
+        "school": null,
+        "date": "2015-03-09T13:39:00",
+        "weather": "",
+        "site": 86,
+        "landscape_pos": "large_flat",
+        "cover_type": "bare_soil",
+        "land_use": "agricultural",
+        "distance": "30.48",
+        "site_char": "lots of oaks next to the school",
+        "soil_type": "loam"
+    }
+},
+{
+    "model": "streamwebs.soil_survey",
+    "pk": 35,
+    "fields": {
+        "school": null,
+        "date": "2015-03-09T13:39:00",
+        "weather": "",
+        "site": 86,
+        "landscape_pos": "stream_bank",
+        "cover_type": "trees",
+        "land_use": "agricultural",
+        "distance": "3.05",
+        "site_char": "grassy with trees",
+        "soil_type": "loam"
+    }
+},
+{
+    "model": "streamwebs.soil_survey",
+    "pk": 36,
+    "fields": {
+        "school": null,
+        "date": "2015-03-09T12:14:00",
+        "weather": "",
+        "site": 86,
+        "landscape_pos": "stream_bank",
+        "cover_type": "trees",
+        "land_use": "agricultural",
+        "distance": "3.05",
+        "site_char": "shrubs, leaves, trees, low level",
+        "soil_type": "silt_loam"
+    }
+},
+{
+    "model": "streamwebs.soil_survey",
+    "pk": 37,
+    "fields": {
+        "school": null,
+        "date": "2015-03-09T12:00:00",
+        "weather": "",
+        "site": 86,
+        "landscape_pos": "large_flat",
+        "cover_type": "bare_soil",
+        "land_use": "agricultural",
+        "distance": "30.48",
+        "site_char": "by the old school, dry, flat",
+        "soil_type": "silt_loam"
+    }
+},
+{
+    "model": "streamwebs.soil_survey",
+    "pk": 38,
+    "fields": {
+        "school": null,
+        "date": "2016-02-24T10:06:00",
+        "weather": "",
+        "site": 86,
+        "landscape_pos": "large_flat",
+        "cover_type": "bare_soil",
+        "land_use": "wilderness",
+        "distance": null,
+        "site_char": "",
+        "soil_type": "loamy_sand"
+    }
+},
+{
+    "model": "streamwebs.soil_survey",
+    "pk": 39,
+    "fields": {
+        "school": null,
+        "date": "2016-02-24T10:00:00",
+        "weather": "",
+        "site": 86,
+        "landscape_pos": "large_flat",
+        "cover_type": "grass",
+        "land_use": "recreation",
+        "distance": "16.76",
+        "site_char": "flat, traveled, thick grass",
+        "soil_type": "clay_loam"
+    }
+},
+{
+    "model": "streamwebs.soil_survey",
+    "pk": 40,
+    "fields": {
+        "school": null,
+        "date": "2016-02-24T00:00:00",
+        "weather": "",
+        "site": 86,
+        "landscape_pos": "large_flat",
+        "cover_type": "grass",
+        "land_use": "agricultural",
+        "distance": "15.54",
+        "site_char": "Flat area above bank, not overgrown, agricultural land, grass",
+        "soil_type": "loam"
+    }
+},
+{
+    "model": "streamwebs.soil_survey",
+    "pk": 41,
+    "fields": {
+        "school": null,
+        "date": "2016-02-24T09:09:00",
+        "weather": "",
+        "site": 86,
+        "landscape_pos": "large_flat",
+        "cover_type": "shrubs",
+        "land_use": "agricultural",
+        "distance": "27.43",
+        "site_char": "Muddy with a lot of trees and shrubbery",
+        "soil_type": "loam"
+    }
+},
+{
+    "model": "streamwebs.soil_survey",
+    "pk": 42,
+    "fields": {
+        "school": null,
+        "date": "2016-02-24T09:03:00",
+        "weather": "",
+        "site": 86,
+        "landscape_pos": "large_flat",
+        "cover_type": "grass",
+        "land_use": "agricultural",
+        "distance": "9.14",
+        "site_char": "Hollow tree, muddy, leaf cover",
+        "soil_type": "loam"
+    }
+},
+{
+    "model": "streamwebs.soil_survey",
+    "pk": 43,
+    "fields": {
+        "school": null,
+        "date": "2016-02-24T10:43:00",
+        "weather": "",
+        "site": 86,
+        "landscape_pos": "slope",
+        "cover_type": "grass",
+        "land_use": "agricultural",
+        "distance": "22.25",
+        "site_char": "on a slope, halfway down vegetation, rocky",
+        "soil_type": "loam"
+    }
+},
+{
+    "model": "streamwebs.soil_survey",
+    "pk": 44,
+    "fields": {
+        "school": null,
+        "date": "2016-02-24T10:43:00",
+        "weather": "",
+        "site": 86,
+        "landscape_pos": "slope",
+        "cover_type": "grass",
+        "land_use": "recreation",
+        "distance": "0.91",
+        "site_char": "some small animal tracks, trees knocked over",
+        "soil_type": "silt_loam"
+    }
+},
+{
+    "model": "streamwebs.soil_survey",
+    "pk": 45,
+    "fields": {
+        "school": null,
+        "date": "2016-02-24T08:24:00",
+        "weather": "",
+        "site": 86,
+        "landscape_pos": "slope",
+        "cover_type": "rocks",
+        "land_use": "agricultural",
+        "distance": "27.13",
+        "site_char": "",
+        "soil_type": "loamy_sand"
+    }
+},
+{
+    "model": "streamwebs.soil_survey",
+    "pk": 46,
+    "fields": {
+        "school": null,
+        "date": "2016-02-24T08:23:00",
+        "weather": "",
+        "site": 86,
+        "landscape_pos": "stream_bank",
+        "cover_type": "trees",
+        "land_use": "agricultural",
+        "distance": "7.62",
+        "site_char": "rich, mulchy",
+        "soil_type": "light_clay"
+    }
+},
+{
+    "model": "streamwebs.soil_survey",
+    "pk": 47,
+    "fields": {
+        "school": null,
+        "date": "2016-02-24T08:22:00",
+        "weather": "",
+        "site": 86,
+        "landscape_pos": "stream_bank",
+        "cover_type": "trees",
+        "land_use": "agricultural",
+        "distance": "7.62",
+        "site_char": "",
+        "soil_type": "clay_loam"
+    }
+}
+]
