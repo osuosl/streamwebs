@@ -3,7 +3,7 @@
     "model": "streamwebs.soil_survey",
     "pk": 1,
     "fields": {
-        "school": null,
+        "school": 1,
         "date": "2010-08-28T11:33:00",
         "weather": "",
         "site": 35,
@@ -19,7 +19,7 @@
     "model": "streamwebs.soil_survey",
     "pk": 2,
     "fields": {
-        "school": null,
+        "school": 1,
         "date": "2010-08-28T11:45:00",
         "weather": "",
         "site": 188,
@@ -35,7 +35,7 @@
     "model": "streamwebs.soil_survey",
     "pk": 3,
     "fields": {
-        "school": null,
+        "school": 1,
         "date": "2010-08-11T11:22:00",
         "weather": "",
         "site": 188,
@@ -51,7 +51,7 @@
     "model": "streamwebs.soil_survey",
     "pk": 4,
     "fields": {
-        "school": null,
+        "school": 1,
         "date": "2010-08-12T14:15:00",
         "weather": "",
         "site": 188,
@@ -67,7 +67,7 @@
     "model": "streamwebs.soil_survey",
     "pk": 16,
     "fields": {
-        "school": null,
+        "school": 2,
         "date": "2014-03-13T21:22:00",
         "weather": "",
         "site": 188,
@@ -83,7 +83,7 @@
     "model": "streamwebs.soil_survey",
     "pk": 18,
     "fields": {
-        "school": null,
+        "school": 1,
         "date": "2014-03-12T10:54:00",
         "weather": "",
         "site": 86,
@@ -99,7 +99,7 @@
     "model": "streamwebs.soil_survey",
     "pk": 19,
     "fields": {
-        "school": null,
+        "school": 3,
         "date": "2014-03-12T12:05:00",
         "weather": "",
         "site": 86,
@@ -115,7 +115,7 @@
     "model": "streamwebs.soil_survey",
     "pk": 20,
     "fields": {
-        "school": null,
+        "school": 3,
         "date": "2014-03-12T00:00:00",
         "weather": "",
         "site": 86,
@@ -131,7 +131,7 @@
     "model": "streamwebs.soil_survey",
     "pk": 21,
     "fields": {
-        "school": null,
+        "school": 4,
         "date": "2014-03-12T00:00:00",
         "weather": "",
         "site": 86,
@@ -147,7 +147,7 @@
     "model": "streamwebs.soil_survey",
     "pk": 22,
     "fields": {
-        "school": null,
+        "school": 5,
         "date": "2014-03-12T00:00:00",
         "weather": "",
         "site": 86,
@@ -163,7 +163,7 @@
     "model": "streamwebs.soil_survey",
     "pk": 23,
     "fields": {
-        "school": null,
+        "school": 6,
         "date": "2014-03-12T09:42:00",
         "weather": "",
         "site": 86,
@@ -179,7 +179,7 @@
     "model": "streamwebs.soil_survey",
     "pk": 30,
     "fields": {
-        "school": null,
+        "school": 7,
         "date": "2015-03-09T12:38:00",
         "weather": "",
         "site": 86,
@@ -195,7 +195,7 @@
     "model": "streamwebs.soil_survey",
     "pk": 31,
     "fields": {
-        "school": null,
+        "school": 8,
         "date": "2015-03-09T12:38:00",
         "weather": "",
         "site": 86,
@@ -211,7 +211,7 @@
     "model": "streamwebs.soil_survey",
     "pk": 32,
     "fields": {
-        "school": null,
+        "school": 8,
         "date": "2015-03-09T13:07:00",
         "weather": "",
         "site": 86,
@@ -243,7 +243,7 @@
     "model": "streamwebs.soil_survey",
     "pk": 34,
     "fields": {
-        "school": null,
+        "school": 1,
         "date": "2015-03-09T13:39:00",
         "weather": "",
         "site": 86,
@@ -259,7 +259,7 @@
     "model": "streamwebs.soil_survey",
     "pk": 35,
     "fields": {
-        "school": null,
+        "school": 2,
         "date": "2015-03-09T13:39:00",
         "weather": "",
         "site": 86,
@@ -275,7 +275,7 @@
     "model": "streamwebs.soil_survey",
     "pk": 36,
     "fields": {
-        "school": null,
+        "school": 2,
         "date": "2015-03-09T12:14:00",
         "weather": "",
         "site": 86,
@@ -291,7 +291,7 @@
     "model": "streamwebs.soil_survey",
     "pk": 37,
     "fields": {
-        "school": null,
+        "school": 3,
         "date": "2015-03-09T12:00:00",
         "weather": "",
         "site": 86,
@@ -307,7 +307,7 @@
     "model": "streamwebs.soil_survey",
     "pk": 38,
     "fields": {
-        "school": null,
+        "school": 4,
         "date": "2016-02-24T10:06:00",
         "weather": "",
         "site": 86,
@@ -323,7 +323,7 @@
     "model": "streamwebs.soil_survey",
     "pk": 39,
     "fields": {
-        "school": null,
+        "school": 1,
         "date": "2016-02-24T10:00:00",
         "weather": "",
         "site": 86,
@@ -339,7 +339,7 @@
     "model": "streamwebs.soil_survey",
     "pk": 40,
     "fields": {
-        "school": null,
+        "school": 1,
         "date": "2016-02-24T00:00:00",
         "weather": "",
         "site": 86,
@@ -355,7 +355,7 @@
     "model": "streamwebs.soil_survey",
     "pk": 41,
     "fields": {
-        "school": null,
+        "school": 6,
         "date": "2016-02-24T09:09:00",
         "weather": "",
         "site": 86,
@@ -371,7 +371,7 @@
     "model": "streamwebs.soil_survey",
     "pk": 42,
     "fields": {
-        "school": null,
+        "school": 6,
         "date": "2016-02-24T09:03:00",
         "weather": "",
         "site": 86,
@@ -387,7 +387,7 @@
     "model": "streamwebs.soil_survey",
     "pk": 43,
     "fields": {
-        "school": null,
+        "school": 5,
         "date": "2016-02-24T10:43:00",
         "weather": "",
         "site": 86,
@@ -403,7 +403,7 @@
     "model": "streamwebs.soil_survey",
     "pk": 44,
     "fields": {
-        "school": null,
+        "school": 7,
         "date": "2016-02-24T10:43:00",
         "weather": "",
         "site": 86,
@@ -419,7 +419,7 @@
     "model": "streamwebs.soil_survey",
     "pk": 45,
     "fields": {
-        "school": null,
+        "school": 5,
         "date": "2016-02-24T08:24:00",
         "weather": "",
         "site": 86,
@@ -435,7 +435,7 @@
     "model": "streamwebs.soil_survey",
     "pk": 46,
     "fields": {
-        "school": null,
+        "school": 2,
         "date": "2016-02-24T08:23:00",
         "weather": "",
         "site": 86,
@@ -451,7 +451,7 @@
     "model": "streamwebs.soil_survey",
     "pk": 47,
     "fields": {
-        "school": null,
+        "school": 1,
         "date": "2016-02-24T08:22:00",
         "weather": "",
         "site": 86,

@@ -217,3 +217,13 @@ class ResourceForm(forms.ModelForm):
         model = Resource
         fields = ('name', 'res_type', 'sort_order', 'downloadable',
                   'thumbnail')
+
+class StatisticsForm(forms.Form):
+    start = forms.DateField(
+        widget=forms.DateInput(attrs={'class': 'datepicker'}),
+        label=_('starting from'), required=False
+    )
+    end = forms.DateField(
+        widget=forms.DateInput(attrs={'class': 'datepicker'}),
+        label=_('ending on'), required=False
+    )
