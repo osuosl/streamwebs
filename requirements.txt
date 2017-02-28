@@ -14,3 +14,4 @@ requests
 wsgiref
 flake8
 django-recaptcha
+django-queryset-csv
