@@ -25,10 +25,10 @@ from streamwebs.models import (
     TransectZone, Canopy_Cover, CameraPoint, PhotoPoint,
     PhotoPointImage, Soil_Survey, Resource, School)
 
-from datetime import datetime
 from djqscsv import render_to_csv_response
 import json
 import copy
+import datetime
 
 
 def export_wq(request, site_slug):
@@ -36,11 +36,37 @@ def export_wq(request, site_slug):
     water = Water_Quality.objects.filter(site_id=site.id)
     wq_sample = WQ_Sample.objects.filter(water_quality=water)
 
+# TODO: Make multiple queries for water quality (main) and each of the samples
+#       Link the results together to use render_to_csv
+    data = water.values(
+        'site__site_name'
+    )
+
+    return render_to_csv_response(data,
+        field_header_map={
+            'site__site_name': 'site'
+        }
+    )
+
+### The following doesn't grab any data
+#    data = wq_sample.values(
+#        'water_quality__school__name', 'water_quality__date',
+#        'water_quality__site__site_name', 'water_quality__DEQ_dq_level',
+#        'water_quality__latitude', 'water_quality__longitude',
+#        'water_quality__fish_present', 'water_quality__live_fish',
+#        'water_quality__dead_fish', 'water_quality__water_temp_unit',
+#        'water_quality__air_temp_unit', 'water_quality__notes'
+#    )
+#    return render_to_csv_response(data,
+#        field_header_map={
+#            'water_quality__site__site_name': 'site'
+#        }
+#    )
+
 
 def export_macros(request, site_slug):
     site = Site.objects.get(site_slug=site_slug)
-    macros = Macroinvertebrates.objects.filter(site_id=site.id)
-    data = macros.values(
+    macros = Macroinvertebrates.objects.filter(site_id=site.id).values(
         'school', 'date_time', 'site__site_name', 'weather', 'time_spent',
         'num_people', 'water_type', 'notes', 'caddisfly', 'mayfly',
         'riffle_beetle', 'stonefly', 'water_penny', 'dobsonfly',
@@ -48,8 +74,8 @@ def export_macros(request, site_slug):
         'damselfly', 'dragonfly', 'scud', 'fishfly', 'alderfly', 'mite',
         'somewhat_sensitive_total', 'aquatic_worm', 'blackfly', 'leech',
         'midge', 'snail', 'mosquito_larva', 'tolerant_total', 'wq_rating'
-        )
-    return render_to_csv_response(data,
+    )
+    return render_to_csv_response(macros,
         field_header_map={
             'date_time': 'date/time', 'site__site_name': 'site',
             'time_spent': 'time spent sorting',
@@ -60,7 +86,9 @@ def export_macros(request, site_slug):
             'somewhat_sensitive_total': 'somewhat sensitive total',
             'aquatic_worm': 'aquatic worm', 'mosquito_larva': 'mosquito larva',
             'tolerant_total': 'tolerant total',
-            'wq_rating': 'water quality rating' })
+            'wq_rating': 'water quality rating'
+        }
+    )
 
 
 def _timestamp(dt):
