@@ -32,6 +32,12 @@
         map.addListener('click', function(e) {
           placeMarker(e.latLng, map);
         });
+        // responsive function
+        google.maps.event.addDomListener(window, "resize", function() {
+        			var center = map.getCenter();
+        			google.maps.event.trigger(map, "resize");
+        			map.setCenter(center);
+        		});
     });
 
     function placeMarker(latlng, map){
@@ -91,8 +97,7 @@
                 <div class ="input-field col s12">
                     {{ camera_form.location.label }}
                     {{ camera_form.location.errors | striptags }}
-                    <!-- {{ camera_form.location }} -->
-                    <div class="map col s12" style="width: 805px; height: 400px;"></div>
+                    <div class="map" style="height:400px;"></div>
                     <input type="hidden" id="input_lat" name="lat" value="{{ site.to_dict.location.y }}">
                     <input type="hidden" id="input_lng" name="lng" value="{{ site.to_dict.location.x }}">
                 </div>
