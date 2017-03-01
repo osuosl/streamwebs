@@ -95,6 +95,17 @@
             <li><a href="{% url 'streamwebs:camera_point_add' site_slug=site.site_slug %}">Photo point monitoring</a></li>
             <li><a href="{% url 'streamwebs:soil_edit' site_slug=site.site_slug %}">Soil Survey</a></li>
         </ul>
+    {% endif %}
+    </div>
+
+    <div class="export_data">
+        <h4>Export data for this site: </h4>
+        <p><a href="{% url 'streamwebs:export_wq' site_slug=site.site_slug %}">Water quality</a></p>
+        <p><a href="{% url 'streamwebs:export_macros' site.site_slug %}">Macroinvertebrates</a></p>
+        <!--<p><a href="{% url 'streamwebs:riparian_transect_edit' site.site_slug %}">Riparian transect</a></p>
+        <p><a href="{% url 'streamwebs:canopy_cover_edit' site.site_slug %}">Canopy Cover Survey</a></p>
+        <p><a href="{% url 'streamwebs:camera_point_add' site_slug=site.site_slug %}">Photo point monitoring</a></p>
+        <p><a href="{% url 'streamwebs:soil_edit' site_slug=site.site_slug %}">Soil Survey</a></p>-->
     </div>
 </div>
 

@@ -29,7 +29,12 @@ from datetime import datetime
 from djqscsv import render_to_csv_response
 import json
 import copy
-import csv
+
+
+def export_wq(request, site_slug):
+    site = Site.objects.get(site_slug=site_slug)
+    water = Water_Quality.objects.filter(site_id=site.id)
+    wq_sample = WQ_Sample.objects.filter(water_quality=water)
 
 
 def export_macros(request, site_slug):
@@ -42,9 +47,20 @@ def export_macros(request, site_slug):
         'sensitive_total', 'clam_or_mussel', 'crane_fly', 'crayfish',
         'damselfly', 'dragonfly', 'scud', 'fishfly', 'alderfly', 'mite',
         'somewhat_sensitive_total', 'aquatic_worm', 'blackfly', 'leech',
-        'midge', 'snail', 'mosquito_larva', 'tolerant_total', 'wq_rating'
+        'midge', 'snail', 'mosquito_larva', 'tolerant_total', 'wq_rating' 
         )
-    return render_to_csv_response(data)
+    return render_to_csv_response(data,
+        field_header_map={
+            'date_time': 'date/time', 'site__site_name': 'site',
+            'time_spent': 'time spent sorting',
+            'num_people': '# of people sorting', 'water_type': 'water type',
+            'riffle_beetle': 'riffle beetle', 'water_penny': 'water penny',
+            'sensitive_total': 'sensitive total',
+            'clam_or_mussel': 'clam/mussel', 'crane_fly': 'crane fly',
+            'somewhat_sensitive_total': 'somewhat sensitive total',
+            'aquatic_worm': 'aquatic worm', 'mosquito_larva': 'mosquito larva',
+            'tolerant_total': 'tolerant total',
+            'wq_rating': 'water quality rating' })
 
 
 def _timestamp(dt):

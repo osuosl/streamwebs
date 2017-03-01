@@ -24,6 +24,9 @@ urlpatterns = [
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/water/(?P<data_id>\d+)/',
         views.water_quality, name='water_quality'),
 
+    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/water/export/$',
+        views.export_wq, name='export_wq'),
+
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/delete/', views.deactivate_site,
         name='deactivate_site'),
 
@@ -38,6 +41,9 @@ urlpatterns = [
 
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/macro/edit/$',
         views.macroinvertebrate_edit, name='macroinvertebrate_edit'),
+
+    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/macro/export/$',
+        views.export_macros, name='export_macros'),
 
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/transect/(?P<data_id>\d+)/',
         views.riparian_transect_view, name='riparian_transect'),
