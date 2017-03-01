@@ -47,7 +47,7 @@ def export_macros(request, site_slug):
         'sensitive_total', 'clam_or_mussel', 'crane_fly', 'crayfish',
         'damselfly', 'dragonfly', 'scud', 'fishfly', 'alderfly', 'mite',
         'somewhat_sensitive_total', 'aquatic_worm', 'blackfly', 'leech',
-        'midge', 'snail', 'mosquito_larva', 'tolerant_total', 'wq_rating' 
+        'midge', 'snail', 'mosquito_larva', 'tolerant_total', 'wq_rating'
         )
     return render_to_csv_response(data,
         field_header_map={
