@@ -28,10 +28,6 @@ class AddPhotoPointTestCase(TestCase):
                 'photo_point-MIN_NUM_FORMS': '1'
                 }
         )
-        self.assertFormError(response, 'pp_form', 'camera_point',
-                             'This field is required.')
-        self.assertFormError(response, 'pp_form', 'pp_date',
-                             'This field is required.')
         self.assertFormError(response, 'pp_form', 'compass_bearing',
                              'This field is required.')
         self.assertFormError(response, 'pp_form', 'distance',

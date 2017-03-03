@@ -211,8 +211,7 @@ class PhotoPointForm(forms.ModelForm):
 
     class Meta:
         model = PhotoPoint
-        fields = ('camera_point', 'pp_date', 'compass_bearing', 'distance',
-                  'camera_height', 'notes')
+        fields = ('compass_bearing', 'distance', 'camera_height', 'notes')
 
 
 class CameraPointForm(forms.ModelForm):
