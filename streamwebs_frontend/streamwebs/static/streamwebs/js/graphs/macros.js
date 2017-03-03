@@ -118,93 +118,98 @@ const useLineGraph = function useLineGraph() {
      * ]
      */
     formatted = formatted.map((x) => {
-      /*
-       * First we'll map the data to remove any extraneous values just in case,
-       * and to change the date to a string of just the date.
-       */
-      const key = x.date.toISOString().substring(0, 10);
+        /*
+         * First we'll map the data to remove any extraneous values just in case,
+         * and to change the date to a string of just the date.
+         */
+        const key = x.date.toISOString().substring(0, 10);
 
-      return {
-        date: key,
-        Sensitive: x.Sensitive,
-        'Somewhat Sensitive': x['Somewhat Sensitive'],
-        Tolerant: x.Tolerant,
-        Total: x.Total,
-      };
+        return {
+            date: key,
+            Sensitive: x.Sensitive,
+            'Somewhat Sensitive': x['Somewhat Sensitive'],
+            Tolerant: x.Tolerant,
+            Total: x.Total,
+        };
     }).reduce((prev, curr) => {
-      /*
-       * Next, we'll reduce it down to sums per day.
-       */
+        /*
+         * Next, we'll reduce it down to sums per day.
+         */
 
-      /*
-       * `data` here represents the existing data for the day we're looking at,
-       * if it exists. It contains all of the sums we've already calculated for
-       * this day, plus its own index in the list so we can find it later.
-       */
-      let data = prev.map((x, i) => { x['idx'] = i; return x; })
-                     .filter((x) => { return x.date === curr.date; });
-      if (data === [] || data.length === 0) {
         /*
-         * If this is the first data point we've found for this day, then we'll
-         * add it as it is to the list. Also add a `count` value so we can
-         * calculate the average from the sums.
+         * `data` here represents the existing data for the day we're looking at,
+         * if it exists. It contains all of the sums we've already calculated for
+         * this day, plus its own index in the list so we can find it later.
          */
-        prev.push({
-          date: curr.date,
-          Sensitive: curr.Sensitive,
-          'Somewhat Sensitive': curr['Somewhat Sensitive'],
-          Tolerant: curr.Tolerant,
-          Total: curr.Total,
-          count: 1,
-        });
-      } else {
-        /*
-         * Data now holds the existing data for the day. It's technically a list
-         * of size one, so get the first element out. Now modify the list to add
-         * our new values to the existing ones, and to increment the count.
-         */
-        data = data[0];
-        prev[data.idx] = {
-          date: curr.date,
-          Sensitive: data.Sensitive + curr.Sensitive,
-          'Somewhat Sensitive': data['Somewhat Sensitive'] + curr['Somewhat Sensitive'],
-          Tolerant: data.Tolerant + curr.Tolerant,
-          Total: data.Total + curr.Total,
-          count: data.count + 1,
+        let data = prev.map((x, i) => {
+            x['idx'] = i;
+            return x;
+        })
+            .filter((x) => {
+                return x.date === curr.date;
+            });
+        if (data === [] || data.length === 0) {
+            /*
+             * If this is the first data point we've found for this day, then we'll
+             * add it as it is to the list. Also add a `count` value so we can
+             * calculate the average from the sums.
+             */
+            prev.push({
+                date: curr.date,
+                Sensitive: curr.Sensitive,
+                'Somewhat Sensitive': curr['Somewhat Sensitive'],
+                Tolerant: curr.Tolerant,
+                Total: curr.Total,
+                count: 1,
+            });
+        } else {
+            /*
+             * Data now holds the existing data for the day. It's technically a list
+             * of size one, so get the first element out. Now modify the list to add
+             * our new values to the existing ones, and to increment the count.
+             */
+            data = data[0];
+            prev[data.idx] = {
+                date: curr.date,
+                Sensitive: data.Sensitive + curr.Sensitive,
+                'Somewhat Sensitive': data['Somewhat Sensitive'] + curr['Somewhat Sensitive'],
+                Tolerant: data.Tolerant + curr.Tolerant,
+                Total: data.Total + curr.Total,
+                count: data.count + 1,
+            }
         }
-      }
-      return prev;
+        return prev;
     }, []).map((value) => {
-      /*
-       * Now our list should look like this:
-       *
-       * [
-       *   {
-       *     date: '...',
-       *     Sensitive: ...,
-       *     'Somewhat Sensitive': ...,
-       *     Tolerant: ...,
-       *     Total: ...,
-       *     count: ...,
-       *     idx: 1,
-       *   },
-       *   {
-       *     ...
-       *   },
-       *   ...
-       * ]
-       *
-       * So, we mostly have the format we want. We just need to divide the sums
-       * by the count to get our averages, and filter the counts and indexes out
-       * of our data.
-       */
-      return {
-        date: value.date,
-        Sensitive: value.Sensitive / value.count,
-        'Somewhat Sensitive': value['Somewhat Sensitive'] / value.count,
-        Tolerant: value.Tolerant / value.count,
-        Total: value.Total / value.count,
-      };
+        /*
+         * Now our list should look like this:
+         *
+         * [
+         *   {
+         *     date: '...',
+         *     Sensitive: ...,
+         *     'Somewhat Sensitive': ...,
+         *     Tolerant: ...,
+         *     Total: ...,
+         *     count: ...,
+         *     idx: 1,
+         *   },
+         *   {
+         *     ...
+         *   },
+         *   ...
+         * ]
+         *
+         * So, we mostly have the format we want. We just need to divide the sums
+         * by the count to get our averages, and filter the counts and indexes out
+         * of our data.
+         */
+        return {
+            date: value.date,
+            Sensitive: value.Sensitive / value.count,
+            'Somewhat Sensitive': value['Somewhat Sensitive'] / value.count,
+            Tolerant: value.Tolerant / value.count,
+            Total: value.Total / value.count,
+        };
     });
 
     formatted.sort((a, b) => {
@@ -218,39 +223,53 @@ const useLineGraph = function useLineGraph() {
             name: name,
             values: formatted.map((d) => {
                 return {date: d.date, value: d[name]};
+            }).filter(d => {
+                return !isNaN(d.value);
             })
         };
     });
 
     const container = outerContainer;
     const margin = {top: 20, right: 200, bottom: 30, left: 40};
-    const width = (container.width() * 0.7) - margin.left - margin.right;
-    const height = 192 - margin.top - margin.bottom;
+    const width = container.width() - margin.left - margin.right;
+    const height = 250 - margin.top - margin.bottom;
 
     const x = d3.scaleTime()
         .range([0, width]);
 
     x.domain([
-      date_range[0] !== 0 ? new Date(date_range[0]) :
-        d3.min(formatted, (d) => { return new Date(d.date) }),
-      date_range[1] !== Number.MAX_SAFE_INTEGER ? new Date(date_range[1]) :
-        d3.max(formatted, (d) => { return new Date(d.date) }),
+        date_range[0] !== 0 ? new Date(date_range[0]) :
+            d3.min(formatted, (d) => {
+                return new Date(d.date) || new Date(new Date().getTime() - 86400)
+            }),
+        date_range[1] !== Number.MAX_SAFE_INTEGER ? new Date(date_range[1]) :
+            d3.max(formatted, (d) => {
+                return new Date(d.date) || new Date()
+            }),
     ]);
     const y = d3.scaleLinear()
         .domain([0,
             d3.max(types, (c) => {
-                return d3.max(c.values, (d) => { return d.value })
-            })
+                return d3.max(c.values, (d) => {
+                    return d.value || 1; // Prevent NaNs from spoiling the max
+                }) || 1
+            }) || 1
         ])
         .range([height, 0]);
     const z = d3.scaleOrdinal()
-        .domain(types.map((c) => { return c.name }))
+        .domain(types.map((c) => {
+            return c.name
+        }))
         .range(['#869099', '#8c7853', '#007d4a', '#e24431']);
 
     const line = d3.line()
         .curve(d3.curveLinear)
-        .x((d) => { return x(new Date(d.date)) })
-        .y((d) => { return y(d.value) });
+        .x((d) => {
+            return x(new Date(d.date))
+        })
+        .y((d) => {
+            return y(d.value)
+        });
 
     const svg = d3.select('#graph-' + siteId).append('svg')
         .attr('width', width + margin.left + margin.right)
@@ -269,53 +288,72 @@ const useLineGraph = function useLineGraph() {
         .call(d3.axisLeft(y));
 
     if (formatted.length > 0) {
-      const type = g.selectAll('.type')
-          .data(types)
-          .enter()
-      .append('g')
-          .attr('class', 'type');
+        const type = g.selectAll('.type')
+            .data(types)
+            .enter()
+            .append('g')
+            .attr('class', 'type');
 
-      type.append('path')
-          .attr('class', 'line')
-          .attr('d', (d) => { return line(d.values) })
-          .style('stroke', (d) => { return z(d.name) });
+        type.append('path')
+            .attr('class', 'line')
+            .attr('d', (d) => {
+                return line(d.values)
+            })
+            .style('stroke', (d) => {
+                return z(d.name)
+            });
 
-      type.selectAll('dot')
-          .data((d) => {
-            return d.values.map((e) => { e['name'] = d.name; return e});
-          })
-        .enter().append('circle')
-          .attr('r', 3.5)
-          .attr('cx', (d) => {
-            return x(new Date(d.date))
-          })
-          .attr('cy', (d) => { return y(d.value)})
-          .style('stroke', (d) => { return z(d.name) })
-          .style('fill', (d) => { return z(d.name) });
+        type.selectAll('dot')
+            .data((d) => {
+                return d.values.map((e) => {
+                    e['name'] = d.name;
+                    return e
+                });
+            })
+            .enter().append('circle')
+            .attr('r', 3.5)
+            .attr('cx', (d) => {
+                return x(new Date(d.date))
+            })
+            .attr('cy', (d) => {
+                return y(d.value)
+            })
+            .style('stroke', (d) => {
+                return z(d.name)
+            })
+            .style('fill', (d) => {
+                return z(d.name)
+            });
 
-      const legend = g.selectAll('.legend')
-          .data(types)
-          .enter()
-      .append('g')
-          .attr('class', 'legend')
-          .attr('transform', (d,i) => {
-            return 'translate(' + (width + margin.left + 5) + ', ' + i*20 + ')';
-          })
-          .style('border', '1px solid black')
-          .style('font', '12px sans-serif');
+        const legend = g.selectAll('.legend')
+            .data(types)
+            .enter()
+            .append('g')
+            .attr('class', 'legend')
+            .attr('transform', (d, i) => {
+                return 'translate(' + (width + margin.left + 5) + ', ' + i * 20 + ')';
+            })
+            .style('border', '1px solid black')
+            .style('font', '12px sans-serif');
 
-      legend.append('rect')
-          .attr('x', 2)
-          .attr('width', 18)
-          .attr('height', 2)
-          .attr('fill', (d) => { return z(d.name); });
+        legend.append('rect')
+            .attr('x', 2)
+            .attr('width', 18)
+            .attr('height', 2)
+            .attr('fill', (d) => {
+                return z(d.name);
+            });
 
-      legend.append('text')
-          .attr('x', 25)
-          .attr('dy', '.35em')
-          .attr('text-anchor', 'begin')
-          .attr('fill', (d) => { return z(d.name); })
-          .text((d) => { return d.name; });
+        legend.append('text')
+            .attr('x', 25)
+            .attr('dy', '.35em')
+            .attr('text-anchor', 'begin')
+            .attr('fill', (d) => {
+                return z(d.name);
+            })
+            .text((d) => {
+                return d.name;
+            });
     }
 };
 
@@ -328,7 +366,12 @@ const useBarGraph = function useBarGraph() {
     // Copy the data so we don't change the original
     data = JSON.parse(JSON.stringify(window.data_summ));
 
-    const categories = {'tolerant': [], 'somewhat': [], 'sensitive': [], 'total': []};
+    const categories = {
+        'tolerant': [],
+        'somewhat': [],
+        'sensitive': [],
+        'total': []
+    };
 
     let numEntries = 0;
     for (let key in data) {
@@ -385,19 +428,28 @@ const useBarGraph = function useBarGraph() {
             continue;
         }
 
-        const species = categories[category];
+        const species = categories[category].filter(d => {
+            return !isNaN(d.value);
+        }).sort((a, b) => {
+            return a.name.localeCompare(b.name);
+        });
 
         const container = $('#graph-' + siteId + '-' + category);
-        const margin = {top: 50, right: 200, bottom: 40, left: 50};
-        const width = (container.width() * 0.7) - margin.left - margin.right;
+        const margin = {top: 50, right: 100, bottom: 40, left: 50};
+        const width = (Math.min(container.width(), 150 * species.length)) -
+            margin.left - margin.right;
         const height = 256 - margin.top - margin.bottom;
 
         const x = d3.scaleBand()
-            .domain(species.map((d) => { return d.name }))
+            .domain(species.map((d) => {
+                return d.name
+            }))
             .range([0, width])
             .paddingInner(0.1);
         const y = d3.scaleLinear()
-            .domain([0, d3.max(species, (d) => { return d.value })])
+            .domain([0, d3.max(species, (d) => {
+                return d.value
+            }) || 1])
             .range([height, 0]);
 
         const xAxis = d3.axisBottom(x);
@@ -408,7 +460,7 @@ const useBarGraph = function useBarGraph() {
             .attr('height', height + margin.top + margin.bottom)
             .attr('xmlns', 'http://www.w3.org/2000/svg')
             .attr('xmlns:xlink', 'http://www.w3.org/1999/xlink')
-        .append('g')
+            .append('g')
             .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
         svg.append('g')
@@ -419,53 +471,65 @@ const useBarGraph = function useBarGraph() {
         svg.append('g')
             .attr('class', 'y axis')
             .call(yAxis)
-        .append('text')
+            .append('text')
             .attr('transform', 'rotate(-90)')
             .attr('y', 6)
             .attr('dy', '.71em')
             .style('text-anchor', 'end')
             .text('Frequency');
 
-        svg.selectAll('.bar')
-            .data(species)
-            .enter()
-        .append('rect')
-            .attr('class', 'bar')
-            .attr('x', (d) => { return x(d.name) })
-            .attr('width', x.bandwidth())
-            .attr('y', (d) => { return y(d.value) })
-            .attr('height', (d) => { return height - y(d.value) })
-            .attr('x-data-name', (d) => { return d.name })
-            .attr('x-data-value', (d) => { return d.value });
+        if (species.length > 0) {
+            svg.selectAll('.bar')
+                .data(species)
+                .enter()
+                .append('rect')
+                .attr('class', 'bar')
+                .attr('x', (d) => {
+                    return x(d.name)
+                })
+                .attr('width', x.bandwidth())
+                .attr('y', (d) => {
+                    return y(d.value || 0)
+                })
+                .attr('height', (d) => {
+                    return height - y(d.value || 0)
+                })
+                .attr('x-data-name', (d) => {
+                    return d.name
+                })
+                .attr('x-data-value', (d) => {
+                    return d.value || 0
+                });
 
-        const hover = svg.append('g')
-            .attr('class', 'bar-img')
-            .attr('transform', 'translate(0,0)')
-            .attr('width', 130)
-            .attr('height', 65)
-            .attr('opacity', 0);
+            const hover = svg.append('g')
+                .attr('class', 'bar-img')
+                .attr('transform', 'translate(0,0)')
+                .attr('width', 130)
+                .attr('height', 65)
+                .attr('opacity', 0);
 
-        hover.append('rect')
-            .attr('x', 0)
-            .attr('y', 0)
-            .attr('width', 130)
-            .attr('height', 65)
-            .attr('fill', '#ffffff')
-            .attr('stroke', '#000000')
-            .style('border', '1px solid black');
+            hover.append('rect')
+                .attr('x', 0)
+                .attr('y', 0)
+                .attr('width', 130)
+                .attr('height', 65)
+                .attr('fill', '#ffffff')
+                .attr('stroke', '#000000')
+                .style('border', '1px solid black');
 
-        hover.append('image')
-            .attr('x', 0)
-            .attr('y', 0)
-            .attr('width', 125)
-            .attr('height', 45)
-            .attr('xlink:href', '/static/streamwebs/images/macroinvertebrates/macro_snail.png');
+            hover.append('image')
+                .attr('x', 0)
+                .attr('y', 0)
+                .attr('width', 125)
+                .attr('height', 45)
+                .attr('xlink:href', '/static/streamwebs/images/macroinvertebrates/macro_snail.png');
 
-        hover.append('text')
-            .attr('x', 10)
-            .attr('y', 55)
-            .attr('dy', '0.2em')
-            .style('font', '10px sans-serif');
+            hover.append('text')
+                .attr('x', 10)
+                .attr('y', 55)
+                .attr('dy', '0.2em')
+                .style('font', '10px sans-serif');
+        }
     }
 
     const totals = categories['total'];
@@ -473,13 +537,20 @@ const useBarGraph = function useBarGraph() {
     for (let total of totals) {
         sum += total.value;
     }
-    const names = {'sensitive': 'Sensitive', 'somewhat': 'Somewhat Sensitive', 'tolerant': 'Tolerant'};
+    const names = {
+        'sensitive': 'Sensitive',
+        'somewhat': 'Somewhat Sensitive',
+        'tolerant': 'Tolerant'
+    };
     const columns = ['Sensitive', 'Somewhat Sensitive', 'Tolerant'];
 
     const container = $('#graph-' + siteId + '-pie');
-    const width = container.width() * 0.5;
-    const height = 256;
     const margin = {top: 30, right: 20, bottom: 30, left: 20};
+    const width = Math.min(
+        container.width() - margin.right - margin.left,
+        768
+    );
+    const height = 256;
     const radius = Math.min(width, height) / 2;
 
     const color = d3.scaleOrdinal()
@@ -492,45 +563,55 @@ const useBarGraph = function useBarGraph() {
 
     const pie = d3.pie()
         .sort(null)
-        .value((d) => { return d.value });
+        .value((d) => {
+            return d.value
+        });
 
     const svg = d3.select('#graph-' + siteId + '-pie').append('svg')
         .attr('width', width + margin.left + margin.right)
         .attr('height', height + margin.top + margin.bottom);
 
     const g = svg.append('g')
-        .attr('transform', 'translate(' + (width/2 + margin.left) + ',' + (height/2 + margin.top) + ')');
+        .attr('transform', 'translate(' + (width / 2 + margin.left) + ',' + (height / 2 + margin.top) + ')');
 
     const arcs = g.selectAll('.arc')
         .data(pie(totals))
         .enter()
-    .append('g')
+        .append('g')
         .attr('class', 'arc');
 
     arcs.append('path')
         .attr('d', arc)
-        .style('fill', (d) => { return color(d.data.name) });
+        .style('fill', (d) => {
+            return color(d.data.name)
+        });
 
     const legend = svg.selectAll('.legend')
         .data(totals)
         .enter()
-    .append('g')
+        .append('g')
         .attr('class', 'legend')
-        .attr('transform', (d,i) => { return 'translate(0, ' + i*20 + ')'; })
+        .attr('transform', (d, i) => {
+            return 'translate(0, ' + i * 20 + ')';
+        })
         .style('font', '12px sans-serif');
 
     legend.append('rect')
         .attr('x', width - 18)
         .attr('width', 18)
         .attr('height', 18)
-        .attr('fill', (d) => { return color(d.name); });
+        .attr('fill', (d) => {
+            return color(d.name);
+        });
 
     legend.append('text')
         .attr('x', width - 24)
         .attr('y', 9)
         .attr('dy', '.35em')
         .attr('text-anchor', 'end')
-        .text((d) => { return names[d.name] + ' (' + toFixed(((d.value/sum)*100), 2) + '%)'; });
+        .text((d) => {
+            return names[d.name] + ' (' + toFixed(((d.value / sum) * 100), 2) + '%)';
+        });
 
     $('.bar').mouseenter((e) => {
         const target = $(e.target);
@@ -543,16 +624,16 @@ const useBarGraph = function useBarGraph() {
         g.attr('transform',
             'translate(' +
             (parseFloat(target.attr('x')) + parseFloat(target.attr('width')) + 10) +
-            ',' + (parseFloat(target.attr('height')) + parseFloat(target.attr('y')))/4 + ')'
+            ',' + (parseFloat(target.attr('height')) + parseFloat(target.attr('y'))) / 4 + ')'
         );
         g.find('text').html(
             target.attr('x-data-name') + ' (' + toFixed(target.attr('x-data-value'), 2) + ')'
         );
         g.attr('opacity', 1);
     })
-    .mouseleave((e) => {
-        $(e.target).siblings('.bar-img').attr('opacity', 0);
-    });
+        .mouseleave((e) => {
+            $(e.target).siblings('.bar-img').attr('opacity', 0);
+        });
 };
 
 // Fix for broken .change() event on radio buttons
@@ -572,7 +653,7 @@ $.fn.fix_radios = function fix_radios() {
             return;
         }
 
-        $('input[name=' + this.name + ']').each(function() {
+        $('input[name=' + this.name + ']').each(function () {
             this.was_checked = this.checked;
         });
     }
