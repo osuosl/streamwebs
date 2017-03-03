@@ -3,8 +3,8 @@ from django.core.urlresolvers import reverse
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.models import User, Group, Permission
 from streamwebs.models import Resource
-from streamwebs.util.temp_img import (get_temporary_image,
-                                      get_temporary_text_file)
+from streamwebs.util.create_dummy_files import (get_temporary_image,
+                                                get_temporary_text_file)
 
 
 class UploadResourceTestCase(TestCase):
