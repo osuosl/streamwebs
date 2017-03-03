@@ -239,13 +239,11 @@ const createGraph = function createGraph() {
 
     const margin = {top: 20, right: 100, bottom: 30, left: 40};
     const defineWidth = function definedefineWidth(container) {
-        return (Math.max(container.width() / 2,
-                Math.min(container.width(), 35 * formatted.length))) -
-            margin.left - margin.right;
+        return container.width() - (margin.right + margin.left);
     };
 
     const defineHeight = function definedefineHeight(container) {
-        return 200 - margin.top - margin.bottom;
+        return 300 - (margin.top + margin.bottom);
     };
 
     /***************************************************************************

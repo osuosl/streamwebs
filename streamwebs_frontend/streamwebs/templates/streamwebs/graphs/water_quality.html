@@ -28,23 +28,42 @@
 
 <h2 class="graph-header">Water Quality Over Time</h2>
 <div id="graph-{{site.site_slug}}-container">
-    <h3 class="graph-header">Temperature (°C)</h3>
-    <div id="graph-{{site.site_slug}}-temperature" class="graph line temperature"></div>
-    <h3 class="graph-header">Dissolved Oxygen (mg/L)</h3>
-    <div id="graph-{{site.site_slug}}-oxygen" class="graph line oxygen"></div>
-    <h3 class="graph-header">pH</h3>
-    <div id="graph-{{site.site_slug}}-ph" class="graph line ph"></div>
-    <h3 class="graph-header">Turbidity (NTU)</h3>
-    <div id="graph-{{site.site_slug}}-turbidity" class="graph line turbidity"></div>
-    <h3 class="graph-header">Salinity (PSU or PPT)</h3> <!-- TODO: You need to ask Renee about this! -->
-    <div id="graph-{{site.site_slug}}-salinity" class="graph line salinity"></div>
-    <h3 class="graph-header">Conductivity (µS/cm)</h3>
-    <div id="graph-{{site.site_slug}}-conductivity" class="graph line conductivity"></div>
-    <h3 class="graph-header">Dissolved Matter (mg/L)</h3>
-    <div id="graph-{{site.site_slug}}-dissolved" class="graph line dissolved"></div>
-    <h3 class="graph-header">Biochemical Oxygen Demand (mg/L)</h3>
-    <div id="graph-{{site.site_slug}}-bod" class="graph line bod"></div>
-    <h3 class="graph-header">Fecal Coliform (CFU / 100 mL)</h3>
-    <div id="graph-{{site.site_slug}}-coliform" class="graph line coliform"></div>
+    <div class="row">
+        <div id="graph-{{site.site_slug}}-temperature" class="graph line temperature col s12 l6">
+            <h3 class="graph-header">Temperature (°C)</h3>
+        </div>
+        <div id="graph-{{site.site_slug}}-oxygen" class="graph line oxygen col s12 l6">
+            <h3 class="graph-header">Dissolved Oxygen (mg/L)</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div id="graph-{{site.site_slug}}-ph" class="graph line ph col s12 l6">
+            <h3 class="graph-header">pH</h3>
+        </div>
+        <div id="graph-{{site.site_slug}}-turbidity" class="graph line turbidity col s12 l6">
+            <h3 class="graph-header">Turbidity (NTU)</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div id="graph-{{site.site_slug}}-salinity" class="graph line salinity col s12 l6">
+            <h3 class="graph-header">Salinity (PSU or PPT)</h3> <!-- TODO: You need to ask Renee about this! -->
+        </div>
+        <div id="graph-{{site.site_slug}}-conductivity" class="graph line conductivity col s12 l6">
+            <h3 class="graph-header">Conductivity (µS/cm)</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div id="graph-{{site.site_slug}}-dissolved" class="graph line dissolved col s12 l6">
+            <h3 class="graph-header">Dissolved Matter (mg/L)</h3>
+        </div>
+        <div id="graph-{{site.site_slug}}-bod" class="graph line bod col s12 l6">
+            <h3 class="graph-header">Biochemical Oxygen Demand (mg/L)</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div id="graph-{{site.site_slug}}-coliform" class="graph line coliform col s12 l6">
+            <h3 class="graph-header">Fecal Coliform (CFU / 100 mL)</h3>
+        </div>
+    </div>
 </div>
 {% endblock %}
