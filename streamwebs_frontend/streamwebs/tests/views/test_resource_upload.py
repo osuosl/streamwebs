@@ -50,6 +50,14 @@ class UploadResourceTestCase(TestCase):
         self.assertTemplateNotUsed(
             response, 'streamwebs/resources/resources-upload.html')
 
+        """Should not be able to view link in resources.html"""
+        response = self.client.get(reverse('streamwebs:resources'))
+        self.assertContains(
+            response,
+            "StreamWebs offers a number of resources to get you started in " +
+            "the field")
+        self.assertNotContains(response, "Upload a new resource")
+
     def test_admin_user_has_upload_perm(self):
         """User in admin group with upload perm should be able to view page"""
         self.client.login(username='admin', password='adminpassword')
@@ -62,6 +70,14 @@ class UploadResourceTestCase(TestCase):
         self.assertTemplateUsed(
             response, 'streamwebs/resources/resources_upload.html')
         self.assertContains(response, 'Upload a new resource')
+
+        """Should also be able to view link in resources.html"""
+        response = self.client.get(reverse('streamwebs:resources'))
+        self.assertContains(
+            response,
+            "StreamWebs offers a number of resources to get you started in " +
+            "the field")
+        self.assertContains(response, "Upload a new resource")
         self.client.logout()
 
     def test_reg_user_has_upload_perm(self):
@@ -78,6 +94,15 @@ class UploadResourceTestCase(TestCase):
         self.assertTemplateUsed(
             response, 'streamwebs/resources/resources_upload.html')
         self.assertContains(response, 'Upload a new resource')
+
+        """Should also be able to view link in resources.html"""
+        response = self.client.get(reverse('streamwebs:resources'))
+        self.assertContains(
+            response,
+            "StreamWebs offers a number of resources to get you started in " +
+            "the field")
+        self.assertContains(response, "Upload a new resource")
+
         self.client.logout()
 
     def test_reg_user_without_upload_perm(self):
@@ -93,6 +118,15 @@ class UploadResourceTestCase(TestCase):
         self.assertEquals(response.status_code, 403)
         self.assertTemplateNotUsed(
             response, 'streamwebs/resources/resources_upload.html')
+
+        """Should not be able to view link in resources.html"""
+        response = self.client.get(reverse('streamwebs:resources'))
+        self.assertContains(
+            response,
+            "StreamWebs offers a number of resources to get you started in " +
+            "the field")
+        self.assertNotContains(response, "Upload a new resource")
+
         self.client.logout()
 
     def test_view_with_bad_blank_data(self):
