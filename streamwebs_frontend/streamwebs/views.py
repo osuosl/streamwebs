@@ -33,16 +33,22 @@ import datetime
 
 def export_wq(request, site_slug):
     site = Site.objects.get(site_slug=site_slug)
-    water = Water_Quality.objects.filter(site_id=site.id)
-    wq_sample = WQ_Sample.objects.filter(water_quality=water)
-
 # TODO: Make multiple queries for water quality (main) and each of the samples
 #       Link the results together to use render_to_csv
-    data = water.values(
-        'site__site_name'
+    waterq = Water_Quality.objects.filter(site_id=site.id).values(
+        'school__name', 'date', 'site__site_name', 'DEQ_dq_level', 'latitude',
+        'longitude', 'fish_present', 'live_fish', 'dead_fish',
+        'water_temp_unit', 'air_temp_unit', 'notes'
     )
+    # How to grab wq_samples that come from a single data sheet? 
 
-    return render_to_csv_response(data,
+    #wq_sample = WQ_Sample.objects.filter(water_quality=water)
+    #sample_1 = wq_sample.objects.filter(sample=1)
+    #sample_2 = wq_sample.objects.filter(sample=2)
+    #sample_3 = wq_sample.objects.filter(sample=3)
+    #sample_4 = wq_sample.objects.filter(sample=4)
+
+    return render_to_csv_response(waterq,
         field_header_map={
             'site__site_name': 'site'
         }
@@ -87,6 +93,34 @@ def export_macros(request, site_slug):
             'aquatic_worm': 'aquatic worm', 'mosquito_larva': 'mosquito larva',
             'tolerant_total': 'tolerant total',
             'wq_rating': 'water quality rating'
+        }
+    )
+
+# Come back to this to fix schools and foreign key calls
+def export_ript(request, site_slug):
+    site = Site.objects.get(site_slug=site_slug)
+    rip_transect = RiparianTransect.objects.filter(site_id=site.id).values(
+        'school', 'date_time', 'weather', 'site__site_name', 'slope', 'notes'
+    )
+    return render_to_csv_response(rip_transect,
+        field_to_header_map={
+            'site__site_name': 'site'
+        }
+    )
+
+
+def export_soil(request, site_slug):
+    site = Site.objects.get(site_slug=site_slug)
+    soil = Soil_Survey.objects.filter(site_id=site.id).values(
+        'school__name', 'date', 'site__site_name', 'weather', 'landscape_pos',
+        'cover_type', 'land_use', 'soil_type', 'distance', 'site_char'        
+    )
+    return render_to_csv_response(soil,
+        field_header_map={
+            'school__name': 'school', 'site__site_name': 'site',
+            'landscape_pos': 'landscape position', 'cover_type': 'cover type',
+            'land_use': 'land use', 'distance': 'distance from stream',
+            'soil_type': 'soil type', 'site_char': 'site characteristics'
         }
     )
 

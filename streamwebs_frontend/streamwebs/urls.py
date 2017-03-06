@@ -51,6 +51,9 @@ urlpatterns = [
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/transect/edit/',
         views.riparian_transect_edit, name='riparian_transect_edit'),
 
+    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/transect/export/$',
+        views.export_ript, name='export_transects'),
+
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/canopy/(?P<data_id>\d+)/',
         views.canopy_cover_view, name='canopy_cover'),
 
@@ -71,6 +74,9 @@ urlpatterns = [
 
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/soil/edit',
         views.soil_survey_edit, name='soil_edit'),
+
+    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/soil/export/$',
+        views.export_soil, name='export_soil'),
 
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/soil/(?P<data_id>\d+)/$',
         views.soil_survey, name='soil'),
