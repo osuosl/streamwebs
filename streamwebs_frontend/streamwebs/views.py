@@ -35,12 +35,27 @@ def export_wq(request, site_slug):
     site = Site.objects.get(site_slug=site_slug)
 # TODO: Make multiple queries for water quality (main) and each of the samples
 #       Link the results together to use render_to_csv
-    waterq = Water_Quality.objects.filter(site_id=site.id).values(
-        'school__name', 'date', 'site__site_name', 'DEQ_dq_level', 'latitude',
-        'longitude', 'fish_present', 'live_fish', 'dead_fish',
-        'water_temp_unit', 'air_temp_unit', 'notes'
-    )
-    # How to grab wq_samples that come from a single data sheet? 
+    waterq = Water_Quality.objects.filter(site_id=site.id) #.values(
+    #    'school__name', 'date', 'site__site_name', 'DEQ_dq_level', 'latitude',
+    #    'longitude', 'fish_present', 'live_fish', 'dead_fish',
+    #    'water_temp_unit', 'air_temp_unit', 'notes'
+    #)
+
+    # Store nid of each wq data sheet into a list
+    sheets = []
+    for each in waterq:
+        sheets.append(each.nid)
+
+    # Filter by each nid and grab related samples
+    #samples = []
+
+    # Current Issue: Can only grab samples from the last (most recent) data sheet
+    # TODO: Figure out how to export ALL samples alongside the parent WQ info
+
+    for sheet in sheets:
+        samples = WQ_Sample.objects.select_related('water_quality').filter(nid=sheet).order_by('id')
+        #wq = WQ_Sample.objects.select_related('water_quality').filter(nid=sheet).order_by('id')
+        #samples.append(wq)
 
     #wq_sample = WQ_Sample.objects.filter(water_quality=water)
     #sample_1 = wq_sample.objects.filter(sample=1)
@@ -48,11 +63,12 @@ def export_wq(request, site_slug):
     #sample_3 = wq_sample.objects.filter(sample=3)
     #sample_4 = wq_sample.objects.filter(sample=4)
 
-    return render_to_csv_response(waterq,
-        field_header_map={
-            'site__site_name': 'site'
-        }
-    )
+    return render_to_csv_response(samples)
+    #return render_to_csv_response(waterq,
+    #    field_header_map={
+    #        'site__site_name': 'site'
+    #    }
+    #)
 
 ### The following doesn't grab any data
 #    data = wq_sample.values(
