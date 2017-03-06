@@ -360,6 +360,7 @@ def riparian_transect_edit(request, site_slug):
         RiparianTransect, TransectZone,
         fields=('conifers', 'hardwoods', 'shrubs', 'comments'), extra=5
     )
+    blank = 0;
 
     if request.method == 'POST':
         zone_formset = TransectZoneInlineFormSet(
@@ -368,24 +369,35 @@ def riparian_transect_edit(request, site_slug):
         transect_form = RiparianTransectForm(data=request.POST)
 
         if (zone_formset.is_valid() and transect_form.is_valid()):
-            transect = transect_form.save()             # save form to object
-            transect.site = site
-            transect.save()                             # save object
-
             zones = zone_formset.save(commit=False)     # save forms to objs
 
-            for zone in zones:                          # for each zone,
-                zone.transect = transect                # assign the transect
-                zone.save()                             # save the zone obj
+            for zone in zones:
+                if zone.conifers == 0 and zone.hardwoods == 0 and zone.shrubs == 0:
+                    blank += 1
+            
+            if blank == 5:
+                messages.error(
+                    request,
+                    "Your conifer, hardwood and shrub totals can't all be 0." +
+                    " Please try again.")
+            
+            else:
+                transect = transect_form.save(commit=False)             # save form to object
+                transect.site = site
+                transect.save()                             # save object
 
-            messages.success(
-                request,
-                'You have successfully added a new riparian transect ' +
-                'data sheet.')
+                for zone in zones:                          # for each zone,
+                    zone.transect = transect                # assign the transect
+                    zone.save()                             # save the zone obj
 
-            return redirect(reverse('streamwebs:riparian_transect',
-                                    kwargs={'site_slug': site.site_slug,
-                                            'data_id': transect.id}))
+                messages.success(
+                    request,
+                    'You have successfully added a new riparian transect ' +
+                    'data sheet.')
+
+                return redirect(reverse('streamwebs:riparian_transect',
+                                       kwargs={'site_slug': site.site_slug,
+                                                'data_id': transect.id}))
 
     else:
         zone_formset = TransectZoneInlineFormSet(instance=transect)

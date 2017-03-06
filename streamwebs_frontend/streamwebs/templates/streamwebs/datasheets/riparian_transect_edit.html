@@ -18,9 +18,15 @@
 {% endblock%}
 
 {% block content %}
-<div class="container">
-{% if added %}
-<strong>{% trans "You have successfully submitted your Riparian Transect data sheet." %}</strong>
+    <div class="container">
+        {% if messages %}
+            {% for message in messages %}
+            <strong>{{ message }}<strong>
+            {% endfor %}
+        {% endif %}
+
+    {% if added %}
+    <strong>{% trans "You have successfully submitted your Riparian Transect data sheet." %}</strong>
 
 {% else %}
     <h3 align ="center">
