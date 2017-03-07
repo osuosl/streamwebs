@@ -15,20 +15,24 @@
     }
 
     .canopy {
-        color: #000000;
-        width: 300px;
+        color: #000;
+        width: 350px;
         height: 350px;
+        min-width: 350px;
+        max-width: 350px;
         display: inline-block;
-        margin-left: 30px;
-        margin-right: 30px;
+    }
+
+    #canopies > .row {
+        text-align: center;
     }
 
     .canopy-square {
+        display: inline-block;
         width: 50px;
         height: 50px;
-        border: solid black 1px;
-        float: left;
-        margin: -1px -1px 0 0;
+        outline: 1px solid;
+        margin-top: 1px;
 
         text-align: center;
         line-height: 50px;
@@ -85,194 +89,193 @@
                 </div>
             </div>
 
+            <div id="canopies">
+                <div class="row">
+                    <div id="canopy-north" class="canopy">
+                        <p class="header">North</p>
+                        <div class="canopy-square hidden">Z</div>
+                        <div class="canopy-square hidden">Z</div>
+                        <div class="canopy-square shown" id="square-0-0">A</div>
+                        <div class="canopy-square shown" id="square-0-1">B</div>
+                        <div class="canopy-square hidden">Z</div>
+                        <div class="canopy-square hidden">Z</div>
+
+                        <div class="canopy-square hidden">Z</div>
+                        <div class="canopy-square shown" id="square-0-2">C</div>
+                        <div class="canopy-square shown" id="square-0-3">D</div>
+                        <div class="canopy-square shown" id="square-0-4">E</div>
+                        <div class="canopy-square shown" id="square-0-5">F</div>
+                        <div class="canopy-square hidden">Z</div>
+
+                        <div class="canopy-square shown" id="square-0-6">G</div>
+                        <div class="canopy-square shown" id="square-0-7">H</div>
+                        <div class="canopy-square shown" id="square-0-8">I</div>
+                        <div class="canopy-square shown" id="square-0-9">J</div>
+                        <div class="canopy-square shown" id="square-0-10">K</div>
+                        <div class="canopy-square shown" id="square-0-11">L</div>
+
+                        <div class="canopy-square shown" id="square-0-12">M</div>
+                        <div class="canopy-square shown" id="square-0-13">N</div>
+                        <div class="canopy-square shown" id="square-0-14">O</div>
+                        <div class="canopy-square shown" id="square-0-15">P</div>
+                        <div class="canopy-square shown" id="square-0-16">Q</div>
+                        <div class="canopy-square shown" id="square-0-17">R</div>
+
+                        <div class="canopy-square hidden">Z</div>
+                        <div class="canopy-square shown" id="square-0-18">S</div>
+                        <div class="canopy-square shown" id="square-0-19">T</div>
+                        <div class="canopy-square shown" id="square-0-20">U</div>
+                        <div class="canopy-square shown" id="square-0-21">V</div>
+                        <div class="canopy-square hidden">Z</div>
+
+                        <div class="canopy-square hidden">Z</div>
+                        <div class="canopy-square hidden">Z</div>
+                        <div class="canopy-square shown" id="square-0-22">W</div>
+                        <div class="canopy-square shown" id="square-0-23">X</div>
+                        <div class="canopy-square hidden">Z</div>
+                        <div class="canopy-square hidden">Z</div>
+                    </div>
+
+                    <div id="canopy-west" class="canopy">
+                        <p class="header">West</p>
+                        <div class="canopy-square hidden">Z</div>
+                        <div class="canopy-square hidden">Z</div>
+                        <div class="canopy-square shown" id="square-1-0">A</div>
+                        <div class="canopy-square shown" id="square-1-1">B</div>
+                        <div class="canopy-square hidden">Z</div>
+                        <div class="canopy-square hidden">Z</div>
+
+                        <div class="canopy-square hidden">Z</div>
+                        <div class="canopy-square shown" id="square-1-2">C</div>
+                        <div class="canopy-square shown" id="square-1-3">D</div>
+                        <div class="canopy-square shown" id="square-1-4">E</div>
+                        <div class="canopy-square shown" id="square-1-5">F</div>
+                        <div class="canopy-square hidden">Z</div>
+
+                        <div class="canopy-square shown" id="square-1-6">G</div>
+                        <div class="canopy-square shown" id="square-1-7">H</div>
+                        <div class="canopy-square shown" id="square-1-8">I</div>
+                        <div class="canopy-square shown" id="square-1-9">J</div>
+                        <div class="canopy-square shown" id="square-1-10">K</div>
+                        <div class="canopy-square shown" id="square-1-11">L</div>
+
+                        <div class="canopy-square shown" id="square-1-12">M</div>
+                        <div class="canopy-square shown" id="square-1-13">N</div>
+                        <div class="canopy-square shown" id="square-1-14">O</div>
+                        <div class="canopy-square shown" id="square-1-15">P</div>
+                        <div class="canopy-square shown" id="square-1-16">Q</div>
+                        <div class="canopy-square shown" id="square-1-17">R</div>
+
+                        <div class="canopy-square hidden">Z</div>
+                        <div class="canopy-square shown" id="square-1-18">S</div>
+                        <div class="canopy-square shown" id="square-1-19">T</div>
+                        <div class="canopy-square shown" id="square-1-20">U</div>
+                        <div class="canopy-square shown" id="square-1-21">V</div>
+                        <div class="canopy-square hidden">Z</div>
+
+                        <div class="canopy-square hidden">Z</div>
+                        <div class="canopy-square hidden">Z</div>
+                        <div class="canopy-square shown" id="square-1-22">W</div>
+                        <div class="canopy-square shown" id="square-1-23">X</div>
+                        <div class="canopy-square hidden">Z</div>
+                        <div class="canopy-square hidden">Z</div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div id="canopy-east" class="canopy">
+                        <p class="header">East</p>
+                        <div class="canopy-square hidden">Z</div>
+                        <div class="canopy-square hidden">Z</div>
+                        <div class="canopy-square shown" id="square-2-0">A</div>
+                        <div class="canopy-square shown" id="square-2-1">B</div>
+                        <div class="canopy-square hidden">Z</div>
+                        <div class="canopy-square hidden">Z</div>
+
+                        <div class="canopy-square hidden">Z</div>
+                        <div class="canopy-square shown" id="square-2-2">C</div>
+                        <div class="canopy-square shown" id="square-2-3">D</div>
+                        <div class="canopy-square shown" id="square-2-4">E</div>
+                        <div class="canopy-square shown" id="square-2-5">F</div>
+                        <div class="canopy-square hidden">Z</div>
+
+                        <div class="canopy-square shown" id="square-2-6">G</div>
+                        <div class="canopy-square shown" id="square-2-7">H</div>
+                        <div class="canopy-square shown" id="square-2-8">I</div>
+                        <div class="canopy-square shown" id="square-2-9">J</div>
+                        <div class="canopy-square shown" id="square-2-10">K</div>
+                        <div class="canopy-square shown" id="square-2-11">L</div>
+
+                        <div class="canopy-square shown" id="square-2-12">M</div>
+                        <div class="canopy-square shown" id="square-2-13">N</div>
+                        <div class="canopy-square shown" id="square-2-14">O</div>
+                        <div class="canopy-square shown" id="square-2-15">P</div>
+                        <div class="canopy-square shown" id="square-2-16">Q</div>
+                        <div class="canopy-square shown" id="square-2-17">R</div>
+
+                        <div class="canopy-square hidden">Z</div>
+                        <div class="canopy-square shown" id="square-2-18">S</div>
+                        <div class="canopy-square shown" id="square-2-19">T</div>
+                        <div class="canopy-square shown" id="square-2-20">U</div>
+                        <div class="canopy-square shown" id="square-2-21">V</div>
+                        <div class="canopy-square hidden">Z</div>
+
+                        <div class="canopy-square hidden">Z</div>
+                        <div class="canopy-square hidden">Z</div>
+                        <div class="canopy-square shown" id="square-2-22">W</div>
+                        <div class="canopy-square shown" id="square-2-23">X</div>
+                        <div class="canopy-square hidden">Z</div>
+                        <div class="canopy-square hidden">Z</div>
+                    </div>
+
+                    <div id="canopy-south" class="canopy">
+                        <p class="header">South</p>
+                        <div class="canopy-square hidden">Z</div>
+                        <div class="canopy-square hidden">Z</div>
+                        <div class="canopy-square shown" id="square-3-0">A</div>
+                        <div class="canopy-square shown" id="square-3-1">B</div>
+                        <div class="canopy-square hidden">Z</div>
+                        <div class="canopy-square hidden">Z</div>
+
+                        <div class="canopy-square hidden">Z</div>
+                        <div class="canopy-square shown" id="square-3-2">C</div>
+                        <div class="canopy-square shown" id="square-3-3">D</div>
+                        <div class="canopy-square shown" id="square-3-4">E</div>
+                        <div class="canopy-square shown" id="square-3-5">F</div>
+                        <div class="canopy-square hidden">Z</div>
+
+                        <div class="canopy-square shown" id="square-3-6">G</div>
+                        <div class="canopy-square shown" id="square-3-7">H</div>
+                        <div class="canopy-square shown" id="square-3-8">I</div>
+                        <div class="canopy-square shown" id="square-3-9">J</div>
+                        <div class="canopy-square shown" id="square-3-10">K</div>
+                        <div class="canopy-square shown" id="square-3-11">L</div>
+
+                        <div class="canopy-square shown" id="square-3-12">M</div>
+                        <div class="canopy-square shown" id="square-3-13">N</div>
+                        <div class="canopy-square shown" id="square-3-14">O</div>
+                        <div class="canopy-square shown" id="square-3-15">P</div>
+                        <div class="canopy-square shown" id="square-3-16">Q</div>
+                        <div class="canopy-square shown" id="square-3-17">R</div>
+
+                        <div class="canopy-square hidden">Z</div>
+                        <div class="canopy-square shown" id="square-3-18">S</div>
+                        <div class="canopy-square shown" id="square-3-19">T</div>
+                        <div class="canopy-square shown" id="square-3-20">U</div>
+                        <div class="canopy-square shown" id="square-3-21">V</div>
+                        <div class="canopy-square hidden">Z</div>
+
+                        <div class="canopy-square hidden">Z</div>
+                        <div class="canopy-square hidden">Z</div>
+                        <div class="canopy-square shown" id="square-3-22">W</div>
+                        <div class="canopy-square shown" id="square-3-23">X</div>
+                        <div class="canopy-square hidden">Z</div>
+                        <div class="canopy-square hidden">Z</div>
+                    </div>
+                </div>
+            </div>
+
             <table>
-                <tr>
-                    <td>
-                        <div id="canopies">
-                            <div id="canopy-north" class="canopy">
-                                <p class="header">North</p>
-                                <div class="canopy-square hidden"></div>
-                                <div class="canopy-square hidden"></div>
-                                <div class="canopy-square shown" id="square-0-0">A</div>
-                                <div class="canopy-square shown" id="square-0-1">B</div>
-                                <div class="canopy-square hidden"></div>
-                                <div class="canopy-square hidden"></div>
-
-                                <div class="canopy-square hidden"></div>
-                                <div class="canopy-square shown" id="square-0-2">C</div>
-                                <div class="canopy-square shown" id="square-0-3">D</div>
-                                <div class="canopy-square shown" id="square-0-4">E</div>
-                                <div class="canopy-square shown" id="square-0-5">F</div>
-                                <div class="canopy-square hidden"></div>
-
-                                <div class="canopy-square shown" id="square-0-6">G</div>
-                                <div class="canopy-square shown" id="square-0-7">H</div>
-                                <div class="canopy-square shown" id="square-0-8">I</div>
-                                <div class="canopy-square shown" id="square-0-9">J</div>
-                                <div class="canopy-square shown" id="square-0-10">K</div>
-                                <div class="canopy-square shown" id="square-0-11">L</div>
-
-                                <div class="canopy-square shown" id="square-0-12">M</div>
-                                <div class="canopy-square shown" id="square-0-13">N</div>
-                                <div class="canopy-square shown" id="square-0-14">O</div>
-                                <div class="canopy-square shown" id="square-0-15">P</div>
-                                <div class="canopy-square shown" id="square-0-16">Q</div>
-                                <div class="canopy-square shown" id="square-0-17">R</div>
-
-                                <div class="canopy-square hidden"></div>
-                                <div class="canopy-square shown" id="square-0-18">S</div>
-                                <div class="canopy-square shown" id="square-0-19">T</div>
-                                <div class="canopy-square shown" id="square-0-20">U</div>
-                                <div class="canopy-square shown" id="square-0-21">V</div>
-                                <div class="canopy-square hidden"></div>
-
-                                <div class="canopy-square hidden"></div>
-                                <div class="canopy-square hidden"></div>
-                                <div class="canopy-square shown" id="square-0-22">W</div>
-                                <div class="canopy-square shown" id="square-0-23">X</div>
-                                <div class="canopy-square hidden"></div>
-                                <div class="canopy-square hidden"></div>
-                            </div>
-
-                            <div id="canopy-west" class="canopy">
-                                <p class="header">West</p>
-                                <div class="canopy-square hidden"></div>
-                                <div class="canopy-square hidden"></div>
-                                <div class="canopy-square shown" id="square-1-0">A</div>
-                                <div class="canopy-square shown" id="square-1-1">B</div>
-                                <div class="canopy-square hidden"></div>
-                                <div class="canopy-square hidden"></div>
-
-                                <div class="canopy-square hidden"></div>
-                                <div class="canopy-square shown" id="square-1-2">C</div>
-                                <div class="canopy-square shown" id="square-1-3">D</div>
-                                <div class="canopy-square shown" id="square-1-4">E</div>
-                                <div class="canopy-square shown" id="square-1-5">F</div>
-                                <div class="canopy-square hidden"></div>
-
-                                <div class="canopy-square shown" id="square-1-6">G</div>
-                                <div class="canopy-square shown" id="square-1-7">H</div>
-                                <div class="canopy-square shown" id="square-1-8">I</div>
-                                <div class="canopy-square shown" id="square-1-9">J</div>
-                                <div class="canopy-square shown" id="square-1-10">K</div>
-                                <div class="canopy-square shown" id="square-1-11">L</div>
-
-                                <div class="canopy-square shown" id="square-1-12">M</div>
-                                <div class="canopy-square shown" id="square-1-13">N</div>
-                                <div class="canopy-square shown" id="square-1-14">O</div>
-                                <div class="canopy-square shown" id="square-1-15">P</div>
-                                <div class="canopy-square shown" id="square-1-16">Q</div>
-                                <div class="canopy-square shown" id="square-1-17">R</div>
-
-                                <div class="canopy-square hidden"></div>
-                                <div class="canopy-square shown" id="square-1-18">S</div>
-                                <div class="canopy-square shown" id="square-1-19">T</div>
-                                <div class="canopy-square shown" id="square-1-20">U</div>
-                                <div class="canopy-square shown" id="square-1-21">V</div>
-                                <div class="canopy-square hidden"></div>
-
-                                <div class="canopy-square hidden"></div>
-                                <div class="canopy-square hidden"></div>
-                                <div class="canopy-square shown" id="square-1-22">W</div>
-                                <div class="canopy-square shown" id="square-1-23">X</div>
-                                <div class="canopy-square hidden"></div>
-                                <div class="canopy-square hidden"></div>
-                            </div>
-
-                            <div id="canopy-east" class="canopy">
-                                <p class="header">East</p>
-                                <div class="canopy-square hidden"></div>
-                                <div class="canopy-square hidden"></div>
-                                <div class="canopy-square shown" id="square-2-0">A</div>
-                                <div class="canopy-square shown" id="square-2-1">B</div>
-                                <div class="canopy-square hidden"></div>
-                                <div class="canopy-square hidden"></div>
-
-                                <div class="canopy-square hidden"></div>
-                                <div class="canopy-square shown" id="square-2-2">C</div>
-                                <div class="canopy-square shown" id="square-2-3">D</div>
-                                <div class="canopy-square shown" id="square-2-4">E</div>
-                                <div class="canopy-square shown" id="square-2-5">F</div>
-                                <div class="canopy-square hidden"></div>
-
-                                <div class="canopy-square shown" id="square-2-6">G</div>
-                                <div class="canopy-square shown" id="square-2-7">H</div>
-                                <div class="canopy-square shown" id="square-2-8">I</div>
-                                <div class="canopy-square shown" id="square-2-9">J</div>
-                                <div class="canopy-square shown" id="square-2-10">K</div>
-                                <div class="canopy-square shown" id="square-2-11">L</div>
-
-                                <div class="canopy-square shown" id="square-2-12">M</div>
-                                <div class="canopy-square shown" id="square-2-13">N</div>
-                                <div class="canopy-square shown" id="square-2-14">O</div>
-                                <div class="canopy-square shown" id="square-2-15">P</div>
-                                <div class="canopy-square shown" id="square-2-16">Q</div>
-                                <div class="canopy-square shown" id="square-2-17">R</div>
-
-                                <div class="canopy-square hidden"></div>
-                                <div class="canopy-square shown" id="square-2-18">S</div>
-                                <div class="canopy-square shown" id="square-2-19">T</div>
-                                <div class="canopy-square shown" id="square-2-20">U</div>
-                                <div class="canopy-square shown" id="square-2-21">V</div>
-                                <div class="canopy-square hidden"></div>
-
-                                <div class="canopy-square hidden"></div>
-                                <div class="canopy-square hidden"></div>
-                                <div class="canopy-square shown" id="square-2-22">W</div>
-                                <div class="canopy-square shown" id="square-2-23">X</div>
-                                <div class="canopy-square hidden"></div>
-                                <div class="canopy-square hidden"></div>
-                            </div>
-
-                            <div id="canopy-south" class="canopy">
-                                <p class="header">South</p>
-                                <div class="canopy-square hidden"></div>
-                                <div class="canopy-square hidden"></div>
-                                <div class="canopy-square shown" id="square-3-0">A</div>
-                                <div class="canopy-square shown" id="square-3-1">B</div>
-                                <div class="canopy-square hidden"></div>
-                                <div class="canopy-square hidden"></div>
-
-                                <div class="canopy-square hidden"></div>
-                                <div class="canopy-square shown" id="square-3-2">C</div>
-                                <div class="canopy-square shown" id="square-3-3">D</div>
-                                <div class="canopy-square shown" id="square-3-4">E</div>
-                                <div class="canopy-square shown" id="square-3-5">F</div>
-                                <div class="canopy-square hidden"></div>
-
-                                <div class="canopy-square shown" id="square-3-6">G</div>
-                                <div class="canopy-square shown" id="square-3-7">H</div>
-                                <div class="canopy-square shown" id="square-3-8">I</div>
-                                <div class="canopy-square shown" id="square-3-9">J</div>
-                                <div class="canopy-square shown" id="square-3-10">K</div>
-                                <div class="canopy-square shown" id="square-3-11">L</div>
-
-                                <div class="canopy-square shown" id="square-3-12">M</div>
-                                <div class="canopy-square shown" id="square-3-13">N</div>
-                                <div class="canopy-square shown" id="square-3-14">O</div>
-                                <div class="canopy-square shown" id="square-3-15">P</div>
-                                <div class="canopy-square shown" id="square-3-16">Q</div>
-                                <div class="canopy-square shown" id="square-3-17">R</div>
-
-                                <div class="canopy-square hidden"></div>
-                                <div class="canopy-square shown" id="square-3-18">S</div>
-                                <div class="canopy-square shown" id="square-3-19">T</div>
-                                <div class="canopy-square shown" id="square-3-20">U</div>
-                                <div class="canopy-square shown" id="square-3-21">V</div>
-                                <div class="canopy-square hidden"></div>
-
-                                <div class="canopy-square hidden"></div>
-                                <div class="canopy-square hidden"></div>
-                                <div class="canopy-square shown" id="square-3-22">W</div>
-                                <div class="canopy-square shown" id="square-3-23">X</div>
-                                <div class="canopy-square hidden"></div>
-                                <div class="canopy-square hidden"></div>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-
-                <tr></tr>
                 <tr>
                     <th align='left'>{{ canopy_cover_form.est_canopy_cover.label }}</th>
                     <td style="display: none" id="total">{{ canopy_cover_form.est_canopy_cover }}</td>
