@@ -47,43 +47,21 @@ def export_wq(request, site_slug):
         sheets.append(each.nid)
 
     # Filter by each nid and grab related samples
-    #samples = []
 
-    # Current Issue: Can only grab samples from the last (most recent) data sheet
-    # TODO: Figure out how to export ALL samples alongside the parent WQ info
+    # Query the first set of samples outside of the loop and pop nid from list
+    samples = WQ_Sample.objects.select_related('water_quality').filter(nid=sheets[0]).order_by('id')
+    sheets.pop(0)
 
+    # Query for the remaining samples according to wq_nid
     for sheet in sheets:
-        samples = WQ_Sample.objects.select_related('water_quality').filter(nid=sheet).order_by('id')
-        #wq = WQ_Sample.objects.select_related('water_quality').filter(nid=sheet).order_by('id')
-        #samples.append(wq)
+        wq = Water_Quality.objects.filter(site_id=site.id, nid=sheet)
+        n_samples = WQ_Sample.objects.select_related('water_quality').filter(nid=sheet).order_by('id')
+        # Merge multiple queries into one queryset for render_to_csv
+        samples = samples | n_samples
 
-    #wq_sample = WQ_Sample.objects.filter(water_quality=water)
-    #sample_1 = wq_sample.objects.filter(sample=1)
-    #sample_2 = wq_sample.objects.filter(sample=2)
-    #sample_3 = wq_sample.objects.filter(sample=3)
-    #sample_4 = wq_sample.objects.filter(sample=4)
+    filename = site.site_name + '_WQ'
 
-    return render_to_csv_response(samples)
-    #return render_to_csv_response(waterq,
-    #    field_header_map={
-    #        'site__site_name': 'site'
-    #    }
-    #)
-
-### The following doesn't grab any data
-#    data = wq_sample.values(
-#        'water_quality__school__name', 'water_quality__date',
-#        'water_quality__site__site_name', 'water_quality__DEQ_dq_level',
-#        'water_quality__latitude', 'water_quality__longitude',
-#        'water_quality__fish_present', 'water_quality__live_fish',
-#        'water_quality__dead_fish', 'water_quality__water_temp_unit',
-#        'water_quality__air_temp_unit', 'water_quality__notes'
-#    )
-#    return render_to_csv_response(data,
-#        field_header_map={
-#            'water_quality__site__site_name': 'site'
-#        }
-#    )
+    return render_to_csv_response(samples, filename=filename)
 
 
 def export_macros(request, site_slug):
