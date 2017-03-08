@@ -237,7 +237,7 @@ const createGraph = function createGraph() {
         }),
     };
 
-    const margin = {top: 20, right: 100, bottom: 30, left: 40};
+    const margin = {top: 20, right: 150, bottom: 30, left: 40};
     const defineWidth = function definedefineWidth(container) {
         return container.width() - (margin.right + margin.left);
     };
@@ -1221,5 +1221,9 @@ $(() => {
     $('#date-start').change(changeRangeStart);
     $('#date-end').change(changeRangeEnd);
 
+    createGraph();
+});
+
+$(window).resize(() => {
     createGraph();
 });
