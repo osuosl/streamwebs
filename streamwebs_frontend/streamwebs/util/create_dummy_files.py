@@ -13,3 +13,11 @@ def get_temporary_image():
                                       None)
     image_file.seek(0)
     return image_file
+
+
+def get_temporary_text_file():
+    io = StringIO.StringIO()
+    io.write('This is a dummy file that is full of dummy text.')
+    text_file = InMemoryUploadedFile(io, None, 'foo.pdf', 'pdf', io.len, None)
+    text_file.seek(0)
+    return text_file

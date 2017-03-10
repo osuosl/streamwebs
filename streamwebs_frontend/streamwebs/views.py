@@ -16,7 +16,7 @@ from streamwebs.forms import (
     UserForm, UserProfileForm, RiparianTransectForm, MacroinvertebratesForm,
     PhotoPointImageForm, PhotoPointForm, CameraPointForm, WQSampleForm,
     WQSampleFormReadOnly, WQForm, WQFormReadOnly, SiteForm, Canopy_Cover_Form,
-    SoilSurveyForm, SoilSurveyFormReadOnly, StatisticsForm)
+    SoilSurveyForm, SoilSurveyFormReadOnly, StatisticsForm, ResourceForm)
 
 from streamwebs.models import (
     Macroinvertebrates, Site, Water_Quality, WQ_Sample, RiparianTransect,
@@ -869,5 +869,39 @@ def resources_publications(request):
     return render(
         request, 'streamwebs/resources/resources_publications.html', {
             'data': data,
+        }
+    )
+
+
+@login_required
+@permission_required('streamwebs.can_upload_resources', raise_exception=True)
+def resources_upload(request):
+    """ View for uploading a new resource """
+    res_form = ResourceForm()
+
+    if request.method == 'POST':
+        res_form = ResourceForm(request.POST, request.FILES)
+
+        if res_form.is_valid():
+            res = res_form.save()
+            if res.res_type == 'data_sheet':
+                messages.success(
+                    request,
+                    'You have successfully uploaded a new data sheet resource.'
+                )
+                return redirect(reverse('streamwebs:resources-data-sheets'))
+            elif res.res_type == 'publication':
+                messages.success(
+                    request,
+                    'You have successfully uploaded a new publication.'
+                )
+                return redirect(reverse('streamwebs:resources-publications'))
+            # elif res.res_type == 'tutorial_video':
+                # process the url
+                # redirect to video page
+
+    return render(
+        request, 'streamwebs/resources/resources_upload.html', {
+            'res_form': res_form,
         }
     )

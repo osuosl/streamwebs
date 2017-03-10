@@ -44,5 +44,8 @@
     The StreamWebs glossary contains some of the most important watershed terms
     and concepts.
   </p>
+  {% if perms.streamwebs.can_upload_resources %}
+  <p><a href="{% url 'streamwebs:resources-upload' %}">Upload a new resource</a>
+  {% endif %}
 </div>
 {% endblock %}

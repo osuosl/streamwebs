@@ -2,7 +2,7 @@ from django.test import Client, TestCase
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from streamwebs.models import Site, PhotoPointImage, PhotoPoint, CameraPoint
-from streamwebs.util.temp_img import get_temporary_image
+from streamwebs.util.create_dummy_files import get_temporary_image
 
 
 class ViewPhotoPointTestCase(TestCase):
