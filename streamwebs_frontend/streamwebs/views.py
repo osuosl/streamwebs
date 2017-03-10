@@ -35,8 +35,8 @@ import datetime
 
 def export_wq(request, site_slug):
     site = Site.objects.get(site_slug=site_slug)
-
     waterq = Water_Quality.objects.filter(site_id=site.id)    # Store nid of each wq data sheet into a list
+
     sheets = []
     for each in waterq:
         sheets.append(each.nid)
@@ -131,12 +131,38 @@ def export_macros(request, site_slug):
 # Come back to this to fix schools and foreign key calls
 def export_ript(request, site_slug):
     site = Site.objects.get(site_slug=site_slug)
-    rip_transect = RiparianTransect.objects.filter(site_id=site.id).values(
-        'school', 'date_time', 'weather', 'site__site_name', 'slope', 'notes'
-    )
-    return render_to_csv_response(rip_transect,
+    rip_transect = RiparianTransect.objects.filter(site_id=site.id)
+   
+    sheets = []
+    for each in rip_transect:
+        sheets.append(each.id)
+
+    print(sheets)
+
+    # doesn't return anything if filtering by transect_id??
+    zones = TransectZone.objects.filter(transect_id=39)
+    #zones = TransectZone.objects.filter(transect_id=sheets[0]).order_by('id').values(
+    #    'transect__school', 'transect__date_time', 'transect__site__site_name',
+    #    'transect__weather', 'transect__slope', 'transect__notes', 'zone_num',
+    #    'conifers', 'hardwoods', 'shrubs', 'comments'
+    #)
+    sheets.pop(0)
+
+    for sheet in sheets:
+        n_zones = TransectZone.objects.filter(transect_id=sheet).order_by('id').values(
+            'transect__school', 'transect__date_time', 'transect__site__site_name',
+            'transect__weather', 'transect__slope', 'transect__notes', 'zone_num',
+            'conifers', 'hardwoods', 'shrubs', 'comments'
+        )
+        #zones = zones | n_zones
+
+    #return render_to_csv_response(rip_transect) 
+    return render_to_csv_response(zones,
         field_to_header_map={
-            'site__site_name': 'site'
+            'transect__school': 'school', 'transect__date_time': 'date/time',
+            'transect__site__site_name': 'site', 'transect__weather':'weather',
+            'transect__slope': 'slope', 'transect__notes': 'notes',
+            'zone_num': 'zone number'
         }
     )
 
