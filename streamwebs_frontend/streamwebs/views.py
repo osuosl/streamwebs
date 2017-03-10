@@ -26,6 +26,8 @@ from streamwebs.models import (
     PhotoPointImage, Soil_Survey, Resource, School)
 
 from djqscsv import render_to_csv_response
+from itertools import chain
+#from django.db.models.expressions import RawSQL
 import json
 import copy
 import datetime
@@ -33,35 +35,71 @@ import datetime
 
 def export_wq(request, site_slug):
     site = Site.objects.get(site_slug=site_slug)
-# TODO: Make multiple queries for water quality (main) and each of the samples
-#       Link the results together to use render_to_csv
-    waterq = Water_Quality.objects.filter(site_id=site.id) #.values(
-    #    'school__name', 'date', 'site__site_name', 'DEQ_dq_level', 'latitude',
-    #    'longitude', 'fish_present', 'live_fish', 'dead_fish',
-    #    'water_temp_unit', 'air_temp_unit', 'notes'
-    #)
 
-    # Store nid of each wq data sheet into a list
+    waterq = Water_Quality.objects.filter(site_id=site.id)    # Store nid of each wq data sheet into a list
     sheets = []
     for each in waterq:
         sheets.append(each.nid)
 
-    # Filter by each nid and grab related samples
-
     # Query the first set of samples outside of the loop and pop nid from list
-    samples = WQ_Sample.objects.select_related('water_quality').filter(nid=sheets[0]).order_by('id')
+    samples = WQ_Sample.objects.prefetch_related('water_quality').filter(nid=sheets[0]).order_by('id').values(
+        'water_quality__school__name', 'water_quality__date',
+        'water_quality__site__site_name', 'water_quality__DEQ_dq_level',
+        'water_quality__latitude', 'water_quality__longitude',
+        'water_quality__fish_present', 'water_quality__live_fish',
+        'water_quality__dead_fish', 'water_quality__water_temp_unit',
+        'water_quality__air_temp_unit', 'water_quality__notes', 'sample',
+        'water_temperature', 'water_temp_tool', 'air_temperature',
+        'air_temp_tool', 'dissolved_oxygen', 'oxygen_tool', 'pH', 'pH_tool',
+        'turbidity', 'turbid_tool', 'salinity', 'salt_tool', 'conductivity',
+        'total_solids', 'bod', 'ammonia', 'nitrite', 'nitrate', 'phosphates',
+        'fecal_coliform' 
+    )
     sheets.pop(0)
 
     # Query for the remaining samples according to wq_nid
     for sheet in sheets:
-        wq = Water_Quality.objects.filter(site_id=site.id, nid=sheet)
-        n_samples = WQ_Sample.objects.select_related('water_quality').filter(nid=sheet).order_by('id')
-        # Merge multiple queries into one queryset for render_to_csv
+        n_samples = WQ_Sample.objects.prefetch_related('water_quality').filter(nid=sheet).order_by('id').values(
+            'water_quality__school__name', 'water_quality__date',
+            'water_quality__site__site_name', 'water_quality__DEQ_dq_level',
+            'water_quality__latitude', 'water_quality__longitude',
+            'water_quality__fish_present', 'water_quality__live_fish',
+            'water_quality__dead_fish', 'water_quality__water_temp_unit',
+            'water_quality__air_temp_unit', 'water_quality__notes', 'sample',
+            'water_temperature', 'water_temp_tool', 'air_temperature',
+            'air_temp_tool', 'dissolved_oxygen', 'oxygen_tool', 'pH', 'pH_tool',
+            'turbidity', 'turbid_tool', 'salinity', 'salt_tool', 'conductivity',
+            'total_solids', 'bod', 'ammonia', 'nitrite', 'nitrate', 'phosphates',
+            'fecal_coliform' 
+        )
         samples = samples | n_samples
-
+    
     filename = site.site_name + '_WQ'
 
-    return render_to_csv_response(samples, filename=filename)
+    return render_to_csv_response(samples, filename=filename,
+        field_header_map={
+            'water_quality__school__name': 'school',
+            'water_quality__date': 'date',
+            'water_quality__site__site_name': 'site',
+            'water_quality__DEQ_dq_level': 'DEQ Data Quality level',
+            'water_quality__latitude': 'latitude',
+            'water_quality__longitude': 'longitude',
+            'water_quality__fish_present': 'Are fish present?',
+            'water_quality__live_fish': '# of live fish',
+            'water_quality__dead_fish': '# of dead fish',
+            'water_quality__water_temp_unit': 'water temperature unit',
+            'water_quality__air_temp_unit': 'air temperature unit',
+            'water_quality__notes': 'notes',
+            'water_temperature': 'water temperature',
+            'water_temp_tool': 'water temperature tool',
+            'air_temperature': 'air temperature',
+            'air_temp_tool': 'air temperature tool',
+            'dissolved_oxygen': 'dissolved oxygen',
+            'oxygen_tool': 'oxygen tool', 'pH_tool': 'pH tool',
+            'turbid_tool': 'turbidity tool', 'salt_tool': 'salinity tool',
+            'total_solids': 'total solids', 'fecal_coliform': 'fecal coliform'    
+        }
+    )
 
 
 def export_macros(request, site_slug):
