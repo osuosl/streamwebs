@@ -74,6 +74,8 @@
         <h4 align="center">{% trans 'New Canopy Cover Sampling' %}</h4>
         <form id='canopy_cover_form' method='post'>
         {% csrf_token %}
+            {{ canopy_cover_form.non_field_errors }}
+
             <div class="row">
                 <div class="col s12">
                     <div class="input-field">
@@ -103,6 +105,34 @@
                         {{ canopy_cover_form.weather }}
                     </div>
                 </div>
+            </div>
+
+            <div class="row" style="display: none;">
+                {{ canopy_cover_form.north_cc.label }}
+
+                {{ canopy_cover_form.north_cc.errors | striptags }}
+                <span id='north-form'>{{ canopy_cover_form.north_cc }}</span>
+            </div>
+
+            <div class="row" style="display: none;">
+                {{ canopy_cover_form.east_cc.label }}
+
+                {{ canopy_cover_form.east_cc.errors | striptags }}
+                <span id='east-form'>{{ canopy_cover_form.east_cc }}</span>
+            </div>
+
+            <div class="row" style="display: none;">
+                {{ canopy_cover_form.west_cc.label }}
+
+                {{ canopy_cover_form.west_cc.errors | striptags }}
+                <span id='west-form'>{{ canopy_cover_form.west_cc }}</span>
+            </div>
+
+            <div class="row" style="display: none;">
+                {{ canopy_cover_form.south_cc.label }}
+
+                {{ canopy_cover_form.south_cc.errors | striptags }}
+                <span id='south-form'>{{ canopy_cover_form.south_cc }}</span>
             </div>
 
             <div id="canopies">
