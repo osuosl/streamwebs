@@ -35,6 +35,7 @@ class AddTransectTestCase(TestCase):
         When the user submits a form with all required fields filled
         appropriately, the user should see a success message
         """
+        print("START VALID TEST.")
         site = Site.test_objects.create_site('Site Name')
         response = self.client.post(
             reverse(
@@ -86,10 +87,12 @@ class AddTransectTestCase(TestCase):
                     ),
             status_code=302,
             target_status_code=200)
+        print("END VALID TEST")
 
     def test_view_with_invalid_zones_with_notes(self):
         """When counts for all zones are 0, can't submit even if notes exist"""
-        site = Site.test_objects.create_site('Site Name')
+        print("START INVALID WITH NOTES")
+        site = Site.test_objects.create_site('Bad Transect with Notes')
         response = self.client.post(
             reverse(
                 'streamwebs:riparian_transect_edit',
@@ -138,10 +141,15 @@ class AddTransectTestCase(TestCase):
         self.assertTemplateNotUsed(
             response,
             'streamwebs/datasheets/riparian_transect_view.html')
+        self.assertFormsetError(response, 'zone_formset', None, None, 'At least one zone must have at least one value greater than 0.') 
+        self.assertFalse(RiparianTransect.objects.filter(site=site.id).exists())
+
+        print("END INVALID WITH NOTES")
 
     def test_view_with_invalid_zones_without_notes(self):
         """Can't submit when all zones completely blank/zeroed out"""
-        site = Site.test_objects.create_site('Site Name')
+        print("START INVALID WITHOUT NOTES.")
+        site = Site.test_objects.create_site('Bad Transect without Notes')
         response = self.client.post(
             reverse(
                 'streamwebs:riparian_transect_edit',
@@ -184,12 +192,12 @@ class AddTransectTestCase(TestCase):
                     'transect-4-comments': ''
                 }
         )
-        self.assertTemplateUsed(
-            response,
-            'streamwebs/datasheets/riparian_transect_edit.html')
         self.assertTemplateNotUsed(
             response,
             'streamwebs/datasheets/riparian_transect_view.html')
+        self.assertFormsetError(response, 'zone_formset', None, None, 'At least one zone must have at least one value greater than 0.') 
+        self.assertFalse(RiparianTransect.objects.filter(site=site.id).exists())
+        print("END INVALID WITHOUT NOTES.")
 
     def test_view_with_not_logged_in_user(self):
         """

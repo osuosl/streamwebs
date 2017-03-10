@@ -16,7 +16,8 @@ from streamwebs.forms import (
     UserForm, UserProfileForm, RiparianTransectForm, MacroinvertebratesForm,
     PhotoPointImageForm, PhotoPointForm, CameraPointForm, WQSampleForm,
     WQSampleFormReadOnly, WQForm, WQFormReadOnly, SiteForm, Canopy_Cover_Form,
-    SoilSurveyForm, SoilSurveyFormReadOnly, StatisticsForm, ResourceForm)
+    SoilSurveyForm, SoilSurveyFormReadOnly, StatisticsForm, ResourceForm,
+    BaseZoneInlineFormSet)
 
 from streamwebs.models import (
     Macroinvertebrates, Site, Water_Quality, WQ_Sample, RiparianTransect,
@@ -358,46 +359,38 @@ def riparian_transect_edit(request, site_slug):
     transect = RiparianTransect()
     TransectZoneInlineFormSet = inlineformset_factory(
         RiparianTransect, TransectZone,
-        fields=('conifers', 'hardwoods', 'shrubs', 'comments'), extra=5
+        fields=('conifers', 'hardwoods', 'shrubs', 'comments'),
+        extra=5,
+        formset=BaseZoneInlineFormSet
     )
-    blank = 0;
 
     if request.method == 'POST':
+        # process the zone formset
         zone_formset = TransectZoneInlineFormSet(
             data=request.POST, instance=transect
         )
+        # process the transect form
         transect_form = RiparianTransectForm(data=request.POST)
 
+        # if both the zone formset and the transect form have "valid" data,
         if (zone_formset.is_valid() and transect_form.is_valid()):
-            zones = zone_formset.save(commit=False)     # save forms to objs
+            zones = zone_formset.save(commit=False) # save forms to objs
+            transect = transect_form.save()         # save form to object
+            transect.site = site
+            transect.save()                         # save object
 
-            for zone in zones:
-                if zone.conifers == 0 and zone.hardwoods == 0 and zone.shrubs == 0:
-                    blank += 1
-            
-            if blank == 5:
-                messages.error(
-                    request,
-                    "Your conifer, hardwood and shrub totals can't all be 0." +
-                    " Please try again.")
-            
-            else:
-                transect = transect_form.save(commit=False)             # save form to object
-                transect.site = site
-                transect.save()                             # save object
+            for zone in zones:                      # for each zone,
+                zone.transect = transect            # assign the transect
+                zone.save()                         # save the zone obj
 
-                for zone in zones:                          # for each zone,
-                    zone.transect = transect                # assign the transect
-                    zone.save()                             # save the zone obj
+            messages.success(
+                request,
+                'You have successfully added a new riparian transect ' +
+                'data sheet.')
 
-                messages.success(
-                    request,
-                    'You have successfully added a new riparian transect ' +
-                    'data sheet.')
-
-                return redirect(reverse('streamwebs:riparian_transect',
-                                       kwargs={'site_slug': site.site_slug,
-                                                'data_id': transect.id}))
+            return redirect(reverse('streamwebs:riparian_transect',
+                                   kwargs={'site_slug': site.site_slug,
+                                            'data_id': transect.id}))
 
     else:
         zone_formset = TransectZoneInlineFormSet(instance=transect)

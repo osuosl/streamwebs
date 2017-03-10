@@ -86,6 +86,7 @@
 
         {{ zone_formset.management_form }}
         <table> <!-- zones subtable -->
+            <tr>{{ zone_formset.non_field_errors }}</tr>
             <tr>
                 <th>{{ 'zone'|get_zone_labels }}</th>
                 <th>{{ 'conifers'|get_zone_labels }}</th>

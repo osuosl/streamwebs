@@ -6,6 +6,7 @@ from streamwebs.models import UserProfile, WQ_Sample, Water_Quality, \
     Soil_Survey, Resource
 from django.contrib.auth.models import User
 from django import forms
+from django.forms import BaseInlineFormSet
 from django.utils.translation import ugettext_lazy as _
 from django.utils.safestring import mark_safe
 from captcha.fields import ReCaptchaField
@@ -144,6 +145,7 @@ class Canopy_Cover_Form(forms.ModelForm):
                   'north_cc', 'west_cc', 'east_cc', 'south_cc')
 
 
+# the following form is never used in views.py and can probably be deleted.
 class TransectZoneForm(forms.ModelForm):
     class Meta:
         model = TransectZone
@@ -151,6 +153,36 @@ class TransectZoneForm(forms.ModelForm):
             'comments': forms.Textarea(attrs={'class': 'materialize-textarea'})
         }
         fields = ('conifers', 'hardwoods', 'shrubs', 'comments')
+
+
+class BaseZoneInlineFormSet(BaseInlineFormSet):
+    def clean(self):
+        # still do regular formset cleaning...
+        super(BaseZoneInlineFormSet, self).clean()
+        if any(self.errors):
+            return
+
+        # ...plus custom cleaning to check for blank zones
+        print('\nWE GET HERE\n')
+        blank = 0
+        for form in self.forms:
+            if form.cleaned_data:
+                conifers = form.cleaned_data['conifers']
+                print(conifers)
+                hardwoods = form.cleaned_data['hardwoods']
+                print(hardwoods)
+                shrubs = form.cleaned_data['shrubs']
+                print(shrubs)
+
+            # if form's conifers, hardwoods, shrubs ALL 0, inc. 'blank' count
+                if (conifers == 0 and hardwoods == 0 and shrubs == 0):
+                    blank += 1
+                print("blank is ", blank)
+        
+        if blank == 5 or not (self.has_changed()): # All zones are blank. Complain
+            print("gdi!!")
+            raise forms.ValidationError('At least one zone must have at ' +
+                                        'least one value greater than 0.')
 
 
 class RiparianTransectForm(forms.ModelForm):
