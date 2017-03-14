@@ -1,5 +1,3 @@
-let data = JSON.parse(JSON.stringify(window.data));
-
 let date_range = [0, Number.MAX_SAFE_INTEGER];
 
 const changeRangeStart = function changeRangeStart() {
@@ -36,9 +34,9 @@ const createGraph = function createGraph() {
     const outerContainer = $('#graph-container');
     outerContainer.find('svg').remove();
 
-    data = JSON.parse(JSON.stringify(window.data)); // Copy the data so we don't change the original
+    let data = JSON.parse(JSON.stringify(window.data.site1)); // Copy the data so we don't change the original
 
-    const formatted = [];
+    const formatted1 = [];
 
     for (let datum of data) {
         const date = parseInt(datum.date, 10) * 1000; // Convert from seconds to millis
@@ -48,14 +46,14 @@ const createGraph = function createGraph() {
 
         datum.date = new Date(date);
 
-        formatted.push(datum);
+        formatted1.push(datum);
     }
 
-    formatted.sort((a, b) => {
+    formatted1.sort((a, b) => {
         return a.date - b.date;
     });
 
-    const types = {
+    const types1 = {
         /*
          * So we currently have a list of data points, each one containing a date
          * and a list of 4 samples, each sample having one each of every data type
@@ -65,7 +63,7 @@ const createGraph = function createGraph() {
          * Get comfortable with this code, because we're about to repeat it for
          * every data type.
          */
-        water_temperature: formatted.map((d) => {
+        water_temperature: formatted1.map((d) => {
             /*
              * Turn each data point *d*, which looks like this:
              *
@@ -105,7 +103,7 @@ const createGraph = function createGraph() {
         }).filter(d => {
             return !isNaN(d.value);
         }),
-        air_temperature: formatted.map((d) => {
+        air_temperature: formatted1.map((d) => {
             return {
                 date: d.date,
                 value: d.samples.reduce((prev, curr, idx) => {
@@ -115,7 +113,7 @@ const createGraph = function createGraph() {
         }).filter(d => {
             return !isNaN(d.value);
         }),
-        dissolved_oxygen: formatted.map((d) => {
+        dissolved_oxygen: formatted1.map((d) => {
             return {
                 date: d.date,
                 value: d.samples.reduce((prev, curr, idx) => {
@@ -125,7 +123,7 @@ const createGraph = function createGraph() {
         }).filter(d => {
             return !isNaN(d.value);
         }),
-        pH: formatted.map((d) => {
+        pH: formatted1.map((d) => {
             return {
                 date: d.date,
                 value: d.samples.reduce((prev, curr, idx) => {
@@ -135,7 +133,7 @@ const createGraph = function createGraph() {
         }).filter(d => {
             return !isNaN(d.value);
         }),
-        turbidity: formatted.map((d) => {
+        turbidity: formatted1.map((d) => {
             return {
                 date: d.date,
                 value: d.samples.reduce((prev, curr, idx) => {
@@ -145,7 +143,7 @@ const createGraph = function createGraph() {
         }).filter(d => {
             return !isNaN(d.value);
         }),
-        salinity: formatted.map((d) => {
+        salinity: formatted1.map((d) => {
             return {
                 date: d.date,
                 value: d.samples.reduce((prev, curr, idx) => {
@@ -155,7 +153,7 @@ const createGraph = function createGraph() {
         }).filter(d => {
             return !isNaN(d.value);
         }),
-        conductivity: formatted.map((d) => {
+        conductivity: formatted1.map((d) => {
             return {
                 date: d.date,
                 value: d.samples.reduce((prev, curr, idx) => {
@@ -165,7 +163,7 @@ const createGraph = function createGraph() {
         }).filter(d => {
             return !isNaN(d.value);
         }),
-        fecal_coliform: formatted.map((d) => {
+        fecal_coliform: formatted1.map((d) => {
             return {
                 date: d.date,
                 value: d.samples.reduce((prev, curr, idx) => {
@@ -175,7 +173,7 @@ const createGraph = function createGraph() {
         }).filter(d => {
             return !isNaN(d.value);
         }),
-        total_solids: formatted.map((d) => {
+        total_solids: formatted1.map((d) => {
             return {
                 date: d.date,
                 value: d.samples.reduce((prev, curr, idx) => {
@@ -185,7 +183,7 @@ const createGraph = function createGraph() {
         }).filter(d => {
             return !isNaN(d.value);
         }),
-        bod: formatted.map((d) => {
+        bod: formatted1.map((d) => {
             return {
                 date: d.date,
                 value: d.samples.reduce((prev, curr, idx) => {
@@ -195,7 +193,7 @@ const createGraph = function createGraph() {
         }).filter(d => {
             return !isNaN(d.value);
         }),
-        ammonia: formatted.map((d) => {
+        ammonia: formatted1.map((d) => {
             return {
                 date: d.date,
                 value: d.samples.reduce((prev, curr, idx) => {
@@ -205,7 +203,7 @@ const createGraph = function createGraph() {
         }).filter(d => {
             return !isNaN(d.value);
         }),
-        nitrite: formatted.map((d) => {
+        nitrite: formatted1.map((d) => {
             return {
                 date: d.date,
                 value: d.samples.reduce((prev, curr, idx) => {
@@ -215,7 +213,7 @@ const createGraph = function createGraph() {
         }).filter(d => {
             return !isNaN(d.value);
         }),
-        nitrate: formatted.map((d) => {
+        nitrate: formatted1.map((d) => {
             return {
                 date: d.date,
                 value: d.samples.reduce((prev, curr, idx) => {
@@ -225,7 +223,7 @@ const createGraph = function createGraph() {
         }).filter(d => {
             return !isNaN(d.value);
         }),
-        phosphates: formatted.map((d) => {
+        phosphates: formatted1.map((d) => {
             return {
                 date: d.date,
                 value: d.samples.reduce((prev, curr, idx) => {
@@ -237,12 +235,174 @@ const createGraph = function createGraph() {
         }),
     };
 
+    const formatted2 = [];
+    const types2 = {};
+
+    if (window.data.site2) {
+        data = JSON.parse(JSON.stringify(window.data.site2));
+        for (let datum of data) {
+            const date = parseInt(datum.date, 10) * 1000; // Convert from seconds to millis
+            if (date >= date_range[1] || date <= date_range[0]) {
+                continue;
+            }
+
+            datum.date = new Date(date);
+
+            formatted2.push(datum);
+        }
+
+        formatted2.sort((a, b) => {
+            return a.date - b.date;
+        });
+
+        types2.water_temperature = formatted1.map((d) => {
+            return {
+                date: d.date,
+                value: d.samples.reduce((prev, curr, idx) => {
+                    return ((prev * idx) + parseFloat(curr.water_temperature)) / (idx + 1);
+                }, 0),
+            };
+        }).filter(d => {
+            return !isNaN(d.value);
+        });
+        types2.air_temperature = formatted1.map((d) => {
+            return {
+                date: d.date,
+                value: d.samples.reduce((prev, curr, idx) => {
+                    return ((prev * idx) + parseFloat(curr.air_temperature)) / (idx + 1);
+                }, 0),
+            };
+        }).filter(d => {
+            return !isNaN(d.value);
+        });
+        types2.dissolved_oxygen = formatted1.map((d) => {
+            return {
+                date: d.date,
+                value: d.samples.reduce((prev, curr, idx) => {
+                    return ((prev * idx) + parseFloat(curr.dissolved_oxygen)) / (idx + 1);
+                }, 0),
+            };
+        }).filter(d => {
+            return !isNaN(d.value);
+        });
+        types2.pH = formatted1.map((d) => {
+            return {
+                date: d.date,
+                value: d.samples.reduce((prev, curr, idx) => {
+                    return ((prev * idx) + parseFloat(curr.pH)) / (idx + 1);
+                }, 0),
+            };
+        }).filter(d => {
+            return !isNaN(d.value);
+        });
+        types2.turbidity = formatted1.map((d) => {
+            return {
+                date: d.date,
+                value: d.samples.reduce((prev, curr, idx) => {
+                    return ((prev * idx) + parseFloat(curr.turbidity)) / (idx + 1);
+                }, 0),
+            };
+        }).filter(d => {
+            return !isNaN(d.value);
+        });
+        types2.salinity = formatted1.map((d) => {
+            return {
+                date: d.date,
+                value: d.samples.reduce((prev, curr, idx) => {
+                    return ((prev * idx) + parseFloat(curr.salinity)) / (idx + 1);
+                }, 0),
+            };
+        }).filter(d => {
+            return !isNaN(d.value);
+        });
+        types2.conductivity = formatted1.map((d) => {
+            return {
+                date: d.date,
+                value: d.samples.reduce((prev, curr, idx) => {
+                    return ((prev * idx) + parseFloat(curr.conductivity)) / (idx + 1);
+                }, 0),
+            };
+        }).filter(d => {
+            return !isNaN(d.value);
+        });
+        types2.fecal_coliform = formatted1.map((d) => {
+            return {
+                date: d.date,
+                value: d.samples.reduce((prev, curr, idx) => {
+                    return ((prev * idx) + parseFloat(curr.fecal_coliform)) / (idx + 1);
+                }, 0),
+            };
+        }).filter(d => {
+            return !isNaN(d.value);
+        });
+        types2.total_solids = formatted1.map((d) => {
+            return {
+                date: d.date,
+                value: d.samples.reduce((prev, curr, idx) => {
+                    return ((prev * idx) + parseFloat(curr.total_solids)) / (idx + 1);
+                }, 0),
+            };
+        }).filter(d => {
+            return !isNaN(d.value);
+        });
+        types2.bod = formatted1.map((d) => {
+            return {
+                date: d.date,
+                value: d.samples.reduce((prev, curr, idx) => {
+                    return ((prev * idx) + parseFloat(curr.bod)) / (idx + 1);
+                }, 0),
+            };
+        }).filter(d => {
+            return !isNaN(d.value);
+        });
+        types2.ammonia = formatted1.map((d) => {
+            return {
+                date: d.date,
+                value: d.samples.reduce((prev, curr, idx) => {
+                    return ((prev * idx) + parseFloat(curr.ammonia)) / (idx + 1);
+                }, 0),
+            };
+        }).filter(d => {
+            return !isNaN(d.value);
+        });
+        types2.nitrite = formatted1.map((d) => {
+            return {
+                date: d.date,
+                value: d.samples.reduce((prev, curr, idx) => {
+                    return ((prev * idx) + parseFloat(curr.nitrite)) / (idx + 1);
+                }, 0),
+            };
+        }).filter(d => {
+            return !isNaN(d.value);
+        });
+        types2.nitrate = formatted1.map((d) => {
+            return {
+                date: d.date,
+                value: d.samples.reduce((prev, curr, idx) => {
+                    return ((prev * idx) + parseFloat(curr.nitrate)) / (idx + 1);
+                }, 0),
+            };
+        }).filter(d => {
+            return !isNaN(d.value);
+        });
+        types2.phosphates = formatted1.map((d) => {
+            return {
+                date: d.date,
+                value: d.samples.reduce((prev, curr, idx) => {
+                    return ((prev * idx) + parseFloat(curr.phosphates)) / (idx + 1);
+                }, 0),
+            };
+        }).filter(d => {
+            return !isNaN(d.value);
+        });
+    }
+
     const margin = {top: 20, right: 150, bottom: 30, left: 40};
     const defineWidth = function definedefineWidth(container) {
         return container.width() - (margin.right + margin.left);
     };
 
-    const defineHeight = function definedefineHeight(container) {
+    const defineHeight = function definedefineHeight() {
         return 300 - (margin.top + margin.bottom);
     };
 
@@ -260,27 +420,27 @@ const createGraph = function createGraph() {
             .range([0, width]);
         x.domain([
             date_range[0] !== 0 ? new Date(date_range[0]) :
-                d3.min(formatted, (d) => {
+                d3.min(formatted1, (d) => {
                     return new Date(d.date)
                 }),
             date_range[1] !== Number.MAX_SAFE_INTEGER ? new Date(date_range[1]) :
-                d3.max(formatted, (d) => {
+                d3.max(formatted1, (d) => {
                     return new Date(d.date)
                 }),
         ]);
-        const water_min = d3.min(types.water_temperature, d => {
+        const water_min = d3.min(types1.water_temperature, d => {
             // Sometimes we have NaN, null, or undefined, so remove those
             // so that d3.min returns a numeric value
             return d.value || 0;
         }) || 0; // If d3.min is given an empty array, it returns Nan,
                  // So substitute a reasonable default
-        const air_min = d3.min(types.air_temperature, d => {
+        const air_min = d3.min(types1.air_temperature, d => {
             return d.value || 0;
         }) || 0;
-        const water_max = d3.max(types.water_temperature, (d) => {
+        const water_max = d3.max(types1.water_temperature, (d) => {
             return d.value || 1;
         }) || 1;
-        const air_max = d3.max(types.air_temperature, (d) => {
+        const air_max = d3.max(types1.air_temperature, (d) => {
             return d.value || 1;
         }) || 1;
         const y = d3.scaleLinear()
@@ -318,14 +478,14 @@ const createGraph = function createGraph() {
             .attr('class', 'axis axis--y')
             .call(d3.axisLeft(y));
 
-        if (types.water_temperature.length > 0 || types.air_temperature.length > 0) {
+        if (types1.water_temperature.length > 0 || types1.air_temperature.length > 0) {
             const type = g.selectAll('.temp')
                 .data([
                     {
                         name: "Water Temperature",
-                        values: types.water_temperature
+                        values: types1.water_temperature
                     },
-                    {name: "Air Temperature", values: types.air_temperature},
+                    {name: "Air Temperature", values: types1.air_temperature},
                 ])
                 .enter()
                 .append('g')
@@ -366,9 +526,9 @@ const createGraph = function createGraph() {
                 .data([
                     {
                         name: "Water Temperature",
-                        values: types.water_temperature
+                        values: types1.water_temperature
                     },
-                    {name: "Air Temperature", values: types.air_temperature},
+                    {name: "Air Temperature", values: types1.air_temperature},
                 ])
                 .enter()
                 .append('g')
@@ -417,16 +577,16 @@ const createGraph = function createGraph() {
             .range([0, width]);
         x.domain([
             date_range[0] !== 0 ? new Date(date_range[0]) :
-                d3.min(formatted, (d) => {
+                d3.min(formatted1, (d) => {
                     return new Date(d.date)
                 }),
             date_range[1] !== Number.MAX_SAFE_INTEGER ? new Date(date_range[1]) :
-                d3.max(formatted, (d) => {
+                d3.max(formatted1, (d) => {
                     return new Date(d.date)
                 }),
         ]);
         const y = d3.scaleLinear()
-            .domain([0, Math.ceil(d3.max(types.dissolved_oxygen, (d) => {
+            .domain([0, Math.ceil(d3.max(types1.dissolved_oxygen, (d) => {
                 return d.value || 1;
             }) || 1)
             ])
@@ -457,11 +617,11 @@ const createGraph = function createGraph() {
             .attr('class', 'axis axis--y')
             .call(d3.axisLeft(y));
 
-        if (types.dissolved_oxygen.length > 0) {
+        if (types1.dissolved_oxygen.length > 0) {
             const type = g.selectAll('.do')
                 .data([{
                     name: 'Dissolved Oxygen',
-                    values: types.dissolved_oxygen
+                    values: types1.dissolved_oxygen
                 }])
                 .enter()
                 .append('g')
@@ -511,11 +671,11 @@ const createGraph = function createGraph() {
             .range([0, width]);
         x.domain([
             date_range[0] !== 0 ? new Date(date_range[0]) :
-                d3.min(formatted, (d) => {
+                d3.min(formatted1, (d) => {
                     return new Date(d.date)
                 }),
             date_range[1] !== Number.MAX_SAFE_INTEGER ? new Date(date_range[1]) :
-                d3.max(formatted, (d) => {
+                d3.max(formatted1, (d) => {
                     return new Date(d.date)
                 }),
         ]);
@@ -548,9 +708,9 @@ const createGraph = function createGraph() {
             .attr('class', 'axis axis--y')
             .call(d3.axisLeft(y));
 
-        if (types.pH.length > 0) {
+        if (types1.pH.length > 0) {
             const type = g.selectAll('.ph')
-                .data([{name: 'pH', values: types.pH}])
+                .data([{name: 'pH', values: types1.pH}])
                 .enter()
                 .append('g')
                 .attr('class', 'ph');
@@ -599,20 +759,20 @@ const createGraph = function createGraph() {
             .range([0, width]);
         x.domain([
             date_range[0] !== 0 ? new Date(date_range[0]) :
-                d3.min(formatted, (d) => {
+                d3.min(formatted1, (d) => {
                     return new Date(d.date)
                 }),
             date_range[1] !== Number.MAX_SAFE_INTEGER ? new Date(date_range[1]) :
-                d3.max(formatted, (d) => {
+                d3.max(formatted1, (d) => {
                     return new Date(d.date)
                 }),
         ]);
         const y = d3.scaleLinear()
             .domain([
-                Math.floor(Math.min(0, d3.min(types.turbidity, (d) => {
+                Math.floor(Math.min(0, d3.min(types1.turbidity, (d) => {
                     return d.value || 0;
                 }) || 0)),
-                Math.ceil(d3.max(types.turbidity, (d) => {
+                Math.ceil(d3.max(types1.turbidity, (d) => {
                     return d.value || 1;
                 }) || 1)
             ])
@@ -643,9 +803,9 @@ const createGraph = function createGraph() {
             .attr('class', 'axis axis--y')
             .call(d3.axisLeft(y));
 
-        if (types.turbidity.length > 0) {
+        if (types1.turbidity.length > 0) {
             const type = g.selectAll('.turb')
-                .data([{name: 'Turbidity', values: types.turbidity}])
+                .data([{name: 'Turbidity', values: types1.turbidity}])
                 .enter()
                 .append('g')
                 .attr('class', 'turb');
@@ -694,20 +854,20 @@ const createGraph = function createGraph() {
             .range([0, width]);
         x.domain([
             date_range[0] !== 0 ? new Date(date_range[0]) :
-                d3.min(formatted, (d) => {
+                d3.min(formatted1, (d) => {
                     return new Date(d.date)
                 }),
             date_range[1] !== Number.MAX_SAFE_INTEGER ? new Date(date_range[1]) :
-                d3.max(formatted, (d) => {
+                d3.max(formatted1, (d) => {
                     return new Date(d.date)
                 }),
         ]);
         const y = d3.scaleLinear()
             .domain([
-                Math.floor(Math.min(0, d3.min(types.salinity, (d) => {
+                Math.floor(Math.min(0, d3.min(types1.salinity, (d) => {
                     return d.value || 0;
                 }) || 0)),
-                Math.ceil(d3.max(types.salinity, (d) => {
+                Math.ceil(d3.max(types1.salinity, (d) => {
                     return d.value || 1;
                 }) || 1)
             ])
@@ -738,9 +898,9 @@ const createGraph = function createGraph() {
             .attr('class', 'axis axis--y')
             .call(d3.axisLeft(y));
 
-        if (types.salinity.length > 0) {
+        if (types1.salinity.length > 0) {
             const type = g.selectAll('.sal')
-                .data([{name: 'Salinity', values: types.salinity}])
+                .data([{name: 'Salinity', values: types1.salinity}])
                 .enter()
                 .append('g')
                 .attr('class', 'sal');
@@ -789,17 +949,17 @@ const createGraph = function createGraph() {
             .range([0, width]);
         x.domain([
             date_range[0] !== 0 ? new Date(date_range[0]) :
-                d3.min(formatted, (d) => {
+                d3.min(formatted1, (d) => {
                     return new Date(d.date)
                 }),
             date_range[1] !== Number.MAX_SAFE_INTEGER ? new Date(date_range[1]) :
-                d3.max(formatted, (d) => {
+                d3.max(formatted1, (d) => {
                     return new Date(d.date)
                 }),
         ]);
         const y = d3.scaleLinear()
             .domain([0,
-                Math.ceil(d3.max(types.conductivity, (d) => {
+                Math.ceil(d3.max(types1.conductivity, (d) => {
                     return d.value || 1;
                 }) || 1)
             ])
@@ -830,9 +990,9 @@ const createGraph = function createGraph() {
             .attr('class', 'axis axis--y')
             .call(d3.axisLeft(y));
 
-        if (types.conductivity.length > 0) {
+        if (types1.conductivity.length > 0) {
             const type = g.selectAll('.cond')
-                .data([{name: 'Conductivity', values: types.conductivity}])
+                .data([{name: 'Conductivity', values: types1.conductivity}])
                 .enter()
                 .append('g')
                 .attr('class', 'cond');
@@ -881,11 +1041,11 @@ const createGraph = function createGraph() {
             .range([0, width]);
         x.domain([
             date_range[0] !== 0 ? new Date(date_range[0]) :
-                d3.min(formatted, (d) => {
+                d3.min(formatted1, (d) => {
                     return new Date(d.date)
                 }),
             date_range[1] !== Number.MAX_SAFE_INTEGER ? new Date(date_range[1]) :
-                d3.max(formatted, (d) => {
+                d3.max(formatted1, (d) => {
                     return new Date(d.date)
                 }),
         ]);
@@ -893,24 +1053,24 @@ const createGraph = function createGraph() {
             .domain([
                 Math.floor(Math.min(
                     0,
-                    d3.min(types.total_solids, (d) => {
+                    d3.min(types1.total_solids, (d) => {
                         return d.value || 0;
                     }) || 0,
-                    d3.min(types.ammonia, (d) => {
+                    d3.min(types1.ammonia, (d) => {
                         return d.value || 0;
                     }) || 0,
-                    d3.min(types.nitrate, (d) => {
+                    d3.min(types1.nitrate, (d) => {
                         return d.value || 0;
                     }) || 0,
-                    d3.min(types.nitrite, (d) => {
+                    d3.min(types1.nitrite, (d) => {
                         return d.value || 0;
                     }) || 0,
-                    d3.min(types.phosphates, (d) => {
+                    d3.min(types1.phosphates, (d) => {
                         return d.value || 0;
                     }) || 0
                 )),
                 Math.ceil(
-                    d3.max(types.total_solids, (d) => {
+                    d3.max(types1.total_solids, (d) => {
                         return d.value || 1;
                     }) || 1
                 )
@@ -946,14 +1106,14 @@ const createGraph = function createGraph() {
             .attr('class', 'axis axis--y')
             .call(d3.axisLeft(y));
 
-        if (types.total_solids.length > 0) {
+        if (types1.total_solids.length > 0) {
             const type = g.selectAll('.solids')
                 .data([
-                    {name: "Total Solids", values: types.total_solids},
-                    {name: "Ammonia", values: types.ammonia},
-                    {name: "Nitrite", values: types.nitrite},
-                    {name: "Nitrate", values: types.nitrate},
-                    {name: "Phosphates", values: types.phosphates},
+                    {name: "Total Solids", values: types1.total_solids},
+                    {name: "Ammonia", values: types1.ammonia},
+                    {name: "Nitrite", values: types1.nitrite},
+                    {name: "Nitrate", values: types1.nitrate},
+                    {name: "Phosphates", values: types1.phosphates},
                 ])
                 .enter()
                 .append('g')
@@ -992,11 +1152,11 @@ const createGraph = function createGraph() {
 
             const legend = g.selectAll('.legend')
                 .data([
-                    {name: "Total Solids", values: types.total_solids},
-                    {name: "Ammonia", values: types.ammonia},
-                    {name: "Nitrite", values: types.nitrite},
-                    {name: "Nitrate", values: types.nitrate},
-                    {name: "Phosphates", values: types.phosphates},
+                    {name: "Total Solids", values: types1.total_solids},
+                    {name: "Ammonia", values: types1.ammonia},
+                    {name: "Nitrite", values: types1.nitrite},
+                    {name: "Nitrate", values: types1.nitrate},
+                    {name: "Phosphates", values: types1.phosphates},
                 ])
                 .enter()
                 .append('g')
@@ -1045,17 +1205,17 @@ const createGraph = function createGraph() {
             .range([0, width]);
         x.domain([
             date_range[0] !== 0 ? new Date(date_range[0]) :
-                d3.min(formatted, (d) => {
+                d3.min(formatted1, (d) => {
                     return new Date(d.date)
                 }),
             date_range[1] !== Number.MAX_SAFE_INTEGER ? new Date(date_range[1]) :
-                d3.max(formatted, (d) => {
+                d3.max(formatted1, (d) => {
                     return new Date(d.date)
                 }),
         ]);
         const y = d3.scaleLinear()
             .domain([0,
-                Math.ceil(d3.max(types.bod, (d) => {
+                Math.ceil(d3.max(types1.bod, (d) => {
                     return d.value || 1;
                 }) || 1)
             ])
@@ -1086,9 +1246,9 @@ const createGraph = function createGraph() {
             .attr('class', 'axis axis--y')
             .call(d3.axisLeft(y));
 
-        if (types.bod.length > 0) {
+        if (types1.bod.length > 0) {
             const type = g.selectAll('.bod')
-                .data([{name: 'BOD', values: types.bod}])
+                .data([{name: 'BOD', values: types1.bod}])
                 .enter()
                 .append('g')
                 .attr('class', 'bod');
@@ -1137,17 +1297,17 @@ const createGraph = function createGraph() {
             .range([0, width]);
         x.domain([
             date_range[0] !== 0 ? new Date(date_range[0]) :
-                d3.min(formatted, (d) => {
+                d3.min(formatted1, (d) => {
                     return new Date(d.date)
                 }),
             date_range[1] !== Number.MAX_SAFE_INTEGER ? new Date(date_range[1]) :
-                d3.max(formatted, (d) => {
+                d3.max(formatted1, (d) => {
                     return new Date(d.date)
                 }),
         ]);
         const y = d3.scaleLinear()
             .domain([0,
-                Math.ceil(d3.max(types.fecal_coliform, (d) => {
+                Math.ceil(d3.max(types1.fecal_coliform, (d) => {
                     return d.value || 1;
                 }) || 1)
             ])
@@ -1178,9 +1338,9 @@ const createGraph = function createGraph() {
             .attr('class', 'axis axis--y')
             .call(d3.axisLeft(y));
 
-        if (types.fecal_coliform.length > 0) {
+        if (types1.fecal_coliform.length > 0) {
             const type = g.selectAll('.fecal')
-                .data([{name: 'Fecal Coliform', values: types.fecal_coliform}])
+                .data([{name: 'Fecal Coliform', values: types1.fecal_coliform}])
                 .enter()
                 .append('g')
                 .attr('class', 'fecal');
@@ -1227,3 +1387,10 @@ $(() => {
 $(window).resize(() => {
     createGraph();
 });
+
+const loadSite2 = function loadSite2(site_slug) {
+    $.getJSON(`/sites/${site_slug}/water/data/`, function(data) {
+        window.data.site2 = data.data;
+        createGraph();
+    });
+};

@@ -15,6 +15,9 @@ urlpatterns = [
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/water/$',
         views.graph_water, name='graph_water'),
 
+    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/water/data/$',
+        views.water_graph_site_data, name='water_graph_site_data'),
+
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/macros/$',
         views.graph_macros, name='graph_macros'),
 

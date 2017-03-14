@@ -5,7 +5,7 @@
 
 {% block scripts %}
 <script type="application/javascript">
-    window.data = {{data|safe}};
+    window.data = {site1: {{data|safe}}, site2: null};
     const siteId = '{{site.site_slug}}';
     window.hasSiteTwo = false;
 </script>
@@ -30,6 +30,10 @@
 <style>
     label {
         margin-right: 1.5em;
+    }
+
+    #site_select {
+        margin-top: 10px;
     }
 </style>
 
@@ -76,6 +80,15 @@
 <input type="checkbox" id="coliform-control" checked="checked"
        onclick="toggleGraph('coliform')" />
 <label for="coliform-control">Fecal Coliform</label>
+
+<div id="site_select">
+    <a href="#!" class="dropdown-button btn select-button teal darken-4" data-activates='dropdown'>{% trans "Load a site to compare:" %}<i class="material-icons right">arrow_drop_down</i></a>
+    <ul id="dropdown" class="dropdown-content">
+    {% for site in sites %}
+        <li><a onclick="loadSite2('{{site.site_slug}}')" class="teal-text text-darken-4">{{site.site_name}}</a></li>
+    {% endfor %}
+    </ul>
+</div>
 
 <h2 class="graph-header">Water Quality Over Time</h2>
 <div id="graph-container">
