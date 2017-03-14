@@ -8,6 +8,11 @@
     window.data = {site1: {{data|safe}}, site2: null};
     const siteId = '{{site.site_slug}}';
     window.hasSiteTwo = false;
+
+    $('.datepicker').pickadate({
+        selectMonths: true,
+        selectYears: 20,
+    });
 </script>
 
 <script type="application/javascript"
@@ -21,9 +26,9 @@
 <form action=""><div id="dates">
         <p>{% trans "Date Range:" %}</p>
         <label for="date-start">{% trans "After" %}</label>
-        <input type="date" name="date" id="date-start" value="" />
+        <input type="date" name="date" class="datepicker" id="date-start" value="" />
         <label for="date-end">{% trans "Before" %}</label>
-        <input type="date" name="date" id="date-end" value="" />
+        <input type="date" name="date" class="datepicker" id="date-end" value="" />
     </div>
 </form>
 

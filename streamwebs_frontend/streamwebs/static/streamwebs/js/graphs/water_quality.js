@@ -1,8 +1,8 @@
-let date_range = [0, Number.MAX_SAFE_INTEGER];
+let date_range = [Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER];
 
 const changeRangeStart = function changeRangeStart() {
     if (!$(this).val()) { // If the field is empty, clear the range
-        date_range[0] = 0;
+        date_range[0] = Number.MIN_SAFE_INTEGER;
     } else {
         const date = Date.parse($(this).val());
         if (!date || Number.isNaN(date)) {
@@ -238,7 +238,10 @@ const createGraph = function createGraph() {
     const formatted2 = [];
     const types2 = {};
 
-    if (window.data.site2) {
+    if (!window.data.site2 || window.data.site2.length === 0) {
+        window.hasSiteTwo = false;
+    } else {
+        window.hasSiteTwo = true;
         data = JSON.parse(JSON.stringify(window.data.site2));
         for (let datum of data) {
             const date = parseInt(datum.date, 10) * 1000; // Convert from seconds to millis
@@ -255,7 +258,7 @@ const createGraph = function createGraph() {
             return a.date - b.date;
         });
 
-        types2.water_temperature = formatted1.map((d) => {
+        types2.water_temperature = formatted2.map((d) => {
             return {
                 date: d.date,
                 value: d.samples.reduce((prev, curr, idx) => {
@@ -265,7 +268,7 @@ const createGraph = function createGraph() {
         }).filter(d => {
             return !isNaN(d.value);
         });
-        types2.air_temperature = formatted1.map((d) => {
+        types2.air_temperature = formatted2.map((d) => {
             return {
                 date: d.date,
                 value: d.samples.reduce((prev, curr, idx) => {
@@ -275,7 +278,7 @@ const createGraph = function createGraph() {
         }).filter(d => {
             return !isNaN(d.value);
         });
-        types2.dissolved_oxygen = formatted1.map((d) => {
+        types2.dissolved_oxygen = formatted2.map((d) => {
             return {
                 date: d.date,
                 value: d.samples.reduce((prev, curr, idx) => {
@@ -285,7 +288,7 @@ const createGraph = function createGraph() {
         }).filter(d => {
             return !isNaN(d.value);
         });
-        types2.pH = formatted1.map((d) => {
+        types2.pH = formatted2.map((d) => {
             return {
                 date: d.date,
                 value: d.samples.reduce((prev, curr, idx) => {
@@ -295,7 +298,7 @@ const createGraph = function createGraph() {
         }).filter(d => {
             return !isNaN(d.value);
         });
-        types2.turbidity = formatted1.map((d) => {
+        types2.turbidity = formatted2.map((d) => {
             return {
                 date: d.date,
                 value: d.samples.reduce((prev, curr, idx) => {
@@ -305,7 +308,7 @@ const createGraph = function createGraph() {
         }).filter(d => {
             return !isNaN(d.value);
         });
-        types2.salinity = formatted1.map((d) => {
+        types2.salinity = formatted2.map((d) => {
             return {
                 date: d.date,
                 value: d.samples.reduce((prev, curr, idx) => {
@@ -315,7 +318,7 @@ const createGraph = function createGraph() {
         }).filter(d => {
             return !isNaN(d.value);
         });
-        types2.conductivity = formatted1.map((d) => {
+        types2.conductivity = formatted2.map((d) => {
             return {
                 date: d.date,
                 value: d.samples.reduce((prev, curr, idx) => {
@@ -325,7 +328,7 @@ const createGraph = function createGraph() {
         }).filter(d => {
             return !isNaN(d.value);
         });
-        types2.fecal_coliform = formatted1.map((d) => {
+        types2.fecal_coliform = formatted2.map((d) => {
             return {
                 date: d.date,
                 value: d.samples.reduce((prev, curr, idx) => {
@@ -335,7 +338,7 @@ const createGraph = function createGraph() {
         }).filter(d => {
             return !isNaN(d.value);
         });
-        types2.total_solids = formatted1.map((d) => {
+        types2.total_solids = formatted2.map((d) => {
             return {
                 date: d.date,
                 value: d.samples.reduce((prev, curr, idx) => {
@@ -345,7 +348,7 @@ const createGraph = function createGraph() {
         }).filter(d => {
             return !isNaN(d.value);
         });
-        types2.bod = formatted1.map((d) => {
+        types2.bod = formatted2.map((d) => {
             return {
                 date: d.date,
                 value: d.samples.reduce((prev, curr, idx) => {
@@ -355,7 +358,7 @@ const createGraph = function createGraph() {
         }).filter(d => {
             return !isNaN(d.value);
         });
-        types2.ammonia = formatted1.map((d) => {
+        types2.ammonia = formatted2.map((d) => {
             return {
                 date: d.date,
                 value: d.samples.reduce((prev, curr, idx) => {
@@ -365,7 +368,7 @@ const createGraph = function createGraph() {
         }).filter(d => {
             return !isNaN(d.value);
         });
-        types2.nitrite = formatted1.map((d) => {
+        types2.nitrite = formatted2.map((d) => {
             return {
                 date: d.date,
                 value: d.samples.reduce((prev, curr, idx) => {
@@ -375,7 +378,7 @@ const createGraph = function createGraph() {
         }).filter(d => {
             return !isNaN(d.value);
         });
-        types2.nitrate = formatted1.map((d) => {
+        types2.nitrate = formatted2.map((d) => {
             return {
                 date: d.date,
                 value: d.samples.reduce((prev, curr, idx) => {
@@ -385,7 +388,7 @@ const createGraph = function createGraph() {
         }).filter(d => {
             return !isNaN(d.value);
         });
-        types2.phosphates = formatted1.map((d) => {
+        types2.phosphates = formatted2.map((d) => {
             return {
                 date: d.date,
                 value: d.samples.reduce((prev, curr, idx) => {
@@ -411,42 +414,70 @@ const createGraph = function createGraph() {
      **************************************************************************/
 
     {
-        const containerName = '#graph-site1-temperature';
-        const container = outerContainer.find(containerName);
-        const width = defineWidth(container);
-        const height = defineHeight(container);
+        const containerName1 = '#graph-site1-temperature';
+        const container1 = outerContainer.find(containerName1);
+        const width = defineWidth(container1);
+        const height = defineHeight(container1);
+
+        const containerName2 = '#graph-site2-temperature';
+        const container2 = outerContainer.find(containerName2);
 
         const x = d3.scaleTime()
-            .range([0, width]);
-        x.domain([
-            date_range[0] !== 0 ? new Date(date_range[0]) :
-                d3.min(formatted1, (d) => {
-                    return new Date(d.date)
-                }),
-            date_range[1] !== Number.MAX_SAFE_INTEGER ? new Date(date_range[1]) :
-                d3.max(formatted1, (d) => {
-                    return new Date(d.date)
-                }),
-        ]);
-        const water_min = d3.min(types1.water_temperature, d => {
-            // Sometimes we have NaN, null, or undefined, so remove those
-            // so that d3.min returns a numeric value
-            return d.value || 0;
-        }) || 0; // If d3.min is given an empty array, it returns Nan,
-                 // So substitute a reasonable default
-        const air_min = d3.min(types1.air_temperature, d => {
-            return d.value || 0;
-        }) || 0;
-        const water_max = d3.max(types1.water_temperature, (d) => {
-            return d.value || 1;
-        }) || 1;
-        const air_max = d3.max(types1.air_temperature, (d) => {
-            return d.value || 1;
-        }) || 1;
+            .range([0, width])
+            .domain([
+                date_range[0] !== Number.MIN_SAFE_INTEGER ? new Date(date_range[0]) :
+                Math.min(
+                    d3.min(formatted1, d => {
+                        return new Date(d.date)
+                    }),
+                    window.hasSiteTwo ? d3.min(formatted2, d => {
+                        return new Date(d.date)
+                    }) : Number.MAX_SAFE_INTEGER
+                ),
+                date_range[1] !== Number.MAX_SAFE_INTEGER ? new Date(date_range[1]) :
+                Math.max(
+                    d3.max(formatted1, d => {
+                        return new Date(d.date)
+                    }),
+                    window.hasSiteTwo ? d3.max(formatted2, d => {
+                        return new Date(d.date)
+                    }) : Number.MIN_SAFE_INTEGER
+                ),
+            ]);
+        const min = Math.min(
+            0,
+            d3.min(types1.water_temperature, d => {
+                return d.value || 0;
+            }) || 0,
+            d3.min(types1.air_temperature, d => {
+                return d.value || 0;
+            }) || 0,
+            window.hasSiteTwo ? d3.min(types2.water_temperature, d => {
+                return d.value || 0;
+            }) || 0 : 0,
+            window.hasSiteTwo ? d3.min(types2.air_temperature, d => {
+                return d.value || 0;
+            }) || 0 : 0
+        );
+        const max = Math.max(
+            1,
+            d3.max(types1.water_temperature, d => {
+                return d.value || 1;
+            }) || 1,
+            d3.max(types1.air_temperature, d => {
+                return d.value || 1;
+            }) || 1,
+            window.hasSiteTwo ? d3.max(types2.water_temperature, d => {
+                return d.value || 1;
+            }) || 1 : 0,
+            window.hasSiteTwo ? d3.max(types2.air_temperature, d => {
+                return d.value || 1;
+            }) || 1 : 0
+        );
         const y = d3.scaleLinear()
             .domain([
-                Math.floor(Math.min(0, water_min, air_min)) || 0,
-                Math.ceil(Math.max(1, water_max, air_max)) || 1
+                Math.floor(min) || 0,
+                Math.ceil(max) || 1
             ])
             .range([height, 0]);
         const z = d3.scaleOrdinal()
@@ -455,113 +486,237 @@ const createGraph = function createGraph() {
 
         const line = d3.line()
             .curve(d3.curveLinear)
-            .x((d) => {
+            .x(d => {
                 return x(d.date)
             })
-            .y((d) => {
+            .y(d => {
                 return y(d.value)
             });
 
-        const svg = d3.select(containerName).append('svg')
+        const svg1 = d3.select(containerName1).append('svg')
             .attr('width', width + margin.left + margin.right)
             .attr('height', height + margin.top + margin.bottom);
 
-        const g = svg.append('g')
+        const g1 = svg1.append('g')
             .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
-        g.append('g')
-            .attr('class', 'axis axis--x')
+        g1.append('g')
+            .attr('class', 'axis axis--x x')
             .attr('transform', 'translate(0, ' + height + ')')
             .call(d3.axisBottom(x));
 
-        g.append('g')
-            .attr('class', 'axis axis--y')
+        g1.append('g')
+            .attr('class', 'axis axis--y y')
             .call(d3.axisLeft(y));
 
-        if (types1.water_temperature.length > 0 || types1.air_temperature.length > 0) {
-            const type = g.selectAll('.temp')
-                .data([
-                    {
-                        name: "Water Temperature",
-                        values: types1.water_temperature
-                    },
-                    {name: "Air Temperature", values: types1.air_temperature},
-                ])
-                .enter()
-                .append('g')
-                .attr('class', 'temp');
+        const svg2 = d3.select(containerName2).append('svg')
+            .attr('width', width + margin.left + margin.right)
+            .attr('height', height + margin.top + margin.bottom);
 
-            type.append('path')
-                .attr('class', 'line')
-                .attr('d', (d) => {
-                    return line(d.values)
-                })
-                .style('stroke', (d) => {
-                    return z(d.name)
-                });
+        const g2 = svg2.append('g')
+            .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
-            type.selectAll('dot')
-                .data((d) => {
-                    return d.values.map((e) => {
-                        e['name'] = d.name;
-                        return e
+        g2.append('g')
+            .attr('class', 'axis axis--x x')
+            .attr('transform', 'translate(0, ' + height + ')')
+            .call(d3.axisBottom(x));
+
+        g2.append('g')
+            .attr('class', 'axis axis--y y')
+            .call(d3.axisLeft(y));
+
+        if ((types1.water_temperature.length ||
+        types1.air_temperature.length) &&
+        (!window.hasSiteTwo || types2.water_temperature.length ||
+        types2.air_temperature.length)) {
+            $('#temperature-control').attr('disabled', '');
+            container1.css({display: 'block'});
+
+            if (types1.water_temperature.length || types1.air_temperature.length) {
+                const type1 = g1.selectAll('.temp')
+                    .data([
+                        {
+                            name: "Water Temperature",
+                            values: types1.water_temperature
+                        },
+                        {
+                            name: "Air Temperature",
+                            values: types1.air_temperature
+                        },
+                    ])
+                    .enter()
+                    .append('g')
+                    .attr('class', 'temp');
+
+                type1.append('path')
+                    .attr('class', 'line')
+                    .attr('d', d => {
+                        return line(d.values)
+                    })
+                    .style('stroke', d => {
+                        return z(d.name)
                     });
-                })
-                .enter().append('circle')
-                .attr('r', 3.5)
-                .attr('cx', (d) => {
-                    return x(new Date(d.date))
-                })
-                .attr('cy', (d) => {
-                    return y(d.value)
-                })
-                .style('stroke', (d) => {
-                    return z(d.name)
-                })
-                .style('fill', (d) => {
-                    return z(d.name)
-                });
 
-            const legend = g.selectAll('.legend')
-                .data([
-                    {
-                        name: "Water Temperature",
-                        values: types1.water_temperature
-                    },
-                    {name: "Air Temperature", values: types1.air_temperature},
-                ])
-                .enter()
-                .append('g')
-                .attr('class', 'legend')
-                .attr('transform', (d, i) => {
-                    return 'translate(' + (width + 10) + ', ' + i * 20 + ')';
-                })
-                .style('border', '1px solid black')
-                .style('font', '12px sans-serif');
+                type1.selectAll('dot')
+                    .data(d => {
+                        return d.values.map(e => {
+                            e['name'] = d.name;
+                            return e
+                        });
+                    })
+                    .enter().append('circle')
+                    .attr('r', 3.5)
+                    .attr('cx', d => {
+                        return x(new Date(d.date))
+                    })
+                    .attr('cy', d => {
+                        return y(d.value)
+                    })
+                    .style('stroke', d => {
+                        return z(d.name)
+                    })
+                    .style('fill', d => {
+                        return z(d.name)
+                    });
 
-            legend.append('rect')
-                .attr('x', 2)
-                .attr('width', 18)
-                .attr('height', 2)
-                .attr('fill', (d) => {
-                    return z(d.name);
-                });
+                const legend1 = g1.selectAll('.legend')
+                    .data([
+                        {
+                            name: "Water Temperature",
+                            values: types1.water_temperature
+                        },
+                        {
+                            name: "Air Temperature",
+                            values: types1.air_temperature
+                        },
+                    ])
+                    .enter()
+                    .append('g')
+                    .attr('class', 'legend')
+                    .attr('transform', (d, i) => {
+                        return 'translate(' + (width + 10) + ', ' + i * 20 + ')';
+                    })
+                    .style('border', '1px solid black')
+                    .style('font', '12px sans-serif');
 
-            legend.append('text')
-                .attr('x', 25)
-                .attr('dy', '.35em')
-                .attr('text-anchor', 'begin')
-                .attr('fill', (d) => {
-                    return z(d.name);
-                })
-                .text((d) => {
-                    return d.name;
-                });
+                legend1.append('rect')
+                    .attr('x', 2)
+                    .attr('width', 18)
+                    .attr('height', 2)
+                    .attr('fill', (d) => {
+                        return z(d.name);
+                    });
+
+                legend1.append('text')
+                    .attr('x', 25)
+                    .attr('dy', '.35em')
+                    .attr('text-anchor', 'begin')
+                    .attr('fill', (d) => {
+                        return z(d.name);
+                    })
+                    .text((d) => {
+                        return d.name;
+                    });
+            }
+
+            if (window.hasSiteTwo && (
+                types2.water_temperature.length || types2.air_temperature.length
+            )) {
+                container2.css({display: 'block'});
+                const type2 = g2.selectAll('.temp')
+                    .data([
+                        {
+                            name: "Water Temperature",
+                            values: types2.water_temperature
+                        },
+                        {
+                            name: "Air Temperature",
+                            values: types2.air_temperature
+                        },
+                    ])
+                    .enter()
+                    .append('g')
+                    .attr('class', 'temp');
+
+                type2.append('path')
+                    .attr('class', 'line')
+                    .attr('d', d => {
+                        return line(d.values)
+                    })
+                    .style('stroke', d => {
+                        return z(d.name)
+                    });
+
+                type2.selectAll('dot')
+                    .data(d => {
+                        return d.values.map(e => {
+                            e['name'] = d.name;
+                            return e
+                        });
+                    })
+                    .enter().append('circle')
+                    .attr('r', 3.5)
+                    .attr('cx', d => {
+                        return x(new Date(d.date))
+                    })
+                    .attr('cy', d => {
+                        return y(d.value)
+                    })
+                    .style('stroke', d => {
+                        return z(d.name)
+                    })
+                    .style('fill', d => {
+                        return z(d.name)
+                    });
+
+                const legend2 = g2.selectAll('.legend')
+                    .data([
+                        {
+                            name: "Water Temperature",
+                            values: types2.water_temperature
+                        },
+                        {
+                            name: "Air Temperature",
+                            values: types2.air_temperature
+                        },
+                    ])
+                    .enter()
+                    .append('g')
+                    .attr('class', 'legend')
+                    .attr('transform', (d, i) => {
+                        return 'translate(' + (width + 10) + ', ' + i * 20 + ')';
+                    })
+                    .style('border', '1px solid black')
+                    .style('font', '12px sans-serif');
+
+                legend2.append('rect')
+                    .attr('x', 2)
+                    .attr('width', 18)
+                    .attr('height', 2)
+                    .attr('fill', d => {
+                        return z(d.name);
+                    });
+
+                legend2.append('text')
+                    .attr('x', 25)
+                    .attr('dy', '.35em')
+                    .attr('text-anchor', 'begin')
+                    .attr('fill', d => {
+                        return z(d.name);
+                    })
+                    .text(d => {
+                        return d.name;
+                    });
+            }
+
         } else {
             $('#temperature-control').attr('disabled', 'disabled');
-            container.css({display: 'none'});
+            container1.css({display: 'none'});
+            container2.css({display: 'none'});
         }
     }
+
+    return;
 
     /***************************************************************************
      * Dissolved Oxygen
