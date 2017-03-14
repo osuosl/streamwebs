@@ -33,7 +33,7 @@ const changeRangeEnd = function changeRangeEnd() {
 };
 
 const createGraph = function createGraph() {
-    const outerContainer = $('#graph-' + siteId + '-container');
+    const outerContainer = $('#graph-container');
     outerContainer.find('svg').remove();
 
     data = JSON.parse(JSON.stringify(window.data)); // Copy the data so we don't change the original
@@ -251,7 +251,7 @@ const createGraph = function createGraph() {
      **************************************************************************/
 
     {
-        const containerName = '#graph-' + siteId + '-temperature';
+        const containerName = '#graph-site1-temperature';
         const container = outerContainer.find(containerName);
         const width = defineWidth(container);
         const height = defineHeight(container);
@@ -408,7 +408,7 @@ const createGraph = function createGraph() {
      **************************************************************************/
 
     {
-        const containerName = '#graph-' + siteId + '-oxygen';
+        const containerName = '#graph-site1-oxygen';
         const container = outerContainer.find(containerName);
         const width = defineWidth(container);
         const height = defineHeight(container);
@@ -502,7 +502,7 @@ const createGraph = function createGraph() {
      **************************************************************************/
 
     {
-        const containerName = '#graph-' + siteId + '-ph';
+        const containerName = '#graph-site1-ph';
         const container = outerContainer.find(containerName);
         const width = defineWidth(container);
         const height = defineHeight(container);
@@ -590,7 +590,7 @@ const createGraph = function createGraph() {
      **************************************************************************/
 
     {
-        const containerName = '#graph-' + siteId + '-turbidity';
+        const containerName = '#graph-site1-turbidity';
         const container = outerContainer.find(containerName);
         const width = defineWidth(container);
         const height = defineHeight(container);
@@ -685,7 +685,7 @@ const createGraph = function createGraph() {
      **************************************************************************/
 
     {
-        const containerName = '#graph-' + siteId + '-salinity';
+        const containerName = '#graph-site1-salinity';
         const container = outerContainer.find(containerName);
         const width = defineWidth(container);
         const height = defineHeight(container);
@@ -780,7 +780,7 @@ const createGraph = function createGraph() {
      **************************************************************************/
 
     {
-        const containerName = '#graph-' + siteId + '-conductivity';
+        const containerName = '#graph-site1-conductivity';
         const container = outerContainer.find(containerName);
         const width = defineWidth(container);
         const height = defineHeight(container);
@@ -872,7 +872,7 @@ const createGraph = function createGraph() {
      **************************************************************************/
 
     {
-        const containerName = '#graph-' + siteId + '-dissolved';
+        const containerName = '#graph-site1-dissolved';
         const container = outerContainer.find(containerName);
         const width = defineWidth(container);
         const height = defineHeight(container);
@@ -1036,7 +1036,7 @@ const createGraph = function createGraph() {
      **************************************************************************/
 
     {
-        const containerName = '#graph-' + siteId + '-bod';
+        const containerName = '#graph-site1-bod';
         const container = outerContainer.find(containerName);
         const width = defineWidth(container);
         const height = defineHeight(container);
@@ -1128,7 +1128,7 @@ const createGraph = function createGraph() {
      **************************************************************************/
 
     {
-        const containerName = '#graph-' + siteId + '-coliform';
+        const containerName = '#graph-site1-coliform';
         const container = outerContainer.find(containerName);
         const width = defineWidth(container);
         const height = defineHeight(container);
