@@ -20,7 +20,8 @@ def _timestamp(dt):
 
 
 def _temp_conv(temp, unit):
-    if not isinstance(unit, str) or not isinstance(temp, Number):
+    if (not (isinstance(unit, str) or isinstance(unit, unicode))) or \
+            not isinstance(temp, Number):
         return None
 
     if unit != _('Celsius') and unit != _('Fahrenheit'):
@@ -343,7 +344,7 @@ class WQSampleManager(models.Manager):
 
 
 def validate_pH(ph):
-    if not(0 <= ph and ph <= 14):
+    if not(0 <= ph <= 14):
         raise ValidationError(
             '%(ph)s is not 0-14.',
             params={'ph': ph},

@@ -237,15 +237,13 @@ const createGraph = function createGraph() {
         }),
     };
 
-    const margin = {top: 20, right: 100, bottom: 30, left: 40};
+    const margin = {top: 20, right: 150, bottom: 30, left: 40};
     const defineWidth = function definedefineWidth(container) {
-        return (Math.max(container.width() / 2,
-                Math.min(container.width(), 35 * formatted.length))) -
-            margin.left - margin.right;
+        return container.width() - (margin.right + margin.left);
     };
 
     const defineHeight = function definedefineHeight(container) {
-        return 200 - margin.top - margin.bottom;
+        return 300 - (margin.top + margin.bottom);
     };
 
     /***************************************************************************
@@ -399,6 +397,9 @@ const createGraph = function createGraph() {
                 .text((d) => {
                     return d.name;
                 });
+        } else {
+            $('#temperature-control').attr('disabled', 'disabled');
+            container.css({display: 'none'});
         }
     }
 
@@ -490,6 +491,9 @@ const createGraph = function createGraph() {
                 })
                 .style('stroke', '#93ece9')
                 .style('fill', '#93ece9');
+        } else {
+            $('#oxygen-control').attr('disabled', 'disabled');
+            container.css({display: 'none'});
         }
     }
 
@@ -575,6 +579,9 @@ const createGraph = function createGraph() {
                 })
                 .style('stroke', '#aede5b')
                 .style('fill', '#aede5b');
+        } else {
+            $('#ph-control').attr('disabled', 'disabled');
+            container.css({display: 'none'});
         }
     }
 
@@ -667,6 +674,9 @@ const createGraph = function createGraph() {
                 })
                 .style('stroke', '#636363')
                 .style('fill', '#636363');
+        } else {
+            $('#turbidity-control').attr('disabled', 'disabled');
+            container.css({display: 'none'});
         }
     }
 
@@ -759,6 +769,9 @@ const createGraph = function createGraph() {
                 })
                 .style('stroke', '#cccccc')
                 .style('fill', '#cccccc');
+        } else {
+            $('#salinity-control').attr('disabled', 'disabled');
+            container.css({display: 'none'});
         }
     }
 
@@ -848,6 +861,9 @@ const createGraph = function createGraph() {
                 })
                 .style('stroke', '#f7f73e')
                 .style('fill', '#f7f73e');
+        } else {
+            $('#conductivity-control').attr('disabled', 'disabled');
+            container.css({display: 'none'});
         }
     }
 
@@ -1009,6 +1025,9 @@ const createGraph = function createGraph() {
                 .text((d) => {
                     return d.name;
                 });
+        } else {
+            $('#dissolved-control').attr('disabled', 'disabled');
+            container.css({display: 'none'});
         }
     }
 
@@ -1098,6 +1117,9 @@ const createGraph = function createGraph() {
                 })
                 .style('stroke', '#6851ed')
                 .style('fill', '#6851ed');
+        } else {
+            $('#bod-control').attr('disabled', 'disabled');
+            container.css({display: 'none'});
         }
     }
 
@@ -1187,6 +1209,9 @@ const createGraph = function createGraph() {
                 })
                 .style('stroke', '#593e29')
                 .style('fill', '#593e29');
+        } else {
+            $('#coliform-control').attr('disabled', 'disabled');
+            container.css({display: 'none'});
         }
     }
 };
@@ -1196,5 +1221,9 @@ $(() => {
     $('#date-start').change(changeRangeStart);
     $('#date-end').change(changeRangeEnd);
 
+    createGraph();
+});
+
+$(window).resize(() => {
     createGraph();
 });
