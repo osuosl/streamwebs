@@ -137,28 +137,28 @@ def export_ript(request, site_slug):
     for each in rip_transect:
         sheets.append(each.id)
 
-    print(sheets)
-
     # doesn't return anything if filtering by transect_id??
-    zones = TransectZone.objects.filter(transect_id=39)
-    #zones = TransectZone.objects.filter(transect_id=sheets[0]).order_by('id').values(
-    #    'transect__school', 'transect__date_time', 'transect__site__site_name',
-    #    'transect__weather', 'transect__slope', 'transect__notes', 'zone_num',
-    #    'conifers', 'hardwoods', 'shrubs', 'comments'
-    #)
+    #zones = TransectZone.objects.filter(transect_id=39)
+    zones = TransectZone.objects.filter(transect_id=sheets[0]).values(
+        'transect__school', 'transect__date_time', 'transect__site__site_name',
+        'transect__weather', 'transect__slope', 'transect__notes', 'zone_num',
+        'conifers', 'hardwoods', 'shrubs', 'comments'
+    )
     sheets.pop(0)
 
     for sheet in sheets:
-        n_zones = TransectZone.objects.filter(transect_id=sheet).order_by('id').values(
-            'transect__school', 'transect__date_time', 'transect__site__site_name',
-            'transect__weather', 'transect__slope', 'transect__notes', 'zone_num',
-            'conifers', 'hardwoods', 'shrubs', 'comments'
+        n_zones = TransectZone.objects.filter(transect_id=sheet)
+        n_zones = n_zones.order_by('transect__id', 'zone_num').values(
+            'transect__school', 'transect__date_time',
+            'transect__site__site_name', 'transect__weather',
+            'transect__slope', 'transect__notes', 'zone_num', 'conifers',
+            'hardwoods', 'shrubs', 'comments'
         )
-        #zones = zones | n_zones
+        zones = zones | n_zones
 
     #return render_to_csv_response(rip_transect) 
     return render_to_csv_response(zones,
-        field_to_header_map={
+        field_header_map={
             'transect__school': 'school', 'transect__date_time': 'date/time',
             'transect__site__site_name': 'site', 'transect__weather':'weather',
             'transect__slope': 'slope', 'transect__notes': 'notes',
