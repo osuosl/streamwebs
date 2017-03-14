@@ -887,29 +887,40 @@ const createGraph = function createGraph() {
         }
     }
 
-    return;
-
     /***************************************************************************
      * pH
      **************************************************************************/
 
     {
-        const containerName = '#graph-site1-ph';
-        const container = outerContainer.find(containerName);
-        const width = defineWidth(container);
-        const height = defineHeight(container);
+        const containerName1 = '#graph-site1-ph';
+        const container1 = outerContainer.find(containerName1);
+        const width = defineWidth(container1);
+        const height = defineHeight(container1);
+
+        const containerName2 = '#graph-site2-ph';
+        const container2 = outerContainer.find(containerName2);
 
         const x = d3.scaleTime()
-            .range([0, width]);
-        x.domain([
-            date_range[0] !== 0 ? new Date(date_range[0]) :
-                d3.min(formatted1, (d) => {
-                    return new Date(d.date)
-                }),
-            date_range[1] !== Number.MAX_SAFE_INTEGER ? new Date(date_range[1]) :
-                d3.max(formatted1, (d) => {
-                    return new Date(d.date)
-                }),
+            .range([0, width])
+            .domain([
+                date_range[0] !== Number.MIN_SAFE_INTEGER ? new Date(date_range[0]) :
+                Math.min(
+                    d3.min(formatted1, d => {
+                        return new Date(d.date)
+                    }),
+                    window.hasSiteTwo ? d3.min(formatted2, d => {
+                        return new Date(d.date)
+                    }) : Number.MAX_SAFE_INTEGER
+                ),
+                date_range[1] !== Number.MAX_SAFE_INTEGER ? new Date(date_range[1]) :
+                Math.max(
+                    d3.max(formatted1, d => {
+                        return new Date(d.date)
+                    }),
+                    window.hasSiteTwo ? d3.max(formatted2, d => {
+                        return new Date(d.date)
+                    }) : Number.MIN_SAFE_INTEGER
+                ),
         ]);
         const y = d3.scaleLinear()
             .domain([0, 14])
@@ -917,87 +928,165 @@ const createGraph = function createGraph() {
 
         const line = d3.line()
             .curve(d3.curveLinear)
-            .x((d) => {
+            .x(d => {
                 return x(d.date)
             })
-            .y((d) => {
+            .y(d => {
                 return y(d.value)
             });
 
-        const svg = d3.select(containerName).append('svg')
+        const svg1 = d3.select(containerName1).append('svg')
             .attr('width', width + margin.left + margin.right)
             .attr('height', height + margin.top + margin.bottom);
 
-        const g = svg.append('g')
+        const g1 = svg1.append('g')
             .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
-        g.append('g')
+        g1.append('g')
             .attr('class', 'axis axis--x')
             .attr('transform', 'translate(0, ' + height + ')')
             .call(d3.axisBottom(x));
 
-        g.append('g')
+        g1.append('g')
             .attr('class', 'axis axis--y')
             .call(d3.axisLeft(y));
 
-        if (types1.pH.length > 0) {
-            const type = g.selectAll('.ph')
-                .data([{name: 'pH', values: types1.pH}])
-                .enter()
-                .append('g')
-                .attr('class', 'ph');
+        const svg2 = d3.select(containerName2).append('svg')
+            .attr('width', width + margin.left + margin.right)
+            .attr('height', height + margin.top + margin.bottom);
 
-            type.append('path')
-                .attr('class', 'line')
-                .attr('d', (d) => {
-                    return line(d.values)
-                })
-                .style('stroke', '#aede5b');
+        const g2 = svg2.append('g')
+            .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
-            type.selectAll('dot')
-                .data((d) => {
-                    return d.values.map((e) => {
-                        e['name'] = d.name;
-                        return e
-                    });
-                })
-                .enter().append('circle')
-                .attr('r', 3.5)
-                .attr('cx', (d) => {
-                    return x(new Date(d.date))
-                })
-                .attr('cy', (d) => {
-                    return y(d.value)
-                })
-                .style('stroke', '#aede5b')
-                .style('fill', '#aede5b');
+        g2.append('g')
+            .attr('class', 'axis axis--x')
+            .attr('transform', 'translate(0, ' + height + ')')
+            .call(d3.axisBottom(x));
+
+        g2.append('g')
+            .attr('class', 'axis axis--y')
+            .call(d3.axisLeft(y));
+
+        if ((types1.pH.length && !window.hasSiteTwo) || types2.pH.length) {
+            $('#ph-control').attr('disabled', null);
+            container1.css({display: 'block'});
+
+            if (types1.pH.length) {
+                const type1 = g1.selectAll('.ph')
+                    .data([{
+                        name: 'pH',
+                        values: types1.pH
+                    }])
+                    .enter()
+                    .append('g')
+                    .attr('class', 'ph');
+
+                type1.append('path')
+                    .attr('class', 'line')
+                    .attr('d', d => {
+                        return line(d.values)
+                    })
+                    .style('stroke', '#aede5b');
+
+                type1.selectAll('dot')
+                    .data(d => {
+                        return d.values.map(e => {
+                            e['name'] = d.name;
+                            return e
+                        });
+                    })
+                    .enter().append('circle')
+                    .attr('r', 3.5)
+                    .attr('cx', d => {
+                        return x(new Date(d.date))
+                    })
+                    .attr('cy', d => {
+                        return y(d.value)
+                    })
+                    .style('stroke', '#aede5b')
+                    .style('fill', '#aede5b');
+            }
+
+            if (window.hasSiteTwo && types2.pH.length) {
+                container2.css({display: 'block'});
+                const type2 = g2.selectAll('.ph')
+                    .data([{
+                        name: 'pH',
+                        values: types2.pH
+                    }])
+                    .enter()
+                    .append('g')
+                    .attr('class', 'ph');
+
+                type2.append('path')
+                    .attr('class', 'line')
+                    .attr('d', d => {
+                        return line(d.values)
+                    })
+                    .style('stroke', '#aede5b');
+
+                type2.selectAll('dot')
+                    .data(d => {
+                        return d.values.map(e => {
+                            e['name'] = d.name;
+                            return e
+                        });
+                    })
+                    .enter().append('circle')
+                    .attr('r', 3.5)
+                    .attr('cx', d => {
+                        return x(new Date(d.date))
+                    })
+                    .attr('cy', d => {
+                        return y(d.value)
+                    })
+                    .style('stroke', '#aede5b')
+                    .style('fill', '#aede5b');
+            }
+
         } else {
             $('#ph-control').attr('disabled', 'disabled');
-            container.css({display: 'none'});
+            container1.css({display: 'none'});
+            container2.css({display: 'none'});
         }
     }
+
+    return;
 
     /***************************************************************************
      * Turbidity
      **************************************************************************/
 
     {
-        const containerName = '#graph-site1-turbidity';
-        const container = outerContainer.find(containerName);
-        const width = defineWidth(container);
-        const height = defineHeight(container);
+        const containerName1 = '#graph-site1-turbidity';
+        const container1 = outerContainer.find(containerName1);
+        const width = defineWidth(container1);
+        const height = defineHeight(container1);
+
+        const containerName2 = '#graph-site2-turbidity';
+        const container2 = outerContainer.find(containerName2);
 
         const x = d3.scaleTime()
-            .range([0, width]);
-        x.domain([
-            date_range[0] !== 0 ? new Date(date_range[0]) :
-                d3.min(formatted1, (d) => {
-                    return new Date(d.date)
-                }),
-            date_range[1] !== Number.MAX_SAFE_INTEGER ? new Date(date_range[1]) :
-                d3.max(formatted1, (d) => {
-                    return new Date(d.date)
-                }),
+            .range([0, width])
+            .domain([
+                date_range[0] !== Number.MIN_SAFE_INTEGER ? new Date(date_range[0]) :
+                Math.min(
+                    d3.min(formatted1, (d) => {
+                        return new Date(d.date)
+                    }),
+                    window.hasSiteTwo ? d3.min(formatted2, d => {
+                        return new Date(d.date)
+                    }) : Number.MAX_SAFE_INTEGER
+                ),
+                date_range[1] !== Number.MAX_SAFE_INTEGER ? new Date(date_range[1]) :
+                Math.max(
+                    d3.max(formatted1, (d) => {
+                        return new Date(d.date)
+                    }),
+                    window.hasSiteTwo ? d3.max(formatted2, d => {
+                        return new Date(d.date)
+                    }) : Number.MIN_SAFE_INTEGER
+                ),
         ]);
         const y = d3.scaleLinear()
             .domain([
