@@ -529,7 +529,7 @@ const createGraph = function createGraph() {
         types1.air_temperature.length) &&
         (!window.hasSiteTwo || types2.water_temperature.length ||
         types2.air_temperature.length)) {
-            $('#temperature-control').attr('disabled', '');
+            $('#temperature-control').attr('disabled', null);
             container1.css({display: 'block'});
 
             if (types1.water_temperature.length || types1.air_temperature.length) {
@@ -716,101 +716,178 @@ const createGraph = function createGraph() {
         }
     }
 
-    return;
-
     /***************************************************************************
      * Dissolved Oxygen
      **************************************************************************/
 
     {
-        const containerName = '#graph-site1-oxygen';
-        const container = outerContainer.find(containerName);
-        const width = defineWidth(container);
-        const height = defineHeight(container);
+        const containerName1 = '#graph-site1-oxygen';
+        const container1 = outerContainer.find(containerName1);
+        const width = defineWidth(container1);
+        const height = defineHeight(container1);
+
+        const containerName2 = '#graph-site2-oxygen';
+        const container2 = outerContainer.find(containerName2);
 
         const x = d3.scaleTime()
-            .range([0, width]);
-        x.domain([
-            date_range[0] !== 0 ? new Date(date_range[0]) :
-                d3.min(formatted1, (d) => {
-                    return new Date(d.date)
-                }),
-            date_range[1] !== Number.MAX_SAFE_INTEGER ? new Date(date_range[1]) :
-                d3.max(formatted1, (d) => {
-                    return new Date(d.date)
-                }),
-        ]);
+            .range([0, width])
+            .domain([
+                date_range[0] !== Number.MIN_SAFE_INTEGER ? new Date(date_range[0]) :
+                Math.min(
+                    d3.min(formatted1, d => {
+                        return new Date(d.date)
+                    }),
+                    window.hasSiteTwo ? d3.min(formatted2, d => {
+                        return new Date(d.date)
+                    }) : Number.MAX_SAFE_INTEGER
+                ),
+                date_range[1] !== Number.MAX_SAFE_INTEGER ? new Date(date_range[1]) :
+                Math.max(
+                    d3.max(formatted1, d => {
+                        return new Date(d.date)
+                    }),
+                    window.hasSiteTwo ? d3.max(formatted2, d => {
+                        return new Date(d.date)
+                    }) : Number.MIN_SAFE_INTEGER
+                ),
+            ]);
         const y = d3.scaleLinear()
-            .domain([0, Math.ceil(d3.max(types1.dissolved_oxygen, (d) => {
-                return d.value || 1;
-            }) || 1)
+            .domain([0, Math.ceil(Math.max(
+                d3.max(types1.dissolved_oxygen, (d) => {
+                    return d.value || 1;
+                }) || 1,
+                window.hasSiteTwo ? d3.max(types2.dissolved_oxygen, d => {
+                    return d.value || 1;
+                }) || 1 : Number.MIN_SAFE_INTEGER)) || 1
             ])
             .range([height, 0]);
 
         const line = d3.line()
             .curve(d3.curveLinear)
-            .x((d) => {
+            .x(d => {
                 return x(d.date)
             })
-            .y((d) => {
+            .y(d => {
                 return y(d.value)
             });
 
-        const svg = d3.select(containerName).append('svg')
+        const svg1 = d3.select(containerName1).append('svg')
             .attr('width', width + margin.left + margin.right)
             .attr('height', height + margin.top + margin.bottom);
 
-        const g = svg.append('g')
+        const g1 = svg1.append('g')
             .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
-        g.append('g')
+        g1.append('g')
             .attr('class', 'axis axis--x')
             .attr('transform', 'translate(0, ' + height + ')')
             .call(d3.axisBottom(x));
 
-        g.append('g')
+        g1.append('g')
             .attr('class', 'axis axis--y')
             .call(d3.axisLeft(y));
 
-        if (types1.dissolved_oxygen.length > 0) {
-            const type = g.selectAll('.do')
-                .data([{
-                    name: 'Dissolved Oxygen',
-                    values: types1.dissolved_oxygen
-                }])
-                .enter()
-                .append('g')
-                .attr('class', 'do');
+        const svg2 = d3.select(containerName2).append('svg')
+            .attr('width', width + margin.left + margin.right)
+            .attr('height', height + margin.top + margin.bottom);
 
-            type.append('path')
-                .attr('class', 'line')
-                .attr('d', (d) => {
-                    return line(d.values)
-                })
-                .style('stroke', '#93ece9');
+        const g2 = svg2.append('g')
+            .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
-            type.selectAll('dot')
-                .data((d) => {
-                    return d.values.map((e) => {
-                        e['name'] = d.name;
-                        return e
-                    });
-                })
-                .enter().append('circle')
-                .attr('r', 3.5)
-                .attr('cx', (d) => {
-                    return x(new Date(d.date))
-                })
-                .attr('cy', (d) => {
-                    return y(d.value)
-                })
-                .style('stroke', '#93ece9')
-                .style('fill', '#93ece9');
+        g2.append('g')
+            .attr('class', 'axis axis--x')
+            .attr('transform', 'translate(0, ' + height + ')')
+            .call(d3.axisBottom(x));
+
+        g2.append('g')
+            .attr('class', 'axis axis--y')
+            .call(d3.axisLeft(y));
+
+        if ((types1.dissolved_oxygen.length && !window.hasSiteTwo) ||
+        types2.dissolved_oxygen.length) {
+            $('#oxygen-control').attr('disabled', null);
+            container1.css({display: 'block'});
+
+            if (types1.dissolved_oxygen.length) {
+                const type1 = g1.selectAll('.do')
+                    .data([{
+                        name: 'Dissolved Oxygen',
+                        values: types1.dissolved_oxygen
+                    }])
+                    .enter()
+                    .append('g')
+                    .attr('class', 'do');
+
+                type1.append('path')
+                    .attr('class', 'line')
+                    .attr('d', d => {
+                        return line(d.values)
+                    })
+                    .style('stroke', '#93ece9');
+
+                type1.selectAll('dot')
+                    .data(d => {
+                        return d.values.map(e => {
+                            e['name'] = d.name;
+                            return e
+                        });
+                    })
+                    .enter().append('circle')
+                    .attr('r', 3.5)
+                    .attr('cx', d => {
+                        return x(new Date(d.date))
+                    })
+                    .attr('cy', d => {
+                        return y(d.value)
+                    })
+                    .style('stroke', '#93ece9')
+                    .style('fill', '#93ece9');
+            }
+
+            if (window.hasSiteTwo && types2.dissolved_oxygen.length) {
+                container2.css({display: 'block'});
+                const type2 = g2.selectAll('.do')
+                    .data([{
+                        name: 'Dissolved Oxygen',
+                        values: types2.dissolved_oxygen
+                    }])
+                    .enter()
+                    .append('g')
+                    .attr('class', 'do');
+
+                type2.append('path')
+                    .attr('class', 'line')
+                    .attr('d', d => {
+                        return line(d.values)
+                    })
+                    .style('stroke', '#93ece9');
+
+                type2.selectAll('dot')
+                    .data(d => {
+                        return d.values.map(e => {
+                            e['name'] = d.name;
+                            return e
+                        });
+                    })
+                    .enter().append('circle')
+                    .attr('r', 3.5)
+                    .attr('cx', d => {
+                        return x(new Date(d.date))
+                    })
+                    .attr('cy', d => {
+                        return y(d.value)
+                    })
+                    .style('stroke', '#93ece9')
+                    .style('fill', '#93ece9');
+            }
         } else {
             $('#oxygen-control').attr('disabled', 'disabled');
-            container.css({display: 'none'});
+            container1.css({display: 'none'});
+            container2.css({display: 'none'});
         }
     }
+
+    return;
 
     /***************************************************************************
      * pH
