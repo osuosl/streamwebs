@@ -12,6 +12,12 @@ urlpatterns = [
 
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/$', views.site, name='site'),
 
+    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/edit/', views.update_site,
+        name='update_site'),
+
+    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/delete/', views.deactivate_site,
+        name='deactivate_site'),
+
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/water/$',
         views.graph_water, name='graph_water'),
 
@@ -24,17 +30,11 @@ urlpatterns = [
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/water/(?P<data_id>\d+)/',
         views.water_quality, name='water_quality'),
 
-    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/water/export/$',
-        views.export_wq, name='export_wq'),
-
-    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/delete/', views.deactivate_site,
-        name='deactivate_site'),
-
-    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/edit/', views.update_site,
-        name='update_site'),
-
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/water/edit/',
         views.water_quality_edit, name='water_quality_edit'),
+
+    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/water/export/$',
+        views.export_wq, name='export_wq'),
 
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/macro/(?P<data_id>\d+)/$',
         views.macroinvertebrate, name='macroinvertebrate_view'),
@@ -57,6 +57,12 @@ urlpatterns = [
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/canopy/(?P<data_id>\d+)/',
         views.canopy_cover_view, name='canopy_cover'),
 
+    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/canopy/edit',
+        views.canopy_cover_edit, name='canopy_cover_edit'),
+
+    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/canopy/export/',
+        views.export_cc, name='export_cc'),
+
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/camera/(?P<cp_id>\d+)/photo/' +
         '(?P<pp_id>\d+)/?$', views.view_pp_and_add_img, name='photo_point'),
 
@@ -69,17 +75,14 @@ urlpatterns = [
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/camera/edit/',
         views.add_camera_point, name='camera_point_add'),
 
-    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/canopy/edit',
-        views.canopy_cover_edit, name='canopy_cover_edit'),
+    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/soil/(?P<data_id>\d+)/$',
+        views.soil_survey, name='soil'),
 
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/soil/edit',
         views.soil_survey_edit, name='soil_edit'),
 
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/soil/export/$',
         views.export_soil, name='export_soil'),
-
-    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/soil/(?P<data_id>\d+)/$',
-        views.soil_survey, name='soil'),
 
     url(r'^statistics/$', views.admin_site_statistics, name='stats'),
     url(r'^register/$', views.register, name='register'),

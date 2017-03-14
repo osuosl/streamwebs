@@ -26,8 +26,6 @@ from streamwebs.models import (
     PhotoPointImage, Soil_Survey, Resource, School)
 
 from djqscsv import render_to_csv_response
-from itertools import chain
-#from django.db.models.expressions import RawSQL
 import json
 import copy
 import datetime
@@ -35,14 +33,16 @@ import datetime
 
 def export_wq(request, site_slug):
     site = Site.objects.get(site_slug=site_slug)
-    waterq = Water_Quality.objects.filter(site_id=site.id)    # Store nid of each wq data sheet into a list
+    waterq = Water_Quality.objects.filter(site_id=site.id)
 
+    # Store nid of each wq data sheet into a list
     sheets = []
     for each in waterq:
         sheets.append(each.nid)
 
     # Query the first set of samples outside of the loop and pop nid from list
-    samples = WQ_Sample.objects.prefetch_related('water_quality').filter(nid=sheets[0]).order_by('id').values(
+    samples = WQ_Sample.objects.prefetch_related('water_quality')
+    samples = samples.filter(nid=sheets[0]).order_by('id').values(
         'water_quality__school__name', 'water_quality__date',
         'water_quality__site__site_name', 'water_quality__DEQ_dq_level',
         'water_quality__latitude', 'water_quality__longitude',
@@ -59,7 +59,8 @@ def export_wq(request, site_slug):
 
     # Query for the remaining samples according to wq_nid
     for sheet in sheets:
-        n_samples = WQ_Sample.objects.prefetch_related('water_quality').filter(nid=sheet).order_by('id').values(
+        n_samples = WQ_Sample.objects.prefetch_related('water_quality')
+        n_samples = n_samples.filter(nid=sheet).order_by('id').values(
             'water_quality__school__name', 'water_quality__date',
             'water_quality__site__site_name', 'water_quality__DEQ_dq_level',
             'water_quality__latitude', 'water_quality__longitude',
@@ -67,10 +68,10 @@ def export_wq(request, site_slug):
             'water_quality__dead_fish', 'water_quality__water_temp_unit',
             'water_quality__air_temp_unit', 'water_quality__notes', 'sample',
             'water_temperature', 'water_temp_tool', 'air_temperature',
-            'air_temp_tool', 'dissolved_oxygen', 'oxygen_tool', 'pH', 'pH_tool',
-            'turbidity', 'turbid_tool', 'salinity', 'salt_tool', 'conductivity',
-            'total_solids', 'bod', 'ammonia', 'nitrite', 'nitrate', 'phosphates',
-            'fecal_coliform' 
+            'air_temp_tool', 'dissolved_oxygen', 'oxygen_tool', 'pH',
+            'pH_tool', 'turbidity', 'turbid_tool', 'salinity', 'salt_tool',
+            'conductivity', 'total_solids', 'bod', 'ammonia', 'nitrite',
+            'nitrate', 'phosphates', 'fecal_coliform' 
         )
         samples = samples | n_samples
     
@@ -128,6 +129,7 @@ def export_macros(request, site_slug):
         }
     )
 
+
 # Come back to this to fix schools and foreign key calls
 def export_ript(request, site_slug):
     site = Site.objects.get(site_slug=site_slug)
@@ -137,9 +139,8 @@ def export_ript(request, site_slug):
     for each in rip_transect:
         sheets.append(each.id)
 
-    # doesn't return anything if filtering by transect_id??
-    #zones = TransectZone.objects.filter(transect_id=39)
-    zones = TransectZone.objects.filter(transect_id=sheets[0]).values(
+    zones = TransectZone.objects.filter(transect_id=sheets[0])
+    zones = zones.values(
         'transect__school', 'transect__date_time', 'transect__site__site_name',
         'transect__weather', 'transect__slope', 'transect__notes', 'zone_num',
         'conifers', 'hardwoods', 'shrubs', 'comments'
@@ -156,7 +157,6 @@ def export_ript(request, site_slug):
         )
         zones = zones | n_zones
 
-    #return render_to_csv_response(rip_transect) 
     return render_to_csv_response(zones,
         field_header_map={
             'transect__school': 'school', 'transect__date_time': 'date/time',
@@ -165,6 +165,15 @@ def export_ript(request, site_slug):
             'zone_num': 'zone number'
         }
     )
+
+
+def export_cc(request, site_slug):
+    site = Site.objects.get(site_slug=site_slug)
+    canopyc = Canopy_Cover.objects.filter(site_id=site.id)
+
+    # TODO: convert big int values to human-readable cc_square totals
+
+    return render_to_csv_response(canopyc)
 
 
 def export_soil(request, site_slug):
