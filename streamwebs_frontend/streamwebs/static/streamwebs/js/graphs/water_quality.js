@@ -2367,6 +2367,8 @@ $(window).resize(() => {
 const loadSite2 = function loadSite2(site_slug) {
     $.getJSON(`/sites/${site_slug}/water/data/`, function(data) {
         window.data.site2 = data.data;
+        $('#site2-header').text(data.site.site_name);
+        $('#site-names').show();
         createGraph();
     });
 };
