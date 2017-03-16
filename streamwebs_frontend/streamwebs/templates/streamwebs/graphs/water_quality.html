@@ -91,7 +91,7 @@
 <label for="coliform-control">Fecal Coliform</label>
 
 <div id="site_select">
-    <a href="#!" class="dropdown-button btn select-button teal darken-4" data-activates='dropdown'>{% trans "Load a site to compare:" %}<i class="material-icons right">arrow_drop_down</i></a>
+    <a href="#!" class="dropdown-button btn select-button teal darken-4" data-activates='dropdown'>{% trans "Load a site to compare" %}<i class="material-icons right">arrow_drop_down</i></a>
     <ul id="dropdown" class="dropdown-content">
     {% for site in sites %}
         <li><a onclick="loadSite2('{{site.site_slug}}')" class="teal-text text-darken-4">{{site.site_name}}</a></li>
