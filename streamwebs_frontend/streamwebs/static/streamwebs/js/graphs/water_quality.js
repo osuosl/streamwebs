@@ -526,7 +526,10 @@ const createGraph = function createGraph() {
         types1.air_temperature.length) ||
         (window.hasSiteTwo && (types2.water_temperature.length ||
         types2.air_temperature.length))) {
-            $('#temperature-control').attr('disabled', null);
+            $('#temperature-control').prop({
+                disabled: null,
+                checked: true
+            });
             container1.css({display: 'block'});
             container2.css({display: window.hasSiteTwo ? 'block' : 'none'});
 
@@ -707,7 +710,10 @@ const createGraph = function createGraph() {
             }
 
         } else {
-            $('#temperature-control').attr('disabled', 'disabled');
+            $('#temperature-control').prop({
+                disabled: 'disabled',
+                checked: false
+            });
             container1.css({display: 'none'});
             container2.css({display: 'none'});
         }
@@ -802,7 +808,10 @@ const createGraph = function createGraph() {
 
         if (types1.dissolved_oxygen.length ||
         (window.hasSiteTwo && types2.dissolved_oxygen.length)) {
-            $('#oxygen-control').attr('disabled', null);
+            $('#oxygen-control').prop({
+                disabled: null,
+                checked: true
+            });
             container1.css({display: 'block'});
             container2.css({display: window.hasSiteTwo ? 'block' : 'none'});
 
@@ -878,7 +887,10 @@ const createGraph = function createGraph() {
                     .style('fill', '#93ece9');
             }
         } else {
-            $('#oxygen-control').attr('disabled', 'disabled');
+            $('#oxygen-control').prop({
+                disabled: 'disabled',
+                checked: false
+            });
             container1.css({display: 'none'});
             container2.css({display: 'none'});
         }
@@ -965,7 +977,10 @@ const createGraph = function createGraph() {
             .call(d3.axisLeft(y));
 
         if (types1.pH.length || (window.hasSiteTwo && types2.pH.length)) {
-            $('#ph-control').attr('disabled', null);
+            $('#ph-control').prop({
+                disabled: null,
+                checked: true
+            });
             container1.css({display: 'block'});
             container2.css({display: window.hasSiteTwo ? 'block' : 'none'});
 
@@ -1042,7 +1057,10 @@ const createGraph = function createGraph() {
             }
 
         } else {
-            $('#ph-control').attr('disabled', 'disabled');
+            $('#ph-control').prop({
+                disabled: 'disabled',
+                checked: false
+            });
             container1.css({display: 'none'});
             container2.css({display: 'none'});
         }
@@ -1149,7 +1167,10 @@ const createGraph = function createGraph() {
 
         if (types1.turbidity.length ||
         (window.hasSiteTwo && types2.turbidity.length)) {
-            $('#turbidity-control').attr('disabled', null);
+            $('#turbidity-control').prop({
+                disabled: null,
+                checked: true
+            });
             container1.css({display: 'block'});
             container2.css({display: window.hasSiteTwo ? 'block' : 'none'});
 
@@ -1226,7 +1247,10 @@ const createGraph = function createGraph() {
                     .style('fill', '#636363');
             }
         } else {
-            $('#turbidity-control').attr('disabled', 'disabled');
+            $('#turbidity-control').prop({
+                disabled: 'disabled',
+                checked: false
+            });
             container1.css({display: 'none'});
             container2.css({display: 'none'});
         }
@@ -1333,7 +1357,10 @@ const createGraph = function createGraph() {
 
         if (types1.salinity.length ||
         (window.hasSiteTwo && types2.salinity.length)) {
-            $('#salinity-control').attr('disabled', null);
+            $('#salinity-control').prop({
+                disabled: null,
+                checked: true
+            });
             container1.css({display: 'block'});
             container2.css({display: window.hasSiteTwo ? 'block' : 'none'});
 
@@ -1409,7 +1436,10 @@ const createGraph = function createGraph() {
                     .style('fill', '#cccccc');
             }
         } else {
-            $('#salinity-control').attr('disabled', 'disabled');
+            $('#salinity-control').prop({
+                disabled: 'disabled',
+                checked: false
+            });
             container1.css({display: 'none'});
             container2.css({display: 'none'});
         }
@@ -1516,7 +1546,10 @@ const createGraph = function createGraph() {
 
         if (types1.conductivity.length ||
         (window.hasSiteTwo && types2.conductivity.length)) {
-            $('#conductivity-control').attr('disabled', null);
+            $('#conductivity-control').prop({
+                disabled: null,
+                checked: true
+            });
             container1.css({display: 'block'});
             container2.css({display: window.hasSiteTwo ? 'block' : 'none'});
 
@@ -1592,7 +1625,10 @@ const createGraph = function createGraph() {
                     .style('fill', '#f7f73e');
             }
         } else {
-            $('#conductivity-control').attr('disabled', 'disabled');
+            $('#conductivity-control').prop({
+                disabled: 'disabled',
+                checked: false
+            });
             container1.css({display: 'none'});
             container2.css({display: 'none'});
         }
@@ -1750,7 +1786,10 @@ const createGraph = function createGraph() {
 
         if (types1.total_solids.length ||
         (window.hasSiteTwo && types2.total_solids.length)) {
-            $('#dissolved-control').attr('disabled', null);
+            $('#dissolved-control').prop({
+                disabled: null,
+                checked: true
+            });
             container1.css({display: 'block'});
             container2.css({display: window.hasSiteTwo ? 'block' : 'none'});
 
@@ -1976,7 +2015,10 @@ const createGraph = function createGraph() {
                     });
             }
         } else {
-            $('#dissolved-control').attr('disabled', 'disabled');
+            $('#dissolved-control').prop({
+                disabled: 'disabled',
+                checked: false
+            });
             container1.css({display: 'none'});
             container2.css({display: 'none'});
         }
@@ -2083,7 +2125,10 @@ const createGraph = function createGraph() {
 
         if (types1.bod.length ||
         (window.hasSiteTwo && types2.bod.length)) {
-            $('#bod-control').attr('disabled', null);
+            $('#bod-control').prop({
+                disabled: null,
+                checked: true
+            });
             container1.css({display: 'block'});
             container2.css({display: window.hasSiteTwo ? 'block' : 'none'});
 
@@ -2159,7 +2204,10 @@ const createGraph = function createGraph() {
                     .style('fill', '#6851ed');
             }
         } else {
-            $('#bod-control').attr('disabled', 'disabled');
+            $('#bod-control').prop({
+                disabled: 'disabled',
+                checked: false
+            });
             container1.css({display: 'none'});
             container2.css({display: 'none'});
         }
@@ -2266,7 +2314,10 @@ const createGraph = function createGraph() {
 
         if (types1.fecal_coliform.length ||
         (window.hasSiteTwo && types2.fecal_coliform.length)) {
-            $('#coliform-control').attr('disabled', null);
+            $('#coliform-control').prop({
+                disabled: null,
+                checked: true
+            });
             container1.css({display: 'block'});
             container2.css({display: window.hasSiteTwo ? 'block' : 'none'});
 
@@ -2342,7 +2393,10 @@ const createGraph = function createGraph() {
                     .style('fill', '#593e29');
             }
         } else {
-            $('#coliform-control').attr('disabled', 'disabled');
+            $('#coliform-control').prop({
+                disabled: 'disabled',
+                checked: false
+            });
             container1.css({display: 'none'});
             container2.css({display: 'none'});
         }
