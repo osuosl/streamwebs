@@ -1,6 +1,6 @@
 # coding=UTF-8
 from __future__ import print_function
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, permission_required
@@ -216,11 +216,23 @@ def graph_water(request, site_slug):
     site = Site.objects.get(site_slug=site_slug)
     wq_data = Water_Quality.objects.filter(site=site)
     data = [m.to_dict() for m in wq_data]
+    site_list = Site.objects.filter(active=True)
     return render(request, 'streamwebs/graphs/water_quality.html', {
         'data': json.dumps(data),
         'site': site,
-        'site_js': json.dumps(site.to_dict())
+        'site_js': json.dumps(site.to_dict()),
+        'sites': site_list
     })
+
+
+def water_graph_site_data(request, site_slug):
+    site = Site.objects.get(site_slug=site_slug)
+    wq_data = Water_Quality.objects.filter(site=site)
+    data = [m.to_dict() for m in wq_data]
+    return HttpResponse(json.dumps({
+        'data': data,
+        'site': site.to_dict()
+    }), content_type='application/json')
 
 
 def graph_macros(request, site_slug):
