@@ -133,6 +133,10 @@ nav ul#languages {
     margin-left: 10px;
 }
 
+.brand-logo a {
+    color: inherit;
+}
+
 .nav-wrapper i {
     line-height: 36px !important;
 }

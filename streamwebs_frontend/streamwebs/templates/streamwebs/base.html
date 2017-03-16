@@ -35,9 +35,16 @@
                 </ul>
             </form>
 
+            <ul id="admin-options" class="dropdown-content">
+                <!-- TODO: Real links -->
+                <li><a href="{% url 'streamwebs:stats' %}">View Site Statistics</a></li>
+                <li><a href="{% url 'streamwebs:resources-upload' %}">Upload Resources</a></li>
+                <li><a href="#!">Manage Users</a></li>
+              </ul>
+
             <nav>
-                <div class="nav-wrapper">
-                    <a href="#!" class="brand-logo center teal-text text-darken-4">{% block body_title %}Streamwebs{% endblock %}</a>
+                <div class="nav-wrapper grey lighten-5">
+                    <span class="brand-logo center teal-text text-darken-4">{% block body_title %}Streamwebs{% endblock %}</span>
 
                     {% include "streamwebs/navigation.html" %}
                 </div>

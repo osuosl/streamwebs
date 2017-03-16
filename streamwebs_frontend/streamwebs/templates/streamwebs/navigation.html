@@ -1,59 +1,37 @@
 {% load staticfiles %}
 {% load i18n %}
 
-<div id="topbar">
-  <form id="langform" action="/i18n/setlang/" method="post">
-      {% csrf_token %}
-      <input name="next" type="hidden" value="{{ request.path }}" />
-      <input id="lang_input" name="language" type="hidden" />
-      <ul id="languages" class="dropdown-content">
+
+<a href="#!" class="btn dropdown-button teal darken-4" data-activates="languages">
+  <ul class="left">
+      <li>
           {% for lang in LANGUAGES %}
-              <li><a href="#!" onclick="submitLang('{{ lang.0 }}');">{{ lang.1 }}</a></li>
+              {% if lang.0 == LANGUAGE_CODE %}
+                  {{ lang.1 }}
+              {% endif %}
           {% endfor %}
-      </ul>
-  </form>
-  
-  <ul id="admin-options" class="dropdown-content">
-    <!-- TODO: Real links -->
-    <li><a href="{% url 'streamwebs:stats' %}">View Site Statistics</a></li> 
-    <li><a href="{% url 'streamwebs:resources-upload' %}">Upload Resources</a></li>
-    <li><a href="#!">Manage Users</a></li>
+          <i class="material-icons right">arrow_drop_down</i>
+      </li>
   </ul>
+</a>
 
-  <nav class="grey lighten-5">
-    <div class="nav-wrapper">
-      <a href="#!" class="btn dropdown-button teal darken-4" data-activates="languages">
-          <ul class="left">
-              <li>
-                  {% for lang in LANGUAGES %}
-                      {% if lang.0 == LANGUAGE_CODE %}
-                          {{ lang.1 }}
-                      {% endif %}
-                  {% endfor %}
-                  <i class="material-icons right">arrow_drop_down</i>
-              </li>
-          </ul>
-      </a>
+<ul class="right">
+<li><a href="{% url 'streamwebs:sites' %}" class="teal-text text-darken-4">Sites</a></li>
+<li><a href="{% url 'streamwebs:resources' %}" class="teal-text text-darken-4">Resources</a></li>
 
-      <ul class="right">
-        <li><a href="{% url 'streamwebs:sites' %}" class="teal-text text-darken-4">Sites</a></li>
-        <li><a href="{% url 'streamwebs:resources' %}" class="teal-text text-darken-4">Resources</a></li>
-
-        {% if user.is_authenticated %}
-            {% for group in user.groups.all %}
-                {% if group.name == 'admin' %}
-                    <li><a class="teal-text text-darken-4 dropdown-button" href="#!" data-activates="admin-options">Administration<i class="material-icons right">arrow_drop_down</i></a></li>
-                {% endif %}
-            {% endfor %}
-            <li><a href="{% url 'streamwebs:logout' %}" class="teal-text text-darken-4">Logout</a></li>
-        {% else %}
-            <li><a href="{% url 'streamwebs:register' %}" class="teal-text text-darken-4">Create Account</a></li>
-            <li><a href="{% url 'streamwebs:login' %}?next={{ request.path }}" class="teal-text text-darken-4">Login</a></li>
+{% if user.is_authenticated %}
+    {% for group in user.groups.all %}
+        {% if group.name == 'admin' %}
+            <li><a class="teal-text text-darken-4 dropdown-button" href="#!" data-activates="admin-options">Administration<i class="material-icons right">arrow_drop_down</i></a></li>
         {% endif %}
-      </ul>
-    </div>
-  </nav>
-</div>
+    {% endfor %}
+    <li><a href="{% url 'streamwebs:logout' %}" class="teal-text text-darken-4">Logout</a></li>
+{% else %}
+    <li><a href="{% url 'streamwebs:register' %}" class="teal-text text-darken-4">Create Account</a></li>
+    <li><a href="{% url 'streamwebs:login' %}?next={{ request.path }}" class="teal-text text-darken-4">Login</a></li>
+{% endif %}
+</ul>
+
 <!--<script>
     // Language submission
     function submitLang(language) {
