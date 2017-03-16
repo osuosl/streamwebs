@@ -238,10 +238,7 @@ const createGraph = function createGraph() {
     const formatted2 = [];
     const types2 = {};
 
-    if (!window.data.site2 || window.data.site2.length === 0) {
-        window.hasSiteTwo = false;
-    } else {
-        window.hasSiteTwo = true;
+    if (window.hasSiteTwo) {
         data = JSON.parse(JSON.stringify(window.data.site2));
         for (let datum of data) {
             const date = parseInt(datum.date, 10) * 1000; // Convert from seconds to millis
@@ -2366,9 +2363,18 @@ $(window).resize(() => {
 
 const loadSite2 = function loadSite2(site_slug) {
     $.getJSON(`/sites/${site_slug}/water/data/`, function(data) {
-        window.data.site2 = data.data;
-        $('#site2-header').text(data.site.site_name);
-        $('#site-names').show();
+        if (!data.data || data.data.length === 0) {
+            window.hasSiteTwo = false;
+            window.data.site2 = null;
+            $('#site-names').hide();
+            $('#compare-error').show();
+        } else {
+            window.hasSiteTwo = true;
+            window.data.site2 = data.data;
+            $('#site2-header').text(data.site.site_name);
+            $('#site-names').show();
+            $('#compare-error').hide();
+        }
         createGraph();
     });
 };

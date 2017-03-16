@@ -40,6 +40,10 @@
     #site_select {
         margin-top: 10px;
     }
+
+    .error {
+        color: red;
+    }
 </style>
 
 <script type="application/javascript">
@@ -93,6 +97,9 @@
         <li><a onclick="loadSite2('{{site.site_slug}}')" class="teal-text text-darken-4">{{site.site_name}}</a></li>
     {% endfor %}
     </ul>
+    <p id="compare-error" class="error" style="display: none">
+        Site has no Water Quality data to compare.
+    </p>
 </div>
 
 <h2 class="graph-header">Water Quality Over Time</h2>
