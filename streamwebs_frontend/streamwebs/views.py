@@ -82,7 +82,7 @@ def site(request, site_slug):
     macro_sheets = list(macro_sheets.order_by('-date_time').values())
     macro_sheets = [
         {'id': x['id'], 'uri': 'macro', 'type': 'Macroinvertebrate',
-         'date': x['date'].date()}
+         'date': x['date_time'].date()}
         for x in macro_sheets]
     transect_sheets = RiparianTransect.objects.filter(site_id=site.id)
     transect_sheets = list(transect_sheets.order_by('-date_time').values())
@@ -347,7 +347,7 @@ def macroinvertebrate_edit(request, site_slug):
                 request,
                 'You have successfully added a new macroinvertebrates ' +
                 'data sheet.')
-            return redirect(reverse('streamwebs:macroinvertebrate',
+            return redirect(reverse('streamwebs:macroinvertebrate_view',
                             kwargs={'site_slug': site.site_slug,
                                     'data_id': macro.id}))
 
