@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import User
+from django.core.serializers.json import DjangoJSONEncoder
 from django.shortcuts import render, redirect
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
@@ -67,30 +68,62 @@ def sites(request):
         'maps_api': settings.GOOGLE_MAPS_API
     })
 
-
 # view-view for individual specified site
 def site(request, site_slug):
     """ View an individual site """
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
-    wq_sheets = Water_Quality.objects.filter(site_id=site.id).order_by('-date')
+    wq_sheets = Water_Quality.objects.filter(site_id=site.id)
+    wq_sheets = list(wq_sheets.order_by('-date').values())
+    wq_sheets = [
+        {'id': x['id'], 'uri': 'water', 'type': 'Water Quality',
+         'date': x['date']}
+        for x in wq_sheets]
     macro_sheets = Macroinvertebrates.objects.filter(site_id=site.id)
-    macro_sheets = macro_sheets.order_by('-date_time')
+    macro_sheets = list(macro_sheets.order_by('-date_time').values())
+    macro_sheets = [
+        {'id': x['id'], 'uri': 'macro', 'type': 'Macroinvertebrate',
+         'date': x['date'].date()}
+        for x in macro_sheets]
     transect_sheets = RiparianTransect.objects.filter(site_id=site.id)
-    transect_sheets = transect_sheets.order_by('-date_time')
+    transect_sheets = list(transect_sheets.order_by('-date_time').values())
+    transect_sheets = [
+        {'id': x['id'], 'uri': 'transect', 'type': 'Riparian Transect',
+         'date': x['date_time'].date()}
+        for x in transect_sheets]
     canopy_sheets = Canopy_Cover.objects.filter(site_id=site.id)
-    canopy_sheets = canopy_sheets.order_by('-date_time')
-    ppm_sheets = CameraPoint.objects.filter(site_id=site.id).order_by('letter')
+    canopy_sheets = list(canopy_sheets.order_by('-date_time').values())
+    canopy_sheets = [
+        {'id': x['id'], 'uri': 'canopy', 'type': 'Canopy Cover',
+         'date': x['date_time'].date()}
+        for x in canopy_sheets]
+    ppm_sheets = CameraPoint.objects.filter(site_id=site.id)
+    ppm_sheets = list(ppm_sheets.order_by('letter').values())
+    ppm_sheets = [
+        {'id': x['id'], 'uri': 'camera', 'type': 'Camera Point',
+         'date': x['date']}
+        for x in ppm_sheets]
     soil_sheets = Soil_Survey.objects.filter(site_id=site.id)
-    soil_sheets = soil_sheets.order_by('-date')
+    soil_sheets = list(soil_sheets.order_by('-date').values())
+    soil_sheets = [
+        {'id': x['id'], 'uri': 'soil', 'type': 'Soil Survey',
+         'date': x['date']}
+        for x in soil_sheets]
+    data = wq_sheets + macro_sheets + transect_sheets + canopy_sheets +\
+        ppm_sheets + soil_sheets
+
+    def sort_date(x, y):
+        return x.year - y.year or x.month - y.month or x.day - y.day
+
+    data.sort(cmp=sort_date, key=lambda x: x['date'])
 
     return render(request, 'streamwebs/site_detail.html', {
         'site': site,
-        'wq_sheets': wq_sheets,
-        'macro_sheets': macro_sheets,
-        'transect_sheets': transect_sheets,
-        'canopy_sheets': canopy_sheets,
-        'ppm_sheets': ppm_sheets,
-        'soil_sheets': soil_sheets
+        'maps_api': settings.GOOGLE_MAPS_API,
+        'data': json.dumps(data, cls=DjangoJSONEncoder),
+        'pages': len(data)/10+1,
+        'data_len_range': range(2, len(data)/10+2),
+        'has_wq': len(wq_sheets) > 0,
+        'has_macros': len(macro_sheets) > 0
     })
 
 
@@ -314,7 +347,7 @@ def macroinvertebrate_edit(request, site_slug):
                 request,
                 'You have successfully added a new macroinvertebrates ' +
                 'data sheet.')
-            return redirect(reverse('streamwebs:macroinvertebrate_view',
+            return redirect(reverse('streamwebs:macroinvertebrate',
                             kwargs={'site_slug': site.site_slug,
                                     'data_id': macro.id}))
 
