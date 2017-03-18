@@ -68,6 +68,7 @@ def sites(request):
         'maps_api': settings.GOOGLE_MAPS_API
     })
 
+
 # view-view for individual specified site
 def site(request, site_slug):
     """ View an individual site """
