@@ -18,15 +18,15 @@
 {% endblock%}
 
 {% block content %}
-    <div class="container">
-        {% if messages %}
-            {% for message in messages %}
-            <strong>{{ message }}<strong>
-            {% endfor %}
-        {% endif %}
+<div class="container">
+{% if messages %}
+    {% for message in messages %}
+    <strong>{{ message }}<strong>
+    {% endfor %}
+{% endif %}
 
-    {% if added %}
-    <strong>{% trans "You have successfully submitted your Riparian Transect data sheet." %}</strong>
+{% if added %}
+<strong>{% trans "You have successfully submitted your Riparian Transect data sheet." %}</strong>
 
 {% else %}
     <h3 align ="center">
@@ -61,7 +61,6 @@
 
 
             <div class="col s6">
-            <div class="row">
                 <div class="input-field">
                     <label for="{{ transect_form.weather.id_for_label }}">
                         {{ transect_form.weather.label }}
@@ -87,8 +86,8 @@
         <br>
 
         {{ zone_formset.management_form }}
-        {{ zone_formset.non_field_errors }}
         <table> <!-- zones subtable -->
+            <tr>{{ zone_formset.non_form_errors }}</tr>
             <tr>
                 <th>{{ 'zone'|get_zone_labels }}</th>
                 <th>{{ 'conifers'|get_zone_labels }}</th>
