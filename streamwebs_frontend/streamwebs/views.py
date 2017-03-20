@@ -113,7 +113,7 @@ def site(request, site_slug):
         ppm_sheets + soil_sheets
 
     def sort_date(x, y):
-        return x.year - y.year or x.month - y.month or x.day - y.day
+        return y.year - x.year or y.month - x.month or y.day - x.day
 
     data.sort(cmp=sort_date, key=lambda x: x['date'])
 

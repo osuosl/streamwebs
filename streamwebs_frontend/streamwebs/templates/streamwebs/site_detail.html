@@ -46,7 +46,7 @@
 </div>
 <div class="row">
     {% if has_wq or has_macros %}
-    <div class="col s12 m2 graphs">
+    <div class="col s12 m2 graphs center-align">
         <h4>Graphs</h4>
         {% if has_wq %}
         <p><a href="{% url 'streamwebs:graph_water' site.site_slug %}">
@@ -83,7 +83,7 @@
 </div>
 <div class="row">
     <div class="col s12 m4 offset-m8">
-        <a class="dropdown-button btn" href="#"data-activates="new-data-dropdown">
+        <a class="dropdown-button btn" href="#" data-activates="new-data-dropdown">
             Add data for this site
         </a>
         <ul id="new-data-dropdown" class="dropdown-content">
