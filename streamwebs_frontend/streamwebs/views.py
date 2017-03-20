@@ -16,7 +16,8 @@ from streamwebs.forms import (
     UserForm, UserProfileForm, RiparianTransectForm, MacroinvertebratesForm,
     PhotoPointImageForm, PhotoPointForm, CameraPointForm, WQSampleForm,
     WQSampleFormReadOnly, WQForm, WQFormReadOnly, SiteForm, Canopy_Cover_Form,
-    SoilSurveyForm, SoilSurveyFormReadOnly, StatisticsForm, ResourceForm)
+    SoilSurveyForm, SoilSurveyFormReadOnly, StatisticsForm, TransectZoneForm,
+    BaseZoneInlineFormSet, ResourceForm)
 
 from streamwebs.models import (
     Macroinvertebrates, Site, Water_Quality, WQ_Sample, RiparianTransect,
@@ -357,26 +358,30 @@ def riparian_transect_edit(request, site_slug):
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     transect = RiparianTransect()
     TransectZoneInlineFormSet = inlineformset_factory(
-        RiparianTransect, TransectZone,
-        fields=('conifers', 'hardwoods', 'shrubs', 'comments'), extra=5
+        RiparianTransect, TransectZone, form=TransectZoneForm,
+        extra=5,
+        formset=BaseZoneInlineFormSet
     )
 
     if request.method == 'POST':
+        # process the zone formset
         zone_formset = TransectZoneInlineFormSet(
             data=request.POST, instance=transect
         )
+        # process the transect form
         transect_form = RiparianTransectForm(data=request.POST)
 
+        # if both the zone formset and the transect form have "valid" data,
         if (zone_formset.is_valid() and transect_form.is_valid()):
+            zones = zone_formset.save(commit=False)     # save forms to objs
             transect = transect_form.save()             # save form to object
             transect.site = site
             transect.save()                             # save object
 
-            zones = zone_formset.save(commit=False)     # save forms to objs
-
-            for zone in zones:                          # for each zone,
+            for index, zone in enumerate(zones):        # for each zone,
                 zone.transect = transect                # assign the transect
-                zone.save()                             # save the zone obj
+                zone.zone_num = index + 1               # save the zone obj
+                zone.save()
 
             messages.success(
                 request,

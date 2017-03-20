@@ -6,6 +6,7 @@ from streamwebs.models import UserProfile, WQ_Sample, Water_Quality, \
     Soil_Survey, Resource
 from django.contrib.auth.models import User
 from django import forms
+from django.forms import BaseInlineFormSet
 from django.utils.translation import ugettext_lazy as _
 from django.utils.safestring import mark_safe
 from captcha.fields import ReCaptchaField
@@ -145,12 +146,41 @@ class Canopy_Cover_Form(forms.ModelForm):
 
 
 class TransectZoneForm(forms.ModelForm):
+    # The following override is neccessary so that when the user chooses not to
+    # fill in an individual zone form in a 5-zone inline formset, the zone form
+    # is not ignored and is saved as a new zone object with its model-specified
+    # default values of 0 (for the numerical fields) and '' (for the comments
+    # field).
+    def has_changed(self):
+        return True
+
     class Meta:
         model = TransectZone
         widgets = {
             'comments': forms.Textarea(attrs={'class': 'materialize-textarea'})
         }
         fields = ('conifers', 'hardwoods', 'shrubs', 'comments')
+
+
+class BaseZoneInlineFormSet(BaseInlineFormSet):
+    def clean(self):
+        # still do regular formset cleaning...
+        super(BaseZoneInlineFormSet, self).clean()
+        if any(self.errors):
+            return
+
+        # ...plus custom cleaning to check for blank zones
+        blank = 0
+        for form in self.forms:
+            # if form's conifers, hardwoods, shrubs ALL 0, inc. 'blank' count
+            if (form.cleaned_data['conifers'] == 0 and
+                    form.cleaned_data['hardwoods'] == 0 and
+                    form.cleaned_data['shrubs'] == 0):
+                blank += 1
+
+        if blank == 5:
+            raise forms.ValidationError('At least one zone must have at ' +
+                                        'least one value greater than 0.')
 
 
 class RiparianTransectForm(forms.ModelForm):

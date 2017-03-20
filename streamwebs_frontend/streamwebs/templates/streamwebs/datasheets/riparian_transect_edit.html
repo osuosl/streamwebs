@@ -19,6 +19,12 @@
 
 {% block content %}
 <div class="container">
+{% if messages %}
+    {% for message in messages %}
+    <strong>{{ message }}<strong>
+    {% endfor %}
+{% endif %}
+
 {% if added %}
 <strong>{% trans "You have successfully submitted your Riparian Transect data sheet." %}</strong>
 
@@ -53,6 +59,7 @@
                 </div>
             </div>
 
+
             <div class="col s6">
                 <div class="input-field">
                     <label for="{{ transect_form.weather.id_for_label }}">
@@ -80,6 +87,7 @@
 
         {{ zone_formset.management_form }}
         <table> <!-- zones subtable -->
+            <tr>{{ zone_formset.non_form_errors }}</tr>
             <tr>
                 <th>{{ 'zone'|get_zone_labels }}</th>
                 <th>{{ 'conifers'|get_zone_labels }}</th>
