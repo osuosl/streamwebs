@@ -31,31 +31,32 @@
 
 <!-- site info -->
 <div class="row">
-    {% if site.image %}
-        <div class="col s12 m6">
+        <div class="col s12 m6 center-align">
+            {% if site.image %}
             <img src="{{ site.image.url }}" alt="site image" />
+            {% else %}
+            <img src="{% static 'streamwebs/images/img-default.jpg' %}" alt="site image" />
+            {% endif %}
         </div>
         <div class="col s12 m6 center-align">
             <p>{{ site.description }}</p>
             <p>Created: {{ site.created|date:"m-d-Y H:i T" }}</p>
             <p>Last modified: {{ site.modified|date:"m-d-Y H:i T" }}</p>
         </div>
-    {% endif %}
-    <div class="col s12 center-align">
-        <p>{{ site.description }}</p>
-        <p>Created: {{ site.created|date:"m-d-Y H:i T" }}</p>
-        <p>Last modified: {{ site.modified|date:"m-d-Y H:i T" }}</p>
-    </div>
 </div>
 <div class="row">
     {% if has_wq or has_macros %}
     <div class="col s12 m2 graphs">
         <h4>Graphs</h4>
         {% if has_wq %}
-        <p><a href="{% url 'streamwebs:graph_water' site.site_slug %}">Water Quality</a></p>
+        <p><a href="{% url 'streamwebs:graph_water' site.site_slug %}">
+            <img src="{% static 'streamwebs/images/graph-wq.png' %}" alt="water quality graphs" />
+        </a></p>
         {% endif %}
         {% if has_macros %}
-        <p><a href="{% url 'streamwebs:graph_macros' site.site_slug %}">Macroinvertebrates</a></p>
+        <p><a href="{% url 'streamwebs:graph_macros' site.site_slug %}">
+            <img src="{% static 'streamwebs/images/graph-macros.png' %}" alt="macroinvertebrate graphs" />
+        </a></p>
         {% endif %}
     </div>
     {% endif %}
