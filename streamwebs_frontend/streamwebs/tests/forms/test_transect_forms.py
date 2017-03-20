@@ -24,6 +24,10 @@ class TransectZoneFormTestCase(TestCase):
         for field in self.optional_fields:
             self.assertEqual(zone_form.base_fields[field].required, False)
 
+    def test_override_has_changed(self):
+        zone_form = TransectZoneForm()
+        self.assertEqual(zone_form.has_changed(), True)
+
 
 class RiparianTransectFormTestCase(TestCase):
 

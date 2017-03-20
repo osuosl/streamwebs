@@ -1,7 +1,7 @@
 from django.test import Client, TestCase
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
-from streamwebs.models import Site, School, RiparianTransect
+from streamwebs.models import Site, School, RiparianTransect, TransectZone
 
 
 class AddTransectTestCase(TestCase):
@@ -13,10 +13,7 @@ class AddTransectTestCase(TestCase):
         self.school = School.test_objects.create_school('Test School')
 
     def test_view_with_bad_blank_data(self):
-        """
-        When the user tries to submit a bad (blank) form, the form errors
-        should be displayed
-        """
+        """When bad (blank) form submitted, form errors should be displayed"""
         site = Site.test_objects.create_site('Site Name')
         response = self.client.post(
             reverse('streamwebs:riparian_transect_edit',
@@ -29,13 +26,14 @@ class AddTransectTestCase(TestCase):
         )
         self.assertFormError(response, 'transect_form', 'school',
                              'This field is required.')
+        # No riparian transect or zone objects should be created.
+        self.assertFalse(
+            RiparianTransect.objects.filter(site=site.id).exists())
+        self.assertEquals(
+            TransectZone.objects.filter(transect__site=site.id).count(), 0)
 
     def test_view_with_valid_zones(self):
-        """
-        When the user submits a form with all required fields filled
-        appropriately, the user should see a success message
-        """
-        print("START VALID TEST.")
+        """If all zones completely filled in, data sheet is certainly valid"""
         site = Site.test_objects.create_site('Site Name')
         response = self.client.post(
             reverse(
@@ -87,11 +85,72 @@ class AddTransectTestCase(TestCase):
                     ),
             status_code=302,
             target_status_code=200)
-        print("END VALID TEST")
+        # Transect object and all five of its zones should have been created.
+        self.assertTrue(
+            RiparianTransect.objects.filter(site=site.id).exists())
+        self.assertEquals(
+            TransectZone.objects.filter(transect__site=site.id).count(), 5)
+
+    def test_view_with_bare_minimum(self):
+        """If one zone has at least one nonzero val: all 5 zones get created"""
+        site = Site.test_objects.create_site('Site Name!')
+        response = self.client.post(
+            reverse(
+                'streamwebs:riparian_transect_edit',
+                kwargs={'site_slug': site.site_slug}
+            ), {
+                    'school': self.school.id,
+                    'date_time': '2016-07-18 14:09:07',
+                    'weather': 'cloudy',
+                    'site': site.id,
+                    'slope': 5,
+                    'notes': 'notes',
+
+                    'transect-TOTAL_FORMS': '5',
+                    'transect-INITIAL_FORMS': '0',
+                    'transect-MAX_NUM_FORMS': '5',
+
+                    'transect-0-conifers': 0,
+                    'transect-0-hardwoods': 0,
+                    'transect-0-shrubs': 0,
+                    'transect-0-comments': '',
+
+                    'transect-1-conifers': 0,
+                    'transect-1-hardwoods': 0,
+                    'transect-1-shrubs': 0,
+                    'transect-1-comments': '',
+
+                    'transect-2-conifers': 0,
+                    'transect-2-hardwoods': 1,
+                    'transect-2-shrubs': 0,
+                    'transect-2-comments': '',
+
+                    'transect-3-conifers': 0,
+                    'transect-3-hardwoods': 0,
+                    'transect-3-shrubs': 0,
+                    'transect-3-comments': '',
+
+                    'transect-4-conifers': 0,
+                    'transect-4-hardwoods': 0,
+                    'transect-4-shrubs': 0,
+                    'transect-4-comments': ''
+                }
+        )
+        self.assertRedirects(
+            response,
+            reverse('streamwebs:riparian_transect',
+                    kwargs={'site_slug': site.site_slug,
+                            'data_id': RiparianTransect.test_objects.last().id}
+                    ),
+            status_code=302,
+            target_status_code=200)
+        self.assertTrue(
+            RiparianTransect.objects.filter(site=site.id).exists())
+        self.assertEquals(
+            TransectZone.objects.filter(transect__site=site.id).count(), 5)
 
     def test_view_with_invalid_zones_with_notes(self):
         """When counts for all zones are 0, can't submit even if notes exist"""
-        print("START INVALID WITH NOTES")
         site = Site.test_objects.create_site('Bad Transect with Notes')
         response = self.client.post(
             reverse(
@@ -112,7 +171,7 @@ class AddTransectTestCase(TestCase):
                     'transect-0-conifers': 0,
                     'transect-0-hardwoods': 0,
                     'transect-0-shrubs': 0,
-                    'transect-0-comments': '1 comments',
+                    'transect-0-comments': '',
 
                     'transect-1-conifers': 0,
                     'transect-1-hardwoods': 0,
@@ -122,7 +181,7 @@ class AddTransectTestCase(TestCase):
                     'transect-2-conifers': 0,
                     'transect-2-hardwoods': 0,
                     'transect-2-shrubs': 0,
-                    'transect-2-comments': '3 comments',
+                    'transect-2-comments': '',
 
                     'transect-3-conifers': 0,
                     'transect-3-hardwoods': 0,
@@ -141,14 +200,13 @@ class AddTransectTestCase(TestCase):
         self.assertTemplateNotUsed(
             response,
             'streamwebs/datasheets/riparian_transect_view.html')
-        self.assertFormsetError(response, 'zone_formset', None, None, 'At least one zone must have at least one value greater than 0.') 
-        self.assertFalse(RiparianTransect.objects.filter(site=site.id).exists())
-
-        print("END INVALID WITH NOTES")
+        self.assertFalse(
+            RiparianTransect.objects.filter(site=site.id).exists())
+        self.assertEquals(
+            TransectZone.objects.filter(transect__site=site.id).count(), 0)
 
     def test_view_with_invalid_zones_without_notes(self):
         """Can't submit when all zones completely blank/zeroed out"""
-        print("START INVALID WITHOUT NOTES.")
         site = Site.test_objects.create_site('Bad Transect without Notes')
         response = self.client.post(
             reverse(
@@ -161,31 +219,31 @@ class AddTransectTestCase(TestCase):
                     'site': site.id,
                     'slope': 5,
                     'notes': 'notes',
-        
+
                     'transect-TOTAL_FORMS': '5',
                     'transect-INITIAL_FORMS': '0',
                     'transect-MAX_NUM_FORMS': '5',
-        
+
                     'transect-0-conifers': 0,
                     'transect-0-hardwoods': 0,
                     'transect-0-shrubs': 0,
                     'transect-0-comments': '',
-        
+
                     'transect-1-conifers': 0,
                     'transect-1-hardwoods': 0,
                     'transect-1-shrubs': 0,
                     'transect-1-comments': '',
-        
+
                     'transect-2-conifers': 0,
                     'transect-2-hardwoods': 0,
                     'transect-2-shrubs': 0,
                     'transect-2-comments': '',
-        
+
                     'transect-3-conifers': 0,
                     'transect-3-hardwoods': 0,
                     'transect-3-shrubs': 0,
                     'transect-3-comments': '',
-        
+
                     'transect-4-conifers': 0,
                     'transect-4-hardwoods': 0,
                     'transect-4-shrubs': 0,
@@ -195,9 +253,11 @@ class AddTransectTestCase(TestCase):
         self.assertTemplateNotUsed(
             response,
             'streamwebs/datasheets/riparian_transect_view.html')
-        self.assertFormsetError(response, 'zone_formset', None, None, 'At least one zone must have at least one value greater than 0.') 
-        self.assertFalse(RiparianTransect.objects.filter(site=site.id).exists())
-        print("END INVALID WITHOUT NOTES.")
+        # No riparian transect or zone objects should be created.
+        self.assertFalse(
+            RiparianTransect.objects.filter(site=site.id).exists())
+        self.assertEquals(
+            TransectZone.objects.filter(transect__site=site.id).count(), 0)
 
     def test_view_with_not_logged_in_user(self):
         """

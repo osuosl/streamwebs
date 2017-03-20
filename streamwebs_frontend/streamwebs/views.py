@@ -16,8 +16,8 @@ from streamwebs.forms import (
     UserForm, UserProfileForm, RiparianTransectForm, MacroinvertebratesForm,
     PhotoPointImageForm, PhotoPointForm, CameraPointForm, WQSampleForm,
     WQSampleFormReadOnly, WQForm, WQFormReadOnly, SiteForm, Canopy_Cover_Form,
-    SoilSurveyForm, SoilSurveyFormReadOnly, StatisticsForm, ResourceForm,
-    BaseZoneInlineFormSet)
+    SoilSurveyForm, SoilSurveyFormReadOnly, StatisticsForm, TransectZoneForm,
+    BaseZoneInlineFormSet, ResourceForm)
 
 from streamwebs.models import (
     Macroinvertebrates, Site, Water_Quality, WQ_Sample, RiparianTransect,
@@ -358,8 +358,7 @@ def riparian_transect_edit(request, site_slug):
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     transect = RiparianTransect()
     TransectZoneInlineFormSet = inlineformset_factory(
-        RiparianTransect, TransectZone,
-        fields=('conifers', 'hardwoods', 'shrubs', 'comments'),
+        RiparianTransect, TransectZone, form=TransectZoneForm,
         extra=5,
         formset=BaseZoneInlineFormSet
     )
@@ -374,14 +373,15 @@ def riparian_transect_edit(request, site_slug):
 
         # if both the zone formset and the transect form have "valid" data,
         if (zone_formset.is_valid() and transect_form.is_valid()):
-            zones = zone_formset.save(commit=False) # save forms to objs
-            transect = transect_form.save()         # save form to object
+            zones = zone_formset.save(commit=False)     # save forms to objs
+            transect = transect_form.save()             # save form to object
             transect.site = site
-            transect.save()                         # save object
+            transect.save()                             # save object
 
-            for zone in zones:                      # for each zone,
-                zone.transect = transect            # assign the transect
-                zone.save()                         # save the zone obj
+            for index, zone in enumerate(zones):        # for each zone,
+                zone.transect = transect                # assign the transect
+                zone.zone_num = index + 1               # save the zone obj
+                zone.save()
 
             messages.success(
                 request,
@@ -389,7 +389,7 @@ def riparian_transect_edit(request, site_slug):
                 'data sheet.')
 
             return redirect(reverse('streamwebs:riparian_transect',
-                                   kwargs={'site_slug': site.site_slug,
+                                    kwargs={'site_slug': site.site_slug,
                                             'data_id': transect.id}))
 
     else:

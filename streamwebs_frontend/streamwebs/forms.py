@@ -145,8 +145,15 @@ class Canopy_Cover_Form(forms.ModelForm):
                   'north_cc', 'west_cc', 'east_cc', 'south_cc')
 
 
-# the following form is never used in views.py and can probably be deleted.
 class TransectZoneForm(forms.ModelForm):
+    # The following override is neccessary so that when the user chooses not to
+    # fill in an individual zone form in a 5-zone inline formset, the zone form
+    # is not ignored and is saved as a new zone object with its model-specified
+    # default values of 0 (for the numerical fields) and '' (for the comments
+    # field).
+    def has_changed(self):
+        return True
+
     class Meta:
         model = TransectZone
         widgets = {
@@ -163,24 +170,15 @@ class BaseZoneInlineFormSet(BaseInlineFormSet):
             return
 
         # ...plus custom cleaning to check for blank zones
-        print('\nWE GET HERE\n')
         blank = 0
         for form in self.forms:
-            if form.cleaned_data:
-                conifers = form.cleaned_data['conifers']
-                print(conifers)
-                hardwoods = form.cleaned_data['hardwoods']
-                print(hardwoods)
-                shrubs = form.cleaned_data['shrubs']
-                print(shrubs)
-
             # if form's conifers, hardwoods, shrubs ALL 0, inc. 'blank' count
-                if (conifers == 0 and hardwoods == 0 and shrubs == 0):
-                    blank += 1
-                print("blank is ", blank)
-        
-        if blank == 5 or not (self.has_changed()): # All zones are blank. Complain
-            print("gdi!!")
+            if (form.cleaned_data['conifers'] == 0 and
+                    form.cleaned_data['hardwoods'] == 0 and
+                    form.cleaned_data['shrubs'] == 0):
+                blank += 1
+
+        if blank == 5:
             raise forms.ValidationError('At least one zone must have at ' +
                                         'least one value greater than 0.')
 
