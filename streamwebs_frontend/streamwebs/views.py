@@ -26,6 +26,7 @@ from streamwebs.models import (
     PhotoPointImage, Soil_Survey, Resource, School)
 
 from djqscsv import render_to_csv_response
+import csv
 import json
 import copy
 import datetime
@@ -75,7 +76,7 @@ def export_wq(request, site_slug):
         )
         samples = samples | n_samples
     
-    filename = site.site_name + '_WQ'
+    filename = 'water_quality_export'
 
     return render_to_csv_response(samples, filename=filename,
         field_header_map={
@@ -157,7 +158,9 @@ def export_ript(request, site_slug):
         )
         zones = zones | n_zones
 
-    return render_to_csv_response(zones,
+    filename = 'riparian_transect_export'
+
+    return render_to_csv_response(zones, filename=filename,
         field_header_map={
             'transect__school': 'school', 'transect__date_time': 'date/time',
             'transect__site__site_name': 'site', 'transect__weather':'weather',
@@ -171,9 +174,36 @@ def export_cc(request, site_slug):
     site = Site.objects.get(site_slug=site_slug)
     canopyc = Canopy_Cover.objects.filter(site_id=site.id)
 
-    # TODO: convert big int values to human-readable cc_square totals
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; \
+                                       filename="canopy_cover_export.csv"'
+    writer = csv.writer(response)
+    writer.writerow(['school', 'date/time', 'site', 'weather', 'north',
+                     'east', 'south', 'west', 'estimated canopy cover'])
 
-    return render_to_csv_response(canopyc)
+    sheets = []
+    for each in canopyc:
+        sheets.append(each.id)
+
+    for sheet in sheets:
+        cc = Canopy_Cover.objects.get(id=sheet)
+
+        # Convert int to binary
+        north = "{0:b}".format(cc.north_cc)
+        east = "{0:b}".format(cc.east_cc)
+        south = "{0:b}".format(cc.south_cc)
+        west = "{0:b}".format(cc.west_cc)
+
+        # "Count" the number of shaded squares
+        n = north.count('1')
+        e = east.count('1')
+        s = south.count('1')
+        w = west.count('1')
+
+        writer.writerow([cc.school, cc.date_time, cc.site.site_name,
+                         cc.weather, n, e, s, w, cc.est_canopy_cover])
+
+    return response
 
 
 def export_soil(request, site_slug):
