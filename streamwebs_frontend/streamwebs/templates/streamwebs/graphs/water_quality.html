@@ -20,7 +20,9 @@
 </script>
 {% endblock %}
 
-{% block body_title %}{{site.site_name}}: {% trans "Water Quality" %}{% endblock %}
+{% block body_title %}
+    <a href="/sites/{{site.site_slug}}">{{site.site_name}}</a>: {% trans "Water Quality" %}
+{% endblock %}
 
 {% block content %}
 <form action=""><div id="dates">
