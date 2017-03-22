@@ -54,7 +54,7 @@ def export_wq(request, site_slug):
         'air_temp_tool', 'dissolved_oxygen', 'oxygen_tool', 'pH', 'pH_tool',
         'turbidity', 'turbid_tool', 'salinity', 'salt_tool', 'conductivity',
         'total_solids', 'bod', 'ammonia', 'nitrite', 'nitrate', 'phosphates',
-        'fecal_coliform' 
+        'fecal_coliform'
     )
     sheets.pop(0)
 
@@ -72,14 +72,14 @@ def export_wq(request, site_slug):
             'air_temp_tool', 'dissolved_oxygen', 'oxygen_tool', 'pH',
             'pH_tool', 'turbidity', 'turbid_tool', 'salinity', 'salt_tool',
             'conductivity', 'total_solids', 'bod', 'ammonia', 'nitrite',
-            'nitrate', 'phosphates', 'fecal_coliform' 
+            'nitrate', 'phosphates', 'fecal_coliform'
         )
         samples = samples | n_samples
-    
+
     filename = 'water_quality_export'
 
-    return render_to_csv_response(samples, filename=filename,
-        field_header_map={
+    return render_to_csv_response(
+        samples, filename=filename, field_header_map={
             'water_quality__school__name': 'school',
             'water_quality__date': 'date',
             'water_quality__site__site_name': 'site',
@@ -99,7 +99,7 @@ def export_wq(request, site_slug):
             'dissolved_oxygen': 'dissolved oxygen',
             'oxygen_tool': 'oxygen tool', 'pH_tool': 'pH tool',
             'turbid_tool': 'turbidity tool', 'salt_tool': 'salinity tool',
-            'total_solids': 'total solids', 'fecal_coliform': 'fecal coliform'    
+            'total_solids': 'total solids', 'fecal_coliform': 'fecal coliform'
         }
     )
 
@@ -115,8 +115,8 @@ def export_macros(request, site_slug):
         'somewhat_sensitive_total', 'aquatic_worm', 'blackfly', 'leech',
         'midge', 'snail', 'mosquito_larva', 'tolerant_total', 'wq_rating'
     )
-    return render_to_csv_response(macros,
-        field_header_map={
+    return render_to_csv_response(
+        macros, field_header_map={
             'date_time': 'date/time', 'site__site_name': 'site',
             'time_spent': 'time spent sorting',
             'num_people': '# of people sorting', 'water_type': 'water type',
@@ -135,7 +135,7 @@ def export_macros(request, site_slug):
 def export_ript(request, site_slug):
     site = Site.objects.get(site_slug=site_slug)
     rip_transect = RiparianTransect.objects.filter(site_id=site.id)
-   
+
     sheets = []
     for each in rip_transect:
         sheets.append(each.id)
@@ -160,12 +160,12 @@ def export_ript(request, site_slug):
 
     filename = 'riparian_transect_export'
 
-    return render_to_csv_response(zones, filename=filename,
-        field_header_map={
+    return render_to_csv_response(
+        zones, filename=filename, field_header_map={
             'transect__school': 'school', 'transect__date_time': 'date/time',
-            'transect__site__site_name': 'site', 'transect__weather':'weather',
-            'transect__slope': 'slope', 'transect__notes': 'notes',
-            'zone_num': 'zone number'
+            'transect__site__site_name': 'site',
+            'transect__weather': 'weather', 'transect__slope': 'slope',
+            'transect__notes': 'notes', 'zone_num': 'zone number'
         }
     )
 
@@ -212,8 +212,8 @@ def export_soil(request, site_slug):
         'school__name', 'date', 'site__site_name', 'weather', 'landscape_pos',
         'cover_type', 'land_use', 'soil_type', 'distance', 'site_char'        
     )
-    return render_to_csv_response(soil,
-        field_header_map={
+    return render_to_csv_response(
+        soil, field_header_map={
             'school__name': 'school', 'site__site_name': 'site',
             'landscape_pos': 'landscape position', 'cover_type': 'cover type',
             'land_use': 'land use', 'distance': 'distance from stream',
