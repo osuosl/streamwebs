@@ -181,12 +181,8 @@ def export_cc(request, site_slug):
     writer.writerow(['school', 'date/time', 'site', 'weather', 'north',
                      'east', 'south', 'west', 'estimated canopy cover'])
 
-    sheets = []
     for each in canopyc:
-        sheets.append(each.id)
-
-    for sheet in sheets:
-        cc = Canopy_Cover.objects.get(id=sheet)
+        cc = canopyc.get(id=each.id)
 
         # Convert int to binary
         north = "{0:b}".format(cc.north_cc)
