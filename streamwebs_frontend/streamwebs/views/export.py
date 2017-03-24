@@ -1,13 +1,10 @@
 # coding=UTF-8
 from __future__ import print_function
-from django.http import HttpResponseRedirect, HttpResponse
-from django.utils import timezone
-from django.utils.translation import ugettext_lazy as _
-from django.conf import settings
+from django.http import HttpResponse
 
 from streamwebs.models import (
     Macroinvertebrates, Site, Water_Quality, WQ_Sample, RiparianTransect,
-    TransectZone, Canopy_Cover, PhotoPoint, Soil_Survey, School)
+    TransectZone, Canopy_Cover, Soil_Survey,)
 
 from djqscsv import render_to_csv_response
 import csv
