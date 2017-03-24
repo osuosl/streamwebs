@@ -931,7 +931,7 @@ class TransectZone(models.Model):
                                                  verbose_name=_('hardwoods'))
     shrubs = models.PositiveSmallIntegerField(default=0, null=True,
                                               verbose_name=_('shrubs'))
-    comments = models.TextField(blank=True,
+    comments = models.TextField(blank=True, default='',
                                 verbose_name=_('additional comments'))
 
     test_objects = TransectZoneManager()
