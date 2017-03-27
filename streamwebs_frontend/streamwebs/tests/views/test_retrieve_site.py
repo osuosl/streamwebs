@@ -59,15 +59,12 @@ class RetrieveSiteTestCase(TestCase):
         new_response = self.client.get(reverse(
             'streamwebs:site', kwargs={'site_slug': self.site.site_slug}))
 
-        self.assertContains(new_response, '08-25-2016')
-        self.assertContains(new_response, '07-25-2016')
-        self.assertContains(
-            new_response, 'Macroinvertebrates data: 07-11-2016')
-        self.assertContains(
-            new_response, 'Riparian transect data: 06-25-2016')
-        self.assertContains(
-            new_response, 'Riparian transect data: 05-25-2016')
-        self.assertNotContains(new_response, 'Canopy cover data')
+        self.assertContains(new_response, '2016-08-25')
+        self.assertContains(new_response, '2016-07-25')
+        self.assertContains(new_response, '2016-07-11')
+        self.assertContains(new_response, '2016-06-25')
+        self.assertContains(new_response, '2016-05-25')
+        self.assertNotContains(new_response, '"Canopy Cover"')
 
     def test_site_view_without_sheets(self):
         """Tests that site doesn't display sheet links if no sheets exist"""
