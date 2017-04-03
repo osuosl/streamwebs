@@ -23,7 +23,7 @@ class UploadResourceTestCase(TestCase):
         can_upload = Permission.objects.get(codename='can_upload_resources')
         self.special_user.user_permissions.add(can_upload)
 
-        # admin user with all permissions
+        # admin user with admin permissions (stats and resources)
         admins = Group.objects.get(name='admin')
         self.admin = User.objects.create_user('admin', 'admin@example.com',
                                               'adminpassword')
@@ -62,8 +62,7 @@ class UploadResourceTestCase(TestCase):
         """User in admin group with upload perm should be able to view page"""
         self.client.login(username='admin', password='adminpassword')
         self.assertTrue(self.admin.has_perms(
-            ['streamwebs.can_upload_resources', 'streamwebs.can_promote_users',
-             'streamwebs.can_view_stats']))
+            ['streamwebs.can_upload_resources', 'streamwebs.can_view_stats']))
         self.assertTrue(self.admin.groups.filter(name='admin').exists())
         response = self.client.get(reverse('streamwebs:resources-upload'))
         self.assertTrue(response.status_code, 200)
