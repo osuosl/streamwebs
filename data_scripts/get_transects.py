@@ -65,7 +65,7 @@ with open(zones, 'r') as csvfile:
     for row in reader:
         if row[0] != 'Nid':
             # Set entry == None if value is not listed in csv
-            for i in range(1, 4):
+            for i in range(1, 5):
                 if row[i] == '':
                     row[i] = None
 
@@ -91,7 +91,7 @@ with open(zones, 'r') as csvfile:
     reader = csv.reader(csvfile)
     for row in reader:
         if row[0] != 'Nid':
-            for i in range(5, 8):
+            for i in range(5, 9):
                 if row[i] == '':
                     row[i] = None
 
@@ -117,7 +117,7 @@ with open(zones, 'r') as csvfile:
     reader = csv.reader(csvfile)
     for row in reader:
         if row[0] != 'Nid':
-            for i in range(9, 12):
+            for i in range(9, 13):
                 if row[i] == '':
                     row[i] = None
 
@@ -143,7 +143,7 @@ with open(zones, 'r') as csvfile:
     reader = csv.reader(csvfile)
     for row in reader:
         if row[0] != 'Nid':
-            for i in range(13, 16):
+            for i in range(13, 17):
                 if row[i] == '':
                     row[i] = None
 
@@ -169,7 +169,7 @@ with open(zones, 'r') as csvfile:
     reader = csv.reader(csvfile)
     for row in reader:
         if row[0] != 'Nid':
-            for i in range(17, 20):
+            for i in range(17, 21):
                 if row[i] == '':
                     row[i] = None
 
