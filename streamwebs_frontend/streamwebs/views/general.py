@@ -18,7 +18,7 @@ from streamwebs.forms import (
     PhotoPointImageForm, PhotoPointForm, CameraPointForm, WQSampleForm,
     WQSampleFormReadOnly, WQForm, WQFormReadOnly, SiteForm, Canopy_Cover_Form,
     SoilSurveyForm, SoilSurveyFormReadOnly, StatisticsForm, TransectZoneForm,
-    BaseZoneInlineFormSet, ResourceForm)
+    BaseZoneInlineFormSet, ResourceForm, AdminPromotionForm)
 
 from streamwebs.models import (
     Macroinvertebrates, Site, Water_Quality, WQ_Sample, RiparianTransect,
@@ -957,5 +957,17 @@ def resources_upload(request):
     return render(
         request, 'streamwebs/resources/resources_upload.html', {
             'res_form': res_form,
+        }
+    )
+
+
+@login_required
+@permission_required('streamwebs.can_promote_users', raise_exception=True)
+def admin_user_promotion(request):
+    promo_form = AdminPromotionForm()
+
+    return render(
+        request, 'streamwebs/admin/user_promo.html', {
+            'promo_form': promo_form,
         }
     )
