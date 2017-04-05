@@ -35,11 +35,7 @@ class UploadResourceTestCase(TestCase):
 
     def test_not_logged_in_user(self):
         """If user is not logged in, can't view the upload page or link"""
-        # grab resources view: can't see link
-        response = self.client.get(reverse('streamwebs:resources'))
-        self.assertEquals(response.status_code, 200)
-        self.assertNotContains(response, 'Upload a new resource')
-        # grab resources upload: redirected to login
+        # Can't access upload page:
         response = self.client.get(reverse('streamwebs:resources-upload'))
         self.assertRedirects(
             response,
@@ -50,7 +46,7 @@ class UploadResourceTestCase(TestCase):
         self.assertTemplateNotUsed(
             response, 'streamwebs/resources/resources-upload.html')
 
-        """Should not be able to view link in resources.html"""
+        # Can't view link on resources page:
         response = self.client.get(reverse('streamwebs:resources'))
         self.assertContains(
             response,
@@ -65,7 +61,7 @@ class UploadResourceTestCase(TestCase):
             ['streamwebs.can_upload_resources', 'streamwebs.can_view_stats']))
         self.assertTrue(self.admin.groups.filter(name='admin').exists())
         response = self.client.get(reverse('streamwebs:resources-upload'))
-        self.assertTrue(response.status_code, 200)
+        self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(
             response, 'streamwebs/resources/resources_upload.html')
         self.assertContains(response, 'Upload a new resource')
@@ -89,7 +85,7 @@ class UploadResourceTestCase(TestCase):
             self.special_user.groups.filter(name='admin').exists())
         self.client.login(username='special_user', password='specialpassword')
         response = self.client.get(reverse('streamwebs:resources-upload'))
-        self.assertTrue(response.status_code, 200)
+        self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(
             response, 'streamwebs/resources/resources_upload.html')
         self.assertContains(response, 'Upload a new resource')
