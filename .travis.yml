@@ -4,6 +4,7 @@ python:
   - "2.7"
 
 env:
+  - DJANGO_VERSION=1.10
   - POSTGRES_DB=streamwebs POSTGRES_USER=postgres POSTGRES_PASSWORD=postgres_pw PG_HOST=localhost
 
 install:
