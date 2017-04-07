@@ -82,7 +82,7 @@
     </div>
 </div>
 <div class="row">
-    <div class="col s12 m4 offset-m8">
+    <div class="col s12 m5 offset-m7 center">
         <a class="dropdown-button btn teal darken-4"
            href="#" data-activates="new-data-dropdown">
             Add data for this site
@@ -94,6 +94,28 @@
             <li><a href="{% url 'streamwebs:canopy_cover_edit' site.site_slug %}">Canopy Cover Survey</a></li>
             <li><a href="{% url 'streamwebs:camera_point_add' site_slug=site.site_slug %}">Photo point monitoring</a></li>
             <li><a href="{% url 'streamwebs:soil_edit' site_slug=site.site_slug %}">Soil Survey</a></li>
+        </ul>
+
+        <a class="dropdown-button btn teal darken-4"
+          href="#" data-activates="export-data-dropdown">
+            Export data
+        </a>
+        <ul id="export-data-dropdown" class="dropdown-content">
+            {% if has_wq %}
+                <li><a href="{% url 'streamwebs:export_wq' site_slug=site.site_slug %}">Water quality</a></li>
+            {% endif %}
+            {% if has_macros %}
+                <li><a href="{% url 'streamwebs:export_macros' site.site_slug %}">Macroinvertebrates</a></li>
+            {% endif %}
+            {% if has_transects %}
+                <li><a href="{% url 'streamwebs:export_transects' site.site_slug %}">Riparian transect</a></li>
+            {% endif %}
+            {% if has_cc %}
+                <li><a href="{% url 'streamwebs:export_cc' site.site_slug %}">Canopy Cover Survey</a></li>
+            {% endif %}
+            {% if has_soil %}
+                <li><a href="{% url 'streamwebs:export_soil' site_slug=site.site_slug %}">Soil Survey</a></li>
+            {% endif %}
         </ul>
     </div>
 </div>

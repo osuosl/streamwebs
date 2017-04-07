@@ -1,4 +1,4 @@
-Django
+Django==1.10.7
 Jinja2
 Pillow
 MarkupSafe
@@ -14,3 +14,4 @@ requests
 wsgiref
 flake8
 django-recaptcha
+django-queryset-csv

@@ -125,7 +125,10 @@ def site(request, site_slug):
         'pages': len(data)/10+1,
         'data_len_range': range(2, len(data)/10+2),
         'has_wq': len(wq_sheets) > 0,
-        'has_macros': len(macro_sheets) > 0
+        'has_macros': len(macro_sheets) > 0,
+        'has_transects': len(transect_sheets) > 0,
+        'has_cc': len(canopy_sheets) > 0,
+        'has_soil': len(soil_sheets) > 0
     })
 
 
