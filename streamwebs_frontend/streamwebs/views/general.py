@@ -4,7 +4,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, permission_required
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group, Permission
 from django.core.serializers.json import DjangoJSONEncoder
 from django.shortcuts import render, redirect
 from django.utils import timezone
@@ -986,7 +986,37 @@ def resources_upload(request):
 @login_required
 @permission_required('streamwebs.can_promote_users', raise_exception=True)
 def admin_user_promotion(request):
+    admins = Group.objects.get(name='admin')
+    can_view_stats = Permission.objects.get(codename='can_view_stats')
+    can_upload_resources = Permission.objects.get(
+        codename='can_upload_resources')
+
     promo_form = AdminPromotionForm()
+
+    if request.method == 'POST':
+        promo_form = AdminPromotionForm(request.POST)
+
+        if promo_form.is_valid():
+            action = promo_form.cleaned_data['perms']
+            users = promo_form.cleaned_data['users']
+
+            for user in users:
+                if action == 'add_admin':
+                    user.groups.add(admins)
+                elif action == 'del_admin':
+                    user.groups.remove(admins)
+                elif action == 'add_stats':
+                    user.user_permissions.add(can_view_stats)
+                elif action == 'del_stats':
+                    user.user_permissions.remove(can_view_stats)
+                elif action == 'add_upload':
+                    user.user_permissions.add(can_upload_resources)
+                elif action == 'del_upload':
+                    user.user_permissions.remove(can_upload_resources)
+
+            # flash a success message that includes which users were changed
+            # and how (add all modified users to a list and pass to template)
+            # check if user already has requested perms via form cleaning?
 
     return render(
         request, 'streamwebs/admin/user_promo.html', {
