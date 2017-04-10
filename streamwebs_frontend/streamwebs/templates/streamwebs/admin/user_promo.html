@@ -1,0 +1,19 @@
+{% extends 'streamwebs/base.html' %}
+{% load i18n %}
+{% load staticfiles %}
+
+{% block title %} Manage User Permissions {% endblock %}
+{% block body_title %} Manage User Permissions {% endblock %}
+
+{% block content %}
+<form id='promo_form' method='post'>
+    {% csrf_token %}
+    {{ promo_form.as_p }}
+    <input type='submit' name='submit' value='{% trans 'Apply' %}'/>
+</form>
+
+{% block scripts %}
+    <script type="application/javascript" src="{% static 'streamwebs/js/data.js' %}"></script>
+{% endblock %}
+
+{% endblock %}
