@@ -35,52 +35,46 @@
       <div class="container">
         <div class="section">
           <div class="row">
-            <div class="col s12 m4">
-              <div class="icon-block">
-                <h2 class="center"><i class="material-icons">directions_walk</i></h2>
-                <h5 class="center">### engaged students</h5>
-                <p class="light center">We have this many students active</p>
-              </div>
-            </div>
-
-            <div class="col s12 m4">
-              <div class="icon-block">
-                <h2 class="center"><i class="material-icons">school</i></h2>
-                <h5 class="center">### data driven schools</h5>
-                <p class="light center">There are this many schools participating</p>
-              </div>
-            </div>
-
-            <div class="col s12 m4">
-              <div class="icon-block">
-                <h2 class="center"><i class="material-icons">public</i></h2>
-                <h5 class="center">### accessible datasheets</h5>
-                <p class="light center">Mi data es tu data.</p>
-              </div>
-            </div>
+            <img class="responsive-img" src="{% static 'streamwebs/images/SW_5.jpg' %}" alt="homepage img">
           </div>
         </div>
-        <br><br>
-        <div class="divisder"></div>
+        <div class="divider"></div>
       </div>
 
-
       <div class="container about">
-        <h3>{% trans "About:" %}</h3>
+        <h3>{% trans "About" %}</h3>
         <p>
-          StreamWebs is a dynamic networking platform that links students with
-          locally based hands-on  watershed stewardship projects and provides a
-          multimedia showcase for their project and data reports. StreamWebs
-          offers teachers and community partners resources to support setting
-          students on the path to lifelong watershed stewardship. By providing
-          students and teachers open-source, web-based tools for watershed data
-          management, analysis, and networking, StreamWebs supports classrooms in
-          their pursuit of STEM (Science, Technology, Engineering, Mathematics)
-          educational opportunities, while helping students and teachers
-          demonstrate their role as vital contributors to watershed
-          sustainability. StreamWebs originated in 2008 as a project of The
-          Freshwater Trust.  In 2011, StreamWebs transitioned to Oregon State
-          University Extension Service.</p>
+          The StreamWebs Student Stewardship Network is an educational
+          platform that provides teachers and students with resources to
+          conduct based hands-on watershed stewardship projects. The
+          StreamWebs program works to promote the teaching and learning of
+          field based cience, enhance environmental literacy and to provide
+          resources that support 
+          <a href="http://www.noaa.gov/explainers/noaa-meaningful-watershed-educational-experience">
+              Meaningful Watershed Education Experiences
+          </a>
+          (MWEEs).
+          <br><br>
+          By providing students and teachers open-source, web-based tools
+          for watershed data collection, analysis, and a multimedia showcase
+          for their project and data reports, StreamWebs helps to bridge
+          student field experiences back to teh classroom, and vice versa.
+          StreamWebs hopes to increase understanding and stewardship of
+          watersheds and related ocean, coastal, riverine, and estuarine
+          ecosystems and to help students and teachers demonstrate their role
+          as vital contributors to watershed sustainability.
+          <br><br>
+          StreamWebs is a program of Oregon Sea Grant and Oregon State
+          University Extension Service and is supported by the National
+          Oceanic and Atmospheric Administration (NOAA) Bay and Watershed
+          Education Training (BWET) program.
+          <br><br>
+          If you have questions about StreamWebs, or how you can get
+          involved, email
+          <a href="mailto:StreamWebs@oregonstate.edu">
+            StreamWebs@oregonstate.edu
+          </a>.
+        </p>
       </div>
 
   {% endblock %}
