@@ -29,7 +29,7 @@ class IndexViewTest(TestCase):
         """When regular user logged in, can see standard tabs but not Admin."""
         self.client.login(username='reg', password="regpassword")
         response = self.client.get(reverse('streamwebs:index'))
-        self.assertNotContains(response, 'Administration')
+        self.assertContains(response, 'Administration', 1)
         self.assertNotContains(response, 'Login')
         self.assertContains(response, 'Sites')
         self.assertContains(response, 'Resources')
@@ -42,7 +42,7 @@ class IndexViewTest(TestCase):
         """When admin user logged in, can see standard tabs and Admin tab."""
         self.client.login(username='admin', password="adminpassword")
         response = self.client.get(reverse('streamwebs:index'))
-        self.assertContains(response, 'Administration')
+        self.assertContains(response, 'Administration', 2)
         self.assertNotContains(response, 'Login')
         self.assertContains(response, 'Sites')
         self.assertContains(response, 'Resources')
@@ -54,7 +54,7 @@ class IndexViewTest(TestCase):
     def test_anon_navigation_menu(self):
         """When user not logged in, has Create Acct tab but no Admin tab."""
         response = self.client.get(reverse('streamwebs:index'))
-        self.assertNotContains(response, 'Administration')
+        self.assertContains(response, 'Administration', 1)
         self.assertContains(response, 'Sites')
         self.assertContains(response, 'Resources')
         self.assertContains(response, 'Login')
