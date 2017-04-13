@@ -55,19 +55,6 @@ class UserProfileForm(forms.ModelForm):
         fields = ('school', 'birthdate')
 
 
-class HorizontalRadioSelect(forms.RadioSelect):
-    """ Renders radio buttons horizontally """
-    def __init__(self, *args, **kwargs):
-        super(HorizontalRadioSelect, self).__init__(*args, **kwargs)
-        # In Python 3.x, just do:
-        # super().__init__(*args, **kwargs)
-
-        css_style = 'style="display: inline-block; margin-right: 10px;"'
-
-        self.renderer.inner_html = '<li ' + css_style + '>' \
-                                   '{choice_value}{sub_widgets}</li>'
-
-
 class MacroinvertebratesForm(forms.ModelForm):
     school = forms.ModelChoiceField(queryset=School.objects.all())
 
@@ -88,9 +75,9 @@ class WQForm(forms.ModelForm):
     class Meta:
         model = Water_Quality
         widgets = {
-            'fish_present': HorizontalRadioSelect(),
-            'water_temp_unit': HorizontalRadioSelect(),
-            'air_temp_unit': HorizontalRadioSelect(),
+            'fish_present': forms.RadioSelect(),
+            'water_temp_unit': forms.RadioSelect(),
+            'air_temp_unit': forms.RadioSelect(),
             'notes':
                 forms.Textarea(attrs={'class': 'materialize-textarea'})
         }
@@ -112,12 +99,12 @@ class WQSampleForm(forms.ModelForm):
     class Meta:
         model = WQ_Sample
         widgets = {
-            'water_temp_tool': HorizontalRadioSelect(),
-            'air_temp_tool': HorizontalRadioSelect(),
-            'oxygen_tool': HorizontalRadioSelect(),
-            'pH_tool': HorizontalRadioSelect(),
-            'turbid_tool': HorizontalRadioSelect(),
-            'salt_tool': HorizontalRadioSelect()
+            'water_temp_tool': forms.RadioSelect(),
+            'air_temp_tool': forms.RadioSelect(),
+            'oxygen_tool': forms.RadioSelect(),
+            'pH_tool': forms.RadioSelect(),
+            'turbid_tool': forms.RadioSelect(),
+            'salt_tool': forms.RadioSelect()
         }
         fields = (
             'water_temperature', 'water_temp_tool',
