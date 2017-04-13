@@ -6,8 +6,6 @@ python:
 env:
   global:
     - POSTGRES_DB=streamwebs POSTGRES_USER=postgres POSTGRES_PASSWORD=postgres_pw PG_HOST=localhost
-  matrix:
-    - DJANGO_VERSION=1.10.7
 
 install:
   - "pip install -r requirements.txt"
