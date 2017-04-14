@@ -1003,16 +1003,39 @@ def admin_user_promotion(request):
             for user in users:
                 if action == 'add_admin':
                     user.groups.add(admins)
+
                 elif action == 'del_admin':
                     user.groups.remove(admins)
+
                 elif action == 'add_stats':
                     user.user_permissions.add(can_view_stats)
+
                 elif action == 'del_stats':
-                    user.user_permissions.remove(can_view_stats)
+                    # if they're an admin,
+                    if user.groups.filter(name='admin').exists():
+                        # remove them from the admins group
+                        user.groups.remove(admins)
+                        # add back all perms admins enjoy, EXCLUDING stats
+                        admin_perms = Permission.objects.filter(group=admins)
+                        for perm in admin_perms:
+                            if perm.codename != 'can_view_stats':
+                                user.user_permissions.add(perm)
+                    # if they're a regular user,
+                    else:
+                        user.user_permissions.remove(can_view_stats)
+
                 elif action == 'add_upload':
                     user.user_permissions.add(can_upload_resources)
+
                 elif action == 'del_upload':
-                    user.user_permissions.remove(can_upload_resources)
+                    if user.groups.filter(name='admin').exists():
+                        user.groups.remove(admins)
+                        admin_perms = Permission.objects.filter(group=admins)
+                        for perm in admin_perms:
+                            if perm.codename != 'can_upload_resources':
+                                user.user_permissions.add(perm)
+                    else:
+                        user.user_permissions.remove(can_upload_resources)
 
             # flash a success message that includes which users were changed
             # and how (add all modified users to a list and pass to template)
