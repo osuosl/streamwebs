@@ -530,6 +530,8 @@ def add_camera_point(request, site_slug):
     )
 
     if request.method == 'POST':
+        if not request.POST._mutable:
+            request.POST._mutable = True
         # check if lat and lng came in, if not, set it to 0
         if 'lat' not in request.POST and 'lng' not in request.POST:
             request.POST['lat'] = 0
