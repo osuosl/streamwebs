@@ -45,8 +45,8 @@
         </div>
 </div>
 <div class="row">
-    {% if has_wq or has_macros %}
     <div class="col s12 m2 graphs center-align">
+    {% if has_wq or has_macros %}
         <h4>Graphs</h4>
         {% if has_wq %}
         <p><a href="{% url 'streamwebs:graph_water' site.site_slug %}">
@@ -58,10 +58,11 @@
             <img src="{% static 'streamwebs/images/graph-macros.png' %}" alt="macroinvertebrate graphs" />
         </a></p>
         {% endif %}
-    </div>
     {% endif %}
+    </div>
 
     <div class="col s12 m10 l5">
+        {% if has_wq or has_macros or has_cc or has_transect or has_soil %}
         <ul class="collection" id="data-sheet-list">
         </ul>
         <ul class="pagination">
@@ -76,6 +77,9 @@
                 <i class="material-icons">fast_forward</i>
             </a></li>
         </ul>
+        {% else %}
+        <p>No data in this site.</p>
+        {% endif %}
     </div>
     <div class="col m12 l5">
         <div id="map"></div>
