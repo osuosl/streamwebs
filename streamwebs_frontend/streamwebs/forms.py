@@ -8,7 +8,6 @@ from django.contrib.auth.models import User
 from django import forms
 from django.forms import BaseInlineFormSet
 from django.utils.translation import ugettext_lazy as _
-from django.utils.safestring import mark_safe
 from captcha.fields import ReCaptchaField
 
 
@@ -55,12 +54,6 @@ class UserProfileForm(forms.ModelForm):
         fields = ('school', 'birthdate')
 
 
-class HorizontalRadioRenderer(forms.RadioSelect.renderer):
-    ''' Renders radio buttons horizontally '''
-    def render(self):
-        return mark_safe(u'\n'.join([u'%s\n' % w for w in self]))
-
-
 class MacroinvertebratesForm(forms.ModelForm):
     school = forms.ModelChoiceField(queryset=School.objects.all())
 
@@ -81,12 +74,9 @@ class WQForm(forms.ModelForm):
     class Meta:
         model = Water_Quality
         widgets = {
-            'fish_present':
-                forms.RadioSelect(renderer=HorizontalRadioRenderer),
-            'water_temp_unit':
-                forms.RadioSelect(renderer=HorizontalRadioRenderer),
-            'air_temp_unit':
-                forms.RadioSelect(renderer=HorizontalRadioRenderer),
+            'fish_present': forms.RadioSelect(),
+            'water_temp_unit': forms.RadioSelect(),
+            'air_temp_unit': forms.RadioSelect(),
             'notes':
                 forms.Textarea(attrs={'class': 'materialize-textarea'})
         }
@@ -108,14 +98,12 @@ class WQSampleForm(forms.ModelForm):
     class Meta:
         model = WQ_Sample
         widgets = {
-            'water_temp_tool':
-                forms.RadioSelect(renderer=HorizontalRadioRenderer),
-            'air_temp_tool':
-                forms.RadioSelect(renderer=HorizontalRadioRenderer),
-            'oxygen_tool': forms.RadioSelect(renderer=HorizontalRadioRenderer),
-            'pH_tool': forms.RadioSelect(renderer=HorizontalRadioRenderer),
-            'turbid_tool': forms.RadioSelect(renderer=HorizontalRadioRenderer),
-            'salt_tool': forms.RadioSelect(renderer=HorizontalRadioRenderer)
+            'water_temp_tool': forms.RadioSelect(),
+            'air_temp_tool': forms.RadioSelect(),
+            'oxygen_tool': forms.RadioSelect(),
+            'pH_tool': forms.RadioSelect(),
+            'turbid_tool': forms.RadioSelect(),
+            'salt_tool': forms.RadioSelect()
         }
         fields = (
             'water_temperature', 'water_temp_tool',

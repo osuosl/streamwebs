@@ -17,6 +17,8 @@ RUN npm install -g bower
 
 COPY requirements.txt /home/centos/
 
-RUN pip install -r /home/centos/requirements.txt
+RUN pip install --upgrade pip
+
+RUN pip install --upgrade -r /home/centos/requirements.txt
 
 #RUN echo 'source /opt/streamwebs/dockerfiles/startup.sh' >> /root/.bashrc
