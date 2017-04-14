@@ -9,23 +9,29 @@ class AdminPromoTestCase(TestCase):
 
     def setUp(self):
         self.client = Client()
-        admins = Group.objects.get(name='admin')
-        can_promo = Permission.objects.get(codename='can_promote_users')
 
+        # grab 'admin' group, 'promo' perm, and 'stats' perm
+        self.admins = Group.objects.get(name='admin')
+        can_promo = Permission.objects.get(codename='can_promote_users')
+        self.can_stats = Permission.objects.get(codename='can_view_stats')
+        self.can_upload = Permission.objects.get(
+            codename='can_upload_resources')
+
+        # two regular users loaded in from fixtures to test admin perms
         self.user1 = User.objects.get(pk=2)
         self.user2 = User.objects.get(pk=7)
 
-        # super admin (level: Renee) with promotion permission
+        # super admin (level: Renee) to test promo perm
         self.superAdmin = User.objects.create_user('superAdmin',
                                                    'super@example.com',
                                                    'superpassword')
-        self.superAdmin.groups.add(admins)
+        self.superAdmin.groups.add(self.admins)
         self.superAdmin.user_permissions.add(can_promo)
 
-        # regular admin (level: Renee's colleague) without promotion permission
+        # regular admin (level: Renee's colleague) to test promo perm
         self.regAdmin = User.objects.create_user('regAdmin', 'reg@example.com',
                                                  'regpassword')
-        self.regAdmin.groups.add(admins)
+        self.regAdmin.groups.add(self.admins)
 
     def test_data_loaded_and_usable(self):
         """Check users exist in test db and that admins have correct perms"""
@@ -103,6 +109,9 @@ class AdminPromoTestCase(TestCase):
         """Tests that users can be removed from the admin group"""
         self.client.login(username='superAdmin', password='superpassword')
 
+        self.user1.groups.add(self.admins)
+        self.assertTrue(self.user1.groups.filter(name='admin').exists())
+
         response = self.client.post(reverse('streamwebs:user_promo'), {
             'users': (self.user1.id),
             'perms': 'del_admin',
@@ -114,22 +123,44 @@ class AdminPromoTestCase(TestCase):
         """Tests that users can be granted the can_view_stats permission"""
         self.client.login(username='superAdmin', password='superpassword')
 
+        # within the scope of this test, user2 is still a regular user
+        self.assertFalse(self.user2.groups.filter(name='admin').exists())
+        self.assertFalse(self.user2.has_perm('streamwebs.can_view_stats'))
+
         response = self.client.post(reverse('streamwebs:user_promo'), {
-            'users': (self.user1.id),
+            'users': (self.user2.id),
             'perms': 'add_stats',
             }
         )
-        self.assertTrue(self.user1.has_perm('streamwebs.can_view_stats'))
+        # user2 should now be able to view stats, but is still not an admin
+        self.user2 = User.objects.get(pk=7)     # re-query: perms are cached
+        self.assertFalse(self.user2.groups.filter(name='admin').exists())
+        self.assertTrue(self.user2.has_perm('streamwebs.can_view_stats'))
 
     def test_remove_stats_perm_for_users(self):
         """Tests that users can have the can_view_stats permission revoked"""
         self.client.login(username='superAdmin', password='superpassword')
+
+        # user1 is an admin; user2 is a regular user but has the stats perm
+        self.user1.groups.add(self.admins)
+        self.user2.user_permissions.add(self.can_stats)
+
+        self.assertTrue(self.user1.groups.filter(name='admin').exists())
+        self.assertFalse(self.user2.groups.filter(name='admin').exists())
+        self.assertTrue(self.user2.has_perm('streamwebs.can_view_stats'))
 
         response = self.client.post(reverse('streamwebs:user_promo'), {
             'users': (self.user1.id, self.user2.id),
             'perms': 'del_stats',
             }
         )
+        # user1 and user2 should both be regular users now w/o the stats perm
+        self.user1 = User.objects.get(pk=2)     # re-query: perms are cached
+        self.user2 = User.objects.get(pk=7)
+
+        self.assertFalse(self.user1.groups.filter(name='admin').exists())
+        self.assertFalse(self.user2.groups.filter(name='admin').exists())
+
         self.assertFalse(self.user1.has_perm('streamwebs.can_view_stats'))
         self.assertFalse(self.user2.has_perm('streamwebs.can_view_stats'))
 
@@ -148,11 +179,26 @@ class AdminPromoTestCase(TestCase):
         """Tests that users can have the can_upload_stats permission revoked"""
         self.client.login(username='superAdmin', password='superpassword')
 
+        # user1 is an admin; user2 is a regular user but has the upload perm
+        self.user1.groups.add(self.admins)
+        self.user2.user_permissions.add(self.can_upload)
+
+        self.assertTrue(self.user1.groups.filter(name='admin').exists())
+        self.assertFalse(self.user2.groups.filter(name='admin').exists())
+        self.assertTrue(self.user2.has_perm('streamwebs.can_upload_resources'))
+
         response = self.client.post(reverse('streamwebs:user_promo'), {
             'users': (self.user1.id, self.user2.id),
             'perms': 'del_upload',
             }
         )
+        # user1 and user2 should both be regular users now w/o the stats perm
+        self.user1 = User.objects.get(pk=2)     # re-query: perms are cached
+        self.user2 = User.objects.get(pk=7)
+
+        self.assertFalse(self.user1.groups.filter(name='admin').exists())
+        self.assertFalse(self.user2.groups.filter(name='admin').exists())
+
         self.assertFalse(self.user1.has_perm(
             'streamwebs.can_upload_resources'))
         self.assertFalse(self.user2.has_perm(
