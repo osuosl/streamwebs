@@ -17,3 +17,17 @@
     {% endif %}
 
 {% endblock %}
+
+{% block scripts %}
+<script>
+$(document).ready(function() {
+  $('.datepicker').pickadate({
+    today: '',
+    selectMonths: true, // Creates a dropdown to control month
+    selectYears: 100, // Creates a dropdown of 15 years to control year
+    max: true, // set max to today
+    format: 'yyyy-mm-dd',
+  });
+});
+</script>
+{% endblock %}

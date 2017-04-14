@@ -13,7 +13,7 @@
     <p>Distance from camera point {{ pp.camera_point.letter }}: {{ pp.distance }}</p>
     <p>Camera height: {{ pp.camera_height }}</p>
     <p>Notes: {{ pp.notes }}</p>
-    
+
     <strong>Photos for this photo point:</strong>
     {% for img in pp_images %}
     <p>{{ img.date|date:"m-d-Y" }}</p>
@@ -32,7 +32,7 @@
 
         <form id='ppi_form', method='post', enctype='multipart/form-data'>
             {% csrf_token %}
-            {{ ppi_formset.as_p}}
+            {{ ppi_formset.as_p }}
             <input type='submit', name='submit', value='Submit' />
         </form>
 
@@ -40,4 +40,19 @@
     <a href="{% url 'streamwebs:login' %}?next={{ request.path }}">Log in to add photos for this photo point.</a>
     {% endif %}
 </div>
+
+{% endblock %}
+
+{% block scripts%}
+  <script>
+  $(document).ready(function() {
+    $('.datepicker').pickadate({
+      today: '',
+      selectMonths: true, // Creates a dropdown to control month
+      selectYears: 100, // Creates a dropdown of 15 years to control year
+      max: true, // set max to today
+      format: 'yyyy-mm-dd',
+    });
+  });
+  </script>
 {% endblock %}
