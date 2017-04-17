@@ -102,7 +102,7 @@ def site(request, site_slug):
     ppm_sheets = list(ppm_sheets.order_by('letter').values())
     ppm_sheets = [
         {'id': x['id'], 'uri': 'camera', 'type': 'Camera Point',
-         'date': x['date']}
+         'date': x['cp_date']}
         for x in ppm_sheets]
     soil_sheets = Soil_Survey.objects.filter(site_id=site.id)
     soil_sheets = list(soil_sheets.order_by('-date').values())
