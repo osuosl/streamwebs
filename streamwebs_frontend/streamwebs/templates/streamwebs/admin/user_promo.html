@@ -6,11 +6,27 @@
 {% block body_title %} Manage User Permissions {% endblock %}
 
 {% block content %}
-<form id='promo_form' method='post'>
-    {% csrf_token %}
-    {{ promo_form.as_p }}
-    <input type='submit' name='submit' value='{% trans 'Apply' %}'/>
-</form>
+<div class="container">
+{% if messages %}
+    {% for message in messages %}
+    <strong>{{ message }}</strong>
+    {% endfor %}
+{% endif %}
+
+    <form id='promo_form' method='post'>
+        {% csrf_token %}
+        {{ promo_form.as_p }}
+        <input class="btn waves-effect waves-light teal darken-4" type='submit' name='submit' value='{% trans 'Apply' %}'/>
+    </form>
+
+    {% if users_list %}
+        {% for user, perm in users_list.items %}
+        <ul>
+            <li>{{ user }}: {{ perm }}</li>
+        </ul>
+        {% endfor %}
+    {% endif %}
+</div>
 
 {% block scripts %}
     <script type="application/javascript" src="{% static 'streamwebs/js/data.js' %}"></script>
