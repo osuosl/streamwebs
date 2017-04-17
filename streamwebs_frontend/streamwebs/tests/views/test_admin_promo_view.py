@@ -105,6 +105,11 @@ class AdminPromoTestCase(TestCase):
         self.assertTrue(self.user1.groups.filter(name='admin').exists())
         self.assertTrue(self.user2.groups.filter(name='admin').exists())
 
+        self.assertContains(response,
+                            str(self.user1.username) + ': ' + 'is an admin')
+        self.assertContains(response,
+                            str(self.user2.username) + ': ' + 'is an admin')
+
     def test_remove_users_from_admin_group(self):
         """Tests that users can be removed from the admin group"""
         self.client.login(username='superAdmin', password='superpassword')
@@ -118,6 +123,9 @@ class AdminPromoTestCase(TestCase):
             }
         )
         self.assertFalse(self.user1.groups.filter(name='admin').exists())
+        self.assertContains(response,
+                            (str(self.user1.username) + ': ' +
+                                "does not have any special permissions"))
 
     def test_add_stats_perm_for_users(self):
         """Tests that users can be granted the can_view_stats permission"""
@@ -137,6 +145,10 @@ class AdminPromoTestCase(TestCase):
         self.assertFalse(self.user2.groups.filter(name='admin').exists())
         self.assertTrue(self.user2.has_perm('streamwebs.can_view_stats'))
 
+        self.assertContains(response,
+                            (str(self.user2.username) + ': ' +
+                                'can view the Statistics page'))
+
     def test_remove_stats_perm_for_users(self):
         """Tests that users can have the can_view_stats permission revoked"""
         self.client.login(username='superAdmin', password='superpassword')
@@ -154,19 +166,32 @@ class AdminPromoTestCase(TestCase):
             'perms': 'del_stats',
             }
         )
-        # user1 and user2 should both be regular users now w/o the stats perm
+        # user1 and user2 should both be regular users now w/o the stats perm.
+        # user1 still has the upload perm.
         self.user1 = User.objects.get(pk=2)     # re-query: perms are cached
         self.user2 = User.objects.get(pk=7)
 
         self.assertFalse(self.user1.groups.filter(name='admin').exists())
         self.assertFalse(self.user2.groups.filter(name='admin').exists())
 
+        self.assertTrue(self.user1.has_perm('streamwebs.can_upload_resources'))
         self.assertFalse(self.user1.has_perm('streamwebs.can_view_stats'))
         self.assertFalse(self.user2.has_perm('streamwebs.can_view_stats'))
+
+        self.assertContains(
+                response,
+                (str(self.user1.username) + ': ' +
+                    'can upload new resources to the Resources page'))
+        self.assertContains(response,
+                            (str(self.user2.username) + ': ' +
+                                'does not have any special permissions'))
 
     def test_add_upload_perm_for_users(self):
         """Tests that users can be granted the can_upload_resources perm"""
         self.client.login(username='superAdmin', password='superpassword')
+
+        # within the scope of this test, user1 is a regular user
+        self.assertFalse(self.user1.groups.filter(name='admin').exists())
 
         response = self.client.post(reverse('streamwebs:user_promo'), {
             'users': (self.user1.id),
@@ -174,6 +199,11 @@ class AdminPromoTestCase(TestCase):
             }
         )
         self.assertTrue(self.user1.has_perm('streamwebs.can_upload_resources'))
+
+        self.assertContains(
+                response,
+                (str(self.user1.username) + ': ' +
+                    'can upload new resources to the Resources page'))
 
     def test_remove_upload_perm_for_users(self):
         """Tests that users can have the can_upload_stats permission revoked"""
@@ -192,7 +222,8 @@ class AdminPromoTestCase(TestCase):
             'perms': 'del_upload',
             }
         )
-        # user1 and user2 should both be regular users now w/o the stats perm
+        # user1 and user2 should both be regular users now w/o the upload perm.
+        # user1 still has the stats perm.
         self.user1 = User.objects.get(pk=2)     # re-query: perms are cached
         self.user2 = User.objects.get(pk=7)
 
@@ -203,3 +234,10 @@ class AdminPromoTestCase(TestCase):
             'streamwebs.can_upload_resources'))
         self.assertFalse(self.user2.has_perm(
             'streamwebs.can_upload_resources'))
+
+        self.assertContains(response,
+                            (str(self.user1.username) + ': ' +
+                                'can view the Statistics page'))
+        self.assertContains(response,
+                            (str(self.user2.username) + ': ' +
+                                'does not have any special permissions'))

@@ -964,7 +964,9 @@ def resources_upload(request):
 @login_required
 @permission_required('streamwebs.can_promote_users', raise_exception=True)
 def admin_user_promotion(request):
+    users_list = dict()
     admins = Group.objects.get(name='admin')
+    admin_perms = Permission.objects.filter(group=admins)
     can_view_stats = Permission.objects.get(codename='can_view_stats')
     can_upload_resources = Permission.objects.get(
         codename='can_upload_resources')
@@ -1008,7 +1010,6 @@ def admin_user_promotion(request):
                 elif action == 'del_upload':
                     if user.groups.filter(name='admin').exists():
                         user.groups.remove(admins)
-                        admin_perms = Permission.objects.filter(group=admins)
                         for perm in admin_perms:
                             if perm.codename != 'can_upload_resources':
                                 user.user_permissions.add(perm)
@@ -1019,8 +1020,22 @@ def admin_user_promotion(request):
             # and how (add all modified users to a list and pass to template)
             # check if user already has requested perms via form cleaning?
 
+    all_users = User.objects.all()
+    for user in all_users:
+        if user.is_staff:
+            users_list[user] = 'is a super admin'
+        elif user.groups.filter(name='admin').exists():
+            users_list[user] = 'is an admin'
+        elif user.has_perm('streamwebs.can_view_stats'):
+            users_list[user] = 'can view the Statistics page'
+        elif user.has_perm('streamwebs.can_upload_resources'):
+            users_list[user] = 'can upload new resources to the Resources page'
+        else:
+            users_list[user] = 'does not have any special permissions'
+
     return render(
         request, 'streamwebs/admin/user_promo.html', {
             'promo_form': promo_form,
+            'users_list': users_list,
         }
     )
