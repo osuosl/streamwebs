@@ -564,6 +564,9 @@ def add_camera_point(request, site_slug):
 
             for (pp, ppi) in zip(photo_points, pp_images):
                 pp.camera_point = camera
+                # Since there is no pp_date on the form, use the parent's camera
+                # point date
+                pp.pp_date = camera.cp_date
                 pp.save()
 
                 ppi = PhotoPointImage(photo_point=pp, image=ppi.image,

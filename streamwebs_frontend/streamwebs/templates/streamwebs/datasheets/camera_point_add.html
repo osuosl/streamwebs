@@ -24,7 +24,7 @@
         };
         map = new google.maps.Map($('.map')[0], mapOptions);
 
-        curr_marker = new google.maps.Marker({
+        marker = new google.maps.Marker({
           position: {lat:{{ site.to_dict.location.y }}, lng:{{ site.to_dict.location.x }}},
           map: map,
           title: "Site Location"
