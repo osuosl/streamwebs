@@ -564,8 +564,8 @@ def add_camera_point(request, site_slug):
 
             for (pp, ppi) in zip(photo_points, pp_images):
                 pp.camera_point = camera
-                # Since there is no pp_date on the form, use the parent's camera
-                # point date
+                # Since there is no pp_date on the form, use the parent's
+                # camera point date
                 pp.pp_date = camera.cp_date
                 pp.save()
 
@@ -669,6 +669,8 @@ def add_photo_point(request, site_slug, cp_id):
         if pp_form.is_valid() and ppi_formset.is_valid():
             photo_point = pp_form.save(commit=False)
             photo_point.camera_point = cp
+            # use parent camera point date
+            photo_point.pp_date = cp.cp_date
             photo_point.save()
 
             pp_images = ppi_formset.save(commit=False)
