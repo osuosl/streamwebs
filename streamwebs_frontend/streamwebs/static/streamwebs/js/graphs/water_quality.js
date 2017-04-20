@@ -397,7 +397,7 @@ const createGraph = function createGraph() {
         });
     }
 
-    const margin = {top: 20, right: 150, bottom: 30, left: 40};
+    const margin = {top: 20, right: 150, bottom: 50, left: 40};
     const defineWidth = function definedefineWidth(container) {
         return container.width() - (margin.right + margin.left);
     };
@@ -500,7 +500,13 @@ const createGraph = function createGraph() {
         g1.append('g')
             .attr('class', 'axis axis--x x')
             .attr('transform', 'translate(0, ' + height + ')')
-            .call(d3.axisBottom(x));
+            .call(d3.axisBottom(x))
+        .selectAll("text")
+            .attr("y", 5)
+            .attr("x", 7)
+            .attr("dy", ".35em")
+            .attr("transform", "rotate(45)")
+            .style("text-anchor", "start");
 
         g1.append('g')
             .attr('class', 'axis axis--y y')
@@ -516,7 +522,13 @@ const createGraph = function createGraph() {
         g2.append('g')
             .attr('class', 'axis axis--x x')
             .attr('transform', 'translate(0, ' + height + ')')
-            .call(d3.axisBottom(x));
+            .call(d3.axisBottom(x))
+        .selectAll("text")
+            .attr("y", 5)
+            .attr("x", 7)
+            .attr("dy", ".35em")
+            .attr("transform", "rotate(45)")
+            .style("text-anchor", "start");
 
         g2.append('g')
             .attr('class', 'axis axis--y y')
@@ -784,7 +796,13 @@ const createGraph = function createGraph() {
         g1.append('g')
             .attr('class', 'axis axis--x')
             .attr('transform', 'translate(0, ' + height + ')')
-            .call(d3.axisBottom(x));
+            .call(d3.axisBottom(x))
+        .selectAll("text")
+            .attr("y", 5)
+            .attr("x", 7)
+            .attr("dy", ".35em")
+            .attr("transform", "rotate(45)")
+            .style("text-anchor", "start");
 
         g1.append('g')
             .attr('class', 'axis axis--y')
@@ -800,7 +818,13 @@ const createGraph = function createGraph() {
         g2.append('g')
             .attr('class', 'axis axis--x')
             .attr('transform', 'translate(0, ' + height + ')')
-            .call(d3.axisBottom(x));
+            .call(d3.axisBottom(x))
+        .selectAll("text")
+            .attr("y", 5)
+            .attr("x", 7)
+            .attr("dy", ".35em")
+            .attr("transform", "rotate(45)")
+            .style("text-anchor", "start");
 
         g2.append('g')
             .attr('class', 'axis axis--y')
@@ -954,7 +978,13 @@ const createGraph = function createGraph() {
         g1.append('g')
             .attr('class', 'axis axis--x')
             .attr('transform', 'translate(0, ' + height + ')')
-            .call(d3.axisBottom(x));
+            .call(d3.axisBottom(x))
+        .selectAll("text")
+            .attr("y", 5)
+            .attr("x", 7)
+            .attr("dy", ".35em")
+            .attr("transform", "rotate(45)")
+            .style("text-anchor", "start");
 
         g1.append('g')
             .attr('class', 'axis axis--y')
@@ -970,7 +1000,13 @@ const createGraph = function createGraph() {
         g2.append('g')
             .attr('class', 'axis axis--x')
             .attr('transform', 'translate(0, ' + height + ')')
-            .call(d3.axisBottom(x));
+            .call(d3.axisBottom(x))
+        .selectAll("text")
+            .attr("y", 5)
+            .attr("x", 7)
+            .attr("dy", ".35em")
+            .attr("transform", "rotate(45)")
+            .style("text-anchor", "start");
 
         g2.append('g')
             .attr('class', 'axis axis--y')
@@ -1143,7 +1179,13 @@ const createGraph = function createGraph() {
         g1.append('g')
             .attr('class', 'axis axis--x')
             .attr('transform', 'translate(0, ' + height + ')')
-            .call(d3.axisBottom(x));
+            .call(d3.axisBottom(x))
+        .selectAll("text")
+            .attr("y", 5)
+            .attr("x", 7)
+            .attr("dy", ".35em")
+            .attr("transform", "rotate(45)")
+            .style("text-anchor", "start");
 
         g1.append('g')
             .attr('class', 'axis axis--y')
@@ -1159,7 +1201,13 @@ const createGraph = function createGraph() {
         g2.append('g')
             .attr('class', 'axis axis--x')
             .attr('transform', 'translate(0, ' + height + ')')
-            .call(d3.axisBottom(x));
+            .call(d3.axisBottom(x))
+        .selectAll("text")
+            .attr("y", 5)
+            .attr("x", 7)
+            .attr("dy", ".35em")
+            .attr("transform", "rotate(45)")
+            .style("text-anchor", "start");
 
         g2.append('g')
             .attr('class', 'axis axis--y')
@@ -1333,7 +1381,13 @@ const createGraph = function createGraph() {
         g1.append('g')
             .attr('class', 'axis axis--x')
             .attr('transform', 'translate(0, ' + height + ')')
-            .call(d3.axisBottom(x));
+            .call(d3.axisBottom(x))
+        .selectAll("text")
+            .attr("y", 5)
+            .attr("x", 7)
+            .attr("dy", ".35em")
+            .attr("transform", "rotate(45)")
+            .style("text-anchor", "start");
 
         g1.append('g')
             .attr('class', 'axis axis--y')
@@ -1349,7 +1403,13 @@ const createGraph = function createGraph() {
         g2.append('g')
             .attr('class', 'axis axis--x')
             .attr('transform', 'translate(0, ' + height + ')')
-            .call(d3.axisBottom(x));
+            .call(d3.axisBottom(x))
+        .selectAll("text")
+            .attr("y", 5)
+            .attr("x", 7)
+            .attr("dy", ".35em")
+            .attr("transform", "rotate(45)")
+            .style("text-anchor", "start");
 
         g2.append('g')
             .attr('class', 'axis axis--y')
@@ -1522,7 +1582,13 @@ const createGraph = function createGraph() {
         g1.append('g')
             .attr('class', 'axis axis--x')
             .attr('transform', 'translate(0, ' + height + ')')
-            .call(d3.axisBottom(x));
+            .call(d3.axisBottom(x))
+        .selectAll("text")
+            .attr("y", 5)
+            .attr("x", 7)
+            .attr("dy", ".35em")
+            .attr("transform", "rotate(45)")
+            .style("text-anchor", "start");
 
         g1.append('g')
             .attr('class', 'axis axis--y')
@@ -1538,7 +1604,13 @@ const createGraph = function createGraph() {
         g2.append('g')
             .attr('class', 'axis axis--x')
             .attr('transform', 'translate(0, ' + height + ')')
-            .call(d3.axisBottom(x));
+            .call(d3.axisBottom(x))
+        .selectAll("text")
+            .attr("y", 5)
+            .attr("x", 7)
+            .attr("dy", ".35em")
+            .attr("transform", "rotate(45)")
+            .style("text-anchor", "start");
 
         g2.append('g')
             .attr('class', 'axis axis--y')
@@ -1762,7 +1834,13 @@ const createGraph = function createGraph() {
         g1.append('g')
             .attr('class', 'axis axis--x')
             .attr('transform', 'translate(0, ' + height + ')')
-            .call(d3.axisBottom(x));
+            .call(d3.axisBottom(x))
+        .selectAll("text")
+            .attr("y", 5)
+            .attr("x", 7)
+            .attr("dy", ".35em")
+            .attr("transform", "rotate(45)")
+            .style("text-anchor", "start");
 
         g1.append('g')
             .attr('class', 'axis axis--y')
@@ -1778,7 +1856,13 @@ const createGraph = function createGraph() {
         g2.append('g')
             .attr('class', 'axis axis--x')
             .attr('transform', 'translate(0, ' + height + ')')
-            .call(d3.axisBottom(x));
+            .call(d3.axisBottom(x))
+        .selectAll("text")
+            .attr("y", 5)
+            .attr("x", 7)
+            .attr("dy", ".35em")
+            .attr("transform", "rotate(45)")
+            .style("text-anchor", "start");
 
         g2.append('g')
             .attr('class', 'axis axis--y')
@@ -2101,7 +2185,13 @@ const createGraph = function createGraph() {
         g1.append('g')
             .attr('class', 'axis axis--x')
             .attr('transform', 'translate(0, ' + height + ')')
-            .call(d3.axisBottom(x));
+            .call(d3.axisBottom(x))
+        .selectAll("text")
+            .attr("y", 5)
+            .attr("x", 7)
+            .attr("dy", ".35em")
+            .attr("transform", "rotate(45)")
+            .style("text-anchor", "start");
 
         g1.append('g')
             .attr('class', 'axis axis--y')
@@ -2117,7 +2207,13 @@ const createGraph = function createGraph() {
         g2.append('g')
             .attr('class', 'axis axis--x')
             .attr('transform', 'translate(0, ' + height + ')')
-            .call(d3.axisBottom(x));
+            .call(d3.axisBottom(x))
+        .selectAll("text")
+            .attr("y", 5)
+            .attr("x", 7)
+            .attr("dy", ".35em")
+            .attr("transform", "rotate(45)")
+            .style("text-anchor", "start");
 
         g2.append('g')
             .attr('class', 'axis axis--y')
@@ -2290,7 +2386,13 @@ const createGraph = function createGraph() {
         g1.append('g')
             .attr('class', 'axis axis--x')
             .attr('transform', 'translate(0, ' + height + ')')
-            .call(d3.axisBottom(x));
+            .call(d3.axisBottom(x))
+        .selectAll("text")
+            .attr("y", 5)
+            .attr("x", 7)
+            .attr("dy", ".35em")
+            .attr("transform", "rotate(45)")
+            .style("text-anchor", "start");
 
         g1.append('g')
             .attr('class', 'axis axis--y')
@@ -2306,7 +2408,13 @@ const createGraph = function createGraph() {
         g2.append('g')
             .attr('class', 'axis axis--x')
             .attr('transform', 'translate(0, ' + height + ')')
-            .call(d3.axisBottom(x));
+            .call(d3.axisBottom(x))
+        .selectAll("text")
+            .attr("y", 5)
+            .attr("x", 7)
+            .attr("dy", ".35em")
+            .attr("transform", "rotate(45)")
+            .style("text-anchor", "start");
 
         g2.append('g')
             .attr('class', 'axis axis--y')
