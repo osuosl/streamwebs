@@ -282,12 +282,12 @@ const useLineGraph = function useLineGraph() {
         .attr('class', 'axis axis--x')
         .attr('transform', 'translate(0, ' + height + ')')
         .call(d3.axisBottom(x))
-        .selectAll("text")
-            .attr("y", 5)
-            .attr("x", 7)
-            .attr("dy", ".35em")
-            .attr("transform", "rotate(45)")
-            .style("text-anchor", "start");
+    .selectAll("text")
+        .attr("y", 5)
+        .attr("x", 7)
+        .attr("dy", ".35em")
+        .attr("transform", "rotate(45)")
+        .style("text-anchor", "start");
 
     g.append('g')
         .attr('class', 'axis axis--y')
@@ -441,7 +441,7 @@ const useBarGraph = function useBarGraph() {
         });
 
         const container = $('#graph-' + siteId + '-' + category);
-        const margin = {top: 50, right: 100, bottom: 40, left: 50};
+        const margin = {top: 50, right: 100, bottom: 80, left: 50};
         const width = (Math.min(container.width(), 150 * species.length)) -
             margin.left - margin.right;
         const height = 256 - margin.top - margin.bottom;
@@ -472,7 +472,13 @@ const useBarGraph = function useBarGraph() {
         svg.append('g')
             .attr('class', 'x axis')
             .attr('transform', 'translate(0, ' + height + ')')
-            .call(xAxis);
+            .call(xAxis)
+        .selectAll("text")
+            .attr("y", 5)
+            .attr("x", 7)
+            .attr("dy", ".35em")
+            .attr("transform", "rotate(45)")
+            .style("text-anchor", "start");
 
         svg.append('g')
             .attr('class', 'y axis')
@@ -551,7 +557,7 @@ const useBarGraph = function useBarGraph() {
     const columns = ['Sensitive', 'Somewhat Sensitive', 'Tolerant'];
 
     const container = $('#graph-' + siteId + '-pie');
-    const margin = {top: 30, right: 20, bottom: 30, left: 20};
+    const margin = {top: 20, right: 20, bottom: 30, left: 20};
     const width = Math.min(
         container.width() - margin.right - margin.left,
         768
@@ -666,6 +672,16 @@ $.fn.fix_radios = function fix_radios() {
 
     return this.focus(focus).change(change);
 };
+
+
+
+$(window).resize(() => {
+    if ($('input[name=type]:checked').val() === 'line') {
+        useLineGraph();
+    } else {
+        useBarGraph();
+    }
+});
 
 $(() => {
     $('input[type=date]').val('');
