@@ -230,7 +230,7 @@ const useLineGraph = function useLineGraph() {
     });
 
     const container = outerContainer;
-    const margin = {top: 20, right: 200, bottom: 30, left: 40};
+    const margin = {top: 20, right: 200, bottom: 50, left: 40};
     const width = container.width() - margin.left - margin.right;
     const height = 250 - margin.top - margin.bottom;
 
@@ -281,7 +281,13 @@ const useLineGraph = function useLineGraph() {
     g.append('g')
         .attr('class', 'axis axis--x')
         .attr('transform', 'translate(0, ' + height + ')')
-        .call(d3.axisBottom(x));
+        .call(d3.axisBottom(x))
+        .selectAll("text")
+            .attr("y", 5)
+            .attr("x", 7)
+            .attr("dy", ".35em")
+            .attr("transform", "rotate(45)")
+            .style("text-anchor", "start");
 
     g.append('g')
         .attr('class', 'axis axis--y')
