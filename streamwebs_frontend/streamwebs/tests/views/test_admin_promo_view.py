@@ -33,6 +33,15 @@ class AdminPromoTestCase(TestCase):
                                                  'regpassword')
         self.regAdmin.groups.add(self.admins)
 
+        # flash message strings
+        self.add_admin_msg = ' was added to the Admin group.'
+        self.del_admin_msg = ' was removed from the Admin group.'
+        self.add_stats_msg = ' was granted permission to view Statistics.'
+        self.del_stats_msg = ' was revoked the permission to view Statistics.'
+        self.add_upload_msg = ' was granted permission to upload resources.'
+        self.del_upload_msg = (
+            ' was revoked the permission to upload resources.')
+
     def test_data_loaded_and_usable(self):
         """Check users exist in test db and that admins have correct perms"""
         self.assertEquals(User.objects.count(), 9)
@@ -110,6 +119,13 @@ class AdminPromoTestCase(TestCase):
         self.assertContains(response,
                             str(self.user2.username) + ': ' + 'is an admin')
 
+        messages = list(response.context['msgs'])
+        self.assertEquals(len(messages), 2)
+        self.assertEquals(messages[0],
+                          self.user1.username + self.add_admin_msg)
+        self.assertEquals(messages[1],
+                          self.user2.username + self.add_admin_msg)
+
     def test_remove_users_from_admin_group(self):
         """Tests that users can be removed from the admin group"""
         self.client.login(username='superAdmin', password='superpassword')
@@ -126,6 +142,11 @@ class AdminPromoTestCase(TestCase):
         self.assertContains(response,
                             (str(self.user1.username) + ': ' +
                                 "does not have any special permissions"))
+
+        messages = list(response.context['msgs'])
+        self.assertEquals(len(messages), 1)
+        self.assertEquals(messages[0],
+                          self.user1.username + self.del_admin_msg)
 
     def test_add_stats_perm_for_users(self):
         """Tests that users can be granted the can_view_stats permission"""
@@ -148,6 +169,11 @@ class AdminPromoTestCase(TestCase):
         self.assertContains(response,
                             (str(self.user2.username) + ': ' +
                                 'can view the Statistics page'))
+
+        messages = list(response.context['msgs'])
+        self.assertEquals(len(messages), 1)
+        self.assertEquals(messages[0],
+                          self.user2.username + self.add_stats_msg)
 
     def test_remove_stats_perm_for_users(self):
         """Tests that users can have the can_view_stats permission revoked"""
@@ -186,6 +212,13 @@ class AdminPromoTestCase(TestCase):
                             (str(self.user2.username) + ': ' +
                                 'does not have any special permissions'))
 
+        messages = list(response.context['msgs'])
+        self.assertEquals(len(messages), 2)
+        self.assertEquals(messages[0],
+                          self.user1.username + self.del_stats_msg)
+        self.assertEquals(messages[1],
+                          self.user2.username + self.del_stats_msg)
+
     def test_add_upload_perm_for_users(self):
         """Tests that users can be granted the can_upload_resources perm"""
         self.client.login(username='superAdmin', password='superpassword')
@@ -204,6 +237,11 @@ class AdminPromoTestCase(TestCase):
                 response,
                 (str(self.user1.username) + ': ' +
                     'can upload new resources to the Resources page'))
+
+        messages = list(response.context['msgs'])
+        self.assertEquals(len(messages), 1)
+        self.assertEquals(messages[0],
+                          self.user1.username + self.add_upload_msg)
 
     def test_remove_upload_perm_for_users(self):
         """Tests that users can have the can_upload_stats permission revoked"""
@@ -241,3 +279,10 @@ class AdminPromoTestCase(TestCase):
         self.assertContains(response,
                             (str(self.user2.username) + ': ' +
                                 'does not have any special permissions'))
+
+        messages = list(response.context['msgs'])
+        self.assertEquals(len(messages), 2)
+        self.assertEquals(messages[0],
+                          self.user1.username + self.del_upload_msg)
+        self.assertEquals(messages[1],
+                          self.user2.username + self.del_upload_msg)

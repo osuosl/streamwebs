@@ -970,6 +970,7 @@ def admin_user_promotion(request):
     can_view_stats = Permission.objects.get(codename='can_view_stats')
     can_upload_resources = Permission.objects.get(
         codename='can_upload_resources')
+    msgs = []    # list to hold custom flash messages
 
     promo_form = AdminPromotionForm()
 
@@ -983,12 +984,19 @@ def admin_user_promotion(request):
             for user in users:
                 if action == 'add_admin':
                     user.groups.add(admins)
+                    msgs.append(
+                        '%s was added to the Admin group.' % user.username)
 
                 elif action == 'del_admin':
                     user.groups.remove(admins)
+                    msgs.append(
+                        '%s was removed from the Admin group.' % user.username)
 
                 elif action == 'add_stats':
                     user.user_permissions.add(can_view_stats)
+                    msgs.append(
+                        '%s was granted permission to view Statistics.'
+                        % user.username)
 
                 elif action == 'del_stats':
                     # if they're an admin,
@@ -1000,12 +1008,19 @@ def admin_user_promotion(request):
                         for perm in admin_perms:
                             if perm.codename != 'can_view_stats':
                                 user.user_permissions.add(perm)
-                    # if they're a regular user,
+                    # otherwise if they're a regular user,
                     else:
                         user.user_permissions.remove(can_view_stats)
 
+                    msgs.append(
+                        '%s was revoked the permission to view Statistics.'
+                        % user.username)
+
                 elif action == 'add_upload':
                     user.user_permissions.add(can_upload_resources)
+                    msgs.append(
+                        '%s was granted permission to upload resources.'
+                        % user.username)
 
                 elif action == 'del_upload':
                     if user.groups.filter(name='admin').exists():
@@ -1016,9 +1031,9 @@ def admin_user_promotion(request):
                     else:
                         user.user_permissions.remove(can_upload_resources)
 
-            # flash a success message that includes which users were changed
-            # and how (add all modified users to a list and pass to template)
-            # check if user already has requested perms via form cleaning?
+                    msgs.append(
+                        '%s was revoked the permission to upload resources.'
+                        % user.username)
 
     all_users = User.objects.all()
     for user in all_users:
@@ -1037,5 +1052,6 @@ def admin_user_promotion(request):
         request, 'streamwebs/admin/user_promo.html', {
             'promo_form': promo_form,
             'users_list': users_list,
+            'msgs': msgs,
         }
     )
