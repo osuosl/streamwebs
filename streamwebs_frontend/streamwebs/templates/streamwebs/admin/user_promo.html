@@ -7,9 +7,9 @@
 
 {% block content %}
 <div class="container">
-{% if messages %}
-    {% for message in messages %}
-    <strong>{{ message }}</strong>
+{% if msgs %}
+    {% for message in msgs %}
+    <strong>{{ message }}</strong><br>
     {% endfor %}
 {% endif %}
 
