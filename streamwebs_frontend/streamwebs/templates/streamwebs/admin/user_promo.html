@@ -19,14 +19,35 @@
         <input class="btn waves-effect waves-light teal darken-4" type='submit' name='submit' value='{% trans 'Apply' %}'/>
     </form>
 
-    {% if users_list %}
-        {% for user, perm in users_list.items %}
-        <ul>
-            <li>{{ user }}: {{ perm }}</li>
-        </ul>
-        {% endfor %}
-    {% endif %}
-</div>
+    {% for user in users %}
+        {% if user in users_list.staff %}
+        {{ user.username }}: is a super admin<br>
+        {% elif user in users_list.admin %}
+        {{ user.username }}: is an admin<br>
+        {% elif user in users_list.stats %}
+        {{ user.username }}: can view the Statistics page<br>
+        {% elif user in users_list.upload %}
+        {{ user.username }}: can upload new resources to the Resources page<br>
+        {% elif user in users_list.none %}
+        {{ user.username }}: does not have any special permissions<br>
+        {% endif %}
+    {% endfor %}
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if users.has_previous %}
+                <a href="?page={{ users.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ users.number }} of {{ users.paginator.num_pages }}.
+            </span>
+
+            {% if users.has_next %}
+                <a href="?page={{ users.next_page_number }}">next</a>
+            {% endif %}
+        </span>
+    </div>
 
 {% block scripts %}
     <script type="application/javascript" src="{% static 'streamwebs/js/data.js' %}"></script>
