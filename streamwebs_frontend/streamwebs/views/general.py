@@ -11,6 +11,7 @@ from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from django.forms import inlineformset_factory, modelformset_factory
 from django.core.urlresolvers import reverse
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.conf import settings
 
 from streamwebs.forms import (
@@ -986,7 +987,6 @@ def resources_upload(request):
 @login_required
 @permission_required('streamwebs.can_promote_users', raise_exception=True)
 def admin_user_promotion(request):
-    users_list = dict()
     admins = Group.objects.get(name='admin')
     admin_perms = Permission.objects.filter(group=admins)
     can_view_stats = Permission.objects.get(codename='can_view_stats')
@@ -1001,9 +1001,9 @@ def admin_user_promotion(request):
 
         if promo_form.is_valid():
             action = promo_form.cleaned_data['perms']
-            users = promo_form.cleaned_data['users']
+            selected_users = promo_form.cleaned_data['users']
 
-            for user in users:
+            for user in selected_users:
                 if action == 'add_admin':
                     user.groups.add(admins)
                     msgs.append(
@@ -1058,21 +1058,37 @@ def admin_user_promotion(request):
                         % user.username)
 
     all_users = User.objects.all()
+    users_list = {'staff': [], 'admin': [], 'stats': [], 'upload': [],
+                  'none': []}
+
     for user in all_users:
         if user.is_staff:
-            users_list[user] = 'is a super admin'
+            users_list['staff'].append(user)
         elif user.groups.filter(name='admin').exists():
-            users_list[user] = 'is an admin'
+            users_list['admin'].append(user)
         elif user.has_perm('streamwebs.can_view_stats'):
-            users_list[user] = 'can view the Statistics page'
+            users_list['stats'].append(user)
         elif user.has_perm('streamwebs.can_upload_resources'):
-            users_list[user] = 'can upload new resources to the Resources page'
+            users_list['upload'].append(user)
         else:
-            users_list[user] = 'does not have any special permissions'
+            users_list['none'].append(user)
+
+    paginator = Paginator((users_list['staff'] + users_list['admin'] +
+                           users_list['stats'] + users_list['upload'] +
+                           users_list['none']), 10)  # Show 10 users per page
+    page = request.GET.get('page')
+
+    try:
+        users = paginator.page(page)
+    except PageNotAnInteger:
+        users = paginator.page(1)
+    except EmptyPage:
+        users = paginator.page(paginator.num_pages)
 
     return render(
         request, 'streamwebs/admin/user_promo.html', {
             'promo_form': promo_form,
+            'users': users,
             'users_list': users_list,
             'msgs': msgs,
         }
