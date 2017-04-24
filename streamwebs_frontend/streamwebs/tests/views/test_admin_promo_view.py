@@ -42,6 +42,8 @@ class AdminPromoTestCase(TestCase):
         self.del_upload_msg = (
             ' was revoked the permission to upload resources.')
 
+        self.pages = User.objects.count()/10 + 1
+
     def test_data_loaded_and_usable(self):
         """Check users exist in test db and that admins have correct perms"""
         self.assertEquals(User.objects.count(), 9)
@@ -114,15 +116,26 @@ class AdminPromoTestCase(TestCase):
         self.assertTrue(self.user1.groups.filter(name='admin').exists())
         self.assertTrue(self.user2.groups.filter(name='admin').exists())
 
-        self.assertContains(response,
-                            str(self.user1.username) + ': ' + 'is an admin')
-        self.assertContains(response,
-                            str(self.user2.username) + ': ' + 'is an admin')
-
         messages = list(response.context['msgs'])
         self.assertEquals(len(messages), 2)
         self.assertIn(self.user1.username + self.add_admin_msg, messages)
         self.assertIn(self.user2.username + self.add_admin_msg, messages)
+
+        done1 = False
+        done2 = False
+        for i in range(1, self.pages + 1):
+            if self.user1 in response.context['users']:
+                self.assertContains(
+                    response, str(self.user1.username + ': ' + 'is an admin'))
+                done1 = True
+            if self.user2 in response.context['users']:
+                self.assertContains(
+                    response, str(self.user2.username + ': ' + 'is an admin'))
+                done2 = True
+            response = self.client.get(
+                reverse('streamwebs:user_promo') + '?page=' + str(i+1))
+        if done1 is False or done2 is False:
+            raise ValueError("didn't find user1 or user2")
 
     def test_remove_users_from_admin_group(self):
         """Tests that users can be removed from the admin group"""
@@ -137,14 +150,31 @@ class AdminPromoTestCase(TestCase):
             }
         )
         self.assertFalse(self.user1.groups.filter(name='admin').exists())
-        self.assertContains(response,
-                            (str(self.user1.username) + ': ' +
-                                "does not have any special permissions"))
 
         messages = list(response.context['msgs'])
         self.assertEquals(len(messages), 1)
         self.assertEquals(messages[0],
                           self.user1.username + self.del_admin_msg)
+
+        done1 = False
+        done2 = False
+        for i in range(1, self.pages + 1):
+            if self.user1 in response.context['users']:
+                self.assertContains(
+                    response,
+                    str(self.user1.username + ': ' +
+                        'does not have any special permissions'))
+                done1 = True
+            if self.user2 in response.context['users']:
+                self.assertContains(
+                    response,
+                    str(self.user2.username + ': ' +
+                        'does not have any special permissions'))
+                done2 = True
+            response = self.client.get(
+                reverse('streamwebs:user_promo') + '?page=' + str(i+1))
+        if done1 is False or done2 is False:
+            raise ValueError("didn't find user1 or user2")
 
     def test_add_stats_perm_for_users(self):
         """Tests that users can be granted the can_view_stats permission"""
@@ -164,14 +194,22 @@ class AdminPromoTestCase(TestCase):
         self.assertFalse(self.user2.groups.filter(name='admin').exists())
         self.assertTrue(self.user2.has_perm('streamwebs.can_view_stats'))
 
-        self.assertContains(response,
-                            (str(self.user2.username) + ': ' +
-                                'can view the Statistics page'))
-
         messages = list(response.context['msgs'])
         self.assertEquals(len(messages), 1)
         self.assertEquals(messages[0],
                           self.user2.username + self.add_stats_msg)
+        done1 = False
+        for i in range(1, self.pages + 1):
+            if self.user2 in response.context['users']:
+                self.assertContains(
+                    response,
+                    str(self.user2.username + ': ' +
+                        'can view the Statistics page'))
+                done1 = True
+            response = self.client.get(
+                reverse('streamwebs:user_promo') + '?page=' + str(i+1))
+        if done1 is False:
+            raise ValueError("didn't find user2")
 
     def test_remove_stats_perm_for_users(self):
         """Tests that users can have the can_view_stats permission revoked"""
@@ -202,18 +240,30 @@ class AdminPromoTestCase(TestCase):
         self.assertFalse(self.user1.has_perm('streamwebs.can_view_stats'))
         self.assertFalse(self.user2.has_perm('streamwebs.can_view_stats'))
 
-        self.assertContains(
-                response,
-                (str(self.user1.username) + ': ' +
-                    'can upload new resources to the Resources page'))
-        self.assertContains(response,
-                            (str(self.user2.username) + ': ' +
-                                'does not have any special permissions'))
-
         messages = list(response.context['msgs'])
         self.assertEquals(len(messages), 2)
         self.assertIn(self.user1.username + self.del_stats_msg, messages)
         self.assertIn(self.user2.username + self.del_stats_msg, messages)
+
+        done1 = False
+        done2 = False
+        for i in range(1, self.pages + 1):
+            if self.user1 in response.context['users']:
+                self.assertContains(
+                    response,
+                    str(self.user1.username + ': ' +
+                        'can upload new resources to the Resources page'))
+                done1 = True
+            if self.user2 in response.context['users']:
+                self.assertContains(
+                    response,
+                    str(self.user2.username + ': ' +
+                        'does not have any special permissions'))
+                done2 = True
+            response = self.client.get(
+                reverse('streamwebs:user_promo') + '?page=' + str(i+1))
+        if done1 is False or done2 is False:
+            raise ValueError("didn't find user1 or user2")
 
     def test_add_upload_perm_for_users(self):
         """Tests that users can be granted the can_upload_resources perm"""
@@ -229,15 +279,23 @@ class AdminPromoTestCase(TestCase):
         )
         self.assertTrue(self.user1.has_perm('streamwebs.can_upload_resources'))
 
-        self.assertContains(
-                response,
-                (str(self.user1.username) + ': ' +
-                    'can upload new resources to the Resources page'))
-
         messages = list(response.context['msgs'])
         self.assertEquals(len(messages), 1)
         self.assertEquals(messages[0],
                           self.user1.username + self.add_upload_msg)
+
+        done1 = False
+        for i in range(1, self.pages + 1):
+            if self.user1 in response.context['users']:
+                self.assertContains(
+                    response,
+                    str(self.user1.username + ': ' +
+                        'can upload new resources to the Resources page'))
+                done1 = True
+            response = self.client.get(
+                reverse('streamwebs:user_promo') + '?page=' + str(i+1))
+        if done1 is False:
+            raise ValueError("didn't find user1")
 
     def test_remove_upload_perm_for_users(self):
         """Tests that users can have the can_upload_stats permission revoked"""
@@ -269,14 +327,27 @@ class AdminPromoTestCase(TestCase):
         self.assertFalse(self.user2.has_perm(
             'streamwebs.can_upload_resources'))
 
-        self.assertContains(response,
-                            (str(self.user1.username) + ': ' +
-                                'can view the Statistics page'))
-        self.assertContains(response,
-                            (str(self.user2.username) + ': ' +
-                                'does not have any special permissions'))
-
         messages = list(response.context['msgs'])
         self.assertEquals(len(messages), 2)
         self.assertIn(self.user1.username + self.del_upload_msg, messages)
         self.assertIn(self.user2.username + self.del_upload_msg, messages)
+
+        done1 = False
+        done2 = False
+        for i in range(1, self.pages + 1):
+            if self.user1 in response.context['users']:
+                self.assertContains(
+                    response,
+                    str(self.user1.username + ': ' +
+                        'can view the Statistics page'))
+                done1 = True
+            if self.user2 in response.context['users']:
+                self.assertContains(
+                    response,
+                    str(self.user2.username + ': ' +
+                        'does not have any special permissions'))
+                done2 = True
+            response = self.client.get(
+                reverse('streamwebs:user_promo') + '?page=' + str(i+1))
+        if done1 is False or done2 is False:
+            raise ValueError("didn't find user1 or user2")
