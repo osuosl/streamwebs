@@ -1091,5 +1091,6 @@ def admin_user_promotion(request):
             'users': users,
             'users_list': users_list,
             'msgs': msgs,
+            'all_users': all_users,
         }
     )
