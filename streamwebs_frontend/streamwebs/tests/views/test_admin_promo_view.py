@@ -121,10 +121,8 @@ class AdminPromoTestCase(TestCase):
 
         messages = list(response.context['msgs'])
         self.assertEquals(len(messages), 2)
-        self.assertEquals(messages[0],
-                          self.user1.username + self.add_admin_msg)
-        self.assertEquals(messages[1],
-                          self.user2.username + self.add_admin_msg)
+        self.assertIn(self.user1.username + self.add_admin_msg, messages)
+        self.assertIn(self.user2.username + self.add_admin_msg, messages)
 
     def test_remove_users_from_admin_group(self):
         """Tests that users can be removed from the admin group"""
@@ -214,10 +212,8 @@ class AdminPromoTestCase(TestCase):
 
         messages = list(response.context['msgs'])
         self.assertEquals(len(messages), 2)
-        self.assertEquals(messages[0],
-                          self.user1.username + self.del_stats_msg)
-        self.assertEquals(messages[1],
-                          self.user2.username + self.del_stats_msg)
+        self.assertIn(self.user1.username + self.del_stats_msg, messages)
+        self.assertIn(self.user2.username + self.del_stats_msg, messages)
 
     def test_add_upload_perm_for_users(self):
         """Tests that users can be granted the can_upload_resources perm"""
@@ -282,7 +278,5 @@ class AdminPromoTestCase(TestCase):
 
         messages = list(response.context['msgs'])
         self.assertEquals(len(messages), 2)
-        self.assertEquals(messages[0],
-                          self.user1.username + self.del_upload_msg)
-        self.assertEquals(messages[1],
-                          self.user2.username + self.del_upload_msg)
+        self.assertIn(self.user1.username + self.del_upload_msg, messages)
+        self.assertIn(self.user2.username + self.del_upload_msg, messages)
