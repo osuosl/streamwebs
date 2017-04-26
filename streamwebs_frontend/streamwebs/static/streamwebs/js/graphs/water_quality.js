@@ -481,15 +481,6 @@ const createGraph = function createGraph() {
             .domain(['Air Temperature', 'Water Temperature'])
             .range(['#6cbcfc', '#0310fc']);
 
-        const line = d3.line()
-            .curve(d3.curveLinear)
-            .x(d => {
-                return x(d.date)
-            })
-            .y(d => {
-                return y(d.value)
-            });
-
         const svg1 = d3.select(containerName1).append('svg')
             .attr('width', width + margin.left + margin.right)
             .attr('height', height + margin.top + margin.bottom);
@@ -560,15 +551,6 @@ const createGraph = function createGraph() {
                     .enter()
                     .append('g')
                     .attr('class', 'temp');
-
-                type1.append('path')
-                    .attr('class', 'line')
-                    .attr('d', d => {
-                        return line(d.values)
-                    })
-                    .style('stroke', d => {
-                        return z(d.name)
-                    });
 
                 type1.selectAll('dot')
                     .data(d => {
@@ -649,15 +631,6 @@ const createGraph = function createGraph() {
                     .enter()
                     .append('g')
                     .attr('class', 'temp');
-
-                type2.append('path')
-                    .attr('class', 'line')
-                    .attr('d', d => {
-                        return line(d.values)
-                    })
-                    .style('stroke', d => {
-                        return z(d.name)
-                    });
 
                 type2.selectAll('dot')
                     .data(d => {
@@ -777,15 +750,6 @@ const createGraph = function createGraph() {
             ])
             .range([height, 0]);
 
-        const line = d3.line()
-            .curve(d3.curveLinear)
-            .x(d => {
-                return x(d.date)
-            })
-            .y(d => {
-                return y(d.value)
-            });
-
         const svg1 = d3.select(containerName1).append('svg')
             .attr('width', width + margin.left + margin.right)
             .attr('height', height + margin.top + margin.bottom);
@@ -849,13 +813,6 @@ const createGraph = function createGraph() {
                     .append('g')
                     .attr('class', 'do');
 
-                type1.append('path')
-                    .attr('class', 'line')
-                    .attr('d', d => {
-                        return line(d.values)
-                    })
-                    .style('stroke', '#93ece9');
-
                 type1.selectAll('dot')
                     .data(d => {
                         return d.values.map(e => {
@@ -884,13 +841,6 @@ const createGraph = function createGraph() {
                     .enter()
                     .append('g')
                     .attr('class', 'do');
-
-                type2.append('path')
-                    .attr('class', 'line')
-                    .attr('d', d => {
-                        return line(d.values)
-                    })
-                    .style('stroke', '#93ece9');
 
                 type2.selectAll('dot')
                     .data(d => {
@@ -959,15 +909,6 @@ const createGraph = function createGraph() {
             .domain([0, 14])
             .range([height, 0]);
 
-        const line = d3.line()
-            .curve(d3.curveLinear)
-            .x(d => {
-                return x(d.date)
-            })
-            .y(d => {
-                return y(d.value)
-            });
-
         const svg1 = d3.select(containerName1).append('svg')
             .attr('width', width + margin.left + margin.right)
             .attr('height', height + margin.top + margin.bottom);
@@ -1030,13 +971,6 @@ const createGraph = function createGraph() {
                     .append('g')
                     .attr('class', 'ph');
 
-                type1.append('path')
-                    .attr('class', 'line')
-                    .attr('d', d => {
-                        return line(d.values)
-                    })
-                    .style('stroke', '#aede5b');
-
                 type1.selectAll('dot')
                     .data(d => {
                         return d.values.map(e => {
@@ -1065,13 +999,6 @@ const createGraph = function createGraph() {
                     .enter()
                     .append('g')
                     .attr('class', 'ph');
-
-                type2.append('path')
-                    .attr('class', 'line')
-                    .attr('d', d => {
-                        return line(d.values)
-                    })
-                    .style('stroke', '#aede5b');
 
                 type2.selectAll('dot')
                     .data(d => {
@@ -1160,15 +1087,6 @@ const createGraph = function createGraph() {
             ])
             .range([height, 0]);
 
-        const line = d3.line()
-            .curve(d3.curveLinear)
-            .x(d => {
-                return x(d.date)
-            })
-            .y(d => {
-                return y(d.value)
-            });
-
         const svg1 = d3.select(containerName1).append('svg')
             .attr('width', width + margin.left + margin.right)
             .attr('height', height + margin.top + margin.bottom);
@@ -1232,13 +1150,6 @@ const createGraph = function createGraph() {
                     .append('g')
                     .attr('class', 'turb');
 
-                type1.append('path')
-                    .attr('class', 'line')
-                    .attr('d', d => {
-                        return line(d.values)
-                    })
-                    .style('stroke', '#636363');
-
                 type1.selectAll('dot')
                     .data(d => {
                         return d.values.map(e => {
@@ -1268,13 +1179,6 @@ const createGraph = function createGraph() {
                     .enter()
                     .append('g')
                     .attr('class', 'turb');
-
-                type2.append('path')
-                    .attr('class', 'line')
-                    .attr('d', d => {
-                        return line(d.values)
-                    })
-                    .style('stroke', '#636363');
 
                 type2.selectAll('dot')
                     .data(d => {
@@ -1362,15 +1266,6 @@ const createGraph = function createGraph() {
             ])
             .range([height, 0]);
 
-        const line = d3.line()
-            .curve(d3.curveLinear)
-            .x(d => {
-                return x(d.date)
-            })
-            .y(d => {
-                return y(d.value)
-            });
-
         const svg1 = d3.select(containerName1).append('svg')
             .attr('width', width + margin.left + margin.right)
             .attr('height', height + margin.top + margin.bottom);
@@ -1434,13 +1329,6 @@ const createGraph = function createGraph() {
                     .append('g')
                     .attr('class', 'sal');
 
-                type1.append('path')
-                    .attr('class', 'line')
-                    .attr('d', d => {
-                        return line(d.values)
-                    })
-                    .style('stroke', '#cccccc');
-
                 type1.selectAll('dot')
                     .data(d => {
                         return d.values.map(e => {
@@ -1469,13 +1357,6 @@ const createGraph = function createGraph() {
                     .enter()
                     .append('g')
                     .attr('class', 'sal');
-
-                type2.append('path')
-                    .attr('class', 'line')
-                    .attr('d', d => {
-                        return line(d.values)
-                    })
-                    .style('stroke', '#cccccc');
 
                 type2.selectAll('dot')
                     .data(d => {
@@ -1563,15 +1444,6 @@ const createGraph = function createGraph() {
             ])
             .range([height, 0]);
 
-        const line = d3.line()
-            .curve(d3.curveLinear)
-            .x(d => {
-                return x(d.date)
-            })
-            .y(d => {
-                return y(d.value)
-            });
-
         const svg1 = d3.select(containerName1).append('svg')
             .attr('width', width + margin.left + margin.right)
             .attr('height', height + margin.top + margin.bottom);
@@ -1635,13 +1507,6 @@ const createGraph = function createGraph() {
                     .append('g')
                     .attr('class', 'cond');
 
-                type1.append('path')
-                    .attr('class', 'line')
-                    .attr('d', d => {
-                        return line(d.values)
-                    })
-                    .style('stroke', '#f7f73e');
-
                 type1.selectAll('dot')
                     .data(d => {
                         return d.values.map(e => {
@@ -1670,13 +1535,6 @@ const createGraph = function createGraph() {
                     .enter()
                     .append('g')
                     .attr('class', 'cond');
-
-                type2.append('path')
-                    .attr('class', 'line')
-                    .attr('d', d => {
-                        return line(d.values)
-                    })
-                    .style('stroke', '#f7f73e');
 
                 type2.selectAll('dot')
                     .data(d => {
@@ -1815,15 +1673,6 @@ const createGraph = function createGraph() {
             .domain(['Total Solids', 'Ammonia', 'Nitrite', 'Nitrate', 'Phosphates'])
             .range(['#ababab', '#bfbf30', '#a8bf13', '#c8e60b', '#c9833c']);
 
-        const line = d3.line()
-            .curve(d3.curveLinear)
-            .x(d => {
-                return x(d.date)
-            })
-            .y(d => {
-                return y(d.value)
-            });
-
         const svg1 = d3.select(containerName1).append('svg')
             .attr('width', width + margin.left + margin.right)
             .attr('height', height + margin.top + margin.bottom);
@@ -1904,15 +1753,6 @@ const createGraph = function createGraph() {
                     .enter()
                     .append('g')
                     .attr('class', 'solids');
-
-                type.append('path')
-                    .attr('class', 'line')
-                    .attr('d', d => {
-                        return line(d.values)
-                    })
-                    .style('stroke', d => {
-                        return z(d.name)
-                    });
 
                 type.selectAll('dot')
                     .data(d => {
@@ -2015,15 +1855,6 @@ const createGraph = function createGraph() {
                     .enter()
                     .append('g')
                     .attr('class', 'solids');
-
-                type.append('path')
-                    .attr('class', 'line')
-                    .attr('d', d => {
-                        return line(d.values)
-                    })
-                    .style('stroke', d => {
-                        return z(d.name)
-                    });
 
                 type.selectAll('dot')
                     .data(d => {
@@ -2166,15 +1997,6 @@ const createGraph = function createGraph() {
             ])
             .range([height, 0]);
 
-        const line = d3.line()
-            .curve(d3.curveLinear)
-            .x(d => {
-                return x(d.date)
-            })
-            .y(d => {
-                return y(d.value)
-            });
-
         const svg1 = d3.select(containerName1).append('svg')
             .attr('width', width + margin.left + margin.right)
             .attr('height', height + margin.top + margin.bottom);
@@ -2238,13 +2060,6 @@ const createGraph = function createGraph() {
                     .append('g')
                     .attr('class', 'bod');
 
-                type1.append('path')
-                    .attr('class', 'line')
-                    .attr('d', d => {
-                        return line(d.values)
-                    })
-                    .style('stroke', '#6851ed');
-
                 type1.selectAll('dot')
                     .data(d => {
                         return d.values.map(e => {
@@ -2273,13 +2088,6 @@ const createGraph = function createGraph() {
                     .enter()
                     .append('g')
                     .attr('class', 'bod');
-
-                type2.append('path')
-                    .attr('class', 'line')
-                    .attr('d', d => {
-                        return line(d.values)
-                    })
-                    .style('stroke', '#6851ed');
 
                 type2.selectAll('dot')
                     .data(d => {
@@ -2367,15 +2175,6 @@ const createGraph = function createGraph() {
             ])
             .range([height, 0]);
 
-        const line = d3.line()
-            .curve(d3.curveLinear)
-            .x(d => {
-                return x(d.date)
-            })
-            .y(d => {
-                return y(d.value)
-            });
-
         const svg1 = d3.select(containerName1).append('svg')
             .attr('width', width + margin.left + margin.right)
             .attr('height', height + margin.top + margin.bottom);
@@ -2439,13 +2238,6 @@ const createGraph = function createGraph() {
                     .append('g')
                     .attr('class', 'fecal');
 
-                type1.append('path')
-                    .attr('class', 'line')
-                    .attr('d', d => {
-                        return line(d.values)
-                    })
-                    .style('stroke', '#593e29');
-
                 type1.selectAll('dot')
                     .data(d => {
                         return d.values.map(e => {
@@ -2474,13 +2266,6 @@ const createGraph = function createGraph() {
                     .enter()
                     .append('g')
                     .attr('class', 'fecal');
-
-                type2.append('path')
-                    .attr('class', 'line')
-                    .attr('d', d => {
-                        return line(d.values)
-                    })
-                    .style('stroke', '#593e29');
 
                 type2.selectAll('dot')
                     .data(d => {
