@@ -29,9 +29,7 @@
           <div class="card-image">
             {% for pp_num, img_set in pp_images.items %}
                 {% if pp_num == pp.number %}
-                    {% for img in img_set %}
-                    <img src="{{ img.image.url }}" alt="pp image" />
-                    {% endfor %}
+                  <img src="{{ img_set.first.image.url }}"/>
                 {% endif %}
             {% endfor %}
           </div>
@@ -40,9 +38,7 @@
                 <li>Established: {{ pp.pp_date|date:"m-d-Y" }}</li>
                 {% for pp_num, img_set in pp_images.items %}
                   {% if pp_num == pp.number %}
-                    {% for img in img_set %}
-                    <li>Image date: {{ img.date|date:"m-d-Y" }}</li>
-                    {% endfor %}
+                    <li>Number of Images: {{ img_set.count }}</li>
                   {% endif %}
                 {% endfor %}
                 <li>Compass bearing: {{ pp.compass_bearing }}</li>
