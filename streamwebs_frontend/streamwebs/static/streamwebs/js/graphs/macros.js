@@ -262,15 +262,6 @@ const useLineGraph = function useLineGraph() {
         }))
         .range(['#869099', '#8c7853', '#007d4a', '#e24431']);
 
-    const line = d3.line()
-        .curve(d3.curveLinear)
-        .x((d) => {
-            return x(new Date(d.date))
-        })
-        .y((d) => {
-            return y(d.value)
-        });
-
     const svg = d3.select('#graph-' + siteId).append('svg')
         .attr('width', width + margin.left + margin.right)
         .attr('height', height + margin.top + margin.bottom);
@@ -299,15 +290,6 @@ const useLineGraph = function useLineGraph() {
             .enter()
             .append('g')
             .attr('class', 'type');
-
-        type.append('path')
-            .attr('class', 'line')
-            .attr('d', (d) => {
-                return line(d.values)
-            })
-            .style('stroke', (d) => {
-                return z(d.name)
-            });
 
         type.selectAll('dot')
             .data((d) => {
