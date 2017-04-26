@@ -145,9 +145,9 @@ const useLineGraph = function useLineGraph() {
             x['idx'] = i;
             return x;
         })
-            .filter((x) => {
-                return x.date === curr.date;
-            });
+        .filter((x) => {
+            return x.date.getTime() === curr.date.getTime();
+        });
         if (data === [] || data.length === 0) {
             /*
              * If this is the first data point we've found for this day, then we'll
