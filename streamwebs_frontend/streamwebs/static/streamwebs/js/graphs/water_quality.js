@@ -419,16 +419,18 @@ const createGraph = function createGraph() {
                     .style('border', '1px solid black')
                     .style('font', '12px sans-serif');
 
-                legend1.append('rect')
-                    .attr('x', 2)
-                    .attr('width', 18)
-                    .attr('height', 2)
+                legend1.append('path')
+                    .attr('transform', 'translate(5,0)')
+                    .attr('d', d3.symbol()
+                        .type(d => d.name === 'Water Temperature' ?
+                                d3.symbolCircle : d3.symbolTriangle
+                        ))
                     .attr('fill', d => {
                         return z(d.name);
                     });
 
                 legend1.append('text')
-                    .attr('x', 25)
+                    .attr('x', 20)
                     .attr('dy', '.35em')
                     .attr('text-anchor', 'begin')
                     .attr('fill', d => {
@@ -1180,16 +1182,30 @@ const createGraph = function createGraph() {
                     .style('border', '1px solid black')
                     .style('font', '12px sans-serif');
 
-                legend.append('rect')
-                    .attr('x', 2)
-                    .attr('width', 18)
-                    .attr('height', 2)
+                legend.append('path')
+                    .attr('transform', 'translate(30,0)')
+                    .attr('d',  d3.symbol()
+                        .type(d => {
+                            switch(d.name) {
+                                case "Total Solids":
+                                    return d3.symbolCircle;
+                                case "Ammonia":
+                                    return d3.symbolTriangle;
+                                case "Nitrite":
+                                    return d3.symbolDiamond;
+                                case "Nitrate":
+                                    return d3.symbolCross;
+                                case "Phosphates":
+                                    return d3.symbolWye;
+                            }
+                        })
+                    )
                     .attr('fill', d => {
                         return z(d.name);
                     });
 
                 legend.append('text')
-                    .attr('x', 25)
+                    .attr('x', 40)
                     .attr('dy', '.35em')
                     .attr('text-anchor', 'begin')
                     .attr('fill', d => {
