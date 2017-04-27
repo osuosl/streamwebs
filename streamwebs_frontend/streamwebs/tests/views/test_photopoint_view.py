@@ -39,7 +39,6 @@ class ViewPhotoPointTestCase(TestCase):
                             'cp_id': self.pp.camera_point.id,
                             'pp_id': self.pp.id}))
         self.assertContains(response, 'Paradise')
-        self.assertContains(response, 'point A1')
         self.assertContains(response, '08-13-2016')
         self.assertContains(response, 93)
         self.assertContains(response, 6)
