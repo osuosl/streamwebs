@@ -41,29 +41,57 @@ const changeRangeEnd = function changeRangeEnd() {
 /*******************************************************************************
  *******************************************************************************
  *
- * Histogram
- *
- *******************************************************************************
- ******************************************************************************/
-
-const showHistogram = function showMouseover(e) {
-
-};
-
-/*******************************************************************************
- *******************************************************************************
- *
  * Mouseover
  *
  *******************************************************************************
  ******************************************************************************/
 
-const showMouseover = function showMouseover(e) {
+const showMouseover = function showMouseover(data) {
+    const g = d3.select(this.parentElement.parentElement);
+    const pos = [this.transform.baseVal[0].matrix['e'],
+                 this.transform.baseVal[0].matrix['f']];
 
+    const popup = g.append('g')
+        .attr('class', 'popup')
+        .attr('transform', 'translate(' + (pos[0] + 120) + ',' + pos[1] + ')')
+        .attr('width', 250)
+        .attr('height', 100)
+        .on('click', () => { d3.event.stopPropagation(); });
+
+    popup.append('rect')
+        .attr('x', -100)
+        .attr('y', -10)
+        .attr('width', 250)
+        .attr('height', 100)
+        .attr('rx', 5)
+        .attr('ry', 5)
+        .style('fill', '#E0E0E0')
+        .style('stroke', '#000000');
+
+    popup.append('foreignObject')
+        .attr('x', -95)
+        .attr('y', 0)
+        .attr('width', 240)
+        .attr('height', 100)
+        .attr('text-anchor', 'middle')
+        .attr('dy', '10px')
+        .style('font-size', '16px')
+        .style('line-height', '14px')
+    .append('xhtml:div')
+        .html(
+            '<p>' +
+                data.date.toISOString().substring(0, 10) + ': ' + data.value +
+            '</p>' +
+            '<p>' +
+                '<a href="">View this date as a histogram</a>' +
+            '</p>'
+        );
+
+    d3.event.stopPropagation();
 };
 
-const hideMouseover = function hideMouseover(e) {
-
+const hideMouseover = function hideMouseover() {
+    $('.popup').remove();
 };
 
 /*******************************************************************************
@@ -447,9 +475,8 @@ const createGraph = function createGraph() {
                     .style('fill', d => {
                         return z(d.name)
                     })
-                    .on('mouseover', showMouseover)
-                    .on('mouseout', hideMouseover)
-                    .on('click', showHistogram);
+                    .style('cursor', 'pointer')
+                    .on('click', showMouseover);
 
                 const legend1 = g1.selectAll('.legend')
                     .data([
@@ -534,9 +561,8 @@ const createGraph = function createGraph() {
                     .style('fill', d => {
                         return z(d.name)
                     })
-                    .on('mouseover', showMouseover)
-                    .on('mouseout', hideMouseover)
-                    .on('click', showHistogram);
+                    .style('cursor', 'pointer')
+                    .on('click', showMouseover);
 
                 const legend2 = g2.selectAll('.legend')
                     .data([
@@ -646,9 +672,8 @@ const createGraph = function createGraph() {
                     .attr('d', d3.symbol())
                     .style('stroke', '#000000')
                     .style('fill', '#000000')
-                    .on('mouseover', showMouseover)
-                    .on('mouseout', hideMouseover)
-                    .on('click', showHistogram);
+                    .style('cursor', 'pointer')
+                    .on('click', showMouseover);
             }
 
             if (window.hasSiteTwo && types2.dissolved_oxygen.length) {
@@ -676,9 +701,8 @@ const createGraph = function createGraph() {
                     .attr('d', d3.symbol())
                     .style('stroke', '#000000')
                     .style('fill', '#000000')
-                    .on('mouseover', showMouseover)
-                    .on('mouseout', hideMouseover)
-                    .on('click', showHistogram);
+                    .style('cursor', 'pointer')
+                    .on('click', showMouseover);
             }
         } else {
             $('#oxygen-control').prop({
@@ -747,9 +771,8 @@ const createGraph = function createGraph() {
                     .attr('d', d3.symbol())
                     .style('stroke', '#000000')
                     .style('fill', '#000000')
-                    .on('mouseover', showMouseover)
-                    .on('mouseout', hideMouseover)
-                    .on('click', showHistogram);
+                    .style('cursor', 'pointer')
+                    .on('click', showMouseover);
             }
 
             if (window.hasSiteTwo && types2.pH.length) {
@@ -777,9 +800,8 @@ const createGraph = function createGraph() {
                     .attr('d', d3.symbol())
                     .style('stroke', '#000000')
                     .style('fill', '#000000')
-                    .on('mouseover', showMouseover)
-                    .on('mouseout', hideMouseover)
-                    .on('click', showHistogram);
+                    .style('cursor', 'pointer')
+                    .on('click', showMouseover);
             }
 
         } else {
@@ -850,9 +872,8 @@ const createGraph = function createGraph() {
                     .attr('d', d3.symbol())
                     .style('stroke', '#000000')
                     .style('fill', '#000000')
-                    .on('mouseover', showMouseover)
-                    .on('mouseout', hideMouseover)
-                    .on('click', showHistogram);
+                    .style('cursor', 'pointer')
+                    .on('click', showMouseover);
             }
 
             if (window.hasSiteTwo && types2.turbidity.length) {
@@ -881,9 +902,8 @@ const createGraph = function createGraph() {
                     .attr('d', d3.symbol())
                     .style('stroke', '#000000')
                     .style('fill', '#000000')
-                    .on('mouseover', showMouseover)
-                    .on('mouseout', hideMouseover)
-                    .on('click', showHistogram);
+                    .style('cursor', 'pointer')
+                    .on('click', showMouseover);
             }
         } else {
             $('#turbidity-control').prop({
@@ -953,9 +973,8 @@ const createGraph = function createGraph() {
                     .attr('d', d3.symbol())
                     .style('stroke', '#000000')
                     .style('fill', '#000000')
-                    .on('mouseover', showMouseover)
-                    .on('mouseout', hideMouseover)
-                    .on('click', showHistogram);
+                    .style('cursor', 'pointer')
+                    .on('click', showMouseover);
             }
 
             if (window.hasSiteTwo && types2.salinity.length) {
@@ -983,9 +1002,8 @@ const createGraph = function createGraph() {
                     .attr('d', d3.symbol())
                     .style('stroke', '#000000')
                     .style('fill', '#000000')
-                    .on('mouseover', showMouseover)
-                    .on('mouseout', hideMouseover)
-                    .on('click', showHistogram);
+                    .style('cursor', 'pointer')
+                    .on('click', showMouseover);
             }
         } else {
             $('#salinity-control').prop({
@@ -1055,9 +1073,8 @@ const createGraph = function createGraph() {
                     .attr('d', d3.symbol())
                     .style('stroke', '#000000')
                     .style('fill', '#000000')
-                    .on('mouseover', showMouseover)
-                    .on('mouseout', hideMouseover)
-                    .on('click', showHistogram);
+                    .style('cursor', 'pointer')
+                    .on('click', showMouseover);
             }
 
             if (window.hasSiteTwo && types2.conductivity.length) {
@@ -1085,9 +1102,8 @@ const createGraph = function createGraph() {
                     .attr('d', d3.symbol())
                     .style('stroke', '#000000')
                     .style('fill', '#000000')
-                    .on('mouseover', showMouseover)
-                    .on('mouseout', hideMouseover)
-                    .on('click', showHistogram);
+                    .style('cursor', 'pointer')
+                    .on('click', showMouseover);
             }
         } else {
             $('#conductivity-control').prop({
@@ -1198,9 +1214,8 @@ const createGraph = function createGraph() {
                     .style('fill', d => {
                         return z(d.name)
                     })
-                    .on('mouseover', showMouseover)
-                    .on('mouseout', hideMouseover)
-                    .on('click', showHistogram);
+                    .style('cursor', 'pointer')
+                    .on('click', showMouseover);
 
                 const legend = g1.selectAll('.legend')
                     .data([
@@ -1317,9 +1332,8 @@ const createGraph = function createGraph() {
                     .style('fill', d => {
                         return z(d.name)
                     })
-                    .on('mouseover', showMouseover)
-                    .on('mouseout', hideMouseover)
-                    .on('click', showHistogram);
+                    .style('cursor', 'pointer')
+                    .on('click', showMouseover);
 
                 const legend = g2.selectAll('.legend')
                     .data([
@@ -1440,9 +1454,8 @@ const createGraph = function createGraph() {
                     .attr('d', d3.symbol())
                     .style('stroke', '#000000')
                     .style('fill', '#000000')
-                    .on('mouseover', showMouseover)
-                    .on('mouseout', hideMouseover)
-                    .on('click', showHistogram);
+                    .style('cursor', 'pointer')
+                    .on('click', showMouseover);
             }
 
             if (window.hasSiteTwo && types2.bod.length) {
@@ -1470,9 +1483,8 @@ const createGraph = function createGraph() {
                     .attr('d', d3.symbol())
                     .style('stroke', '#000000')
                     .style('fill', '#000000')
-                    .on('mouseover', showMouseover)
-                    .on('mouseout', hideMouseover)
-                    .on('click', showHistogram);
+                    .style('cursor', 'pointer')
+                    .on('click', showMouseover);
             }
         } else {
             $('#bod-control').prop({
@@ -1542,9 +1554,8 @@ const createGraph = function createGraph() {
                     .attr('d', d3.symbol())
                     .style('stroke', '#000000')
                     .style('fill', '#000000')
-                    .on('mouseover', showMouseover)
-                    .on('mouseout', hideMouseover)
-                    .on('click', showHistogram);
+                    .style('cursor', 'pointer')
+                    .on('click', showMouseover);
             }
 
             if (window.hasSiteTwo && types2.fecal_coliform.length) {
@@ -1572,9 +1583,8 @@ const createGraph = function createGraph() {
                     .attr('d', d3.symbol())
                     .style('stroke', '#000000')
                     .style('fill', '#000000')
-                    .on('mouseover', showMouseover)
-                    .on('mouseout', hideMouseover)
-                    .on('click', showHistogram);
+                    .style('cursor', 'pointer')
+                    .on('click', showMouseover);
             }
         } else {
             $('#coliform-control').prop({
@@ -1599,6 +1609,8 @@ $(() => {
     $('input[type=date]').val('');
     $('#date-start').change(changeRangeStart);
     $('#date-end').change(changeRangeEnd);
+
+    document.addEventListener('click', hideMouseover);
 
     createGraph();
 });
