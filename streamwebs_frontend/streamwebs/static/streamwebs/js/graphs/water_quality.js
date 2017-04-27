@@ -74,7 +74,7 @@ const hideMouseover = function hideMouseover(e) {
  *******************************************************************************
  ******************************************************************************/
 
-let types1 = {}, types2 = {};
+let types1 = {}, types2 = {}, filtered1 = {}, filtered2 = {};
 
 const formatData = function formatData(data, key) {
     /*
@@ -83,7 +83,7 @@ const formatData = function formatData(data, key) {
      * we need. Instead, we want to pull out just one type per data point, pair
      * it with the date, and average each day into one point.
      */
-    const entries =  data.map(d => {
+    return data.map(d => {
         /*
          * Turn each data point *d*, which looks like this:
          *
@@ -123,6 +123,9 @@ const formatData = function formatData(data, key) {
     }).filter(d => {
         return !isNaN(d.value);
     });
+};
+
+const filterOutliers = function filterOutliers(entries) {
 
     /*
      * Next we calculate the first and third quartile and the inter-quartile range
@@ -230,74 +233,84 @@ const createGraphTemplate = function createGraphTemplate(container, width, heigh
     return g1;
 };
 
+const isGoodNum = function isGoodNum(n) {
+    // NaN is not equal to itself
+    return (typeof n === 'number') && n === n;
+};
+
+// If a number is passed, return it.
+// If null, undefined, or NaN are passed, return a boundary value.
+// If `min` is truthy, return Number.MIN_SAFE_INTEGER, else Number.MAX_SAFE_INTEGER
+const valNum = function valNum(n, min) {
+    return isGoodNum(n) ? n : (min ? Number.MIN_SAFE_INTEGER : Number.MAX_SAFE_INTEGER);
+};
+
 const getXDomain = function getX(keys) {
     let min = 0;
     if (date_range[0] !== Number.MIN_SAFE_INTEGER) {
         min = new Date(date_range[0]);
     } else {
-        min = keys.map(key => {
+        min = new Date(keys.map(key => {
             return Math.min(
-                d3.min(types1[key], d => {
-                    return d.date;
-                }),
-                window.hasSiteTwo ? d3.min(types2[key], d => {
-                    return d.date;
-                }) : Number.MAX_SAFE_INTEGER,
+                valNum(d3.min(types1[key], d => {
+                    return d.date.getTime();
+                }), false),
+                window.hasSiteTwo ? valNum(d3.min(types2[key], d => {
+                    return d.date.getTime();
+                }), false)  : Number.MAX_SAFE_INTEGER,
             );
         }).reduce((prev, curr) => {
             return Math.min(prev, curr);
-        });
+        }, Number.MAX_SAFE_INTEGER));
     }
 
     let max = 0;
     if (date_range[1] !== Number.MAX_SAFE_INTEGER) {
         max = new Date(date_range[1]);
     } else {
-        max = keys.map(key => {
+        max = new Date(keys.map(key => {
             return Math.max(
-                d3.max(types1[key], d => {
-                    return d.date;
-                }),
-                window.hasSiteTwo ? d3.max(types2[key], d => {
-                    return d.date;
-                }) : Number.MIN_SAFE_INTEGER,
+                valNum(d3.max(types1[key], d => {
+                    return d.date.getTime();
+                }), true),
+                window.hasSiteTwo ? valNum(d3.max(types2[key], d => {
+                    return d.date.getTime();
+                }), true) : Number.MIN_SAFE_INTEGER,
             );
         }).reduce((prev, curr) => {
             return Math.max(prev, curr);
-        });
+        }, Number.MIN_SAFE_INTEGER));
     }
 
     return [min, max];
 };
 
 const getYDomain = function getY(keys) {
-    let min = keys.map(key => {
-        return Math.min(
-            d3.min(types1[key], d => {
-                return typeof d.value === 'number' ? d.value : Number.MAX_SAFE_INTEGER;
-            }),
-            window.hasSiteTwo ? d3.min(types2[key], d => {
-                return typeof d.value === 'number' ? d.value : Number.MAX_SAFE_INTEGER;
-            }) : Number.MAX_SAFE_INTEGER,
-        );
+    const min = keys.map(key => {
+        const min1 = valNum(d3.min(types1[key], d => {
+            return valNum(d.value, false);
+        }), false);
+        const min2 = window.hasSiteTwo ? valNum(d3.min(types2[key], d => {
+            return valNum(d.value, false);
+        }), false) : Number.MAX_SAFE_INTEGER;
+        return Math.min(min1, min2);
     }).reduce((prev, curr) => {
         return Math.min(prev, curr);
-    });
+    }, Number.MAX_SAFE_INTEGER);
 
-    let max = keys.map(key => {
-        return Math.max(
-            d3.max(types1[key], d => {
-                return typeof d.value === 'number' ? d.value : Number.MIN_SAFE_INTEGER;
-            }),
-            window.hasSiteTwo ? d3.max(types2[key], d => {
-                return typeof d.value === 'number' ? d.value : Number.MIN_SAFE_INTEGER;
-            }) : Number.MIN_SAFE_INTEGER,
-        );
+    const max = keys.map(key => {
+        const max1 = valNum(d3.max(types1[key], d => {
+            return valNum(d.value, true);
+        }), true);
+        const max2 = window.hasSiteTwo ? valNum(d3.max(types2[key], d => {
+            return valNum(d.value, true);
+        }), true) : Number.MIN_SAFE_INTEGER;
+        return Math.max(max1, max2);
     }).reduce((prev, curr) => {
         return Math.max(prev, curr);
-    });
+    }, Number.MIN_SAFE_INTEGER);
 
-    return [min, max];
+    return [min, max === min ? max+10 : max];
 };
 
 const createGraph = function createGraph() {
@@ -327,6 +340,7 @@ const createGraph = function createGraph() {
     'pH', 'turbidity', 'salinity', 'conductivity', 'fecal_coliform', 'bod',
     'total_solids', 'ammonia', 'nitrite', 'nitrate', 'phosphates']) {
         types1[key] = formatData(formatted1, key);
+        filtered1[key] = filterOutliers(types1[key]);
     }
 
     const formatted2 = [];
@@ -352,6 +366,7 @@ const createGraph = function createGraph() {
         'pH', 'turbidity', 'salinity', 'conductivity', 'fecal_coliform', 'bod',
         'total_solids', 'ammonia', 'nitrite', 'nitrate', 'phosphates']) {
             types2[key] = formatData(formatted2, key);
+            filtered2[key] = filterOutliers(types2[key]);
         }
     }
 
