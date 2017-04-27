@@ -102,7 +102,7 @@ def site(request, site_slug):
     ppm_sheets = list(ppm_sheets.order_by('letter').values())
     ppm_sheets = [
         {'id': x['id'], 'uri': 'camera', 'type': 'Camera Point',
-         'date': x['date']}
+         'date': x['cp_date']}
         for x in ppm_sheets]
     soil_sheets = Soil_Survey.objects.filter(site_id=site.id)
     soil_sheets = list(soil_sheets.order_by('-date').values())
@@ -530,7 +530,24 @@ def add_camera_point(request, site_slug):
     )
 
     if request.method == 'POST':
+        if not request.POST._mutable:
+            request.POST._mutable = True
+        # check if lat and lng came in, if not, set it to 0
+        if 'lat' not in request.POST and 'lng' not in request.POST:
+            request.POST['lat'] = 0
+            request.POST['lng'] = 0
+
+        # convert lat and longs into a pointfield object
+        point = ("SRID=4326;POINT(%s %s)" %
+                 (request.POST['lat'], request.POST['lng']))
+        # spoof the location and  request param with the point object
+        # and proceed like normal.
+        request.POST['location'] = point
+        request.POST['site'] = site.id
+
         camera_form = CameraPointForm(request.POST)
+        # camera_form.location = point
+
         pp_formset = PhotoPointInlineFormset(request.POST, instance=camera)
         ppi_formset = PPImageModelFormset(
             request.POST, request.FILES,
@@ -547,6 +564,9 @@ def add_camera_point(request, site_slug):
 
             for (pp, ppi) in zip(photo_points, pp_images):
                 pp.camera_point = camera
+                # Since there is no pp_date on the form, use the parent's
+                # camera point date
+                pp.pp_date = camera.cp_date
                 pp.save()
 
                 ppi = PhotoPointImage(photo_point=pp, image=ppi.image,
@@ -649,6 +669,8 @@ def add_photo_point(request, site_slug, cp_id):
         if pp_form.is_valid() and ppi_formset.is_valid():
             photo_point = pp_form.save(commit=False)
             photo_point.camera_point = cp
+            # use parent camera point date
+            photo_point.pp_date = cp.cp_date
             photo_point.save()
 
             pp_images = ppi_formset.save(commit=False)
