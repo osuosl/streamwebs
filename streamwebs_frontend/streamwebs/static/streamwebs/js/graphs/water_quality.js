@@ -83,7 +83,7 @@ const formatData = function formatData(data, key) {
      * we need. Instead, we want to pull out just one type per data point, pair
      * it with the date, and average each day into one point.
      */
-    return data.map((d) => {
+    const entries =  data.map(d => {
         /*
          * Turn each data point *d*, which looks like this:
          *
@@ -120,41 +120,78 @@ const formatData = function formatData(data, key) {
                 return ((prev * idx) + parseFloat(curr[key])) / (idx + 1);
             }, 0),
         };
-        }).filter(d => {
-            return !isNaN(d.value);
-        /*
-         * For an explanation of the following map-reduce functions, see lines
-         * 134-213 of macros.js.
-         */
-        }).reduce((prev, curr) => {
-            let data = prev.map((x, i) => {
-                x['idx'] = i;
-                return x;
-            }).filter(x => {
-                return x.date.getTime() === curr.date.getTime();
-            });
+    }).filter(d => {
+        return !isNaN(d.value);
+    });
 
-            if (!data || data === [] || data.length === 0) {
-                prev.push({
-                    date: curr.date,
-                    value: curr.value,
-                    count: 1,
-                });
-            } else {
-                data = data[0];
-                prev[data.idx] = {
-                    date: curr.date,
-                    value: data.value + curr.value,
-                    count: data.count + 1,
-                }
-            }
-            return prev;
-        }, []).map(x => {
-            return {
-                date: x.date,
-                value: x.value / x.count,
-            }
+    /*
+     * Next we calculate the first and third quartile and the inter-quartile range
+     */
+
+    const points = entries.map(d => {
+        return d.value;
+    }).sort();
+    const n = points.length;
+
+    const firstQP = Math.floor(.25*(n+1));
+
+    const firstQ = .25*(n+1) === firstQP ? // If (n+1)/4 is an integer
+        points[.25*(n+1)] : // Use it as the index
+        // Otherwise, interpolate the two values, using
+        // x[int((n+1)/4)] + x[int((n+1)/4)+1](decimal((n+1)/4))
+        points[firstQP] + (points[firstQP+1] * (.25*(n+1) - firstQP));
+
+    const thirdQP = Math.floor(.75*(n+1));
+
+    const thirdQ = .25*(n+1) === thirdQP ? // If 3(n+1)/4 is an integer
+        points[thirdQP] : // Use it as the index
+        // Otherwise, interpolate the two values, using
+        // x[int(3(n+1)/4)] + x[int(3(n+1)/4)+1](decimal(3(n+1)/4))
+        points[thirdQP] + (points[thirdQP+1] * (.75*(n+1) - thirdQP));
+
+    const iqr = thirdQ - firstQ;
+
+    /*
+     * Finally, we filter outliers (values more than 1.5*IQR away from the quartiles),
+     * then average the remaining data points.
+     */
+
+    return entries.filter(d => {
+        return d.value >= firstQ - (1.5*iqr) &&
+               d.value <= thirdQ + (1.5*iqr);
+    /*
+     * Get the averages by each day. For more information, see lines 134-213
+     * of macros.js.
+     */
+    }).reduce((prev, curr) => {
+        let data = prev.map((x, i) => {
+            x['idx'] = i;
+            return x;
+        }).filter(x => {
+            return x.date.getTime() === curr.date.getTime();
         });
+
+        if (!data || data === [] || data.length === 0) {
+            prev.push({
+                date: curr.date,
+                value: curr.value,
+                count: 1,
+            });
+        } else {
+            data = data[0];
+            prev[data.idx] = {
+                date: curr.date,
+                value: data.value + curr.value,
+                count: data.count + 1,
+            }
+        }
+        return prev;
+    }, []).map(x => {
+        return {
+            date: x.date,
+            value: x.value / x.count,
+        }
+    });
 };
 
 const margin = {top: 20, right: 150, bottom: 50, left: 40};
