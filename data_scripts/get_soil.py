@@ -23,7 +23,7 @@ else:
 
 # Collected, Stream/Site name, Landscape Position, Cover Type, Land Use,
 # Distance From Stream, Distinguishing Site Characteristics, My Soil Type Is
-with open('../csvs/soil_survey.csv', 'r') as csvfile:  # 'r' is for read
+with open(datafile, 'r') as csvfile:  # 'r' is for read
     reader = csv.DictReader(csvfile)    # dict v. regular: name instead of idx
     for row in reader:
         # Strip ``Collected`` so that it is in the correct format
