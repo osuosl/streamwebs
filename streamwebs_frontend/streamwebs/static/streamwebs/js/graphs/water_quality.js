@@ -161,24 +161,44 @@ const filterOutliers = function filterOutliers(entries) {
 
     const points = entries.map(d => {
         return d.value;
-    }).sort();
+    }).sort((a, b) => {
+        return a-b;
+    });
     const n = points.length;
 
-    const firstQP = Math.floor(.25*(n+1));
+    /*
+     * Split the array into a top and bottom half.
+     * In an odd-length array, we drop the middle.
+     *
+     * Examples:
+     * n = 12, n/2 = 6 [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+     * bottom = [0, 1, 2, 3, 4, 5] = slice(0, 6) = slice(0, n/2)
+     * top = [6, 7, 8, 9, 10, 11] = slice(6, 12) = slice(n/2, n)
+     *
+     * n = 13, n/2 = 6.5 [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+     * bottom = [0, 1, 2, 3, 4, 5] = slice(0, 6) = slice(0, floor(n/2))
+     * top = [7, 8, 9, 10, 11, 12] = slice(7, 13) = slice(ceil(n/2), n)
+     */
+    const bottom = points.slice(0, Math.floor(n/2));
+    const top = points.slice(Math.ceil(n/2), n);
 
-    const firstQ = .25*(n+1) === firstQP ? // If (n+1)/4 is an integer
-        points[.25*(n+1)] : // Use it as the index
-        // Otherwise, interpolate the two values, using
-        // x[int((n+1)/4)] + x[int((n+1)/4)+1](decimal((n+1)/4))
-        points[firstQP] + (points[firstQP+1] * (.25*(n+1) - firstQP));
+    /*
+     * Now each quartile is the median of each array.
+     * In an odd-length array, it's the halfway point of the array, which
+     * (in a 0-indexed system) is floor(n/2).
+     * In an even-length array, it's the average of the two points in the middle,
+     * which are floor(n/2 - 1) and floor(n/2) (sum them and divide by two).
+     */
 
-    const thirdQP = Math.floor(.75*(n+1));
+    const firstQP = Math.floor(bottom.length/2);
+    const firstQ = bottom.length % 2 === 0 ?
+        (bottom[firstQP-1] + bottom[firstQP])/2 :
+        bottom[firstQP];
 
-    const thirdQ = .25*(n+1) === thirdQP ? // If 3(n+1)/4 is an integer
-        points[thirdQP] : // Use it as the index
-        // Otherwise, interpolate the two values, using
-        // x[int(3(n+1)/4)] + x[int(3(n+1)/4)+1](decimal(3(n+1)/4))
-        points[thirdQP] + (points[thirdQP+1] * (.75*(n+1) - thirdQP));
+    const thirdQP = Math.floor(top.length/2);
+    const thirdQ = top.length % 2 === 0 ?
+        (top[thirdQP-1] + top[thirdQP])/2 :
+        top[thirdQP];
 
     const iqr = thirdQ - firstQ;
 
@@ -280,10 +300,10 @@ const getXDomain = function getX(keys) {
     } else {
         min = new Date(keys.map(key => {
             return Math.min(
-                valNum(d3.min(types1[key], d => {
+                valNum(d3.min(filtered1[key], d => {
                     return d.date.getTime();
                 }), false),
-                window.hasSiteTwo ? valNum(d3.min(types2[key], d => {
+                window.hasSiteTwo ? valNum(d3.min(filtered2[key], d => {
                     return d.date.getTime();
                 }), false)  : Number.MAX_SAFE_INTEGER,
             );
@@ -298,10 +318,10 @@ const getXDomain = function getX(keys) {
     } else {
         max = new Date(keys.map(key => {
             return Math.max(
-                valNum(d3.max(types1[key], d => {
+                valNum(d3.max(filtered1[key], d => {
                     return d.date.getTime();
                 }), true),
-                window.hasSiteTwo ? valNum(d3.max(types2[key], d => {
+                window.hasSiteTwo ? valNum(d3.max(filtered2[key], d => {
                     return d.date.getTime();
                 }), true) : Number.MIN_SAFE_INTEGER,
             );
@@ -315,10 +335,10 @@ const getXDomain = function getX(keys) {
 
 const getYDomain = function getY(keys) {
     const min = keys.map(key => {
-        const min1 = valNum(d3.min(types1[key], d => {
+        const min1 = valNum(d3.min(filtered1[key], d => {
             return valNum(d.value, false);
         }), false);
-        const min2 = window.hasSiteTwo ? valNum(d3.min(types2[key], d => {
+        const min2 = window.hasSiteTwo ? valNum(d3.min(filtered2[key], d => {
             return valNum(d.value, false);
         }), false) : Number.MAX_SAFE_INTEGER;
         return Math.min(min1, min2);
@@ -327,10 +347,10 @@ const getYDomain = function getY(keys) {
     }, Number.MAX_SAFE_INTEGER);
 
     const max = keys.map(key => {
-        const max1 = valNum(d3.max(types1[key], d => {
+        const max1 = valNum(d3.max(filtered1[key], d => {
             return valNum(d.value, true);
         }), true);
-        const max2 = window.hasSiteTwo ? valNum(d3.max(types2[key], d => {
+        const max2 = window.hasSiteTwo ? valNum(d3.max(filtered2[key], d => {
             return valNum(d.value, true);
         }), true) : Number.MIN_SAFE_INTEGER;
         return Math.max(max1, max2);
@@ -425,10 +445,10 @@ const createGraph = function createGraph() {
 
         const g2 = createGraphTemplate(containerName2, width, height, x, y);
 
-        if ((types1.water_temperature.length ||
-        types1.air_temperature.length) ||
-        (window.hasSiteTwo && (types2.water_temperature.length ||
-        types2.air_temperature.length))) {
+        if ((filtered1.water_temperature.length ||
+        filtered1.air_temperature.length) ||
+        (window.hasSiteTwo && (filtered2.water_temperature.length ||
+        filtered2.air_temperature.length))) {
             $('#temperature-control').prop({
                 disabled: null,
                 checked: true
@@ -436,16 +456,16 @@ const createGraph = function createGraph() {
             container1.css({display: 'block'});
             container2.css({display: window.hasSiteTwo ? 'block' : 'none'});
 
-            if (types1.water_temperature.length || types1.air_temperature.length) {
+            if (filtered1.water_temperature.length || filtered1.air_temperature.length) {
                 const type1 = g1.selectAll('.temp')
                     .data([
                         {
                             name: "Water Temperature",
-                            values: types1.water_temperature
+                            values: filtered1.water_temperature
                         },
                         {
                             name: "Air Temperature",
-                            values: types1.air_temperature
+                            values: filtered1.air_temperature
                         },
                     ])
                     .enter()
@@ -482,11 +502,11 @@ const createGraph = function createGraph() {
                     .data([
                         {
                             name: "Water Temperature",
-                            values: types1.water_temperature
+                            values: filtered1.water_temperature
                         },
                         {
                             name: "Air Temperature",
-                            values: types1.air_temperature
+                            values: filtered1.air_temperature
                         },
                     ])
                     .enter()
@@ -521,17 +541,17 @@ const createGraph = function createGraph() {
             }
 
             if (window.hasSiteTwo && (
-                types2.water_temperature.length || types2.air_temperature.length
+                filtered2.water_temperature.length || filtered2.air_temperature.length
             )) {
                 const type2 = g2.selectAll('.temp')
                     .data([
                         {
                             name: "Water Temperature",
-                            values: types2.water_temperature
+                            values: filtered2.water_temperature
                         },
                         {
                             name: "Air Temperature",
-                            values: types2.air_temperature
+                            values: filtered2.air_temperature
                         },
                     ])
                     .enter()
@@ -568,11 +588,11 @@ const createGraph = function createGraph() {
                     .data([
                         {
                             name: "Water Temperature",
-                            values: types2.water_temperature
+                            values: filtered2.water_temperature
                         },
                         {
                             name: "Air Temperature",
-                            values: types2.air_temperature
+                            values: filtered2.air_temperature
                         },
                     ])
                     .enter()
@@ -638,8 +658,8 @@ const createGraph = function createGraph() {
 
         const g2 = createGraphTemplate(containerName2, width, height, x, y);
 
-        if (types1.dissolved_oxygen.length ||
-        (window.hasSiteTwo && types2.dissolved_oxygen.length)) {
+        if (filtered1.dissolved_oxygen.length ||
+        (window.hasSiteTwo && filtered2.dissolved_oxygen.length)) {
             $('#oxygen-control').prop({
                 disabled: null,
                 checked: true
@@ -647,11 +667,11 @@ const createGraph = function createGraph() {
             container1.css({display: 'block'});
             container2.css({display: window.hasSiteTwo ? 'block' : 'none'});
 
-            if (types1.dissolved_oxygen.length) {
+            if (filtered1.dissolved_oxygen.length) {
                 const type1 = g1.selectAll('.do')
                     .data([{
                         name: 'Dissolved Oxygen',
-                        values: types1.dissolved_oxygen
+                        values: filtered1.dissolved_oxygen
                     }])
                     .enter()
                     .append('g')
@@ -676,11 +696,11 @@ const createGraph = function createGraph() {
                     .on('click', showMouseover);
             }
 
-            if (window.hasSiteTwo && types2.dissolved_oxygen.length) {
+            if (window.hasSiteTwo && filtered2.dissolved_oxygen.length) {
                 const type2 = g2.selectAll('.do')
                     .data([{
                         name: 'Dissolved Oxygen',
-                        values: types2.dissolved_oxygen
+                        values: filtered2.dissolved_oxygen
                     }])
                     .enter()
                     .append('g')
@@ -738,7 +758,7 @@ const createGraph = function createGraph() {
 
         const g2 = createGraphTemplate(containerName2, width, height, x, y);
 
-        if (types1.pH.length || (window.hasSiteTwo && types2.pH.length)) {
+        if (filtered1.pH.length || (window.hasSiteTwo && filtered2.pH.length)) {
             $('#ph-control').prop({
                 disabled: null,
                 checked: true
@@ -746,11 +766,11 @@ const createGraph = function createGraph() {
             container1.css({display: 'block'});
             container2.css({display: window.hasSiteTwo ? 'block' : 'none'});
 
-            if (types1.pH.length) {
+            if (filtered1.pH.length) {
                 const type1 = g1.selectAll('.ph')
                     .data([{
                         name: 'pH',
-                        values: types1.pH
+                        values: filtered1.pH
                     }])
                     .enter()
                     .append('g')
@@ -775,11 +795,11 @@ const createGraph = function createGraph() {
                     .on('click', showMouseover);
             }
 
-            if (window.hasSiteTwo && types2.pH.length) {
+            if (window.hasSiteTwo && filtered2.pH.length) {
                 const type2 = g2.selectAll('.ph')
                     .data([{
                         name: 'pH',
-                        values: types2.pH
+                        values: filtered2.pH
                     }])
                     .enter()
                     .append('g')
@@ -838,8 +858,8 @@ const createGraph = function createGraph() {
 
         const g2 = createGraphTemplate(containerName2, width, height, x, y);
 
-        if (types1.turbidity.length ||
-        (window.hasSiteTwo && types2.turbidity.length)) {
+        if (filtered1.turbidity.length ||
+        (window.hasSiteTwo && filtered2.turbidity.length)) {
             $('#turbidity-control').prop({
                 disabled: null,
                 checked: true
@@ -847,11 +867,11 @@ const createGraph = function createGraph() {
             container1.css({display: 'block'});
             container2.css({display: window.hasSiteTwo ? 'block' : 'none'});
 
-            if (types1.turbidity.length) {
+            if (filtered1.turbidity.length) {
                 const type1 = g1.selectAll('.turb')
                     .data([{
                         name: 'Turbidity',
-                        values: types1.turbidity
+                        values: filtered1.turbidity
                     }])
                     .enter()
                     .append('g')
@@ -876,12 +896,12 @@ const createGraph = function createGraph() {
                     .on('click', showMouseover);
             }
 
-            if (window.hasSiteTwo && types2.turbidity.length) {
+            if (window.hasSiteTwo && filtered2.turbidity.length) {
 
                 const type2 = g2.selectAll('.turb')
                     .data([{
                         name: 'Turbidity',
-                        values: types2.turbidity
+                        values: filtered2.turbidity
                     }])
                     .enter()
                     .append('g')
@@ -939,8 +959,8 @@ const createGraph = function createGraph() {
 
         const g2 = createGraphTemplate(containerName2, width, height, x, y);
 
-        if (types1.salinity.length ||
-        (window.hasSiteTwo && types2.salinity.length)) {
+        if (filtered1.salinity.length ||
+        (window.hasSiteTwo && filtered2.salinity.length)) {
             $('#salinity-control').prop({
                 disabled: null,
                 checked: true
@@ -948,11 +968,11 @@ const createGraph = function createGraph() {
             container1.css({display: 'block'});
             container2.css({display: window.hasSiteTwo ? 'block' : 'none'});
 
-            if (types1.salinity.length) {
+            if (filtered1.salinity.length) {
                 const type1 = g1.selectAll('.sal')
                     .data([{
                         name: 'Salinity',
-                        values: types1.salinity
+                        values: filtered1.salinity
                     }])
                     .enter()
                     .append('g')
@@ -977,11 +997,11 @@ const createGraph = function createGraph() {
                     .on('click', showMouseover);
             }
 
-            if (window.hasSiteTwo && types2.salinity.length) {
+            if (window.hasSiteTwo && filtered2.salinity.length) {
                 const type2 = g2.selectAll('.sal')
                     .data([{
                         name: 'Salinity',
-                        values: types2.salinity
+                        values: filtered2.salinity
                     }])
                     .enter()
                     .append('g')
@@ -1039,8 +1059,8 @@ const createGraph = function createGraph() {
 
         const g2 = createGraphTemplate(containerName2, width, height, x, y);
 
-        if (types1.conductivity.length ||
-        (window.hasSiteTwo && types2.conductivity.length)) {
+        if (filtered1.conductivity.length ||
+        (window.hasSiteTwo && filtered2.conductivity.length)) {
             $('#conductivity-control').prop({
                 disabled: null,
                 checked: true
@@ -1048,11 +1068,11 @@ const createGraph = function createGraph() {
             container1.css({display: 'block'});
             container2.css({display: window.hasSiteTwo ? 'block' : 'none'});
 
-            if (types1.conductivity.length) {
+            if (filtered1.conductivity.length) {
                 const type1 = g1.selectAll('.cond')
                     .data([{
                         name: 'Conductivity',
-                        values: types1.conductivity
+                        values: filtered1.conductivity
                     }])
                     .enter()
                     .append('g')
@@ -1077,11 +1097,11 @@ const createGraph = function createGraph() {
                     .on('click', showMouseover);
             }
 
-            if (window.hasSiteTwo && types2.conductivity.length) {
+            if (window.hasSiteTwo && filtered2.conductivity.length) {
                 const type2 = g2.selectAll('.cond')
                     .data([{
                         name: 'Conductivity',
-                        values: types2.conductivity
+                        values: filtered2.conductivity
                     }])
                     .enter()
                     .append('g')
@@ -1143,8 +1163,8 @@ const createGraph = function createGraph() {
 
         const g2 = createGraphTemplate(containerName2, width, height, x, y);
 
-        if (types1.total_solids.length ||
-        (window.hasSiteTwo && types2.total_solids.length)) {
+        if (filtered1.total_solids.length ||
+        (window.hasSiteTwo && filtered2.total_solids.length)) {
             $('#dissolved-control').prop({
                 disabled: null,
                 checked: true
@@ -1152,28 +1172,28 @@ const createGraph = function createGraph() {
             container1.css({display: 'block'});
             container2.css({display: window.hasSiteTwo ? 'block' : 'none'});
 
-            if (types1.total_solids.length) {
+            if (filtered1.total_solids.length) {
                 const type = g1.selectAll('.solids')
                     .data([
                         {
                             name: "Total Solids",
-                            values: types1.total_solids
+                            values: filtered1.total_solids
                         },
                         {
                             name: "Ammonia",
-                            values: types1.ammonia
+                            values: filtered1.ammonia
                         },
                         {
                             name: "Nitrite",
-                            values: types1.nitrite
+                            values: filtered1.nitrite
                         },
                         {
                             name: "Nitrate",
-                            values: types1.nitrate
+                            values: filtered1.nitrate
                         },
                         {
                             name: "Phosphates",
-                            values: types1.phosphates
+                            values: filtered1.phosphates
                         },
                     ])
                     .enter()
@@ -1221,23 +1241,23 @@ const createGraph = function createGraph() {
                     .data([
                         {
                             name: "Total Solids",
-                            values: types1.total_solids
+                            values: filtered1.total_solids
                         },
                         {
                             name: "Ammonia",
-                            values: types1.ammonia
+                            values: filtered1.ammonia
                         },
                         {
                             name: "Nitrite",
-                            values: types1.nitrite
+                            values: filtered1.nitrite
                         },
                         {
                             name: "Nitrate",
-                            values: types1.nitrate
+                            values: filtered1.nitrate
                         },
                         {
                             name: "Phosphates",
-                            values: types1.phosphates
+                            values: filtered1.phosphates
                         },
                     ])
                     .enter()
@@ -1283,28 +1303,28 @@ const createGraph = function createGraph() {
                     });
             }
 
-            if (window.hasSiteTwo && types2.total_solids.length) {
+            if (window.hasSiteTwo && filtered2.total_solids.length) {
                 const type = g2.selectAll('.solids')
                     .data([
                         {
                             name: "Total Solids",
-                            values: types2.total_solids
+                            values: filtered2.total_solids
                         },
                         {
                             name: "Ammonia",
-                            values: types2.ammonia
+                            values: filtered2.ammonia
                         },
                         {
                             name: "Nitrite",
-                            values: types2.nitrite
+                            values: filtered2.nitrite
                         },
                         {
                             name: "Nitrate",
-                            values: types2.nitrate
+                            values: filtered2.nitrate
                         },
                         {
                             name: "Phosphates",
-                            values: types2.phosphates
+                            values: filtered2.phosphates
                         },
                     ])
                     .enter()
@@ -1339,23 +1359,23 @@ const createGraph = function createGraph() {
                     .data([
                         {
                             name: "Total Solids",
-                            values: types2.total_solids
+                            values: filtered2.total_solids
                         },
                         {
                             name: "Ammonia",
-                            values: types2.ammonia
+                            values: filtered2.ammonia
                         },
                         {
                             name: "Nitrite",
-                            values: types2.nitrite
+                            values: filtered2.nitrite
                         },
                         {
                             name: "Nitrate",
-                            values: types2.nitrate
+                            values: filtered2.nitrate
                         },
                         {
                             name: "Phosphates",
-                            values: types2.phosphates
+                            values: filtered2.phosphates
                         },
                     ])
                     .enter()
@@ -1420,8 +1440,8 @@ const createGraph = function createGraph() {
 
         const g2 = createGraphTemplate(containerName2, width, height, x, y);
 
-        if (types1.bod.length ||
-        (window.hasSiteTwo && types2.bod.length)) {
+        if (filtered1.bod.length ||
+        (window.hasSiteTwo && filtered2.bod.length)) {
             $('#bod-control').prop({
                 disabled: null,
                 checked: true
@@ -1429,11 +1449,11 @@ const createGraph = function createGraph() {
             container1.css({display: 'block'});
             container2.css({display: window.hasSiteTwo ? 'block' : 'none'});
 
-            if (types1.bod.length) {
+            if (filtered1.bod.length) {
                 const type1 = g1.selectAll('.bod')
                     .data([{
                         name: 'BOD',
-                        values: types1.bod
+                        values: filtered1.bod
                     }])
                     .enter()
                     .append('g')
@@ -1458,11 +1478,11 @@ const createGraph = function createGraph() {
                     .on('click', showMouseover);
             }
 
-            if (window.hasSiteTwo && types2.bod.length) {
+            if (window.hasSiteTwo && filtered2.bod.length) {
                 const type2 = g2.selectAll('.bod')
                     .data([{
                         name: 'BOD',
-                        values: types2.bod
+                        values: filtered2.bod
                     }])
                     .enter()
                     .append('g')
@@ -1520,8 +1540,8 @@ const createGraph = function createGraph() {
 
         const g2 = createGraphTemplate(containerName2, width, height, x, y);
 
-        if (types1.fecal_coliform.length ||
-        (window.hasSiteTwo && types2.fecal_coliform.length)) {
+        if (filtered1.fecal_coliform.length ||
+        (window.hasSiteTwo && filtered2.fecal_coliform.length)) {
             $('#coliform-control').prop({
                 disabled: null,
                 checked: true
@@ -1529,11 +1549,11 @@ const createGraph = function createGraph() {
             container1.css({display: 'block'});
             container2.css({display: window.hasSiteTwo ? 'block' : 'none'});
 
-            if (types1.fecal_coliform.length) {
+            if (filtered1.fecal_coliform.length) {
                 const type1 = g1.selectAll('.fecal')
                     .data([{
                         name: 'Fecal Coliform',
-                        values: types1.fecal_coliform
+                        values: filtered1.fecal_coliform
                     }])
                     .enter()
                     .append('g')
@@ -1558,11 +1578,11 @@ const createGraph = function createGraph() {
                     .on('click', showMouseover);
             }
 
-            if (window.hasSiteTwo && types2.fecal_coliform.length) {
+            if (window.hasSiteTwo && filtered2.fecal_coliform.length) {
                 const type2 = g2.selectAll('.fecal')
                     .data([{
                         name: 'Fecal Coliform',
-                        values: types2.fecal_coliform
+                        values: filtered2.fecal_coliform
                     }])
                     .enter()
                     .append('g')
