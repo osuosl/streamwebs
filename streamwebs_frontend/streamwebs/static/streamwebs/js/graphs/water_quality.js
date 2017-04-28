@@ -48,21 +48,35 @@ const changeRangeEnd = function changeRangeEnd() {
 
 const showMouseover = function showMouseover(data) {
     const g = d3.select(this.parentElement.parentElement);
-    const pos = [this.transform.baseVal[0].matrix['e'],
+    const dotPos = [this.transform.baseVal[0].matrix['e'],
                  this.transform.baseVal[0].matrix['f']];
+
+    const svg = d3.select(this.ownerSVGElement);
+    const svgSize = [svg.attr('width'), svg.attr('height')];
+
+    const width = 250;
+    const height = 100;
+
+    const xOffset = 120;
+
+    const pos = [
+        dotPos[0] + xOffset + width > svgSize[0] ?
+            svgSize[0] - 4*width/5 : dotPos[0] + xOffset,
+        dotPos[1] + height > svgSize[1] ? svgSize[1] - height - 20 : dotPos[1]
+    ];
 
     const popup = g.append('g')
         .attr('class', 'popup')
-        .attr('transform', 'translate(' + (pos[0] + 120) + ',' + pos[1] + ')')
-        .attr('width', 250)
-        .attr('height', 100)
+        .attr('transform', 'translate(' + pos[0] + ',' + pos[1] + ')')
+        .attr('width', width)
+        .attr('height', height)
         .on('click', () => { d3.event.stopPropagation(); });
 
     popup.append('rect')
         .attr('x', -100)
         .attr('y', -10)
-        .attr('width', 250)
-        .attr('height', 100)
+        .attr('width', width)
+        .attr('height', height)
         .attr('rx', 5)
         .attr('ry', 5)
         .style('fill', '#E0E0E0')
@@ -70,9 +84,9 @@ const showMouseover = function showMouseover(data) {
 
     popup.append('foreignObject')
         .attr('x', -95)
-        .attr('y', 0)
-        .attr('width', 240)
-        .attr('height', 100)
+        .attr('y', -5)
+        .attr('width', width-10)
+        .attr('height', height-10)
         .attr('text-anchor', 'middle')
         .attr('dy', '10px')
         .style('font-size', '16px')
@@ -80,7 +94,13 @@ const showMouseover = function showMouseover(data) {
     .append('xhtml:div')
         .html(
             '<p>' +
-                data.date.toISOString().substring(0, 10) + ': ' + data.value +
+                data.date.toISOString().substring(0, 10) + ': ' +
+                data.value.toLocaleString('en-US', {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 5,
+                    style: 'decimal',
+                    useGrouping: true,
+                }) +
             '</p>' +
             '<p>' +
                 '<a href="">View this date as a histogram</a>' +
