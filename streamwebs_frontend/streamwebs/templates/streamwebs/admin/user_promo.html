@@ -5,6 +5,15 @@
 {% block title %} Manage User Permissions {% endblock %}
 {% block body_title %} Manage User Permissions {% endblock %}
 
+{% block scripts %}
+    <script type="application/javascript" src="{% static 'streamwebs/js/data.js' %}"></script>
+    <script>
+        $(document).ready(function() {
+            $('select').material_select();
+        });
+    </script>
+{% endblock %}
+
 {% block content %}
 <div class="container">
 {% if msgs %}
@@ -15,7 +24,19 @@
 
     <form id='promo_form' method='post'>
         {% csrf_token %}
-        {{ promo_form.as_p }}
+
+        {{ promo_form.users.errors }}
+        <div class="input-field">
+            <select multiple>
+                <option value="" disabled selected>default</option>
+                <option value={{promo_form.users}}></option>
+            </select>
+            <label> Users </label>
+        </div>
+
+        {{ promo_form.perms.label }}
+        {{ promo_form.perms }}
+        {{ promo_form.perms.errors }}
         <input class="btn waves-effect waves-light teal darken-4" type='submit' name='submit' value='{% trans 'Apply' %}'/>
     </form>
 
@@ -48,9 +69,5 @@
             {% endif %}
         </span>
     </div>
-
-{% block scripts %}
-    <script type="application/javascript" src="{% static 'streamwebs/js/data.js' %}"></script>
-{% endblock %}
 
 {% endblock %}
