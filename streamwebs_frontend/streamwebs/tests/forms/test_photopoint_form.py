@@ -5,8 +5,6 @@ from streamwebs.forms import PhotoPointForm
 class PhotoPointFormTestCase(TestCase):
     def setUp(self):
         self.expected_fields = (
-            'camera_point',
-            'pp_date',
             'compass_bearing',
             'distance',
             'camera_height',
@@ -14,8 +12,6 @@ class PhotoPointFormTestCase(TestCase):
         )
 
         self.required_fields = (
-            'camera_point',
-            'pp_date',
             'compass_bearing',
             'distance',
             'camera_height',

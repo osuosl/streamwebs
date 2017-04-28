@@ -3,17 +3,43 @@
 {% load i18n %}
 {% load filters %}
 {% block title %}{% trans "New photo point" %}{% endblock %}
-{% block body_title %}{% trans "Add a new photo point for camera point" %}{% endblock %}
 {% block content %}
+  <div class="container">
+    <h4>{% trans "New photo point for camera point" %}</h4>
     {% if added %}
     <strong>{% trans "You have successfully added a new photo point" %}</strong>
     {% else %}
     <form id='pp_form' method='post' enctype='multipart/form-data'>
         {% csrf_token %}
         {{ pp_form.as_p }}
-        {{ ppi_formset.as_p }}
+        {{ ppi_formset.management_form }}
+        {% for ppi_form in ppi_formset %}
+          <div class ="input-field">
+            {{ ppi_form.image }}
+            {{ ppi_form.image.errors | striptags }}
+          </div>
+          <div class ="input-field">
+            <label for="{{ ppi_form.date.label }}">Date</label>
+            {{ ppi_form.date }}
+            {{ ppi_form.date.errors | striptags }}
+          </div>
+        {% endfor %}
         <input class="btn waves-effect waves-light teal darken-4" type='submit' name='submit' value='Submit' />
     </form>
     {% endif %}
+  </div>
+{% endblock %}
 
+{% block scripts %}
+<script>
+$(document).ready(function() {
+  $('.datepicker').pickadate({
+    today: '',
+    selectMonths: true, // Creates a dropdown to control month
+    selectYears: 100, // Creates a dropdown of 15 years to control year
+    max: true, // set max to today
+    format: 'yyyy-mm-dd',
+  });
+});
+</script>
 {% endblock %}

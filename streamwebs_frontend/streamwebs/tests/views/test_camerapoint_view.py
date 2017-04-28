@@ -51,7 +51,7 @@ class ViewCameraPointTestCase(TestCase):
         self.assertContains(self.response, 'Photo point 2')
         self.assertContains(self.response, 'Photo point 3')
 
-        # PPI dates present
-        self.assertContains(self.response, '09-13-2016')
-        self.assertContains(self.response, '09-14-2016')
-        self.assertContains(self.response, '09-15-2016')
+        # PPI dates no longer present on camera point view
+        # self.assertContains(self.response, '09-13-2016')
+        # self.assertContains(self.response, '09-14-2016')
+        # self.assertContains(self.response, '09-15-2016')

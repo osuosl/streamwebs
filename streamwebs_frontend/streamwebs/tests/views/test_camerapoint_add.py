@@ -32,8 +32,6 @@ class AddCameraPointTestCase(TestCase):
         )
         self.assertFormError(response, 'camera_form', 'cp_date',
                              'This field is required.')
-        self.assertFormError(response, 'camera_form', 'location',
-                             'No geometry value provided.')
         self.assertTemplateUsed(
             response,
             'streamwebs/datasheets/camera_point_add.html'
@@ -56,6 +54,8 @@ class AddCameraPointTestCase(TestCase):
                         'location': 'POINT(-121.3846841 44.0612385)',
                         'map_datum': 'WGS84',
                         'description': 'aay',
+                        'lat': '-121.3846841',
+                        'lng': '44.0612385',
 
                         # photo point formset
                         'camera_point-TOTAL_FORMS': '3',  # 3 for now
