@@ -62,6 +62,14 @@ body {
     pointer-events: none;
 }
 
+#language-button {
+    height: 1.5em;
+    line-height: 1.6em;
+    font-size: 1.2em;
+    padding-left: .5em;
+    padding-right: .5em;
+}
+
 .inner-wrap {
     width: 74%;
     min-height: 700px;
