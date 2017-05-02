@@ -273,6 +273,16 @@ def water_graph_site_data(request, site_slug):
     }), content_type='application/json')
 
 
+def water_histogram(request, site_slug, data_type, date):
+    site = Site.objects.get(site_slug=site_slug)
+    wq_data = Water_Quality.objects.filter(site=site)
+    data = [m.to_dict() for m in wq_data]
+    return render(request, 'streamwebs/graphs/wq_histogram.html', {
+        'site': site.to_dict(),
+        'data': json.dumps(data)
+    })
+
+
 def graph_macros(request, site_slug):
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     macros = Macroinvertebrates.objects.filter(site=site)
