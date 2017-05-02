@@ -279,7 +279,10 @@ def water_histogram(request, site_slug, data_type, date):
     data = [m.to_dict() for m in wq_data]
     return render(request, 'streamwebs/graphs/wq_histogram.html', {
         'site': site.to_dict(),
-        'data': json.dumps(data)
+        'data': json.dumps(data),
+        'type_key': data_type,
+        'type_name': '', #TODO: Map key names to human-readable names
+        'date': datetime.datetime.strptime(date, 'Y-m-d').date()
     })
 
 
