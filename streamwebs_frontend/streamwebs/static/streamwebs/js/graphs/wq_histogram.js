@@ -58,7 +58,15 @@ const createGraph = function createGraph() {
     xAxis.ticks(0);
 
     const yAxis = d3.axisLeft(y);
-    yAxis.ticks(1);
+    const yMax = y.domain()[1];
+    /*
+     * Array(n) creates an array of n values. Array.keys() returns an array
+     * iterator which returns the keys of the array (i.e. the numbers 0-n);
+     * the spread operator [... ] unpacks something like an iterator into
+     * an array. In short, this line is the Javascript equivalent of Python's
+     * range() function.
+     */
+    yAxis.tickValues([...Array(yMax+1).keys()]);
 
     svg.append('g')
         .attr('class', 'axis axis--x')
@@ -92,9 +100,9 @@ const createGraph = function createGraph() {
         .attr('class', 'value')
         .attr('dy', '.75em')
         .attr('x', d => (x(d.x1) - x(d.x0))/2)
-        .attr('y', height + 6)
+        .attr('y', d => height - y(d.length) + 6)
         .attr('text-anchor', 'middle')
-        .text(d => (d.x1 + d.x0)/2);
+        .text(d => d.x0);
 };
 
 $(() => {
