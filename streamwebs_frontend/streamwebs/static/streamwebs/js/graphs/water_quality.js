@@ -103,6 +103,9 @@ const showMouseover = function showMouseover(data) {
                 }) +
             '</p>' +
             '<p>' +
+                data.count + (data.count > 1 ? ' entries' : ' entry') +
+            '</p>' +
+            '<p>' +
                 '<a href="">View this date as a histogram</a>' +
             '</p>'
         );
@@ -261,6 +264,7 @@ const filterOutliers = function filterOutliers(entries) {
         return {
             date: x.date,
             value: x.value / x.count,
+            count: x.count,
         }
     });
 };
