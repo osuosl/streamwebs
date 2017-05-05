@@ -1063,6 +1063,7 @@ class Soil_Survey(models.Model):
 
     soil_type = models.CharField(max_length=10, default=None,
                                  choices=soil_type_choices)
+    uid = models.PositiveIntegerField(blank=True, null=True)
 
     def __str__(self):
         return self.site.site_name

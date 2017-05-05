@@ -16,9 +16,9 @@ from streamwebs.util.ft_to_m import feet_to_meters  # NOQA
 
 
 if os.path.isdir("../streamwebs_frontend/sw_data"):
-    datafile = '../sw_data/soil_survey.csv'
+    datafile = '../sw_data/soil_new.csv'
 else:
-    datafile = '../csvs/soil_survey.csv'
+    datafile = '../csvs/soil_new.csv'
 
 
 # Collected, Stream/Site name, Landscape Position, Cover Type, Land Use,
@@ -83,6 +83,8 @@ with open(datafile, 'r') as csvfile:  # 'r' is for read
 
         weather = ''
 
+        uid = row['Uid']
+
         # TODO: Find actual school from outside the CSV
         school = None
 
@@ -90,7 +92,7 @@ with open(datafile, 'r') as csvfile:  # 'r' is for read
             date=date, site_id=site_id, landscape_pos=landscape_pos,
             cover_type=cover_type, land_use=land_use, distance=dist,
             site_char=site_char, soil_type=soil_type, weather=weather,
-            school=school
+            uid=uid, school=school
         )
 
 csvfile.close()
