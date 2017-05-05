@@ -272,9 +272,11 @@ class AdminPromotionForm(forms.Form):
         ('del_upload', _('Revoke permission to upload to the Resources page')),
     )
 
-    users_choices = [(None, '-----')]
-    for user in User.objects.all():
-        print(user.id)
+#    users_choices = [(None, '-----')]
+#    for user in User.objects.all():
+#        print(user.id)
+    arg = User.objects.all()
+    print(arg.count())
     users = forms.ModelMultipleChoiceField(queryset=User.objects.all(),
                                            widget=forms.SelectMultiple)
     perms = forms.ChoiceField(choices=PERM_OPTIONS)
