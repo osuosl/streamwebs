@@ -24,3 +24,6 @@ before_script:
   - psql -c 'create database streamwebs;' -U postgres
   - psql -U postgres -c "create extension postgis"
   - cp streamwebs_frontend/streamwebs_frontend/settings.py.dist streamwebs_frontend/streamwebs_frontend/settings.py
+
+notifications:
+  email: false
