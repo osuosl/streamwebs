@@ -275,7 +275,6 @@ class AdminPromotionForm(forms.Form):
     users_choices = [(None, '-----')]
     for user in User.objects.all():
         print(user.id)
-        print(user.username)
     users = forms.ModelMultipleChoiceField(queryset=User.objects.all(),
                                            widget=forms.SelectMultiple)
     perms = forms.ChoiceField(choices=PERM_OPTIONS)
