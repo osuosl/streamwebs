@@ -271,7 +271,9 @@ class AdminPromotionForm(forms.Form):
         ('del_stats', _('Revoke permission to view the Statistics page')),
         ('del_upload', _('Revoke permission to upload to the Resources page')),
     )
-
+    # harmless comment
+    for user in User.objects.all():
+        print(user.id)
     users = forms.ModelMultipleChoiceField(queryset=User.objects.all(),
                                            widget=forms.SelectMultiple)
     perms = forms.ChoiceField(choices=PERM_OPTIONS)
