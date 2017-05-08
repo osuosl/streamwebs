@@ -118,6 +118,9 @@ def site(request, site_slug):
 
     data.sort(cmp=sort_date, key=lambda x: x['date'])
 
+    print(len(data))
+    print(len(transect_sheets))
+
     return render(request, 'streamwebs/site_detail.html', {
         'site': site,
         'maps_api': settings.GOOGLE_MAPS_API,
@@ -126,7 +129,7 @@ def site(request, site_slug):
         'data_len_range': range(2, len(data)/10+2),
         'has_wq': len(wq_sheets) > 0,
         'has_macros': len(macro_sheets) > 0,
-        'has_transects': len(transect_sheets) > 0,
+        'has_transect': len(transect_sheets) > 0,
         'has_cc': len(canopy_sheets) > 0,
         'has_soil': len(soil_sheets) > 0
     })
