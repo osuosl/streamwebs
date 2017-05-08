@@ -43,7 +43,8 @@ const createGraph = function createGraph() {
 
     const x = d3.scaleLinear()
         .domain(range)
-        .range([0, width]);
+        .range([0, width])
+        .nice();
 
     const bins = d3.histogram()
         .domain(x.domain())
@@ -52,7 +53,8 @@ const createGraph = function createGraph() {
 
     const y = d3.scaleLinear()
         .range([height, 0])
-        .domain(d3.extent(bins, d => d.length));
+        .domain(d3.extent(bins, d => d.length))
+        .nice();
 
     const xAxis = d3.axisBottom(x);
     xAxis.ticks(0);
