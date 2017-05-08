@@ -1,9 +1,10 @@
 from django.core.management.base import BaseCommand
 from streamwebs.models import Site, Water_Quality, WQ_Sample,\
-    Macroinvertebrates, Canopy_Cover, RiparianTransect, TransectZone
+    Macroinvertebrates, Canopy_Cover, RiparianTransect, TransectZone,\
+    Soil_Survey
 
 from datetime import date, datetime
-from random import randint, uniform, betavariate as beta
+from random import randint, uniform, choice, betavariate as beta
 
 
 class Command(BaseCommand):
@@ -204,5 +205,23 @@ class Command(BaseCommand):
 
         if type == 'soil' or type == 'all':
             print('Generating Soil Survey data...')
+            ls = ['summit', 'slope', 'depression', 'large_flat', 'stream_bank']
+            ct = ['bare_soil', 'rocks', 'grass', 'trees', 'shrubs']
+            lu = ['urban', 'agricultural', 'recreation', 'wilderness', 'other']
+            st = ['sand', 'loamy_sand', 'silt_loam', 'loam', 'clay_loam',
+                  'light_clay', 'heavy_clay', 'n/a', 'other']
+            for day in range(1, 31):
+                ss = Soil_Survey\
+                    .objects.create(site=s,
+                                    school=None,
+                                    date=date(2017, 4, day),
+                                    weather='Sunny',
+                                    landscape_pos=choice(ls),
+                                    cover_type=choice(ct),
+                                    land_use=choice(lu),
+                                    distance=uniform(0, 10),
+                                    site_char='',
+                                    soil_type=choice(st))
+                ss.save()
 
         print('Data generated.')
