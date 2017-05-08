@@ -329,7 +329,7 @@ const getXDomain = function getX(keys) {
                 }), false),
                 window.hasSiteTwo ? valNum(d3.min(filtered2[key], d => {
                     return d.date.getTime();
-                }), false)  : Number.MAX_SAFE_INTEGER,
+                }), false)  : Number.MAX_SAFE_INTEGER
             );
         }).reduce((prev, curr) => {
             return Math.min(prev, curr);
@@ -347,7 +347,7 @@ const getXDomain = function getX(keys) {
                 }), true),
                 window.hasSiteTwo ? valNum(d3.max(filtered2[key], d => {
                     return d.date.getTime();
-                }), true) : Number.MIN_SAFE_INTEGER,
+                }), true) : Number.MIN_SAFE_INTEGER
             );
         }).reduce((prev, curr) => {
             return Math.max(prev, curr);
