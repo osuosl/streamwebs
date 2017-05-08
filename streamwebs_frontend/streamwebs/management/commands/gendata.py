@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 from streamwebs.models import Site, Water_Quality, WQ_Sample,\
-    Macroinvertebrates, Canopy_Cover
+    Macroinvertebrates, Canopy_Cover, RiparianTransect, TransectZone
 
 from datetime import date, datetime
 from random import randint, uniform, betavariate as beta
@@ -184,6 +184,23 @@ class Command(BaseCommand):
 
         if type == 'transect' or type == 'all':
             print('Generating Riparian Transect data...')
+            for day in range(1, 31):
+                rt = RiparianTransect\
+                    .objects.create(site=s,
+                                    school='',
+                                    date_time=datetime(2017, 4, day),
+                                    weather='Sunny',
+                                    slope=uniform(0, 90))
+                rt.save()
+
+                for i in range(5):
+                    zone = TransectZone\
+                        .objects.create(transect=rt,
+                                        zone_num=i,
+                                        conifers=randint(0, 10),
+                                        hardwoods=randint(0, 10),
+                                        shrubs=randint(0, 10))
+                    zone.save()
 
         if type == 'soil' or type == 'all':
             print('Generating Soil Survey data...')
