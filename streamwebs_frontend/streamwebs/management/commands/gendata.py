@@ -1,8 +1,9 @@
 from django.core.management.base import BaseCommand
-from streamwebs.models import Site, Water_Quality, WQ_Sample
+from streamwebs.models import Site, Water_Quality, WQ_Sample,\
+    Macroinvertebrates
 
-from datetime import date
-from random import randint, uniform
+from datetime import date, datetime
+from random import randint, uniform, betavariate as beta
 
 
 class Command(BaseCommand):
@@ -105,6 +106,36 @@ class Command(BaseCommand):
 
         if type == 'macros' or type == 'all':
             print('Generating Macroinvertebrate data...')
+            for day in range(30):
+                for i in range(randint(1, 5)):
+                    macro = Macroinvertebrates\
+                        .objects.create(school='Test School',
+                                        date_time=datetime(2017, 4, day+1),
+                                        weather='Sunny',
+                                        site=s,
+                                        water_type='POOL',
+                                        caddisfly=round(beta(2, 5) * 10),
+                                        mayfly=round(beta(2, 5) * 10),
+                                        riffle_beetle=round(beta(2, 5) * 10),
+                                        stonefly=round(beta(2, 5) * 10),
+                                        water_penny=round(beta(2, 5) * 10),
+                                        dobsonfly=round(beta(2, 5) * 10),
+                                        clam_or_mussel=round(beta(2, 5) * 10),
+                                        crane_fly=round(beta(2, 5) * 10),
+                                        crayfish=round(beta(2, 5) * 10),
+                                        damselfly=round(beta(2, 5) * 10),
+                                        dragonfly=round(beta(2, 5) * 10),
+                                        scud=round(beta(2, 5) * 10),
+                                        fishfly=round(beta(2, 5) * 10),
+                                        alderfly=round(beta(2, 5) * 10),
+                                        mite=round(beta(2, 5) * 10),
+                                        aquatic_worm=round(beta(2, 5) * 10),
+                                        blackfly=round(beta(2, 5) * 10),
+                                        leech=round(beta(2, 5) * 10),
+                                        midge=round(beta(2, 5) * 10),
+                                        snail=round(beta(2, 5) * 10),
+                                        mosquito_larva=round(beta(2, 5) * 10))
+                    macro.save()
 
         if type == 'cc' or type == 'all':
             print('Generating Canopy Cover data...')
