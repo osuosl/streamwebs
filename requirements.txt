@@ -14,4 +14,4 @@ wsgiref
 flake8
 django-recaptcha
 django-queryset-csv
-requests
+requests==2.13.0
