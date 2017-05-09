@@ -10,8 +10,8 @@ docutils
 mock
 pep8
 psycopg2
-requests
+wsgiref
 flake8
 django-recaptcha
 django-queryset-csv
-wsgiref
+requests
