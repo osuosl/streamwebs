@@ -24,19 +24,19 @@
       <strong>{% trans "Create an account." %}</strong><br />
         {% csrf_token %}
         <div class="input-field col s6">
-          <label for="{{ user_form.first_name.id_for_label }}">First Name:</label>
+          <label for="{{ user_form.first_name.id_for_label }}">{% trans "First Name" %}:</label>
           {{ user_form.first_name }}
           {{ user_form.first_name.errors }}
 
         </div>
         <div class="input-field col s6">
-          <label for="{{ user_form.last_name.id_for_label }}">Last Name:</label>
+          <label for="{{ user_form.last_name.id_for_label }}">{% trans "Last Name" %}:</label>
           {{ user_form.last_name }}
           {{ user_form.last_name.errors }}
         </div>
 
         <div class="input-field col s12">
-          <label for="{{ profile_form.birthdate.id_for_label }}">Birthdate</label>
+          <label for="{{ profile_form.birthdate.id_for_label }}">{% trans "Birthdate" %}</label>
           {{ profile_form.birthdate }}
           {{ profile_form.birthdate.errors }}
         </div>
@@ -44,29 +44,29 @@
         <div class="input-field col s12 ">
           {{ profile_form.school }}
           {{ profile_form.school.errors }}
-          <label for="{{ profile_form.school.id_for_label }}">School:</label>
+          <label for="{{ profile_form.school.id_for_label }}">{% trans "School" %}:</label>
         </div>
 
         <div class="input-field col s12">
-          <label for="{{ user_form.username.id_for_label }}">Username:</label>
+          <label for="{{ user_form.username.id_for_label }}">{% trans "Username" %}:</label>
           {{ user_form.username }}
           {{ user_form.username.errors }}
         </div>
 
         <div class="input-field col s12">
-          <label for="{{ user_form.email.id_for_label }}">Email:</label>
+          <label for="{{ user_form.email.id_for_label }}">{% trans "Email" %}:</label>
           {{ user_form.email }}
           {{ user_form.email.errors }}
         </div>
 
         <div class="input-field col s12">
-          <label for="{{ user_form.password.id_for_label }}">Password:</label>
+          <label for="{{ user_form.password.id_for_label }}">{% trans "Password" %}:</label>
           {{ user_form.password }}
           {{ user_form.password.errors }}
         </div>
 
         <div class="input-field col s12">
-          <label for="{{ user_form.password_check.id_for_label }}">Password (again):</label>
+          <label for="{{ user_form.password_check.id_for_label }}">{% trans "Verify Password" %}:</label>
           {{ user_form.password_check }}
           {{ user_form.password_check.errors }}
         </div>

@@ -7,8 +7,8 @@
 <script type="application/javascript" src="{% static 'streamwebs/js/create_site.js' %}"></script>
 {% endblock %}
 
-{% block title %} Add a New Site {% endblock %}
-{% block body_title %} Add a New Site {% endblock %}
+{% block title %}{% trans "Add a New Site" %}{% endblock %}
+{% block body_title %}{% trans "Add a New Site" %}{% endblock %}
 
 {% block content %}
     <form id='site_form' method='post' enctype="multipart/form-data">

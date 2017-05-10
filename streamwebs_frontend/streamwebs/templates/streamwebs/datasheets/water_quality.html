@@ -11,7 +11,7 @@
 
 {% block content %}
 {% if added %}
-    <strong>Success!</strong>
+    <strong>{% trans "Success!" %}</strong>
 
     <!-- Display errors, if any (should be improved/more CSS friendly) -->
     <!-- {% for field in wq_form %}
@@ -148,11 +148,13 @@
             {{ sample_formset.management_form }}
 
             <thead>
-                <th data-field="test"></th>
-                <th data-field="sample1">Sample 1</th>
-                <th data-field="sample2">Sample 2</th>
-                <th data-field="sample3">Sample 3</th>
-                <th data-field="sample4">Sample 4</th>
+                <tr>
+                    <th data-field="test"></th>
+                    <th data-field="sample1">{% trans "Sample 1" %}</th>
+                    <th data-field="sample2">{% trans "Sample 2" %}</th>
+                    <th data-field="sample3">{% trans "Sample 3" %}</th>
+                    <th data-field="sample4">{% trans "Sample 4" %}</th>
+                </tr>
             </thead>
 
             <tbody>
@@ -351,7 +353,7 @@
         </div>
 
         {% if editable %}
-            <input class="btn waves-effect waves-light teal darken-4" type="submit" value="Submit">
+            <input class="btn waves-effect waves-light teal darken-4" type="submit" value='{% trans "Submit" %}'>
         {% endif %}
     </form>
 </div>

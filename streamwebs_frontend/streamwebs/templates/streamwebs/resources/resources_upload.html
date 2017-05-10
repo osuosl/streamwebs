@@ -3,7 +3,7 @@
 {% load i18n %}
 
 {% block content %}
-<h3>Upload a new resource</h3>
+<h3>{% trans "Upload a new resource" %}</h3>
 <div class="container">
 <form id='res_form' method='post' enctype='multipart/form-data'>
     {% csrf_token %}

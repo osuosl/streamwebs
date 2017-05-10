@@ -68,9 +68,9 @@
         </div>
 
         <div class="row">
-            <h5 align=center>Sensitivity to pollution</h5>
+            <h5 align=center>{% trans "Sensitivity to pollution" %}</h5>
             <div class="col s4">
-                <h6 align=center>Sensitive/intolerant</h6>
+                <h6 align=center>{% trans "Sensitive/intolerant" %}</h6>
                 <table>
                     {% for bug in intolerant %}
                     <tr>
@@ -93,7 +93,7 @@
             </div>  <!-- end sensitive/intolerant -->
 
             <div class="col s4">
-                <h6 align=center>Somewhat sensitive</h6>
+                <h6 align=center>{% trans "Somewhat sensitive" %}</h6>
                 <table>
                     {% for bug in somewhat %}
                     <tr>
@@ -115,7 +115,7 @@
             </div>  <!-- end somewhat sensitive -->
 
             <div class="col s4">
-                <h6 align=center>Tolerant</h6>
+                <h6 align=center>{% trans "Tolerant" %}</h6>
                 <table>
                     {% for bug in tolerant %}
                     <tr>
@@ -137,7 +137,7 @@
             </div>  <!-- end tolerant -->
         </div> <!-- end macros row -->
 
-        <input class="btn waves-effect waves-light teal darken-4" type='submit' name='submit' value='Submit' />
+        <input class="btn waves-effect waves-light teal darken-4" type='submit' name='submit' value='{% trans "Submit" %}' />
     </form>
     {% endif %}
 

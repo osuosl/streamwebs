@@ -83,19 +83,25 @@
             <div class="loc-input">
               <!-- CAMERA FORM: -->
               {{ camera_form.media }}
-                <h5>Location Input</h5>
+                <h5>{% trans "Location Input" %}</h5>
                 <div class="input-field col s12">
-                  <label for="{{ camera_form.cp_date.label }}">Camera Point Date</label>
+                  <label for="{{ camera_form.cp_date.label }}">
+                      {% trans "Camera Point Date" %}
+                  </label>
                   {{ camera_form.cp_date }}
                   {{ camera_form.cp_date.errors | striptags }}
                 </div>
                 <div class ="input-field col s12">
-                  <label for="{{ camera_form.description.label }}">Description</label>
+                  <label for="{{ camera_form.description.label }}">
+                      {% trans "Description" %}
+                  </label>
                   {{ camera_form.description }}
                   {{ camera_form.description.errors | striptags }}
                 </div>
                 <div class ="input-field col s12">
-                  <label for="{{ camera_form.map_datum.label }}">Map Datum</label>
+                  <label for="{{ camera_form.map_datum.label }}">
+                      {% trans "Map Datum" %}
+                  </label>
                   {{ camera_form.map_datum }}
                   {{ camera_form.map_datum.errors | striptags }}
                 </div>
@@ -110,14 +116,16 @@
             </div>
             <br>
             <div class="photo-input">
-              <h5>Photo Input</h5>
+              <h5>{% trans "Photo Input" %}</h5>
               <div class="row">
                 {{ pp_formset.management_form }}
                 {% for p_form in pp_formset %}
                 <div class="col s4">
                   <h6>Photo #{{ forloop.counter }}</h6>
                   <div class ="input-field">
-                    <label for="{{ p_form.compass_bearing.label }}">Compass Bearing</label>
+                    <label for="{{ p_form.compass_bearing.label }}">
+                        {% trans "Compass Bearing" %}
+                    </label>
                     {{ p_form.compass_bearing }}
                     {{ p_form.compass_bearing.errors | striptags }}
                   </div>
@@ -158,8 +166,8 @@
               </div>
             </div>
             <button class="btn-large
-             waves-effect waves-light teal darken-4" type="submit" name="action" value='Submit'>Submit
-              <i class="material-icons right">send</i>
+             waves-effect waves-light teal darken-4" type="submit" name="action" value='{% trans "Submit" %}'>
+                {% trans "Submit" %}<i class="material-icons right">send</i>
             </button>
         </form>
         {% endif %}

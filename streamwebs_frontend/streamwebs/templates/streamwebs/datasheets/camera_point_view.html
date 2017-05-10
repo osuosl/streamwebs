@@ -7,11 +7,11 @@
 <div class="container">
 <!-- CP info -->
 <div>
-    <h3>{{ site.site_name }}: Camera Point {{ cp.letter }}</h3>
-    <p><b>Date established:</b> {{ cp.cp_date|date:"m-d-Y" }}</p>
-    <p><b>Location:</b> {{ cp.location }}</p>
-    <p><b>Map datum:</b> {{ cp.map_datum }} </p>
-    <p><b>Description:</b> {{ cp.description }}</p>
+    <h3>{{ site.site_name }}: {% trans "Camera Point" %} {{ cp.letter }}</h3>
+    <p><b>{% trans "Date established" %}:</b> {{ cp.cp_date|date:"m-d-Y" }}</p>
+    <p><b>{% trans "Location" %}:</b> {{ cp.location }}</p>
+    <p><b>{% trans "Map datum" %}:</b> {{ cp.map_datum }} </p>
+    <p><b>{% trans "Description" %}:</b> {{ cp.description }}</p>
 </div>
 
 <!-- Gmaps -->
@@ -19,7 +19,7 @@
 
 <!-- CP's PP info, including PPIs -->
 <div>
-    <h2>Photo points</h2>
+    <h2>{% trans "Photo points" %}</h2>
     <div class="row">
       <div class="col s12 m7">
     {% for pp in pps %}
@@ -34,22 +34,22 @@
           </div>
           <div class="card-content">
             <ul>
-                <li>Established: {{ pp.pp_date|date:"m-d-Y" }}</li>
+                <li>{% trans "Established" %}: {{ pp.pp_date|date:"m-d-Y" }}</li>
                 {% for pp_num, img_set in pp_images.items %}
                   {% if pp_num == pp.number %}
                     <li>Number of Images: {{ img_set.count }}</li>
                   {% endif %}
                 {% endfor %}
-                <li>Compass bearing: {{ pp.compass_bearing }}</li>
-                <li>Distance from camera point: {{ pp.distance }}</li>
-                <li>Camera height: {{ pp.camera_height }}</li>
-                <li>Notes: {{ pp.notes }}</li>
+                <li>{% trans "Compass bearing" %}: {{ pp.compass_bearing }}</li>
+                <li>{% trans "Distance from camera point" %}: {{ pp.distance }}</li>
+                <li>{% trans "Camera height" %}: {{ pp.camera_height }}</li>
+                <li>{% trans "Notes" %}: {{ pp.notes }}</li>
             </ul>
           </div>
           <div class="card-action">
             <h5>
               <a href="{% url 'streamwebs:photo_point' site.site_slug cp.id pp.id %}">
-                 Photo point {{ pp.number }}
+                 {% trans "Photo point" %} {{ pp.number }}
               </a>
             </h5>
           </div>

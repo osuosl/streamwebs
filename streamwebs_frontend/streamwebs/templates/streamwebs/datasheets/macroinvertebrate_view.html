@@ -25,51 +25,51 @@
             {{ site.site_name }}
         </a>
     </h3>
-    <h4 align="center">Macroinvertebrate data: {{ data.date_time|date:"m-d-Y" }}</h4>
+    <h4 align="center">{% trans "Macroinvertebrate data" %}: {{ data.date_time|date:"m-d-Y" }}</h4>
    
     <div class="row">
         <div class="col s12">
             <p>School: {{ data.school }} </>
         </div>
         <div class="col s6">
-            <p>Water quality: {{ rating }}</p>
+            <p>{% trans "Water quality" %}: {{ rating }}</p>
         </div>
         <div class="col s6">
-            <p># of people sorting/identifying: {{ data.num_people }}</p>
+            <p>{% trans "# of people sorting/identifying" %}: {{ data.num_people }}</p>
         </div>
         <div class="col s6">
-            <p>Water type: {{ data.get_water_type_display }}</p>
+            <p>{% trans "Water type" %}: {{ data.get_water_type_display }}</p>
         </div>
         <div class="col s6">
-            <p>Time spent sorting/identifying: {{ data.time_spent }} minutes</p>
+            <p>{% trans "Time spent sorting/identifying" %}: {{ data.time_spent }} minutes</p>
         </div>
         <div class="col s6">
-            <p>Percent EPT: {{ EPT|floatformat:2 }}%</p>
+            <p>{% trans "Percent EPT" %}: {{ EPT|floatformat:2 }}%</p>
         </div>
         <div class="col s6">
-            <p>Weather: {{ data.weather }}</p>
+            <p>{% trans "Weather" %}: {{ data.weather }}</p>
         </div>
         <div class="col s12">
             {% if data.notes %}
-            <p>Field notes: {{ data.notes }}</p>
+            <p>{% trans "Field notes" %}: {{ data.notes }}</p>
             {% endif %}
         </div>
     </div>
     <div class="row">
-        <h5 align="center">Sensitivity to pollution</h5>
+        <h5 align="center">{% trans "Sensitivity to pollution" %}</h5>
         <div class="col s3">
             <table class="bordered">
                 <thead>
                         <h6 align=center>{% trans "Sensitive/Intolerant" %}</h6>
                     <tr>
                         <th></th>
-                        <th>Count</th>
+                        <th>{% trans "Count" %}</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td class="label">
-                            Caddisfly<br>
+                            {% trans "Caddisfly" %}<br>
                             <img src="{% static 'streamwebs/images/macroinvertebrates/macro_caddisfly.png' %}">
                         </td>
 
@@ -77,7 +77,7 @@
                     </tr>
                     <tr>
                         <td class="label">
-                        Mayfly<br>
+                        {% trans "Mayfly" %}<br>
                         <img src="{% static 'streamwebs/images/macroinvertebrates/macro_mayfly.png' %}">
                         </td>
                         
@@ -85,28 +85,28 @@
                     </tr>
                     <tr>
                         <td class="label">
-                        Riffle beetle<br>
+                        {% trans "Riffle beetle" %}<br>
                         <img src="{% static 'streamwebs/images/macroinvertebrates/macro_riffle_beetle.png' %}">
                     </td>
                         <td class="value">{{ data.riffle_beetle }}</td>
                     </tr>
                     <tr>
                         <td class="label">
-                        Stonefly<br>
+                        {% trans "Stonefly" %}<br>
                         <img src="{% static 'streamwebs/images/macroinvertebrates/macro_stonefly.png' %}">
                         </td>
                         <td class="value">{{ data.stonefly }}</td>
                     </tr>
                     <tr>
                         <td class="label">
-                        Water penny<br>
+                        {% trans "Water penny" %}<br>
                         <img src="{% static 'streamwebs/images/macroinvertebrates/macro_water_penny.png' %}">
                         </td>
                         <td class="value">{{ data.water_penny }}</td>
                     </tr>
                     <tr>
                         <td class="label">
-                        Dobsonfly<br>
+                        {% trans "Dobsonfly" %}<br>
                         <img src="{% static 'streamwebs/images/macroinvertebrates/macro_dobsonfly.png' %}">
                         </td>
                         <td class="value">{{ data.dobsonfly }}</td>
@@ -125,13 +125,13 @@
                 <h6 align="center">{% trans "Somewhat Sensitive" %}</h6>
                 <tr>
                     <th></th>
-                    <th>Count</th>
+                    <th>{% trans "Count" %}</th>
                 </tr>
             </thead>
           <tbody>
           <tr>
             <td class="label">
-              Clam/mussel
+              {% trans "Clam/mussel" %}
               <br>
               <img src="{% static 'streamwebs/images/macroinvertebrates/macro_clam_mussel.png' %}">
             </td>
@@ -139,7 +139,7 @@
           </tr>
           <tr>
             <td class="label">
-              Crane fly
+              {% trans "Crane fly" %}
               <br>
               <img src="{% static 'streamwebs/images/macroinvertebrates/macro_crane_fly.png' %}">
             </td>
@@ -147,7 +147,7 @@
           </tr>
           <tr>
             <td class="label">
-              Crayfish
+              {% trans "Crayfish" %}
               <br>
               <img src="{% static 'streamwebs/images/macroinvertebrates/macro_crayfish.png' %}">
             </td>
@@ -155,7 +155,7 @@
           </tr>
           <tr>
             <td class="label">
-              Damselfly
+              {% trans "Damselfly" %}
               <br>
               <img src="{% static 'streamwebs/images/macroinvertebrates/macro_damselfly.png' %}">
             </td>
@@ -163,7 +163,7 @@
           </tr>
           <tr>
             <td class="label">
-              Dragonfly
+              {% trans "Dragonfly" %}
               <br>
               <img src="{% static 'streamwebs/images/macroinvertebrates/macro_dragonfly.png' %}">
             </td>
@@ -171,7 +171,7 @@
           </tr>
           <tr>
             <td class="label">
-              Scud
+              {% trans "Scud" %}
               <br>
               <img src="{% static 'streamwebs/images/macroinvertebrates/macro_scud.png' %}">
             </td>
@@ -179,7 +179,7 @@
           </tr>
           <tr>
             <td class="label">
-              Fishfly
+              {% trans "Fishfly" %}
               <br>
               <img src="{% static 'streamwebs/images/macroinvertebrates/macro_fishfly.png' %}">
             </td>
@@ -187,7 +187,7 @@
           </tr>
           <tr>
             <td class="label">
-              Alderfly
+              {% trans "Alderfly" %}
               <br>
               <img src="{% static 'streamwebs/images/macroinvertebrates/macro_alderfly.png' %}">
             </td>
@@ -195,7 +195,7 @@
           </tr>
           <tr>
             <td class="label">
-              Water mite
+              {% trans "Water mite" %}
               <br>
               <img src="{% static 'streamwebs/images/macroinvertebrates/macro_mite.png' %}">
             </td>
@@ -214,13 +214,13 @@
             <h6 align="center">{% trans "Tolerant " %}</h6>
             <tr>
                 <th></th>
-                <th>Count</th>
+                <th>{% trans "Count" %}</th>
             </tr>
             </thead>
           <tbody>
           <tr>
             <td class="label">
-              Aquatic worm
+              {% trans "Aquatic worm" %}
               <br>
               <img src="{% static 'streamwebs/images/macroinvertebrates/macro_aquatic_worm.png' %}">
             </td>
@@ -228,7 +228,7 @@
           </tr>
           <tr>
             <td class="label">
-              Blackfly
+              {% trans "Blackfly" %}
               <br>
               <img src="{% static 'streamwebs/images/macroinvertebrates/macro_blackfly.png' %}">
             </td>
@@ -236,7 +236,7 @@
           </tr>
           <tr>
             <td class="label">
-              Leech
+              {% trans "Leech" %}
               <br>
               <img src="{% static 'streamwebs/images/macroinvertebrates/macro_leech.png' %}">
             </td>
@@ -244,7 +244,7 @@
           </tr>
           <tr>
             <td class="label">
-              Midge
+              {% trans "Midge" %}
               <br>
               <img src="{% static 'streamwebs/images/macroinvertebrates/macro_midge.png' %}">
             </td>
@@ -252,7 +252,7 @@
           </tr>
           <tr>
             <td class="label">
-              Snail
+              {% trans "Snail" %}
               <br>
               <img src="{% static 'streamwebs/images/macroinvertebrates/macro_snail.png' %}">
             </td>
@@ -260,7 +260,7 @@
           </tr>
           <tr>
             <td class="label">
-              Mosquito larva
+              {% trans "Mosquito larva" %}
               <br>
               <img src="{% static 'streamwebs/images/macroinvertebrates/macro_mosquito_larva.png' %}">
             </td>

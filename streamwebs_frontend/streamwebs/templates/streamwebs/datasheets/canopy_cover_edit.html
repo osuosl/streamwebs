@@ -129,7 +129,7 @@
         <div id="canopies">
             <div class="row">
                 <div id="canopy-north" class="canopy">
-                    <p class="header">North</p>
+                    <p class="header">{% trans "North" %}</p>
                     <div class="canopy-square hidden">Z</div>
                     <div class="canopy-square hidden">Z</div>
                     <div class="canopy-square shown" id="square-0-0">A</div>
@@ -174,7 +174,7 @@
                 </div>
 
                 <div id="canopy-west" class="canopy">
-                    <p class="header">West</p>
+                    <p class="header">{% trans "West" %}</p>
                     <div class="canopy-square hidden">Z</div>
                     <div class="canopy-square hidden">Z</div>
                     <div class="canopy-square shown" id="square-1-0">A</div>
@@ -221,7 +221,7 @@
 
             <div class="row">
                 <div id="canopy-east" class="canopy">
-                    <p class="header">East</p>
+                    <p class="header">{% trans "East" %}</p>
                     <div class="canopy-square hidden">Z</div>
                     <div class="canopy-square hidden">Z</div>
                     <div class="canopy-square shown" id="square-2-0">A</div>
@@ -266,7 +266,7 @@
                 </div>
 
                 <div id="canopy-south" class="canopy">
-                    <p class="header">South</p>
+                    <p class="header">{% trans "South" %}</p>
                     <div class="canopy-square hidden">Z</div>
                     <div class="canopy-square hidden">Z</div>
                     <div class="canopy-square shown" id="square-3-0">A</div>
@@ -320,7 +320,7 @@
                 <td>{{ canopy_cover_form.est_canopy_cover.errors }}</td>
             </tr>
         </table> <!-- end canopy cover -->
-        <input class="btn waves-effect waves-light teal darken-4" type='submit' name='submit' value='Submit'/>
+        <input class="btn waves-effect waves-light teal darken-4" type='submit' name='submit' value='{% trans "Submit" %}'/>
     </form>
 {% endif %}
 
