@@ -55,7 +55,7 @@ const showMouseover = function showMouseover(data) {
     const svgSize = [svg.attr('width'), svg.attr('height')];
 
     const width = 250;
-    const height = 100;
+    const height = 150;
 
     const xOffset = 120;
 
@@ -83,7 +83,7 @@ const showMouseover = function showMouseover(data) {
         .style('stroke', '#000000');
 
     popup.append('foreignObject')
-        .attr('x', -95)
+        .attr('x', -90)
         .attr('y', -5)
         .attr('width', width-10)
         .attr('height', height-10)
@@ -93,6 +93,7 @@ const showMouseover = function showMouseover(data) {
         .style('line-height', '14px')
     .append('xhtml:div')
         .html(
+            '<p><b>' + data.name + '</b></p>' +
             '<p>' +
                 data.date.toISOString().substring(0, 10) + ': ' +
                 data.value.toLocaleString('en-US', {
