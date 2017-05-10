@@ -1,0 +1,73 @@
+{% extends 'streamwebs/base.html' %}
+{% load i18n %}
+{% load staticfiles %}
+
+{% block title %} Manage User Permissions {% endblock %}
+{% block body_title %} Manage User Permissions {% endblock %}
+
+{% block scripts %}
+    <script type="application/javascript" src="{% static 'streamwebs/js/data.js' %}"></script>
+    <script>
+        $(document).ready(function() {
+            $('select').material_select();
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+{% if msgs %}
+    {% for message in msgs %}
+    <strong>{{ message }}</strong><br>
+    {% endfor %}
+{% endif %}
+
+    <form id='promo_form' method='post'>
+        {% csrf_token %}
+
+        {{ promo_form.users.errors }}
+        <div class="input-field">
+            <select multiple>
+                <option value="" disabled selected>default</option>
+                <option value={{promo_form.users}}></option>
+            </select>
+            <label> Users </label>
+        </div>
+
+        {{ promo_form.perms.label }}
+        {{ promo_form.perms }}
+        {{ promo_form.perms.errors }}
+        <input class="btn waves-effect waves-light teal darken-4" type='submit' name='submit' value='{% trans 'Apply' %}'/>
+    </form>
+
+    {% for user in users %}
+        {% if user in users_list.staff %}
+        {{ user.username }}: is a super admin<br>
+        {% elif user in users_list.admin %}
+        {{ user.username }}: is an admin<br>
+        {% elif user in users_list.stats %}
+        {{ user.username }}: can view the Statistics page<br>
+        {% elif user in users_list.upload %}
+        {{ user.username }}: can upload new resources to the Resources page<br>
+        {% elif user in users_list.none %}
+        {{ user.username }}: does not have any special permissions<br>
+        {% endif %}
+    {% endfor %}
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if users.has_previous %}
+                <a href="?page={{ users.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ users.number }} of {{ users.paginator.num_pages }}.
+            </span>
+
+            {% if users.has_next %}
+                <a href="?page={{ users.next_page_number }}">next</a>
+            {% endif %}
+        </span>
+    </div>
+
+{% endblock %}

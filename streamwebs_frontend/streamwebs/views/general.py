@@ -4,13 +4,14 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, permission_required
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group, Permission
 from django.core.serializers.json import DjangoJSONEncoder
 from django.shortcuts import render, redirect
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from django.forms import inlineformset_factory, modelformset_factory
 from django.core.urlresolvers import reverse
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.conf import settings
 
 from streamwebs.forms import (
@@ -18,7 +19,7 @@ from streamwebs.forms import (
     PhotoPointImageForm, PhotoPointForm, CameraPointForm, WQSampleForm,
     WQSampleFormReadOnly, WQForm, WQFormReadOnly, SiteForm, Canopy_Cover_Form,
     SoilSurveyForm, SoilSurveyFormReadOnly, StatisticsForm, TransectZoneForm,
-    BaseZoneInlineFormSet, ResourceForm)
+    BaseZoneInlineFormSet, ResourceForm, AdminPromotionForm)
 
 from streamwebs.models import (
     Macroinvertebrates, Site, Water_Quality, WQ_Sample, RiparianTransect,
@@ -979,5 +980,117 @@ def resources_upload(request):
     return render(
         request, 'streamwebs/resources/resources_upload.html', {
             'res_form': res_form,
+        }
+    )
+
+
+@login_required
+@permission_required('streamwebs.can_promote_users', raise_exception=True)
+def admin_user_promotion(request):
+    admins = Group.objects.get(name='admin')
+    admin_perms = Permission.objects.filter(group=admins)
+    can_view_stats = Permission.objects.get(codename='can_view_stats')
+    can_upload_resources = Permission.objects.get(
+        codename='can_upload_resources')
+    msgs = []    # list to hold custom flash messages
+
+    promo_form = AdminPromotionForm()
+
+    if request.method == 'POST':
+        promo_form = AdminPromotionForm(request.POST)
+
+        if promo_form.is_valid():
+            action = promo_form.cleaned_data['perms']
+            selected_users = promo_form.cleaned_data['users']
+
+            for user in selected_users:
+                if action == 'add_admin':
+                    user.groups.add(admins)
+                    msgs.append(
+                        '%s was added to the Admin group.' % user.username)
+
+                elif action == 'del_admin':
+                    user.groups.remove(admins)
+                    msgs.append(
+                        '%s was removed from the Admin group.' % user.username)
+
+                elif action == 'add_stats':
+                    user.user_permissions.add(can_view_stats)
+                    msgs.append(
+                        '%s was granted permission to view Statistics.'
+                        % user.username)
+
+                elif action == 'del_stats':
+                    # if they're an admin,
+                    if user.groups.filter(name='admin').exists():
+                        # remove them from the admins group
+                        user.groups.remove(admins)
+                        # add back all perms admins enjoy, EXCLUDING stats
+                        admin_perms = Permission.objects.filter(group=admins)
+                        for perm in admin_perms:
+                            if perm.codename != 'can_view_stats':
+                                user.user_permissions.add(perm)
+                    # otherwise if they're a regular user,
+                    else:
+                        user.user_permissions.remove(can_view_stats)
+
+                    msgs.append(
+                        '%s was revoked the permission to view Statistics.'
+                        % user.username)
+
+                elif action == 'add_upload':
+                    user.user_permissions.add(can_upload_resources)
+                    msgs.append(
+                        '%s was granted permission to upload resources.'
+                        % user.username)
+
+                elif action == 'del_upload':
+                    if user.groups.filter(name='admin').exists():
+                        user.groups.remove(admins)
+                        for perm in admin_perms:
+                            if perm.codename != 'can_upload_resources':
+                                user.user_permissions.add(perm)
+                    else:
+                        user.user_permissions.remove(can_upload_resources)
+
+                    msgs.append(
+                        '%s was revoked the permission to upload resources.'
+                        % user.username)
+
+    all_users = User.objects.all()
+    users_list = {'staff': [], 'admin': [], 'stats': [], 'upload': [],
+                  'none': []}
+
+    for user in all_users:
+        if user.is_staff:
+            users_list['staff'].append(user)
+        elif user.groups.filter(name='admin').exists():
+            users_list['admin'].append(user)
+        elif user.has_perm('streamwebs.can_view_stats'):
+            users_list['stats'].append(user)
+        elif user.has_perm('streamwebs.can_upload_resources'):
+            users_list['upload'].append(user)
+        else:
+            users_list['none'].append(user)
+
+    paginator = Paginator((users_list['staff'] + users_list['admin'] +
+                           users_list['stats'] + users_list['upload'] +
+                           users_list['none']), 10)  # Show 10 users per page
+    page = request.GET.get('page')
+
+    try:
+        users = paginator.page(page)
+    except PageNotAnInteger:
+        users = paginator.page(1)
+    except EmptyPage:
+        users = paginator.page(paginator.num_pages)
+
+    return render(
+        request, 'streamwebs/admin/user_promo.html', {
+            'promo_form': promo_form,
+            'users': users,
+            'users_list': users_list,
+            'msgs': msgs,
+            'all_users': all_users,
         }
     )
