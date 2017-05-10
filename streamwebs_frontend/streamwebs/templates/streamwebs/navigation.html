@@ -20,11 +20,12 @@
 <li><a href="{% url 'streamwebs:resources' %}" class="teal-text text-darken-4">Resources</a></li>
 
 {% if user.is_authenticated %}
-    {% for group in user.groups.all %}
-        {% if group.name == 'admin' %}
-            <li><a class="teal-text text-darken-4 dropdown-button" href="#!" data-activates="admin-options">Administration<i class="material-icons right">arrow_drop_down</i></a></li>
-        {% endif %}
-    {% endfor %}
+    {% if perms.streamwebs.can_view_stats %}
+    <li><a href="{% url 'streamwebs:stats' %}" class="teal-text text-darken-4">View Site Statistics</a></li>
+    {% endif %}
+    {% if perms.streamwebs.can_promote_users %}
+    <li><a href="{% url 'streamwebs:user_promo' %}" class="teal-text text-darken-4">Manage Users</a></li>
+    {% endif %}
     <li><a href="{% url 'streamwebs:logout' %}" class="teal-text text-darken-4">Logout</a></li>
 {% else %}
     <li><a href="{% url 'streamwebs:register' %}" class="teal-text text-darken-4">Create Account</a></li>
