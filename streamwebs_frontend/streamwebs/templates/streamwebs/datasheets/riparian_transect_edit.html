@@ -5,79 +5,78 @@
 {% block title %}{% trans "Riparian Area Transect" %}{% endblock %}
 
 {% block stylesheets %}
-<style>
-  .material-icons {
-    font-size: 1.5em;
-  }
+  <style>
+    .material-icons {
+      font-size: 1.5em;
+    }
 
-  .errorlist {
-    color: red;
-  }
-</style>
-{% endblock%}
+    .errorlist {
+      color: red;
+    }
+  </style>
+{% endblock %}
 
 {% block content %}
-<div class="container">
-{% if messages %}
-    {% for message in messages %}
-    <strong>{{ message }}<strong>
-    {% endfor %}
-{% endif %}
+  <div class="container">
+    {% if messages %}
+      {% for message in messages %}
+        <strong>{{ message }}</strong>
+      {% endfor %}
+    {% endif %}
 
-{% if added %}
-<strong>{% trans "You have successfully submitted your Riparian Transect data sheet." %}</strong>
-
-{% else %}
-    <h3 align ="center">
+    {% if added %}
+      <strong>{% trans "You have successfully submitted your Riparian Transect data sheet." %}</strong>
+    {% else %}
+      <h3 align="center">
         <a href="{% url 'streamwebs:site' site.site_slug %}">
-            {{ site.site_name }}
+          {{ site.site_name }}
         </a>
-    </h3>
+      </h3>
 
-    <h4 align="center">{% trans 'New Riparian Area Transect Sampling' %}</h4>
+      <h4 align="center">{% trans 'New Riparian Area Transect Sampling' %}</h4>
 
-    <form id='rip_trans_form' method='post'>
+      <form id='rip_trans_form' method='post'>
         {% csrf_token %}
         <tr>{{ transect_form.non_field_errors }}</tr>
 
         <div class="row">
-            <div class="input-field">
-                {{ transect_form.school.label }}
-                {{ transect_form.school.errors | striptags }}
-                {{ transect_form.school }}
+          <div class="input-field">
+            {{ transect_form.school.label }}
+            {{ transect_form.school.errors | striptags }}
+            {{ transect_form.school }}
+          </div>
         </div>
 
         <div class="row">
-            <div class="col s6">
-                <div class="input-field">
-                    <label for="{{ transect_form.date_time.id_for_label }}">
-                        {{ transect_form.date_time.label }}
-                    </label>
-                    {{ transect_form.date_time.errors | striptags }}
-                    {{ transect_form.date_time }}
-                </div>
+          <div class="col s6">
+            <div class="input-field">
+              <label for="{{ transect_form.date_time.id_for_label }}">
+                {{ transect_form.date_time.label }}
+              </label>
+              {{ transect_form.date_time.errors | striptags }}
+              {{ transect_form.date_time }}
             </div>
+          </div>
 
-
-            <div class="col s6">
-                <div class="input-field">
-                    <label for="{{ transect_form.weather.id_for_label }}">
-                        {{ transect_form.weather.label }}
-                    </label>
-                    {{ transect_form.weather.errors | striptags }}
-                    {{ transect_form.weather }}
-                </div>
+          <div class="col s6">
+            <div class="input-field">
+              <label for="{{ transect_form.weather.id_for_label }}">
+                {{ transect_form.weather.label }}
+              </label>
+              {{ transect_form.weather.errors | striptags }}
+              {{ transect_form.weather }}
             </div>
+          </div>
         </div>
 
         <div class="row">
-            <div class="input-field">
-                <label for="{{ transect_form.slope.id_for_label }}">
-                    {{ transect_form.slope.label }}
-                </label>
-                {{ transect_form.slope.errors | striptags }}
-                {{ transect_form.slope }}
-            </div>
+          <div class="input-field">
+            <label for="{{ transect_form.slope.id_for_label }}">
+              {{ transect_form.slope.label }}
+            </label>
+            {{ transect_form.slope.errors | striptags }}
+            {{ transect_form.slope }}
+          </div>
         </div>
 
         <br>
@@ -86,55 +85,56 @@
 
         {{ zone_formset.management_form }}
         <table> <!-- zones subtable -->
-            <tr>{{ zone_formset.non_form_errors }}</tr>
+          <tr>{{ zone_formset.non_form_errors }}</tr>
+          <tr>
+            <th>{{ 'zone'|get_zone_labels }}</th>
+            <th>{{ 'conifers'|get_zone_labels }}</th>
+            <th>{{ 'hardwoods'|get_zone_labels }}</th>
+            <th>{{ 'shrubs'|get_zone_labels }}</th>
+            <th>{{ 'comments'|get_zone_labels }}</th>
+          </tr>
+          {% for zone_form in zone_formset %}
             <tr>
-                <th>{{ 'zone'|get_zone_labels }}</th>
-                <th>{{ 'conifers'|get_zone_labels }}</th>
-                <th>{{ 'hardwoods'|get_zone_labels }}</th>
-                <th>{{ 'shrubs'|get_zone_labels }}</th>
-                <th>{{ 'comments'|get_zone_labels }}</th>
-            </tr>
-        {% for zone_form in zone_formset %}
-            <tr>
-                <th></th>
-                <td>{{ zone_form.conifers.errors }}</td>
-                <td>{{ zone_form.hardwoods.errors }}</td>
-                <td>{{ zone_form.shrubs.errors }}</td>
-                <td>{{ zone_form.comments.errors }}</td>
+              <th></th>
+              <td>{{ zone_form.conifers.errors }}</td>
+              <td>{{ zone_form.hardwoods.errors }}</td>
+              <td>{{ zone_form.shrubs.errors }}</td>
+              <td>{{ zone_form.comments.errors }}</td>
             </tr>
             <tr>
-                <th>
-                    {{ forloop.counter0|plus_one }}<br>
-                    {{ forloop.counter0|get_zone }}
-                </th>
-                <td>{{ zone_form.conifers }}</td>
-                <td>{{ zone_form.hardwoods }}</td>
-                <td>{{ zone_form.shrubs }}</td>
-                <td>{{ zone_form.comments }}</td>
+              <th>
+                {{ forloop.counter0|plus_one }}<br>
+                {{ forloop.counter0|get_zone }}
+              </th>
+              <td>{{ zone_form.conifers }}</td>
+              <td>{{ zone_form.hardwoods }}</td>
+              <td>{{ zone_form.shrubs }}</td>
+              <td>{{ zone_form.comments }}</td>
             </tr>
-        {% endfor %}
+          {% endfor %}
         </table> <!-- end zones subtable -->
 
         <div class="divider"></div>
         <br>
 
         <div class="row">
-            <div class="input-field">
-                <label for="{{ transect_form.notes.id_for_label }}">
-                    {{ transect_form.notes.label }}
-                </label>
-                {{ transect_form.notes.errors | striptags }}
-                {{ transect_form.notes }}
-            </div>
+          <div class="input-field">
+            <label for="{{ transect_form.notes.id_for_label }}">
+              {{ transect_form.notes.label }}
+            </label>
+            {{ transect_form.notes.errors | striptags }}
+            {{ transect_form.notes }}
+          </div>
         </div>
 
-    <input class="btn waves-effect waves-light teal darken-4" type='submit' value='{% trans "Submit" %}' />
-    </form>
-{% endif %}
-
-</div>
+        <input class="btn waves-effect waves-light teal darken-4" type='submit'
+               value='{% trans "Submit" %}'/>
+      </form>
+    {% endif %}
+  </div>
 {% endblock %}
 
 {% block scripts %}
-    <script type="application/javascript" src="{% static 'streamwebs/js/data.js' %}"></script>
+  <script type="application/javascript"
+          src="{% static 'streamwebs/js/data.js' %}"></script>
 {% endblock %}

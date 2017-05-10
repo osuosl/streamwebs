@@ -5,330 +5,332 @@
 {% block title %}{% trans "Add Canopy Cover Survey" %}{% endblock %}
 
 {% block content %}
-<style>
+  <style>
     p.header {
-        text-align: center;
-        font-weight: bold;
-        line-height: 10px;
-        height: 10px;
+      text-align: center;
+      font-weight: bold;
+      line-height: 10px;
+      height: 10px;
     }
 
     .canopy {
-        color: #000;
-        width: 350px;
-        height: 350px;
-        min-width: 350px;
-        max-width: 350px;
-        display: inline-block;
+      color: #000;
+      width: 350px;
+      height: 350px;
+      min-width: 350px;
+      max-width: 350px;
+      display: inline-block;
     }
 
     #canopies > .row {
-        text-align: center;
+      text-align: center;
     }
 
     .canopy-square {
-        cursor: default;
-        display: inline-block;
-        width: 50px;
-        height: 50px;
-        outline: 1px solid;
-        text-align: center;
-        line-height: 50px;
-        font-size: 2em;
-        font-weight: bold;
+      cursor: default;
+      display: inline-block;
+      width: 50px;
+      height: 50px;
+      outline: 1px solid;
+      text-align: center;
+      line-height: 50px;
+      font-size: 2em;
+      font-weight: bold;
 
-        /* Don't remove - fixes weird spacing */
-        background-color: white;
-        margin-top: 1px;
-        margin-right: -3px;
+      /* Don't remove - fixes weird spacing */
+      background-color: white;
+      margin-top: 1px;
+      margin-right: -3px;
     }
 
     @media (max-width: 991px) {
-        .canopy-square {
-            margin-right: -2px;
-        }
+      .canopy-square {
+        margin-right: -2px;
+      }
     }
 
     .canopy-square.hidden {
-        visibility: hidden;
+      visibility: hidden;
     }
-</style>
+  </style>
 
-{% if added %}
+  {% if added %}
     <strong>{% trans "You have successfully submitted your Canopy Cover Survey." %}</strong>
-{% else %}
+  {% else %}
     <h3 align="center">
-        <a href="{% url 'streamwebs:site' site.site_slug %}">
-            {{ site.site_name }}
-        </a>
+      <a href="{% url 'streamwebs:site' site.site_slug %}">
+        {{ site.site_name }}
+      </a>
     </h3>
     <h4 align="center">{% trans 'New Canopy Cover Sampling' %}</h4>
     <form id='canopy_cover_form' method='post'>
-    {% csrf_token %}
-        {{ canopy_cover_form.non_field_errors }}
+      {% csrf_token %}
+      {{ canopy_cover_form.non_field_errors }}
+
+      <div class="row">
+        <div class="col s12">
+          <div class="input-field">
+            {{ canopy_cover_form.school.label }}
+
+            {{ canopy_cover_form.school.errors | striptags }}
+            {{ canopy_cover_form.school }}
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col s6">
+          <div class="input-field">
+            {{ canopy_cover_form.date_time.label }}
+
+            {{ canopy_cover_form.date_time.errors | striptags }}
+            {{ canopy_cover_form.date_time }}
+          </div>
+        </div>
+
+        <div class="col s6">
+          <div class="input-field">
+            {{ canopy_cover_form.weather.label }}
+
+            {{ canopy_cover_form.weather.errors | striptags }}
+            {{ canopy_cover_form.weather }}
+          </div>
+        </div>
+      </div>
+
+      <div class="row" style="display: none;">
+        {{ canopy_cover_form.north_cc.label }}
+
+        {{ canopy_cover_form.north_cc.errors | striptags }}
+        <span id='north-form'>{{ canopy_cover_form.north_cc }}</span>
+      </div>
+
+      <div class="row" style="display: none;">
+        {{ canopy_cover_form.east_cc.label }}
+
+        {{ canopy_cover_form.east_cc.errors | striptags }}
+        <span id='east-form'>{{ canopy_cover_form.east_cc }}</span>
+      </div>
+
+      <div class="row" style="display: none;">
+        {{ canopy_cover_form.west_cc.label }}
+
+        {{ canopy_cover_form.west_cc.errors | striptags }}
+        <span id='west-form'>{{ canopy_cover_form.west_cc }}</span>
+      </div>
+
+      <div class="row" style="display: none;">
+        {{ canopy_cover_form.south_cc.label }}
+
+        {{ canopy_cover_form.south_cc.errors | striptags }}
+        <span id='south-form'>{{ canopy_cover_form.south_cc }}</span>
+      </div>
+
+      <div id="canopies">
+        <div class="row">
+          <div id="canopy-north" class="canopy">
+            <p class="header">{% trans "North" %}</p>
+            <div class="canopy-square hidden">Z</div>
+            <div class="canopy-square hidden">Z</div>
+            <div class="canopy-square shown" id="square-0-0">A</div>
+            <div class="canopy-square shown" id="square-0-1">B</div>
+            <div class="canopy-square hidden">Z</div>
+            <div class="canopy-square hidden">Z</div>
+
+            <div class="canopy-square hidden">Z</div>
+            <div class="canopy-square shown" id="square-0-2">C</div>
+            <div class="canopy-square shown" id="square-0-3">D</div>
+            <div class="canopy-square shown" id="square-0-4">E</div>
+            <div class="canopy-square shown" id="square-0-5">F</div>
+            <div class="canopy-square hidden">Z</div>
+
+            <div class="canopy-square shown" id="square-0-6">G</div>
+            <div class="canopy-square shown" id="square-0-7">H</div>
+            <div class="canopy-square shown" id="square-0-8">I</div>
+            <div class="canopy-square shown" id="square-0-9">J</div>
+            <div class="canopy-square shown" id="square-0-10">K</div>
+            <div class="canopy-square shown" id="square-0-11">L</div>
+
+            <div class="canopy-square shown" id="square-0-12">M</div>
+            <div class="canopy-square shown" id="square-0-13">N</div>
+            <div class="canopy-square shown" id="square-0-14">O</div>
+            <div class="canopy-square shown" id="square-0-15">P</div>
+            <div class="canopy-square shown" id="square-0-16">Q</div>
+            <div class="canopy-square shown" id="square-0-17">R</div>
+
+            <div class="canopy-square hidden">Z</div>
+            <div class="canopy-square shown" id="square-0-18">S</div>
+            <div class="canopy-square shown" id="square-0-19">T</div>
+            <div class="canopy-square shown" id="square-0-20">U</div>
+            <div class="canopy-square shown" id="square-0-21">V</div>
+            <div class="canopy-square hidden">Z</div>
+
+            <div class="canopy-square hidden">Z</div>
+            <div class="canopy-square hidden">Z</div>
+            <div class="canopy-square shown" id="square-0-22">W</div>
+            <div class="canopy-square shown" id="square-0-23">X</div>
+            <div class="canopy-square hidden">Z</div>
+            <div class="canopy-square hidden">Z</div>
+          </div>
+
+          <div id="canopy-west" class="canopy">
+            <p class="header">{% trans "West" %}</p>
+            <div class="canopy-square hidden">Z</div>
+            <div class="canopy-square hidden">Z</div>
+            <div class="canopy-square shown" id="square-1-0">A</div>
+            <div class="canopy-square shown" id="square-1-1">B</div>
+            <div class="canopy-square hidden">Z</div>
+            <div class="canopy-square hidden">Z</div>
+
+            <div class="canopy-square hidden">Z</div>
+            <div class="canopy-square shown" id="square-1-2">C</div>
+            <div class="canopy-square shown" id="square-1-3">D</div>
+            <div class="canopy-square shown" id="square-1-4">E</div>
+            <div class="canopy-square shown" id="square-1-5">F</div>
+            <div class="canopy-square hidden">Z</div>
+
+            <div class="canopy-square shown" id="square-1-6">G</div>
+            <div class="canopy-square shown" id="square-1-7">H</div>
+            <div class="canopy-square shown" id="square-1-8">I</div>
+            <div class="canopy-square shown" id="square-1-9">J</div>
+            <div class="canopy-square shown" id="square-1-10">K</div>
+            <div class="canopy-square shown" id="square-1-11">L</div>
+
+            <div class="canopy-square shown" id="square-1-12">M</div>
+            <div class="canopy-square shown" id="square-1-13">N</div>
+            <div class="canopy-square shown" id="square-1-14">O</div>
+            <div class="canopy-square shown" id="square-1-15">P</div>
+            <div class="canopy-square shown" id="square-1-16">Q</div>
+            <div class="canopy-square shown" id="square-1-17">R</div>
+
+            <div class="canopy-square hidden">Z</div>
+            <div class="canopy-square shown" id="square-1-18">S</div>
+            <div class="canopy-square shown" id="square-1-19">T</div>
+            <div class="canopy-square shown" id="square-1-20">U</div>
+            <div class="canopy-square shown" id="square-1-21">V</div>
+            <div class="canopy-square hidden">Z</div>
+
+            <div class="canopy-square hidden">Z</div>
+            <div class="canopy-square hidden">Z</div>
+            <div class="canopy-square shown" id="square-1-22">W</div>
+            <div class="canopy-square shown" id="square-1-23">X</div>
+            <div class="canopy-square hidden">Z</div>
+            <div class="canopy-square hidden">Z</div>
+          </div>
+        </div>
 
         <div class="row">
-            <div class="col s12">
-                <div class="input-field">
-                    {{ canopy_cover_form.school.label }}
+          <div id="canopy-east" class="canopy">
+            <p class="header">{% trans "East" %}</p>
+            <div class="canopy-square hidden">Z</div>
+            <div class="canopy-square hidden">Z</div>
+            <div class="canopy-square shown" id="square-2-0">A</div>
+            <div class="canopy-square shown" id="square-2-1">B</div>
+            <div class="canopy-square hidden">Z</div>
+            <div class="canopy-square hidden">Z</div>
 
-                    {{ canopy_cover_form.school.errors | striptags }}
-                    {{ canopy_cover_form.school }}
-                </div>
-            </div>
+            <div class="canopy-square hidden">Z</div>
+            <div class="canopy-square shown" id="square-2-2">C</div>
+            <div class="canopy-square shown" id="square-2-3">D</div>
+            <div class="canopy-square shown" id="square-2-4">E</div>
+            <div class="canopy-square shown" id="square-2-5">F</div>
+            <div class="canopy-square hidden">Z</div>
+
+            <div class="canopy-square shown" id="square-2-6">G</div>
+            <div class="canopy-square shown" id="square-2-7">H</div>
+            <div class="canopy-square shown" id="square-2-8">I</div>
+            <div class="canopy-square shown" id="square-2-9">J</div>
+            <div class="canopy-square shown" id="square-2-10">K</div>
+            <div class="canopy-square shown" id="square-2-11">L</div>
+
+            <div class="canopy-square shown" id="square-2-12">M</div>
+            <div class="canopy-square shown" id="square-2-13">N</div>
+            <div class="canopy-square shown" id="square-2-14">O</div>
+            <div class="canopy-square shown" id="square-2-15">P</div>
+            <div class="canopy-square shown" id="square-2-16">Q</div>
+            <div class="canopy-square shown" id="square-2-17">R</div>
+
+            <div class="canopy-square hidden">Z</div>
+            <div class="canopy-square shown" id="square-2-18">S</div>
+            <div class="canopy-square shown" id="square-2-19">T</div>
+            <div class="canopy-square shown" id="square-2-20">U</div>
+            <div class="canopy-square shown" id="square-2-21">V</div>
+            <div class="canopy-square hidden">Z</div>
+
+            <div class="canopy-square hidden">Z</div>
+            <div class="canopy-square hidden">Z</div>
+            <div class="canopy-square shown" id="square-2-22">W</div>
+            <div class="canopy-square shown" id="square-2-23">X</div>
+            <div class="canopy-square hidden">Z</div>
+            <div class="canopy-square hidden">Z</div>
+          </div>
+
+          <div id="canopy-south" class="canopy">
+            <p class="header">{% trans "South" %}</p>
+            <div class="canopy-square hidden">Z</div>
+            <div class="canopy-square hidden">Z</div>
+            <div class="canopy-square shown" id="square-3-0">A</div>
+            <div class="canopy-square shown" id="square-3-1">B</div>
+            <div class="canopy-square hidden">Z</div>
+            <div class="canopy-square hidden">Z</div>
+
+            <div class="canopy-square hidden">Z</div>
+            <div class="canopy-square shown" id="square-3-2">C</div>
+            <div class="canopy-square shown" id="square-3-3">D</div>
+            <div class="canopy-square shown" id="square-3-4">E</div>
+            <div class="canopy-square shown" id="square-3-5">F</div>
+            <div class="canopy-square hidden">Z</div>
+
+            <div class="canopy-square shown" id="square-3-6">G</div>
+            <div class="canopy-square shown" id="square-3-7">H</div>
+            <div class="canopy-square shown" id="square-3-8">I</div>
+            <div class="canopy-square shown" id="square-3-9">J</div>
+            <div class="canopy-square shown" id="square-3-10">K</div>
+            <div class="canopy-square shown" id="square-3-11">L</div>
+
+            <div class="canopy-square shown" id="square-3-12">M</div>
+            <div class="canopy-square shown" id="square-3-13">N</div>
+            <div class="canopy-square shown" id="square-3-14">O</div>
+            <div class="canopy-square shown" id="square-3-15">P</div>
+            <div class="canopy-square shown" id="square-3-16">Q</div>
+            <div class="canopy-square shown" id="square-3-17">R</div>
+
+            <div class="canopy-square hidden">Z</div>
+            <div class="canopy-square shown" id="square-3-18">S</div>
+            <div class="canopy-square shown" id="square-3-19">T</div>
+            <div class="canopy-square shown" id="square-3-20">U</div>
+            <div class="canopy-square shown" id="square-3-21">V</div>
+            <div class="canopy-square hidden">Z</div>
+
+            <div class="canopy-square hidden">Z</div>
+            <div class="canopy-square hidden">Z</div>
+            <div class="canopy-square shown" id="square-3-22">W</div>
+            <div class="canopy-square shown" id="square-3-23">X</div>
+            <div class="canopy-square hidden">Z</div>
+            <div class="canopy-square hidden">Z</div>
+          </div>
         </div>
+      </div>
 
-        <div class="row">
-            <div class="col s6">
-                <div class="input-field">
-                    {{ canopy_cover_form.date_time.label }}
-
-                    {{ canopy_cover_form.date_time.errors | striptags }}
-                    {{ canopy_cover_form.date_time }}
-                </div>
-            </div>
-
-            <div class="col s6">
-                <div class="input-field">
-                    {{ canopy_cover_form.weather.label }}
-
-                    {{ canopy_cover_form.weather.errors | striptags }}
-                    {{ canopy_cover_form.weather }}
-                </div>
-            </div>
-        </div>
-
-        <div class="row" style="display: none;">
-            {{ canopy_cover_form.north_cc.label }}
-
-            {{ canopy_cover_form.north_cc.errors | striptags }}
-            <span id='north-form'>{{ canopy_cover_form.north_cc }}</span>
-        </div>
-
-        <div class="row" style="display: none;">
-            {{ canopy_cover_form.east_cc.label }}
-
-            {{ canopy_cover_form.east_cc.errors | striptags }}
-            <span id='east-form'>{{ canopy_cover_form.east_cc }}</span>
-        </div>
-
-        <div class="row" style="display: none;">
-            {{ canopy_cover_form.west_cc.label }}
-
-            {{ canopy_cover_form.west_cc.errors | striptags }}
-            <span id='west-form'>{{ canopy_cover_form.west_cc }}</span>
-        </div>
-
-        <div class="row" style="display: none;">
-            {{ canopy_cover_form.south_cc.label }}
-
-            {{ canopy_cover_form.south_cc.errors | striptags }}
-            <span id='south-form'>{{ canopy_cover_form.south_cc }}</span>
-        </div>
-
-        <div id="canopies">
-            <div class="row">
-                <div id="canopy-north" class="canopy">
-                    <p class="header">{% trans "North" %}</p>
-                    <div class="canopy-square hidden">Z</div>
-                    <div class="canopy-square hidden">Z</div>
-                    <div class="canopy-square shown" id="square-0-0">A</div>
-                    <div class="canopy-square shown" id="square-0-1">B</div>
-                    <div class="canopy-square hidden">Z</div>
-                    <div class="canopy-square hidden">Z</div>
-
-                    <div class="canopy-square hidden">Z</div>
-                    <div class="canopy-square shown" id="square-0-2">C</div>
-                    <div class="canopy-square shown" id="square-0-3">D</div>
-                    <div class="canopy-square shown" id="square-0-4">E</div>
-                    <div class="canopy-square shown" id="square-0-5">F</div>
-                    <div class="canopy-square hidden">Z</div>
-
-                    <div class="canopy-square shown" id="square-0-6">G</div>
-                    <div class="canopy-square shown" id="square-0-7">H</div>
-                    <div class="canopy-square shown" id="square-0-8">I</div>
-                    <div class="canopy-square shown" id="square-0-9">J</div>
-                    <div class="canopy-square shown" id="square-0-10">K</div>
-                    <div class="canopy-square shown" id="square-0-11">L</div>
-
-                    <div class="canopy-square shown" id="square-0-12">M</div>
-                    <div class="canopy-square shown" id="square-0-13">N</div>
-                    <div class="canopy-square shown" id="square-0-14">O</div>
-                    <div class="canopy-square shown" id="square-0-15">P</div>
-                    <div class="canopy-square shown" id="square-0-16">Q</div>
-                    <div class="canopy-square shown" id="square-0-17">R</div>
-
-                    <div class="canopy-square hidden">Z</div>
-                    <div class="canopy-square shown" id="square-0-18">S</div>
-                    <div class="canopy-square shown" id="square-0-19">T</div>
-                    <div class="canopy-square shown" id="square-0-20">U</div>
-                    <div class="canopy-square shown" id="square-0-21">V</div>
-                    <div class="canopy-square hidden">Z</div>
-
-                    <div class="canopy-square hidden">Z</div>
-                    <div class="canopy-square hidden">Z</div>
-                    <div class="canopy-square shown" id="square-0-22">W</div>
-                    <div class="canopy-square shown" id="square-0-23">X</div>
-                    <div class="canopy-square hidden">Z</div>
-                    <div class="canopy-square hidden">Z</div>
-                </div>
-
-                <div id="canopy-west" class="canopy">
-                    <p class="header">{% trans "West" %}</p>
-                    <div class="canopy-square hidden">Z</div>
-                    <div class="canopy-square hidden">Z</div>
-                    <div class="canopy-square shown" id="square-1-0">A</div>
-                    <div class="canopy-square shown" id="square-1-1">B</div>
-                    <div class="canopy-square hidden">Z</div>
-                    <div class="canopy-square hidden">Z</div>
-
-                    <div class="canopy-square hidden">Z</div>
-                    <div class="canopy-square shown" id="square-1-2">C</div>
-                    <div class="canopy-square shown" id="square-1-3">D</div>
-                    <div class="canopy-square shown" id="square-1-4">E</div>
-                    <div class="canopy-square shown" id="square-1-5">F</div>
-                    <div class="canopy-square hidden">Z</div>
-
-                    <div class="canopy-square shown" id="square-1-6">G</div>
-                    <div class="canopy-square shown" id="square-1-7">H</div>
-                    <div class="canopy-square shown" id="square-1-8">I</div>
-                    <div class="canopy-square shown" id="square-1-9">J</div>
-                    <div class="canopy-square shown" id="square-1-10">K</div>
-                    <div class="canopy-square shown" id="square-1-11">L</div>
-
-                    <div class="canopy-square shown" id="square-1-12">M</div>
-                    <div class="canopy-square shown" id="square-1-13">N</div>
-                    <div class="canopy-square shown" id="square-1-14">O</div>
-                    <div class="canopy-square shown" id="square-1-15">P</div>
-                    <div class="canopy-square shown" id="square-1-16">Q</div>
-                    <div class="canopy-square shown" id="square-1-17">R</div>
-
-                    <div class="canopy-square hidden">Z</div>
-                    <div class="canopy-square shown" id="square-1-18">S</div>
-                    <div class="canopy-square shown" id="square-1-19">T</div>
-                    <div class="canopy-square shown" id="square-1-20">U</div>
-                    <div class="canopy-square shown" id="square-1-21">V</div>
-                    <div class="canopy-square hidden">Z</div>
-
-                    <div class="canopy-square hidden">Z</div>
-                    <div class="canopy-square hidden">Z</div>
-                    <div class="canopy-square shown" id="square-1-22">W</div>
-                    <div class="canopy-square shown" id="square-1-23">X</div>
-                    <div class="canopy-square hidden">Z</div>
-                    <div class="canopy-square hidden">Z</div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div id="canopy-east" class="canopy">
-                    <p class="header">{% trans "East" %}</p>
-                    <div class="canopy-square hidden">Z</div>
-                    <div class="canopy-square hidden">Z</div>
-                    <div class="canopy-square shown" id="square-2-0">A</div>
-                    <div class="canopy-square shown" id="square-2-1">B</div>
-                    <div class="canopy-square hidden">Z</div>
-                    <div class="canopy-square hidden">Z</div>
-
-                    <div class="canopy-square hidden">Z</div>
-                    <div class="canopy-square shown" id="square-2-2">C</div>
-                    <div class="canopy-square shown" id="square-2-3">D</div>
-                    <div class="canopy-square shown" id="square-2-4">E</div>
-                    <div class="canopy-square shown" id="square-2-5">F</div>
-                    <div class="canopy-square hidden">Z</div>
-
-                    <div class="canopy-square shown" id="square-2-6">G</div>
-                    <div class="canopy-square shown" id="square-2-7">H</div>
-                    <div class="canopy-square shown" id="square-2-8">I</div>
-                    <div class="canopy-square shown" id="square-2-9">J</div>
-                    <div class="canopy-square shown" id="square-2-10">K</div>
-                    <div class="canopy-square shown" id="square-2-11">L</div>
-
-                    <div class="canopy-square shown" id="square-2-12">M</div>
-                    <div class="canopy-square shown" id="square-2-13">N</div>
-                    <div class="canopy-square shown" id="square-2-14">O</div>
-                    <div class="canopy-square shown" id="square-2-15">P</div>
-                    <div class="canopy-square shown" id="square-2-16">Q</div>
-                    <div class="canopy-square shown" id="square-2-17">R</div>
-
-                    <div class="canopy-square hidden">Z</div>
-                    <div class="canopy-square shown" id="square-2-18">S</div>
-                    <div class="canopy-square shown" id="square-2-19">T</div>
-                    <div class="canopy-square shown" id="square-2-20">U</div>
-                    <div class="canopy-square shown" id="square-2-21">V</div>
-                    <div class="canopy-square hidden">Z</div>
-
-                    <div class="canopy-square hidden">Z</div>
-                    <div class="canopy-square hidden">Z</div>
-                    <div class="canopy-square shown" id="square-2-22">W</div>
-                    <div class="canopy-square shown" id="square-2-23">X</div>
-                    <div class="canopy-square hidden">Z</div>
-                    <div class="canopy-square hidden">Z</div>
-                </div>
-
-                <div id="canopy-south" class="canopy">
-                    <p class="header">{% trans "South" %}</p>
-                    <div class="canopy-square hidden">Z</div>
-                    <div class="canopy-square hidden">Z</div>
-                    <div class="canopy-square shown" id="square-3-0">A</div>
-                    <div class="canopy-square shown" id="square-3-1">B</div>
-                    <div class="canopy-square hidden">Z</div>
-                    <div class="canopy-square hidden">Z</div>
-
-                    <div class="canopy-square hidden">Z</div>
-                    <div class="canopy-square shown" id="square-3-2">C</div>
-                    <div class="canopy-square shown" id="square-3-3">D</div>
-                    <div class="canopy-square shown" id="square-3-4">E</div>
-                    <div class="canopy-square shown" id="square-3-5">F</div>
-                    <div class="canopy-square hidden">Z</div>
-
-                    <div class="canopy-square shown" id="square-3-6">G</div>
-                    <div class="canopy-square shown" id="square-3-7">H</div>
-                    <div class="canopy-square shown" id="square-3-8">I</div>
-                    <div class="canopy-square shown" id="square-3-9">J</div>
-                    <div class="canopy-square shown" id="square-3-10">K</div>
-                    <div class="canopy-square shown" id="square-3-11">L</div>
-
-                    <div class="canopy-square shown" id="square-3-12">M</div>
-                    <div class="canopy-square shown" id="square-3-13">N</div>
-                    <div class="canopy-square shown" id="square-3-14">O</div>
-                    <div class="canopy-square shown" id="square-3-15">P</div>
-                    <div class="canopy-square shown" id="square-3-16">Q</div>
-                    <div class="canopy-square shown" id="square-3-17">R</div>
-
-                    <div class="canopy-square hidden">Z</div>
-                    <div class="canopy-square shown" id="square-3-18">S</div>
-                    <div class="canopy-square shown" id="square-3-19">T</div>
-                    <div class="canopy-square shown" id="square-3-20">U</div>
-                    <div class="canopy-square shown" id="square-3-21">V</div>
-                    <div class="canopy-square hidden">Z</div>
-
-                    <div class="canopy-square hidden">Z</div>
-                    <div class="canopy-square hidden">Z</div>
-                    <div class="canopy-square shown" id="square-3-22">W</div>
-                    <div class="canopy-square shown" id="square-3-23">X</div>
-                    <div class="canopy-square hidden">Z</div>
-                    <div class="canopy-square hidden">Z</div>
-                </div>
-            </div>
-        </div>
-
-        <table>
-            <tr>
-                <th align='left'>{{ canopy_cover_form.est_canopy_cover.label }}</th>
-                <td style="display: none" id="total">{{ canopy_cover_form.est_canopy_cover }}</td>
-                <td><span class="grey-text" id="percent">0%</span></td>
-                <td>{{ canopy_cover_form.est_canopy_cover.errors }}</td>
-            </tr>
-        </table> <!-- end canopy cover -->
-        <input class="btn waves-effect waves-light teal darken-4" type='submit' name='submit' value='{% trans "Submit" %}'/>
+      <table>
+        <tr>
+          <th align='left'>{{ canopy_cover_form.est_canopy_cover.label }}</th>
+          <td style="display: none" id="total">{{ canopy_cover_form.est_canopy_cover }}</td>
+          <td><span class="grey-text" id="percent">0%</span></td>
+          <td>{{ canopy_cover_form.est_canopy_cover.errors }}</td>
+        </tr>
+      </table> <!-- end canopy cover -->
+      <input class="btn waves-effect waves-light teal darken-4" type='submit'
+             name='submit' value='{% trans "Submit" %}'/>
     </form>
-{% endif %}
+  {% endif %}
 
 {% endblock %}
 
 {% block scripts %}
-    <script type="application/javascript" src="{% static 'streamwebs/js/data.js' %}"></script>
-    <script type="application/javascript"
-        src="{% static 'streamwebs/js/data/edit/canopy_cover.js' %}">
-    </script>
+  <script type="application/javascript"
+          src="{% static 'streamwebs/js/data.js' %}"></script>
+  <script type="application/javascript"
+          src="{% static 'streamwebs/js/data/edit/canopy_cover.js' %}">
+  </script>
 {% endblock %}

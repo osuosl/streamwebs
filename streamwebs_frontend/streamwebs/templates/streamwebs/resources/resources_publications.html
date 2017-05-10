@@ -5,18 +5,18 @@
 {% block content %}
   <div class="container">
     {% if messages %}
-        {% for message in messages %}
+      {% for message in messages %}
         <strong>{{ message }}</strong>
-        {% endfor %}
+      {% endfor %}
     {% endif %}
-    
+
     <h1>{% trans "Curriculum Guides" %}</h1>
 
     <table class="bordered centered responsive-table">
       <thead>
         <tr>
-            <th data-field="name">{% trans "Name" %}</th>
-            <th data-field="Thumbnail">{% trans "Link" %}</th>
+          <th data-field="name">{% trans "Name" %}</th>
+          <th data-field="Thumbnail">{% trans "Link" %}</th>
         </tr>
       </thead>
 
@@ -27,7 +27,7 @@
               <h4>
                 {{ guide.name }}
 
-                </h4>
+              </h4>
             </td>
             <td>
               <a href={{ guide.downloadable.url }}>

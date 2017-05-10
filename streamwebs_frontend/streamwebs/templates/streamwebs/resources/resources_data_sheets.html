@@ -3,39 +3,39 @@
 {% load i18n %}
 
 {% block content %}
-<div class="container">
-  {% if messages %}
-    {% for message in messages %}
-    <strong>{{ message }}</strong>
-    {% endfor %}
-  {% endif %}
+  <div class="container">
+    {% if messages %}
+      {% for message in messages %}
+        <strong>{{ message }}</strong>
+      {% endfor %}
+    {% endif %}
 
-  <h1>{% trans "Data Sheets" %}</h1>
+    <h1>{% trans "Data Sheets" %}</h1>
 
-  <table class="bordered centered responsive-table">
-    <thead>
-      <tr>
+    <table class="bordered centered responsive-table">
+      <thead>
+        <tr>
           <th data-field="name">{% trans "Name" %}</th>
           <th data-field="Thumbnail">{% trans "Link" %}</th>
-      </tr>
-    </thead>
-
-    <tbody>
-      {% for sheet in data %}
-        <tr>
-          <td>
-            <h4>
-              {{ sheet.name }}
-            </h4>
-          </td>
-          <td>
-            <a href={{ sheet.downloadable.url }}>
-              <img src={{ sheet.thumbnail.url }} width="200" height="200">
-            </a>
-          </td>
         </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-</div>
+      </thead>
+
+      <tbody>
+        {% for sheet in data %}
+          <tr>
+            <td>
+              <h4>
+                {{ sheet.name }}
+              </h4>
+            </td>
+            <td>
+              <a href={{ sheet.downloadable.url }}>
+                <img src={{ sheet.thumbnail.url }} width="200" height="200">
+              </a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 {% endblock %}

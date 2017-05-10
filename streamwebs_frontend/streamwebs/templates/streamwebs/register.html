@@ -3,104 +3,115 @@
 {% block title %}Register -{% endblock %}
 {% block stylesheets %}
   <style>
-    .errorlist{
-      color:red;
+    .errorlist {
+      color: red;
     }
   </style>
 {% endblock %}
 {% block body_title %}{% trans "Register" %}{% endblock %}
 {% block content %}
-    <div class="container">
-      <div class="row">
-
-
-    {% if registered %}
+  <div class="container">
+  <div class="row">
+  {% if registered %}
     <strong>{% trans "You have successfully created a StreamWebs account." %}</strong>
-    <a href="{% url 'streamwebs:index' %}">{% trans "Return to home" %}</a><br />
+    <a href="{% url 'streamwebs:index' %}">{% trans "Return to home" %}</a><br/>
 
-    {% else %}
+  {% else %}
 
-    <form class="col s8 offset-s2" id='user_form' method='post' action="{% url 'streamwebs:register' %}">
-      <strong>{% trans "Create an account." %}</strong><br />
-        {% csrf_token %}
-        <div class="input-field col s6">
-          <label for="{{ user_form.first_name.id_for_label }}">{% trans "First Name" %}:</label>
-          {{ user_form.first_name }}
-          {{ user_form.first_name.errors }}
+    <form class="col s8 offset-s2" id='user_form' method='post'
+          action="{% url 'streamwebs:register' %}">
+      <strong>{% trans "Create an account." %}</strong><br/>
+      {% csrf_token %}
+      <div class="input-field col s6">
+        <label
+            for="{{ user_form.first_name.id_for_label }}">{% trans "First Name" %}:</label>
+        {{ user_form.first_name }}
+        {{ user_form.first_name.errors }}
 
-        </div>
-        <div class="input-field col s6">
-          <label for="{{ user_form.last_name.id_for_label }}">{% trans "Last Name" %}:</label>
-          {{ user_form.last_name }}
-          {{ user_form.last_name.errors }}
-        </div>
+      </div>
+      <div class="input-field col s6">
+        <label
+            for="{{ user_form.last_name.id_for_label }}">{% trans "Last Name" %}:</label>
+        {{ user_form.last_name }}
+        {{ user_form.last_name.errors }}
+      </div>
 
-        <div class="input-field col s12">
-          <label for="{{ profile_form.birthdate.id_for_label }}">{% trans "Birthdate" %}</label>
-          {{ profile_form.birthdate }}
-          {{ profile_form.birthdate.errors }}
-        </div>
-        
-        <div class="input-field col s12 ">
-          {{ profile_form.school }}
-          {{ profile_form.school.errors }}
-          <label for="{{ profile_form.school.id_for_label }}">{% trans "School" %}:</label>
-        </div>
+      <div class="input-field col s12">
+        <label
+            for="{{ profile_form.birthdate.id_for_label }}">{% trans "Birthdate" %}</label>
+        {{ profile_form.birthdate }}
+        {{ profile_form.birthdate.errors }}
+      </div>
 
-        <div class="input-field col s12">
-          <label for="{{ user_form.username.id_for_label }}">{% trans "Username" %}:</label>
-          {{ user_form.username }}
-          {{ user_form.username.errors }}
-        </div>
+      <div class="input-field col s12 ">
+        {{ profile_form.school }}
+        {{ profile_form.school.errors }}
+        <label for="{{ profile_form.school.id_for_label }}">{% trans "School" %}:</label>
+      </div>
 
-        <div class="input-field col s12">
-          <label for="{{ user_form.email.id_for_label }}">{% trans "Email" %}:</label>
-          {{ user_form.email }}
-          {{ user_form.email.errors }}
-        </div>
+      <div class="input-field col s12">
+        <label
+            for="{{ user_form.username.id_for_label }}">{% trans "Username" %}:</label>
+        {{ user_form.username }}
+        {{ user_form.username.errors }}
+      </div>
 
-        <div class="input-field col s12">
-          <label for="{{ user_form.password.id_for_label }}">{% trans "Password" %}:</label>
-          {{ user_form.password }}
-          {{ user_form.password.errors }}
-        </div>
+      <div class="input-field col s12">
+        <label
+            for="{{ user_form.email.id_for_label }}">{% trans "Email" %}:</label>
+        {{ user_form.email }}
+        {{ user_form.email.errors }}
+      </div>
 
-        <div class="input-field col s12">
-          <label for="{{ user_form.password_check.id_for_label }}">{% trans "Verify Password" %}:</label>
-          {{ user_form.password_check }}
-          {{ user_form.password_check.errors }}
-        </div>
-        <div class="input-field col s12">
-          <label for="{{ profile_form.captcha.id_for_label }}"></label>
-          {{ profile_form.captcha }}
-          {{ profile_form.captcha.errors }}
-        </div>
-        <br>
+      <div class="input-field col s12">
+        <label
+            for="{{ user_form.password.id_for_label }}">{% trans "Password" %}:</label>
+        {{ user_form.password }}
+        {{ user_form.password.errors }}
+      </div>
 
-        <input class="btn waves-effect waves-light teal darken-4" type='submit' name='submit' value='{% trans "Create Account"%}' />
+      <div class="input-field col s12">
+        <label
+            for="{{ user_form.password_check.id_for_label }}">{% trans "Verify Password" %}:</label>
+        {{ user_form.password_check }}
+        {{ user_form.password_check.errors }}
+      </div>
+      <div class="input-field col s12">
+        <label for="{{ profile_form.captcha.id_for_label }}"></label>
+        {{ profile_form.captcha }}
+        {{ profile_form.captcha.errors }}
+      </div>
+      <br>
+
+      <input class="btn waves-effect waves-light teal darken-4" type='submit'
+             name='submit' value='{% trans "Create Account" %}'/>
     </form>
-    {% endif %}
-    {% block scripts %}
+  {% endif %}
+  {% block scripts %}
     <!--Import jQuery before materialize.js-->
-    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pickadate.js/3.5.6/compressed/picker.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pickadate.js/3.5.6/compressed/picker.date.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
+    <script type="text/javascript"
+            src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/pickadate.js/3.5.6/compressed/picker.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/pickadate.js/3.5.6/compressed/picker.date.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
     <script>
-    $(document).ready(function() {
-      $('select').material_select();
+        $(document).ready(function () {
+            $('select').material_select();
 
-      $('.datepicker').pickadate({
-        today: '',
-        selectMonths: true, // Creates a dropdown to control month
-        selectYears: 100, // Creates a dropdown of 15 years to control year
-        max: true, // set max to today
-        format: 'yyyy-mm-dd',
-      });
-    });
+            $('.datepicker').pickadate({
+                today: '',
+                selectMonths: true, // Creates a dropdown to control month
+                selectYears: 100, // Creates a dropdown of 15 years to control year
+                max: true, // set max to today
+                format: 'yyyy-mm-dd',
+            });
+        });
 
 
     </script>
-    {% endblock %}
+  {% endblock %}
 
 {% endblock %}
