@@ -106,7 +106,10 @@ const showMouseover = function showMouseover(data) {
                 data.count + (data.count > 1 ? ' entries' : ' entry') +
             '</p>' +
             '<p>' +
-                '<a href="">View this date as a histogram</a>' +
+                '<a href="' +
+                    '/sites/' + data.site + '/water/' + data.key + '/' +
+                    data.date.toISOString().substring(0, 10) + '/' +
+                '">View this date as a histogram</a>' +
             '</p>'
         );
 
@@ -485,10 +488,12 @@ const createGraph = function createGraph() {
                     .data([
                         {
                             name: "Water Temperature",
+                            key: 'water_temperature',
                             values: filtered1.water_temperature
                         },
                         {
                             name: "Air Temperature",
+                            key: 'air_temperature',
                             values: filtered1.air_temperature
                         },
                     ])
@@ -500,6 +505,8 @@ const createGraph = function createGraph() {
                     .data(d => {
                         return d.values.map(e => {
                             e['name'] = d.name;
+                            e['key'] = d.key;
+                            e['site'] = siteId;
                             return e
                         });
                     })
@@ -571,10 +578,12 @@ const createGraph = function createGraph() {
                     .data([
                         {
                             name: "Water Temperature",
+                            key: 'water_temperature',
                             values: filtered2.water_temperature
                         },
                         {
                             name: "Air Temperature",
+                            key: 'air_temperature',
                             values: filtered2.air_temperature
                         },
                     ])
@@ -586,6 +595,8 @@ const createGraph = function createGraph() {
                     .data(d => {
                         return d.values.map(e => {
                             e['name'] = d.name;
+                            e['key'] = d.key;
+                            e['site'] = window.site2Id;
                             return e
                         });
                     })
@@ -705,7 +716,9 @@ const createGraph = function createGraph() {
                     .data(d => {
                         return d.values.map(e => {
                             e['name'] = d.name;
-                            return e
+                            e['key'] = 'dissolved_oxygen';
+                            e['site'] = siteId;
+                            return e;
                         });
                     })
                     .enter().append('path')
@@ -734,7 +747,9 @@ const createGraph = function createGraph() {
                     .data(d => {
                         return d.values.map(e => {
                             e['name'] = d.name;
-                            return e
+                            e['key'] = 'dissolved_oxygen';
+                            e['site'] = window.site2Id;
+                            return e;
                         });
                     })
                     .enter().append('path')
@@ -794,7 +809,7 @@ const createGraph = function createGraph() {
                 const type1 = g1.selectAll('.ph')
                     .data([{
                         name: 'pH',
-                        values: filtered1.pH
+                        values: filtered1.pH,
                     }])
                     .enter()
                     .append('g')
@@ -804,7 +819,9 @@ const createGraph = function createGraph() {
                     .data(d => {
                         return d.values.map(e => {
                             e['name'] = d.name;
-                            return e
+                            e['key'] = 'pH';
+                            e['site'] = siteId;
+                            return e;
                         });
                     })
                     .enter().append('path')
@@ -833,7 +850,9 @@ const createGraph = function createGraph() {
                     .data(d => {
                         return d.values.map(e => {
                             e['name'] = d.name;
-                            return e
+                            e['key'] = 'pH';
+                            e['site'] = window.site2Id;
+                            return e;
                         });
                     })
                     .enter().append('path')
@@ -895,7 +914,7 @@ const createGraph = function createGraph() {
                 const type1 = g1.selectAll('.turb')
                     .data([{
                         name: 'Turbidity',
-                        values: filtered1.turbidity
+                        values: filtered1.turbidity,
                     }])
                     .enter()
                     .append('g')
@@ -905,7 +924,9 @@ const createGraph = function createGraph() {
                     .data(d => {
                         return d.values.map(e => {
                             e['name'] = d.name;
-                            return e
+                            e['key'] = 'turbidity';
+                            e['site'] = siteId;
+                            return e;
                         });
                     })
                     .enter().append('path')
@@ -925,7 +946,7 @@ const createGraph = function createGraph() {
                 const type2 = g2.selectAll('.turb')
                     .data([{
                         name: 'Turbidity',
-                        values: filtered2.turbidity
+                        values: filtered2.turbidity,
                     }])
                     .enter()
                     .append('g')
@@ -935,7 +956,9 @@ const createGraph = function createGraph() {
                     .data(d => {
                         return d.values.map(e => {
                             e['name'] = d.name;
-                            return e
+                            e['key'] = 'turbidity';
+                            e['site'] = window.site2Id;
+                            return e;
                         });
                     })
                     .enter().append('path')
@@ -996,7 +1019,7 @@ const createGraph = function createGraph() {
                 const type1 = g1.selectAll('.sal')
                     .data([{
                         name: 'Salinity',
-                        values: filtered1.salinity
+                        values: filtered1.salinity,
                     }])
                     .enter()
                     .append('g')
@@ -1006,7 +1029,9 @@ const createGraph = function createGraph() {
                     .data(d => {
                         return d.values.map(e => {
                             e['name'] = d.name;
-                            return e
+                            e['key'] = 'salinity';
+                            e['site'] = siteId;
+                            return e;
                         });
                     })
                     .enter().append('path')
@@ -1025,7 +1050,7 @@ const createGraph = function createGraph() {
                 const type2 = g2.selectAll('.sal')
                     .data([{
                         name: 'Salinity',
-                        values: filtered2.salinity
+                        values: filtered2.salinity,
                     }])
                     .enter()
                     .append('g')
@@ -1035,7 +1060,9 @@ const createGraph = function createGraph() {
                     .data(d => {
                         return d.values.map(e => {
                             e['name'] = d.name;
-                            return e
+                            e['key'] = 'salinity';
+                            e['site'] = window.site2Id;
+                            return e;
                         });
                     })
                     .enter().append('path')
@@ -1096,7 +1123,7 @@ const createGraph = function createGraph() {
                 const type1 = g1.selectAll('.cond')
                     .data([{
                         name: 'Conductivity',
-                        values: filtered1.conductivity
+                        values: filtered1.conductivity,
                     }])
                     .enter()
                     .append('g')
@@ -1106,7 +1133,9 @@ const createGraph = function createGraph() {
                     .data(d => {
                         return d.values.map(e => {
                             e['name'] = d.name;
-                            return e
+                            e['key'] = 'conducitivity';
+                            e['site'] = siteId;
+                            return e;
                         });
                     })
                     .enter().append('path')
@@ -1125,7 +1154,7 @@ const createGraph = function createGraph() {
                 const type2 = g2.selectAll('.cond')
                     .data([{
                         name: 'Conductivity',
-                        values: filtered2.conductivity
+                        values: filtered2.conductivity,
                     }])
                     .enter()
                     .append('g')
@@ -1135,7 +1164,9 @@ const createGraph = function createGraph() {
                     .data(d => {
                         return d.values.map(e => {
                             e['name'] = d.name;
-                            return e
+                            e['key'] = 'conductivity';
+                            e['site'] = window.site2Id;
+                            return e;
                         });
                     })
                     .enter().append('path')
@@ -1201,23 +1232,28 @@ const createGraph = function createGraph() {
                     .data([
                         {
                             name: "Total Solids",
-                            values: filtered1.total_solids
+                            values: filtered1.total_solids,
+                            key: 'total_solids',
                         },
                         {
                             name: "Ammonia",
-                            values: filtered1.ammonia
+                            values: filtered1.ammonia,
+                            key: 'ammonia',
                         },
                         {
                             name: "Nitrite",
-                            values: filtered1.nitrite
+                            values: filtered1.nitrite,
+                            key: 'nitrite',
                         },
                         {
                             name: "Nitrate",
-                            values: filtered1.nitrate
+                            values: filtered1.nitrate,
+                            key: 'nitrate',
                         },
                         {
                             name: "Phosphates",
-                            values: filtered1.phosphates
+                            values: filtered1.phosphates,
+                            key: 'phosphates',
                         },
                     ])
                     .enter()
@@ -1228,7 +1264,9 @@ const createGraph = function createGraph() {
                     .data(d => {
                         return d.values.map(e => {
                             e['name'] = d.name;
-                            return e
+                            e['key'] = d.key;
+                            e['site'] = siteId;
+                            return e;
                         });
                     })
                     .enter().append('path')
@@ -1332,23 +1370,28 @@ const createGraph = function createGraph() {
                     .data([
                         {
                             name: "Total Solids",
-                            values: filtered2.total_solids
+                            values: filtered2.total_solids,
+                            key: 'total_solids',
                         },
                         {
                             name: "Ammonia",
-                            values: filtered2.ammonia
+                            values: filtered2.ammonia,
+                            key: 'ammonia',
                         },
                         {
                             name: "Nitrite",
-                            values: filtered2.nitrite
+                            values: filtered2.nitrite,
+                            key: 'nitrite',
                         },
                         {
                             name: "Nitrate",
-                            values: filtered2.nitrate
+                            values: filtered2.nitrate,
+                            key: 'nitrate',
                         },
                         {
                             name: "Phosphates",
-                            values: filtered2.phosphates
+                            values: filtered2.phosphates,
+                            key: 'phosphates',
                         },
                     ])
                     .enter()
@@ -1359,7 +1402,9 @@ const createGraph = function createGraph() {
                     .data(d => {
                         return d.values.map(e => {
                             e['name'] = d.name;
-                            return e
+                            e['key'] = d.key;
+                            e['site'] = window.site2Id;
+                            return e;
                         });
                     })
                     .enter().append('circle')
@@ -1477,7 +1522,7 @@ const createGraph = function createGraph() {
                 const type1 = g1.selectAll('.bod')
                     .data([{
                         name: 'BOD',
-                        values: filtered1.bod
+                        values: filtered1.bod,
                     }])
                     .enter()
                     .append('g')
@@ -1487,7 +1532,9 @@ const createGraph = function createGraph() {
                     .data(d => {
                         return d.values.map(e => {
                             e['name'] = d.name;
-                            return e
+                            e['key'] = 'bod';
+                            e['site'] = siteId;
+                            return e;
                         });
                     })
                     .enter().append('path')
@@ -1506,7 +1553,7 @@ const createGraph = function createGraph() {
                 const type2 = g2.selectAll('.bod')
                     .data([{
                         name: 'BOD',
-                        values: filtered2.bod
+                        values: filtered2.bod,
                     }])
                     .enter()
                     .append('g')
@@ -1516,7 +1563,9 @@ const createGraph = function createGraph() {
                     .data(d => {
                         return d.values.map(e => {
                             e['name'] = d.name;
-                            return e
+                            e['key'] = 'bod';
+                            e['site'] = window.site2Id;
+                            return e;
                         });
                     })
                     .enter().append('path')
@@ -1577,7 +1626,7 @@ const createGraph = function createGraph() {
                 const type1 = g1.selectAll('.fecal')
                     .data([{
                         name: 'Fecal Coliform',
-                        values: filtered1.fecal_coliform
+                        values: filtered1.fecal_coliform,
                     }])
                     .enter()
                     .append('g')
@@ -1587,7 +1636,9 @@ const createGraph = function createGraph() {
                     .data(d => {
                         return d.values.map(e => {
                             e['name'] = d.name;
-                            return e
+                            e['key'] = 'fecal_coliform';
+                            e['site'] = siteId;
+                            return e;
                         });
                     })
                     .enter().append('path')
@@ -1606,7 +1657,7 @@ const createGraph = function createGraph() {
                 const type2 = g2.selectAll('.fecal')
                     .data([{
                         name: 'Fecal Coliform',
-                        values: filtered2.fecal_coliform
+                        values: filtered2.fecal_coliform,
                     }])
                     .enter()
                     .append('g')
@@ -1616,7 +1667,9 @@ const createGraph = function createGraph() {
                     .data(d => {
                         return d.values.map(e => {
                             e['name'] = d.name;
-                            return e
+                            e['key'] = 'fecal_coliform';
+                            e['site'] = window.site2Id;
+                            return e;
                         });
                     })
                     .enter().append('path')
@@ -1668,11 +1721,13 @@ const loadSite2 = function loadSite2(site_slug) {
         if (!data.data || data.data.length === 0) {
             window.hasSiteTwo = false;
             window.data.site2 = null;
+            window.site2Id = null;
             $('#site-names').hide();
             $('#compare-error').show();
         } else {
             window.hasSiteTwo = true;
             window.data.site2 = data.data;
+            window.site2Id = data.site.site_slug;
             $('#site2-header').text(data.site.site_name);
             $('#site-names').show();
             $('#compare-error').hide();
