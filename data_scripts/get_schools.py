@@ -18,12 +18,13 @@ if os.path.isdir("../streamwebs_frontend/sw_data/"):
     datafile = '../sw_data/schools_info.csv'
 else:
     # datafile = '../csvs/schools_info.csv'
-    datafile = '../csvs/updated_schools.csv'
+    datafile = '../csvs/schools_info.csv'
 
 
 with open(datafile, 'r') as csvfile:
     sitereader = csv.DictReader(csvfile)
     for row in sitereader:
+        nid = row['Nid']
         name = row['School name']
         school_type = row['School type']
         address = row['Street']
@@ -33,7 +34,7 @@ with open(datafile, 'r') as csvfile:
 
         school = School.objects.update_or_create(
             name=name, school_type=school_type, address=address, city=city,
-            province=province, zipcode=zipcode
+            province=province, zipcode=zipcode, nid=nid
         )
 
 print "Schools loaded."
