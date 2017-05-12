@@ -137,6 +137,11 @@ class School(models.Model):
     created = models.DateTimeField(default=timezone.now)
     modified = models.DateTimeField(default=timezone.now)
 
+    # nid and assoc_uid are only used by the data_scripts to make relations
+    # between the models
+    nid = models.PositiveIntegerField(blank=True, null=True)
+    assoc_uid = models.PositiveIntegerField(blank=True, null=True)
+
     test_objects = SchoolManager()
     objects = models.Manager()
 
