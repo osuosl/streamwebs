@@ -278,11 +278,17 @@ def water_histogram(request, site_slug, data_type, date):
     day = datetime.datetime.strptime(date, '%Y-%m-%d').date()
     wq_data = Water_Quality.objects.filter(site=site)
     data = [m.to_dict() for m in wq_data if m.date == day]
+    if data_type == 'pH':
+        data_name = data_type
+    elif data_type == 'bod':
+        data_name = 'BOD'
+    else:
+        data_name = data_type.replace('_', ' ').title()
     return render(request, 'streamwebs/graphs/wq_histogram.html', {
         'site': site.to_dict(),
         'data': json.dumps(data),
         'type_key': data_type,
-        'type_name': '',  # TODO: Map key names to human-readable names
+        'type_name': data_name,
         'date': day
     })
 
