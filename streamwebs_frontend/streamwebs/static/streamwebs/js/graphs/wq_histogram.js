@@ -1,5 +1,10 @@
 "use strict";
 
+function toFixed(value, precision) {
+    const power = Math.pow(10, precision || 0);
+    return String(Math.round(value * power) / power);
+}
+
 const createGraph = function createGraph() {
     $('svg').remove();
 
@@ -104,7 +109,7 @@ const createGraph = function createGraph() {
         .attr('x', d => (x(d.x1) - x(d.x0))/2)
         .attr('y', d => height - y(d.length) + 6)
         .attr('text-anchor', 'middle')
-        .text(d => d.x0);
+        .text(d => toFixed(Number.parseFloat(d.x0), 2));
 };
 
 $(() => {
