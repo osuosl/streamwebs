@@ -11,7 +11,7 @@ proj_path = "../streamwebs_frontend/"
 sys.path.append(proj_path)
 application = get_wsgi_application()
 
-from streamwebs.models import School  # NOQA
+from streamwebs.models import School, SchoolRelations  # NOQA
 
 if os.path.isdir("../streamwebs_frontend/sw_data/"):
     # Update this at some point
@@ -24,16 +24,6 @@ else:
 with open(datafile, 'r') as csvfile:
     reader = csv.DictReader(csvfile)
     for row in reader:
-   
-        duplicate_names = ['Cascade Middle School',       # Eugene
-                           'Hoover Elementary School',    # Medford, Salem
-                           'Howard Elementary School',    # Medford
-                           'Wilson Elementary School',    # Medford
-                           'Adams Elementary School',     # Eugene
-                           'Butte Falls Charter School',  # Butte Falls
-                           'Evergreen Elementary School', # Silverton, Redmond
-                           'Roosevelt Elementary School'] # Klamath Falls
-
         # Seems like 'Resource Link Charter School' is actually a dup entry
         # B/c one lists a PO Box as an address
 
@@ -66,13 +56,41 @@ with open(datafile, 'r') as csvfile:
               qry.save()
         else:
             if school.exists() and school.count != 0:
-                #print (row['School'])
-                school = School.objects.get(name=row['School'])
-                #print (row['School'] + ' \t' + row['Uid'])
-                if row['Uid'] == '':
-                    school.assoc_uid = None
+                if row['Uid'] != '':
+                    uid = row['Uid']
                 else:
-                    school.assoc_uid = row['Uid']
-                school.save()
+                    uid = None
+                
+                related_school =  school.first()
+
+                relations = SchoolRelations.objects.update_or_create(
+                    uid=uid, school=related_school
+                )
+
+# Manually assigning uid-to-school relations for renamed duplicates...
+adams_uids = [1071, 1026, 188, 185, 182]
+other_uids = [1781, 163, 1726, 1671, 1101, 608, 83]
+assoc_schools = ['Cascade Middle School (Bend)',
+                 'Hoover Elementary School (Salem)',
+                 'Hoover Elementary School (Corvallis)',
+                 'Howard Elementary School (Eugene)',
+                 'Wilson Elementary School (Medford)',
+                 'Evergreen Elementary School (Redmond)',
+                 'Roosevelt Elementary School (Klamath Falls)']
+
+for i in range(len(other_uids)):
+    uid = other_uids[i]
+    related_school = School.objects.get(name=assoc_schools[i])
+    relations = SchoolRelations.objects.update_or_create(
+        uid=uid, school=related_school
+    ) 
+
+# Make one query since the following uids are associated w/ the same school
+related_school = School.objects.get(name='Adams Elementary School (Corvallis)')
+for each in adams_uids:
+    uid = each
+    relations = SchoolRelations.objects.update_or_create(
+        uid=uid, school=related_school
+    ) 
             
-print "Duplicates renamed."
+print "Duplicates renamed, uid-to-school relations made."
