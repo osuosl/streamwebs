@@ -4,18 +4,23 @@
 {% load filters %}
 {% block title %}{% trans "Add a new camera point" %}{% endblock %}
 {% block content %}
-  <script type="text/javascript"
+  <script type="application/javascript"
           src="http://maps.google.com/maps/api/js?key=AIzaSyBV71HBuAFMtHEAaSEVpRDPUQyGvJwTX1k"></script>
   <script
       src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-  <script>
+  <script type="application/javascript">
     // initialize curr_marker
-    let curr_marker = null;
     let marker = null;
 
     // onload
     $(document).ready(function () {
-      const latlng = new google.maps.LatLng("{{ site.to_dict.location.y }}", "{{ site.to_dict.location.x }}");
+      {% language "en-us" %}
+      const loc = {
+        lat: {{ site.to_dict.location.y }},
+        lng: {{ site.to_dict.location.x }},
+      };
+      {% endlanguage %}
+      const latlng = new google.maps.LatLng(loc.lat, loc.lng);
       const mapOptions = {
         zoom: 14,
         center: latlng,
@@ -26,10 +31,7 @@
       map = new google.maps.Map($('.map')[0], mapOptions);
 
       marker = new google.maps.Marker({
-        position: {
-          lat:{{ site.to_dict.location.y }},
-          lng:{{ site.to_dict.location.x }}
-        },
+        position: loc,
         map: map,
         title: "Site Location"
       });
@@ -46,11 +48,9 @@
     });
 
     function placeMarker(latlng, map) {
-      // set prev marker to current marker
-      curr_marker = marker;
       // delete old marker if exists
-      if (curr_marker) {
-        curr_marker.setMap(null);
+      if (marker) {
+        marker.setMap(null);
       }
       // make new marker
       marker = new google.maps.Marker({
@@ -80,8 +80,7 @@
           </a>
         </h3>
         <h4 align="center">{% trans 'New Photo Point' %}</h4>
-        <form id='pp_monitoring_form' method='post'
-              enctype='multipart/form-data'>
+        <form id='pp_monitoring_form' method='post' enctype='multipart/form-data'>
           {% csrf_token %}
 
           <p>{{ camera_form.site }}</p>
@@ -138,20 +137,23 @@
                     {{ p_form.compass_bearing.errors | striptags }}
                   </div>
                   <div class="input-field">
-                    <label
-                        for="{{ p_form.distance.label }}">{{ p_form.distance.label }}</label>
+                    <label for="{{ p_form.distance.label }}">
+                      {{ p_form.distance.label }}
+                    </label>
                     {{ p_form.distance }}
                     {{ p_form.distance.errors | striptags }}
                   </div>
                   <div class="input-field">
-                    <label
-                        for="{{ p_form.camera_height.label }}">{{ p_form.camera_height.label }}</label>
+                    <label for="{{ p_form.camera_height.label }}">
+                      {{ p_form.camera_height.label }}
+                    </label>
                     {{ p_form.camera_height }}
                     {{ p_form.camera_height.errors | striptags }}
                   </div>
                   <div class="input-field">
-                    <label
-                        for="{{ p_form.notes.label }}">{{ p_form.notes.label }}</label>
+                    <label for="{{ p_form.notes.label }}">
+                      {{ p_form.notes.label }}
+                    </label>
                     {{ p_form.notes }}
                     {{ p_form.notes.errors | striptags }}
                   </div>
@@ -176,9 +178,8 @@
               {% endfor %}
             </div>
           </div>
-          <button class="btn-large
-          waves-effect waves-light teal darken-4" type="submit" name="action"
-                  value='{% trans "Submit" %}'>
+          <button class="btn-large waves-effect waves-light teal darken-4"
+                  type="submit" name="action" value='{% trans "Submit" %}'>
             {% trans "Submit" %}<i class="material-icons right">send</i>
           </button>
         </form>
@@ -195,7 +196,7 @@
       $('.datepicker').pickadate({
         today: '',
         selectMonths: true, // Creates a dropdown to control month
-        selectYears: 100, // Creates a dropdown of 15 years to control year
+        selectYears: 15, // Creates a dropdown of 15 years to control year
         max: true, // set max to today
         format: 'yyyy-mm-dd',
       });
