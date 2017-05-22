@@ -1058,39 +1058,33 @@ def admin_user_promotion(request):
                         % user.username)
 
     all_users = User.objects.all()
-    users_list = {'staff': [], 'admin': [], 'stats': [], 'upload': [],
-                  'none': []}
+    user_info = dict()
+    for u in all_users:
+        user_info[u] = {
+            'is staff': u.is_staff,
+            'is an admin': u.groups.filter(name='admin').exists(),
+            'can view stats': u.has_perm('streamwebs.can_view_stats'),
+            'can upload resources': u.has_perm(
+                'streamwebs.can_upload_resources'),
+            'can manage other users': u.has_perm(
+                'streamwebs.can_promote_users')}
 
-    for user in all_users:
-        if user.is_staff:
-            users_list['staff'].append(user)
-        elif user.groups.filter(name='admin').exists():
-            users_list['admin'].append(user)
-        elif user.has_perm('streamwebs.can_view_stats'):
-            users_list['stats'].append(user)
-        elif user.has_perm('streamwebs.can_upload_resources'):
-            users_list['upload'].append(user)
-        else:
-            users_list['none'].append(user)
-
-    paginator = Paginator((users_list['staff'] + users_list['admin'] +
-                           users_list['stats'] + users_list['upload'] +
-                           users_list['none']), 10)  # Show 10 users per page
+    paginator = Paginator(list(all_users), 10)  # Show 10 users per page
     page = request.GET.get('page')
 
     try:
-        users = paginator.page(page)
+        page_of_users = paginator.page(page)
     except PageNotAnInteger:
-        users = paginator.page(1)
+        page_of_users = paginator.page(1)
     except EmptyPage:
-        users = paginator.page(paginator.num_pages)
+        page_of_users = paginator.page(paginator.num_pages)
 
     return render(
         request, 'streamwebs/admin/user_promo.html', {
             'promo_form': promo_form,
-            'users': users,
-            'users_list': users_list,
+            'page_of_users': page_of_users,
             'msgs': msgs,
             'all_users': all_users,
+            'user_info': user_info,
         }
     )
