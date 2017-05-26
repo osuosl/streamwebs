@@ -1,0 +1,40 @@
+{% extends "streamwebs/base.html" %}
+{% load staticfiles %}
+{% block title %}{{ type_name }} Data on {{ date|date:'m/d/Y' }} - {{ site.site_name }}{% endblock %}
+{% load i18n %}
+
+{% block scripts %}
+<script type="application/javascript">
+    window.data = {{data|safe}};
+    const siteId = '{{ site.site_slug }}';
+    const key = '{{ type_key }}';
+</script>
+
+<script src="{% static 'streamwebs/js/graphs/wq_histogram.js' %}" type="application/javascript"></script>
+{% endblock %}
+
+{% block body_title %}
+    <a href="/sites/{{site.site_slug}}/water/">{{site.site_name}}</a>:
+    {{ type_name }} Data on {{ date|date:'m/d/Y' }}
+{% endblock %}
+
+{% block content %}
+<style>
+    .bar rect {
+        fill: blue;
+    }
+
+    .bar .label {
+        fill: white;
+        font: 12px sans-serif;
+    }
+
+    .bar .value {
+        fill: black;
+        font: 12px sans-serif;
+    }
+</style>
+<div class="row">
+    <div id="histogram" class="graph histogram col s12"></div>
+</div>
+{% endblock %}

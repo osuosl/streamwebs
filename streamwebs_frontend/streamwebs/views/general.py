@@ -273,6 +273,26 @@ def water_graph_site_data(request, site_slug):
     }), content_type='application/json')
 
 
+def water_histogram(request, site_slug, data_type, date):
+    site = Site.objects.get(site_slug=site_slug)
+    day = datetime.datetime.strptime(date, '%Y-%m-%d').date()
+    wq_data = Water_Quality.objects.filter(site=site)
+    data = [m.to_dict() for m in wq_data if m.date == day]
+    if data_type == 'pH':
+        data_name = data_type
+    elif data_type == 'bod':
+        data_name = 'BOD'
+    else:
+        data_name = data_type.replace('_', ' ').title()
+    return render(request, 'streamwebs/graphs/wq_histogram.html', {
+        'site': site.to_dict(),
+        'data': json.dumps(data),
+        'type_key': data_type,
+        'type_name': data_name,
+        'date': day
+    })
+
+
 def graph_macros(request, site_slug):
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     macros = Macroinvertebrates.objects.filter(site=site)
