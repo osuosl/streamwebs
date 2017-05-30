@@ -13,7 +13,9 @@ proj_path = "../streamwebs_frontend/"
 sys.path.append(proj_path)
 application = get_wsgi_application()
 
-from streamwebs.models import Soil_Survey, School, SchoolRelations  # NOQA
+from streamwebs.models import (
+    Macroinvertebrates, Soil_Survey, School, SchoolRelations,
+    RiparianTransect)
 
 if os.path.isdir("../streamwebs_frontend/sw_data/"):
     datafile = '../sw_data/active_schools.csv'
@@ -40,6 +42,7 @@ with open(datafile, 'r') as csvfile:
 
                 # Nothing appears to be happening???
                 #print ('Got here ' + str(soil_survey))
+                print ('Soil Uid: ' + str(row['Uid']))
                 relation = SchoolRelations.objects.get(uid=row['Uid'])
 
                 for each in soil_survey:
@@ -50,10 +53,105 @@ with open(datafile, 'r') as csvfile:
                     #print ('Soil site: ' + str(soil_survey[i]) + '\t' + str(school[0]))
                     soil = Soil_Survey.objects.get(id=each)
                     #print("test: " + str(type(soil_survey[i])))
-                    print("type: " + str(type(relation.school)))
+                    #print("type: " + str(type(relation.school)))
                     soil.school = relation.school
                     #print (soil, 'relation: ' + str(relation.school))
                     soil.save()
+
+            if Macroinvertebrates.objects.filter(uid=row['Uid']).exists():
+                # Update School field for soil survey
+                macro_sheets = []
+                macros = Macroinvertebrates.objects.filter(uid=row['Uid'])
+
+                # Nothing appears to be happening???
+                #print ('Got here ' + str(soil_survey))
+                print ('Macro Uid: ' + str(row['Uid']))
+                relation = SchoolRelations.objects.get(uid=row['Uid'])
+
+                for each in macros:
+                    macro_sheets.append(each.id)
+
+                # MAKE RELATIONS BETWEEN UID AND SCHOOL
+                for each in macro_sheets:
+                    #print ('Soil site: ' + str(soil_survey[i]) + '\t' + str(school[0]))
+                    macroq = Macroinvertebrates.objects.get(id=each)
+                    #print("test: " + str(type(soil_survey[i])))
+                    #print("type: " + str(type(relation.school)))
+                    macroq.school = relation.school
+                    #print (soil, 'relation: ' + str(relation.school))
+                    macroq.save()
+
+            if RiparianTransect.objects.filter(uid=row['Uid']).exists():
+                # Update School field for soil survey
+                rt_sheets = []
+                ript = RiparianTransect.objects.filter(uid=row['Uid'])
+
+                # Nothing appears to be happening???
+                #print ('Got here ' + str(soil_survey))
+                #print ('Uid: ' + str(row['Uid']))
+                relation = SchoolRelations.objects.get(uid=row['Uid'])
+
+                for each in ript:
+                    rt_sheets.append(each.id)
+
+                # MAKE RELATIONS BETWEEN UID AND SCHOOL
+                for each in rt_sheets:
+                    #print ('Soil site: ' + str(soil_survey[i]) + '\t' + str(school[0]))
+                    transect = RiparianTransect.objects.get(id=each)
+                    #print("test: " + str(type(soil_survey[i])))
+                    #print("type: " + str(type(relation.school)))
+                    transect.school = relation.school
+                    #print (soil, 'relation: ' + str(relation.school))
+                    transect.save()
+
+            '''
+            if Water_Quality.objects.filter(uid=row['Uid']).exists():
+                # Update School field for soil survey
+                wq_sheets = []
+                wq = Water_Quality.objects.filter(uid=row['Uid'])
+
+                # Nothing appears to be happening???
+                #print ('Got here ' + str(soil_survey))
+                #print ('Uid: ' + str(row['Uid']))
+                relation = SchoolRelations.objects.get(uid=row['Uid'])
+
+                for each in wq:
+                    wq_sheets.append(each.id)
+
+                # MAKE RELATIONS BETWEEN UID AND SCHOOL
+                for each in wq_sheets:
+                    #print ('Soil site: ' + str(soil_survey[i]) + '\t' + str(school[0]))
+                    waterq = Water_Quality.objects.get(id=each)
+                    #print("test: " + str(type(soil_survey[i])))
+                    #print("type: " + str(type(relation.school)))
+                    waterq.school = relation.school
+                    #print (soil, 'relation: ' + str(relation.school))
+                    waterq.save()
+
+            if Canopy_Cover.objects.filter(uid=row['Uid']).exists():
+                # Update School field for soil survey
+                cc_sheets = []
+                cc = Canopy_Cover.objects.filter(uid=row['Uid'])
+
+                # Nothing appears to be happening???
+                #print ('Got here ' + str(soil_survey))
+                #print ('Uid: ' + str(row['Uid']))
+                relation = SchoolRelations.objects.get(uid=row['Uid'])
+
+                for each in cc:
+                    cc_sheets.append(each.id)
+
+                # MAKE RELATIONS BETWEEN UID AND SCHOOL
+                for each in cc_sheets:
+                    #print ('Soil site: ' + str(soil_survey[i]) + '\t' + str(school[0]))
+                    canopyc = Canopy_Cover.objects.get(id=each)
+                    #print("test: " + str(type(soil_survey[i])))
+                    #print("type: " + str(type(relation.school)))
+                    canopyc.school = relation.school
+                    #print (soil, 'relation: ' + str(relation.school))
+                    canopyc.save()
+          '''
+
 #        else:
 #            print("User: " + row['Uid']  + " not affiliated with school")
 #        except streamwebs.models.MultipleObjectsReturned:

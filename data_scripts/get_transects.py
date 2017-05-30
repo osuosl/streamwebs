@@ -22,15 +22,18 @@ else:
     datapath = '../csvs/'
 
 
-transects = datapath + 'rip_transect.csv'
-zones = datapath + 'transect_zones.csv'
+#transects = datapath + 'rip_transect.csv'
+#zones = datapath + 'transect_zones.csv'
+transects = datapath + 'rt_new.csv'
+zones = datapath + 'tz_new.csv'
 
-# Nid, Collected, Site Name, Estimated Slope, Field Notes
+
+# Nid, Collected, Site Name, Estimated Slope, Field Notes, Uid
 with open(transects, 'r') as csvfile:
     reader = csv.reader(csvfile)
     for row in reader:
         if row[0] != 'Nid':  # Skip the header
-            if row[3] == '':
+            if row[3] == '' or row[3] == 'n/a':
                 row[3] = None
 
             # Strip ``Collected date`` so that's in the correct format
@@ -39,6 +42,7 @@ with open(transects, 'r') as csvfile:
             slope = row[3]
             notes = row[4]
             nid = row[0]
+            uid = row[5]
 
             # Create the foreign key relation between datasheet and site
             site = Site.objects.get(site_name=row[2])
@@ -49,7 +53,7 @@ with open(transects, 'r') as csvfile:
             if not RiparianTransect.objects.filter(nid=nid).exists():
                 transect = RiparianTransect.objects.create(
                     date_time=date_time, slope=slope, notes=notes, nid=nid,
-                    site_id=site_id
+                    site_id=site_id, uid=uid
                 )
 
 csvfile.close()
