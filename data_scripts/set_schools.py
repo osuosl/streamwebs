@@ -14,8 +14,8 @@ sys.path.append(proj_path)
 application = get_wsgi_application()
 
 from streamwebs.models import (
-    Macroinvertebrates, Soil_Survey, School, SchoolRelations,
-    RiparianTransect)
+    School, SchoolRelations, Macroinvertebrates, Soil_Survey, 
+    RiparianTransect, Water_Quality, Canopy_Cover)
 
 if os.path.isdir("../streamwebs_frontend/sw_data/"):
     datafile = '../sw_data/active_schools.csv'
@@ -42,7 +42,7 @@ with open(datafile, 'r') as csvfile:
 
                 # Nothing appears to be happening???
                 #print ('Got here ' + str(soil_survey))
-                print ('Soil Uid: ' + str(row['Uid']))
+                #print ('Soil Uid: ' + str(row['Uid']))
                 relation = SchoolRelations.objects.get(uid=row['Uid'])
 
                 for each in soil_survey:
@@ -65,7 +65,7 @@ with open(datafile, 'r') as csvfile:
 
                 # Nothing appears to be happening???
                 #print ('Got here ' + str(soil_survey))
-                print ('Macro Uid: ' + str(row['Uid']))
+                #print ('Macro Uid: ' + str(row['Uid']))
                 relation = SchoolRelations.objects.get(uid=row['Uid'])
 
                 for each in macros:
@@ -104,7 +104,6 @@ with open(datafile, 'r') as csvfile:
                     #print (soil, 'relation: ' + str(relation.school))
                     transect.save()
 
-            '''
             if Water_Quality.objects.filter(uid=row['Uid']).exists():
                 # Update School field for soil survey
                 wq_sheets = []
@@ -150,7 +149,6 @@ with open(datafile, 'r') as csvfile:
                     canopyc.school = relation.school
                     #print (soil, 'relation: ' + str(relation.school))
                     canopyc.save()
-          '''
 
 #        else:
 #            print("User: " + row['Uid']  + " not affiliated with school")

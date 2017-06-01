@@ -93,16 +93,16 @@ assoc_schools = ['Cascade Middle School (Bend)',
 for i in range(len(other_uids)):
     uid = other_uids[i]
     related_school = School.objects.get(name=assoc_schools[i])
-    relations = SchoolRelations.objects.update_or_create(
-        uid=uid, school=related_school
-    ) 
+    relation = SchoolRelations.objects.get(uid=uid)
+    relation.school = related_school
+    relation.save()
 
 # Make one query since the following uids are associated w/ the same school
 related_school = School.objects.get(name='Adams Elementary School (Corvallis)')
 for each in adams_uids:
     uid = each
-    relations = SchoolRelations.objects.update_or_create(
-        uid=uid, school=related_school
-    ) 
+    relation = SchoolRelations.objects.get(uid=uid)
+    relation.school = related_school
+    relation.save()
             
 print "Duplicates renamed, uid-to-school relations made."

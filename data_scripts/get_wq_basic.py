@@ -19,7 +19,8 @@ from streamwebs.models import Water_Quality  # NOQA
 if os.path.isdir("../streamwebs_frontend/sw_data/"):
     datafile = '../sw_data/wq_csvs/water_quality.csv'
 else:
-    datafile = '../csvs/wq_csvs/water_quality.csv'
+    #datafile = '../csvs/wq_csvs/water_quality.csv'
+    datafile = '../csvs/wq_new/wq_main.csv'
 
 
 # Stream/Site name, DEQ Data Quality, Collected, School, Any fish present?
@@ -70,8 +71,14 @@ with open(datafile, 'r') as csvfile:
 
             nid = row[11]
 
+            if row[12] == '':
+                row[12] = None
+
+            uid = row[12]
+
             if row[0] is not None:
                 try:
+                    print('site: ' + str(row[0]))
                     site = Site.objects.get(site_name=row[0])
                     site_id = site.id
                 except:  # for the one site_name exception...
@@ -91,7 +98,7 @@ with open(datafile, 'r') as csvfile:
                 fish_present=fish_present, live_fish=live_fish,
                 dead_fish=dead_fish, air_temp_unit=air_temp_unit,
                 water_temp_unit=water_temp_unit, latitude=latitude,
-                longitude=longitude, nid=nid, site_id=site_id
+                longitude=longitude, nid=nid, site_id=site_id, uid=uid
             )
 
 
