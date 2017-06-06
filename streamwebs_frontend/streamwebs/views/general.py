@@ -213,6 +213,11 @@ def register(request):
         'profile_form': profile_form,
         'registered': registered})
 
+def edit_account(request):
+    if request.method == 'GET':
+        user_edit_form = UserEditForm()
+
+    return
 
 def user_login(request):
     redirect_to = request.POST.get('next', '')

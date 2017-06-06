@@ -53,6 +53,8 @@ class UserProfileForm(forms.ModelForm):
         model = UserProfile
         fields = ('school', 'birthdate')
 
+class UserEditForm(forms.ModelForm):
+    password = forms.CharField
 
 class MacroinvertebratesForm(forms.ModelForm):
     school = forms.ModelChoiceField(queryset=School.objects.all())
