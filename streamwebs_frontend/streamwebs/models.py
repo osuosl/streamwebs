@@ -644,14 +644,14 @@ class MacroinvertebratesManager(models.Manager):
     """
     Manager for the Macroinvertebrates model.
     """
-    def create_macro(self, site, time_spent=0, num_people=0, water_type='riff',
-                     caddisfly=0, mayfly=0, riffle_beetle=0, stonefly=0,
-                     water_penny=0, dobsonfly=0, clam_or_mussel=0, crane_fly=0,
-                     crayfish=0, damselfly=0, dragonfly=0, scud=0, fishfly=0,
-                     alderfly=0, mite=0, aquatic_worm=0, blackfly=0, leech=0,
-                     midge=0, snail=0, mosquito_larva=0, notes=''):
+    def create_macro(self, site, school, time_spent=0, num_people=0,
+                     water_type='riff', caddisfly=0, mayfly=0, riffle_beetle=0,
+                     stonefly=0, water_penny=0, dobsonfly=0, clam_or_mussel=0,
+                     crane_fly=0, crayfish=0, damselfly=0, dragonfly=0, scud=0,
+                     fishfly=0, alderfly=0, mite=0, aquatic_worm=0, blackfly=0,
+                     leech=0, midge=0, snail=0, mosquito_larva=0, notes=''):
 
-        info = self.create(school='aaaa',
+        info = self.create(school=school,
                            date_time='2016-07-11 14:09',
                            weather="bbbb",
                            site=site,

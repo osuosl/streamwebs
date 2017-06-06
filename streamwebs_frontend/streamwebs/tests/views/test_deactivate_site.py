@@ -2,7 +2,7 @@ from django.test import Client, TestCase
 from django.core.urlresolvers import reverse
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import User
-from streamwebs.models import Site, Macroinvertebrates
+from streamwebs.models import Site, School, Macroinvertebrates
 
 
 class DeactivateSiteTestCase(TestCase):
@@ -13,6 +13,7 @@ class DeactivateSiteTestCase(TestCase):
         self.client.login(username='john', password='johnpassword')
 
         self.site = Site.test_objects.create_site('Creaky Creek')
+        self.school = School.test_objects.create_school('Old School')
 
     def test_successful_deactivate(self):
         """Tests that user can deactivate site if site has no data."""
@@ -34,7 +35,9 @@ class DeactivateSiteTestCase(TestCase):
 
     def test_unsuccessful_deactivate(self):
         """Tests that user can't deactivate site if the site has data."""
-        data = Macroinvertebrates.test_objects.create_macro(self.site)  # NOQA
+        data = Macroinvertebrates.test_objects.create_macro( # NOQA
+            self.site, self.school
+        )
         response = self.client.get(reverse(
             'streamwebs:deactivate_site',
             kwargs={'site_slug': self.site.site_slug}))

@@ -3,6 +3,7 @@
 import os
 import sys
 import csv
+import time
 
 from django.core.wsgi import get_wsgi_application
 
@@ -56,11 +57,10 @@ with open(datafile, 'r') as csvfile:
         school = School.objects.filter(name=row['School'])
 
         if school.count() > 1:
-            #print (school)
             for each in school:
-              qry = school.first()
-              qry.name = str(qry) + ' (' + str(qry.city) + ')'
-              qry.save()
+                qry = school.first()
+                qry.name = str(qry) + ' (' + str(qry.city) + ')'
+                qry.save()
         else:
             if row['Uid'] != '':
                 uid = row['Uid']
@@ -68,7 +68,7 @@ with open(datafile, 'r') as csvfile:
                 uid = None
 
             # Make relation between uid and school if it exists
-            # otherwise, assign a default non-value for school            
+            # otherwise, assign a default non-value for school
             if school.exists() and school.count != 0:
                 related_school = school.first()
             else:
@@ -78,17 +78,19 @@ with open(datafile, 'r') as csvfile:
                 uid=uid, school=related_school
             )
 
+# Must sleep for two seconds to allow django enough time to create relations
+time.sleep(2)
+
 # Manually assigning uid-to-school relations for renamed duplicates...
 adams_uids = [1071, 1026, 188, 185, 182]
-other_uids = [1781, 163, 1726, 1671, 1101, 608, 83, 663]
+other_uids = [1781, 163, 1726, 1671, 1101, 608, 83]
 assoc_schools = ['Cascade Middle School (Bend)',
                  'Hoover Elementary School (Salem)',
                  'Hoover Elementary School (Corvallis)',
                  'Howard Elementary School (Eugene)',
                  'Wilson Elementary School (Medford)',
                  'Evergreen Elementary School (Redmond)',
-                 'Roosevelt Elementary School (Klamath Falls)',
-                 'Butte Falls Charter School (Butte Falls)']  # Ehhhhh
+                 'Roosevelt Elementary School (Klamath Falls)']
 
 for i in range(len(other_uids)):
     uid = other_uids[i]
@@ -104,5 +106,5 @@ for each in adams_uids:
     relation = SchoolRelations.objects.get(uid=uid)
     relation.school = related_school
     relation.save()
-            
+
 print "Duplicates renamed, uid-to-school relations made."

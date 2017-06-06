@@ -27,6 +27,7 @@ class CanopyCovTestCase(TestCase):
             'south_cc': models.IntegerField,
             'west_cc': models.IntegerField,
             'est_canopy_cover': models.PositiveIntegerField,
+            'uid': models.PositiveIntegerField,
             'id': models.AutoField,
         }
 

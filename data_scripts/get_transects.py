@@ -22,8 +22,8 @@ else:
     datapath = '../csvs/'
 
 
-#transects = datapath + 'rip_transect.csv'
-#zones = datapath + 'transect_zones.csv'
+# transects = datapath + 'rip_transect.csv'
+# zones = datapath + 'transect_zones.csv'
 transects = datapath + 'rt_new.csv'
 zones = datapath + 'tz_new.csv'
 
