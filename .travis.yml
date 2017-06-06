@@ -1,0 +1,26 @@
+language: python
+sudo: false
+python:
+  - "2.7"
+
+env:
+  global:
+    - POSTGRES_DB=streamwebs POSTGRES_USER=postgres POSTGRES_PASSWORD=postgres_pw PG_HOST=localhost
+
+install:
+  - "pip install -r requirements.txt"
+  - npm install -g bower
+  - bower install
+
+script:
+  - flake8 data_scripts
+  - flake8 streamwebs_frontend/ --exclude streamwebs_frontend/streamwebs/migrations
+  - ./runtests.sh
+
+addons:
+  postgresql: "9.3"
+
+before_script:
+  - psql -c 'create database streamwebs;' -U postgres
+  - psql -U postgres -c "create extension postgis"
+  - cp streamwebs_frontend/streamwebs_frontend/settings.py.dist streamwebs_frontend/streamwebs_frontend/settings.py

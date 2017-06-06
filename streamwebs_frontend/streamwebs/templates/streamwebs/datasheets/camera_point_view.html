@@ -1,0 +1,101 @@
+{% extends 'streamwebs/base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+{% load filters %}
+{% block content %}
+
+<div class="container">
+<!-- CP info -->
+<div>
+    <h3>{{ site.site_name }}: Camera Point {{ cp.letter }}</h3>
+    <p><b>Date established:</b> {{ cp.cp_date|date:"m-d-Y" }}</p>
+    <p><b>Location:</b> {{ cp.location }}</p>
+    <p><b>Map datum:</b> {{ cp.map_datum }} </p>
+    <p><b>Description:</b> {{ cp.description }}</p>
+</div>
+
+<!-- Gmaps -->
+<div class="map" style="height:400px;"></div>
+
+<!-- CP's PP info, including PPIs -->
+<div>
+    <h2>Photo points</h2>
+    <div class="row">
+      <div class="col s12 m7">
+    {% for pp in pps %}
+
+        <div class="card">
+          <div class="card-image">
+            {% for pp_num, img_set in pp_images.items %}
+                {% if pp_num == pp.number %}
+                  <img src="{{ img_set.first.image.url }}"/>
+                {% endif %}
+            {% endfor %}
+          </div>
+          <div class="card-content">
+            <ul>
+                <li>Established: {{ pp.pp_date|date:"m-d-Y" }}</li>
+                {% for pp_num, img_set in pp_images.items %}
+                  {% if pp_num == pp.number %}
+                    <li>Number of Images: {{ img_set.count }}</li>
+                  {% endif %}
+                {% endfor %}
+                <li>Compass bearing: {{ pp.compass_bearing }}</li>
+                <li>Distance from camera point: {{ pp.distance }}</li>
+                <li>Camera height: {{ pp.camera_height }}</li>
+                <li>Notes: {{ pp.notes }}</li>
+            </ul>
+          </div>
+          <div class="card-action">
+            <h5>
+              <a href="{% url 'streamwebs:photo_point' site.site_slug cp.id pp.id %}">
+                 Photo point {{ pp.number }}
+              </a>
+            </h5>
+          </div>
+        </div>
+
+    {% endfor %}
+    </div>
+  </div>
+</div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyBV71HBuAFMtHEAaSEVpRDPUQyGvJwTX1k"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script>
+    // initialize marker
+    let marker = null;
+
+    // onload
+    $(document).ready(function() {
+        const latlng = new google.maps.LatLng("{{ site.to_dict.location.y }}", "{{ site.to_dict.location.x }}");
+        const mapOptions = {
+            zoom: 14,
+            center: latlng,
+            mapTypeControl: false,
+            navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL},
+            mapTypeId: 'roadmap'
+        };
+        map = new google.maps.Map($('.map')[0], mapOptions);
+
+        marker = new google.maps.Marker({
+          position: {lat:{{ site.to_dict.location.y }}, lng:{{ site.to_dict.location.x }}},
+          map: map,
+          title: "Site Location"
+        });
+
+        // responsive function
+        google.maps.event.addDomListener(window, "resize", function() {
+            const center = map.getCenter();
+            google.maps.event.trigger(map, "resize");
+            map.setCenter(center);
+        });
+    });
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends 'streamwebs/base.html' %}
+{% load i18n %}
+{% load staticfiles %}
+
+{% block title %} StreamWebs Statistics {% endblock %}
+{% block body_title %} StreamWebs Statistics {% endblock %}
+
+{% block content %}
+<form id='stats_form' method='post'>
+    {% csrf_token %}
+    {{ stats_form.as_p }}
+    <input type='submit' name='submit' value='{% trans 'Calculate' %}'/>
+</form>
+
+{% if all_time %}
+Users who have logged in within the last 3 years: {{ users.count }}
+{% else %}
+Users who joined between {{ start }} and {{ end }}: {{ users.count }}
+{% endif %}
+{% for user in users.users %}
+    <li>{{ user.username }}</li>
+{% endfor %}
+
+Number of data sheets uploaded between {{ start }} and {{ end }}:
+{% for type, num in sheets.items %}
+<li> {{ type }}: {{ num }}</li>
+{% endfor %}
+
+Schools that uploaded data between {{ start }} and {{ end }}: {{ schools.total }}
+{% for school in schools.schools %}
+<li> {{ school.name }} </li>
+{% endfor %}
+
+Sites that uploaded data between {{ start }} and {{ end }}: {{ sites.total }}
+{% for site in sites.sites %}
+<li>{{ site.site_name }}</li>
+{% endfor %}
+
+{% endblock %}

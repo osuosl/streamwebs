@@ -1,0 +1,24 @@
+FROM osuosl/django-centos:latest
+RUN yum -y update
+
+RUN yum -y install gdal-python\
+                   geos-python\
+                   proj\
+                   proj-nad\
+                   postgresql-devel\
+                   nodejs\
+                   npm\
+                   vim\
+                   freetype-devel\
+                   libjpeg-devel\
+                   libpng-devel
+
+RUN npm install -g bower
+
+COPY requirements.txt /home/centos/
+
+RUN pip install --upgrade pip
+
+RUN pip install --upgrade -r /home/centos/requirements.txt
+
+#RUN echo 'source /opt/streamwebs/dockerfiles/startup.sh' >> /root/.bashrc

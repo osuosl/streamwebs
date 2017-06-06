@@ -1,0 +1,16 @@
+{% extends 'streamwebs/base.html' %}
+
+{% load i18n %}
+
+{% block title %} Update Site {% endblock %}
+{% block body_title %}{{ site.site_name }}{% endblock %}
+
+{% block content %}
+    <form id='site_form' method='post' enctype="multipart/form-data" action={% url 'streamwebs:update_site' site.site_slug %}>
+        {% csrf_token %}
+        {{ site_form.media }}
+        {{ site_form.as_p }}
+
+        <input class="btn waves-effect waves-light teal darken-4" type='submit' name='submit' value='{% trans 'Update site' %}'/>
+    </form>
+{% endblock %}

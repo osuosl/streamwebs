@@ -1,0 +1,17 @@
+Django==1.11
+Jinja2
+Pillow
+MarkupSafe
+PyYAML
+Pygments
+Sphinx
+argparse
+docutils
+mock
+pep8
+psycopg2
+requests
+wsgiref
+flake8
+django-recaptcha
+django-queryset-csv

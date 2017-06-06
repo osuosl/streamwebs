@@ -1,0 +1,24 @@
+# Distribution / packaging
+*.pyc
+db.sqlite3
+__pycache__/
+venv/
+
+# Django stuff
+*.log
+migrations/
+
+# NFS write temps
+.nfs*
+
+Dockerfile.env
+
+docs/build
+
+*.swp
+
+bower_components
+
+streamwebs_frontend/streamwebs_frontend/settings.py
+
+media/
