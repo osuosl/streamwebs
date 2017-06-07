@@ -23,5 +23,5 @@ def init_groups_and_perms(sender, **kwargs):
 
     admin, created = Group.objects.get_or_create(name='admin')
     if created:
-        admin.permissions.add(can_upload, can_promote, can_view_stats)
+        admin.permissions.add(can_upload, can_view_stats)
         print("admin group created; permissions added")

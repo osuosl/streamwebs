@@ -23,7 +23,7 @@ class AdminStatsTestCase(TestCase):
                                                      'special@example.com',
                                                      'specialpassword')
         admins = Group.objects.get(name='admin')
-        # admin user with all permissions
+        # admin user with admin permissions (stats and resources)
         self.admin = User.objects.create_user('admin', 'admin@example.com',
                                               'adminpassword')
         self.admin.groups.add(admins)    # add test admin user to group
@@ -103,8 +103,8 @@ class AdminStatsTestCase(TestCase):
         # default admin
         admin = User.objects.get(username="admin")
         self.assertTrue(admin.has_perms(['streamwebs.can_view_stats',
-                                         'streamwebs.can_upload_resources',
-                                         'streamwebs.can_promote_users']))
+                                         'streamwebs.can_upload_resources']))
+        self.assertFalse(admin.has_perm('streamwebs.can_promote_users'))
 
         # regular user
         reg_user = User.objects.get(username='reg_user')
