@@ -22,10 +22,8 @@ else:
     datapath = '../csvs/'
 
 
-# transects = datapath + 'rip_transect.csv'
-# zones = datapath + 'transect_zones.csv'
-transects = datapath + 'rt_new.csv'
-zones = datapath + 'tz_new.csv'
+transects = datapath + 'rip_transect.csv'
+zones = datapath + 'transect_zones.csv'
 
 
 # Nid, Collected, Site Name, Estimated Slope, Field Notes, Uid

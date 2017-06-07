@@ -62,11 +62,9 @@ directions = ['north', 'east', 'south', 'west']
 
 for dir in directions:
     if os.path.isdir("../streamwebs_frontend/sw_data/"):
-        # datafile = '../sw_data/cc_' + dir + '.csv'
-        datafile = '../sw_data/cc_' + dir + '_new.csv'
+        datafile = '../sw_data/cc_' + dir + '.csv'
     else:
-        # datafile = '../csvs/cc_' + dir + '.csv'
-        datafile = '../csvs/cc_' + dir + '_new.csv'
+        datafile = '../csvs/cc_' + dir + '.csv'
 
     with open(datafile, 'r') as csvfile:
         sitereader = csv.DictReader(csvfile)

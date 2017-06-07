@@ -19,8 +19,7 @@ from streamwebs.models import Water_Quality  # NOQA
 if os.path.isdir("../streamwebs_frontend/sw_data/"):
     datafile = '../sw_data/wq_csvs/water_quality.csv'
 else:
-    # datafile = '../csvs/wq_csvs/water_quality.csv'
-    datafile = '../csvs/wq_new/wq_main.csv'
+    datafile = '../csvs/wq_csvs/water_quality.csv'
 
 
 # Stream/Site name, DEQ Data Quality, Collected, School, Any fish present?

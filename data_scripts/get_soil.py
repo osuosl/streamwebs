@@ -16,9 +16,9 @@ from streamwebs.util.ft_to_m import feet_to_meters  # NOQA
 
 
 if os.path.isdir("../streamwebs_frontend/sw_data"):
-    datafile = '../sw_data/soil_new.csv'
+    datafile = '../sw_data/soil_survey.csv'
 else:
-    datafile = '../csvs/soil_new.csv'
+    datafile = '../csvs/soil_survey.csv'
 
 
 # Collected, Stream/Site name, Landscape Position, Cover Type, Land Use,

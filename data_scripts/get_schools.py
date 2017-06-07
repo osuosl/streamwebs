@@ -14,11 +14,9 @@ application = get_wsgi_application()
 from streamwebs.models import School  # NOQA
 
 if os.path.isdir("../streamwebs_frontend/sw_data/"):
-    # Update this at some point
     datafile = '../sw_data/schools_info.csv'
 else:
-    # datafile = '../csvs/schools_info.csv'
-    datafile = '../csvs/schools_minus1.csv'
+    datafile = '../csvs/schools_info.csv'
 
 
 with open(datafile, 'r') as csvfile:
