@@ -14,13 +14,26 @@
         <form class="col s8 offset-s2" id="user_edit_form" method="post" action="{% url 'streamwebs:edit_account' %}">
             <strong>{% trans "Edit your account" %}</strong><br/>
             {% csrf_token %}
-            <div class="input-field col s6">
-                <label for="{{ user_edit_form.first_name.ad_for_label }}">First Name:</label>
-                    {{ user_edit_form.first_name }}
-                    {{ user_form.first_name}}
+            <div class="input-field col s12">
+                <label for="{{ user_edit_form.email.ad_for_label }}">Email:</label>
+                    {{ user_edit_form.email }}
+                    {{ user_edit_form.email.errors }}
             </div>
+            <div class="input-field col s12">
+              <label for="{{ user_edit.password.id_for_label }}">Password:</label>
+              {{ user_edit_form.password }}
+              {{ user_edit_form.password.errors }}
+            </div>
+
+            <div class="input-field col s12">
+              <label for="{{ user_edit_form.password_check.id_for_label }}">Password (again):</label>
+              {{ user_edit_form.password_check }}
+              {{ user_edit_form.password_check.errors }}
+            </div>
+            <input class="btn waves-effect waves-light teal darken-4" type='submit' name='submit' value='{% trans "Create Account"%}' />
         </form
         {% if edit_submitted %}
         <strong>{% trans "You have successfully modified your account." %}</strong>
+        {% endif %}
     </div>
 {% endblock %}

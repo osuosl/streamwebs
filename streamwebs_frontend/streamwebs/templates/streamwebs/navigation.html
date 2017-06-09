@@ -25,7 +25,7 @@
             <li><a class="teal-text text-darken-4 dropdown-button" href="#!" data-activates="admin-options">Administration<i class="material-icons right">arrow_drop_down</i></a></li>
         {% endif %}
     {% endfor %}
-    <!--<li><a href="% url 'streamwebs:edit_account' %" class="teal-text text-darken-4">Edit Account</a></li>-->
+    <li><a href="{% url 'streamwebs:edit-account' %}" class="teal-text text-darken-4">Edit Account</a></li>
     <li><a href="{% url 'streamwebs:logout' %}" class="teal-text text-darken-4">Logout</a></li>
 {% else %}
     <li><a href="{% url 'streamwebs:register' %}" class="teal-text text-darken-4">Create Account</a></li>

@@ -18,7 +18,7 @@ from streamwebs.forms import (
     PhotoPointImageForm, PhotoPointForm, CameraPointForm, WQSampleForm,
     WQSampleFormReadOnly, WQForm, WQFormReadOnly, SiteForm, Canopy_Cover_Form,
     SoilSurveyForm, SoilSurveyFormReadOnly, StatisticsForm, TransectZoneForm,
-    BaseZoneInlineFormSet, ResourceForm)
+    BaseZoneInlineFormSet, ResourceForm, UserEditForm)
 
 from streamwebs.models import (
     Macroinvertebrates, Site, Water_Quality, WQ_Sample, RiparianTransect,
@@ -214,10 +214,21 @@ def register(request):
         'registered': registered})
 
 def edit_account(request):
-    if request.method == 'GET':
+    edit_submitted = False
+
+    if request.method == 'POST':
+        user_edit_form = UserEditForm(data=request.POST)
+
+        if user_edit_form.is_valid():
+            user = user_edit_form.save()
+            user.set_password(user.password)
+            user.save()
+            edit_submitted = True
+    else:
         user_edit_form = UserEditForm()
 
-    return
+    return render(request, 'streamwebs/edit_account.html', {
+        'user_edit_form': user_edit_form})
 
 def user_login(request):
     redirect_to = request.POST.get('next', '')
