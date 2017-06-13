@@ -99,17 +99,17 @@ with open(airtemp, 'r') as csvfile:
                         sample = 3
                     else:
                         sample = 4
-    
+
                     if row['Air Temperature'] != '':
                         air_temperature = row['Air Temperature']
                     else:
                         air_temperature = None
-    
+
                     nid = row['Nid']
-    
+
                     # Create foreign key relation
                     waterq = Water_Quality.objects.get(nid=row['Nid'])
- 
+
                     # Create new entry if datasheet sample does not yet exist
                     air_temp = WQ_Sample.objects.update_or_create(
                         sample=sample, air_temperature=air_temperature,
