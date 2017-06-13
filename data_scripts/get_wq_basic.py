@@ -49,7 +49,7 @@ with open(datafile, 'r') as csvfile:
                 datetime.datetime.strptime('2014-06-09', '%Y-%m-%d').date()
 
             DEQ_dq_level = row[1]
-            school = row[3]   # TODO: Figure out corr. schools
+            school = row[3]   # None for now, schools assigned elsewhere
 
             if row[4] == 'Yes':
                 fish_present = True
