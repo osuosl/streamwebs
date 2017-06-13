@@ -90,7 +90,7 @@ urlpatterns = [
 
     url(r'^statistics/$', views.admin_site_statistics, name='stats'),
     url(r'^register/$', views.register, name='register'),
-    url(r'^edit-account/$', views.edit_account, name='edit-account'),
+    url(r'^edit_account/$', views.edit_account, name='edit_account'),
     url(r'^login/$', views.user_login, name='login'),
     url(r'^logout/$', views.user_logout, name='logout'),
 

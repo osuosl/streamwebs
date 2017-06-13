@@ -8,30 +8,33 @@
         }
     </style>
 {% endblock %}
-{% block body_title %}{% trans "Register" %}{% endblock %}
+{% block body_title %}{% trans "Edit Account" %}{% endblock %}
 {% block content %}
     <div class="row">
-        <form class="col s8 offset-s2" id="user_edit_form" method="post" action="{% url 'streamwebs:edit_account' %}">
-            <strong>{% trans "Edit your account" %}</strong><br/>
-            {% csrf_token %}
+        <form class="col s8 offset-s2" id="user_form" method="post" action="{% url 'streamwebs:edit_account' %}">
+            <strong>{% trans "Change your email" %}</strong><br/>
             <div class="input-field col s12">
                 <label for="{{ user_edit_form.email.ad_for_label }}">Email:</label>
                     {{ user_edit_form.email }}
                     {{ user_edit_form.email.errors }}
             </div>
+            <input class="btn waves-effect waves-light teal darken-4" type='submit' name='email_submit' value='{% trans "Change Email"%}' />
+            <br>
+            <br>
+            <strong>{% trans "Change your Password" %}</strong><br/>
+            {% csrf_token %}
             <div class="input-field col s12">
-              <label for="{{ user_edit.password.id_for_label }}">Password:</label>
+              <label for="{{ user_edit_form.password.id_for_label }}">Password:</label>
               {{ user_edit_form.password }}
               {{ user_edit_form.password.errors }}
             </div>
-
             <div class="input-field col s12">
               <label for="{{ user_edit_form.password_check.id_for_label }}">Password (again):</label>
               {{ user_edit_form.password_check }}
               {{ user_edit_form.password_check.errors }}
             </div>
-            <input class="btn waves-effect waves-light teal darken-4" type='submit' name='submit' value='{% trans "Create Account"%}' />
-        </form
+            <input class="btn waves-effect waves-light teal darken-4" type='submit' name='password_submit' value='{% trans "Change Password"%}' />
+        </form>
         {% if edit_submitted %}
         <strong>{% trans "You have successfully modified your account." %}</strong>
         {% endif %}

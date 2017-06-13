@@ -53,29 +53,6 @@ class UserProfileForm(forms.ModelForm):
         model = UserProfile
         fields = ('school', 'birthdate')
 
-class UserEditForm(forms.ModelForm):
-    password = forms.CharField(
-        widget=forms.PasswordInput(),
-        label=_('Password'))
-
-    password_check = forms.CharField(
-        widget=forms.PasswordInput(),
-        label='Repeat your password')
-
-    email = forms.CharField(required=True)
-
-    class Meta:
-        model = User
-        fields = ('email', 'password')
-        label = {
-            'email': _('Email'),
-            'password': _('Password:')
-        }
-
-    def clean_password(self):
-        if self.data['password'] != self.data['password_check']:
-            raise forms.ValidationError(_('Passwords do not match'))
-        return self.data['password']
 
 class MacroinvertebratesForm(forms.ModelForm):
     school = forms.ModelChoiceField(queryset=School.objects.all())
