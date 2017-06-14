@@ -3,7 +3,6 @@
 import os
 import sys
 import csv
-import time
 
 from django.core.wsgi import get_wsgi_application
 
