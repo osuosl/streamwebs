@@ -1021,61 +1021,60 @@ def admin_user_promotion(request):
 
         if promo_form.is_valid():
             action = promo_form.cleaned_data['perms']
-            selected_users = promo_form.cleaned_data['users']
+            user = promo_form.cleaned_data['users']
 
-            for user in selected_users:
-                if action == 'add_admin':
-                    user.groups.add(admins)
-                    msgs.append(
-                        '%s was added to the Admin group.' % user.username)
+            if action == 'add_admin':
+                user.groups.add(admins)
+                msgs.append(
+                    '%s was added to the Admin group.' % user)
 
-                elif action == 'del_admin':
+            elif action == 'del_admin':
+                user.groups.remove(admins)
+                msgs.append(
+                    '%s was removed from the Admin group.' % user.username)
+
+            elif action == 'add_stats':
+                user.user_permissions.add(can_view_stats)
+                msgs.append(
+                    '%s was granted permission to view Statistics.'
+                    % user.username)
+
+            elif action == 'del_stats':
+                # if they're an admin,
+                if user.groups.filter(name='admin').exists():
+                    # remove them from the admins group
                     user.groups.remove(admins)
-                    msgs.append(
-                        '%s was removed from the Admin group.' % user.username)
+                    # add back all perms admins enjoy, EXCLUDING stats
+                    admin_perms = Permission.objects.filter(group=admins)
+                    for perm in admin_perms:
+                        if perm.codename != 'can_view_stats':
+                            user.user_permissions.add(perm)
+                # otherwise if they're a regular user,
+                else:
+                    user.user_permissions.remove(can_view_stats)
 
-                elif action == 'add_stats':
-                    user.user_permissions.add(can_view_stats)
-                    msgs.append(
-                        '%s was granted permission to view Statistics.'
-                        % user.username)
+                msgs.append(
+                    '%s was revoked the permission to view Statistics.'
+                    % user.username)
 
-                elif action == 'del_stats':
-                    # if they're an admin,
-                    if user.groups.filter(name='admin').exists():
-                        # remove them from the admins group
-                        user.groups.remove(admins)
-                        # add back all perms admins enjoy, EXCLUDING stats
-                        admin_perms = Permission.objects.filter(group=admins)
-                        for perm in admin_perms:
-                            if perm.codename != 'can_view_stats':
-                                user.user_permissions.add(perm)
-                    # otherwise if they're a regular user,
-                    else:
-                        user.user_permissions.remove(can_view_stats)
+            elif action == 'add_upload':
+                user.user_permissions.add(can_upload_resources)
+                msgs.append(
+                    '%s was granted permission to upload resources.'
+                    % user.username)
 
-                    msgs.append(
-                        '%s was revoked the permission to view Statistics.'
-                        % user.username)
+            elif action == 'del_upload':
+                if user.groups.filter(name='admin').exists():
+                    user.groups.remove(admins)
+                    for perm in admin_perms:
+                        if perm.codename != 'can_upload_resources':
+                            user.user_permissions.add(perm)
+                else:
+                    user.user_permissions.remove(can_upload_resources)
 
-                elif action == 'add_upload':
-                    user.user_permissions.add(can_upload_resources)
-                    msgs.append(
-                        '%s was granted permission to upload resources.'
-                        % user.username)
-
-                elif action == 'del_upload':
-                    if user.groups.filter(name='admin').exists():
-                        user.groups.remove(admins)
-                        for perm in admin_perms:
-                            if perm.codename != 'can_upload_resources':
-                                user.user_permissions.add(perm)
-                    else:
-                        user.user_permissions.remove(can_upload_resources)
-
-                    msgs.append(
-                        '%s was revoked the permission to upload resources.'
-                        % user.username)
+                msgs.append(
+                    '%s was revoked the permission to upload resources.'
+                    % user.username)
 
     all_users = User.objects.all()
     user_info = dict()
@@ -1108,3 +1107,13 @@ def admin_user_promotion(request):
             'user_info': user_info,
         }
     )
+
+def users_auto_complete(request):
+    users = User.objects.all()
+    users_list = []
+
+    for u in users:
+        u_dict = {'id': u.id, 'label': u.username, 'value': u.username}
+        users_list.append(u_dict)
+
+    return HttpResponse(json.dumps(users_list), content_type='application/json') 

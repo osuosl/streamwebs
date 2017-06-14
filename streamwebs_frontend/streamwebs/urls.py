@@ -91,6 +91,8 @@ urlpatterns = [
     url(r'^statistics/$', views.admin_site_statistics, name='stats'),
     url(r'^user-promotion/$', views.admin_user_promotion, name='user_promo'),
 
+    url(r'^users_auto_complete/$', views.users_auto_complete, name='users_auto_complete'),
+
     url(r'^register/$', views.register, name='register'),
     url(r'^login/$', views.user_login, name='login'),
     url(r'^logout/$', views.user_logout, name='logout'),
