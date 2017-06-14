@@ -3,7 +3,7 @@
 {% load i18n %}
 {% load filters %}
 {% block title %}{% trans "View Macroinvertebrates Data" %}{% endblock %}
- 
+
 {% block scripts %}
     <script type="application/javascript" src="{% static 'streamwebs/js/data.js' %}"></script>
     <style>
@@ -26,7 +26,10 @@
         </a>
     </h3>
     <h4 align="center">Macroinvertebrate data: {{ data.date_time|date:"m-d-Y" }}</h4>
-   
+
+    <div class="row">
+      <p>School: {{ data.school }}</p>
+    </div>
     <div class="row">
         <div class="col s6">
             <p>Water quality: {{ rating }}</p>
@@ -77,7 +80,7 @@
                         Mayfly<br>
                         <img src="{% static 'streamwebs/images/macroinvertebrates/macro_mayfly.png' %}">
                         </td>
-                        
+
                         <td class="value">{{ data.mayfly }}</td>
                     </tr>
                     <tr>

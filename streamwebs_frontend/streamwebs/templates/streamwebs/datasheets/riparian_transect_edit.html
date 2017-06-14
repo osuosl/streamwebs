@@ -24,10 +24,6 @@
     {% endfor %}
 {% endif %}
 
-{% if added %}
-<strong>{% trans "You have successfully submitted your Riparian Transect data sheet." %}</strong>
-
-{% else %}
     <h3 align ="center">
         <a href="{% url 'streamwebs:site' site.site_slug %}">
             {{ site.site_name }}
@@ -130,7 +126,6 @@
 
     <input class="btn waves-effect waves-light teal darken-4" type='submit' value='Submit' />
     </form>
-{% endif %}
 
 </div>
 {% endblock %}

@@ -16,10 +16,6 @@
 {% endblock %}
 {% block content %}
 <div class="container">
-    {% if added %}
-    <strong>{% trans "You have successfully submitted your Macroinvertebrate data sheet." %}.</strong>
-
-    {% else %}
     <h3 align="center">
         <a href="{% url 'streamwebs:site' site.site_slug %}">
             {{ site.site_name }}
@@ -139,7 +135,6 @@
 
         <input class="btn waves-effect waves-light teal darken-4" type='submit' name='submit' value='Submit' />
     </form>
-    {% endif %}
 
     </div>  <!-- end container -->
 {% endblock %}

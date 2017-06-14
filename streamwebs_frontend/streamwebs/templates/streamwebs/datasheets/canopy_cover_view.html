@@ -5,6 +5,11 @@
 {% block title %}{% trans "View Canopy Cover Survey" %}{% endblock %}
 
 {% block content %}
+    {% if messages %}
+        {% for message in messages %}
+        <strong>{{ message }}</strong>
+        {% endfor %}
+    {% endif %}
     <h3 align="center">
         <a href="{% url 'streamwebs:site' site.site_slug %}">
             {{ site.site_name }}
