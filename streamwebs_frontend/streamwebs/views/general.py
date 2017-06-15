@@ -1108,6 +1108,7 @@ def admin_user_promotion(request):
         }
     )
 
+
 def users_auto_complete(request):
     users = User.objects.all()
     users_list = []
@@ -1116,4 +1117,5 @@ def users_auto_complete(request):
         u_dict = {'id': u.id, 'label': u.username, 'value': u.username}
         users_list.append(u_dict)
 
-    return HttpResponse(json.dumps(users_list), content_type='application/json') 
+    return HttpResponse(json.dumps(users_list),
+                        content_type='application/json')

@@ -179,7 +179,7 @@ class AdminPromoTestCase(TestCase):
             }
         )
         # user2 should be a regular user now w/o the stats perm.
-        self.user2 = User.objects.get(pk=7)     #re-query: perms are cached
+        self.user2 = User.objects.get(pk=7)     # re-query: perms are cached
 
         self.assertFalse(self.user2.groups.filter(name='admin').exists())
 
