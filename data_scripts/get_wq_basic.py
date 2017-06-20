@@ -24,7 +24,6 @@ else:
 
 # Stream/Site name, DEQ Data Quality, Collected, School, Any fish present?
 # num alive, num dead, Air Temp units, Water Temp units, Lat, Long, Nid
-
 with open(datafile, 'r') as csvfile:
     wqreader = csv.reader(csvfile)
     for row in wqreader:
@@ -50,7 +49,7 @@ with open(datafile, 'r') as csvfile:
                 datetime.datetime.strptime('2014-06-09', '%Y-%m-%d').date()
 
             DEQ_dq_level = row[1]
-            school = row[3]   # TODO: Figure out corr. schools
+            school = row[3]   # None for now, schools assigned elsewhere
 
             if row[4] == 'Yes':
                 fish_present = True
@@ -69,6 +68,11 @@ with open(datafile, 'r') as csvfile:
             longitude = row[10]
 
             nid = row[11]
+
+            if row[12] == '':
+                row[12] = None
+
+            uid = row[12]
 
             if row[0] is not None:
                 try:
@@ -91,7 +95,7 @@ with open(datafile, 'r') as csvfile:
                 fish_present=fish_present, live_fish=live_fish,
                 dead_fish=dead_fish, air_temp_unit=air_temp_unit,
                 water_temp_unit=water_temp_unit, latitude=latitude,
-                longitude=longitude, nid=nid, site_id=site_id
+                longitude=longitude, nid=nid, site_id=site_id, uid=uid
             )
 
 

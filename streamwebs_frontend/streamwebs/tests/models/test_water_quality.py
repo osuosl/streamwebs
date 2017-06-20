@@ -25,6 +25,7 @@ class WaterQualityTestCase(TestCase):
             'air_temp_unit': models.CharField,
             'notes': models.TextField,
             'nid': models.PositiveIntegerField,
+            'uid': models.PositiveIntegerField,
             'id': models.AutoField,
             'water_quality': models.ManyToOneRel,
         }

@@ -23,7 +23,7 @@ else:
 
 # Collected, Stream/Site name, Landscape Position, Cover Type, Land Use,
 # Distance From Stream, Distinguishing Site Characteristics, My Soil Type Is
-with open('../csvs/soil_survey.csv', 'r') as csvfile:  # 'r' is for read
+with open(datafile, 'r') as csvfile:  # 'r' is for read
     reader = csv.DictReader(csvfile)    # dict v. regular: name instead of idx
     for row in reader:
         # Strip ``Collected`` so that it is in the correct format
@@ -83,6 +83,8 @@ with open('../csvs/soil_survey.csv', 'r') as csvfile:  # 'r' is for read
 
         weather = ''
 
+        uid = row['Uid']
+
         # TODO: Find actual school from outside the CSV
         school = None
 
@@ -90,7 +92,7 @@ with open('../csvs/soil_survey.csv', 'r') as csvfile:  # 'r' is for read
             date=date, site_id=site_id, landscape_pos=landscape_pos,
             cover_type=cover_type, land_use=land_use, distance=dist,
             site_char=site_char, soil_type=soil_type, weather=weather,
-            school=school
+            uid=uid, school=school
         )
 
 csvfile.close()

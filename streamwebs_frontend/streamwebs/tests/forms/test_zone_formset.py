@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.forms import inlineformset_factory
 from streamwebs.forms import BaseZoneInlineFormSet, TransectZoneForm
-from streamwebs.models import RiparianTransect, TransectZone, Site
+from streamwebs.models import RiparianTransect, TransectZone, Site, School
 
 
 class BaseZoneFormSetTestCase(TestCase):
@@ -15,8 +15,9 @@ class BaseZoneFormSetTestCase(TestCase):
 
         # create valid transect (+ site) for future assignation
         site = Site.test_objects.create_site('Site')
+        school = School.test_objects.create_school('School')
         self.transect = RiparianTransect.test_objects.create_transect(
-                'School', '2015-01-01 11:56', site)
+                school, '2015-01-01 11:56', site)
 
     def test_zeroed_zones_with_comments(self):
         """All zone values 0; some zones have comments. Error raised"""
