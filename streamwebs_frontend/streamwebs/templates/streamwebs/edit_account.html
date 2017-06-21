@@ -11,32 +11,38 @@
 {% block body_title %}{% trans "Edit Account" %}{% endblock %}
 {% block content %}
     <div class="row">
-        <form class="col s8 offset-s2" id="user_form" method="post" action="{% url 'streamwebs:edit_account' %}">
+        <form class="col s8 offset-s2" id="user_edit_form" method="post" action="{% url 'streamwebs:edit_account' %}">
+            {% csrf_token %}
             <strong>{% trans "Change your email" %}</strong><br/>
             <div class="input-field col s12">
-                <label for="{{ user_edit_form.email.ad_for_label }}">Email:</label>
+                <label for="{{ user_edit_form.email.id_for_label }}">Email:</label>
                     {{ user_edit_form.email }}
                     {{ user_edit_form.email.errors }}
             </div>
-            <input class="btn waves-effect waves-light teal darken-4" type='submit' name='email_submit' value='{% trans "Change Email"%}' />
+            <input class="btn waves-effect waves-light teal darken-4" type='submit' name='update_email' value='{% trans "Change Email"%}' />
             <br>
             <br>
             <strong>{% trans "Change your Password" %}</strong><br/>
-            {% csrf_token %}
             <div class="input-field col s12">
-              <label for="{{ user_edit_form.password.id_for_label }}">Password:</label>
-              {{ user_edit_form.password }}
-              {{ user_edit_form.password.errors }}
+              <label for="{{ user_edit_form.old_password.id_for_label }}">Old Password:</label>
+              {{ user_edit_form.old_password }}
+              {{ user_edit_form.old_password.errors }}
             </div>
             <div class="input-field col s12">
-              <label for="{{ user_edit_form.password_check.id_for_label }}">Password (again):</label>
-              {{ user_edit_form.password_check }}
-              {{ user_edit_form.password_check.errors }}
+              <label for="{{ user_edit_form.new_password.id_for_label }}">New Password:</label>
+              {{ user_edit_form.new_password }}
+              {{ user_edit_form.new_password.errors }}
             </div>
-            <input class="btn waves-effect waves-light teal darken-4" type='submit' name='password_submit' value='{% trans "Change Password"%}' />
+            <div class="input-field col s12">
+              <label for="{{ user_edit_form.new_password_check.id_for_label }}">New Password (again):</label>
+              {{ user_edit_form.new_password_check }}
+              {{ user_edit_form.new_password_check.errors }}
+            </div>
+            <input class="btn waves-effect waves-light teal darken-4" type='submit' name='update_password' value='{% trans "Change Password"%}' />
+            {% if edit_submitted %}
+            <br/>
+            <strong>{% trans "You have successfully modified your account." %}</strong>
+            {% endif %}
         </form>
-        {% if edit_submitted %}
-        <strong>{% trans "You have successfully modified your account." %}</strong>
-        {% endif %}
     </div>
 {% endblock %}
