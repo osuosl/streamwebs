@@ -1108,3 +1108,9 @@ def admin_user_promotion(request):
             'user_info': user_info,
         }
     )
+
+def schools(request):
+
+    return render(request, 'streamwebs/schools.html',{
+        'schools': School.objects.all
+    })
