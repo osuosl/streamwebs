@@ -25,6 +25,7 @@ from streamwebs.models import (
     Macroinvertebrates, Site, Water_Quality, WQ_Sample, RiparianTransect,
     TransectZone, Canopy_Cover, CameraPoint, PhotoPoint,
     PhotoPointImage, Soil_Survey, Resource, School)
+from django.db.models import Count
 
 import json
 import copy
@@ -1110,7 +1111,23 @@ def admin_user_promotion(request):
     )
 
 def schools(request):
+    # No school_ids on CameraPoint, PhotoPoint?
 
-    return render(request, 'streamwebs/schools.html',{
-        'schools': School.objects.all
+    schools = School.objects.all()
+    #dictionary format: {}<school_id>: <datasheet count>}
+    school_ds_data = {}
+    for i in schools:
+        total = 0
+        total += Water_Quality.objects.filter(school=i.id).count()
+        total += Macroinvertebrates.objects.filter(school=i.id).count()
+        total += Canopy_Cover.objects.filter(school=i.id).count()
+        total += Soil_Survey.objects.filter(school=i.id).count()
+        total += RiparianTransect.objects.filter(school=i.id).count()
+        school_ds_data[i.id] = total
+
+    # print (school_ds_data)
+
+    return render(request, 'streamwebs/schools.html', {
+        'schools': schools,
+        'school_ds_data': school_ds_data
     })

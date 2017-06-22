@@ -2,6 +2,7 @@
 {% load staticfiles %}
 {% block title %}Schools - StreamWebs{% endblock %}
 {% load i18n %}
+{% load filters %}
 
 {% block head %}
 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css">
@@ -13,7 +14,7 @@
 
 <script src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
 <script>
-$(document).ready(function() {  
+$(document).ready(function() {
     $('#schools_table').DataTable();
     $('select').material_select();
 
@@ -33,6 +34,7 @@ $(document).ready(function() {
             <th>School</th>
             <th>Type</th>
             <th>City</th>
+            <th>Datasheets</th>
           </tr>
         </thead>
         <tbody>
@@ -41,6 +43,7 @@ $(document).ready(function() {
               <td>{{ s.name }}</td>
               <td>{{ s.school_type }}</td>
               <td>{{ s.city }}, {{ s.province }}</td>
+              <td>{{ school_ds_data|get_item:s.id }}</td>
             </tr>
           {% endfor %}
         </tbody>
