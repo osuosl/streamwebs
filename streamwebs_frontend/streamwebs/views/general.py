@@ -25,7 +25,6 @@ from streamwebs.models import (
     Macroinvertebrates, Site, Water_Quality, WQ_Sample, RiparianTransect,
     TransectZone, Canopy_Cover, CameraPoint, PhotoPoint,
     PhotoPointImage, Soil_Survey, Resource, School)
-from django.db.models import Count
 
 import json
 import copy
@@ -1110,24 +1109,27 @@ def admin_user_promotion(request):
         }
     )
 
+
 def schools(request):
-    # No school_ids on CameraPoint, PhotoPoint?
-
-    schools = School.objects.all()
-    #dictionary format: {}<school_id>: <datasheet count>}
-    school_ds_data = {}
-    for i in schools:
-        total = 0
-        total += Water_Quality.objects.filter(school=i.id).count()
-        total += Macroinvertebrates.objects.filter(school=i.id).count()
-        total += Canopy_Cover.objects.filter(school=i.id).count()
-        total += Soil_Survey.objects.filter(school=i.id).count()
-        total += RiparianTransect.objects.filter(school=i.id).count()
-        school_ds_data[i.id] = total
-
-    # print (school_ds_data)
-
     return render(request, 'streamwebs/schools.html', {
-        'schools': schools,
-        'school_ds_data': school_ds_data
+        'schools': School.objects.all(),
+    })
+
+
+def school_detail(request, school_id):
+    school_data = School.objects.get(id=school_id)
+    wq_data = Water_Quality.objects.filter(school=school_id)
+    mac_data = Macroinvertebrates.objects.filter(school=school_id)
+    can_data = Canopy_Cover.objects.filter(school=school_id)
+    soil_data = Soil_Survey.objects.filter(school=school_id)
+    rip_data = RiparianTransect.objects.filter(school=school_id)
+
+    return render(request, 'streamwebs/school_detail.html', {
+        'school_data': school_data,
+        'school_id': school_id,
+        'wq_data': wq_data,
+        'mac_data': mac_data,
+        'can_data': can_data,
+        'soil_data': soil_data,
+        'rip_data': rip_data,
     })

@@ -34,16 +34,18 @@ $(document).ready(function() {
             <th>School</th>
             <th>Type</th>
             <th>City</th>
-            <th>Datasheets</th>
           </tr>
         </thead>
         <tbody>
           {% for s in schools %}
             <tr>
-              <td>{{ s.name }}</td>
+              <td>
+                <a href="{% url 'streamwebs:school_detail' s.id %}">
+                  {{ s.name }}
+                </a>
+              </td>
               <td>{{ s.school_type }}</td>
               <td>{{ s.city }}, {{ s.province }}</td>
-              <td>{{ school_ds_data|get_item:s.id }}</td>
             </tr>
           {% endfor %}
         </tbody>
