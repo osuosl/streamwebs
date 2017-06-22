@@ -969,18 +969,6 @@ def resources_publications(request):
         }
     )
 
-def resources_tutorial_videos(request):
-    """ View for publication resources """
-    data = Resource.objects.filter(res_type='tutorial_video').order_by(
-        'sort_order', 'name'
-        )
-
-    return render(
-        request, 'streamwebs/resources/resources_tutorial_videos.html', {
-            'data': data,
-        }
-    )
-
 
 @login_required
 @permission_required('streamwebs.can_upload_resources', raise_exception=True)
