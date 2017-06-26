@@ -3,7 +3,7 @@
     "model": "streamwebs.ripariantransect",
     "pk": 1,
     "fields": {
-        "school": "",
+        "school": 1,
         "date_time": "2010-06-18T16:10:00",
         "weather": "",
         "site": 188,
@@ -16,7 +16,7 @@
     "model": "streamwebs.ripariantransect",
     "pk": 2,
     "fields": {
-        "school": "",
+        "school": 1,
         "date_time": "2010-07-22T15:22:00",
         "weather": "",
         "site": 188,
@@ -29,7 +29,7 @@
     "model": "streamwebs.ripariantransect",
     "pk": 3,
     "fields": {
-        "school": "",
+        "school": 7,
         "date_time": "2010-07-06T14:15:00",
         "weather": "",
         "site": 188,
@@ -42,7 +42,7 @@
     "model": "streamwebs.ripariantransect",
     "pk": 4,
     "fields": {
-        "school": "",
+        "school": 1,
         "date_time": "2010-08-29T09:14:00",
         "weather": "",
         "site": 188,
@@ -55,7 +55,7 @@
     "model": "streamwebs.ripariantransect",
     "pk": 10,
     "fields": {
-        "school": "",
+        "school": 7,
         "date_time": "2011-06-08T23:35:00",
         "weather": "",
         "site": 188,
@@ -68,7 +68,7 @@
     "model": "streamwebs.ripariantransect",
     "pk": 31,
     "fields": {
-        "school": "",
+        "school": 10,
         "date_time": "2014-03-12T12:09:00",
         "weather": "",
         "site": 86,
@@ -81,7 +81,7 @@
     "model": "streamwebs.ripariantransect",
     "pk": 32,
     "fields": {
-        "school": "",
+        "school": 10,
         "date_time": "2014-03-12T13:40:00",
         "weather": "",
         "site": 86,
@@ -94,7 +94,7 @@
     "model": "streamwebs.ripariantransect",
     "pk": 33,
     "fields": {
-        "school": "",
+        "school": 10,
         "date_time": "2014-03-12T09:30:00",
         "weather": "",
         "site": 86,
@@ -107,7 +107,7 @@
     "model": "streamwebs.ripariantransect",
     "pk": 34,
     "fields": {
-        "school": "",
+        "school": 10,
         "date_time": "2014-03-12T10:37:00",
         "weather": "",
         "site": 86,
@@ -120,7 +120,7 @@
     "model": "streamwebs.ripariantransect",
     "pk": 50,
     "fields": {
-        "school": "",
+        "school": 10,
         "date_time": "2015-03-09T13:07:00",
         "weather": "",
         "site": 86,
@@ -133,7 +133,7 @@
     "model": "streamwebs.ripariantransect",
     "pk": 51,
     "fields": {
-        "school": "",
+        "school": 10,
         "date_time": "2015-03-09T14:00:00",
         "weather": "",
         "site": 86,
@@ -146,7 +146,7 @@
     "model": "streamwebs.ripariantransect",
     "pk": 52,
     "fields": {
-        "school": "",
+        "school": 10,
         "date_time": "2015-03-09T12:08:00",
         "weather": "",
         "site": 86,
@@ -159,7 +159,7 @@
     "model": "streamwebs.ripariantransect",
     "pk": 53,
     "fields": {
-        "school": "",
+        "school": 10,
         "date_time": "2015-03-09T12:40:00",
         "weather": "",
         "site": 86,
@@ -172,7 +172,7 @@
     "model": "streamwebs.ripariantransect",
     "pk": 54,
     "fields": {
-        "school": "",
+        "school": 10,
         "date_time": "2016-02-24T10:11:00",
         "weather": "",
         "site": 86,
@@ -185,7 +185,7 @@
     "model": "streamwebs.ripariantransect",
     "pk": 55,
     "fields": {
-        "school": "",
+        "school": 10,
         "date_time": "2016-02-24T10:50:00",
         "weather": "",
         "site": 86,
@@ -198,7 +198,7 @@
     "model": "streamwebs.ripariantransect",
     "pk": 56,
     "fields": {
-        "school": "",
+        "school": 10,
         "date_time": "2016-02-24T08:20:00",
         "weather": "",
         "site": 86,
@@ -211,7 +211,7 @@
     "model": "streamwebs.ripariantransect",
     "pk": 57,
     "fields": {
-        "school": "",
+        "school": 10,
         "date_time": "2016-02-24T09:20:00",
         "weather": "",
         "site": 86,

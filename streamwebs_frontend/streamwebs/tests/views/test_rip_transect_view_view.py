@@ -1,14 +1,15 @@
 from django.test import TestCase
 from django.core.urlresolvers import reverse
-from streamwebs.models import Site, TransectZone, RiparianTransect
+from streamwebs.models import Site, School, TransectZone, RiparianTransect
 
 
 class ViewTransectTestCase(TestCase):
 
     def test_data_sheet_view(self):
         site = Site.test_objects.create_site('site name')
+        school = School.test_objects.create_school('school name')
         transect = RiparianTransect.test_objects.create_transect(
-            'School Name', '2016-07-22 15:04:00', site
+            school, '2016-07-22 15:04:00', site
         )
         zone_1 = TransectZone.test_objects.create_zone(  # NOQA
             transect, 1, 2, 3, 'This is zone 1'
@@ -39,8 +40,9 @@ class ViewTransectTestCase(TestCase):
 
     def test_data_sheet_view_content(self):
         site = Site.test_objects.create_site('Site Name')
+        school = School.test_objects.create_school('School Name')
         transect = RiparianTransect.test_objects.create_transect(
-            'School Name', '2016-07-22 15:04:00', site
+            school, '2016-07-22 15:04:00', site
         )
         zone_1 = TransectZone.test_objects.create_zone(  # NOQA
             transect, 1, 2, 3, 'This is zone 1'

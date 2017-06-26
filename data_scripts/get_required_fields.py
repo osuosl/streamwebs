@@ -68,27 +68,53 @@ with open(airtemp, 'r') as csvfile:
     for row in airreader:
             # Skip the row if no value is specified
             if row['Air Temperature'] != '':
-                if row['Delta'] == '':
-                    # Search for matching Nid and sample
-                    air_temp_1 = WQ_Sample.objects.get(
-                        nid=row['Nid'], sample=1)
-                    air_temp_1.air_temperature = row['Air Temperature']
-                    air_temp_1.save()
-                elif row['Delta'] == '1':
-                    air_temp_2 = WQ_Sample.objects.get(
-                        nid=row['Nid'], sample=2)
-                    air_temp_2.air_temperature = row['Air Temperature']
-                    air_temp_2.save()
-                elif row['Delta'] == '2':
-                    air_temp_3 = WQ_Sample.objects.get(
-                        nid=row['Nid'], sample=3)
-                    air_temp_3.air_temperature = row['Air Temperature']
-                    air_temp_3.save()
+                if WQ_Sample.objects.filter(nid=row['Nid']).exists():
+                    if row['Delta'] == '':
+                        # Search for matching Nid and sample
+                        air_temp_1 = WQ_Sample.objects.get(
+                            nid=row['Nid'], sample=1)
+                        air_temp_1.air_temperature = row['Air Temperature']
+                        air_temp_1.save()
+                    elif row['Delta'] == '1':
+                        air_temp_2 = WQ_Sample.objects.get(
+                            nid=row['Nid'], sample=2)
+                        air_temp_2.air_temperature = row['Air Temperature']
+                        air_temp_2.save()
+                    elif row['Delta'] == '2':
+                        air_temp_3 = WQ_Sample.objects.get(
+                            nid=row['Nid'], sample=3)
+                        air_temp_3.air_temperature = row['Air Temperature']
+                        air_temp_3.save()
+                    else:
+                        air_temp_4 = WQ_Sample.objects.get(
+                            nid=row['Nid'], sample=4)
+                        air_temp_4.air_temperature = row['Air Temperature']
+                        air_temp_4.save()
                 else:
-                    air_temp_4 = WQ_Sample.objects.get(
-                        nid=row['Nid'], sample=4)
-                    air_temp_4.air_temperature = row['Air Temperature']
-                    air_temp_4.save()
+                    if row['Delta'] == '':
+                        sample = 1
+                    elif row['Delta'] == '1':
+                        sample = 2
+                    elif row['Delta'] == '2':
+                        sample = 3
+                    else:
+                        sample = 4
+
+                    if row['Air Temperature'] != '':
+                        air_temperature = row['Air Temperature']
+                    else:
+                        air_temperature = None
+
+                    nid = row['Nid']
+
+                    # Create foreign key relation
+                    waterq = Water_Quality.objects.get(nid=row['Nid'])
+
+                    # Create new entry if datasheet sample does not yet exist
+                    air_temp = WQ_Sample.objects.update_or_create(
+                        sample=sample, air_temperature=air_temperature,
+                        nid=nid, water_quality_id=waterq.id
+                    )
 
 csvfile.close()
 print 'Air temperature loaded.'
