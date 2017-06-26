@@ -969,6 +969,7 @@ def resources_publications(request):
         }
     )
 
+
 def resources_tutorial_videos(request):
     """ View for publication resources """
     data = Resource.objects.filter(res_type='tutorial_video').order_by(
