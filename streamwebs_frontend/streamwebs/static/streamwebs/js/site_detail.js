@@ -35,21 +35,28 @@ const initialize = function initialize() {
 };
 
 const listUpdate = function listUpdate() {
+    console.log(sheet_data);
     const list = $('#data-sheet-list');
     let page = parseInt(window.location.hash.slice(1), 10) || 1;
     const page_data = JSON.parse(JSON.stringify(sheet_data.slice((page-1)*10, page*10)));
 
     list.html('');
     for (let datum of page_data) {
-        list.append(
-            $('<li></li>')
-            .addClass('collection-item')
-            .append(
+        listItem = $('<li></li>').addClass('collection-item')
+        if (datum.type == "school") {
+            listItem.append(
+                $('<p></p>').attr('href', "#")
+                .text(`${datum.name}`)
+            )
+        }
+        else {
+            listItem.append(
                 $('<a></a>')
                 .attr('href', `/sites/${site_slug}/${datum.uri}/${datum.id}`)
                 .text(`${datum.type} data: ${datum.date}`)
             )
-        );
+        }
+        list.append(listItem);
     }
 
     if (page === 1) {
