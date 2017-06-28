@@ -161,14 +161,16 @@ def site(request, site_slug):
 
     data.sort(cmp=sort_date, key=lambda x: x['date'])
     data.sort(key=lambda x: -x['school_id'])
+    pages = len(data)/10 + 1
+    data_len_range = range(2, len(data)/10 + 2)
     data = add_school_name(data)
 
     return render(request, 'streamwebs/site_detail.html', {
         'site': site,
         'maps_api': settings.GOOGLE_MAPS_API,
         'data': json.dumps(data, cls=DjangoJSONEncoder),
-        'pages': len(data)/10+1,
-        'data_len_range': range(2, len(data)/10+2),
+        'pages': pages,
+        'data_len_range': data_len_range,
         'has_wq': len(wq_sheets) > 0,
         'has_macros': len(macro_sheets) > 0,
         'has_transects': len(transect_sheets) > 0,
