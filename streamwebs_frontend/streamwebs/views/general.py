@@ -77,8 +77,6 @@ def site(request, site_slug):
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     wq_sheets = Water_Quality.objects.filter(site_id=site.id)
     wq_sheets = list(wq_sheets.order_by('-date').values())
-    wq_sheets.append({'id': 400, 'uri': 'water', 'type': 'Water Quality', 'date': datetime.date(2011, 8, 23)})
-
     wq_sheets_new = []
     for x in wq_sheets:
         wq_data = {'id': x['id'], 'uri': 'water', 'type': 'Water Quality',
