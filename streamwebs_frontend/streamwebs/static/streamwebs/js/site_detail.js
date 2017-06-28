@@ -35,7 +35,6 @@ const initialize = function initialize() {
 };
 
 const listUpdate = function listUpdate() {
-    console.log(sheet_data);
     const list = $('#data-sheet-list');
     let page = parseInt(window.location.hash.slice(1), 10) || 1;
     const page_data = JSON.parse(JSON.stringify(sheet_data.slice((page-1)*10, page*10)));
