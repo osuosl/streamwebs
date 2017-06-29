@@ -80,7 +80,7 @@ def site(request, site_slug):
     wq_sheets_new = []
     for x in wq_sheets:
         wq_data = {'id': x['id'], 'uri': 'water', 'type': 'Water Quality',
-         'date': x['date']}
+                   'date': x['date']}
         if 'school_id' in x:
             wq_data['school_id'] = x['school_id']
         else:
@@ -92,8 +92,9 @@ def site(request, site_slug):
     macro_sheets = list(macro_sheets.order_by('-date_time').values())
     macro_sheets_new = []
     for x in macro_sheets:
-        macro_data = {'id': x['id'], 'uri': 'macro', 'type': 'Macroinvertebrate',
-         'date': x['date_time'].date()}
+        macro_data = {'id': x['id'], 'uri': 'macro',
+                      'type': 'Macroinvertebrate',
+                      'date': x['date_time'].date()}
         if 'school_id' in x:
             macro_data['school_id'] = x['school_id']
         else:
@@ -105,8 +106,9 @@ def site(request, site_slug):
     transect_sheets = list(transect_sheets.order_by('-date_time').values())
     transect_sheets_new = []
     for x in transect_sheets:
-        transect_data = {'id': x['id'], 'uri': 'transect', 'type': 'Riparian Transect',
-         'date': x['date_time'].date()}
+        transect_data = {'id': x['id'], 'uri': 'transect',
+                         'type': 'Riparian Transect',
+                         'date': x['date_time'].date()}
         if 'school_id' in x:
             transect_data['school_id'] = x['school_id']
         else:
@@ -119,7 +121,7 @@ def site(request, site_slug):
     canopy_sheets_new = []
     for x in canopy_sheets:
         canopy_data = {'id': x['id'], 'uri': 'canopy', 'type': 'Canopy Cover',
-         'date': x['date_time'].date()}
+                       'date': x['date_time'].date()}
         if 'school_id' in x:
             canopy_data['school_id'] = x['school_id']
         else:
@@ -132,7 +134,7 @@ def site(request, site_slug):
     ppm_sheets_new = []
     for x in ppm_sheets:
         ppm_data = {'id': x['id'], 'uri': 'camera', 'type': 'Camera Point',
-         'date': x['cp_date']}
+                    'date': x['cp_date']}
         if 'school_id' in x:
             ppm_data['school_id'] = x['school_id']
         else:
@@ -145,7 +147,7 @@ def site(request, site_slug):
     soil_sheets_new = []
     for x in soil_sheets:
         soil_data = {'id': x['id'], 'uri': 'soil', 'type': 'Soil Survey',
-         'date': x['date']}
+                     'date': x['date']}
         if 'school_id' in x:
             soil_data['school_id'] = x['school_id']
         else:
@@ -178,6 +180,7 @@ def site(request, site_slug):
         'has_soil': len(soil_sheets) > 0
     })
 
+
 def add_school_name(data):
     if len(data) == 0:
         return
@@ -190,7 +193,7 @@ def add_school_name(data):
             school = {'type': 'school', 'name': 'No School Associated'}
 
             if x['school_id'] != -1:
-                school = schools.get(id = x['school_id'])
+                school = schools.get(id=x['school_id'])
                 school = {'type': 'school', 'name': school.name}
 
             data_new.append(school)
@@ -198,6 +201,7 @@ def add_school_name(data):
 
         data_new.append(x)
     return data_new
+
 
 @login_required
 def update_site(request, site_slug):
