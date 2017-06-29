@@ -44,7 +44,25 @@ def create_site(request):
     created = False
 
     if request.method == 'POST':
+        if not request.POST._mutable:
+            request.POST._mutable = True
+        # make sure lat and lng exist, if not, set to zero.
+        if 'lat' not in request.POST and 'lng' not in request.POST:
+            request.POST['lat'] = 0
+            request.POST['lng'] = 0
+
+        #convert lat/lng to pointfield object
+        point = ("SRID=4326;POINT(%s %s)" %
+                (request.POST['lng'], request.POST['lat']))
+        request.POST['location'] = point
+
         site_form = SiteForm(request.POST, request.FILES)
+
+        print(site_form)
+        print(request.POST)
+        print(request.POST['location'])
+        print(request.POST['lat'])
+        print(request.POST['lng'])
 
         if site_form.is_valid():
             site = site_form.save()
