@@ -253,12 +253,12 @@ class ResourceForm(forms.ModelForm):
 
 class StatisticsForm(forms.Form):
     start = forms.DateField(
-        widget=forms.DateInput(attrs={'class': 'datepicker'}),
-        label=_('starting from'), required=False
+        widget=forms.DateInput(attrs={'class': 'datepicker col s5'}),
+        label=_('Starting from'), required=False
     )
     end = forms.DateField(
-        widget=forms.DateInput(attrs={'class': 'datepicker'}),
-        label=_('ending on'), required=False
+        widget=forms.DateInput(attrs={'class': 'datepicker col s5'}),
+        label=_('Ending on'), required=False
     )
 
 

@@ -6,34 +6,89 @@
 {% block body_title %} StreamWebs Statistics {% endblock %}
 
 {% block content %}
-<form id='stats_form' method='post'>
-    {% csrf_token %}
-    {{ stats_form.as_p }}
-    <input type='submit' name='submit' value='{% trans 'Calculate' %}'/>
-</form>
+<div class="container">
+  <form id='stats_form' method='post'>
+      {% csrf_token %}
+      {{ stats_form.as_p }}
+      <input type='submit' name='submit' value='{% trans 'Calculate' %}'/>
+  </form>
+  <br>
+  <div class="row">
+    <div class="col s4">
+      <div class="card teal darken-4">
+        <div class="card-content white-text">
+          {% if all_time %}
+            <span class="card-title">{{ users.count }}</span>
+            <p>Users have logged in within the last 3 years</p>
+          {% else %}
+            <span class="card-title">{{ users.count }}</span>
+            <p>Users who joined between {{ start }} and {{ end }}</p>
+          {% endif %}
 
-{% if all_time %}
-Users who have logged in within the last 3 years: {{ users.count }}
-{% else %}
-Users who joined between {{ start }} and {{ end }}: {{ users.count }}
-{% endif %}
-{% for user in users.users %}
-    <li>{{ user.username }}</li>
-{% endfor %}
+        </div>
+      </div>
 
-Number of data sheets uploaded between {{ start }} and {{ end }}:
-{% for type, num in sheets.items %}
-<li> {{ type }}: {{ num }}</li>
-{% endfor %}
+    </div>
 
-Schools that uploaded data between {{ start }} and {{ end }}: {{ schools.total }}
-{% for school in schools.schools %}
-<li> {{ school.name }} </li>
-{% endfor %}
+    <div class="col s4">
+      <div class="card teal darken-4">
+        <div class="card-content white-text">
+          <span class="card-title">{{ sheets.total }}</span>
+          <p>
+            Data sheets uploaded between {{ start }} and {{ end }}
+            <ul>
+              {% for type, num in sheets.items %}
+                <li> {{ type }}: {{ num }}</li>
+              {% endfor %}
+            </ul>
+          </p>
+        </div>
+      </div>
+    </div>
 
-Sites that uploaded data between {{ start }} and {{ end }}: {{ sites.total }}
-{% for site in sites.sites %}
-<li>{{ site.site_name }}</li>
-{% endfor %}
+    <div class="col s4">
+      <div class="card teal darken-4">
+        <div class="card-content white-text">
+          <span class="card-title"> {{ schools.total }} </span>
+            <p>
+              Schools that uploaded data between {{ start }} and {{ end }}
+              <ul>
+                {% for school in schools.schools %}
+                <li> {{ school.name }} </li>
+                {% endfor %}
+              </ul>
+          </p>
+        </div>
+      </div>
+    </div>
 
+    <div class="col s12">
+      <div class="card teal darken-4">
+        <div class="card-content white-text">
+          <span class="card-title"> {{ sites.total }} </span>
+          <h6>Sites that uploaded data between {{ start }} and {{ end }}</h6>
+          <p>
+            {% for site in sites.sites %}
+              <li>{{ site.site_name }}</li>
+            {% endfor %}
+          </p>
+        </div>
+      </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+$(document).ready(function() {
+  $('.datepicker').pickadate({
+    today: '',
+    selectMonths: true, // Creates a dropdown to control month
+    selectYears: 100, // Creates a dropdown of 15 years to control year
+    max: true, // set max to today
+    format: 'yyyy-mm-dd',
+  });
+});
+
+
+</script>
 {% endblock %}

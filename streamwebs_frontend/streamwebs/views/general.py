@@ -854,7 +854,7 @@ def admin_site_statistics(request):
     # A user is defined as "active" if they have logged in w/in the last 3 yrs
     today = datetime.date.today()
     user_start = datetime.date(today.year - 3, today.month, today.day)
-    start = datetime.date(1970, 1, 1)
+    start = datetime.date(2005, 1, 1)
     end = today
 
     if request.method == 'POST':

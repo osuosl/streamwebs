@@ -51,21 +51,38 @@
   </div>
 {% endblock %}
 {% block scripts %}
+
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-  <!--  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script> -->
-
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script> -->
   <script type="text/javascript">
+
     $(document).ready(function() {
-    //  $('select').material_select();
-      $( "#id_users_display" ).autocomplete({
-        source: "{% url 'streamwebs:users_auto_complete' %}",
-        select: function(event, ui) {
-          $( "#id_users" ).val(ui.item.id)
-        }
-      });
+
+      // materialize css select
+      $('select').material_select();
+      // console.log({% url 'streamwebs:users_auto_complete' %})
+      // var users_list=[];
+      // // get ajax of list of users
+      // $.ajax({
+      //   url: {% url 'streamwebs:users_auto_complete' %},
+      //   dataType: "json",
+      //   cache: false,
+      //   success:function(data){
+      //     console.log(data)
+      //     users_list = data;
+      //     // jquery autocomplete
+      //     $( "#id_users_display" ).autocomplete({
+      //       source: users_list,
+      //       select: function(event, ui) {
+      //         $( "#id_users" ).val(ui.item.id)
+      //       }
+      //     });
+      //   }
+      // });
+      // console.log("outside ajax")
+      // console.log(users_list)
+
     });
   </script>
 {% endblock %}
-
-
