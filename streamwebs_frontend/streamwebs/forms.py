@@ -219,8 +219,10 @@ class SiteForm(forms.ModelForm):
     class Meta:
         model = Site
         widgets = {
-            'site_name': forms.TextInput(attrs={'class': 'materialize-textarea', 'class': 'validate'}),
-            'description': forms.Textarea(attrs={'class': 'materialize-textarea'})
+            'site_name': forms.TextInput(
+                attrs={'class': 'materialize-textarea, validate'}),
+            'description': forms.Textarea(
+            attrs={'class': 'materialize-textarea'})
         }
         fields = ('site_name', 'description', 'location', 'image')
 
