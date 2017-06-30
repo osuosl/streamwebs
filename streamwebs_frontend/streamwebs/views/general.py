@@ -18,12 +18,12 @@ from streamwebs.forms import (
     PhotoPointImageForm, PhotoPointForm, CameraPointForm, WQSampleForm,
     WQSampleFormReadOnly, WQForm, WQFormReadOnly, SiteForm, Canopy_Cover_Form,
     SoilSurveyForm, SoilSurveyFormReadOnly, StatisticsForm, TransectZoneForm,
-    BaseZoneInlineFormSet, ResourceForm, UserEditForm)
+    BaseZoneInlineFormSet, ResourceForm, UserEmailForm)
 
 from streamwebs.models import (
     Macroinvertebrates, Site, Water_Quality, WQ_Sample, RiparianTransect,
     TransectZone, Canopy_Cover, CameraPoint, PhotoPoint,
-    PhotoPointImage, Soil_Survey, Resource, School)
+    PhotoPointImage, Soil_Survey, Resource, School, UserProfile)
 
 import json
 import copy
@@ -141,8 +141,6 @@ def update_site(request, site_slug):
         site_form = SiteForm(request.POST, request.FILES, instance=site)
 
         if site_form.is_valid():
-            print(site.site_name)
-            print(temp.site_name)
             if (site.site_name != temp.site_name or
                     site.description != temp.description or
                     site.location != temp.location or
@@ -215,36 +213,42 @@ def register(request):
         'profile_form': profile_form,
         'registered': registered})
 
-def edit_account(request):
-    edit_submitted = False
+
+@login_required
+def account(request):
+    user = request.user
+    user = User.objects.get(username=user)
+    return render(request, 'streamwebs/account.html',{
+                  'user': user})
+
+
+@login_required
+def update_email(request):
+    email_submitted = False
     user = request.user
     temp = copy.copy(user)
-    if request.method == 'POST':
-        if 'update_email' in request.POST:
-            user_edit_form = UserEditForm(data=request.POST, instance=user,
-                                          edit='update_email')
-            print(user.email)
-            print(temp.email)
-            if user_edit_form.is_valid():
-                print(user.email)
-                print(temp.email)
-                if (user.email != temp.email):
-                    user = user_edit_form.save()
-                    user.save()
-                    edit_submitted = True
-            else:
-                print(user_edit_form.errors)
 
-        else:
-            user_edit_form = UserEditForm(data=request.POST, instance=user,
-                                          edit='update_email')
+    if request.method == 'POST':
+        user_email_form = UserEmailForm(request.POST, instance=user)
+        print(user_email_form.is_valid())
+        if user_email_form.is_valid():
+            if user.email != temp.email:
+                user = user_email_form.save(commit=False)
+                user.save()
+                email_submitted = True
+                messages.success(request, 'You have successfully updated your' +
+                                 ' email.')
+            return redirect(reverse('streamwebs:account'))
 
     else:
-        user_edit_form = UserEditForm(initial={'email': user.email})
+        user_email_form = UserEmailForm(initial={'email': user.email})
 
-    return render(request, 'streamwebs/edit_account.html', {
-        'user_edit_form': user_edit_form,
-        'edit_submitted': edit_submitted})
+    return render(request, 'streamwebs/update_email.html', {
+        'user_form': user_email_form,
+    })
+
+
+
 
 def user_login(request):
     redirect_to = request.POST.get('next', '')

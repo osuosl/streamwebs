@@ -1,0 +1,35 @@
+{% extends 'streamwebs/base.html' %}
+{% load i18n %}
+{% block title %}Edit Account {% endblock %}
+{% block stylesheets %}
+    <style>
+        .errorlist{
+            color:red;
+        }
+    </style>
+{% endblock %}
+{% block body_title %}{% trans "Edit Account" %}{% endblock %}
+{% block content %}
+    <hr/>
+    <br/>
+    <div class="row">
+        <div class="col offset-s4 s4" style="text-align:center;">
+            <b>Email: {{ user.email }}</b>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col offset-s4 s4" style="text-align:center;">
+            <b>Username: {{ user.username }}</b>
+        </div>
+    </div>
+    <br/>
+    <div class="row">
+        <a href="{% url 'streamwebs:update_email' %}" class="btn col offset-s4 s4 teal darken-4">Change Email</a></li>
+    </div>
+    <div class="row">
+        <a href="#" class="btn col offset-s4 s4 teal darken-4">Change Password</a></li>
+    </div>
+    {% if email_submitted %}
+    <strong>{% trans "You have successfully change your email." %}</strong>
+    {% endif %}
+{% endblock %}

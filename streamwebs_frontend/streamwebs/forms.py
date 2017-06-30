@@ -41,47 +41,14 @@ class UserForm(forms.ModelForm):
             raise forms.ValidationError(_('Passwords do not match'))
         return self.data['password']
 
-class UserEditForm(forms.ModelForm):
-    def __init__(self, *args, **kwargs):
-        self.edit = kwargs.pop('edit', None)
-        super(UserEditForm, self).__init__(*args, **kwargs)
 
-    email = forms.CharField(required=False)
-
-    old_password = forms.CharField(
-        widget = forms.PasswordInput(),
-        label = _('Old Password'),
-        required = False)
-
-    new_password = forms.CharField(
-        widget = forms.PasswordInput(),
-        label = _('New Password'),
-        required = False)
-
-    new_password_check = forms.CharField(
-        widget = forms.PasswordInput(),
-        label = _('Repeat New Password'),
-        required = False)
+class UserEmailForm(forms.ModelForm):
+    email = forms.CharField(required=True)
 
     class Meta:
         model = User
-        fields = ('email','new_password')
-        labels = {'email': _('Email'),
-                  'new_password': _('New Password')}
+        fields = ('email',)
 
-    def clean(self):
-        data = super(UserEditForm, self).clean()
-        if data.get('update_email'):
-            email = data.get('email')
-            if email != "":
-                return email
-            else:
-                raise forms.ValidationError(_('Email not blank'))
-
-        else:
-            old_password = data.get('old_password')
-            new_password = data.get('new_password')
-            new_password_check = data.get('new_password_check')
 
 class UserProfileForm(forms.ModelForm):
     captcha = ReCaptchaField()
