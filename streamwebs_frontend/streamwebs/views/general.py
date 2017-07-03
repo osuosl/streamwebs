@@ -1007,12 +1007,7 @@ def resources_upload(request):
                 )
                 return redirect(reverse('streamwebs:resources-publications'))
             elif res.res_type == 'tutorial_video':
-                if hasattr(res, 'downloadale'):
-                    messages.fail(
-                    request,
-                    'you need a video'
-                    )
-                messages.success(
+                    messages.success(
                     request,
                     'You have successfully uploaded a new tutorial video.'
                 )
