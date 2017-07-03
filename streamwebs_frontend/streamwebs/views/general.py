@@ -1007,11 +1007,12 @@ def resources_upload(request):
                 )
                 return redirect(reverse('streamwebs:resources-publications'))
             elif res.res_type == 'tutorial_video':
-                    messages.success(
+                messages.success(
                     request,
                     'You have successfully uploaded a new tutorial video.'
                 )
-                return redirect(reverse('streamwebs:resources-tutorial_videos'))
+                return
+                redirect(reverse('streamwebs:resources-tutorial_videos'))
 
     return render(
         request, 'streamwebs/resources/resources_upload.html', {
