@@ -1,11 +1,11 @@
-let map;
+var map;
 
-const path = "m 0,0 c -7.08163,-14.59707 -5.50487,-20.97294 5.18667,-20.97294 " +
+var path = "m 0,0 c -7.08163,-14.59707 -5.50487,-20.97294 5.18667,-20.97294 " +
            "10.69154,0 12.2683,6.37587 5.18667,20.97294 -2.4156,4.97919 " +
            "-4.74961,9.05306 -5.18667,9.05306 -0.43706,0 -2.77107,-4.07387 " +
            "-5.18667,-9.05306 z";
 
-const initialize = function initialize() {
+var initialize = function initialize() {
     map = new google.maps.Map(document.getElementById('map'), {
         zoom: 10,
         maxZoom: 10,
@@ -14,7 +14,7 @@ const initialize = function initialize() {
         mapTypeId: google.maps.MapTypeId.ROADMAP,
         disableDefaultUI: true,
         draggable: false,
-        clickableIcons: false,
+        clickableIcons: false
     });
 
     new google.maps.Marker({
@@ -26,35 +26,32 @@ const initialize = function initialize() {
           fillColor: "#FF0000",
           fillOpacity: 1,
           strokeColor: "#000000",
-          strokeWeight: 2,
-        },
+          strokeWeight: 2
+        }
     });
 
-    $(window).on('hashchange', listUpdate);
+    $(window).on('hashchange',listUpdate);
     listUpdate();
-};
+}
 
-const listUpdate = function listUpdate() {
-    const list = $('#data-sheet-list');
-    let page = parseInt(window.location.hash.slice(1), 10) || 1;
-    const page_data = JSON.parse(JSON.stringify(sheet_data.slice((page-1)*10, page*10)));
+var listUpdate = function listUpdate() {
+    var list = $('#data-sheet-list');
+    var page = parseInt(window.location.hash.slice(1),10) || 1;
+    var page_data = JSON.parse(JSON.stringify(sheet_data.slice((page-1)*10, page*10)));
 
     list.html('');
     for (let datum of page_data) {
-        listItem = $('<li></li>').addClass('collection-item')
-        if (datum.type == "school") {
-            listItem.append(
-                $('<p></p>').attr('href', "#")
-                .text(`${datum.name}`)
-            )
+        var listItem = $('<li></li>').addClass('collection-item');
+        if (datum.type == 'school') {
+            var schoolName = $('<p></p>').attr('href', '#').text(datum.name);
+            listItem.append(schoolName);
         }
         else {
-            listItem.append(
-                $('<a></a>')
-                .attr('href', `/sites/${site_slug}/${datum.uri}/${datum.id}`)
-                .text(`${datum.type} data: ${datum.date}`)
-            )
+            var itemLink = $('<a></a>').attr('href', '/sites/'+site_slug+'/'+datum.uri+'/'+datum.id);
+            itemLink.text(datum.type+' data: '+datum.date);
+            listItem.append(itemLink);
         }
+
         list.append(listItem);
     }
 
@@ -71,8 +68,8 @@ const listUpdate = function listUpdate() {
     }
 
     $('.page-select').removeClass('active').addClass('wave-effects');
-    $(`#page-${page}`).addClass('active').removeClass('wave-effects');
-};
+    $('#page-'+page).addClass('active').removeClass('wave-effects');
+}
 
 $(document).ready(function () {
     initialize();
