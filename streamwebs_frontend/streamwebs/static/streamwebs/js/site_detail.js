@@ -30,8 +30,16 @@ var initialize = function initialize() {
         }
     });
 
+    resizeImage();
     $(window).on('hashchange',listUpdate);
     listUpdate();
+}
+
+var resizeImage = function resizeImage() {
+    var customImage = $('#site_detail_image');
+    if (customImage != undefined) {
+        $('#site_detail_image')[0].width = imageWidth;
+    }
 }
 
 var listUpdate = function listUpdate() {
