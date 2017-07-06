@@ -21,6 +21,7 @@
       </thead>
     <tbody>
       {% for video in data %}
+      {% if video.downloadable %}
         <tr>
           <td>
             <h4>
@@ -35,6 +36,7 @@
             </a>
           </td>
         </tr>
+        {% endif %}
       {% endfor %}
     </tbody>
     </table>
