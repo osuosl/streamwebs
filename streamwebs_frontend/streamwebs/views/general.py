@@ -30,6 +30,7 @@ import json
 import copy
 import datetime
 
+
 def _timestamp(dt):
     return (dt - datetime.datetime(1970, 1, 1)).total_seconds()
 
@@ -981,9 +982,6 @@ def resources_tutorial_videos(request):
         }
     )
 
-def validate_file_extension(value):
-    if value.file.content_type != 'video/mp4':
-        raise ValidationError('Please upload a video')
 
 @login_required
 @permission_required('streamwebs.can_upload_resources', raise_exception=True)
@@ -1001,11 +999,13 @@ def resources_upload(request):
                 # if it is, publish to the video page
                 if m.lower().endswith(('.mp4', '.ogg', '.webm')):
                     res = res_form.save()
+                    res.save()
                     messages.success(
                         request,
                         'You have successfully uploaded a new tutorial video'
                     )
-                    return redirect(reverse('streamwebs:resources-tutorial_videos'))
+                    return redirect(reverse(
+                        'streamwebs:resources-tutorial_videos'))
                 else:
                     # otherwise, tell the admin that the video is no good
                     messages.error(
@@ -1013,9 +1013,11 @@ def resources_upload(request):
                         'Sorry, that video type is unacceptable.'
                         + 'Please upload a .mp4, .webm, or .ogg'
                     )
-                    return redirect(reverse('streamwebs:resources-tutorial_videos'))
+                    return redirect(reverse(
+                        'streamwebs:resources-tutorial_videos'))
             elif res_form.cleaned_data['res_type'] == 'data_sheet':
                 res = res_form.save()
+                res.save()
                 messages.success(
                     request,
                     'You have successfully uploaded a new data sheet resource.'
@@ -1023,6 +1025,7 @@ def resources_upload(request):
                 return redirect(reverse('streamwebs:resources-data-sheets'))
             elif res_form.cleaned_data['res_type'] == 'publication':
                 res = res_form.save()
+                res.save()
                 messages.success(
                     request,
                     'You have successfully uploaded a new publication.'
