@@ -326,6 +326,8 @@ def graph_water(request, site_slug):
     wq_data = Water_Quality.objects.filter(site=site)
     data = [m.to_dict() for m in wq_data]
     site_list = Site.objects.filter(active=True)
+    for x in data:
+        x['school'] = str(x['school'])
     return render(request, 'streamwebs/graphs/water_quality.html', {
         'data': json.dumps(data),
         'site': site,
@@ -355,6 +357,8 @@ def water_histogram(request, site_slug, data_type, date):
         data_name = 'BOD'
     else:
         data_name = data_type.replace('_', ' ').title()
+    for x in data:
+        x['school'] = str(x['school'])
     return render(request, 'streamwebs/graphs/wq_histogram.html', {
         'site': site.to_dict(),
         'data': json.dumps(data),

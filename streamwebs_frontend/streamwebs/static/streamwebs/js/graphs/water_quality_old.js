@@ -5,15 +5,14 @@
  *
  *******************************************************************************
  ******************************************************************************/
-var date_min = -9007199254740991
-var date_max = 9007199254740991
-var date_range = [date_min, date_max];
 
-var changeRangeStart = function changeRangeStart() {
+let date_range = [Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER];
+
+const changeRangeStart = function changeRangeStart() {
     if (!$(this).val()) { // If the field is empty, clear the range
-        date_range[0] = date_min;
+        date_range[0] = Number.MIN_SAFE_INTEGER;
     } else {
-        var date = Date.parse($(this).val());
+        const date = Date.parse($(this).val());
         if (!date || Number.isNaN(date)) {
             return;
         }
@@ -24,11 +23,11 @@ var changeRangeStart = function changeRangeStart() {
     createGraph();
 };
 
-var changeRangeEnd = function changeRangeEnd() {
+const changeRangeEnd = function changeRangeEnd() {
     if (!$(this).val()) { // If the field is empty, clear the range
-        date_range[1] = date_max;
+        date_range[1] = Number.MAX_SAFE_INTEGER;
     } else {
-        var date = Date.parse($(this).val());
+        const date = Date.parse($(this).val());
         if (!date || Number.isNaN(date)) {
             return;
         }
@@ -47,33 +46,31 @@ var changeRangeEnd = function changeRangeEnd() {
  *******************************************************************************
  ******************************************************************************/
 
-var showMouseover = function showMouseover(data) {
-    var g = d3.select(this.parentElement.parentElement);
-    var dotPos = [this.transform.baseVal[0].matrix['e'],
+const showMouseover = function showMouseover(data) {
+    const g = d3.select(this.parentElement.parentElement);
+    const dotPos = [this.transform.baseVal[0].matrix['e'],
                  this.transform.baseVal[0].matrix['f']];
 
-    var svg = d3.select(this.ownerSVGElement);
-    var svgSize = [svg.attr('width'), svg.attr('height')];
+    const svg = d3.select(this.ownerSVGElement);
+    const svgSize = [svg.attr('width'), svg.attr('height')];
 
-    var width = 250;
-    var height = 150;
+    const width = 250;
+    const height = 150;
 
-    var xOffset = 120;
+    const xOffset = 120;
 
-    var pos = [
+    const pos = [
         dotPos[0] + xOffset + width > svgSize[0] ?
             svgSize[0] - 4*width/5 : dotPos[0] + xOffset,
         dotPos[1] + height > svgSize[1] ? svgSize[1] - height - 20 : dotPos[1]
     ];
 
-    var popup = g.append('g')
+    const popup = g.append('g')
         .attr('class', 'popup')
         .attr('transform', 'translate(' + pos[0] + ',' + pos[1] + ')')
         .attr('width', width)
         .attr('height', height)
-        .on('click', function () {
-             d3.event.stopPropagation();
-         });
+        .on('click', () => { d3.event.stopPropagation(); });
 
     popup.append('rect')
         .attr('x', -100)
@@ -120,7 +117,7 @@ var showMouseover = function showMouseover(data) {
     d3.event.stopPropagation();
 };
 
-var hideMouseover = function hideMouseover() {
+const hideMouseover = function hideMouseover() {
     $('.popup').remove();
 };
 
@@ -132,16 +129,16 @@ var hideMouseover = function hideMouseover() {
  *******************************************************************************
  ******************************************************************************/
 
-var types1 = {}, types2 = {}, filtered1 = {}, filtered2 = {};
+let types1 = {}, types2 = {}, filtered1 = {}, filtered2 = {};
 
-var formatData = function formatData(data, key) {
+const formatData = function formatData(data, key) {
     /*
      * So we currently have a list of data points, each one containing a date
      * and a list of 4 samples, each sample having one each of every data type
      * we need. Instead, we want to pull out just one type per data point, pair
      * it with the date, and average each day into one point.
      */
-    return data.map(function(d) {
+    return data.map(d => {
         /*
          * Turn each data point *d*, which looks like this:
          *
@@ -164,7 +161,7 @@ var formatData = function formatData(data, key) {
             /*
              * Take our samples, and reduce it into a single average for a value.
              */
-            value: d.samples.reduce(function (prev, curr, idx) {
+            value: d.samples.reduce((prev, curr, idx) => {
                 /*
                  * This is more straightforward than it looks. Prev is the average
                  * of samples[0] through samples[idx-1]. We multiply it by the
@@ -178,23 +175,23 @@ var formatData = function formatData(data, key) {
                 return ((prev * idx) + parseFloat(curr[key])) / (idx + 1);
             }, 0),
         };
-    }).filter(function (d) {
+    }).filter(d => {
         return !isNaN(d.value);
     });
 };
 
-var filterOutliers = function filterOutliers(entries) {
+const filterOutliers = function filterOutliers(entries) {
 
     /*
      * Next we calculate the first and third quartile and the inter-quartile range
      */
 
-    var points = entries.map(function(d) {
+    const points = entries.map(d => {
         return d.value;
-    }).sort(function (a, b) {
+    }).sort((a, b) => {
         return a-b;
     });
-    var n = points.length;
+    const n = points.length;
 
     /*
      * Split the array into a top and bottom half.
@@ -209,8 +206,8 @@ var filterOutliers = function filterOutliers(entries) {
      * bottom = [0, 1, 2, 3, 4, 5] = slice(0, 6) = slice(0, floor(n/2))
      * top = [7, 8, 9, 10, 11, 12] = slice(7, 13) = slice(ceil(n/2), n)
      */
-    var bottom = points.slice(0, Math.floor(n/2));
-    var top = points.slice(Math.ceil(n/2), n);
+    const bottom = points.slice(0, Math.floor(n/2));
+    const top = points.slice(Math.ceil(n/2), n);
 
     /*
      * Now each quartile is the median of each array.
@@ -220,35 +217,35 @@ var filterOutliers = function filterOutliers(entries) {
      * which are floor(n/2 - 1) and floor(n/2) (sum them and divide by two).
      */
 
-    var firstQP = Math.floor(bottom.length/2);
-    var firstQ = bottom.length % 2 === 0 ?
+    const firstQP = Math.floor(bottom.length/2);
+    const firstQ = bottom.length % 2 === 0 ?
         (bottom[firstQP-1] + bottom[firstQP])/2 :
         bottom[firstQP];
 
-    var thirdQP = Math.floor(top.length/2);
-    var thirdQ = top.length % 2 === 0 ?
+    const thirdQP = Math.floor(top.length/2);
+    const thirdQ = top.length % 2 === 0 ?
         (top[thirdQP-1] + top[thirdQP])/2 :
         top[thirdQP];
 
-    var iqr = thirdQ - firstQ;
+    const iqr = thirdQ - firstQ;
 
     /*
      * Finally, we filter outliers (values more than 1.5*IQR away from the quartiles),
      * then average the remaining data points.
      */
 
-    return entries.filter(function (d) {
+    return entries.filter(d => {
         return d.value >= firstQ - (1.5*iqr) &&
                d.value <= thirdQ + (1.5*iqr);
     /*
      * Get the averages by each day. For more information, see lines 134-213
      * of macros.js.
      */
- }).reduce(function (prev, curr) {
-        var data = prev.map(function (x, i) {
+    }).reduce((prev, curr) => {
+        let data = prev.map((x, i) => {
             x['idx'] = i;
             return x;
-        }).filter(function (x) {
+        }).filter(x => {
             return x.date.getTime() === curr.date.getTime();
         });
 
@@ -267,7 +264,7 @@ var filterOutliers = function filterOutliers(entries) {
             }
         }
         return prev;
-    }, []).map(function (x) {
+    }, []).map(x => {
         return {
             date: x.date,
             value: x.value / x.count,
@@ -276,22 +273,22 @@ var filterOutliers = function filterOutliers(entries) {
     });
 };
 
-var margin = {top: 20, right: 150, bottom: 50, left: 40};
-var defineWidth = function defineWidth(container) {
+const margin = {top: 20, right: 150, bottom: 50, left: 40};
+const defineWidth = function defineWidth(container) {
     return container.width() - (margin.right + margin.left);
 };
 
-var defineHeight = function defineHeight() {
+const defineHeight = function defineHeight() {
     return 300 - (margin.top + margin.bottom);
 };
 
-var createGraphTemplate = function createGraphTemplate(container, width, height, x, y) {
-    var svg1 = d3.select(container).append('svg')
+const createGraphTemplate = function createGraphTemplate(container, width, height, x, y) {
+    const svg1 = d3.select(container).append('svg')
         .attr('width', width + margin.left + margin.right)
         .attr('height', height + margin.top + margin.bottom)
         .style('border', '1px solid #808080');
 
-    var g1 = svg1.append('g')
+    const g1 = svg1.append('g')
         .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
     g1.append('g')
@@ -312,96 +309,96 @@ var createGraphTemplate = function createGraphTemplate(container, width, height,
     return g1;
 };
 
-var isGoodNum = function isGoodNum(n) {
+const isGoodNum = function isGoodNum(n) {
     // NaN is not equal to itself
     return (typeof n === 'number') && n === n;
 };
 
 // If a number is passed, return it.
 // If null, undefined, or NaN are passed, return a boundary value.
-// If `min` is truthy, return date_min, else date_max
-var valNum = function valNum(n, min) {
-    return isGoodNum(n) ? n : (min ? date_min : date_max);
+// If `min` is truthy, return Number.MIN_SAFE_INTEGER, else Number.MAX_SAFE_INTEGER
+const valNum = function valNum(n, min) {
+    return isGoodNum(n) ? n : (min ? Number.MIN_SAFE_INTEGER : Number.MAX_SAFE_INTEGER);
 };
 
-var getXDomain = function getX(keys) {
-    var min = 0;
-    if (date_range[0] !== date_min) {
+const getXDomain = function getX(keys) {
+    let min = 0;
+    if (date_range[0] !== Number.MIN_SAFE_INTEGER) {
         min = new Date(date_range[0]);
     } else {
-        min = new Date(keys.map(function (key) {
+        min = new Date(keys.map(key => {
             return Math.min(
-                valNum(d3.min(filtered1[key], function (d) {
+                valNum(d3.min(filtered1[key], d => {
                     return d.date.getTime();
                 }), false),
-                window.hasSiteTwo ? valNum(d3.min(filtered2[key], function (d) {
+                window.hasSiteTwo ? valNum(d3.min(filtered2[key], d => {
                     return d.date.getTime();
-                }), false)  : date_max
+                }), false)  : Number.MAX_SAFE_INTEGER
             );
-        }).reduce(function (prev, curr) {
+        }).reduce((prev, curr) => {
             return Math.min(prev, curr);
-        }, date_max));
+        }, Number.MAX_SAFE_INTEGER));
     }
 
-    var max = 0;
-    if (date_range[1] !== date_max) {
+    let max = 0;
+    if (date_range[1] !== Number.MAX_SAFE_INTEGER) {
         max = new Date(date_range[1]);
     } else {
-        max = new Date(keys.map(function (key) {
+        max = new Date(keys.map(key => {
             return Math.max(
-                valNum(d3.max(filtered1[key], function (d) {
+                valNum(d3.max(filtered1[key], d => {
                     return d.date.getTime();
                 }), true),
-                window.hasSiteTwo ? valNum(d3.max(filtered2[key], function (d) {
+                window.hasSiteTwo ? valNum(d3.max(filtered2[key], d => {
                     return d.date.getTime();
-                }), true) : date_min
+                }), true) : Number.MIN_SAFE_INTEGER
             );
-        }).reduce(function (prev, curr) {
+        }).reduce((prev, curr) => {
             return Math.max(prev, curr);
-        }, date_min));
+        }, Number.MIN_SAFE_INTEGER));
     }
 
     return [min, max];
 };
 
-var getYDomain = function getY(keys) {
-    var min = keys.map(function (key) {
-        var min1 = valNum(d3.min(filtered1[key], function (d) {
+const getYDomain = function getY(keys) {
+    const min = keys.map(key => {
+        const min1 = valNum(d3.min(filtered1[key], d => {
             return valNum(d.value, false);
         }), false);
-        var min2 = window.hasSiteTwo ? valNum(d3.min(filtered2[key], function (d) {
+        const min2 = window.hasSiteTwo ? valNum(d3.min(filtered2[key], d => {
             return valNum(d.value, false);
-        }), false) : date_max;
+        }), false) : Number.MAX_SAFE_INTEGER;
         return Math.min(min1, min2);
-    }).reduce(function (prev, curr) {
+    }).reduce((prev, curr) => {
         return Math.min(prev, curr);
-    }, date_max);
+    }, Number.MAX_SAFE_INTEGER);
 
-    var max = keys.map(function (key) {
-        var max1 = valNum(d3.max(filtered1[key], function (d) {
+    const max = keys.map(key => {
+        const max1 = valNum(d3.max(filtered1[key], d => {
             return valNum(d.value, true);
         }), true);
-        var max2 = window.hasSiteTwo ? valNum(d3.max(filtered2[key], function (d) {
+        const max2 = window.hasSiteTwo ? valNum(d3.max(filtered2[key], d => {
             return valNum(d.value, true);
-        }), true) : date_min;
+        }), true) : Number.MIN_SAFE_INTEGER;
         return Math.max(max1, max2);
-    }).reduce(function (prev, curr) {
+    }).reduce((prev, curr) => {
         return Math.max(prev, curr);
-    }, date_min);
+    }, Number.MIN_SAFE_INTEGER);
 
     return [min, max === min ? max+10 : max];
 };
 
-var createGraph = function createGraph() {
-    var outerContainer = $('#graph-container');
+const createGraph = function createGraph() {
+    const outerContainer = $('#graph-container');
     outerContainer.find('svg').remove();
 
-    var data = JSON.parse(JSON.stringify(window.data.site1)); // Copy the data so we don't change the original
+    let data = JSON.parse(JSON.stringify(window.data.site1)); // Copy the data so we don't change the original
 
-    var formatted1 = [];
+    const formatted1 = [];
 
-    for (var datum of data) {
-        var date = parseInt(datum.date, 10) * 1000; // Convert from seconds to millis
+    for (let datum of data) {
+        const date = parseInt(datum.date, 10) * 1000; // Convert from seconds to millis
         if (date >= date_range[1] || date <= date_range[0]) {
             continue;
         }
@@ -411,7 +408,7 @@ var createGraph = function createGraph() {
         formatted1.push(datum);
     }
 
-    formatted1.sort(function (a, b) {
+    formatted1.sort((a, b) => {
         return a.date - b.date;
     });
 
@@ -422,12 +419,12 @@ var createGraph = function createGraph() {
         filtered1[key] = filterOutliers(types1[key]);
     }
 
-    var formatted2 = [];
+    const formatted2 = [];
 
     if (window.hasSiteTwo) {
         data = JSON.parse(JSON.stringify(window.data.site2));
-        for (var datum of data) {
-            var date = parseInt(datum.date, 10) * 1000; // Convert from seconds to millis
+        for (let datum of data) {
+            const date = parseInt(datum.date, 10) * 1000; // Convert from seconds to millis
             if (date >= date_range[1] || date <= date_range[0]) {
                 continue;
             }
@@ -437,7 +434,7 @@ var createGraph = function createGraph() {
             formatted2.push(datum);
         }
 
-        formatted2.sort(function (a, b) {
+        formatted2.sort((a, b) => {
             return a.date - b.date;
         });
 
@@ -454,27 +451,27 @@ var createGraph = function createGraph() {
      **************************************************************************/
 
     {
-        var containerName1 = '#graph-site1-temperature';
-        var container1 = outerContainer.find(containerName1);
-        var width = defineWidth(container1);
-        var height = defineHeight(container1);
+        const containerName1 = '#graph-site1-temperature';
+        const container1 = outerContainer.find(containerName1);
+        const width = defineWidth(container1);
+        const height = defineHeight(container1);
 
-        var containerName2 = '#graph-site2-temperature';
-        var container2 = outerContainer.find(containerName2);
+        const containerName2 = '#graph-site2-temperature';
+        const container2 = outerContainer.find(containerName2);
 
-        var x = d3.scaleTime()
+        const x = d3.scaleTime()
             .range([0, width])
             .domain(getXDomain(['water_temperature', 'air_temperature']));
-        var y = d3.scaleLinear()
+        const y = d3.scaleLinear()
             .domain(getYDomain(['water_temperature', 'air_temperature']))
             .range([height, 0]);
-        var z = d3.scaleOrdinal()
+        const z = d3.scaleOrdinal()
             .domain(['Air Temperature', 'Water Temperature'])
             .range(['#0000bf', '#bf0000']);
 
-        var g1 = createGraphTemplate(containerName1, width, height, x, y);
+        const g1 = createGraphTemplate(containerName1, width, height, x, y);
 
-        var g2 = createGraphTemplate(containerName2, width, height, x, y);
+        const g2 = createGraphTemplate(containerName2, width, height, x, y);
 
         if ((filtered1.water_temperature.length ||
         filtered1.air_temperature.length) ||
@@ -488,7 +485,7 @@ var createGraph = function createGraph() {
             container2.css({display: window.hasSiteTwo ? 'block' : 'none'});
 
             if (filtered1.water_temperature.length || filtered1.air_temperature.length) {
-                var type1 = g1.selectAll('.temp')
+                const type1 = g1.selectAll('.temp')
                     .data([
                         {
                             name: "Water Temperature",
@@ -506,36 +503,34 @@ var createGraph = function createGraph() {
                     .attr('class', 'temp');
 
                 type1.selectAll('dot')
-                    .data(function (d) {
-                        return d.values.map(function (e) {
+                    .data(d => {
+                        return d.values.map(e => {
                             e['name'] = d.name;
                             e['key'] = d.key;
                             e['site'] = siteId;
-                            return e;
+                            return e
                         });
                     })
                     .enter().append('path')
-                    .attr('transform', function (d) {
+                    .attr('transform', d => {
                         return 'translate(' + x(new Date(d.date)) + ', ' +
                                 y(d.value) + ')';
                     })
                     .attr('d', d3.symbol()
-                        .type(function (d) {
-                            var symbolType = d.name === 'Water Temperature' ?
-                                d3.symbolCircle : d3.symbolTriangle;
-                            return symbolType;
-                        })
+                        .type(d => d.name === 'Water Temperature' ?
+                                d3.symbolCircle : d3.symbolTriangle
+                        )
                     )
-                    .style('stroke', function (d) {
+                    .style('stroke', d => {
                         return z(d.name)
                     })
-                    .style('fill', function (d) {
+                    .style('fill', d => {
                         return z(d.name)
                     })
                     .style('cursor', 'pointer')
                     .on('click', showMouseover);
 
-                var legend1 = g1.selectAll('.legend')
+                const legend1 = g1.selectAll('.legend')
                     .data([
                         {
                             name: "Water Temperature",
@@ -549,7 +544,7 @@ var createGraph = function createGraph() {
                     .enter()
                     .append('g')
                     .attr('class', 'legend')
-                    .attr('transform', function (d, i) {
+                    .attr('transform', (d, i) => {
                         return 'translate(' + (width + 10) + ', ' + i * 20 + ')';
                     })
                     .style('border', '1px solid black')
@@ -558,13 +553,10 @@ var createGraph = function createGraph() {
                 legend1.append('path')
                     .attr('transform', 'translate(5,0)')
                     .attr('d', d3.symbol()
-                        .type(function (d) {
-                            var symbolType = d.name === 'Water Temperature' ?
-                                d3.symbolCircle : d3.symbolTriangle;
-                            return symbolType;
-                        })
-                    )
-                    .attr('fill', function (d) {
+                        .type(d => d.name === 'Water Temperature' ?
+                                d3.symbolCircle : d3.symbolTriangle
+                        ))
+                    .attr('fill', d => {
                         return z(d.name);
                     });
 
@@ -572,10 +564,10 @@ var createGraph = function createGraph() {
                     .attr('x', 20)
                     .attr('dy', '.35em')
                     .attr('text-anchor', 'begin')
-                    .attr('fill', function (d) {
+                    .attr('fill', d => {
                         return z(d.name);
                     })
-                    .text(function (d) {
+                    .text(d => {
                         return d.name;
                     });
             }
@@ -583,7 +575,7 @@ var createGraph = function createGraph() {
             if (window.hasSiteTwo && (
                 filtered2.water_temperature.length || filtered2.air_temperature.length
             )) {
-                var type2 = g2.selectAll('.temp')
+                const type2 = g2.selectAll('.temp')
                     .data([
                         {
                             name: "Water Temperature",
@@ -601,36 +593,34 @@ var createGraph = function createGraph() {
                     .attr('class', 'temp');
 
                 type2.selectAll('dot')
-                    .data(function (d) {
-                        return d.values.map(function (e) {
+                    .data(d => {
+                        return d.values.map(e => {
                             e['name'] = d.name;
                             e['key'] = d.key;
                             e['site'] = window.site2Id;
-                            return e;
+                            return e
                         });
                     })
                     .enter().append('path')
-                    .attr('transform', function (d) {
+                    .attr('transform', d => {
                         return 'translate(' + x(new Date(d.date)) + ', ' +
                                 y(d.value) + ')';
                     })
                     .attr('d', d3.symbol()
-                        .type(function (d) {
-                            var symbolType = d.name === 'Water Temperature' ?
-                                d3.symbolCircle : d3.symbolTriangle;
-                            return symbolType;
-                        })
+                        .type(d => d.name === 'Water Temperature' ?
+                                d3.symbolCircle : d3.symbolTriangle
+                        )
                     )
-                    .style('stroke', function (d) {
+                    .style('stroke', d => {
                         return z(d.name)
                     })
-                    .style('fill', function (d) {
+                    .style('fill', d => {
                         return z(d.name)
                     })
                     .style('cursor', 'pointer')
                     .on('click', showMouseover);
 
-                var legend2 = g2.selectAll('.legend')
+                const legend2 = g2.selectAll('.legend')
                     .data([
                         {
                             name: "Water Temperature",
@@ -644,7 +634,7 @@ var createGraph = function createGraph() {
                     .enter()
                     .append('g')
                     .attr('class', 'legend')
-                    .attr('transform', function (d, i) {
+                    .attr('transform', (d, i) => {
                         return 'translate(' + (width + 10) + ', ' + i * 20 + ')';
                     })
                     .style('border', '1px solid black')
@@ -654,7 +644,7 @@ var createGraph = function createGraph() {
                     .attr('x', 2)
                     .attr('width', 18)
                     .attr('height', 2)
-                    .attr('fill', function (d) {
+                    .attr('fill', d => {
                         return z(d.name);
                     });
 
@@ -662,10 +652,10 @@ var createGraph = function createGraph() {
                     .attr('x', 25)
                     .attr('dy', '.35em')
                     .attr('text-anchor', 'begin')
-                    .attr('fill', function (d) {
+                    .attr('fill', d => {
                         return z(d.name);
                     })
-                    .text(function (d) {
+                    .text(d => {
                         return d.name;
                     });
             }
@@ -685,24 +675,24 @@ var createGraph = function createGraph() {
      **************************************************************************/
 
     {
-        var containerName1 = '#graph-site1-oxygen';
-        var container1 = outerContainer.find(containerName1);
-        var width = defineWidth(container1);
-        var height = defineHeight(container1);
+        const containerName1 = '#graph-site1-oxygen';
+        const container1 = outerContainer.find(containerName1);
+        const width = defineWidth(container1);
+        const height = defineHeight(container1);
 
-        var containerName2 = '#graph-site2-oxygen';
-        var container2 = outerContainer.find(containerName2);
+        const containerName2 = '#graph-site2-oxygen';
+        const container2 = outerContainer.find(containerName2);
 
-        var x = d3.scaleTime()
+        const x = d3.scaleTime()
             .range([0, width])
             .domain(getXDomain(['dissolved_oxygen']));
-        var y = d3.scaleLinear()
+        const y = d3.scaleLinear()
             .domain(getYDomain(['dissolved_oxygen']))
             .range([height, 0]);
 
-        var g1 = createGraphTemplate(containerName1, width, height, x, y);
+        const g1 = createGraphTemplate(containerName1, width, height, x, y);
 
-        var g2 = createGraphTemplate(containerName2, width, height, x, y);
+        const g2 = createGraphTemplate(containerName2, width, height, x, y);
 
         if (filtered1.dissolved_oxygen.length ||
         (window.hasSiteTwo && filtered2.dissolved_oxygen.length)) {
@@ -714,7 +704,7 @@ var createGraph = function createGraph() {
             container2.css({display: window.hasSiteTwo ? 'block' : 'none'});
 
             if (filtered1.dissolved_oxygen.length) {
-                var type1 = g1.selectAll('.do')
+                const type1 = g1.selectAll('.do')
                     .data([{
                         name: 'Dissolved Oxygen',
                         values: filtered1.dissolved_oxygen
@@ -724,8 +714,8 @@ var createGraph = function createGraph() {
                     .attr('class', 'do');
 
                 type1.selectAll('dot')
-                    .data(function (d) {
-                        return d.values.map(function (e) {
+                    .data(d => {
+                        return d.values.map(e => {
                             e['name'] = d.name;
                             e['key'] = 'dissolved_oxygen';
                             e['site'] = siteId;
@@ -733,7 +723,7 @@ var createGraph = function createGraph() {
                         });
                     })
                     .enter().append('path')
-                    .attr('transform', function (d) {
+                    .attr('transform', d => {
                         return 'translate(' + x(new Date(d.date)) + ', ' +
                                 y(d.value) + ')';
                     })
@@ -745,7 +735,7 @@ var createGraph = function createGraph() {
             }
 
             if (window.hasSiteTwo && filtered2.dissolved_oxygen.length) {
-                var type2 = g2.selectAll('.do')
+                const type2 = g2.selectAll('.do')
                     .data([{
                         name: 'Dissolved Oxygen',
                         values: filtered2.dissolved_oxygen
@@ -755,8 +745,8 @@ var createGraph = function createGraph() {
                     .attr('class', 'do');
 
                 type2.selectAll('dot')
-                    .data(function (d) {
-                        return d.values.map(function (e) {
+                    .data(d => {
+                        return d.values.map(e => {
                             e['name'] = d.name;
                             e['key'] = 'dissolved_oxygen';
                             e['site'] = window.site2Id;
@@ -764,7 +754,7 @@ var createGraph = function createGraph() {
                         });
                     })
                     .enter().append('path')
-                    .attr('transform', function (d) {
+                    .attr('transform', d => {
                         return 'translate(' + x(new Date(d.date)) + ', ' +
                                 y(d.value) + ')';
                     })
@@ -789,24 +779,24 @@ var createGraph = function createGraph() {
      **************************************************************************/
 
     {
-        var containerName1 = '#graph-site1-ph';
-        var container1 = outerContainer.find(containerName1);
-        var width = defineWidth(container1);
-        var height = defineHeight(container1);
+        const containerName1 = '#graph-site1-ph';
+        const container1 = outerContainer.find(containerName1);
+        const width = defineWidth(container1);
+        const height = defineHeight(container1);
 
-        var containerName2 = '#graph-site2-ph';
-        var container2 = outerContainer.find(containerName2);
+        const containerName2 = '#graph-site2-ph';
+        const container2 = outerContainer.find(containerName2);
 
-        var x = d3.scaleTime()
+        const x = d3.scaleTime()
             .range([0, width])
             .domain(getXDomain(['pH']));
-        var y = d3.scaleLinear()
+        const y = d3.scaleLinear()
             .domain([0, 14])
             .range([height, 0]);
 
-        var g1 = createGraphTemplate(containerName1, width, height, x, y);
+        const g1 = createGraphTemplate(containerName1, width, height, x, y);
 
-        var g2 = createGraphTemplate(containerName2, width, height, x, y);
+        const g2 = createGraphTemplate(containerName2, width, height, x, y);
 
         if (filtered1.pH.length || (window.hasSiteTwo && filtered2.pH.length)) {
             $('#ph-control').prop({
@@ -817,7 +807,7 @@ var createGraph = function createGraph() {
             container2.css({display: window.hasSiteTwo ? 'block' : 'none'});
 
             if (filtered1.pH.length) {
-                var type1 = g1.selectAll('.ph')
+                const type1 = g1.selectAll('.ph')
                     .data([{
                         name: 'pH',
                         values: filtered1.pH,
@@ -827,8 +817,8 @@ var createGraph = function createGraph() {
                     .attr('class', 'ph');
 
                 type1.selectAll('dot')
-                    .data(function (d) {
-                        return d.values.map(function (e) {
+                    .data(d => {
+                        return d.values.map(e => {
                             e['name'] = d.name;
                             e['key'] = 'pH';
                             e['site'] = siteId;
@@ -836,7 +826,7 @@ var createGraph = function createGraph() {
                         });
                     })
                     .enter().append('path')
-                    .attr('transform', function (d) {
+                    .attr('transform', d => {
                         return 'translate(' + x(new Date(d.date)) + ', ' +
                                 y(d.value) + ')';
                     })
@@ -848,7 +838,7 @@ var createGraph = function createGraph() {
             }
 
             if (window.hasSiteTwo && filtered2.pH.length) {
-                var type2 = g2.selectAll('.ph')
+                const type2 = g2.selectAll('.ph')
                     .data([{
                         name: 'pH',
                         values: filtered2.pH
@@ -858,8 +848,8 @@ var createGraph = function createGraph() {
                     .attr('class', 'ph');
 
                 type2.selectAll('dot')
-                    .data(function (d) {
-                        return d.values.map(function (e) {
+                    .data(d => {
+                        return d.values.map(e => {
                             e['name'] = d.name;
                             e['key'] = 'pH';
                             e['site'] = window.site2Id;
@@ -867,7 +857,7 @@ var createGraph = function createGraph() {
                         });
                     })
                     .enter().append('path')
-                    .attr('transform', function (d) {
+                    .attr('transform', d => {
                         return 'translate(' + x(new Date(d.date)) + ', ' +
                                 y(d.value) + ')';
                     })
@@ -893,24 +883,24 @@ var createGraph = function createGraph() {
      **************************************************************************/
 
     {
-        var containerName1 = '#graph-site1-turbidity';
-        var container1 = outerContainer.find(containerName1);
-        var width = defineWidth(container1);
-        var height = defineHeight(container1);
+        const containerName1 = '#graph-site1-turbidity';
+        const container1 = outerContainer.find(containerName1);
+        const width = defineWidth(container1);
+        const height = defineHeight(container1);
 
-        var containerName2 = '#graph-site2-turbidity';
-        var container2 = outerContainer.find(containerName2);
+        const containerName2 = '#graph-site2-turbidity';
+        const container2 = outerContainer.find(containerName2);
 
-        var x = d3.scaleTime()
+        const x = d3.scaleTime()
             .range([0, width])
             .domain(getXDomain(['turbidity']));
-        var y = d3.scaleLinear()
+        const y = d3.scaleLinear()
             .domain(getYDomain(['turbidity']))
             .range([height, 0]);
 
-        var g1 = createGraphTemplate(containerName1, width, height, x, y);
+        const g1 = createGraphTemplate(containerName1, width, height, x, y);
 
-        var g2 = createGraphTemplate(containerName2, width, height, x, y);
+        const g2 = createGraphTemplate(containerName2, width, height, x, y);
 
         if (filtered1.turbidity.length ||
         (window.hasSiteTwo && filtered2.turbidity.length)) {
@@ -922,7 +912,7 @@ var createGraph = function createGraph() {
             container2.css({display: window.hasSiteTwo ? 'block' : 'none'});
 
             if (filtered1.turbidity.length) {
-                var type1 = g1.selectAll('.turb')
+                const type1 = g1.selectAll('.turb')
                     .data([{
                         name: 'Turbidity',
                         values: filtered1.turbidity,
@@ -932,8 +922,8 @@ var createGraph = function createGraph() {
                     .attr('class', 'turb');
 
                 type1.selectAll('dot')
-                    .data(function (d) {
-                        return d.values.map(function (e) {
+                    .data(d => {
+                        return d.values.map(e => {
                             e['name'] = d.name;
                             e['key'] = 'turbidity';
                             e['site'] = siteId;
@@ -941,7 +931,7 @@ var createGraph = function createGraph() {
                         });
                     })
                     .enter().append('path')
-                    .attr('transform', function (d) {
+                    .attr('transform', d => {
                         return 'translate(' + x(new Date(d.date)) + ', ' +
                                 y(d.value) + ')';
                     })
@@ -954,7 +944,7 @@ var createGraph = function createGraph() {
 
             if (window.hasSiteTwo && filtered2.turbidity.length) {
 
-                var type2 = g2.selectAll('.turb')
+                const type2 = g2.selectAll('.turb')
                     .data([{
                         name: 'Turbidity',
                         values: filtered2.turbidity,
@@ -964,8 +954,8 @@ var createGraph = function createGraph() {
                     .attr('class', 'turb');
 
                 type2.selectAll('dot')
-                    .data(function (d) {
-                        return d.values.map(function (e) {
+                    .data(d => {
+                        return d.values.map(e => {
                             e['name'] = d.name;
                             e['key'] = 'turbidity';
                             e['site'] = window.site2Id;
@@ -973,7 +963,7 @@ var createGraph = function createGraph() {
                         });
                     })
                     .enter().append('path')
-                    .attr('transform', function (d) {
+                    .attr('transform', d => {
                         return 'translate(' + x(new Date(d.date)) + ', ' +
                                 y(d.value) + ')';
                     })
@@ -998,24 +988,24 @@ var createGraph = function createGraph() {
      **************************************************************************/
 
     {
-        var containerName1 = '#graph-site1-salinity';
-        var container1 = outerContainer.find(containerName1);
-        var width = defineWidth(container1);
-        var height = defineHeight(container1);
+        const containerName1 = '#graph-site1-salinity';
+        const container1 = outerContainer.find(containerName1);
+        const width = defineWidth(container1);
+        const height = defineHeight(container1);
 
-        var containerName2 = '#graph-site2-salinity';
-        var container2 = outerContainer.find(containerName2);
+        const containerName2 = '#graph-site2-salinity';
+        const container2 = outerContainer.find(containerName2);
 
-        var x = d3.scaleTime()
+        const x = d3.scaleTime()
             .range([0, width])
             .domain(getXDomain(['salinity']));
-        var y = d3.scaleLinear()
+        const y = d3.scaleLinear()
             .domain(getYDomain(['salinity']))
             .range([height, 0]);
 
-        var g1 = createGraphTemplate(containerName1, width, height, x, y);
+        const g1 = createGraphTemplate(containerName1, width, height, x, y);
 
-        var g2 = createGraphTemplate(containerName2, width, height, x, y);
+        const g2 = createGraphTemplate(containerName2, width, height, x, y);
 
         if (filtered1.salinity.length ||
         (window.hasSiteTwo && filtered2.salinity.length)) {
@@ -1027,7 +1017,7 @@ var createGraph = function createGraph() {
             container2.css({display: window.hasSiteTwo ? 'block' : 'none'});
 
             if (filtered1.salinity.length) {
-                var type1 = g1.selectAll('.sal')
+                const type1 = g1.selectAll('.sal')
                     .data([{
                         name: 'Salinity',
                         values: filtered1.salinity,
@@ -1037,8 +1027,8 @@ var createGraph = function createGraph() {
                     .attr('class', 'sal');
 
                 type1.selectAll('dot')
-                    .data(function (d) {
-                        return d.values.map(function (e) {
+                    .data(d => {
+                        return d.values.map(e => {
                             e['name'] = d.name;
                             e['key'] = 'salinity';
                             e['site'] = siteId;
@@ -1046,7 +1036,7 @@ var createGraph = function createGraph() {
                         });
                     })
                     .enter().append('path')
-                    .attr('transform', function (d) {
+                    .attr('transform', d => {
                         return 'translate(' + x(new Date(d.date)) + ', ' +
                                 y(d.value) + ')';
                     })
@@ -1058,7 +1048,7 @@ var createGraph = function createGraph() {
             }
 
             if (window.hasSiteTwo && filtered2.salinity.length) {
-                var type2 = g2.selectAll('.sal')
+                const type2 = g2.selectAll('.sal')
                     .data([{
                         name: 'Salinity',
                         values: filtered2.salinity,
@@ -1068,8 +1058,8 @@ var createGraph = function createGraph() {
                     .attr('class', 'sal');
 
                 type2.selectAll('dot')
-                    .data(function (d) {
-                        return d.values.map(function (e) {
+                    .data(d => {
+                        return d.values.map(e => {
                             e['name'] = d.name;
                             e['key'] = 'salinity';
                             e['site'] = window.site2Id;
@@ -1077,7 +1067,7 @@ var createGraph = function createGraph() {
                         });
                     })
                     .enter().append('path')
-                    .attr('transform', function (d) {
+                    .attr('transform', d => {
                         return 'translate(' + x(new Date(d.date)) + ', ' +
                                 y(d.value) + ')';
                     })
@@ -1102,24 +1092,24 @@ var createGraph = function createGraph() {
      **************************************************************************/
 
     {
-        var containerName1 = '#graph-site1-conductivity';
-        var container1 = outerContainer.find(containerName1);
-        var width = defineWidth(container1);
-        var height = defineHeight(container1);
+        const containerName1 = '#graph-site1-conductivity';
+        const container1 = outerContainer.find(containerName1);
+        const width = defineWidth(container1);
+        const height = defineHeight(container1);
 
-        var containerName2 = '#graph-site2-conductivity';
-        var container2 = outerContainer.find(containerName2);
+        const containerName2 = '#graph-site2-conductivity';
+        const container2 = outerContainer.find(containerName2);
 
-        var x = d3.scaleTime()
+        const x = d3.scaleTime()
             .range([0, width])
             .domain(getXDomain(['conductivity']));
-        var y = d3.scaleLinear()
+        const y = d3.scaleLinear()
             .domain(getYDomain(['conductivity']))
             .range([height, 0]);
 
-        var g1 = createGraphTemplate(containerName1, width, height, x, y);
+        const g1 = createGraphTemplate(containerName1, width, height, x, y);
 
-        var g2 = createGraphTemplate(containerName2, width, height, x, y);
+        const g2 = createGraphTemplate(containerName2, width, height, x, y);
 
         if (filtered1.conductivity.length ||
         (window.hasSiteTwo && filtered2.conductivity.length)) {
@@ -1131,7 +1121,7 @@ var createGraph = function createGraph() {
             container2.css({display: window.hasSiteTwo ? 'block' : 'none'});
 
             if (filtered1.conductivity.length) {
-                var type1 = g1.selectAll('.cond')
+                const type1 = g1.selectAll('.cond')
                     .data([{
                         name: 'Conductivity',
                         values: filtered1.conductivity,
@@ -1141,8 +1131,8 @@ var createGraph = function createGraph() {
                     .attr('class', 'cond');
 
                 type1.selectAll('dot')
-                    .data(function (d) {
-                        return d.values.map(function (e) {
+                    .data(d => {
+                        return d.values.map(e => {
                             e['name'] = d.name;
                             e['key'] = 'conducitivity';
                             e['site'] = siteId;
@@ -1150,7 +1140,7 @@ var createGraph = function createGraph() {
                         });
                     })
                     .enter().append('path')
-                    .attr('transform', function (d) {
+                    .attr('transform', d => {
                         return 'translate(' + x(new Date(d.date)) + ', ' +
                                 y(d.value) + ')';
                     })
@@ -1162,7 +1152,7 @@ var createGraph = function createGraph() {
             }
 
             if (window.hasSiteTwo && filtered2.conductivity.length) {
-                var type2 = g2.selectAll('.cond')
+                const type2 = g2.selectAll('.cond')
                     .data([{
                         name: 'Conductivity',
                         values: filtered2.conductivity,
@@ -1172,8 +1162,8 @@ var createGraph = function createGraph() {
                     .attr('class', 'cond');
 
                 type2.selectAll('dot')
-                    .data(function (d) {
-                        return d.values.map(function (e) {
+                    .data(d => {
+                        return d.values.map(e => {
                             e['name'] = d.name;
                             e['key'] = 'conductivity';
                             e['site'] = window.site2Id;
@@ -1181,7 +1171,7 @@ var createGraph = function createGraph() {
                         });
                     })
                     .enter().append('path')
-                    .attr('transform', function (d) {
+                    .attr('transform', d => {
                         return 'translate(' + x(new Date(d.date)) + ', ' +
                                 y(d.value) + ')';
                     })
@@ -1206,28 +1196,28 @@ var createGraph = function createGraph() {
      **************************************************************************/
 
     {
-        var containerName1 = '#graph-site1-dissolved';
-        var container1 = outerContainer.find(containerName1);
-        var width = defineWidth(container1);
-        var height = defineHeight(container1);
+        const containerName1 = '#graph-site1-dissolved';
+        const container1 = outerContainer.find(containerName1);
+        const width = defineWidth(container1);
+        const height = defineHeight(container1);
 
-        var containerName2 = '#graph-site2-dissolved';
-        var container2 = outerContainer.find(containerName2);
+        const containerName2 = '#graph-site2-dissolved';
+        const container2 = outerContainer.find(containerName2);
 
-        var x = d3.scaleTime()
+        const x = d3.scaleTime()
             .range([0, width])
             .domain(getXDomain(['total_solids', 'ammonia', 'nitrite', 'nitrate', 'phosphates']));
-        var y = d3.scaleLinear()
+        const y = d3.scaleLinear()
             .domain(getYDomain(['total_solids', 'ammonia', 'nitrite', 'nitrate', 'phosphates']))
             .range([height, 0]);
 
-        var z = d3.scaleOrdinal()
+        const z = d3.scaleOrdinal()
             .domain(['Total Solids', 'Ammonia', 'Nitrite', 'Nitrate', 'Phosphates'])
             .range(['#000000', '#bf0000', '#00bf00', '#0000bf', '#bf00bf']);
 
-        var g1 = createGraphTemplate(containerName1, width, height, x, y);
+        const g1 = createGraphTemplate(containerName1, width, height, x, y);
 
-        var g2 = createGraphTemplate(containerName2, width, height, x, y);
+        const g2 = createGraphTemplate(containerName2, width, height, x, y);
 
         if (filtered1.total_solids.length ||
         (window.hasSiteTwo && filtered2.total_solids.length)) {
@@ -1239,7 +1229,7 @@ var createGraph = function createGraph() {
             container2.css({display: window.hasSiteTwo ? 'block' : 'none'});
 
             if (filtered1.total_solids.length) {
-                var type = g1.selectAll('.solids')
+                const type = g1.selectAll('.solids')
                     .data([
                         {
                             name: "Total Solids",
@@ -1272,8 +1262,8 @@ var createGraph = function createGraph() {
                     .attr('class', 'solids');
 
                 type.selectAll('dot')
-                    .data(function (d) {
-                        return d.values.map(function (e) {
+                    .data(d => {
+                        return d.values.map(e => {
                             e['name'] = d.name;
                             e['key'] = d.key;
                             e['site'] = siteId;
@@ -1281,12 +1271,12 @@ var createGraph = function createGraph() {
                         });
                     })
                     .enter().append('path')
-                    .attr('transform', function (d) {
+                    .attr('transform', d => {
                         return 'translate(' + x(new Date(d.date)) + ', ' +
                                 y(d.value) + ')';
                     })
                     .attr('d', d3.symbol()
-                        .type(function (d) {
+                        .type(d => {
                             switch(d.name) {
                                 case "Total Solids":
                                     return d3.symbolCircle;
@@ -1301,16 +1291,16 @@ var createGraph = function createGraph() {
                             }
                         })
                     )
-                    .style('stroke', function (d) {
+                    .style('stroke', d => {
                         return z(d.name)
                     })
-                    .style('fill', function (d) {
+                    .style('fill', d => {
                         return z(d.name)
                     })
                     .style('cursor', 'pointer')
                     .on('click', showMouseover);
 
-                var legend = g1.selectAll('.legend')
+                const legend = g1.selectAll('.legend')
                     .data([
                         {
                             name: "Total Solids",
@@ -1336,7 +1326,7 @@ var createGraph = function createGraph() {
                     .enter()
                     .append('g')
                     .attr('class', 'legend')
-                    .attr('transform', function (d, i) {
+                    .attr('transform', (d, i) => {
                         return 'translate(' + (width + 10) + ', ' + i * 20 + ')';
                     })
                     .style('border', '1px solid black')
@@ -1345,7 +1335,7 @@ var createGraph = function createGraph() {
                 legend.append('path')
                     .attr('transform', 'translate(30,0)')
                     .attr('d',  d3.symbol()
-                        .type(function (d) {
+                        .type(d => {
                             switch(d.name) {
                                 case "Total Solids":
                                     return d3.symbolCircle;
@@ -1360,7 +1350,7 @@ var createGraph = function createGraph() {
                             }
                         })
                     )
-                    .attr('fill', function (d) {
+                    .attr('fill', d => {
                         return z(d.name);
                     });
 
@@ -1368,16 +1358,16 @@ var createGraph = function createGraph() {
                     .attr('x', 40)
                     .attr('dy', '.35em')
                     .attr('text-anchor', 'begin')
-                    .attr('fill', function (d) {
+                    .attr('fill', d => {
                         return z(d.name);
                     })
-                    .text(function (d) {
+                    .text(d => {
                         return d.name;
                     });
             }
 
             if (window.hasSiteTwo && filtered2.total_solids.length) {
-                var type = g2.selectAll('.solids')
+                const type = g2.selectAll('.solids')
                     .data([
                         {
                             name: "Total Solids",
@@ -1410,8 +1400,8 @@ var createGraph = function createGraph() {
                     .attr('class', 'solids');
 
                 type.selectAll('dot')
-                    .data(function (d) {
-                        return d.values.map(function (e) {
+                    .data(d => {
+                        return d.values.map(e => {
                             e['name'] = d.name;
                             e['key'] = d.key;
                             e['site'] = window.site2Id;
@@ -1420,22 +1410,22 @@ var createGraph = function createGraph() {
                     })
                     .enter().append('circle')
                     .attr('r', 3.5)
-                    .attr('cx', function (d) {
+                    .attr('cx', d => {
                         return x(new Date(d.date))
                     })
-                    .attr('cy', function (d) {
+                    .attr('cy', d => {
                         return y(d.value)
                     })
-                    .style('stroke', function (d) {
+                    .style('stroke', d => {
                         return z(d.name)
                     })
-                    .style('fill', function (d) {
+                    .style('fill', d => {
                         return z(d.name)
                     })
                     .style('cursor', 'pointer')
                     .on('click', showMouseover);
 
-                var legend = g2.selectAll('.legend')
+                const legend = g2.selectAll('.legend')
                     .data([
                         {
                             name: "Total Solids",
@@ -1461,7 +1451,7 @@ var createGraph = function createGraph() {
                     .enter()
                     .append('g')
                     .attr('class', 'legend')
-                    .attr('transform', function (d, i) {
+                    .attr('transform', (d, i) => {
                         return 'translate(' + (width + 10) + ', ' + i * 20 + ')';
                     })
                     .style('border', '1px solid black')
@@ -1471,7 +1461,7 @@ var createGraph = function createGraph() {
                     .attr('x', 2)
                     .attr('width', 18)
                     .attr('height', 2)
-                    .attr('fill', function (d) {
+                    .attr('fill', d => {
                         return z(d.name);
                     });
 
@@ -1479,10 +1469,10 @@ var createGraph = function createGraph() {
                     .attr('x', 25)
                     .attr('dy', '.35em')
                     .attr('text-anchor', 'begin')
-                    .attr('fill', function (d) {
+                    .attr('fill', d => {
                         return z(d.name);
                     })
-                    .text(function (d) {
+                    .text(d => {
                         return d.name;
                     });
             }
@@ -1501,24 +1491,24 @@ var createGraph = function createGraph() {
      **************************************************************************/
 
     {
-        var containerName1 = '#graph-site1-bod';
-        var container1 = outerContainer.find(containerName1);
-        var width = defineWidth(container1);
-        var height = defineHeight(container1);
+        const containerName1 = '#graph-site1-bod';
+        const container1 = outerContainer.find(containerName1);
+        const width = defineWidth(container1);
+        const height = defineHeight(container1);
 
-        var containerName2 = '#graph-site2-bod';
-        var container2 = outerContainer.find(containerName2);
+        const containerName2 = '#graph-site2-bod';
+        const container2 = outerContainer.find(containerName2);
 
-        var x = d3.scaleTime()
+        const x = d3.scaleTime()
             .range([0, width])
             .domain(getXDomain(['bod']));
-        var y = d3.scaleLinear()
+        const y = d3.scaleLinear()
             .domain(getYDomain(['bod']))
             .range([height, 0]);
 
-        var g1 = createGraphTemplate(containerName1, width, height, x, y);
+        const g1 = createGraphTemplate(containerName1, width, height, x, y);
 
-        var g2 = createGraphTemplate(containerName2, width, height, x, y);
+        const g2 = createGraphTemplate(containerName2, width, height, x, y);
 
         if (filtered1.bod.length ||
         (window.hasSiteTwo && filtered2.bod.length)) {
@@ -1530,7 +1520,7 @@ var createGraph = function createGraph() {
             container2.css({display: window.hasSiteTwo ? 'block' : 'none'});
 
             if (filtered1.bod.length) {
-                var type1 = g1.selectAll('.bod')
+                const type1 = g1.selectAll('.bod')
                     .data([{
                         name: 'BOD',
                         values: filtered1.bod,
@@ -1540,8 +1530,8 @@ var createGraph = function createGraph() {
                     .attr('class', 'bod');
 
                 type1.selectAll('dot')
-                    .data(function (d) {
-                        return d.values.map(function (e) {
+                    .data(d => {
+                        return d.values.map(e => {
                             e['name'] = d.name;
                             e['key'] = 'bod';
                             e['site'] = siteId;
@@ -1549,7 +1539,7 @@ var createGraph = function createGraph() {
                         });
                     })
                     .enter().append('path')
-                    .attr('transform', function (d) {
+                    .attr('transform', d => {
                         return 'translate(' + x(new Date(d.date)) + ', ' +
                                 y(d.value) + ')';
                     })
@@ -1561,7 +1551,7 @@ var createGraph = function createGraph() {
             }
 
             if (window.hasSiteTwo && filtered2.bod.length) {
-                var type2 = g2.selectAll('.bod')
+                const type2 = g2.selectAll('.bod')
                     .data([{
                         name: 'BOD',
                         values: filtered2.bod,
@@ -1571,8 +1561,8 @@ var createGraph = function createGraph() {
                     .attr('class', 'bod');
 
                 type2.selectAll('dot')
-                    .data(function (d) {
-                        return d.values.map(function (e) {
+                    .data(d => {
+                        return d.values.map(e => {
                             e['name'] = d.name;
                             e['key'] = 'bod';
                             e['site'] = window.site2Id;
@@ -1580,7 +1570,7 @@ var createGraph = function createGraph() {
                         });
                     })
                     .enter().append('path')
-                    .attr('transform', function (d) {
+                    .attr('transform', d => {
                         return 'translate(' + x(new Date(d.date)) + ', ' +
                                 y(d.value) + ')';
                     })
@@ -1605,24 +1595,24 @@ var createGraph = function createGraph() {
      **************************************************************************/
 
     {
-        var containerName1 = '#graph-site1-coliform';
-        var container1 = outerContainer.find(containerName1);
-        var width = defineWidth(container1);
-        var height = defineHeight(container1);
+        const containerName1 = '#graph-site1-coliform';
+        const container1 = outerContainer.find(containerName1);
+        const width = defineWidth(container1);
+        const height = defineHeight(container1);
 
-        var containerName2 = '#graph-site2-coliform';
-        var container2 = outerContainer.find(containerName2);
+        const containerName2 = '#graph-site2-coliform';
+        const container2 = outerContainer.find(containerName2);
 
-        var x = d3.scaleTime()
+        const x = d3.scaleTime()
             .range([0, width])
             .domain(getXDomain(['fecal_coliform']));
-        var y = d3.scaleLinear()
+        const y = d3.scaleLinear()
             .domain(getYDomain(['fecal_coliform']))
             .range([height, 0]);
 
-        var g1 = createGraphTemplate(containerName1, width, height, x, y);
+        const g1 = createGraphTemplate(containerName1, width, height, x, y);
 
-        var g2 = createGraphTemplate(containerName2, width, height, x, y);
+        const g2 = createGraphTemplate(containerName2, width, height, x, y);
 
         if (filtered1.fecal_coliform.length ||
         (window.hasSiteTwo && filtered2.fecal_coliform.length)) {
@@ -1634,7 +1624,7 @@ var createGraph = function createGraph() {
             container2.css({display: window.hasSiteTwo ? 'block' : 'none'});
 
             if (filtered1.fecal_coliform.length) {
-                var type1 = g1.selectAll('.fecal')
+                const type1 = g1.selectAll('.fecal')
                     .data([{
                         name: 'Fecal Coliform',
                         values: filtered1.fecal_coliform,
@@ -1644,8 +1634,8 @@ var createGraph = function createGraph() {
                     .attr('class', 'fecal');
 
                 type1.selectAll('dot')
-                    .data(function (d) {
-                        return d.values.map(function (e) {
+                    .data(d => {
+                        return d.values.map(e => {
                             e['name'] = d.name;
                             e['key'] = 'fecal_coliform';
                             e['site'] = siteId;
@@ -1653,7 +1643,7 @@ var createGraph = function createGraph() {
                         });
                     })
                     .enter().append('path')
-                    .attr('transform', function (d) {
+                    .attr('transform', d => {
                         return 'translate(' + x(new Date(d.date)) + ', ' +
                                 y(d.value) + ')';
                     })
@@ -1665,7 +1655,7 @@ var createGraph = function createGraph() {
             }
 
             if (window.hasSiteTwo && filtered2.fecal_coliform.length) {
-                var type2 = g2.selectAll('.fecal')
+                const type2 = g2.selectAll('.fecal')
                     .data([{
                         name: 'Fecal Coliform',
                         values: filtered2.fecal_coliform,
@@ -1675,8 +1665,8 @@ var createGraph = function createGraph() {
                     .attr('class', 'fecal');
 
                 type2.selectAll('dot')
-                    .data(function (d) {
-                        return d.values.map(function (e) {
+                    .data(d => {
+                        return d.values.map(e => {
                             e['name'] = d.name;
                             e['key'] = 'fecal_coliform';
                             e['site'] = window.site2Id;
@@ -1684,7 +1674,7 @@ var createGraph = function createGraph() {
                         });
                     })
                     .enter().append('path')
-                    .attr('transform', function (d) {
+                    .attr('transform', d => {
                         return 'translate(' + x(new Date(d.date)) + ', ' +
                                 y(d.value) + ')';
                     })
@@ -1713,7 +1703,7 @@ var createGraph = function createGraph() {
  *******************************************************************************
  ******************************************************************************/
 
-$(function () {
+$(() => {
     $('input[type=date]').val('');
     $('#date-start').change(changeRangeStart);
     $('#date-end').change(changeRangeEnd);
@@ -1723,12 +1713,12 @@ $(function () {
     createGraph();
 });
 
-$(window).resize(function () {
+$(window).resize(() => {
     createGraph();
 });
 
-loadSite2 = function loadSite2(site_slug) {
-    $.getJSON('/sites/'+site_slug+'/water/data/', function(data) {
+const loadSite2 = function loadSite2(site_slug) {
+    $.getJSON(`/sites/${site_slug}/water/data/`, function(data) {
         if (!data.data || data.data.length === 0) {
             window.hasSiteTwo = false;
             window.data.site2 = null;
@@ -1744,5 +1734,5 @@ loadSite2 = function loadSite2(site_slug) {
             $('#compare-error').hide();
         }
         createGraph();
-    })
-}
+    });
+};
