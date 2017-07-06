@@ -5,13 +5,13 @@
  *
  *******************************************************************************
  ******************************************************************************/
-var date_min = -9007199254740991
-var date_max = 9007199254740991
-var date_range = [date_min, date_max];
+var num_min = -9007199254740991
+var num_max = 9007199254740991
+var date_range = [num_min, num_max];
 
 var changeRangeStart = function changeRangeStart() {
     if (!$(this).val()) { // If the field is empty, clear the range
-        date_range[0] = date_min;
+        date_range[0] = num_min;
     } else {
         var date = Date.parse($(this).val());
         if (!date || Number.isNaN(date)) {
@@ -26,7 +26,7 @@ var changeRangeStart = function changeRangeStart() {
 
 var changeRangeEnd = function changeRangeEnd() {
     if (!$(this).val()) { // If the field is empty, clear the range
-        date_range[1] = date_max;
+        date_range[1] = num_max;
     } else {
         var date = Date.parse($(this).val());
         if (!date || Number.isNaN(date)) {
@@ -272,7 +272,7 @@ var filterOutliers = function filterOutliers(entries) {
             date: x.date,
             value: x.value / x.count,
             count: x.count,
-        }
+        };
     });
 };
 
@@ -319,14 +319,14 @@ var isGoodNum = function isGoodNum(n) {
 
 // If a number is passed, return it.
 // If null, undefined, or NaN are passed, return a boundary value.
-// If `min` is truthy, return date_min, else date_max
+// If `min` is truthy, return num_min, else num_max
 var valNum = function valNum(n, min) {
-    return isGoodNum(n) ? n : (min ? date_min : date_max);
+    return isGoodNum(n) ? n : (min ? num_min : num_max);
 };
 
 var getXDomain = function getX(keys) {
     var min = 0;
-    if (date_range[0] !== date_min) {
+    if (date_range[0] !== num_min) {
         min = new Date(date_range[0]);
     } else {
         min = new Date(keys.map(function (key) {
@@ -336,15 +336,15 @@ var getXDomain = function getX(keys) {
                 }), false),
                 window.hasSiteTwo ? valNum(d3.min(filtered2[key], function (d) {
                     return d.date.getTime();
-                }), false)  : date_max
+                }), false)  : num_max
             );
         }).reduce(function (prev, curr) {
             return Math.min(prev, curr);
-        }, date_max));
+        }, num_max));
     }
 
     var max = 0;
-    if (date_range[1] !== date_max) {
+    if (date_range[1] !== num_max) {
         max = new Date(date_range[1]);
     } else {
         max = new Date(keys.map(function (key) {
@@ -354,11 +354,11 @@ var getXDomain = function getX(keys) {
                 }), true),
                 window.hasSiteTwo ? valNum(d3.max(filtered2[key], function (d) {
                     return d.date.getTime();
-                }), true) : date_min
+                }), true) : num_min
             );
         }).reduce(function (prev, curr) {
             return Math.max(prev, curr);
-        }, date_min));
+        }, num_min));
     }
 
     return [min, max];
@@ -371,11 +371,11 @@ var getYDomain = function getY(keys) {
         }), false);
         var min2 = window.hasSiteTwo ? valNum(d3.min(filtered2[key], function (d) {
             return valNum(d.value, false);
-        }), false) : date_max;
+        }), false) : num_max;
         return Math.min(min1, min2);
     }).reduce(function (prev, curr) {
         return Math.min(prev, curr);
-    }, date_max);
+    }, num_max);
 
     var max = keys.map(function (key) {
         var max1 = valNum(d3.max(filtered1[key], function (d) {
@@ -383,11 +383,11 @@ var getYDomain = function getY(keys) {
         }), true);
         var max2 = window.hasSiteTwo ? valNum(d3.max(filtered2[key], function (d) {
             return valNum(d.value, true);
-        }), true) : date_min;
+        }), true) : num_min;
         return Math.max(max1, max2);
     }).reduce(function (prev, curr) {
         return Math.max(prev, curr);
-    }, date_min);
+    }, num_min);
 
     return [min, max === min ? max+10 : max];
 };
@@ -527,10 +527,10 @@ var createGraph = function createGraph() {
                         })
                     )
                     .style('stroke', function (d) {
-                        return z(d.name)
+                        return z(d.name);
                     })
                     .style('fill', function (d) {
-                        return z(d.name)
+                        return z(d.name);
                     })
                     .style('cursor', 'pointer')
                     .on('click', showMouseover);
@@ -622,10 +622,10 @@ var createGraph = function createGraph() {
                         })
                     )
                     .style('stroke', function (d) {
-                        return z(d.name)
+                        return z(d.name);
                     })
                     .style('fill', function (d) {
-                        return z(d.name)
+                        return z(d.name);
                     })
                     .style('cursor', 'pointer')
                     .on('click', showMouseover);
@@ -1302,10 +1302,10 @@ var createGraph = function createGraph() {
                         })
                     )
                     .style('stroke', function (d) {
-                        return z(d.name)
+                        return z(d.name);
                     })
                     .style('fill', function (d) {
-                        return z(d.name)
+                        return z(d.name);
                     })
                     .style('cursor', 'pointer')
                     .on('click', showMouseover);
@@ -1421,16 +1421,16 @@ var createGraph = function createGraph() {
                     .enter().append('circle')
                     .attr('r', 3.5)
                     .attr('cx', function (d) {
-                        return x(new Date(d.date))
+                        return x(new Date(d.date));
                     })
                     .attr('cy', function (d) {
-                        return y(d.value)
+                        return y(d.value);
                     })
                     .style('stroke', function (d) {
-                        return z(d.name)
+                        return z(d.name);
                     })
                     .style('fill', function (d) {
-                        return z(d.name)
+                        return z(d.name);
                     })
                     .style('cursor', 'pointer')
                     .on('click', showMouseover);
