@@ -970,6 +970,19 @@ def resources_publications(request):
     )
 
 
+def resources_tutorial_videos(request):
+    """ View for publication resources """
+    data = Resource.objects.filter(res_type='tutorial_video').order_by(
+        'sort_order', 'name'
+        )
+
+    return render(
+        request, 'streamwebs/resources/resources_tutorial_videos.html', {
+            'data': data,
+        }
+    )
+
+
 @login_required
 @permission_required('streamwebs.can_upload_resources', raise_exception=True)
 def resources_upload(request):
@@ -978,25 +991,46 @@ def resources_upload(request):
 
     if request.method == 'POST':
         res_form = ResourceForm(request.POST, request.FILES)
-
         if res_form.is_valid():
-            res = res_form.save()
-            if res.res_type == 'data_sheet':
+            # if tutorial_video selected
+            if res_form.cleaned_data['res_type'] == 'tutorial_video':
+                # check that the file extension is of an acceptable type
+                m = str(request.FILES["downloadable"])
+                # if it is, publish to the video page
+                if m.lower().endswith(('.mp4', '.ogg', '.webm')):
+                    res = res_form.save()
+                    res.save()
+                    messages.success(
+                        request,
+                        'You have successfully uploaded a new tutorial video'
+                    )
+                    return redirect(reverse(
+                        'streamwebs:resources-tutorial_videos'))
+                else:
+                    # otherwise, tell the admin that the video is no good
+                    messages.error(
+                        request,
+                        'Sorry, that video type is unacceptable.'
+                        + 'Please upload a .mp4, .webm, or .ogg'
+                    )
+                    return redirect(reverse(
+                        'streamwebs:resources-tutorial_videos'))
+            elif res_form.cleaned_data['res_type'] == 'data_sheet':
+                res = res_form.save()
+                res.save()
                 messages.success(
                     request,
                     'You have successfully uploaded a new data sheet resource.'
                 )
                 return redirect(reverse('streamwebs:resources-data-sheets'))
-            elif res.res_type == 'publication':
+            elif res_form.cleaned_data['res_type'] == 'publication':
+                res = res_form.save()
+                res.save()
                 messages.success(
                     request,
                     'You have successfully uploaded a new publication.'
                 )
                 return redirect(reverse('streamwebs:resources-publications'))
-            # elif res.res_type == 'tutorial_video':
-                # process the url
-                # redirect to video page
-
     return render(
         request, 'streamwebs/resources/resources_upload.html', {
             'res_form': res_form,

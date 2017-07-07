@@ -100,5 +100,7 @@ urlpatterns = [
         name='resources-data-sheets'),
     url(r'^resources/curriculum-guides/', views.resources_publications,
         name='resources-publications'),
+    url(r'^resources/tutorial-videos/', views.resources_tutorial_videos,
+        name='resources-tutorial_videos'),
     url(r'^resources/new/', views.resources_upload, name='resources-upload')
 ]
