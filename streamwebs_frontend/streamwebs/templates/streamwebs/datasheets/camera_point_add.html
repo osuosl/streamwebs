@@ -66,9 +66,6 @@
 
 <div class="container">
     {% if user.is_authenticated %}
-        {% if added %}
-        <strong>{% trans "You have successfully added a new camera point." %}</strong>
-        {% else %}
         <h3 align="center">
           <a href="{% url 'streamwebs:site' site.site_slug %}">
               {{ site.site_name }}
@@ -162,7 +159,6 @@
               <i class="material-icons right">send</i>
             </button>
         </form>
-        {% endif %}
 
     {% else %}
     <p>{% trans "You must be logged in to submit data." %}</p>

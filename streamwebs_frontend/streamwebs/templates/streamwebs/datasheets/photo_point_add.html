@@ -6,9 +6,6 @@
 {% block content %}
   <div class="container">
     <h4>{% trans "New photo point for camera point" %}</h4>
-    {% if added %}
-    <strong>{% trans "You have successfully added a new photo point" %}</strong>
-    {% else %}
     <form id='pp_form' method='post' enctype='multipart/form-data'>
         {% csrf_token %}
         {{ pp_form.as_p }}
@@ -26,7 +23,6 @@
         {% endfor %}
         <input class="btn waves-effect waves-light teal darken-4" type='submit' name='submit' value='Submit' />
     </form>
-    {% endif %}
   </div>
 {% endblock %}
 

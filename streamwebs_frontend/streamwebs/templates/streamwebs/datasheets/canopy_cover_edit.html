@@ -54,9 +54,6 @@
     }
 </style>
 
-{% if added %}
-    <strong>{% trans "You have successfully submitted your Canopy Cover Survey." %}</strong>
-{% else %}
     <h3 align="center">
         <a href="{% url 'streamwebs:site' site.site_slug %}">
             {{ site.site_name }}
@@ -322,7 +319,6 @@
         </table> <!-- end canopy cover -->
         <input class="btn waves-effect waves-light teal darken-4" type='submit' name='submit' value='Submit'/>
     </form>
-{% endif %}
 
 {% endblock %}
 

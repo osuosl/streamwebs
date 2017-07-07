@@ -5,6 +5,12 @@
 {% block content %}
 
 <div class="container">
+  {% if messages %}
+      {% for message in messages %}
+      <strong>{{ message }}</strong>
+      {% endfor %}
+  {% endif %}
+
 <!-- CP info -->
 <div>
     <h3>{{ site.site_name }}: Camera Point {{ cp.letter }}</h3>
