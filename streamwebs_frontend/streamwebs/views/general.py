@@ -81,7 +81,7 @@ def site(request, site_slug):
     for x in wq_sheets:
         wq_data = {'id': x['id'], 'uri': 'water', 'type': 'Water Quality',
                    'date': x['date']}
-        if 'school_id' in x:
+        if 'school_id' in x and x['school_id'] != None:
             wq_data['school_id'] = x['school_id']
         else:
             wq_data['school_id'] = -1
@@ -95,7 +95,7 @@ def site(request, site_slug):
         macro_data = {'id': x['id'], 'uri': 'macro',
                       'type': 'Macroinvertebrate',
                       'date': x['date_time'].date()}
-        if 'school_id' in x:
+        if 'school_id' in x and x['school_id'] != None:
             macro_data['school_id'] = x['school_id']
         else:
             macro_data['school_id'] = -1
@@ -109,7 +109,7 @@ def site(request, site_slug):
         transect_data = {'id': x['id'], 'uri': 'transect',
                          'type': 'Riparian Transect',
                          'date': x['date_time'].date()}
-        if 'school_id' in x:
+        if 'school_id' in x and x['school_id'] != None:
             transect_data['school_id'] = x['school_id']
         else:
             transect_data['school_id'] = -1
@@ -122,7 +122,7 @@ def site(request, site_slug):
     for x in canopy_sheets:
         canopy_data = {'id': x['id'], 'uri': 'canopy', 'type': 'Canopy Cover',
                        'date': x['date_time'].date()}
-        if 'school_id' in x:
+        if 'school_id' in x and x['school_id'] != None:
             canopy_data['school_id'] = x['school_id']
         else:
             canopy_data['school_id'] = -1
@@ -135,7 +135,7 @@ def site(request, site_slug):
     for x in ppm_sheets:
         ppm_data = {'id': x['id'], 'uri': 'camera', 'type': 'Camera Point',
                     'date': x['cp_date']}
-        if 'school_id' in x:
+        if 'school_id' in x and x['school_id'] != None:
             ppm_data['school_id'] = x['school_id']
         else:
             ppm_data['school_id'] = -1
@@ -148,7 +148,7 @@ def site(request, site_slug):
     for x in soil_sheets:
         soil_data = {'id': x['id'], 'uri': 'soil', 'type': 'Soil Survey',
                      'date': x['date']}
-        if 'school_id' in x:
+        if 'school_id' in x and x['school_id'] != None:
             soil_data['school_id'] = x['school_id']
         else:
             canopy_data['school_id'] = -1
