@@ -312,6 +312,18 @@ var createGraphTemplate = function createGraphTemplate(container, width, height,
     return g1;
 };
 
+var filterTemperature = function filterTemperature(filtered) {
+    filtered.air_temperature = filtered.air_temperature.filter(function(air_temp) {
+        return air_temp.value != 0;
+    });
+    filtered.water_temperature = filtered.water_temperature.filter(function(water_temp) {
+        return water_temp.value != 0;
+    })
+
+    console.log(filtered);
+    return filtered;
+}
+
 var isGoodNum = function isGoodNum(n) {
     // NaN is not equal to itself
     return (typeof n === 'number') && n === n;
@@ -422,6 +434,8 @@ var createGraph = function createGraph() {
         filtered1[key] = filterOutliers(types1[key]);
     }
 
+    filtered1 = filterTemperature(filtered1);
+
     var formatted2 = [];
 
     if (window.hasSiteTwo) {
@@ -447,8 +461,10 @@ var createGraph = function createGraph() {
             types2[key] = formatData(formatted2, key);
             filtered2[key] = filterOutliers(types2[key]);
         }
-    }
 
+        filtered2 = filterTemperature(filtered2);
+    }
+    console.log(filtered1);
     /***************************************************************************
      * Temperature
      **************************************************************************/
@@ -504,7 +520,6 @@ var createGraph = function createGraph() {
                     .enter()
                     .append('g')
                     .attr('class', 'temp');
-
                 type1.selectAll('dot')
                     .data(function (d) {
                         return d.values.map(function (e) {
@@ -1727,7 +1742,7 @@ $(window).resize(function () {
     createGraph();
 });
 
-loadSite2 = function loadSite2(site_slug) {
+var loadSite2 = function loadSite2(site_slug) {
     $.getJSON('/sites/'+site_slug+'/water/data/', function(data) {
         if (!data.data || data.data.length === 0) {
             window.hasSiteTwo = false;

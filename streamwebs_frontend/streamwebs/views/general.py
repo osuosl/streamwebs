@@ -340,6 +340,8 @@ def water_graph_site_data(request, site_slug):
     site = Site.objects.get(site_slug=site_slug)
     wq_data = Water_Quality.objects.filter(site=site)
     data = [m.to_dict() for m in wq_data]
+    for x in data:
+        x['school'] = str(x['school'])
     return HttpResponse(json.dumps({
         'data': data,
         'site': site.to_dict()

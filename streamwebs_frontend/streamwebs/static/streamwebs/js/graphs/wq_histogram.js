@@ -59,9 +59,8 @@ var createGraph = function createGraph() {
     var y = d3.scaleLinear()
         .range([height, 0])
         .domain(d3.extent(bins, function (d) {
-             return d.length;
-         })
-        )
+            return d.length
+        }))
         .nice();
 
     var xAxis = d3.axisBottom(x);
@@ -92,42 +91,42 @@ var createGraph = function createGraph() {
         .enter().append('g')
             .attr('class', 'bar')
             .attr('transform', function (d) {
-                'translate(' + x(d.x0) + ',' + y(d.length) + ')';
+                return 'translate(' + x(d.x0) + ',' + y(d.length) + ')';
             });
 
     histogram.append('rect')
         .attr('x', 1)
         .attr('width', function (d) {
-            x(d.x1) - x(d.x0) - 1;
+            return x(d.x1) - x(d.x0) - 1;
         })
         .attr('height', function (d) {
-            height - y(d.length)
+            return height - y(d.length);
         });
 
     histogram.append('text')
         .attr('class', 'label')
         .attr('dy', '.75em')
         .attr('x', function (d) {
-            (x(d.x1) - x(d.x0))/2;
+            return (x(d.x1) - x(d.x0))/2;
         })
         .attr('y', 6)
         .attr('text-anchor', 'middle')
         .text(function (d) {
-            d.length ? d3.format(',.0f')(d.length) : '';
+            return d.length ? d3.format(',.0f')(d.length) : ''
         });
 
     histogram.append('text')
         .attr('class', 'value')
         .attr('dy', '.75em')
         .attr('x', function (d) {
-            (x(d.x1) - x(d.x0))/;
+            return (x(d.x1) - x(d.x0))/2;
         })
         .attr('y', function (d) {
-            height - y(d.length) + 6;
+            return height - y(d.length) + 6;
         })
         .attr('text-anchor', 'middle')
         .text(function (d) {
-            toFixed(Number.parseFloat(d.x0), 2);
+            return toFixed(Number.parseFloat(d.x0), 2);
         });
 };
 
