@@ -84,9 +84,8 @@ $(document).ready(function() {
   </p>
 
 
+  {{ site_form.location.errors }}
   <div id="map"> </div>
-  {{ site_form.location.errors | striptags}}
-
   <input class="btn waves-effect waves-light teal darken-4" type='submit'
   name='submit' value='{% trans 'Add new site' %}'/>
 

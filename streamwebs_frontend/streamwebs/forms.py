@@ -222,7 +222,7 @@ class SiteForm(forms.ModelForm):
             'site_name': forms.TextInput(
                 attrs={'class': 'materialize-textarea, validate'}),
             'description': forms.Textarea(
-            attrs={'class': 'materialize-textarea'})
+                attrs={'class': 'materialize-textarea'})
         }
         fields = ('site_name', 'description', 'location', 'image')
 
