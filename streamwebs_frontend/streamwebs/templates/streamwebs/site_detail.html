@@ -9,12 +9,13 @@
 
 {% block scripts %}
 <script type="application/javascript">
-    const site_name = '{{ site.site_name }}';
-    const site_slug = '{{ site.site_slug }}';
-    const site_location = {x: {{ site.location.x }}, y: {{ site.location.y }} };
+    var site_name = '{{ site.site_name }}';
+    var site_slug = '{{ site.site_slug }}';
+    var site_location = {x: {{ site.location.x }}, y: {{ site.location.y }} };
 
-    const sheet_data = {{ data|safe }};
-    const page_count = {{ pages }};
+    var sheet_data = {{ data|safe }};
+    var page_count = {{ pages }};
+    var imageWidth = '200';
 </script>
 
 <script src="https://maps.googleapis.com/maps/api/js?key={{ maps_api }}"></script>
@@ -33,9 +34,9 @@
 <div class="row">
         <div class="col s12 m6 center-align">
             {% if site.image %}
-            <img src="{{ site.image.url }}" alt="site image" />
+            <img src="{{ site.image.url }}" alt="site image" id="site_detail_image" />
             {% else %}
-            <img src="{% static 'streamwebs/images/img-default.jpg' %}" alt="site image" />
+            <img src="{% static 'streamwebs/images/img-default.jpg' %}" alt="site image" id="site_detail_image" />
             {% endif %}
         </div>
         <div class="col s12 m6 center-align">

@@ -6,8 +6,8 @@
 {% block scripts %}
 <script type="application/javascript">
     window.data = {{data|safe}};
-    const siteId = '{{ site.site_slug }}';
-    const key = '{{ type_key }}';
+    var siteId = '{{ site.site_slug }}';
+    var key = '{{ type_key }}';
 </script>
 
 <script src="{% static 'streamwebs/js/graphs/wq_histogram.js' %}" type="application/javascript"></script>

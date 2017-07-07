@@ -77,40 +77,84 @@ def site(request, site_slug):
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     wq_sheets = Water_Quality.objects.filter(site_id=site.id)
     wq_sheets = list(wq_sheets.order_by('-date').values())
-    wq_sheets = [
-        {'id': x['id'], 'uri': 'water', 'type': 'Water Quality',
-         'date': x['date']}
-        for x in wq_sheets]
+    wq_sheets_new = []
+    for x in wq_sheets:
+        wq_data = {'id': x['id'], 'uri': 'water', 'type': 'Water Quality',
+                   'date': x['date']}
+        if 'school_id' in x and x['school_id']:
+            wq_data['school_id'] = x['school_id']
+        else:
+            wq_data['school_id'] = -1
+        wq_sheets_new.append(wq_data)
+    wq_sheets = wq_sheets_new
+
     macro_sheets = Macroinvertebrates.objects.filter(site_id=site.id)
     macro_sheets = list(macro_sheets.order_by('-date_time').values())
-    macro_sheets = [
-        {'id': x['id'], 'uri': 'macro', 'type': 'Macroinvertebrate',
-         'date': x['date_time'].date()}
-        for x in macro_sheets]
+    macro_sheets_new = []
+    for x in macro_sheets:
+        macro_data = {'id': x['id'], 'uri': 'macro',
+                      'type': 'Macroinvertebrate',
+                      'date': x['date_time'].date()}
+        if 'school_id' in x and x['school_id']:
+            macro_data['school_id'] = x['school_id']
+        else:
+            macro_data['school_id'] = -1
+        macro_sheets_new.append(macro_data)
+    macro_sheets = macro_sheets_new
+
     transect_sheets = RiparianTransect.objects.filter(site_id=site.id)
     transect_sheets = list(transect_sheets.order_by('-date_time').values())
-    transect_sheets = [
-        {'id': x['id'], 'uri': 'transect', 'type': 'Riparian Transect',
-         'date': x['date_time'].date()}
-        for x in transect_sheets]
+    transect_sheets_new = []
+    for x in transect_sheets:
+        transect_data = {'id': x['id'], 'uri': 'transect',
+                         'type': 'Riparian Transect',
+                         'date': x['date_time'].date()}
+        if 'school_id' in x and x['school_id']:
+            transect_data['school_id'] = x['school_id']
+        else:
+            transect_data['school_id'] = -1
+        transect_sheets_new.append(transect_data)
+    transect_sheets = transect_sheets_new
+
     canopy_sheets = Canopy_Cover.objects.filter(site_id=site.id)
     canopy_sheets = list(canopy_sheets.order_by('-date_time').values())
-    canopy_sheets = [
-        {'id': x['id'], 'uri': 'canopy', 'type': 'Canopy Cover',
-         'date': x['date_time'].date()}
-        for x in canopy_sheets]
+    canopy_sheets_new = []
+    for x in canopy_sheets:
+        canopy_data = {'id': x['id'], 'uri': 'canopy', 'type': 'Canopy Cover',
+                       'date': x['date_time'].date()}
+        if 'school_id' in x and x['school_id']:
+            canopy_data['school_id'] = x['school_id']
+        else:
+            canopy_data['school_id'] = -1
+        canopy_sheets_new.append(canopy_data)
+    canopy_sheets = canopy_sheets_new
+
     ppm_sheets = CameraPoint.objects.filter(site_id=site.id)
     ppm_sheets = list(ppm_sheets.order_by('letter').values())
-    ppm_sheets = [
-        {'id': x['id'], 'uri': 'camera', 'type': 'Camera Point',
-         'date': x['cp_date']}
-        for x in ppm_sheets]
+    ppm_sheets_new = []
+    for x in ppm_sheets:
+        ppm_data = {'id': x['id'], 'uri': 'camera', 'type': 'Camera Point',
+                    'date': x['cp_date']}
+        if 'school_id' in x and x['school_id']:
+            ppm_data['school_id'] = x['school_id']
+        else:
+            ppm_data['school_id'] = -1
+        ppm_sheets_new.append(ppm_data)
+    ppm_sheets = ppm_sheets_new
+
     soil_sheets = Soil_Survey.objects.filter(site_id=site.id)
     soil_sheets = list(soil_sheets.order_by('-date').values())
-    soil_sheets = [
-        {'id': x['id'], 'uri': 'soil', 'type': 'Soil Survey',
-         'date': x['date']}
-        for x in soil_sheets]
+    soil_sheets_new = []
+    for x in soil_sheets:
+        soil_data = {'id': x['id'], 'uri': 'soil', 'type': 'Soil Survey',
+                     'date': x['date']}
+        if 'school_id' in x and x['school_id']:
+            soil_data['school_id'] = x['school_id']
+        else:
+            canopy_data['school_id'] = -1
+        soil_sheets_new.append(soil_data)
+    soil_sheets = soil_sheets_new
+
     data = wq_sheets + macro_sheets + transect_sheets + canopy_sheets +\
         ppm_sheets + soil_sheets
 
@@ -118,19 +162,45 @@ def site(request, site_slug):
         return y.year - x.year or y.month - x.month or y.day - x.day
 
     data.sort(cmp=sort_date, key=lambda x: x['date'])
+    data.sort(key=lambda x: -x['school_id'])
+    pages = len(data)/10 + 1
+    data_len_range = range(2, len(data)/10 + 2)
+    data = add_school_name(data)
 
     return render(request, 'streamwebs/site_detail.html', {
         'site': site,
         'maps_api': settings.GOOGLE_MAPS_API,
         'data': json.dumps(data, cls=DjangoJSONEncoder),
-        'pages': len(data)/10+1,
-        'data_len_range': range(2, len(data)/10+2),
+        'pages': pages,
+        'data_len_range': data_len_range,
         'has_wq': len(wq_sheets) > 0,
         'has_macros': len(macro_sheets) > 0,
         'has_transect': len(transect_sheets) > 0,
         'has_cc': len(canopy_sheets) > 0,
         'has_soil': len(soil_sheets) > 0
     })
+
+
+def add_school_name(data):
+    if len(data) == 0:
+        return
+
+    schools = School.objects.filter(active=True)
+    data_new = []
+    curr_school_id = 0
+    for x in data:
+        if data.index(x) == 0 or x['school_id'] != curr_school_id:
+            school = {'type': 'school', 'name': 'No School Associated'}
+
+            if x['school_id'] != -1:
+                school = schools.get(id=x['school_id'])
+                school = {'type': 'school', 'name': school.name}
+
+            data_new.append(school)
+            curr_school_id = x['school_id']
+
+        data_new.append(x)
+    return data_new
 
 
 @login_required
@@ -256,6 +326,8 @@ def graph_water(request, site_slug):
     wq_data = Water_Quality.objects.filter(site=site)
     data = [m.to_dict() for m in wq_data]
     site_list = Site.objects.filter(active=True)
+    for x in data:
+        x['school'] = str(x['school'])
     return render(request, 'streamwebs/graphs/water_quality.html', {
         'data': json.dumps(data),
         'site': site,
@@ -268,6 +340,8 @@ def water_graph_site_data(request, site_slug):
     site = Site.objects.get(site_slug=site_slug)
     wq_data = Water_Quality.objects.filter(site=site)
     data = [m.to_dict() for m in wq_data]
+    for x in data:
+        x['school'] = str(x['school'])
     return HttpResponse(json.dumps({
         'data': data,
         'site': site.to_dict()
@@ -285,6 +359,8 @@ def water_histogram(request, site_slug, data_type, date):
         data_name = 'BOD'
     else:
         data_name = data_type.replace('_', ' ').title()
+    for x in data:
+        x['school'] = str(x['school'])
     return render(request, 'streamwebs/graphs/wq_histogram.html', {
         'site': site.to_dict(),
         'data': json.dumps(data),

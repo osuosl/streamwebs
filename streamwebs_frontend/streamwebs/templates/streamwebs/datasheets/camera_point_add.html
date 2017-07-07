@@ -8,13 +8,13 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 <script>
     // initialize curr_marker
-    let curr_marker = null;
-    let marker = null;
+    var curr_marker = null;
+    var marker = null;
 
     // onload
     $(document).ready(function() {
-        const latlng = new google.maps.LatLng("{{ site.to_dict.location.y }}", "{{ site.to_dict.location.x }}");
-        const mapOptions = {
+        var latlng = new google.maps.LatLng("{{ site.to_dict.location.y }}", "{{ site.to_dict.location.x }}");
+        var mapOptions = {
             zoom: 14,
             center: latlng,
             mapTypeControl: false,
@@ -34,7 +34,7 @@
         });
         // responsive function
         google.maps.event.addDomListener(window, "resize", function() {
-            const center = map.getCenter();
+            var center = map.getCenter();
             google.maps.event.trigger(map, "resize");
             map.setCenter(center);
         });
@@ -43,7 +43,7 @@
     function placeMarker(latlng, map){
         // set prev marker to current marker
         curr_marker = marker;
-        // delete old marker if exists
+        // devare old marker if exists
         if (curr_marker) {
             curr_marker.setMap(null);
         }

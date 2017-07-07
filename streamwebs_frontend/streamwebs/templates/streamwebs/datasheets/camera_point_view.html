@@ -68,12 +68,12 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 <script>
     // initialize marker
-    let marker = null;
+    var marker = null;
 
     // onload
     $(document).ready(function() {
-        const latlng = new google.maps.LatLng("{{ site.to_dict.location.y }}", "{{ site.to_dict.location.x }}");
-        const mapOptions = {
+        var latlng = new google.maps.LatLng("{{ site.to_dict.location.y }}", "{{ site.to_dict.location.x }}");
+        var mapOptions = {
             zoom: 14,
             center: latlng,
             mapTypeControl: false,
