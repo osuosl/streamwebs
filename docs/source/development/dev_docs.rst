@@ -9,7 +9,7 @@ StreamWebs Github repository `here <https://github.com/osuosl/streamwebs>`_.
 Testing
 -------
 The tests directory is located in streamwebs_frontend/streamwebs/ and contains
-subdirectories (such as " models" and "views"), each of which contains files
+subdirectories (such as "models" and "views"), each of which contains files
 that test individual models, views, etc. To run tests, you must be in the
 same directory in which manage.py is located, i.e. /streamwebs_frontend/:
 
