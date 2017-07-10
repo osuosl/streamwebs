@@ -8,8 +8,8 @@ var path = "m 0,0 c -7.08163,-14.59707 -5.50487,-20.97294 5.18667,-20.97294 " +
 var initialize = function initialize() {
     map = new google.maps.Map(document.getElementById('map'), {
         zoom: 10,
-        maxZoom: 10,
-        minZoom: 10,
+        maxZoom: 20,
+        minZoom: 1,
         center: new google.maps.LatLng(site_location.y, site_location.x),
         mapTypeId: google.maps.MapTypeId.ROADMAP,
         disableDefaultUI: false,
