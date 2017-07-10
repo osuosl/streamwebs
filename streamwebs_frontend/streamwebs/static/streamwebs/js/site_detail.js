@@ -48,7 +48,7 @@ var listUpdate = function listUpdate() {
     var page_data = JSON.parse(JSON.stringify(sheet_data.slice((page-1)*10, page*10)));
 
     list.html('');
-    for (let datum of page_data) {
+    for (var datum of page_data) {
         var listItem = $('<li></li>').addClass('collection-item');
         if (datum.type == 'school') {
             var schoolName = $('<p></p>').attr('href', '#').text(datum.name);

@@ -1,177 +1,197 @@
 {% extends "streamwebs/base.html" %}
 {% load staticfiles %}
-{% block title %}Water Quality - {{site.site_name}} -{% endblock %}
+{% block title %}Water Quality - {{ site.site_name }} -{% endblock %}
 {% load i18n %}
 
 {% block scripts %}
-<script type="application/javascript">
+  <script type="application/javascript">
     window.data = {site1: {{data|safe}}, site2: null};
     var siteId = '{{site.site_slug}}';
     window.site2Id = null;
     window.hasSiteTwo = false;
 
     $('.datepicker').pickadate({
-        selectMonths: true,
-        selectYears: 20,
+      selectMonths: true,
+      selectYears: 20,
     });
-</script>
+  </script>
 
-<script type="application/javascript"
-        src="{% static 'streamwebs/js/graphs/water_quality.js' %}">
-</script>
+  <script type="application/javascript"
+          src="{% static 'streamwebs/js/graphs/water_quality.js' %}">
+  </script>
 {% endblock %}
 
 {% block body_title %}
-    <a href="/sites/{{site.site_slug}}">{{site.site_name}}</a>: {% trans "Water Quality" %}
+  <a href="/sites/{{ site.site_slug }}">{{ site.site_name }}</a>:
+  {% trans "Water Quality" %}
 {% endblock %}
 
 {% block content %}
-<form action=""><div id="dates">
-        <p>{% trans "Date Range:" %}</p>
-        <label for="date-start">{% trans "After" %}</label>
-        <input type="date" name="date" class="datepicker" id="date-start" value="" />
-        <label for="date-end">{% trans "Before" %}</label>
-        <input type="date" name="date" class="datepicker" id="date-end" value="" />
+  <form action="">
+    <div id="dates">
+      <p>{% trans "Date Range:" %}</p>
+      <label for="date-start">{% trans "After" %}</label>
+      <input type="date" name="date" class="datepicker" id="date-start"
+             value=""/>
+      <label for="date-end">{% trans "Before" %}</label>
+      <input type="date" name="date" class="datepicker" id="date-end" value=""/>
     </div>
-</form>
+  </form>
 
-<style>
+  <style>
     label {
-        margin-right: 1.5em;
+      margin-right: 1.5em;
     }
 
     #site_select {
-        margin-top: 10px;
+      margin-top: 10px;
     }
 
     .error {
-        color: red;
+      color: red;
     }
-    
-</style>
+  </style>
 
-<script type="application/javascript">
+  <script type="application/javascript">
     var toggleGraph = function toggleGraph(name) {
-        if ($('#' + name + '-control').prop('checked')) {
-            $('#graph-site1-' + name).fadeIn();
-            if (window.hasSiteTwo) {
-                $('#graph-site2-' + name).fadeIn();
-            }
-        } else {
-            $('#graph-site1-' + name).fadeOut();
-            if (window.hasSiteTwo) {
-                $('#graph-site2-' + name).fadeOut();
-            }
+      if ($('#' + name + '-control').prop('checked')) {
+        $('#graph-site1-' + name).fadeIn();
+        if (window.hasSiteTwo) {
+          $('#graph-site2-' + name).fadeIn();
         }
+      } else {
+        $('#graph-site1-' + name).fadeOut();
+        if (window.hasSiteTwo) {
+          $('#graph-site2-' + name).fadeOut();
+        }
+      }
     };
-</script>
+  </script>
 
-<input type="checkbox" id="temperature-control" checked="checked"
-       onclick="toggleGraph('temperature')" />
-<label for="temperature-control">Temperature</label>
-<input type="checkbox" id="oxygen-control" checked="checked"
-       onclick="toggleGraph('oxygen')" />
-<label for="oxygen-control">Dissolved Oxygen</label>
-<input type="checkbox" id="ph-control" checked="checked"
-       onclick="toggleGraph('ph')" />
-<label for="ph-control">pH</label>
-<input type="checkbox" id="turbidity-control" checked="checked"
-       onclick="toggleGraph('turbidity')" />
-<label for="turbidity-control">Turbidity</label>
-<input type="checkbox" id="salinity-control" checked="checked"
-       onclick="toggleGraph('salinity')" />
-<label for="salinity-control">Salinity</label>
-<input type="checkbox" id="conductivity-control" checked="checked"
-       onclick="toggleGraph('conductivity')" />
-<label for="conductivity-control">Conductivity</label>
-<input type="checkbox" id="dissolved-control" checked="checked"
-       onclick="toggleGraph('dissolved')" />
-<label for="dissolved-control">Dissolved Solids</label>
-<input type="checkbox" id="bod-control" checked="checked"
-       onclick="toggleGraph('bod')" />
-<label for="bod-control">Biochemical Oxygen Demand</label>
-<input type="checkbox" id="coliform-control" checked="checked"
-       onclick="toggleGraph('coliform')" />
-<label for="coliform-control">Fecal Coliform</label>
+  <input type="checkbox" id="temperature-control" checked="checked"
+         onclick="toggleGraph('temperature')"/>
+  <label for="temperature-control">{% trans "Temperature" %}</label>
+  <input type="checkbox" id="oxygen-control" checked="checked"
+         onclick="toggleGraph('oxygen')"/>
+  <label for="oxygen-control">{% trans "Dissolved Oxygen" %}</label>
+  <input type="checkbox" id="ph-control" checked="checked"
+         onclick="toggleGraph('ph')"/>
+  <label for="ph-control">{% trans "pH" %}</label>
+  <input type="checkbox" id="turbidity-control" checked="checked"
+         onclick="toggleGraph('turbidity')"/>
+  <label for="turbidity-control">{% trans "Turbidity" %}</label>
+  <input type="checkbox" id="salinity-control" checked="checked"
+         onclick="toggleGraph('salinity')"/>
+  <label for="salinity-control">{% trans "Salinity" %}</label>
+  <input type="checkbox" id="conductivity-control" checked="checked"
+         onclick="toggleGraph('conductivity')"/>
+  <label for="conductivity-control">{% trans "Conductivity" %}</label>
+  <input type="checkbox" id="dissolved-control" checked="checked"
+         onclick="toggleGraph('dissolved')"/>
+  <label for="dissolved-control">{% trans "Dissolved Solids" %}</label>
+  <input type="checkbox" id="bod-control" checked="checked"
+         onclick="toggleGraph('bod')"/>
+  <label for="bod-control">{% trans "Biochemical Oxygen Demand" %}</label>
+  <input type="checkbox" id="coliform-control" checked="checked"
+         onclick="toggleGraph('coliform')"/>
+  <label for="coliform-control">{% trans "Fecal Coliform" %}</label>
 
-<div id="site_select">
-    <a href="#!" class="dropdown-button btn select-button teal darken-4" data-activates='dropdown'>{% trans "Load a site to compare" %}<i class="material-icons right">arrow_drop_down</i></a>
+  <div id="site_select">
+    <a href="#!" class="dropdown-button btn select-button teal darken-4"
+       data-activates='dropdown'>
+      {% trans "Load a site to compare" %}
+      <i class="material-icons right">arrow_drop_down</i>
+    </a>
     <ul id="dropdown" class="dropdown-content">
-    {% for site in sites %}
-        <li><a onclick="loadSite2('{{site.site_slug}}')" class="teal-text text-darken-4">{{site.site_name}}</a></li>
-    {% endfor %}
+      {% for site in sites %}
+        <li><a onclick="loadSite2('{{ site.site_slug }}')"
+               class="teal-text text-darken-4">{{ site.site_name }}</a></li>
+      {% endfor %}
     </ul>
     <p id="compare-error" class="error" style="display: none">
-        Site has no Water Quality data to compare.
+      {% trans "Site has no Water Quality data to compare." %}
     </p>
-</div>
+  </div>
 
-<h2 class="graph-header">Water Quality Over Time</h2>
-<h6 class="graph-header">Note: Outliers are not graphed.</h6>
-<div id="graph-container">
+  <h2 class="graph-header">{% trans "Water Quality Over Time" %}</h2>
+  <h6 class="graph-header">{% trans "Note: Outliers are not graphed." %}</h6>
+  <div id="graph-container">
     <div class="row" id="site-names" style="display: none">
-        <div class="col hide-on-med-and-down l6">
-            <h3 id="site1-header">{{site.site_name}}</h3>
-        </div>
-        <div class="col hide-on-med-and-down l6">
-            <h3 id="site2-header">Placeholder</h3>
-        </div>
+      <div class="col hide-on-med-and-down l6">
+        <h3 id="site1-header">{{ site.site_name }}</h3>
+      </div>
+      <div class="col hide-on-med-and-down l6">
+        <h3 id="site2-header">Placeholder</h3>
+      </div>
     </div>
     <div class="row">
-        <div id="graph-site1-temperature" class="graph line temperature col s12 l6">
-            <h4 class="graph-header">Temperature (°C)</h4>
-        </div>
-        <div id="graph-site2-temperature" class="graph line temperature col s12 l6" style="display: none">
-            <h4 class="graph-header">Temperature (°C)</h4>
-        </div>
-        <div id="graph-site1-oxygen" class="graph line oxygen col s12 l6">
-            <h4 class="graph-header">Dissolved Oxygen (mg/L)</h4>
-        </div>
-        <div id="graph-site2-oxygen" class="graph line oxygen col s12 l6" style="display: none">
-            <h4 class="graph-header">Dissolved Oxygen (mg/L)</h4>
-        </div>
-        <div id="graph-site1-ph" class="graph line ph col s12 l6">
-            <h4 class="graph-header">pH</h4>
-        </div>
-        <div id="graph-site2-ph" class="graph line ph col s12 l6" style="display: none">
-            <h4 class="graph-header">pH</h4>
-        </div>
-        <div id="graph-site1-turbidity" class="graph line turbidity col s12 l6">
-            <h4 class="graph-header">Turbidity (NTU)</h4>
-        </div>
-        <div id="graph-site2-turbidity" class="graph line turbidity col s12 l6" style="display: none">
-            <h4 class="graph-header">Turbidity (NTU)</h4>
-        </div>
-        <div id="graph-site1-salinity" class="graph line salinity col s12 l6">
-            <h4 class="graph-header">Salinity (PSU or PPT)</h4> <!-- TODO: You need to ask Renee about this! -->
-        </div>
-        <div id="graph-site2-salinity" class="graph line salinity col s12 l6" style="display: none">
-            <h4 class="graph-header">Salinity (PSU or PPT)</h4> <!-- TODO: You need to ask Renee about this! -->
-        </div>
-        <div id="graph-site1-conductivity" class="graph line conductivity col s12 l6">
-            <h4 class="graph-header">Conductivity (µS/cm)</h4>
-        </div>
-        <div id="graph-site2-conductivity" class="graph line conductivity col s12 l6" style="display: none">
-            <h4 class="graph-header">Conductivity (µS/cm)</h4>
-        </div>
-        <div id="graph-site1-dissolved" class="graph line dissolved col s12 l6">
-            <h4 class="graph-header">Dissolved Matter (mg/L)</h4>
-        </div>
-        <div id="graph-site2-dissolved" class="graph line dissolved col s12 l6" style="display: none">
-            <h4 class="graph-header">Dissolved Matter (mg/L)</h4>
-        </div>
-        <div id="graph-site1-bod" class="graph line bod col s12 l6">
-            <h4 class="graph-header">Biochemical Oxygen Demand (mg/L)</h4>
-        </div>
-        <div id="graph-site2-bod" class="graph line bod col s12 l6" style="display: none">
-            <h4 class="graph-header">Biochemical Oxygen Demand (mg/L)</h4>
-        </div>
-        <div id="graph-site1-coliform" class="graph line coliform col s12 l6">
-            <h4 class="graph-header">Fecal Coliform (CFU / 100 mL)</h4>
-        </div>
-        <div id="graph-site2-coliform" class="graph line coliform col s12 l6" style="display: none">
-            <h4 class="graph-header">Fecal Coliform (CFU / 100 mL)</h4>
-        </div>
+      <div id="graph-site1-temperature"
+           class="graph line temperature col s12 l6">
+        <h4 class="graph-header">{% trans "Temperature (°C)" %}</h4>
+      </div>
+      <div id="graph-site2-temperature"
+           class="graph line temperature col s12 l6" style="display: none">
+        <h4 class="graph-header">{% trans "Temperature (°C)" %}</h4>
+      </div>
+      <div id="graph-site1-oxygen" class="graph line oxygen col s12 l6">
+        <h4 class="graph-header">{% trans "Dissolved Oxygen (mg/L)" %}</h4>
+      </div>
+      <div id="graph-site2-oxygen" class="graph line oxygen col s12 l6"
+           style="display: none">
+        <h4 class="graph-header">{% trans "Dissolved Oxygen (mg/L)" %}</h4>
+      </div>
+      <div id="graph-site1-ph" class="graph line ph col s12 l6">
+        <h4 class="graph-header">{% trans "pH" %}</h4>
+      </div>
+      <div id="graph-site2-ph" class="graph line ph col s12 l6"
+           style="display: none">
+        <h4 class="graph-header">{% trans "pH" %}</h4>
+      </div>
+      <div id="graph-site1-turbidity" class="graph line turbidity col s12 l6">
+        <h4 class="graph-header">{% trans "Turbidity (NTU)" %}</h4>
+      </div>
+      <div id="graph-site2-turbidity" class="graph line turbidity col s12 l6"
+           style="display: none">
+        <h4 class="graph-header">{% trans "Turbidity (NTU)" %}</h4>
+      </div>
+      <div id="graph-site1-salinity" class="graph line salinity col s12 l6">
+        <h4 class="graph-header">{% trans "Salinity (PSU or PPT)" %}</h4>
+        <!-- TODO: You need to ask Renee about this! -->
+      </div>
+      <div id="graph-site2-salinity" class="graph line salinity col s12 l6"
+           style="display: none">
+        <h4 class="graph-header">{% trans "Salinity (PSU or PPT)" %}</h4>
+        <!-- TODO: You need to ask Renee about this! -->
+      </div>
+      <div id="graph-site1-conductivity"
+           class="graph line conductivity col s12 l6">
+        <h4 class="graph-header">{% trans "Conductivity (µS/cm)" %}</h4>
+      </div>
+      <div id="graph-site2-conductivity"
+           class="graph line conductivity col s12 l6" style="display: none">
+        <h4 class="graph-header">{% trans "Conductivity (µS/cm)" %}</h4>
+      </div>
+      <div id="graph-site1-dissolved" class="graph line dissolved col s12 l6">
+        <h4 class="graph-header">{% trans "Dissolved Matter (mg/L)" %}</h4>
+      </div>
+      <div id="graph-site2-dissolved" class="graph line dissolved col s12 l6"
+           style="display: none">
+        <h4 class="graph-header">{% trans "Dissolved Matter (mg/L)" %}</h4>
+      </div>
+      <div id="graph-site1-bod" class="graph line bod col s12 l6">
+        <h4 class="graph-header">{% trans "Biochemical Oxygen Demand (mg/L)" %}</h4>
+      </div>
+      <div id="graph-site2-bod" class="graph line bod col s12 l6"
+           style="display: none">
+        <h4 class="graph-header">{% trans "Biochemical Oxygen Demand (mg/L)" %}</h4>
+      </div>
+      <div id="graph-site1-coliform" class="graph line coliform col s12 l6">
+        <h4 class="graph-header">{% trans "Fecal Coliform (CFU / 100 mL)" %}</h4>
+      </div>
+      <div id="graph-site2-coliform" class="graph line coliform col s12 l6"
+           style="display: none">
+        <h4 class="graph-header">{% trans "Fecal Coliform (CFU / 100 mL)" %}</h4>
+      </div>
     </div>
-</div>
+  </div>
 {% endblock %}
