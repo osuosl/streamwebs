@@ -63,7 +63,7 @@ function initialize() {
         });
 
         markerList[i].addListener('click', function () {
-            for (let otherWindow of infoWindows) {
+            for (var otherWindow of infoWindows) {
                 otherWindow.close();
             }
 
