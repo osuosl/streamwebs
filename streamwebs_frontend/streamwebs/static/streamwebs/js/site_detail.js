@@ -12,8 +12,8 @@ var initialize = function initialize() {
         minZoom: 10,
         center: new google.maps.LatLng(site_location.y, site_location.x),
         mapTypeId: google.maps.MapTypeId.ROADMAP,
-        disableDefaultUI: true,
-        draggable: false,
+        disableDefaultUI: false,
+        draggable: true,
         clickableIcons: false
     });
 
