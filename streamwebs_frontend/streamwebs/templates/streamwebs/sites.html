@@ -9,7 +9,7 @@
       src="https://maps.googleapis.com/maps/api/js?key={{ maps_api }}"></script>
 
   <script type="application/javascript">
-    const sites = [];
+    var sites = [];
     {% for site in sites %}
       sites.push({
         id: "{{site.id}}",

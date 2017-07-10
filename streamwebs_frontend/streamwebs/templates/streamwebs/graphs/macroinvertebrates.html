@@ -99,7 +99,7 @@
   <script type="application/javascript">
     window.data_time = {{data.time|safe}};
     window.data_summ = {{data.summary|safe}};
-    const siteId = '{{site.site_slug}}';
+    var siteId = '{{site.site_slug}}';
   </script>
   <script type="application/javascript"
           src="{% static 'streamwebs/js/graphs/macros.js' %}"></script>

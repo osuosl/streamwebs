@@ -5,6 +5,11 @@
 {% block content %}
 
   <div class="container">
+    {% if messages %}
+      {% for message in messages %}
+      <strong>{{ message }}</strong>
+      {% endfor %}
+    {% endif %}
     <!-- CP info -->
     <div>
       <h3>
@@ -75,18 +80,18 @@
       src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
   <script>
     // initialize marker
-    let marker = null;
+    var marker = null;
 
     // onload
     $(document).ready(function () {
       {% language "en-us" %}
-      const loc = {
+      var loc = {
         lat: {{ site.to_dict.location.y }},
         lng: {{ site.to_dict.location.x }},
       };
       {% endlanguage %}
-      const latlng = new google.maps.LatLng(loc.lat, loc.lng);
-      const mapOptions = {
+      var latlng = new google.maps.LatLng(loc.lat, loc.lng);
+      var mapOptions = {
         zoom: 14,
         center: latlng,
         mapTypeControl: false,
@@ -103,7 +108,7 @@
 
       // responsive function
       google.maps.event.addDomListener(window, "resize", function () {
-        const center = map.getCenter();
+        var center = map.getCenter();
         google.maps.event.trigger(map, "resize");
         map.setCenter(center);
       });

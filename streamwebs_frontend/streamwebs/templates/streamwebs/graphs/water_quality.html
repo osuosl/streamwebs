@@ -6,7 +6,7 @@
 {% block scripts %}
   <script type="application/javascript">
     window.data = {site1: {{data|safe}}, site2: null};
-    const siteId = '{{site.site_slug}}';
+    var siteId = '{{site.site_slug}}';
     window.site2Id = null;
     window.hasSiteTwo = false;
 
@@ -53,7 +53,7 @@
   </style>
 
   <script type="application/javascript">
-    const toggleGraph = function toggleGraph(name) {
+    var toggleGraph = function toggleGraph(name) {
       if ($('#' + name + '-control').prop('checked')) {
         $('#graph-site1-' + name).fadeIn();
         if (window.hasSiteTwo) {

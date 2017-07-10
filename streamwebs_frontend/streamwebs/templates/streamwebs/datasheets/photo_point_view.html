@@ -4,6 +4,11 @@
 {% load filters %}
 {% block content %}
   <div class="container">
+    {% if messages %}
+      {% for message in messages %}
+      <strong>{{ message }}</strong>
+      {% endfor %}
+    {% endif %}
     <!-- PP info -->
     <div>
       <h4><a href="{% url 'streamwebs:camera_point' pp.camera_point.site.site_slug pp.camera_point.id %}">{{ pp.camera_point.site.site_name }}:

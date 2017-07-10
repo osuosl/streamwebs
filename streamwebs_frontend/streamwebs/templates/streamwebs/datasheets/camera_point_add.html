@@ -10,18 +10,13 @@
       src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
   <script type="application/javascript">
     // initialize curr_marker
-    let marker = null;
+    var curr_marker = null;
+    var marker = null;
 
     // onload
-    $(document).ready(function () {
-      {% language "en-us" %}
-      const loc = {
-        lat: {{ site.to_dict.location.y }},
-        lng: {{ site.to_dict.location.x }},
-      };
-      {% endlanguage %}
-      const latlng = new google.maps.LatLng(loc.lat, loc.lng);
-      const mapOptions = {
+    $(document).ready(function() {
+      var latlng = new google.maps.LatLng("{{ site.to_dict.location.y }}", "{{ site.to_dict.location.x }}");
+      var mapOptions = {
         zoom: 14,
         center: latlng,
         mapTypeControl: false,
@@ -31,26 +26,28 @@
       map = new google.maps.Map($('.map')[0], mapOptions);
 
       marker = new google.maps.Marker({
-        position: loc,
+        position: {lat:{{ site.to_dict.location.y }}, lng:{{ site.to_dict.location.x }}},
         map: map,
         title: "Site Location"
       });
       // pass event to function
-      map.addListener('click', function (e) {
+      map.addListener('click', function(e) {
         placeMarker(e.latLng, map);
       });
       // responsive function
-      google.maps.event.addDomListener(window, "resize", function () {
-        const center = map.getCenter();
+      google.maps.event.addDomListener(window, "resize", function() {
+        var center = map.getCenter();
         google.maps.event.trigger(map, "resize");
         map.setCenter(center);
       });
     });
 
-    function placeMarker(latlng, map) {
-      // delete old marker if exists
-      if (marker) {
-        marker.setMap(null);
+    function placeMarker(latlng, map){
+      // set prev marker to current marker
+      curr_marker = marker;
+      // devare old marker if exists
+      if (curr_marker) {
+        curr_marker.setMap(null);
       }
       // make new marker
       marker = new google.maps.Marker({

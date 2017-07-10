@@ -10,17 +10,13 @@
 
 {% block scripts %}
   <script type="application/javascript">
-    const site_name = '{{ site.site_name }}';
-    const site_slug = '{{ site.site_slug }}';
-    {% language "en-us" %}
-    const site_location = {
-      x: {{ site.location.x }},
-      y: {{ site.location.y }}
-    };
-    {% endlanguage %}
+    var site_name = '{{ site.site_name }}';
+    var site_slug = '{{ site.site_slug }}';
+    var site_location = {x: {{ site.location.x }}, y: {{ site.location.y }} };
 
-    const sheet_data = {{ data|safe }};
-    const page_count = {{ pages }};
+    var sheet_data = {{ data|safe }};
+    var page_count = {{ pages }};
+    var imageWidth = '200';
   </script>
 
   <script
