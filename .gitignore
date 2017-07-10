@@ -6,7 +6,6 @@ venv/
 
 # Django stuff
 *.log
-migrations/
 
 # NFS write temps
 .nfs*
@@ -22,3 +21,5 @@ bower_components
 streamwebs_frontend/streamwebs_frontend/settings.py
 
 media/
+
+
