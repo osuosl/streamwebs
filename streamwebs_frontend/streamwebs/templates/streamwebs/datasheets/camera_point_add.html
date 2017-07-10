@@ -4,183 +4,199 @@
 {% load filters %}
 {% block title %}{% trans "Add a new camera point" %}{% endblock %}
 {% block content %}
-<script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyBV71HBuAFMtHEAaSEVpRDPUQyGvJwTX1k"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-<script>
+  <script type="application/javascript"
+          src="http://maps.google.com/maps/api/js?key=AIzaSyBV71HBuAFMtHEAaSEVpRDPUQyGvJwTX1k"></script>
+  <script
+      src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+  <script type="application/javascript">
     // initialize curr_marker
-    let curr_marker = null;
-    let marker = null;
+    var curr_marker = null;
+    var marker = null;
 
     // onload
     $(document).ready(function() {
-        const latlng = new google.maps.LatLng("{{ site.to_dict.location.y }}", "{{ site.to_dict.location.x }}");
-        const mapOptions = {
-            zoom: 14,
-            center: latlng,
-            mapTypeControl: false,
-            navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL},
-            mapTypeId: 'roadmap'
-        };
-        map = new google.maps.Map($('.map')[0], mapOptions);
+      var latlng = new google.maps.LatLng("{{ site.to_dict.location.y }}", "{{ site.to_dict.location.x }}");
+      var mapOptions = {
+        zoom: 14,
+        center: latlng,
+        mapTypeControl: false,
+        navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL},
+        mapTypeId: 'roadmap'
+      };
+      map = new google.maps.Map($('.map')[0], mapOptions);
 
-        marker = new google.maps.Marker({
-          position: {lat:{{ site.to_dict.location.y }}, lng:{{ site.to_dict.location.x }}},
-          map: map,
-          title: "Site Location"
-        });
-        // pass event to function
-        map.addListener('click', function(e) {
-          placeMarker(e.latLng, map);
-        });
-        // responsive function
-        google.maps.event.addDomListener(window, "resize", function() {
-            const center = map.getCenter();
-            google.maps.event.trigger(map, "resize");
-            map.setCenter(center);
-        });
+      marker = new google.maps.Marker({
+        position: {lat:{{ site.to_dict.location.y }}, lng:{{ site.to_dict.location.x }}},
+        map: map,
+        title: "Site Location"
+      });
+      // pass event to function
+      map.addListener('click', function(e) {
+        placeMarker(e.latLng, map);
+      });
+      // responsive function
+      google.maps.event.addDomListener(window, "resize", function() {
+        var center = map.getCenter();
+        google.maps.event.trigger(map, "resize");
+        map.setCenter(center);
+      });
     });
 
     function placeMarker(latlng, map){
-        // set prev marker to current marker
-        curr_marker = marker;
-        // delete old marker if exists
-        if (curr_marker) {
-            curr_marker.setMap(null);
-        }
-        // make new marker
-        marker = new google.maps.Marker({
-            position: latlng,
-            map: map,
-            title: "Camera Position"
-        });
-        // set hidden form elements of lat and long to these values
-        $('#input_lat').val(latlng.lat());
-        $('#input_lng').val(latlng.lng());
+      // set prev marker to current marker
+      curr_marker = marker;
+      // devare old marker if exists
+      if (curr_marker) {
+        curr_marker.setMap(null);
+      }
+      // make new marker
+      marker = new google.maps.Marker({
+        position: latlng,
+        map: map,
+        title: "Camera Position"
+      });
+      // set hidden form elements of lat and long to these values
+      $('#input_lat').val(latlng.lat());
+      $('#input_lng').val(latlng.lng());
     }
 
-    $(function() {
-       $('p:has(#id_site)').css('display', 'none');
-       $('#id_site').val('{{ site.id }}');
+    $(function () {
+      $('p:has(#id_site)').css('display', 'none');
+      $('#id_site').val('{{ site.id }}');
     });
-</script>
+  </script>
 
-<div class="container">
+  <div class="container">
     {% if user.is_authenticated %}
-        {% if added %}
+      {% if added %}
         <strong>{% trans "You have successfully added a new camera point." %}</strong>
-        {% else %}
+      {% else %}
         <h3 align="center">
           <a href="{% url 'streamwebs:site' site.site_slug %}">
-              {{ site.site_name }}
+            {{ site.site_name }}
           </a>
         </h3>
         <h4 align="center">{% trans 'New Photo Point' %}</h4>
-          <form id='pp_monitoring_form' method='post' enctype='multipart/form-data'>
-            {% csrf_token %}
+        <form id='pp_monitoring_form' method='post' enctype='multipart/form-data'>
+          {% csrf_token %}
 
-            <p>{{ camera_form.site }}</p>
+          <p>{{ camera_form.site }}</p>
 
-            <div class="loc-input">
-              <!-- CAMERA FORM: -->
-              {{ camera_form.media }}
-                <h5>Location Input</h5>
-                <div class="input-field col s12">
-                  <label for="{{ camera_form.cp_date.label }}">Camera Point Date</label>
-                  {{ camera_form.cp_date }}
-                  {{ camera_form.cp_date.errors | striptags }}
-                </div>
-                <div class ="input-field col s12">
-                  <label for="{{ camera_form.description.label }}">Description</label>
-                  {{ camera_form.description }}
-                  {{ camera_form.description.errors | striptags }}
-                </div>
-                <div class ="input-field col s12">
-                  <label for="{{ camera_form.map_datum.label }}">Map Datum</label>
-                  {{ camera_form.map_datum }}
-                  {{ camera_form.map_datum.errors | striptags }}
-                </div>
-                <div class ="input-field col s12">
-                    {{ camera_form.location.label }}
-                    {{ camera_form.location.errors | striptags }}
-                    <div class="map" style="height:400px;"></div>
-                    <input type="hidden" id="input_lat" name="lat" value="{{ site.to_dict.location.y }}">
-                    <input type="hidden" id="input_lng" name="lng" value="{{ site.to_dict.location.x }}">
-                </div>
-              <!-- END CAMERA FORM -->
+          <div class="loc-input">
+            <!-- CAMERA FORM: -->
+            {{ camera_form.media }}
+            <h5>{% trans "Location Input" %}</h5>
+            <div class="input-field col s12">
+              <label for="{{ camera_form.cp_date.label }}">
+                {% trans "Camera Point Date" %}
+              </label>
+              {{ camera_form.cp_date }}
+              {{ camera_form.cp_date.errors | striptags }}
             </div>
-            <br>
-            <div class="photo-input">
-              <h5>Photo Input</h5>
-              <div class="row">
-                {{ pp_formset.management_form }}
-                {% for p_form in pp_formset %}
+            <div class="input-field col s12">
+              <label for="{{ camera_form.description.label }}">
+                {% trans "Description" %}
+              </label>
+              {{ camera_form.description }}
+              {{ camera_form.description.errors | striptags }}
+            </div>
+            <div class="input-field col s12">
+              <label for="{{ camera_form.map_datum.label }}">
+                {% trans "Map Datum" %}
+              </label>
+              {{ camera_form.map_datum }}
+              {{ camera_form.map_datum.errors | striptags }}
+            </div>
+            <div class="input-field col s12">
+              {{ camera_form.location.label }}
+              {{ camera_form.location.errors | striptags }}
+              <div class="map" style="height:400px;"></div>
+              <input type="hidden" id="input_lat" name="lat"
+                     value="{{ site.to_dict.location.y }}">
+              <input type="hidden" id="input_lng" name="lng"
+                     value="{{ site.to_dict.location.x }}">
+            </div>
+            <!-- END CAMERA FORM -->
+          </div>
+          <br>
+          <div class="photo-input">
+            <h5>{% trans "Photo Input" %}</h5>
+            <div class="row">
+              {{ pp_formset.management_form }}
+              {% for p_form in pp_formset %}
                 <div class="col s4">
                   <h6>Photo #{{ forloop.counter }}</h6>
-                  <div class ="input-field">
-                    <label for="{{ p_form.compass_bearing.label }}">Compass Bearing</label>
+                  <div class="input-field">
+                    <label for="{{ p_form.compass_bearing.label }}">
+                      {% trans "Compass Bearing" %}
+                    </label>
                     {{ p_form.compass_bearing }}
                     {{ p_form.compass_bearing.errors | striptags }}
                   </div>
-                  <div class ="input-field">
-                    <label for="{{ p_form.distance.label }}">{{ p_form.distance.label }}</label>
+                  <div class="input-field">
+                    <label for="{{ p_form.distance.label }}">
+                      {{ p_form.distance.label }}
+                    </label>
                     {{ p_form.distance }}
                     {{ p_form.distance.errors | striptags }}
                   </div>
-                  <div class ="input-field">
-                    <label for="{{ p_form.camera_height.label }}">{{ p_form.camera_height.label }}</label>
+                  <div class="input-field">
+                    <label for="{{ p_form.camera_height.label }}">
+                      {{ p_form.camera_height.label }}
+                    </label>
                     {{ p_form.camera_height }}
                     {{ p_form.camera_height.errors | striptags }}
                   </div>
-                  <div class ="input-field">
-                    <label for="{{ p_form.notes.label }}">{{ p_form.notes.label }}</label>
+                  <div class="input-field">
+                    <label for="{{ p_form.notes.label }}">
+                      {{ p_form.notes.label }}
+                    </label>
                     {{ p_form.notes }}
                     {{ p_form.notes.errors | striptags }}
                   </div>
                 </div>
-                {% endfor %}
+              {% endfor %}
 
-                {{ ppi_formset.management_form }}
-                {% for ppi_form in ppi_formset %}
+              {{ ppi_formset.management_form }}
+              {% for ppi_form in ppi_formset %}
                 <div class="col s4">
-                  <div class ="input-field">
+                  <div class="input-field">
                     {{ ppi_form.image.label }}
                     <br>
                     {{ ppi_form.image }}
                     {{ ppi_form.image.errors | striptags }}
                   </div>
-                  <div class ="input-field">
+                  <div class="input-field">
                     <label for="{{ ppi_form.date.label }}">Date</label>
                     {{ ppi_form.date }}
                     {{ ppi_form.date.errors | striptags }}
                   </div>
                 </div>
-                {% endfor %}
-              </div>
+              {% endfor %}
             </div>
-            <button class="btn-large
-             waves-effect waves-light teal darken-4" type="submit" name="action" value='Submit'>Submit
-              <i class="material-icons right">send</i>
-            </button>
+          </div>
+          <button class="btn-large waves-effect waves-light teal darken-4"
+                  type="submit" name="action" value='{% trans "Submit" %}'>
+            {% trans "Submit" %}<i class="material-icons right">send</i>
+          </button>
         </form>
-        {% endif %}
-
+      {% endif %}
     {% else %}
-    <p>{% trans "You must be logged in to submit data." %}</p>
-    <a href="{% url 'streamwebs:login' %}">{% trans "Log in here." %}</a>
+      <p>{% trans "You must be logged in to submit data." %}</p>
+      <a href="{% url 'streamwebs:login' %}">{% trans "Log in here." %}</a>
     {% endif %}
-</div>
-<script>
-$(document).ready(function() {
-  $('select').material_select();
+  </div>
+  <script>
+    $(document).ready(function () {
+      $('select').material_select();
 
-  $('.datepicker').pickadate({
-    today: '',
-    selectMonths: true, // Creates a dropdown to control month
-    selectYears: 100, // Creates a dropdown of 15 years to control year
-    max: true, // set max to today
-    format: 'yyyy-mm-dd',
-  });
-});
-
-</script>
+      $('.datepicker').pickadate({
+        today: '',
+        selectMonths: true, // Creates a dropdown to control month
+        selectYears: 15, // Creates a dropdown of 15 years to control year
+        max: true, // set max to today
+        format: 'yyyy-mm-dd',
+      });
+    });
+  </script>
 {% endblock %}

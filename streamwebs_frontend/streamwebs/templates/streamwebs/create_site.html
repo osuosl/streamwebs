@@ -3,19 +3,22 @@
 {% load staticfiles %}
 
 {% block scripts %}
-<script src="//maps.google.com/maps/api/js?callback=initMap" async defer></script>
-<script type="application/javascript" src="{% static 'streamwebs/js/create_site.js' %}"></script>
+  <script src="//maps.google.com/maps/api/js?callback=initMap" async
+          defer></script>
+  <script type="application/javascript"
+          src="{% static 'streamwebs/js/create_site.js' %}"></script>
 {% endblock %}
 
-{% block title %} Add a New Site {% endblock %}
-{% block body_title %} Add a New Site {% endblock %}
+{% block title %}{% trans "Add a New Site" %}{% endblock %}
+{% block body_title %}{% trans "Add a New Site" %}{% endblock %}
 
 {% block content %}
-    <form id='site_form' method='post' enctype="multipart/form-data">
+  <form id='site_form' method='post' enctype="multipart/form-data">
     {% csrf_token %}
     {{ site_form.media }}
     {{ site_form.as_p }}
 
-    <input class="btn waves-effect waves-light teal darken-4" type='submit' name='submit' value='{% trans 'Add new site' %}'/>
-    </form>
+    <input class="btn waves-effect waves-light teal darken-4" type='submit'
+           name='submit' value='{% trans 'Add new site' %}'/>
+  </form>
 {% endblock %}

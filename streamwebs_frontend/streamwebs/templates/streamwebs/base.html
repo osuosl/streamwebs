@@ -3,62 +3,70 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <title>{% block title %}Streamwebs{% endblock %}</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'streamwebs/bower_components/materialize/dist/css/materialize.css' %}" />
-    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="{% static 'streamwebs/style.css' %}" />
-    <link rel="shortcut icon" href="{% static 'streamwebs/images/favicon.ico' %}" />
-    {% block head %}{% endblock %}
+  <meta charset="utf-8"/>
+  <title>{% block title %}Streamwebs{% endblock %}</title>
+  <link rel="stylesheet" type="text/css"
+        href="{% static 'streamwebs/bower_components/materialize/dist/css/materialize.css' %}"/>
+  <link href="http://fonts.googleapis.com/icon?family=Material+Icons"
+        rel="stylesheet">
+  <link rel="stylesheet" type="text/css"
+        href="{% static 'streamwebs/style.css' %}"/>
+  <link rel="shortcut icon"
+        href="{% static 'streamwebs/images/favicon.ico' %}"/>
+  {% block head %}{% endblock %}
 </head>
 
 <body>
-    <div class="page-wrap">
-        <div class="header">
-            <a href="/" class="logo">
-                <img src="//streamwebs.org/sites/streamwebs.org/themes/streamwebs_110107/logo.png" alt="Home">
-            </a>
-        </div>
-
-        <div class="header-img">
-        </div>
-
-        <div class="inner-wrap grey lighten-5">
-            <form id="langform" action="/i18n/setlang/" method="post">
-                {% csrf_token %}
-                <input name="next" type="hidden" value="{{ request.path }}" />
-                <input id="lang_input" name="language" type="hidden" />
-                <ul id="languages" class="dropdown-content">
-                    {% for lang in LANGUAGES %}
-                        <li><a href="#!" onclick="submitLang('{{ lang.0 }}');">{{ lang.1 }}</a></li>
-                    {% endfor %}
-                </ul>
-            </form>
-
-            <nav>
-                <div class="nav-wrapper grey lighten-5">
-                    {% include "streamwebs/navigation.html" %}
-                </div>
-            </nav>
-
-            <div class="content">
-                <h3 class="brand-logo center teal-text text-darken-4">{% block body_title %}{% endblock %}</h3>
-                {% block content %}{% endblock %}
-            </div>
-        </div>
+  <div class="page-wrap">
+    <div class="header">
+      <a href="/" class="logo">
+        <img
+            src="//streamwebs.org/sites/streamwebs.org/themes/streamwebs_110107/logo.png"
+            alt="Home">
+      </a>
     </div>
 
-    <script src="{% static 'streamwebs/bower_components/jquery/dist/jquery.js' %}"></script>
-    <script src="{% static 'streamwebs/bower_components/d3/d3.js' %}"></script>
-    <script src="{% static 'streamwebs/bower_components/materialize/dist/js/materialize.js' %}"></script>
-    {% block scripts %}{% endblock %}
+    <div class="header-img">
+    </div>
 
-    <script>
-        // Language submission
-        function submitLang(language) {
-            $('#lang_input').val(language);
-            $('#langform').submit();
-        }
-    </script>
+    <div class="inner-wrap grey lighten-5">
+      <form id="langform" action="/i18n/setlang/" method="post">
+          {% csrf_token %}
+          <input name="next" type="hidden" value="{{ request.path }}" />
+          <input id="lang_input" name="language" type="hidden" />
+          <ul id="languages" class="dropdown-content">
+              {% for lang in LANGUAGES %}
+                  <li><a href="#!" onclick="submitLang('{{ lang.0 }}');">{{ lang.1 }}</a></li>
+              {% endfor %}
+          </ul>
+      </form>
+      <nav>
+          <div class="nav-wrapper grey lighten-5">
+              {% include "streamwebs/navigation.html" %}
+          </div>
+      </nav>
+
+      <div class="content">
+        <h3 class="brand-logo center teal-text text-darken-4">
+          {% block body_title %}{% endblock %}</h3>
+        {% block content %}{% endblock %}
+      </div>
+    </div>
+  </div>
+
+<script
+    src="{% static 'streamwebs/bower_components/jquery/dist/jquery.js' %}"></script>
+<script src="{% static 'streamwebs/bower_components/d3/d3.js' %}"></script>
+<script
+    src="{% static 'streamwebs/bower_components/materialize/dist/js/materialize.js' %}"></script>
+{% block scripts %}{% endblock %}
+
+<script>
+  // Language submission
+  function submitLang(language) {
+    $('#lang_input').val(language);
+    $('#langform').submit();
+  }
+</script>
 </body>
 </html>

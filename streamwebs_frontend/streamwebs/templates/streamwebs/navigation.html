@@ -2,35 +2,39 @@
 {% load i18n %}
 
 
-<a href="#!" id="language-button" class="btn dropdown-button teal darken-4" data-activates="languages">
+<a href="#!" id="language-button" class="btn dropdown-button teal darken-4"
+   data-activates="languages">
   <ul class="left">
-      <li>
-          {% for lang in LANGUAGES %}
-              {% if lang.0 == LANGUAGE_CODE %}
-                  {{ lang.1 }}
-              {% endif %}
-          {% endfor %}
-          <i class="material-icons right">arrow_drop_down</i>
-      </li>
+    <li>
+      {% for lang in LANGUAGES %}
+        {% if lang.0 == LANGUAGE_CODE %}
+          {{ lang.1 }}
+        {% endif %}
+      {% endfor %}
+      <i class="material-icons right">arrow_drop_down</i>
+    </li>
   </ul>
 </a>
 
 <ul class="right">
-<li><a href="{% url 'streamwebs:sites' %}" class="teal-text text-darken-4">Sites</a></li>
-<li><a href="{% url 'streamwebs:schools' %}" class="teal-text text-darken-4">Schools</a></li>
-<li><a href="{% url 'streamwebs:resources' %}" class="teal-text text-darken-4">Resources</a></li>
+  <li><a href="{% url 'streamwebs:sites' %}"
+         class="teal-text text-darken-4">{% trans "Sites" %}</a></li>
+  <li><a href="{% url 'streamwebs:schools' %}"
+        class="teal-text text-darken-4">{% trans "Schools" %}</a></li>
+  <li><a href="{% url 'streamwebs:resources' %}"
+         class="teal-text text-darken-4">{% trans "Resources" %}</a></li>
 
 {% if user.is_authenticated %}
     {% if perms.streamwebs.can_view_stats %}
-    <li><a href="{% url 'streamwebs:stats' %}" class="teal-text text-darken-4">View Site Statistics</a></li>
+    <li><a href="{% url 'streamwebs:stats' %}" class="teal-text text-darken-4">{% trans "View Site Statistics" %}</a></li>
     {% endif %}
     {% if perms.streamwebs.can_promote_users %}
-    <li><a href="{% url 'streamwebs:user_promo' %}" class="teal-text text-darken-4">Manage Users</a></li>
+    <li><a href="{% url 'streamwebs:user_promo' %}" class="teal-text text-darken-4">{% trans "Manage Users" %}</a></li>
     {% endif %}
-    <li><a href="{% url 'streamwebs:logout' %}" class="teal-text text-darken-4">Logout</a></li>
+    <li><a href="{% url 'streamwebs:logout' %}" class="teal-text text-darken-4">{% trans "Logout" %}</a></li>
 {% else %}
-    <li><a href="{% url 'streamwebs:register' %}" class="teal-text text-darken-4">Create Account</a></li>
-    <li><a href="{% url 'streamwebs:login' %}?next={{ request.path }}" class="teal-text text-darken-4">Login</a></li>
+    <li><a href="{% url 'streamwebs:register' %}" class="teal-text text-darken-4">{% trans "Create Account" %}</a></li>
+    <li><a href="{% url 'streamwebs:login' %}?next={{ request.path }}" class="teal-text text-darken-4">{% trans "Login" %}</a></li>
 {% endif %}
 </ul>
 
