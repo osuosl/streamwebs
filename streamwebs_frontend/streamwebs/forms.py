@@ -268,3 +268,18 @@ class StatisticsForm(forms.Form):
         widget=forms.DateInput(attrs={'class': 'datepicker'}),
         label=_('ending on'), required=False
     )
+
+
+class AdminPromotionForm(forms.Form):
+    PERM_OPTIONS = (
+        ('add_admin', _('Add to Admin group')),
+        ('del_admin', _('Remove from Admin group')),
+        ('add_stats', _('Grant permission to view the Statistics page')),
+        ('add_upload', _('Grant permission to upload to the Resources page')),
+        ('del_stats', _('Revoke permission to view the Statistics page')),
+        ('del_upload', _('Revoke permission to upload to the Resources page')),
+    )
+
+    users = forms.ModelMultipleChoiceField(queryset=User.objects.all(),
+                                           widget=forms.SelectMultiple)
+    perms = forms.ChoiceField(choices=PERM_OPTIONS)

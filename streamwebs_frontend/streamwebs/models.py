@@ -137,7 +137,26 @@ class School(models.Model):
     created = models.DateTimeField(default=timezone.now)
     modified = models.DateTimeField(default=timezone.now)
 
+    # nid and assoc_uid are only used by the data_scripts to make relations
+    # between the models
+    # nid = models.PositiveIntegerField(blank=True, null=True)
+    # assoc_uid = models.PositiveIntegerField(blank=True, null=True)
+
     test_objects = SchoolManager()
+    objects = models.Manager()
+
+    def __str__(self):
+        return self.name
+
+
+@python_2_unicode_compatible
+class SchoolRelations(models.Model):
+    uid = models.PositiveIntegerField(blank=True, null=True)
+    school = models.ForeignKey(
+        School, null=True, on_delete=models.CASCADE,
+        limit_choices_to={'active': True}
+    )
+
     objects = models.Manager()
 
     def __str__(self):
@@ -270,6 +289,9 @@ class Water_Quality(models.Model):
     )
     notes = models.TextField(blank=True, verbose_name=_('notes'))
     nid = models.PositiveIntegerField(blank=True, null=True)
+
+    # Uid used to make relations between school and data sheet
+    uid = models.PositiveIntegerField(blank=True, null=True)
 
     test_objects = WaterQualityManager()
     objects = models.Manager()
@@ -622,14 +644,14 @@ class MacroinvertebratesManager(models.Manager):
     """
     Manager for the Macroinvertebrates model.
     """
-    def create_macro(self, site, time_spent=0, num_people=0, water_type='riff',
-                     caddisfly=0, mayfly=0, riffle_beetle=0, stonefly=0,
-                     water_penny=0, dobsonfly=0, clam_or_mussel=0, crane_fly=0,
-                     crayfish=0, damselfly=0, dragonfly=0, scud=0, fishfly=0,
-                     alderfly=0, mite=0, aquatic_worm=0, blackfly=0, leech=0,
-                     midge=0, snail=0, mosquito_larva=0, notes=''):
+    def create_macro(self, site, school, time_spent=0, num_people=0,
+                     water_type='riff', caddisfly=0, mayfly=0, riffle_beetle=0,
+                     stonefly=0, water_penny=0, dobsonfly=0, clam_or_mussel=0,
+                     crane_fly=0, crayfish=0, damselfly=0, dragonfly=0, scud=0,
+                     fishfly=0, alderfly=0, mite=0, aquatic_worm=0, blackfly=0,
+                     leech=0, midge=0, snail=0, mosquito_larva=0, notes=''):
 
-        info = self.create(school='aaaa',
+        info = self.create(school=school,
                            date_time='2016-07-11 14:09',
                            weather="bbbb",
                            site=site,
@@ -672,7 +694,8 @@ class Macroinvertebrates(models.Model):
         (POOL, _('pool')),
     )
 
-    school = models.CharField(max_length=250, verbose_name=_('school'))
+    school = models.ForeignKey(School, null=True, on_delete=models.CASCADE,
+                               verbose_name=_('school'))
     date_time = models.DateTimeField(default=timezone.now,
                                      verbose_name=_('date and time'))
     weather = models.CharField(max_length=250,
@@ -748,6 +771,9 @@ class Macroinvertebrates(models.Model):
     wq_rating = models.PositiveIntegerField(
         default=0, verbose_name=_('water quality rating')
         )
+
+    # Uid used to make relations between school and data sheet
+    uid = models.PositiveIntegerField(blank=True, null=True)
 
     objects = models.Manager()
     test_objects = MacroinvertebratesManager()
@@ -873,7 +899,8 @@ class RiparianTransect(models.Model):
     This model corresponds to the Riparian Transect data sheet and has a one-to
     -one relationship with its specified Site.
     """
-    school = models.CharField(max_length=255, verbose_name=_('school'))
+    school = models.ForeignKey(School, null=True, on_delete=models.CASCADE,
+                               verbose_name=_('school'))
     date_time = models.DateTimeField(default=timezone.now,
                                      verbose_name=_('date and time'))
     weather = models.CharField(max_length=255, blank=True,
@@ -887,6 +914,9 @@ class RiparianTransect(models.Model):
     )
     notes = models.TextField(blank=True, verbose_name=_('notes'))
     nid = models.PositiveIntegerField(blank=True, null=True)
+
+    # Uid used to make relations between school and data sheet
+    uid = models.PositiveIntegerField(blank=True, null=True)
 
     test_objects = RipTransectManager()
     objects = models.Manager()
@@ -992,6 +1022,9 @@ class Canopy_Cover(models.Model):
         verbose_name=_('estimated canopy cover')
         )
 
+    # Uid used to make relations between school and data sheet
+    uid = models.PositiveIntegerField(blank=True, null=True)
+
     def __str__(self):
         return(str(self.date_time) + ' ' + self.site.site_name)
 
@@ -1063,6 +1096,9 @@ class Soil_Survey(models.Model):
 
     soil_type = models.CharField(max_length=10, default=None,
                                  choices=soil_type_choices)
+
+    # Uid used to make relations between school and data sheet
+    uid = models.PositiveIntegerField(blank=True, null=True)
 
     def __str__(self):
         return self.site.site_name

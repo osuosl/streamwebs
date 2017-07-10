@@ -12,3 +12,8 @@
 ./get_transects.py
 ./get_cc.py
 ./get_soil.py
+# Run twice so that relations are created for renamed schools
+./rename_schools.py
+./rename_schools.py
+./reset_dup_relations.py
+./set_schools.py

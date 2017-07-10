@@ -1,6 +1,9 @@
-let data = window.data_summ;
+var num_min = -9007199254740991
+var num_max = 9007199254740991
 
-let date_range = [0, Number.MAX_SAFE_INTEGER];
+var data = window.data_summ;
+
+var date_range = [0, num_max];
 
 /*
  * Number.prototype.toFixed() has several problems: it doesn't
@@ -23,11 +26,11 @@ function toFixed(value, precision) {
     return String(Math.round(value * power) / power);
 }
 
-const changeRangeStart = function changeRangeStart() {
+var changeRangeStart = function changeRangeStart() {
     if (!$(this).val()) { // If the field is empty, clear the range
         date_range[0] = 0;
     } else {
-        const date = Date.parse($(this).val());
+        var date = Date.parse($(this).val());
         if (!date || Number.isNaN(date)) {
             return;
         }
@@ -43,11 +46,11 @@ const changeRangeStart = function changeRangeStart() {
     }
 };
 
-const changeRangeEnd = function changeRangeEnd() {
+var changeRangeEnd = function changeRangeEnd() {
     if (!$(this).val()) { // If the field is empty, clear the range
-        date_range[1] = Number.MAX_SAFE_INTEGER;
+        date_range[1] = num_max;
     } else {
-        const date = Date.parse($(this).val());
+        var date = Date.parse($(this).val());
         if (!date || Number.isNaN(date)) {
             return;
         }
@@ -63,8 +66,8 @@ const changeRangeEnd = function changeRangeEnd() {
     }
 };
 
-const useLineGraph = function useLineGraph() {
-    const outerContainer = $('#graph-' + siteId);
+var useLineGraph = function useLineGraph() {
+    var outerContainer = $('#graph-' + siteId);
     outerContainer.find('svg').remove();
     $('.graph-header').show();
     outerContainer.find('.graph-header').hide();
@@ -72,16 +75,16 @@ const useLineGraph = function useLineGraph() {
     // Copy the data so we don't change the original
     data = JSON.parse(JSON.stringify(window.data_time));
 
-    let formatted = [];
+    var formatted = [];
 
-    for (let key in data) {
-        const date = parseInt(key, 10) * 1000; // Convert from seconds to millis
+    for (var key in data) {
+        var date = parseInt(key, 10) * 1000; // Convert from seconds to millis
         if (date >= date_range[1] || date <= date_range[0]) {
             continue;
         }
 
-        let total = 0;
-        for (let category in data[key]) {
+        var total = 0;
+        for (var category in data[key]) {
             if (category === 'Sensitive') {
                 data[key][category] /= 3;
             } else if (category === 'Somewhat Sensitive') {
@@ -117,12 +120,12 @@ const useLineGraph = function useLineGraph() {
      *   ...
      * ]
      */
-    formatted = formatted.map((x) => {
+    formatted = formatted.map(function (x) {
         /*
          * First we'll map the data to remove any extraneous values just in case,
          * and to change the date to a string of just the date.
          */
-        const key = x.date.toISOString().substring(0, 10);
+        var key = x.date.toISOString().substring(0, 10);
 
         return {
             date: key,
@@ -131,7 +134,7 @@ const useLineGraph = function useLineGraph() {
             Tolerant: x.Tolerant,
             Total: x.Total,
         };
-    }).reduce((prev, curr) => {
+    }).reduce(function (prev, curr) {
         /*
          * Next, we'll reduce it down to sums per day.
          */
@@ -141,11 +144,11 @@ const useLineGraph = function useLineGraph() {
          * if it exists. It contains all of the sums we've already calculated for
          * this day, plus its own index in the list so we can find it later.
          */
-        let data = prev.map((x, i) => {
+        var data = prev.map(function (x, i) {
             x['idx'] = i;
             return x;
         })
-        .filter((x) => {
+        .filter(function (x) {
             return x.date.getTime() === curr.date.getTime();
         });
         if (data === [] || data.length === 0) {
@@ -179,7 +182,7 @@ const useLineGraph = function useLineGraph() {
             }
         }
         return prev;
-    }, []).map((value) => {
+    }, []).map(function (value) {
         /*
          * Now our list should look like this:
          *
@@ -212,61 +215,61 @@ const useLineGraph = function useLineGraph() {
         };
     });
 
-    formatted.sort((a, b) => {
+    formatted.sort(function (a, b) {
         return (a.date < b.date ? -1 : (a.date > b.date ? 1 : 0));
     });
 
     columns = ['date', 'Tolerant', 'Somewhat Sensitive', 'Sensitive', 'Total'];
 
-    const types = columns.slice(1).map((name) => {
+    var types = columns.slice(1).map(function (name) {
         return {
             name: name,
-            values: formatted.map((d) => {
+            values: formatted.map(function (d) {
                 return {date: d.date, value: d[name]};
-            }).filter(d => {
+            }).filter(function (d) {
                 return !isNaN(d.value);
             })
         };
     });
 
-    const container = outerContainer;
-    const margin = {top: 20, right: 200, bottom: 50, left: 40};
-    const width = container.width() - margin.left - margin.right;
-    const height = 250 - margin.top - margin.bottom;
+    var container = outerContainer;
+    var margin = {top: 20, right: 200, bottom: 50, left: 40};
+    var width = container.width() - margin.left - margin.right;
+    var height = 250 - margin.top - margin.bottom;
 
-    const x = d3.scaleTime()
+    var x = d3.scaleTime()
         .range([0, width]);
 
     x.domain([
         date_range[0] !== 0 ? new Date(date_range[0]) :
-            d3.min(formatted, (d) => {
-                return new Date(d.date) || new Date(new Date().getTime() - 86400)
+            d3.min(formatted, function (d) {
+                return new Date(d.date) || new Date(new Date().getTime() - 86400);
             }),
         date_range[1] !== Number.MAX_SAFE_INTEGER ? new Date(date_range[1]) :
-            d3.max(formatted, (d) => {
-                return new Date(d.date) || new Date()
+            d3.max(formatted, function (d) {
+                return new Date(d.date) || new Date();
             }),
     ]);
-    const y = d3.scaleLinear()
+    var y = d3.scaleLinear()
         .domain([0,
-            d3.max(types, (c) => {
-                return d3.max(c.values, (d) => {
+            d3.max(types, function (c) {
+                return d3.max(c.values, function (d) {
                     return d.value || 1; // Prevent NaNs from spoiling the max
-                }) || 1
+                }) || 1;
             }) || 1
         ])
         .range([height, 0]);
-    const z = d3.scaleOrdinal()
-        .domain(types.map((c) => {
-            return c.name
+    var z = d3.scaleOrdinal()
+        .domain(types.map(function (c) {
+            return c.name;
         }))
         .range(['#869099', '#8c7853', '#007d4a', '#e24431']);
 
-    const svg = d3.select('#graph-' + siteId).append('svg')
+    var svg = d3.select('#graph-' + siteId).append('svg')
         .attr('width', width + margin.left + margin.right)
         .attr('height', height + margin.top + margin.bottom);
 
-    const g = svg.append('g')
+    var g = svg.append('g')
         .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
     g.append('g')
@@ -285,40 +288,40 @@ const useLineGraph = function useLineGraph() {
         .call(d3.axisLeft(y));
 
     if (formatted.length > 0) {
-        const type = g.selectAll('.type')
+        var type = g.selectAll('.type')
             .data(types)
             .enter()
             .append('g')
             .attr('class', 'type');
 
         type.selectAll('dot')
-            .data((d) => {
-                return d.values.map((e) => {
+            .data(function (d) {
+                return d.values.map(function (e) {
                     e['name'] = d.name;
-                    return e
+                    return e;
                 });
             })
             .enter().append('circle')
             .attr('r', 3.5)
-            .attr('cx', (d) => {
-                return x(new Date(d.date))
+            .attr('cx', function (d) {
+                return x(new Date(d.date));
             })
-            .attr('cy', (d) => {
-                return y(d.value)
+            .attr('cy', function (d) {
+                return y(d.value);
             })
-            .style('stroke', (d) => {
-                return z(d.name)
+            .style('stroke', function (d) {
+                return z(d.name);
             })
-            .style('fill', (d) => {
-                return z(d.name)
+            .style('fill', function (d) {
+                return z(d.name);
             });
 
-        const legend = g.selectAll('.legend')
+        var legend = g.selectAll('.legend')
             .data(types)
             .enter()
             .append('g')
             .attr('class', 'legend')
-            .attr('transform', (d, i) => {
+            .attr('transform', function (d, i) {
                 return 'translate(' + (width + margin.left + 5) + ', ' + i * 20 + ')';
             })
             .style('border', '1px solid black')
@@ -328,7 +331,7 @@ const useLineGraph = function useLineGraph() {
             .attr('x', 2)
             .attr('width', 18)
             .attr('height', 2)
-            .attr('fill', (d) => {
+            .attr('fill', function (d) {
                 return z(d.name);
             });
 
@@ -336,17 +339,17 @@ const useLineGraph = function useLineGraph() {
             .attr('x', 25)
             .attr('dy', '.35em')
             .attr('text-anchor', 'begin')
-            .attr('fill', (d) => {
+            .attr('fill', function (d) {
                 return z(d.name);
             })
-            .text((d) => {
+            .text(function (d) {
                 return d.name;
             });
     }
 };
 
-const useBarGraph = function useBarGraph() {
-    const outerContainer = $('#graph-' + siteId);
+var useBarGraph = function useBarGraph() {
+    var outerContainer = $('#graph-' + siteId);
     outerContainer.find('svg').remove();
     $('.graph-header').hide();
     outerContainer.find('.graph-header').show();
@@ -354,25 +357,25 @@ const useBarGraph = function useBarGraph() {
     // Copy the data so we don't change the original
     data = JSON.parse(JSON.stringify(window.data_summ));
 
-    const categories = {
+    var categories = {
         'tolerant': [],
         'somewhat': [],
         'sensitive': [],
         'total': []
     };
 
-    let numEntries = 0;
-    for (let key in data) {
-        const date = parseInt(key, 10) * 1000; // Convert from seconds to millis
+    var numEntries = 0;
+    for (var key in data) {
+        var date = parseInt(key, 10) * 1000; // Convert from seconds to millis
         if (date >= date_range[1] || date <= date_range[0]) {
             continue;
         }
 
-        for (let category in data[key]) {
-            let total = 0;
-            for (let species of data[key][category]) { // Look at each animal
-                let found = false;
-                for (let entry of categories[category]) {
+        for (var category in data[key]) {
+            var total = 0;
+            for (var species of data[key][category]) { // Look at each animal
+                var found = false;
+                for (var entry of categories[category]) {
                     if (entry.name === species.name) { // If we've seen the animal
                         entry.value += species.value; // before, just sum it
                         found = true;
@@ -386,8 +389,8 @@ const useBarGraph = function useBarGraph() {
                 total += species.value;
             }
 
-            let found = false;
-            for (let entry of categories['total']) {
+            var found = false;
+            for (var entry of categories['total']) {
                 if (entry.name === category) {
                     entry.value += total;
                     found = true;
@@ -405,45 +408,45 @@ const useBarGraph = function useBarGraph() {
         numEntries++;
     }
 
-    for (let category in categories) {
-        for (let entry of categories[category]) {
+    for (var category in categories) {
+        for (var entry of categories[category]) {
             entry.value /= numEntries; // Earlier summed, now divide to get average
         }
     }
 
-    for (let category in categories) {
+    for (var category in categories) {
         if (category == 'total') {
             continue;
         }
 
-        const species = categories[category].filter(d => {
+        var species = categories[category].filter(function (d) {
             return !isNaN(d.value);
-        }).sort((a, b) => {
+        }).sort(function (a, b){
             return a.name.localeCompare(b.name);
         });
 
-        const container = $('#graph-' + siteId + '-' + category);
-        const margin = {top: 50, right: 100, bottom: 80, left: 50};
-        const width = (Math.min(container.width(), 150 * species.length)) -
+        var container = $('#graph-' + siteId + '-' + category);
+        var margin = {top: 50, right: 100, bottom: 80, left: 50};
+        var width = (Math.min(container.width(), 150 * species.length)) -
             margin.left - margin.right;
-        const height = 256 - margin.top - margin.bottom;
+        var height = 256 - margin.top - margin.bottom;
 
-        const x = d3.scaleBand()
-            .domain(species.map((d) => {
-                return d.name
+        var x = d3.scaleBand()
+            .domain(species.map(function (d) {
+                return d.name;
             }))
             .range([0, width])
             .paddingInner(0.1);
-        const y = d3.scaleLinear()
-            .domain([0, d3.max(species, (d) => {
-                return d.value
+        var y = d3.scaleLinear()
+            .domain([0, d3.max(species, function (d) {
+                return d.value;
             }) || 1])
             .range([height, 0]);
 
-        const xAxis = d3.axisBottom(x);
-        const yAxis = d3.axisLeft(y).ticks(10);
+        var xAxis = d3.axisBottom(x);
+        var yAxis = d3.axisLeft(y).ticks(10);
 
-        const svg = d3.select('#graph-' + siteId + '-' + category).append('svg')
+        var svg = d3.select('#graph-' + siteId + '-' + category).append('svg')
             .attr('width', width + margin.left + margin.right)
             .attr('height', height + margin.top + margin.bottom)
             .attr('xmlns', 'http://www.w3.org/2000/svg')
@@ -478,24 +481,24 @@ const useBarGraph = function useBarGraph() {
                 .enter()
                 .append('rect')
                 .attr('class', 'bar')
-                .attr('x', (d) => {
-                    return x(d.name)
+                .attr('x', function (d) {
+                    return x(d.name);
                 })
                 .attr('width', x.bandwidth())
-                .attr('y', (d) => {
-                    return y(d.value || 0)
+                .attr('y', function (d) {
+                    return y(d.value || 0);
                 })
-                .attr('height', (d) => {
-                    return height - y(d.value || 0)
+                .attr('height', function (d) {
+                    return height - y(d.value || 0);
                 })
-                .attr('x-data-name', (d) => {
-                    return d.name
+                .attr('x-data-name', function (d) {
+                    return d.name;
                 })
-                .attr('x-data-value', (d) => {
-                    return d.value || 0
+                .attr('x-data-value', function (d) {
+                    return d.value || 0;
                 });
 
-            const hover = svg.append('g')
+            var hover = svg.append('g')
                 .attr('class', 'bar-img')
                 .attr('transform', 'translate(0,0)')
                 .attr('width', 130)
@@ -526,49 +529,49 @@ const useBarGraph = function useBarGraph() {
         }
     }
 
-    const totals = categories['total'];
-    let sum = 0;
-    for (let total of totals) {
+    var totals = categories['total'];
+    var sum = 0;
+    for (var total of totals) {
         sum += total.value;
     }
-    const names = {
+    var names = {
         'sensitive': 'Sensitive',
         'somewhat': 'Somewhat Sensitive',
         'tolerant': 'Tolerant'
     };
-    const columns = ['Sensitive', 'Somewhat Sensitive', 'Tolerant'];
+    var columns = ['Sensitive', 'Somewhat Sensitive', 'Tolerant'];
 
-    const container = $('#graph-' + siteId + '-pie');
-    const margin = {top: 20, right: 20, bottom: 30, left: 20};
-    const width = Math.min(
+    var container = $('#graph-' + siteId + '-pie');
+    var margin = {top: 20, right: 20, bottom: 30, left: 20};
+    var width = Math.min(
         container.width() - margin.right - margin.left,
         768
     );
-    const height = 256;
-    const radius = Math.min(width, height) / 2;
+    var height = 256;
+    var radius = Math.min(width, height) / 2;
 
-    const color = d3.scaleOrdinal()
+    var color = d3.scaleOrdinal()
         .domain(columns)
         .range(['#007d4a', '#869099', '#8c7853']);
 
-    const arc = d3.arc()
+    var arc = d3.arc()
         .outerRadius(radius - 10)
         .innerRadius(0);
 
-    const pie = d3.pie()
+    var pie = d3.pie()
         .sort(null)
-        .value((d) => {
-            return d.value
+        .value(function (d) {
+            return d.value;
         });
 
-    const svg = d3.select('#graph-' + siteId + '-pie').append('svg')
+    var svg = d3.select('#graph-' + siteId + '-pie').append('svg')
         .attr('width', width + margin.left + margin.right)
         .attr('height', height + margin.top + margin.bottom);
 
-    const g = svg.append('g')
+    var g = svg.append('g')
         .attr('transform', 'translate(' + (width / 2 + margin.left) + ',' + (height / 2 + margin.top) + ')');
 
-    const arcs = g.selectAll('.arc')
+    var arcs = g.selectAll('.arc')
         .data(pie(totals))
         .enter()
         .append('g')
@@ -576,16 +579,16 @@ const useBarGraph = function useBarGraph() {
 
     arcs.append('path')
         .attr('d', arc)
-        .style('fill', (d) => {
-            return color(d.data.name)
+        .style('fill', function (d) {
+            return color(d.data.name);
         });
 
-    const legend = svg.selectAll('.legend')
+    var legend = svg.selectAll('.legend')
         .data(totals)
         .enter()
         .append('g')
         .attr('class', 'legend')
-        .attr('transform', (d, i) => {
+        .attr('transform', function (d, i) {
             return 'translate(0, ' + i * 20 + ')';
         })
         .style('font', '12px sans-serif');
@@ -594,7 +597,7 @@ const useBarGraph = function useBarGraph() {
         .attr('x', width - 18)
         .attr('width', 18)
         .attr('height', 18)
-        .attr('fill', (d) => {
+        .attr('fill', function (d) {
             return color(d.name);
         });
 
@@ -603,13 +606,13 @@ const useBarGraph = function useBarGraph() {
         .attr('y', 9)
         .attr('dy', '.35em')
         .attr('text-anchor', 'end')
-        .text((d) => {
+        .text(function (d) {
             return names[d.name] + ' (' + toFixed(((d.value / sum) * 100), 2) + '%)';
         });
 
-    $('.bar').mouseenter((e) => {
-        const target = $(e.target);
-        const g = target.siblings('.bar-img');
+    $('.bar').mouseenter(function (e) {
+        var target = $(e.target);
+        var g = target.siblings('.bar-img');
         g.find('image')[0].setAttributeNS('http://www.w3.org/1999/xlink', 'href',
             '/static/streamwebs/images/macroinvertebrates/macro_' +
             target.attr('x-data-name').toLowerCase().replace(/[ /]/g, '_') +
@@ -625,7 +628,7 @@ const useBarGraph = function useBarGraph() {
         );
         g.attr('opacity', 1);
     })
-        .mouseleave((e) => {
+        .mouseleave(function (e) {
             $(e.target).siblings('.bar-img').attr('opacity', 0);
         });
 };
@@ -657,7 +660,7 @@ $.fn.fix_radios = function fix_radios() {
 
 
 
-$(window).resize(() => {
+$(window).resize(function () {
     if ($('input[name=type]:checked').val() === 'line') {
         useLineGraph();
     } else {
@@ -665,13 +668,13 @@ $(window).resize(() => {
     }
 });
 
-$(() => {
+$(function () {
     $('input[type=date]').val('');
     $('#date-start').change(changeRangeStart);
     $('#date-end').change(changeRangeEnd);
 
     $('input[type=radio]').fix_radios();
-    $('input[name=type]').change(() => {
+    $('input[name=type]').change(function () {
         if ($('input[name=type]:checked').val() === 'line') {
             useLineGraph();
         } else {

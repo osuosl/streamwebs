@@ -3,16 +3,17 @@
 {% load i18n %}
 
 {% block content %}
-<h3>Upload a new resource</h3>
-<div class="container">
-<form id='res_form' method='post' enctype='multipart/form-data'>
-    {% csrf_token %}
-    {{ res_form.as_p }}
-    <input type='submit' name='submit' value='{% trans 'Upload' %}'/>
-</form>
-</div>
+  <h3>{% trans "Upload a new resource" %}</h3>
+  <div class="container">
+    <form id='res_form' method='post' enctype='multipart/form-data'>
+      {% csrf_token %}
+      {{ res_form.as_p }}
+      <input type='submit' name='submit' value='{% trans 'Upload' %}'/>
+    </form>
+  </div>
 {% endblock %}
 
 {% block scripts %}
-    <script type="application/javascript" src="{% static 'streamwebs/js/data.js' %}"></script>
+  <script type="application/javascript"
+          src="{% static 'streamwebs/js/data.js' %}"></script>
 {% endblock %}

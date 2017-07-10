@@ -7,7 +7,6 @@ class AdminGroupPermissionsTestCase(TestCase):
         self.admin, self.created = Group.objects.get_or_create(name='admin')
         self.expected_perms = {
             'can upload resources',
-            'can promote other users',
             'can view site statistics',
         }
 

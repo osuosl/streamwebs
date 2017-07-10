@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.contrib.gis.db import models
 from itertools import chain
 
-from streamwebs.models import TransectZone, RiparianTransect, Site
+from streamwebs.models import TransectZone, RiparianTransect, Site, School
 
 
 class TransectZoneTestCase(TestCase):
@@ -25,8 +25,9 @@ class TransectZoneTestCase(TestCase):
         }
 
         site = Site.test_objects.create_site('test site')
+        school = School.test_objects.create_school('School of Cool')
         self.transect = RiparianTransect.test_objects.create_transect(
-            'School of Cool', '2016-07-27 10:14', site)
+            school, '2016-07-27 10:14', site)
 
     def test_fields_exist(self):
         for field, field_type in self.expected_fields.items():
@@ -51,11 +52,11 @@ class TransectZoneTestCase(TestCase):
         zone_2 = TransectZone.test_objects.create_zone(
             self.transect, 1, 1, 1, 'Second zone'
         )
-        self.assertEqual(zone_1.transect.school, 'School of Cool')
+        self.assertEqual(zone_1.transect.school.name, 'School of Cool')
         self.assertEqual(zone_1.transect.date_time, '2016-07-27 10:14')
         self.assertEqual(zone_1.transect.site.site_name, 'test site')
 
-        self.assertEqual(zone_2.transect.school, 'School of Cool')
+        self.assertEqual(zone_2.transect.school.name, 'School of Cool')
         self.assertEqual(zone_2.transect.date_time, '2016-07-27 10:14')
         self.assertEqual(zone_2.transect.site.site_name, 'test site')
 

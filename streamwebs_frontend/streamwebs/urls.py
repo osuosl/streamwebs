@@ -89,6 +89,8 @@ urlpatterns = [
         views.export_soil, name='export_soil'),
 
     url(r'^statistics/$', views.admin_site_statistics, name='stats'),
+    url(r'^user-promotion/$', views.admin_user_promotion, name='user_promo'),
+
     url(r'^register/$', views.register, name='register'),
     url(r'^account/$', views.account, name='account'),
     url(r'^account/update_email/$', views.update_email, name='update_email'),
@@ -101,5 +103,7 @@ urlpatterns = [
         name='resources-data-sheets'),
     url(r'^resources/curriculum-guides/', views.resources_publications,
         name='resources-publications'),
+    url(r'^resources/tutorial-videos/', views.resources_tutorial_videos,
+        name='resources-tutorial_videos'),
     url(r'^resources/new/', views.resources_upload, name='resources-upload')
 ]
