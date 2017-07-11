@@ -2,25 +2,27 @@
 {% load i18n %}
 {% block title %}Change Email{% endblock %}
 {% block stylesheets %}
-    <style>
-        .errorlist{
-            color:red;
-        }
-    </style>
+  <style>
+    .errorlist{
+        color:red;
+    }
+  </style>
 {% endblock %}
-{% block body_title %}{% trans "Account" %}{% endblock %}
+{% block body_title %}{% trans "Update Email" %}{% endblock %}
 {% block content %}
-    <div class="row">
-        <form class="col s8 offset-s2" id="user_form" method="post" action="{% url 'streamwebs:update_email' %}">
-            {% csrf_token %}
-            <strong>{% trans "Change your email" %}</strong><br/>
-            <div class="input-field col s12">
-                <label for="{{ user_form.email.id_for_label }}">Email:</label>
-                    {{ user_form.email }}
-                    <b>{{ user_form.email.errors }}</b>
-            </div>
-            <br/>
-            <input class="btn waves-effect waves-light teal darken-4" type='submit' name='update_email' value='{% trans "Change Email"%}' />
-        </form>
-    </div>
+  <div class="row">
+    <form class="col s8 offset-s2" id="user_form" method="post" action="{% url 'streamwebs:update_email' %}">
+      {% csrf_token %}
+      <br/><br/>
+      <strong>{% trans "Change your email:" %}</strong><br/>
+      <br/>
+      <div class="input-field col s12">
+        <label for="{{ user_form.email.id_for_label }}">Email:</label>
+          {{ user_form.email }}
+          <b>{{ user_form.email.errors }}</b>
+      </div>
+      <br/>
+      <input class="btn waves-effect waves-light teal darken-4" type='submit' name='update_email' value='{% trans "Change Email"%}' />
+    </form>
+  </div>
 {% endblock %}
