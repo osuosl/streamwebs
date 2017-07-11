@@ -69,8 +69,8 @@ class UserPasswordForm(forms.ModelForm):
         if self.data['password'] != self.data['password_check']:
             raise forms.ValidationError(_('New Passwords did not match'))
         if self.data['old_password'] == self.data['password']:
-            raise forms.ValidationError(_('Your old password and new password'+
-                                          ' cannot be the same'))
+            raise forms.ValidationError(_('Your old password and new ' +
+                                          'password cannot be the same'))
         return self.data['password']
 
 
