@@ -25,7 +25,7 @@ from streamwebs.forms import (
 from streamwebs.models import (
     Macroinvertebrates, Site, Water_Quality, WQ_Sample, RiparianTransect,
     TransectZone, Canopy_Cover, CameraPoint, PhotoPoint,
-    PhotoPointImage, Soil_Survey, Resource, School, UserProfile)
+    PhotoPointImage, Soil_Survey, Resource, School)
 
 import json
 import copy
@@ -290,13 +290,12 @@ def register(request):
 def account(request):
     user = request.user
     user = User.objects.get(username=user)
-    return render(request, 'streamwebs/account.html',{
+    return render(request, 'streamwebs/account.html', {
                   'user': user})
 
 
 @login_required
 def update_email(request):
-    email_submitted = False
     user = request.user
     temp = copy.copy(user)
 
@@ -306,9 +305,8 @@ def update_email(request):
             if user.email != temp.email:
                 user = user_email_form.save(commit=False)
                 user.save()
-                email_submitted = True
-                messages.success(request, 'You have successfully updated your' +
-                                 ' email.')
+                messages.success(request, 'You have successfully updated' +
+                                 ' your email.')
             return redirect(reverse('streamwebs:account'))
 
     else:
@@ -335,8 +333,8 @@ def update_password(request):
                 user = User.objects.get(username=user)
                 user.set_password(password)
                 user.save()
-                messages.success(request, 'You have successfully updated your' +
-                                 ' password.')
+                messages.success(request, 'You have successfully updated' +
+                                 ' your password.')
 
                 user = authenticate(username=username, password=password)
                 login(request, user)
@@ -345,16 +343,13 @@ def update_password(request):
 
         else:
             old_password_incorrect = True
-
-
     else:
         user_password_form = UserPasswordForm()
 
     return render(request, 'streamwebs/update_password.html', {
-        'user_form':user_password_form,
+        'user_form': user_password_form,
         'old_password_incorrect': old_password_incorrect
     })
-
 
 
 def user_login(request):
