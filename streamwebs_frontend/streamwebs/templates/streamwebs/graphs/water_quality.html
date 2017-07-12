@@ -52,22 +52,6 @@
     }
   </style>
 
-  <script type="application/javascript">
-    var toggleGraph = function toggleGraph(name) {
-      if ($('#' + name + '-control').prop('checked')) {
-        $('#graph-site1-' + name).fadeIn();
-        if (window.hasSiteTwo) {
-          $('#graph-site2-' + name).fadeIn();
-        }
-      } else {
-        $('#graph-site1-' + name).fadeOut();
-        if (window.hasSiteTwo) {
-          $('#graph-site2-' + name).fadeOut();
-        }
-      }
-    };
-  </script>
-
   <input type="checkbox" id="temperature-control" checked="checked"
          onclick="toggleGraph('temperature')"/>
   <label for="temperature-control">{% trans "Temperature" %}</label>
