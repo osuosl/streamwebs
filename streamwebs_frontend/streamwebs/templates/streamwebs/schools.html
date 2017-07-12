@@ -1,0 +1,55 @@
+{% extends "streamwebs/base.html" %}
+{% load staticfiles %}
+{% block title %}Schools - StreamWebs{% endblock %}
+{% load i18n %}
+{% load filters %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css">
+
+{% endblock %}
+
+{% block scripts %}
+
+
+<script src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#schools_table').DataTable();
+    $('select').material_select();
+
+} );
+</script>
+<!-- <script type="application/javascript" src="{% static 'streamwebs/js/sites.js' %}"></script> -->
+{% endblock %}
+
+{% block body_title %}{% trans "Schools" %}{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+      <table id="schools_table" class="display">
+        <thead>
+          <tr>
+            <th>School</th>
+            <th>Type</th>
+            <th>City</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for s in schools %}
+            <tr>
+              <td>
+                <a href="{% url 'streamwebs:school_detail' s.id %}">
+                  {{ s.name }}
+                </a>
+              </td>
+              <td>{{ s.school_type }}</td>
+              <td>{{ s.city }}, {{ s.province }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+{% endblock %}

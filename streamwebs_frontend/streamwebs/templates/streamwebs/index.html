@@ -3,7 +3,7 @@
 {% load i18n %}
 {% block stylesheets %}
   <style>
-    #index-banner{
+    #index-banner {
       min-height: 380px;
       text-align: center;
       margin-bottom: 0;
@@ -12,12 +12,14 @@
       background-position: 50% 35%;
       background-image: url('http://www.mthoodchamber.com/wp-content/uploads/2013/07/1-mt-hood-oregon-recreation.jpg');
     }
-    #index-banner #banner-text{
+
+    #index-banner #banner-text {
       color: white;
       vertical-align: middle;
       top: 75%;
     }
-    .material-icons{
+
+    .material-icons {
       font-size: 1.5em;
     }
   </style>
@@ -25,55 +27,57 @@
 
 <div class="container">
   {% block content %}
-      <div class="section no-pad-bot" id="index-banner">
-        <div id="banner-text" class="center-align">
-          <h4>Student Stewardship Network</h4>
+    <div class="section no-pad-bot" id="index-banner">
+      <div id="banner-text" class="center-align">
+        <h4>{% trans "Student Stewardship Network" %}</h4>
+      </div>
+    </div>
+    <br>
+    <div class="container">
+      <div class="h-img" style="transform: rotate(-2deg)">
+        <div class="card-panel grey lighten-4 z-depth-1">
+          <img class="responsive-img"
+               src="{% static 'streamwebs/images/SW_5.jpg' %}"
+               alt="homepage img">
         </div>
       </div>
-      <br>
-      <div class="container">
-        <div class="h-img" style="transform: rotate(-2deg)">
-          <div class="card-panel grey lighten-4 z-depth-1">
-            <img class="responsive-img" src="{% static 'streamwebs/images/SW_5.jpg' %}" alt="homepage img">
-          </div>
-        </div>
-      </div>
-      <br>
-      <div class="container about">
-        <h3>{% trans "About" %}</h3>
-        <p>
-          The StreamWebs Student Stewardship Network is an educational
-          platform that provides teachers and students with resources to
-          conduct based hands-on watershed stewardship projects. The
-          StreamWebs program works to promote the teaching and learning of
-          field based science, enhance environmental literacy, and provide
-          resources that support 
-          <a href="http://www.noaa.gov/explainers/noaa-meaningful-watershed-educational-experience">
-              Meaningful Watershed Education Experiences
-          </a>
-          (MWEEs).
-          <br><br>
-          By providing students and teachers open-source, web-based tools
-          for watershed data collection, analysis, and a multimedia showcase
-          for their project and data reports, StreamWebs helps to bridge
-          student field experiences back to the classroom and vice versa.
-          StreamWebs hopes to increase understanding and stewardship of
-          watersheds and related ocean, coastal, riverine, and estuarine
-          ecosystems and to help students and teachers demonstrate their role
-          as vital contributors to watershed sustainability.
-          <br><br>
-          StreamWebs is a program of Oregon Sea Grant and Oregon State
-          University Extension Service and is supported by the National
-          Oceanic and Atmospheric Administration (NOAA) Bay and Watershed
-          Education Training (BWET) program.
-          <br><br>
-          If you have questions about StreamWebs, or how you can get
-          involved, email
-          <a href="mailto:StreamWebs@oregonstate.edu">
-            StreamWebs@oregonstate.edu
-          </a>.
-        </p>
-      </div>
+    </div>
+    <br>
+    <div class="container about">
+      <h3>{% trans "About" %}</h3>
+      <p>
+        The StreamWebs Student Stewardship Network is an educational
+        platform that provides teachers and students with resources to
+        conduct based hands-on watershed stewardship projects. The
+        StreamWebs program works to promote the teaching and learning of
+        field based science, enhance environmental literacy, and provide
+        resources that support
+        <a href="http://www.noaa.gov/explainers/noaa-meaningful-watershed-educational-experience">
+          Meaningful Watershed Education Experiences
+        </a>
+        (MWEEs).
+        <br><br>
+        By providing students and teachers open-source, web-based tools
+        for watershed data collection, analysis, and a multimedia showcase
+        for their project and data reports, StreamWebs helps to bridge
+        student field experiences back to the classroom and vice versa.
+        StreamWebs hopes to increase understanding and stewardship of
+        watersheds and related ocean, coastal, riverine, and estuarine
+        ecosystems and to help students and teachers demonstrate their role
+        as vital contributors to watershed sustainability.
+        <br><br>
+        StreamWebs is a program of Oregon Sea Grant and Oregon State
+        University Extension Service and is supported by the National
+        Oceanic and Atmospheric Administration (NOAA) Bay and Watershed
+        Education Training (BWET) program.
+        <br><br>
+        If you have questions about StreamWebs, or how you can get
+        involved, email
+        <a href="mailto:StreamWebs@oregonstate.edu">
+          StreamWebs@oregonstate.edu
+        </a>.
+      </p>
+    </div>
 
   {% endblock %}
 

@@ -8,64 +8,69 @@
 <script src="https://maps.googleapis.com/maps/api/js?key={{ maps_api }}"></script>
 <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyBV71HBuAFMtHEAaSEVpRDPUQyGvJwTX1k"></script>
 
-<script type="application/javascript">
+  <script type="application/javascript">
     var sites = [];
     {% for site in sites %}
-        sites.push({
-            id:   "{{site.id}}",
-            slug: "{{site.site_slug}}",
-            name: "{{site.site_name}}",
-            description: "{{site.description}}",
+      sites.push({
+        id: "{{site.id}}",
+        slug: "{{site.site_slug}}",
+        name: "{{site.site_name}}",
+        description: "{{site.description}}",
 
-            {% language "en-us" %}
-            lat: {{site.location.y}},
-            lng: {{site.location.x}},
-            {% endlanguage %}
-        });
+        {% language "en-us" %}
+          lat: {{site.location.y}},
+          lng: {{site.location.x}},
+        {% endlanguage %}
+      });
     {% endfor %}
-</script>
-<script type="application/javascript" src="{% static 'streamwebs/js/sites.js' %}"></script>
+  </script>
+  <script type="application/javascript"
+          src="{% static 'streamwebs/js/sites.js' %}"></script>
 {% endblock %}
 
 {% block body_title %}{% trans "Sites" %}{% endblock %}
 
 {% block content %}
-    <div class="container">
-        <div id="site_search">
-            <div class="row">
-                <nav class="search-nav col s8 teal darken-4">
-                    <div class="nav-wrapper">
-                        <div class="input-field">
-                            <input id="search" type="search" autocomplete="off" placeholder="{% trans 'Search sites' %}" oninput="search()">
-                            <label for="search"><i class="material-icons">search</i></label>
-                            <i class="material-icons">close</i>
+  <div class="container">
+    <div id="site_search">
+      <div class="row">
+        <nav class="search-nav col s8 teal darken-4">
+          <div class="nav-wrapper">
+            <div class="input-field">
+              <input id="search" type="search" autocomplete="off"
+                     placeholder="{% trans 'Search sites' %}"
+                     oninput="search()">
+              <label for="search"><i class="material-icons">search</i></label>
+              <i class="material-icons">close</i>
 
-                            <div class="search-results collection">
-                            {% for site in sites %}
-                                <a href="{{site.site_slug}}" class="collection-item search-item {{site.site_type}} teal-text text-darken-4 hide">{{site.site_name}}</a>
-                            {% endfor %}
-                            </div>
-                        </div>
-                    </div>
-                </nav>
+              <div class="search-results collection">
+                {% for site in sites %}
+                  <a href="{{ site.site_slug }}"
+                     class="collection-item search-item {{ site.site_type }} teal-text text-darken-4 hide">{{ site.site_name }}</a>
+                {% endfor %}
+              </div>
             </div>
-        </div>
-
-        <div id="site_map">
-            <div id="map"></div>
-        </div>
-
-        <div id="site_select">
-            <a href="#!" class="dropdown-button btn select-button teal darken-4" data-activates='dropdown'>{% trans "Select Site" %}<i class="material-icons right">arrow_drop_down</i></a>
-            <ul id="dropdown" class="dropdown-content">
-            {% for site in sites %}
-                <li><a href="{{site.site_slug}}" class="teal-text text-darken-4">{{site.site_name}}</a></li>
-            {% endfor %}
-            </ul>
-        </div>
-        <br>
-        <div id="create-site">
-            <a href="{% url 'streamwebs:create_site' %}" class="btn teal darken-4">CREATE SITE</a>
-        </div>
+          </div>
+        </nav>
+      </div>
     </div>
+
+    <div id="site_map">
+      <div id="map"></div>
+    </div>
+
+    <div id="site_select">
+        <a href="#!" class="dropdown-button btn select-button teal darken-4" data-activates='dropdown'>{% trans "Select Site" %}<i class="material-icons right">arrow_drop_down</i></a>
+        <ul id="dropdown" class="dropdown-content">
+        {% for site in sites %}
+            <li><a href="{{site.site_slug}}" class="teal-text text-darken-4">{{site.site_name}}</a></li>
+        {% endfor %}
+        </ul>
+    </div>
+    <br>
+    <div id="create-site">
+        <a href="{% url 'streamwebs:create_site' %}" class="btn teal darken-4">{% trans "Create Site" %}</a>
+    </div>
+    </div>
+  </div>
 {% endblock %}
