@@ -9,12 +9,22 @@ aSyBV71HBuAFMtHEAaSEVpRDPUQyGvJwTX1k"></script>
 .js' %}"></script>
 <script>
 var markers = [];
+var temp;
+var sites = [];
+//Create list of sites in lowercase
+{% for site in sites %}
+  temp = "{{ site.site_name }}".toLowerCase();
+  console.log(temp);
+  sites.push(temp);
+{% endfor %}
+
 $(document).ready(function() {
   document.getElementById("site_form").reset();
-  var myLatLng = new google.maps.LatLng(44, -120);
+  var myLatLng = new google.maps.LatLng(43.8041, -120.5542);
   var map = new google.maps.Map(document.getElementById('map'), {
     zoom: 7,
-    center: myLatLng
+    center: myLatLng,
+    streetViewControl: false
   });
 
   google.maps.event.addListener(map, 'click', function(e){
@@ -42,13 +52,31 @@ $(document).ready(function() {
     $('#input_lng').val(position.lng());
 
   }
-  });
+});
 function validateForm(){
+  var site_name = document.getElementById('id_site_name').value.toLowerCase();
+  var count = 0;
+  var found=sites.includes(site_name);
+  console.log(found);
+  // checks if the user has entered a name that is already in use
+  // regardless of the case
+  if(found){
+    Materialize.toast('That site name is already in use.', 3000, 'red');
+    count ++;
+  }
+  // checks to make sure user has selected a spot on the map
   if (markers.length == 0){
-    Materialize.toast('Please select a location on the map.', 3000, 'red')
+    Materialize.toast('Please select a location on the map.', 3000, 'red');
+    count ++;
+  }
+  // if either checks fail, form is not submitted and user is notified of
+  // the problems via toaster notification
+  if(count != 0){
     return false;
   }
-  return true;
+  else{
+    return true;
+  }
 }
 
 
@@ -60,50 +88,50 @@ function validateForm(){
 {% block content %}
 <form id='site_form' method='post' enctype="multipart/form-data"
 onsubmit="return validateForm()">
-  {% csrf_token %}
-  {{ site_form.media }}
-  <div class="row">
-    <div class="input-field col s12">
-      <i class="material-icons prefix">flag</i>
-      <label for="{{ site_form.site_name.id_for_label }}">Site Name:</label>
-      {{ site_form.site_name }}
-      {{ site_form.site_name.errors | striptags }}
+{% csrf_token %}
+{{ site_form.media }}
+<div class="row">
+  <div class="input-field col s12">
+    <i class="material-icons prefix">flag</i>
+    <label for="{{ site_form.site_name.id_for_label }}">Site Name:</label>
+    {{ site_form.site_name }}
+    {{ site_form.site_name.errors | striptags }}
 
+  </div>
+</div>
+
+<div class="row">
+  <div class="input-field col s12">
+    <i class="material-icons prefix">sort</i>
+    <label for="{{ site_form.description.id_for_label }}">Description:</label>
+    {{ site_form.description }}
+    {{ site_form.description.errors | striptags }}
+  </div>
+</div>
+
+<input type="hidden" id="input_lat" name="lat" required>
+<input type="hidden" id="input_lng" name="lng" required>
+
+<p>
+
+  <label for="id_image">Image:</label>
+
+  <div class="file-field input-field">
+    <div class="btn teal darken-4">
+      <span>File</span>
+      <input type="file" id="id_image" name="image">
+    </div>
+    <div class="file-path-wrapper">
+      <input class="file-path validate" type="text">
     </div>
   </div>
-
-  <div class="row">
-    <div class="input-field col s12">
-      <i class="material-icons prefix">sort</i>
-      <label for="{{ site_form.description.id_for_label }}">Description:</label>
-      {{ site_form.description }}
-      {{ site_form.description.errors | striptags }}
-    </div>
-  </div>
-
-  <input type="hidden" id="input_lat" name="lat" required>
-  <input type="hidden" id="input_lng" name="lng" required>
-
-  <p>
-
-    <label for="id_image">Image:</label>
-
-    <div class="file-field input-field">
-      <div class="btn teal darken-4">
-        <span>File</span>
-        <input type="file" id="id_image" name="image">
-      </div>
-      <div class="file-path-wrapper">
-        <input class="file-path validate" type="text">
-      </div>
-    </div>
-  </p>
+</p>
 
 <div class="row">
   <div id="map"> </div>
 </div>
-  <input id="button" class="btn waves-effect waves-light teal darken-4"
-  type='submit' name='submit' value='{% trans 'Add new site' %}'/>
+<input id="button" class="btn waves-effect waves-light teal darken-4"
+type='submit' name='submit' value='{% trans 'Add new site' %}'/>
 
 
 </form>

@@ -42,6 +42,7 @@ def index(request):
 @login_required
 def create_site(request):
     created = False
+    site_list = Site.objects.filter(active=True)
 
     if request.method == 'POST':
         if not request.POST._mutable:
@@ -70,7 +71,7 @@ def create_site(request):
         site_form = SiteForm()
 
     return render(request, 'streamwebs/create_site.html', {
-        'site_form': site_form, 'created': created})
+        'site_form': site_form, 'created': created, 'sites': site_list})
 
 
 def sites(request):
