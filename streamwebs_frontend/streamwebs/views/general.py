@@ -19,7 +19,8 @@ from streamwebs.forms import (
     PhotoPointImageForm, PhotoPointForm, CameraPointForm, WQSampleForm,
     WQSampleFormReadOnly, WQForm, WQFormReadOnly, SiteForm, Canopy_Cover_Form,
     SoilSurveyForm, SoilSurveyFormReadOnly, StatisticsForm, TransectZoneForm,
-    BaseZoneInlineFormSet, ResourceForm, AdminPromotionForm)
+    BaseZoneInlineFormSet, ResourceForm, AdminPromotionForm, UserEmailForm,
+    UserPasswordForm)
 
 from streamwebs.models import (
     Macroinvertebrates, Site, Water_Quality, WQ_Sample, RiparianTransect,
@@ -283,6 +284,72 @@ def register(request):
         'user_form': user_form,
         'profile_form': profile_form,
         'registered': registered})
+
+
+@login_required
+def account(request):
+    user = request.user
+    user = User.objects.get(username=user)
+    return render(request, 'streamwebs/account.html', {
+                  'user': user})
+
+
+@login_required
+def update_email(request):
+    user = request.user
+    temp = copy.copy(user)
+
+    if request.method == 'POST':
+        user_email_form = UserEmailForm(request.POST, instance=user)
+        if user_email_form.is_valid():
+            if user.email != temp.email:
+                user = user_email_form.save(commit=False)
+                user.save()
+                messages.success(request, 'You have successfully updated' +
+                                 ' your email.')
+            return redirect(reverse('streamwebs:account'))
+
+    else:
+        user_email_form = UserEmailForm(initial={'email': user.email})
+
+    return render(request, 'streamwebs/update_email.html', {
+        'user_form': user_email_form,
+    })
+
+
+@login_required
+def update_password(request):
+    old_password_incorrect = False
+    if request.method == 'POST':
+        username = request.user
+        old_password = request.POST['old_password']
+        password = request.POST['password']
+
+        user_password_form = UserPasswordForm(request.POST, instance=username)
+        user = authenticate(username=username, password=old_password)
+
+        if user:
+            if user_password_form.is_valid():
+                user = User.objects.get(username=user)
+                user.set_password(password)
+                user.save()
+                messages.success(request, 'You have successfully updated' +
+                                 ' your password.')
+
+                user = authenticate(username=username, password=password)
+                login(request, user)
+
+                return redirect(reverse('streamwebs:account'))
+
+        else:
+            old_password_incorrect = True
+    else:
+        user_password_form = UserPasswordForm()
+
+    return render(request, 'streamwebs/update_password.html', {
+        'user_form': user_password_form,
+        'old_password_incorrect': old_password_incorrect
+    })
 
 
 def user_login(request):

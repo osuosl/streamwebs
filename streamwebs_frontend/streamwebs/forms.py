@@ -38,7 +38,39 @@ class UserForm(forms.ModelForm):
 
     def clean_password(self):
         if self.data['password'] != self.data['password_check']:
-            raise forms.ValidationError(_('Passwords do not match'))
+            raise forms.ValidationError(_('Passwords did not match'))
+        return self.data['password']
+
+
+class UserEmailForm(forms.ModelForm):
+    email = forms.CharField(required=True)
+
+    class Meta:
+        model = User
+        fields = ('email',)
+
+
+class UserPasswordForm(forms.ModelForm):
+    old_password = forms.CharField(
+        widget=forms.PasswordInput(),
+        label=_('Old Password'))
+    password = forms.CharField(
+        widget=forms.PasswordInput(),
+        label=_('New Password'))
+    password_check = forms.CharField(
+        widget=forms.PasswordInput(),
+        label=_('New Password Repeat'))
+
+    class Meta:
+        model = User
+        fields = ('password',)
+
+    def clean_password(self):
+        if self.data['password'] != self.data['password_check']:
+            raise forms.ValidationError(_('New Passwords did not match'))
+        if self.data['old_password'] == self.data['password']:
+            raise forms.ValidationError(_('Your old password and new ' +
+                                          'password cannot be the same'))
         return self.data['password']
 
 
