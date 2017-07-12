@@ -27,9 +27,9 @@ def num(x):
 
 
 if os.path.isdir("../streamwebs_frontend/sw_data/"):
-    datafile = '../sw_data/ll_site_data.csv'
+    datafile = '../sw_data/sites.csv'
 else:
-    datafile = '../csvs/ll_site_data.csv'
+    datafile = '../csvs/sites.csv'
 
 
 # Title, Post date, Updated date, Marker, Coordinates, Lat, Long

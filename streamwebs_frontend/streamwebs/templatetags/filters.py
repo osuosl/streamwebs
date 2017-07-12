@@ -66,3 +66,8 @@ def get_cc_percentage(est_cc):
     """Calculates a percentage for the estimated canopy cover"""
     percentage = ((float(est_cc) / 96) * 100)
     return ("{0:.2f}".format(percentage))
+
+
+@register.filter
+def get_item(dictionary, key):
+    return dictionary.get(key)

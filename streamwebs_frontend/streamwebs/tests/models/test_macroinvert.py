@@ -13,7 +13,8 @@ class MacroTestCase(TestCase):
 
     def setUp(self):
         self.expected_fields = {
-            'school': models.CharField,
+            'school': models.ForeignKey,
+            'school_id': models.ForeignKey,
             'date_time': models.DateTimeField,
             'weather': models.CharField,
             'site': models.ForeignKey,
@@ -22,6 +23,7 @@ class MacroTestCase(TestCase):
             'num_people': models.PositiveIntegerField,
             'water_type': models.CharField,
             'notes': models.TextField,
+            'uid': models.PositiveIntegerField,
             'id': models.AutoField,
 
             # Sensitive/intolerant to pollution

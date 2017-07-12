@@ -27,6 +27,8 @@ class SoilSurveyTestCase(TestCase):
             'site_char': models.TextField,
             'soil_type': models.CharField,
 
+            'uid': models.PositiveIntegerField,
+
             'id': models.AutoField,
         }
 

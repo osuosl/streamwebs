@@ -47,14 +47,20 @@ class RetrieveSiteTestCase(TestCase):
             self.site, '2016-07-25', self.school, 'E', 45, 45, 'False', 0, 0,
             'Fahrenheit', 'Fahrenheit')  # NOQA
 
-        macro_sheet_1 = Macroinvertebrates.test_objects.create_macro(self.site)  # NOQA
-        macro_sheet_2 = Macroinvertebrates.test_objects.create_macro(self.site)  # NOQA
+        macro_sheet_1 = Macroinvertebrates.test_objects.create_macro( # NOQA
+            self.site, self.school
+        )
+        macro_sheet_2 = Macroinvertebrates.test_objects.create_macro(
+            self.site, self.school
+        )
         macro_sheet_2.date_time = '2016-08-11 14:09'  # NOQA
 
         transect_sheet_1 = RiparianTransect.test_objects.create_transect(  # NOQA
-            'Test School', '2016-06-25 10:20', self.site)  # NOQA
+            self.school, '2016-06-25 10:20', self.site
+        )  # NOQA
         transect_sheet_2 = RiparianTransect.test_objects.create_transect(  # NOQA
-            'Test School', '2016-05-25 10:20', self.site)  # NOQA
+            self.school, '2016-05-25 10:20', self.site
+        )  # NOQA
 
         new_response = self.client.get(reverse(
             'streamwebs:site', kwargs={'site_slug': self.site.site_slug}))

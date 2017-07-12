@@ -23,8 +23,11 @@ class SchoolTestCase(TestCase):
             'id': models.AutoField,
             'userprofile': models.ManyToOneRel,
             'water_quality': models.ManyToOneRel,
+            'macroinvertebrates': models.ManyToOneRel,
+            'ripariantransect': models.ManyToOneRel,
             'canopy_cover': models.ManyToOneRel,
-            'soil_survey': models.ManyToOneRel
+            'soil_survey': models.ManyToOneRel,
+            'schoolrelations': models.ManyToOneRel
         }
 
     def test_fields_exist(self):
