@@ -37,10 +37,10 @@ aSyBV71HBuAFMtHEAaSEVpRDPUQyGvJwTX1k"></script>
   <div class="row">
     <div class="col s12 m6 center-align">
       {% if site.image %}
-        <img src="{{ site.image.url }}" alt="site image"/>
+        <img src="{{ site.image.url }}" alt="site image" id="site_detail_image" />
       {% else %}
         <img src="{% static 'streamwebs/images/img-default.jpg' %}"
-             alt="site image"/>
+             alt="site image" id="site_detail_image" />
       {% endif %}
     </div>
     <div class="col s12 m6 center-align">

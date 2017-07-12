@@ -102,5 +102,10 @@ urlpatterns = [
         name='resources-publications'),
     url(r'^resources/tutorial-videos/', views.resources_tutorial_videos,
         name='resources-tutorial_videos'),
-    url(r'^resources/new/', views.resources_upload, name='resources-upload')
+    url(r'^resources/new/', views.resources_upload, name='resources-upload'),
+
+    url(r'^schools/$', views.schools, name='schools'),
+    url(r'^schools/(?P<school_id>[0-9]+)/$',
+        views.school_detail, name='school_detail')
+
 ]
