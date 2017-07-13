@@ -23,13 +23,8 @@ from streamwebs.models import UserProfile, School  # NOQA
 
 if os.path.isdir("../streamwebs_frontend/sw_data/"):
     users_list = '../sw_data/users.csv'
-    users_list1 = '../sw_data/users1.csv'
-    users_list2 = '../sw_data/users2.csv'
 else:
     users_list = '../csvs/users.csv'
-    users_list1 = '../csvs/users1.csv'
-    users_list2 = '../csvs/users2.csv'
-
 
 with open(users_list, 'r') as csvfile:
     reader = csv.DictReader(csvfile)
@@ -53,7 +48,8 @@ with open(users_list, 'r') as csvfile:
             if row["E-mail"]:
                 email = row["E-mail"]
             if row["Created date"]:
-                created = datetime.strptime(row["Created date"], '%Y-%m-%d %H:%M')
+                created = datetime.strptime(row["Created date"],
+                                            '%Y-%m-%d %H:%M')
             if row["Active"]:
                 active = row["Active"]
             if row["Roles"]:
@@ -72,7 +68,8 @@ with open(users_list, 'r') as csvfile:
             else:
                 dob = datetime.strptime('01/01/1970', '%m/%d/%Y')
 
-            password = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(12))
+            password = ''.join(random.choice(
+                string.ascii_uppercase + string.digits) for _ in range(12))
 
             if not User.objects.filter(username=username).exists():
                 user = User.objects.create_user(
