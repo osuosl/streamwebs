@@ -295,17 +295,4 @@ class StatisticsForm(forms.Form):
 
 
 class AdminPromotionForm(forms.Form):
-    PERM_OPTIONS = (
-        ('add_admin', _('Add to Admin group')),
-        ('del_admin', _('Remove from Admin group')),
-        ('add_stats', _('Grant permission to view the Statistics page')),
-        ('add_upload', _('Grant permission to upload to the Resources page')),
-        ('del_stats', _('Revoke permission to view the Statistics page')),
-        ('del_upload', _('Revoke permission to upload to the Resources page')),
-    )
-
-    users_display = forms.CharField(max_length=100)
-
-    users = forms.ModelChoiceField(queryset=User.objects.all(),
-                                   widget=forms.HiddenInput())
-    perms = forms.ChoiceField(choices=PERM_OPTIONS)
+    users_search = forms.CharField(max_length=100)
