@@ -4,125 +4,130 @@
 
 {% block title %}{% trans "StreamWebs Statistics" %}{% endblock %}
 {% block body_title %}{% trans "StreamWebs Statistics" %}{% endblock %}
+{% block head %}
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css">
 
+{% endblock %}
 {% block content %}
-<div class="container">
-  <form id='stats_form' method='post'>
-      {% csrf_token %}
-      {{ stats_form.as_p }}
-      <input type='submit' name='submit' value='{% trans 'Calculate' %}'/>
-  </form>
-  <br>
-  <div class="row">
-    <div class="col s4">
-      <div class="card teal darken-4">
-        <div class="card-content white-text">
-          {% if all_time %}
-            <span class="card-title">{{ users.count }}</span>
-            <p>Users have logged in within the last 3 years</p>
-          {% else %}
-            <span class="card-title">{{ users.count }}</span>
-            <p>Users who joined between {{ start }} and {{ end }}</p>
-          {% endif %}
-
-<form id='stats_form' method='post'>
-    {% csrf_token %}
-    {{ stats_form.as_p }}
-    <input type='submit' name='submit' value='{% trans 'Calculate' %}'/>
-</form>
-
-{% if all_time %}
-    {% trans "Users who have logged in within the last 3 years" %}:
-    {{ users.count }}
-{% else %}
-    {% trans "Users who joined between {{ start }} and {{ end }}" %}:
-    {{ users.count }}
-{% endif %}
-{% for user in users.users %}
-    <li>{{ user.username }}</li>
-{% endfor %}
-
-{% trans "Number of data sheets uploaded between {{ start }} and {{ end }}" %}:
-{% for type, num in sheets.items %}
-    <li> {{ type }}: {{ num }}</li>
-{% endfor %}
-
-{% trans "Schools that uploaded data between {{ start }} and {{ end }}" %}:
-{{ schools.total }}
-{% for school in schools.schools %}
-    <li> {{ school.name }} </li>
-{% endfor %}
-
-{% trans "Sites that uploaded data between {{ start }} and {{ end }}" %}:
-{{ sites.total }}
-{% for site in sites.sites %}
-    <li>{{ site.site_name }}</li>
-{% endfor %}
-
+  <div class="container">
+    <form id='stats_form' method='post'>
+        {% csrf_token %}
+        {{ stats_form.as_p }}
+        <input class="btn waves-effect teal darken-4" type='submit' name='submit'
+          value='{% trans 'Calculate' %}'/>
+    </form>
+    <br>
+    <div class="row count-row">
+      <div class="col s6 count">
+        <div class="card teal darken-4">
+          <div class="card-content white-text">
+            {% if all_time %}
+              <span class="card-title">{{ users.count }}</span>
+              <p>
+                Users have logged in within the last 3 years
+              </p>
+            {% else %}
+              <span class="card-title">{{ users.count }}</span>
+              <p>
+                Users who joined between {{ start }} and {{ end }}
+              </p>
+            {% endif %}
+          </div>
         </div>
       </div>
 
-    </div>
-
-    <div class="col s4">
-      <div class="card teal darken-4">
-        <div class="card-content white-text">
-          <span class="card-title">{{ sheets.total }}</span>
-          <p>
-            Data sheets uploaded between {{ start }} and {{ end }}
-            <ul>
+      <div class="col s6 count">
+        <div class="card teal darken-4">
+          <div class="card-content white-text">
+            <span class="card-title">{{ sheets.total }}</span>
+            <p>
+              Data sheets uploaded between {{ start }} and {{ end }}
+            </p>
+            <br>
+            <p>
               {% for type, num in sheets.items %}
                 <li> {{ type }}: {{ num }}</li>
               {% endfor %}
-            </ul>
-          </p>
+            </p>
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="col s4">
-      <div class="card teal darken-4">
-        <div class="card-content white-text">
-          <span class="card-title"> {{ schools.total }} </span>
+    <div class="row count-row">
+      <div class="col s6 count">
+        <div class="card teal darken-4">
+          <div class="card-content white-text">
+            <span class="card-title"> {{ schools.total }} </span>
             <p>
               Schools that uploaded data between {{ start }} and {{ end }}
-              <ul>
-                {% for school in schools.schools %}
-                <li> {{ school.name }} </li>
-                {% endfor %}
-              </ul>
-          </p>
+            </p>
+            <br>
+            <input type="button" value="View All Schools"
+              id = "schools-btn" class="btn teal darken-3"/>
+          </div>
+        </div>
+      </div>
+
+      <div class="col s6 count">
+        <div class="card teal darken-4">
+          <div class="card-content white-text">
+            <span class="card-title"> {{ sites.total }} </span>
+            <p>
+              Sites that uploaded data between {{ start }} and {{ end }}
+            </p>
+            <br>
+            <input type="button" value="View All Sites" style="margin: 0 auto;"
+              id="sites-btn" class="btn teal darken-3"/>
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="col s12">
-      <div class="card teal darken-4">
-        <div class="card-content white-text">
-          <span class="card-title"> {{ sites.total }} </span>
-          <h6>Sites that uploaded data between {{ start }} and {{ end }}</h6>
-          <p>
-            {% for site in sites.sites %}
-              <li>{{ site.site_name }}</li>
-            {% endfor %}
-          </p>
-        </div>
-      </div>
-</div>
+    <div class="row schools" style="display:none;">
+      <input type="button" value="Back" class="back btn teal darken-3"/>
+      <table id="schools_table">
+        <thead>
+          <tr>
+            <th>School</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for school in schools.schools %}
+            <tr>
+              <td>
+                {{ school.name }}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="row sites" style="display:none;">
+      <input type="button" value="Back" class="back btn teal darken-3 s12 l4"/>
+      <table id="sites_table">
+        <thead>
+          <tr>
+            <th>Sites</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for site in sites.sites %}
+            <tr>
+              <td>
+                {{ site.site_name }}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
 {% endblock %}
 
 {% block scripts %}
-<script>
-$(document).ready(function() {
-  $('.datepicker').pickadate({
-    today: '',
-    selectMonths: true, // Creates a dropdown to control month
-    selectYears: 100, // Creates a dropdown of 15 years to control year
-    max: true, // set max to today
-    format: 'yyyy-mm-dd',
-  });
-});
-
-
-</script>
+  <script src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+  <script type="application/javascript"
+          src="{% static 'streamwebs/js/admin/stats.js' %}"></script>
 {% endblock %}
