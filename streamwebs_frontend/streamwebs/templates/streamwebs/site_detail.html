@@ -37,6 +37,7 @@
 
 {% block content %}
 
+
   <!-- site info -->
   <div class="row">
     <div class="col s12 m6 center-align">
@@ -49,8 +50,6 @@
     </div>
     <div class="col s12 m6 center-align">
       <p>{{ site.description }}</p>
-      <p>{% trans "Created" %}: {{ site.created|date:"m-d-Y H:i T" }}</p>
-      <p>{% trans "Last modified" %}: {{ site.modified|date:"m-d-Y H:i T" }}</p>
     </div>
   </div>
   <div class="row">
