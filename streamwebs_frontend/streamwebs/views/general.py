@@ -19,7 +19,8 @@ from streamwebs.forms import (
     PhotoPointImageForm, PhotoPointForm, CameraPointForm, WQSampleForm,
     WQSampleFormReadOnly, WQForm, WQFormReadOnly, SiteForm, Canopy_Cover_Form,
     SoilSurveyForm, SoilSurveyFormReadOnly, StatisticsForm, TransectZoneForm,
-    BaseZoneInlineFormSet, ResourceForm, AdminPromotionForm)
+    BaseZoneInlineFormSet, ResourceForm, UserPromotionForm, UserEmailForm,
+    UserPasswordForm)
 
 from streamwebs.models import (
     Macroinvertebrates, Site, Water_Quality, WQ_Sample, RiparianTransect,
@@ -283,6 +284,72 @@ def register(request):
         'user_form': user_form,
         'profile_form': profile_form,
         'registered': registered})
+
+
+@login_required
+def account(request):
+    user = request.user
+    user = User.objects.get(username=user)
+    return render(request, 'streamwebs/account.html', {
+                  'user': user})
+
+
+@login_required
+def update_email(request):
+    user = request.user
+    temp = copy.copy(user)
+
+    if request.method == 'POST':
+        user_email_form = UserEmailForm(request.POST, instance=user)
+        if user_email_form.is_valid():
+            if user.email != temp.email:
+                user = user_email_form.save(commit=False)
+                user.save()
+                messages.success(request, 'You have successfully updated' +
+                                 ' your email.')
+            return redirect(reverse('streamwebs:account'))
+
+    else:
+        user_email_form = UserEmailForm(initial={'email': user.email})
+
+    return render(request, 'streamwebs/update_email.html', {
+        'user_form': user_email_form,
+    })
+
+
+@login_required
+def update_password(request):
+    old_password_incorrect = False
+    if request.method == 'POST':
+        username = request.user
+        old_password = request.POST['old_password']
+        password = request.POST['password']
+
+        user_password_form = UserPasswordForm(request.POST, instance=username)
+        user = authenticate(username=username, password=old_password)
+
+        if user:
+            if user_password_form.is_valid():
+                user = User.objects.get(username=user)
+                user.set_password(password)
+                user.save()
+                messages.success(request, 'You have successfully updated' +
+                                 ' your password.')
+
+                user = authenticate(username=username, password=password)
+                login(request, user)
+
+                return redirect(reverse('streamwebs:account'))
+
+        else:
+            old_password_incorrect = True
+    else:
+        user_password_form = UserPasswordForm()
+
+    return render(request, 'streamwebs/update_password.html', {
+        'user_form': user_password_form,
+        'old_password_incorrect': old_password_incorrect
+    })
 
 
 def user_login(request):
@@ -930,7 +997,7 @@ def admin_site_statistics(request):
     # A user is defined as "active" if they have logged in w/in the last 3 yrs
     today = datetime.date.today()
     user_start = datetime.date(today.year - 3, today.month, today.day)
-    start = datetime.date(1970, 1, 1)
+    start = datetime.date(2005, 1, 1)
     end = today
 
     if request.method == 'POST':
@@ -1116,7 +1183,34 @@ def resources_upload(request):
 
 @login_required
 @permission_required('streamwebs.can_promote_users', raise_exception=True)
-def admin_user_promotion(request):
+def user_status(request):
+    users = User.objects.all()
+    user_status = {}
+    for user in users:
+        user_status[user] = user.groups.filter(name='admin').exists()
+        print(user_status[user])
+    return render(
+        request, 'streamwebs/admin/user_status.html', {
+            'users': users,
+            'user_status': user_status,
+        }
+    )
+
+
+@login_required
+@permission_required('streamwebs.can_promote_users', raise_exception=True)
+def user_promotion(request, username):
+    user = User.objects.get(username=username)
+    user_promo_form = UserPromotionForm()
+    print(user_promo_form)
+    return render(request, 'streamwebs/admin/user_promo.html', {
+        'user_promo_form': user_promo_form,
+    })
+
+
+@login_required
+@permission_required('streamwebs.can_promote_users', raise_exception=True)
+def admin_user_promotion2(request):
     admins = Group.objects.get(name='admin')
     admin_perms = Permission.objects.filter(group=admins)
     can_view_stats = Permission.objects.get(codename='can_view_stats')
@@ -1131,61 +1225,60 @@ def admin_user_promotion(request):
 
         if promo_form.is_valid():
             action = promo_form.cleaned_data['perms']
-            selected_users = promo_form.cleaned_data['users']
+            user = promo_form.cleaned_data['users']
 
-            for user in selected_users:
-                if action == 'add_admin':
-                    user.groups.add(admins)
-                    msgs.append(
-                        '%s was added to the Admin group.' % user.username)
+            if action == 'add_admin':
+                user.groups.add(admins)
+                msgs.append(
+                    '%s was added to the Admin group.' % user)
 
-                elif action == 'del_admin':
+            elif action == 'del_admin':
+                user.groups.remove(admins)
+                msgs.append(
+                    '%s was removed from the Admin group.' % user.username)
+
+            elif action == 'add_stats':
+                user.user_permissions.add(can_view_stats)
+                msgs.append(
+                    '%s was granted permission to view Statistics.'
+                    % user.username)
+
+            elif action == 'del_stats':
+                # if they're an admin,
+                if user.groups.filter(name='admin').exists():
+                    # remove them from the admins group
                     user.groups.remove(admins)
-                    msgs.append(
-                        '%s was removed from the Admin group.' % user.username)
+                    # add back all perms admins enjoy, EXCLUDING stats
+                    admin_perms = Permission.objects.filter(group=admins)
+                    for perm in admin_perms:
+                        if perm.codename != 'can_view_stats':
+                            user.user_permissions.add(perm)
+                # otherwise if they're a regular user,
+                else:
+                    user.user_permissions.remove(can_view_stats)
 
-                elif action == 'add_stats':
-                    user.user_permissions.add(can_view_stats)
-                    msgs.append(
-                        '%s was granted permission to view Statistics.'
-                        % user.username)
+                msgs.append(
+                    '%s was revoked the permission to view Statistics.'
+                    % user.username)
 
-                elif action == 'del_stats':
-                    # if they're an admin,
-                    if user.groups.filter(name='admin').exists():
-                        # remove them from the admins group
-                        user.groups.remove(admins)
-                        # add back all perms admins enjoy, EXCLUDING stats
-                        admin_perms = Permission.objects.filter(group=admins)
-                        for perm in admin_perms:
-                            if perm.codename != 'can_view_stats':
-                                user.user_permissions.add(perm)
-                    # otherwise if they're a regular user,
-                    else:
-                        user.user_permissions.remove(can_view_stats)
+            elif action == 'add_upload':
+                user.user_permissions.add(can_upload_resources)
+                msgs.append(
+                    '%s was granted permission to upload resources.'
+                    % user.username)
 
-                    msgs.append(
-                        '%s was revoked the permission to view Statistics.'
-                        % user.username)
+            elif action == 'del_upload':
+                if user.groups.filter(name='admin').exists():
+                    user.groups.remove(admins)
+                    for perm in admin_perms:
+                        if perm.codename != 'can_upload_resources':
+                            user.user_permissions.add(perm)
+                else:
+                    user.user_permissions.remove(can_upload_resources)
 
-                elif action == 'add_upload':
-                    user.user_permissions.add(can_upload_resources)
-                    msgs.append(
-                        '%s was granted permission to upload resources.'
-                        % user.username)
-
-                elif action == 'del_upload':
-                    if user.groups.filter(name='admin').exists():
-                        user.groups.remove(admins)
-                        for perm in admin_perms:
-                            if perm.codename != 'can_upload_resources':
-                                user.user_permissions.add(perm)
-                    else:
-                        user.user_permissions.remove(can_upload_resources)
-
-                    msgs.append(
-                        '%s was revoked the permission to upload resources.'
-                        % user.username)
+                msgs.append(
+                    '%s was revoked the permission to upload resources.'
+                    % user.username)
 
     all_users = User.objects.all()
     user_info = dict()
@@ -1218,6 +1311,18 @@ def admin_user_promotion(request):
             'user_info': user_info,
         }
     )
+
+
+def users_auto_complete(request):
+    users = User.objects.all()
+    users_list = []
+
+    for u in users:
+        u_dict = {'id': u.id, 'label': u.username, 'value': u.username}
+        users_list.append(u_dict)
+
+    return HttpResponse(json.dumps(users_list),
+                        content_type='application/json')
 
 
 def schools(request):

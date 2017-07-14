@@ -38,7 +38,39 @@ class UserForm(forms.ModelForm):
 
     def clean_password(self):
         if self.data['password'] != self.data['password_check']:
-            raise forms.ValidationError(_('Passwords do not match'))
+            raise forms.ValidationError(_('Passwords did not match'))
+        return self.data['password']
+
+
+class UserEmailForm(forms.ModelForm):
+    email = forms.CharField(required=True)
+
+    class Meta:
+        model = User
+        fields = ('email',)
+
+
+class UserPasswordForm(forms.ModelForm):
+    old_password = forms.CharField(
+        widget=forms.PasswordInput(),
+        label=_('Old Password'))
+    password = forms.CharField(
+        widget=forms.PasswordInput(),
+        label=_('New Password'))
+    password_check = forms.CharField(
+        widget=forms.PasswordInput(),
+        label=_('New Password Repeat'))
+
+    class Meta:
+        model = User
+        fields = ('password',)
+
+    def clean_password(self):
+        if self.data['password'] != self.data['password_check']:
+            raise forms.ValidationError(_('New Passwords did not match'))
+        if self.data['old_password'] == self.data['password']:
+            raise forms.ValidationError(_('Your old password and new ' +
+                                          'password cannot be the same'))
         return self.data['password']
 
 
@@ -253,25 +285,20 @@ class ResourceForm(forms.ModelForm):
 
 class StatisticsForm(forms.Form):
     start = forms.DateField(
-        widget=forms.DateInput(attrs={'class': 'datepicker'}),
-        label=_('starting from'), required=False
+        widget=forms.DateInput(attrs={'class': 'datepicker col s5'}),
+        label=_('Starting from'), required=False
     )
     end = forms.DateField(
-        widget=forms.DateInput(attrs={'class': 'datepicker'}),
-        label=_('ending on'), required=False
+        widget=forms.DateInput(attrs={'class': 'datepicker col s5'}),
+        label=_('Ending on'), required=False
     )
 
 
-class AdminPromotionForm(forms.Form):
-    PERM_OPTIONS = (
-        ('add_admin', _('Add to Admin group')),
-        ('del_admin', _('Remove from Admin group')),
-        ('add_stats', _('Grant permission to view the Statistics page')),
-        ('add_upload', _('Grant permission to upload to the Resources page')),
-        ('del_stats', _('Revoke permission to view the Statistics page')),
-        ('del_upload', _('Revoke permission to upload to the Resources page')),
-    )
+class UserPromotionForm(forms.Form):
+    is_staff = forms.BooleanField()
+    can_upload = forms.BooleanField()
+    can_promote = forms.BooleanField()
 
-    users = forms.ModelMultipleChoiceField(queryset=User.objects.all(),
-                                           widget=forms.SelectMultiple)
-    perms = forms.ChoiceField(choices=PERM_OPTIONS)
+    fields = (
+        'is_staff', 'can_upload', 'can_promote',
+    )

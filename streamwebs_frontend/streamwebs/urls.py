@@ -89,9 +89,17 @@ urlpatterns = [
         views.export_soil, name='export_soil'),
 
     url(r'^statistics/$', views.admin_site_statistics, name='stats'),
-    url(r'^user-promotion/$', views.admin_user_promotion, name='user_promo'),
+    url(r'^user-status/$', views.user_status, name='user_status'),
+    url(r'^user-promotion/(?P<username>[0-9a-zA-Z-_]+)/$', views.user_promotion,
+        name='user_promotion'),
+    url(r'^users_auto_complete/$', views.users_auto_complete,
+        name='users_auto_complete'),
 
     url(r'^register/$', views.register, name='register'),
+    url(r'^account/$', views.account, name='account'),
+    url(r'^account/update_email/$', views.update_email, name='update_email'),
+    url(r'^account/update_password/$', views.update_password,
+        name='update_password'),
     url(r'^login/$', views.user_login, name='login'),
     url(r'^logout/$', views.user_logout, name='logout'),
 

@@ -25,16 +25,20 @@
          class="teal-text text-darken-4">{% trans "Resources" %}</a></li>
 
 {% if user.is_authenticated %}
-    {% if perms.streamwebs.can_view_stats %}
-    <li><a href="{% url 'streamwebs:stats' %}" class="teal-text text-darken-4">{% trans "View Site Statistics" %}</a></li>
-    {% endif %}
-    {% if perms.streamwebs.can_promote_users %}
-    <li><a href="{% url 'streamwebs:user_promo' %}" class="teal-text text-darken-4">{% trans "Manage Users" %}</a></li>
-    {% endif %}
-    <li><a href="{% url 'streamwebs:logout' %}" class="teal-text text-darken-4">{% trans "Logout" %}</a></li>
+  {% if perms.streamwebs.can_view_stats %}
+  <li><a href="{% url 'streamwebs:stats' %}" class="teal-text text-darken-4">{% trans "View Site Statistics" %}</a></li>
+  {% endif %}
+
+  {% if perms.streamwebs.can_promote_users %}
+  <li><a href="{% url 'streamwebs:user_status' %}" class="teal-text text-darken-4">{% trans "Manage Users" %}</a></li>
+  {% endif %}
+
+  <li><a href="{% url 'streamwebs:account' %}" class="teal-text text-darken-4">Account</a></li>
+  <li><a href="{% url 'streamwebs:logout' %}" class="teal-text text-darken-4">{% trans "Logout" %}</a></li>
+
 {% else %}
-    <li><a href="{% url 'streamwebs:register' %}" class="teal-text text-darken-4">{% trans "Create Account" %}</a></li>
-    <li><a href="{% url 'streamwebs:login' %}?next={{ request.path }}" class="teal-text text-darken-4">{% trans "Login" %}</a></li>
+  <li><a href="{% url 'streamwebs:register' %}" class="teal-text text-darken-4">{% trans "Create Account" %}</a></li>
+  <li><a href="{% url 'streamwebs:login' %}?next={{ request.path }}" class="teal-text text-darken-4">{% trans "Login" %}</a></li>
 {% endif %}
 </ul>
 

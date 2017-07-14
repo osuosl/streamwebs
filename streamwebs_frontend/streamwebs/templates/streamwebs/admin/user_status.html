@@ -1,0 +1,58 @@
+{% extends 'streamwebs/base.html' %}
+{% load i18n %}
+{% load staticfiles %}
+
+{% block title %} Manage User Permissions {% endblock %}
+{% block body_title %} Manage User Permissions {% endblock %}
+{% block head %}
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css">
+
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row">
+    <table id="users_table">
+      <thead>
+        <tr>
+          <th>Username</th>
+          <th>Admin</th>
+          <th>Email</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for user in users %}
+          <tr>
+            <td>
+              <a href="{% url 'streamwebs:user_promotion' user.username %}">
+                {{ user.username }}
+              </a>
+            </td>
+            <td style="text-align:center">
+              {% if user_status.user %}
+                Yes
+              {% else %}
+                No
+              {% endif %}
+            </td>
+            <td>
+              {{ user.email }}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+  <script src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      $('#users_table').DataTable({
+        "bLengthChange": false,
+        "pageLength": 20,
+      });
+    });
+  </script>
+{% endblock %}

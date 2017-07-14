@@ -8,6 +8,7 @@ class AdminPromotionFormTestCase(TestCase):
 
     def setUp(self):
         self.expected_fields = (
+            'users_display',
             'users',
             'perms'
         )
@@ -18,16 +19,16 @@ class AdminPromotionFormTestCase(TestCase):
                          set(self.expected_fields))
 
     def test_required_fields(self):
-        """Both fields should be required"""
+        """All fields should be required"""
         for field in self.expected_fields:
             self.assertEqual(self.promo_form.base_fields[field].required,
                              True)
 
     def test_form_isValid_with_mult_users(self):
         user1 = User.objects.get(pk=1)
-        user2 = User.objects.get(pk=7)
         data = {
-            'users': (user1.id, user2.id),
+            'users_display': user1.username,
+            'users': user1.id,
             'perms': 'add_admin',
         }
         self.promo_form = AdminPromotionForm(data)

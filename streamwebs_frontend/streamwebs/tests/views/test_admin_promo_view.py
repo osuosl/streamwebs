@@ -106,20 +106,17 @@ class AdminPromoTestCase(TestCase):
         self.client.login(username='superAdmin', password='superpassword')
 
         self.assertFalse(self.user1.groups.filter(name='admin').exists())
-        self.assertFalse(self.user2.groups.filter(name='admin').exists())
 
         response = self.client.post(reverse('streamwebs:user_promo'), {
-            'users': (self.user1.id, self.user2.id),
+            'users_display': self.user1.username,
+            'users': self.user1.id,
             'perms': 'add_admin',
             }
         )
         self.assertTrue(self.user1.groups.filter(name='admin').exists())
-        self.assertTrue(self.user2.groups.filter(name='admin').exists())
 
         messages = list(response.context['msgs'])
-        self.assertEquals(len(messages), 2)
         self.assertIn(self.user1.username + self.add_admin_msg, messages)
-        self.assertIn(self.user2.username + self.add_admin_msg, messages)
 
     def test_remove_users_from_admin_group(self):
         """Tests that users can be removed from the admin group"""
@@ -129,7 +126,8 @@ class AdminPromoTestCase(TestCase):
         self.assertTrue(self.user1.groups.filter(name='admin').exists())
 
         response = self.client.post(reverse('streamwebs:user_promo'), {
-            'users': (self.user1.id),
+            'users_display': self.user1.username,
+            'users': self.user1.id,
             'perms': 'del_admin',
             }
         )
@@ -149,7 +147,8 @@ class AdminPromoTestCase(TestCase):
         self.assertFalse(self.user2.has_perm('streamwebs.can_view_stats'))
 
         response = self.client.post(reverse('streamwebs:user_promo'), {
-            'users': (self.user2.id),
+            'users_display': self.user2.username,
+            'users': self.user2.id,
             'perms': 'add_stats',
             }
         )
@@ -167,34 +166,26 @@ class AdminPromoTestCase(TestCase):
         """Tests that users can have the can_view_stats permission revoked"""
         self.client.login(username='superAdmin', password='superpassword')
 
-        # user1 is an admin; user2 is a regular user but has the stats perm
-        self.user1.groups.add(self.admins)
+        # user2 is a regular user but has the stats perm
         self.user2.user_permissions.add(self.can_stats)
 
-        self.assertTrue(self.user1.groups.filter(name='admin').exists())
         self.assertFalse(self.user2.groups.filter(name='admin').exists())
         self.assertTrue(self.user2.has_perm('streamwebs.can_view_stats'))
 
         response = self.client.post(reverse('streamwebs:user_promo'), {
-            'users': (self.user1.id, self.user2.id),
+            'users_display': self.user2.username,
+            'users': self.user2.id,
             'perms': 'del_stats',
             }
         )
-        # user1 and user2 should both be regular users now w/o the stats perm.
-        # user1 still has the upload perm.
-        self.user1 = User.objects.get(pk=2)     # re-query: perms are cached
-        self.user2 = User.objects.get(pk=7)
+        # user2 should be a regular user now w/o the stats perm.
+        self.user2 = User.objects.get(pk=7)     # re-query: perms are cached
 
-        self.assertFalse(self.user1.groups.filter(name='admin').exists())
         self.assertFalse(self.user2.groups.filter(name='admin').exists())
 
-        self.assertTrue(self.user1.has_perm('streamwebs.can_upload_resources'))
-        self.assertFalse(self.user1.has_perm('streamwebs.can_view_stats'))
         self.assertFalse(self.user2.has_perm('streamwebs.can_view_stats'))
 
         messages = list(response.context['msgs'])
-        self.assertEquals(len(messages), 2)
-        self.assertIn(self.user1.username + self.del_stats_msg, messages)
         self.assertIn(self.user2.username + self.del_stats_msg, messages)
 
     def test_add_upload_perm_for_users(self):
@@ -205,14 +196,14 @@ class AdminPromoTestCase(TestCase):
         self.assertFalse(self.user1.groups.filter(name='admin').exists())
 
         response = self.client.post(reverse('streamwebs:user_promo'), {
-            'users': (self.user1.id),
+            'users_display': self.user1.username,
+            'users': self.user1.id,
             'perms': 'add_upload',
             }
         )
         self.assertTrue(self.user1.has_perm('streamwebs.can_upload_resources'))
 
         messages = list(response.context['msgs'])
-        self.assertEquals(len(messages), 1)
         self.assertEquals(messages[0],
                           self.user1.username + self.add_upload_msg)
 
@@ -220,33 +211,25 @@ class AdminPromoTestCase(TestCase):
         """Tests that users can have the can_upload_stats permission revoked"""
         self.client.login(username='superAdmin', password='superpassword')
 
-        # user1 is an admin; user2 is a regular user but has the upload perm
+        # user1 is an admin
         self.user1.groups.add(self.admins)
-        self.user2.user_permissions.add(self.can_upload)
 
         self.assertTrue(self.user1.groups.filter(name='admin').exists())
-        self.assertFalse(self.user2.groups.filter(name='admin').exists())
-        self.assertTrue(self.user2.has_perm('streamwebs.can_upload_resources'))
 
         response = self.client.post(reverse('streamwebs:user_promo'), {
-            'users': (self.user1.id, self.user2.id),
+            'users_display': self.user1.username,
+            'users': self.user1.id,
             'perms': 'del_upload',
             }
         )
-        # user1 and user2 should both be regular users now w/o the upload perm.
-        # user1 still has the stats perm.
+        # user1 is a regular user now w/o the upload perm. They still have the
+        # stats perm.
         self.user1 = User.objects.get(pk=2)     # re-query: perms are cached
-        self.user2 = User.objects.get(pk=7)
 
         self.assertFalse(self.user1.groups.filter(name='admin').exists())
-        self.assertFalse(self.user2.groups.filter(name='admin').exists())
 
         self.assertFalse(self.user1.has_perm(
             'streamwebs.can_upload_resources'))
-        self.assertFalse(self.user2.has_perm(
-            'streamwebs.can_upload_resources'))
 
         messages = list(response.context['msgs'])
-        self.assertEquals(len(messages), 2)
         self.assertIn(self.user1.username + self.del_upload_msg, messages)
-        self.assertIn(self.user2.username + self.del_upload_msg, messages)
