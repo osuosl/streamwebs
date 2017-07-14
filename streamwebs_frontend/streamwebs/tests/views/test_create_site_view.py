@@ -21,7 +21,8 @@ class CreateSiteTestCase(TestCase):
                              'This field is required.')
 
         self.assertFormError(response, 'site_form', 'site_name',
-                            'This field is required.')
+                             'This field is required.')
+
         self.assertFalse(response.context['created'])
 
     def test_view_with_good_data(self):
