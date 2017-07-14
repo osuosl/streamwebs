@@ -3,14 +3,14 @@
 {% load staticfiles %}
 
 {% block scripts %}
-<script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIz
-aSyBV71HBuAFMtHEAaSEVpRDPUQyGvJwTX1k"></script>
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?key={{ maps_api }}"></script>
 <script type="application/javascript" src="{% static 'streamwebs/js/create_site
 .js' %}"></script>
 <script>
 var markers = [];
 var temp;
 var sites = [];
+var map;
 //Create list of sites in lowercase
 {% for site in sites %}
   temp = "{{ site.site_name }}".toLowerCase();
@@ -21,15 +21,17 @@ var sites = [];
 $(document).ready(function() {
   document.getElementById("site_form").reset();
   var myLatLng = new google.maps.LatLng(43.8041, -120.5542);
-  var map = new google.maps.Map(document.getElementById('map'), {
+  map = new google.maps.Map(document.getElementById('map'), {
     zoom: 7,
     center: myLatLng,
     streetViewControl: false
   });
 
+
   google.maps.event.addListener(map, 'click', function(e){
     placeMarker(e.latLng, map);
   });
+});
 
   function clearMarkers(){
     console.log(markers[0]);
@@ -52,12 +54,17 @@ $(document).ready(function() {
     $('#input_lng').val(position.lng());
 
   }
-});
+
+function pan(){
+    var panPoint = new google.maps.LatLng(document.getElementById("input_lat").value, document.getElementById("input_lng").value);
+    map.panTo(panPoint)
+    placeMarker(panPoint, map);
+}
+
 function validateForm(){
   var site_name = document.getElementById('id_site_name').value.toLowerCase();
   var count = 0;
   var found=sites.includes(site_name);
-  console.log(found);
   // checks if the user has entered a name that is already in use
   // regardless of the case
   if(found){
@@ -78,12 +85,10 @@ function validateForm(){
     return true;
   }
 }
-
-
 </script>
 {% endblock %}
 
-{% block body_title %} Add a New Site {% endblock %}
+{% block body_title %}{% trans "Add a New Site" %}{% endblock %}
 
 {% block content %}
 <form id='site_form' method='post' enctype="multipart/form-data"
@@ -109,16 +114,11 @@ onsubmit="return validateForm()">
   </div>
 </div>
 
-<input type="hidden" id="input_lat" name="lat" required>
-<input type="hidden" id="input_lng" name="lng" required>
-
 <p>
-
   <label for="id_image">Image:</label>
-
   <div class="file-field input-field">
     <div class="btn teal darken-4">
-      <span>File</span>
+      <span>Upload</span>
       <input type="file" id="id_image" name="image">
     </div>
     <div class="file-path-wrapper">
@@ -126,6 +126,16 @@ onsubmit="return validateForm()">
     </div>
   </div>
 </p>
+
+<i class="material-icons prefix">my_location</i>
+<label for="{{ site_form.location.id_for_label }}">{% trans "Latitude" %}</label>
+<input type="text" id="input_lat" name="lat" required>
+<br/>
+<i class="material-icons prefix">my_location</i>
+<label for="{{ site_form.location.id_for_label }}">{% trans "Longitude" %}</label>
+<input type ="text" id="input_lng" name="lng" required>
+<input type="button" class="btn waves-effect waves-light teal darken-4"
+value='{% trans 'Update Location' %}' onclick="pan()" />
 
 <div class="row">
   <div id="map"> </div>

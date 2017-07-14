@@ -71,7 +71,11 @@ def create_site(request):
         site_form = SiteForm()
 
     return render(request, 'streamwebs/create_site.html', {
-        'site_form': site_form, 'created': created, 'sites': site_list})
+        'site_form': site_form,
+        'created': created,
+        'sites': site_list,
+        'maps_api': settings.GOOGLE_MAPS_API
+        })
 
 
 def sites(request):
