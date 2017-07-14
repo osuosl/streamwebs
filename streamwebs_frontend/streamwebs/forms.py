@@ -294,5 +294,11 @@ class StatisticsForm(forms.Form):
     )
 
 
-class AdminPromotionForm(forms.Form):
-    users_search = forms.CharField(max_length=100)
+class UserPromotionForm(forms.Form):
+    is_staff = forms.BooleanField()
+    can_upload = forms.BooleanField()
+    can_promote = forms.BooleanField()
+
+    fields = (
+        'is_staff', 'can_upload', 'can_promote',
+    )

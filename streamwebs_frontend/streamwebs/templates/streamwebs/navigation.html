@@ -30,7 +30,7 @@
   {% endif %}
 
   {% if perms.streamwebs.can_promote_users %}
-  <li><a href="{% url 'streamwebs:user_promo' %}" class="teal-text text-darken-4">{% trans "Manage Users" %}</a></li>
+  <li><a href="{% url 'streamwebs:user_status' %}" class="teal-text text-darken-4">{% trans "Manage Users" %}</a></li>
   {% endif %}
 
   <li><a href="{% url 'streamwebs:account' %}" class="teal-text text-darken-4">Account</a></li>

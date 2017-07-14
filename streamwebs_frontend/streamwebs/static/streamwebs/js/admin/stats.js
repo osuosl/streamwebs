@@ -53,11 +53,11 @@ var getHeight = function getHeight(elem) {
 $(document).ready(function() {
     adjustCardSize();
     $('#schools_table').DataTable({
-        bLengthChange: false,
+        "bLengthChange": false,
         "pageLength": 13
     });
     $('#sites_table').DataTable({
-        bLengthChange: false,
+        "bLengthChange": false,
         "pageLength": 13
     })
     $('.datepicker').pickadate({

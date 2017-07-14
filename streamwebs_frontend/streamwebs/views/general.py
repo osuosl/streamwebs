@@ -19,7 +19,7 @@ from streamwebs.forms import (
     PhotoPointImageForm, PhotoPointForm, CameraPointForm, WQSampleForm,
     WQSampleFormReadOnly, WQForm, WQFormReadOnly, SiteForm, Canopy_Cover_Form,
     SoilSurveyForm, SoilSurveyFormReadOnly, StatisticsForm, TransectZoneForm,
-    BaseZoneInlineFormSet, ResourceForm, AdminPromotionForm, UserEmailForm,
+    BaseZoneInlineFormSet, ResourceForm, UserPromotionForm, UserEmailForm,
     UserPasswordForm)
 
 from streamwebs.models import (
@@ -1183,7 +1183,34 @@ def resources_upload(request):
 
 @login_required
 @permission_required('streamwebs.can_promote_users', raise_exception=True)
-def admin_user_promotion(request):
+def user_status(request):
+    users = User.objects.all()
+    user_status = {}
+    for user in users:
+        user_status[user] = user.groups.filter(name='admin').exists()
+        print(user_status[user])
+    return render(
+        request, 'streamwebs/admin/user_status.html', {
+            'users': users,
+            'user_status': user_status,
+        }
+    )
+
+
+@login_required
+@permission_required('streamwebs.can_promote_users', raise_exception=True)
+def user_promotion(request, username):
+    user = User.objects.get(username=username)
+    user_promo_form = UserPromotionForm()
+    print(user_promo_form)
+    return render(request, 'streamwebs/admin/user_promo.html', {
+        'user_promo_form': user_promo_form,
+    })
+
+
+@login_required
+@permission_required('streamwebs.can_promote_users', raise_exception=True)
+def admin_user_promotion2(request):
     admins = Group.objects.get(name='admin')
     admin_perms = Permission.objects.filter(group=admins)
     can_view_stats = Permission.objects.get(codename='can_view_stats')

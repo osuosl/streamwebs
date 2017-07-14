@@ -2,86 +2,21 @@
 {% load i18n %}
 {% load staticfiles %}
 
-{% block title %} Manage User Permissions {% endblock %}
-{% block body_title %} Manage User Permissions {% endblock %}
+{% block title %}{% trans "StreamWebs Statistics" %}{% endblock %}
+{% block body_title %}{% trans "StreamWebs Statistics" %}{% endblock %}
+{% block head %}
 
-
-{% block content %}
-<div class="container">
-{% if msgs %}
-  {% for message in msgs %}
-  <strong>{{ message }}</strong><br>
-  {% endfor %}
-{% endif %}
-
-  <form id='promo_form' method='post'>
-    {% csrf_token %}
-    {{ promo_form.as_p }}
-    <input class="btn waves-effect waves-light teal darken-4" type='submit' name='submit' value='{% trans 'Apply' %}'/>
-  </form>
-
-  {% for user in page_of_users %}
-    {% for user_key, info in user_info.items %}
-      {% if user.username == user_key.username %}
-        {{ user_key }}
-        {% for perm, status in info.items %}
-          {% if status == True %}
-          || {{ perm }}
-          {% endif %}
-        {% endfor %}
-        <br>
-      {% endif %}
-    {% endfor %}
-  {% endfor %}
-
-  <div class="pagination">
-    <span class="step-links">
-      {% if page_of_users.has_previous %}
-        <a href="?page={{ page_of_users.previous_page_number }}">previous</a>
-      {% endif %}
-
-      <span class="current">
-        Page {{ page_of_users.number }} of {{ page_of_users.paginator.num_pages }}.
-      </span>
-
-      {% if page_of_users.has_next %}
-        <a href="?page={{ page_of_users.next_page_number }}">next</a>
-      {% endif %}
-    </span>
-  </div>
 {% endblock %}
-{% block scripts %}
-
-  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script> -->
-  <script type="text/javascript">
-
-    $(document).ready(function() {
-        $('select').material_select();
-      // materialize css select
-      // console.log({% url 'streamwebs:users_auto_complete' %})
-      // var users_list=[];
-      // // get ajax of list of users
-      // $.ajax({
-      //   url: {% url 'streamwebs:users_auto_complete' %},
-      //   dataType: "json",
-      //   cache: false,
-      //   success:function(data){
-      //     console.log(data)
-      //     users_list = data;
-      //     // jquery autocomplete
-      //     $( "#id_users_display" ).autocomplete({
-      //       source: users_list,
-      //       select: function(event, ui) {
-      //         $( "#id_users" ).val(ui.item.id)
-      //       }
-      //     });
-      //   }
-      // });
-      // console.log("outside ajax")
-      // console.log(users_list)
-
-    });
-  </script>
+{% block content %}
+  <div class="container">
+    <h2>{{ username }}</h2>
+    <br/>
+    <form id='user_promo_form' method='post'>
+      {% csrf_token %}
+      {{ user_promo_form }}
+      <br/>
+      <input class="btn waves-effect teal darken-4" type='submit' name='submit'
+        value='{% trans 'Save' %}'/>
+    </form>
+  </div>
 {% endblock %}
