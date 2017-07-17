@@ -17,19 +17,6 @@
     var sheet_data = {{ data|safe }};
     var page_count = {{ pages }};
     var imageWidth = '200';
-</script>
-<!-- changed google maps key to AIzaSyBv7HB...-->
-<script src="https://maps.googleapis.com/maps/api/js?key= {{ maps_api }}"></script>
-<script type="application/javascript" src="{% static 'streamwebs/js/site_detail.js' %}"></script>
-
-  <script>
-  $(document).ready(function(){
-    {% if messages %}
-      {% for message in messages %}
-      Materialize.toast('{{ message }}', 4000, 'green');
-      {% endfor %}
-  {% endif %}
-  });
   </script>
 
   <script
@@ -40,6 +27,11 @@
 
 {% block content %}
 
+  {% if messages %}
+    {% for message in messages %}
+      <strong>{{ message }}</strong>
+    {% endfor %}
+  {% endif %}
 
   <!-- site info -->
   <div class="row">
@@ -53,6 +45,8 @@
     </div>
     <div class="col s12 m6 center-align">
       <p>{{ site.description }}</p>
+      <p>{% trans "Created" %}: {{ site.created|date:"m-d-Y H:i T" }}</p>
+      <p>{% trans "Last modified" %}: {{ site.modified|date:"m-d-Y H:i T" }}</p>
     </div>
   </div>
   <div class="row">

@@ -19,9 +19,8 @@ class CreateSiteTestCase(TestCase):
 
         self.assertFormError(response, 'site_form', 'site_name',
                              'This field is required.')
-
-        self.assertFormError(response, 'site_form', 'site_name',
-                             'This field is required.')
+        self.assertFormError(response, 'site_form', 'location',
+                             'No geometry value provided.')
 
         self.assertFalse(response.context['created'])
 
