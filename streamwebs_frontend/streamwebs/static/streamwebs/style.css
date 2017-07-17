@@ -257,3 +257,7 @@ i {
 .tutorial-th{
   font-size: 24px;
 }
+
+#site_detail_image{
+  width: 300px;
+}
