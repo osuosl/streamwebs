@@ -298,7 +298,6 @@ def account(request):
 def update_email(request):
     user = request.user
     temp = copy.copy(user)
-
     if request.method == 'POST':
         user_email_form = UserEmailForm(request.POST, instance=user)
         if user_email_form.is_valid():
