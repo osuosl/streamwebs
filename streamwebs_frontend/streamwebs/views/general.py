@@ -42,8 +42,20 @@ def index(request):
 @login_required
 def create_site(request):
     created = False
+    site_list = Site.objects.filter(active=True)
 
     if request.method == 'POST':
+        if not request.POST._mutable:
+            request.POST._mutable = True
+
+        if 'lat' not in request.POST and 'lng' not in request.POST:
+            request.POST['lat'] = 0
+            request.POST['lng'] = 0
+
+        # convert lat/lng to pointfield object
+        point = ("SRID=4326;POINT(%s %s)" %
+                 (request.POST['lng'], request.POST['lat']))
+        request.POST['location'] = point
         site_form = SiteForm(request.POST, request.FILES)
 
         if site_form.is_valid():
@@ -59,7 +71,11 @@ def create_site(request):
         site_form = SiteForm()
 
     return render(request, 'streamwebs/create_site.html', {
-        'site_form': site_form, 'created': created})
+        'site_form': site_form,
+        'created': created,
+        'sites': site_list,
+        'maps_api': settings.GOOGLE_MAPS_API
+        })
 
 
 def sites(request):
