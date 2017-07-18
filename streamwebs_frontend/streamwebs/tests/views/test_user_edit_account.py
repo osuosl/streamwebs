@@ -1,7 +1,7 @@
 from django.test import Client, TestCase
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
-import copy
+
 
 class UserAccountTestCase(TestCase):
     def setUp(self):
@@ -35,7 +35,7 @@ class UserChangeEmailTestCase(TestCase):
         new_email = ''
         response1 = self.client.post(reverse(
             'streamwebs:update_email'),
-            {'email': new_email,}
+            {'email': new_email}
         )
         self.assertTemplateUsed(response1, 'streamwebs/update_email.html')
         self.assertFormError(response1, 'user_form', 'email',
@@ -47,7 +47,7 @@ class UserChangeEmailTestCase(TestCase):
         new_email = 'notAnEmail'
         response2 = self.client.post(reverse(
             'streamwebs:update_email'),
-            {'email': new_email,}
+            {'email': new_email}
         )
         self.assertTemplateUsed(response2, 'streamwebs/update_email.html')
         self.assertFormError(response2, 'user_form', 'email',
@@ -69,6 +69,7 @@ class UserChangeEmailTestCase(TestCase):
             status_code=302,
             target_status_code=200
         )
+
 
 class UserChangePasswordTestCase(TestCase):
     def setUp(self):
@@ -139,7 +140,7 @@ class UserChangePasswordTestCase(TestCase):
         )
         self.assertTemplateUsed(response4, 'streamwebs/update_password.html')
         self.assertFormError(response4, 'user_form', 'password',
-                             'Your old password and new password '+
+                             'Your old password and new password ' +
                              'cannot be the same.')
         self.client.logout()
         self.client.login(username='boss', password='BossBoss')

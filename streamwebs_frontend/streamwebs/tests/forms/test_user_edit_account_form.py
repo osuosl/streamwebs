@@ -1,5 +1,6 @@
 from django.test import TestCase
-from streamwebs.forms import UserForm, UserEmailForm, UserPasswordForm
+from streamwebs.forms import UserEmailForm, UserPasswordForm
+
 
 class UserEmailFormTestCase(TestCase):
 
@@ -16,8 +17,7 @@ class UserEmailFormTestCase(TestCase):
         self.assertEqual(set(user_email_form.Meta.fields),
                          set(self.expected_fields))
         self.assertEqual(str(type(user_email_form.base_fields['email'])),
-            "<class 'django.forms.fields.CharField'>"
-        )
+                         "<class 'django.forms.fields.CharField'>")
 
     def test_required_fields(self):
         user_email_form = UserEmailForm()
@@ -44,19 +44,20 @@ class UserPasswordFormTestCase(TestCase):
             self.assertEqual(set(user_password_form.Meta.fields),
                              set(self.expected_fields))
             self.assertEqual(
-                str(type(user_email_form.base_fields['old_password'])),
+                str(type(user_password_form.base_fields['old_password'])),
                 "<class 'django.forms.fields.CharField'>"
             )
             self.assertEqual(
-                str(type(user_email_form.base_fields['password'])),
+                str(type(user_password_form.base_fields['password'])),
                 "<class 'django.forms.fields.CharField'>"
             )
             self.assertEqual(
-                str(type(user_email_form.base_fields['password_check'])),
+                str(type(user_password_form.base_fields['password_check'])),
                 "<class 'django.forms.fields.CharField'>"
             )
 
         def test_required_fields(self):
-            user_password_form = UserPasswordForm()
+            user_pw_form = UserPasswordForm()
             for field in self.required_fields:
-                self.assertEqual(user_email_form.base_fields[field].required, True)
+                self.assertEqual(user_pw_form.base_fields[field].required,
+                                 True)
