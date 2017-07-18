@@ -33,7 +33,6 @@ class UserForm(forms.ModelForm):
             'email': _('Email'),
             'password': _('Password:'),
             'first_name': _('First Name'),
-            'last_name': _('Last Name'),
         }
 
     def clean_password(self):
@@ -67,10 +66,10 @@ class UserPasswordForm(forms.ModelForm):
 
     def clean_password(self):
         if self.data['password'] != self.data['password_check']:
-            raise forms.ValidationError(_('New Passwords did not match'))
+            raise forms.ValidationError(_('New Passwords did not match.'))
         if self.data['old_password'] == self.data['password']:
             raise forms.ValidationError(_('Your old password and new ' +
-                                          'password cannot be the same'))
+                                          'password cannot be the same.'))
         return self.data['password']
 
 
