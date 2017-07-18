@@ -8,15 +8,7 @@
 .js' %}"></script>
 <script>
 var markers = [];
-var temp;
-var sites = [];
 var map;
-//Create list of sites in lowercase
-{% for site in sites %}
-  temp = "{{ site.site_name }}".toLowerCase();
-  console.log(temp);
-  sites.push(temp);
-{% endfor %}
 
 $(document).ready(function() {
   document.getElementById("site_form").reset();
@@ -27,16 +19,13 @@ $(document).ready(function() {
     streetViewControl: false
   });
 
-
   google.maps.event.addListener(map, 'click', function(e){
     placeMarker(e.latLng, map);
   });
 });
 
   function clearMarkers(){
-    console.log(markers[0]);
     if(markers[0]!== undefined){
-      console.log('yes');
       markers[0].setMap(null);
       markers.pop();
     }
@@ -57,42 +46,18 @@ $(document).ready(function() {
 
 function pan(){
     var panPoint = new google.maps.LatLng(document.getElementById("input_lat").value, document.getElementById("input_lng").value);
-    map.panTo(panPoint)
+    map.panTo(panPoint);
+    console.log(panPoint);
     placeMarker(panPoint, map);
 }
 
-function validateForm(){
-  var site_name = document.getElementById('id_site_name').value.toLowerCase();
-  var count = 0;
-  var found=sites.includes(site_name);
-  // checks if the user has entered a name that is already in use
-  // regardless of the case
-  if(found){
-    Materialize.toast('That site name is already in use.', 3000, 'red');
-    count ++;
-  }
-  // checks to make sure user has selected a spot on the map
-  if (markers.length == 0){
-    Materialize.toast('Please select a location on the map.', 3000, 'red');
-    count ++;
-  }
-  // if either checks fail, form is not submitted and user is notified of
-  // the problems via toaster notification
-  if(count != 0){
-    return false;
-  }
-  else{
-    return true;
-  }
-}
 </script>
 {% endblock %}
 
 {% block body_title %}{% trans "Add a New Site" %}{% endblock %}
 
 {% block content %}
-<form id='site_form' method='post' enctype="multipart/form-data"
-onsubmit="return validateForm()">
+<form id='site_form' method='post' enctype="multipart/form-data">
 {% csrf_token %}
 {{ site_form.media }}
 <div class="row">
@@ -100,7 +65,7 @@ onsubmit="return validateForm()">
     <i class="material-icons prefix">flag</i>
     <label for="{{ site_form.site_name.id_for_label }}">Site Name:</label>
     {{ site_form.site_name }}
-    {{ site_form.site_name.errors | striptags }}
+    <strong>{{ site_form.site_name.errors | striptags }}</strong>
 
   </div>
 </div>
@@ -130,6 +95,9 @@ onsubmit="return validateForm()">
 <i class="material-icons prefix">my_location</i>
 <label for="{{ site_form.location.id_for_label }}">{% trans "Latitude" %}</label>
 <input type="text" id="input_lat" name="lat" required>
+<br/>
+<strong> {{ site_form.location.errors | striptags }}</strong>
+<br/>
 <br/>
 <i class="material-icons prefix">my_location</i>
 <label for="{{ site_form.location.id_for_label }}">{% trans "Longitude" %}</label>
