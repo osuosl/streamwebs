@@ -51,7 +51,7 @@
   </div>
     <br/>
   <div class="row">
-    <div class="col s12 m10 l5">
+    <div class="col s12 m10 l5" style="position:static">
       {% if has_wq or has_macros or has_cc or has_transect or has_soil %}
         <ul class="collection" id="data-sheet-list">
         </ul>
@@ -95,44 +95,7 @@
     </div>
   </div>
   <div class="row">
-    <div class="col s12 left">
-      <a class="dropdown-button btn-large teal darken-4"
-         href="#" data-activates="new-data-dropdown">
-         <i class="material-icons right">arrow_drop_down</i>
-        {% trans "Add data to this site" %}
-      </a>
-      <ul id="new-data-dropdown" class="dropdown-content">
-        <li>
-          <a href="{% url 'streamwebs:water_quality_edit' site_slug=site.site_slug %}">
-            {% trans "Water quality" %}
-          </a>
-        </li>
-        <li>
-          <a href="{% url 'streamwebs:macroinvertebrate_edit' site.site_slug %}">
-            {% trans "Macroinvertebrates" %}
-          </a>
-        </li>
-        <li>
-          <a href="{% url 'streamwebs:riparian_transect_edit' site.site_slug %}">
-            {% trans "Riparian transect" %}
-          </a>
-        </li>
-        <li>
-          <a href="{% url 'streamwebs:canopy_cover_edit' site.site_slug %}">
-            {% trans "Canopy Cover Survey" %}
-          </a>
-        </li>
-        <li>
-          <a href="{% url 'streamwebs:camera_point_add' site_slug=site.site_slug %}">
-            {% trans "Photo point monitoring" %}
-          </a>
-        </li>
-        <li>
-          <a href="{% url 'streamwebs:soil_edit' site_slug=site.site_slug %}">
-            {% trans "Soil Survey" %}
-          </a>
-        </li>
-      </ul>
+    <div class="col s12 center">
       <a class="dropdown-button btn-large teal darken-4"
          href="#" data-activates="export-data-dropdown">
          <i class="material-icons right">arrow_drop_down</i>
@@ -175,6 +138,47 @@
           </li>
         {% endif %}
       </ul>
+      <a class="dropdown-button btn-large teal darken-4"
+         href="#" data-activates="new-data-dropdown">
+         <i class="material-icons right">arrow_drop_down</i>
+        {% trans "Add data to this site" %}
+      </a>
+      <ul id="new-data-dropdown" class="dropdown-content">
+        <li>
+          <a href="{% url 'streamwebs:water_quality_edit' site_slug=site.site_slug %}">
+            {% trans "Water quality" %}
+          </a>
+        </li>
+        <li>
+          <a href="{% url 'streamwebs:macroinvertebrate_edit' site.site_slug %}">
+            {% trans "Macroinvertebrates" %}
+          </a>
+        </li>
+        <li>
+          <a href="{% url 'streamwebs:riparian_transect_edit' site.site_slug %}">
+            {% trans "Riparian transect" %}
+          </a>
+        </li>
+        <li>
+          <a href="{% url 'streamwebs:canopy_cover_edit' site.site_slug %}">
+            {% trans "Canopy Cover Survey" %}
+          </a>
+        </li>
+        <li>
+          <a href="{% url 'streamwebs:camera_point_add' site_slug=site.site_slug %}">
+            {% trans "Photo point monitoring" %}
+          </a>
+        </li>
+        <li>
+          <a href="{% url 'streamwebs:soil_edit' site_slug=site.site_slug %}">
+            {% trans "Soil Survey" %}
+          </a>
+        </li>
+      </ul>
+      <a href="{% url 'streamwebs:update_site' site_slug=site.site_slug %}"
+        class="btn-large teal darken-4">
+        <i class="material-icons right">mode_edit</i>
+        {% trans "Edit Site" %}</a>
     </div>
   </div>
 
