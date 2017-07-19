@@ -17,7 +17,10 @@
     var sheet_data = {{ data|safe }};
     var page_count = {{ pages }};
     var imageWidth = '200';
-  </script>
+</script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key= {{ maps_api }}"></script>
+<script type="application/javascript" src="{% static 'streamwebs/js/site_detail.js' %}"></script>
 
   <script>
   $(document).ready(function(){
