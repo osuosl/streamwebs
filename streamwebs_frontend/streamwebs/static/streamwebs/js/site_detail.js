@@ -11,7 +11,7 @@ var initialize = function initialize() {
         maxZoom: 20,
         minZoom: 1,
         center: new google.maps.LatLng(site_location.y, site_location.x),
-        mapTypeId: google.maps.MapTypeId.HYBRID,
+        mapTypeId: google.maps.MapTypeId.TERRAIN,
         disableDefaultUI: true,
         draggable: true,
         clickableIcons: false
