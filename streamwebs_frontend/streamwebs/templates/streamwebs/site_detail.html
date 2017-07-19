@@ -19,6 +19,16 @@
     var imageWidth = '200';
   </script>
 
+  <script>
+  $(document).ready(function(){
+    {% if messages %}
+      {% for message in messages %}
+      Materialize.toast('{{ message }}', 4000, 'green');
+      {% endfor %}
+  {% endif %}
+  });
+  </script>
+
   <script
       src="https://maps.googleapis.com/maps/api/js?key={{ maps_api }}"></script>
   <script type="application/javascript"
@@ -27,11 +37,6 @@
 
 {% block content %}
 
-  {% if messages %}
-    {% for message in messages %}
-      <strong>{{ message }}</strong>
-    {% endfor %}
-  {% endif %}
 
   <!-- site info -->
   <div class="row">

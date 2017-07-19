@@ -33,7 +33,6 @@ class RetrieveSiteTestCase(TestCase):
         self.assertContains(self.response, 'Test site description')
         self.assertContains(self.response, 44.0612385000000017)
         self.assertContains(self.response, -121.3846841000000012)
-        
 
     def test_site_view_with_sheets(self):
         """Tests that site displays sheet links if sheets exist"""
