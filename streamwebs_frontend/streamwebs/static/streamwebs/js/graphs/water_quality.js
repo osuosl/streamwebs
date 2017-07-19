@@ -9,6 +9,7 @@ var num_min = -9007199254740991
 var num_max = 9007199254740991
 var date_range = [num_min, num_max];
 var outerContainer = $('#graph-container');
+var hasPopup = false;
 
 var changeRangeStart = function changeRangeStart() {
     if (!$(this).val()) { // If the field is empty, clear the range
@@ -119,6 +120,7 @@ var showMouseover = function showMouseover(data) {
         );
 
     d3.event.stopPropagation();
+    $('.popup').add($(this)).on('mouseleave', hideMouseover);
 };
 
 var hideMouseover = function hideMouseover() {
@@ -561,7 +563,7 @@ var graphTemperature = function graphTemperature(responsive=false) {
                     return z(d.name);
                 })
                 .style('cursor', 'pointer')
-                .on('click', showMouseover);
+                .on('mouseover', showMouseover);
 
             var legend1 = g1.selectAll('.legend')
                 .data([
@@ -656,7 +658,7 @@ var graphTemperature = function graphTemperature(responsive=false) {
                     return z(d.name);
                 })
                 .style('cursor', 'pointer')
-                .on('click', showMouseover);
+                .on('mouseover', showMouseover);
 
             var legend2 = g2.selectAll('.legend')
                 .data([
@@ -769,7 +771,7 @@ var graphOxygen = function graphOxygen(responsive=false){
                 .style('stroke', '#000000')
                 .style('fill', '#000000')
                 .style('cursor', 'pointer')
-                .on('click', showMouseover);
+                .on('mouseover', showMouseover);
         }
 
         if (window.hasSiteTwo && filtered2.dissolved_oxygen.length) {
@@ -800,7 +802,7 @@ var graphOxygen = function graphOxygen(responsive=false){
                 .style('stroke', '#000000')
                 .style('fill', '#000000')
                 .style('cursor', 'pointer')
-                .on('click', showMouseover);
+                .on('mouseover', showMouseover);
         }
     } else {
         $('#oxygen-control').prop({
@@ -872,7 +874,7 @@ var graphPH = function graphPH(responsive=false) {
                 .style('stroke', '#000000')
                 .style('fill', '#000000')
                 .style('cursor', 'pointer')
-                .on('click', showMouseover);
+                .on('mouseover', showMouseover);
         }
 
         if (window.hasSiteTwo && filtered2.pH.length) {
@@ -903,7 +905,7 @@ var graphPH = function graphPH(responsive=false) {
                 .style('stroke', '#000000')
                 .style('fill', '#000000')
                 .style('cursor', 'pointer')
-                .on('click', showMouseover);
+                .on('mouseover', showMouseover);
         }
 
     } else {
@@ -977,7 +979,7 @@ var graphTurbidity = function graphTurbidity(responsive=false) {
                 .style('stroke', '#000000')
                 .style('fill', '#000000')
                 .style('cursor', 'pointer')
-                .on('click', showMouseover);
+                .on('mouseover', showMouseover);
         }
 
         if (window.hasSiteTwo && filtered2.turbidity.length) {
@@ -1009,7 +1011,7 @@ var graphTurbidity = function graphTurbidity(responsive=false) {
                 .style('stroke', '#000000')
                 .style('fill', '#000000')
                 .style('cursor', 'pointer')
-                .on('click', showMouseover);
+                .on('mouseover', showMouseover);
         }
     } else {
         $('#turbidity-control').prop({
@@ -1082,7 +1084,7 @@ var graphSalinity = function graphSalinity(responsive=false) {
                 .style('stroke', '#000000')
                 .style('fill', '#000000')
                 .style('cursor', 'pointer')
-                .on('click', showMouseover);
+                .on('mouseover', showMouseover);
         }
 
         if (window.hasSiteTwo && filtered2.salinity.length) {
@@ -1113,7 +1115,7 @@ var graphSalinity = function graphSalinity(responsive=false) {
                 .style('stroke', '#000000')
                 .style('fill', '#000000')
                 .style('cursor', 'pointer')
-                .on('click', showMouseover);
+                .on('mouseover', showMouseover);
         }
     } else {
         $('#salinity-control').prop({
@@ -1186,7 +1188,7 @@ var graphConductivity = function graphConductivity(responsive=false) {
                 .style('stroke', '#000000')
                 .style('fill', '#000000')
                 .style('cursor', 'pointer')
-                .on('click', showMouseover);
+                .on('mouseover', showMouseover);
         }
 
         if (window.hasSiteTwo && filtered2.conductivity.length) {
@@ -1217,7 +1219,7 @@ var graphConductivity = function graphConductivity(responsive=false) {
                 .style('stroke', '#000000')
                 .style('fill', '#000000')
                 .style('cursor', 'pointer')
-                .on('click', showMouseover);
+                .on('mouseover', showMouseover);
         }
     } else {
         $('#conductivity-control').prop({
@@ -1336,7 +1338,7 @@ var graphDissolved = function graphDissolved(responsive=false) {
                     return z(d.name);
                 })
                 .style('cursor', 'pointer')
-                .on('click', showMouseover);
+                .on('mouseover', showMouseover);
 
             var legend = g1.selectAll('.legend')
                 .data([
@@ -1461,7 +1463,7 @@ var graphDissolved = function graphDissolved(responsive=false) {
                     return z(d.name);
                 })
                 .style('cursor', 'pointer')
-                .on('click', showMouseover);
+                .on('mouseover', showMouseover);
 
             var legend = g2.selectAll('.legend')
                 .data([
@@ -1585,7 +1587,7 @@ var graphBod = function graphBod(responsive=false) {
                 .style('stroke', '#000000')
                 .style('fill', '#000000')
                 .style('cursor', 'pointer')
-                .on('click', showMouseover);
+                .on('mouseover', showMouseover);
         }
 
         if (window.hasSiteTwo && filtered2.bod.length) {
@@ -1616,7 +1618,7 @@ var graphBod = function graphBod(responsive=false) {
                 .style('stroke', '#000000')
                 .style('fill', '#000000')
                 .style('cursor', 'pointer')
-                .on('click', showMouseover);
+                .on('mouseover', showMouseover);
         }
     } else {
         $('#bod-control').prop({
@@ -1689,7 +1691,7 @@ var graphColiform = function graphColiform(responsive=false) {
                 .style('stroke', '#000000')
                 .style('fill', '#000000')
                 .style('cursor', 'pointer')
-                .on('click', showMouseover);
+                .on('mouseover', showMouseover);
         }
 
         if (window.hasSiteTwo && filtered2.fecal_coliform.length) {
@@ -1720,7 +1722,7 @@ var graphColiform = function graphColiform(responsive=false) {
                 .style('stroke', '#000000')
                 .style('fill', '#000000')
                 .style('cursor', 'pointer')
-                .on('click', showMouseover);
+                .on('mouseover', showMouseover);
         }
     } else {
         $('#coliform-control').prop({
@@ -1745,7 +1747,7 @@ $(function () {
     $('#date-start').change(changeRangeStart);
     $('#date-end').change(changeRangeEnd);
 
-    document.addEventListener('click', hideMouseover);
+    //document.addEventListener('mouseover', hideMouseover);
 
     createGraph();
 });
@@ -1769,6 +1771,11 @@ var loadSite2 = function loadSite2(site_slug) {
             $('#site2-header').text(data.site.site_name);
             $('#site-names').show();
             $('#compare-error').hide();
+        }
+        if (window.hasSiteTwo) {
+            $("div.graph").removeClass("l10 offset-l1").addClass("l6");
+        } else {
+            $("div.graph").removeClass("l6").addClass("l10 offset-l1");
         }
         createGraph();
     })
@@ -1795,25 +1802,6 @@ var toggleGraph = function toggleGraph(name) {
     var checkInput = $('input').toArray().filter(function(input) {
         return input.type == 'checkbox' && input.checked;
     });
-
-    if (checkInput.length == 1 && !window.hasSiteTwo) {
-        graphName = checkInput[0].id.split('-')[0];
-        focusGraph = graphName;
-        var graphDiv = $('div#graph-site1-' + graphName)
-            .removeClass('l6').addClass('l10 offset-l1')
-            .find('svg').remove();
-        graphFunc[graphName].call(this, true);
-    }
-
-    else {
-        if (focusGraph != "" && checkInput.length > 1) {
-            var graphDiv = $('div#graph-site1-' + focusGraph)
-                .removeClass('l10 offset-l1').addClass('l6')
-                .find('svg').remove();
-            graphFunc[focusGraph].call(this, false);
-            focusGraph = "";
-        }
-    }
 
     fadeInGraph(name);
 };
