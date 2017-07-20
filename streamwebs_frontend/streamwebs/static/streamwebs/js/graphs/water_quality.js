@@ -123,49 +123,12 @@ var showMouseover = function showMouseover(data) {
         );
 
     d3.event.stopPropagation();
-    var that = this;
-    var pointLeaveFire = 1;
-    $(document).on('mousemove', function(e) {
+    $("div.graph").on('mouseover', function() {
+        console.log("HERRO");
         if($('.popup').length > 0) {
-            console.log(e.target);
-            if($.contains($('.popup').get(0), e.target)) {
-                $('.popup').on('mouseleave', function() {
-                    console.log("HELLO");
-                    hideMouseover();
-                    pointLeaveFire = 1;
-                });
-            } else {
-                $(that).on('mouseleave', function() {
-                    pointLeaveFire --;
-                    console.log("HERRO");
-                    if (pointLeaveFire < 0) {
-                        hideMouseover();
-                        pointLeaveFire = 1;
-                    }
-                });
-            }
+            hideMouseover();
         }
     });
-
-    /*$('.popup').on('mouseout', function() {
-        leavePopup = true;
-        console.log("popup: {" + leavePopup + ", " + leavePoint + "}" );
-        if (leavePopup && leavePoint) {
-            console.log({leavePopup, leavePoint});
-            hideMouseover();
-            leavePopup = false;
-            leavePoint = false;
-        }
-    })
-    $(this).on('mouseout', function() {
-        leavePoint = true;
-        console.log("point: {" + leavePopup + ", " + leavePoint + "}" );
-        if (leavePopup && leavePoint) {
-            hideMouseover();
-            leavePopup = false;
-            leavePoint = false;
-        }
-    })*/
 };
 
 var hideMouseover = function hideMouseover() {
