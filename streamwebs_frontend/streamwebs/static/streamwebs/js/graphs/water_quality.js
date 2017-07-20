@@ -53,6 +53,7 @@ leavePopup = false;
 leavePopup = false;
 
 var showMouseover = function showMouseover(data) {
+    $('.popup').remove();
     var g = d3.select(this.parentElement.parentElement);
     var dotPos = [this.transform.baseVal[0].matrix['e'],
                  this.transform.baseVal[0].matrix['f']];
@@ -123,12 +124,6 @@ var showMouseover = function showMouseover(data) {
         );
 
     d3.event.stopPropagation();
-    $("div.graph").on('mouseover', function() {
-        console.log("HERRO");
-        if($('.popup').length > 0) {
-            hideMouseover();
-        }
-    });
 };
 
 var hideMouseover = function hideMouseover() {
@@ -327,13 +322,13 @@ var createGraphTemplate = function createGraphTemplate(container, width, height,
     return g1;
 };
 
-var filterTemperature = function filterTemperature(filtered) {
-    filtered.air_temperature = filtered.air_temperature.filter(function(air_temp) {
-        return air_temp.value != 0;
+var filterZeroData = function filterZeroData(filtered) {
+    var keys = Object.keys(filtered);
+    keys.forEach(function(key) {
+        filtered[key] = filtered[key].filter(function(dataPoint) {
+            return dataPoint.value != 0;
+        });
     });
-    filtered.water_temperature = filtered.water_temperature.filter(function(water_temp) {
-        return water_temp.value != 0;
-    })
 
     return filtered;
 }
@@ -447,7 +442,7 @@ var createGraph = function createGraph() {
         filtered1[key] = filterOutliers(types1[key]);
     }
 
-    filtered1 = filterTemperature(filtered1);
+    filtered1 = filterZeroData(filtered1);
 
     var formatted2 = [];
 
@@ -475,7 +470,7 @@ var createGraph = function createGraph() {
             filtered2[key] = filterOutliers(types2[key]);
         }
 
-        filtered2 = filterTemperature(filtered2);
+        filtered2 = filterZeroData(filtered2);
     }
     graphTemperature();
     graphOxygen();
@@ -1755,7 +1750,9 @@ $(function () {
     $('#date-start').change(changeRangeStart);
     $('#date-end').change(changeRangeEnd);
 
-    //document.addEventListener('mouseover', hideMouseover);
+    $('div.graph').on('click', function() {
+        $(this).find('.popup').remove();
+    })
 
     createGraph();
 });
