@@ -323,6 +323,7 @@ var createGraphTemplate = function createGraphTemplate(container, width, height,
 };
 
 var filterZeroData = function filterZeroData(filtered) {
+  console.log(filtered);
     var keys = Object.keys(filtered);
     keys.forEach(function(key) {
         filtered[key] = filtered[key].filter(function(dataPoint) {
@@ -1754,6 +1755,11 @@ $(function () {
         $(this).find('.popup').remove();
     })
 
+    $('div.graph h4').on('mouseenter', function() {
+        $(this).parent().find('div.data-range').show();
+    }).on('mouseleave', function() {
+        $(this).parent().find('div.data-range').hide();
+    })
     createGraph();
 });
 

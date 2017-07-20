@@ -171,6 +171,7 @@ nav ul#languages {
 
 /* CSS for D3 graphs; ALL FREE TO BE CHANGED */
 .graph {
+    position: relative;
     width: 100%;
 }
 
@@ -254,6 +255,21 @@ i {
     margin-bottom: 0;
 }
 
-.tutorial-th{
+.tutorial-th {
   font-size: 24px;
+}
+
+div.data-range {
+    position: absolute;
+    background: white;
+    z-index: 10;
+    border: 2px solid #004d40;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    top: 60px;
+    left: 40px;
+    padding: 10px;
+    font-size: 16px;
+    line-height: 10px;
 }
