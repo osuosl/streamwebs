@@ -2,9 +2,9 @@
 {% load staticfiles %}
 {% load i18n %}
 
-{% block title %} Manage User Permissions {% endblock %}
+{% block title %}{% trans "Manage User Permissions" %}{% endblock %}
 
-{% block body_title %} Manage User Permissions {% endblock %}
+{% block body_title %}{% trans "Manage User Permissions" %}{% endblock %}
 
 {% block content %}
 <div class="container">
@@ -37,15 +37,15 @@
   <div class="pagination">
     <span class="step-links">
       {% if page_of_users.has_previous %}
-        <a href="?page={{ page_of_users.previous_page_number }}">previous</a>
+        <a href="?page={{ page_of_users.previous_page_number }}">{% trans previous %}</a>
       {% endif %}
 
       <span class="current">
-        Page {{ page_of_users.number }} of {{ page_of_users.paginator.num_pages }}.
+      {% trans "Page" %}{{ page_of_users.number }}{% trans "of" %}{{ page_of_users.paginator.num_pages }}.
       </span>
 
       {% if page_of_users.has_next %}
-        <a href="?page={{ page_of_users.next_page_number }}">next</a>
+        <a href="?page={{ page_of_users.next_page_number }}">{% trans "next" %}</a>
       {% endif %}
     </span>
   </div>

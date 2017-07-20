@@ -1,0 +1,1967 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-07-20 23:25+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+#: streamwebs_frontend/streamwebs/forms.py:17
+#: streamwebs_frontend/streamwebs/templates/streamwebs/register.html:68
+msgid "Password"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/forms.py:32
+#: streamwebs_frontend/streamwebs/templates/streamwebs/register.html:54
+msgid "Username"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/forms.py:33
+#: streamwebs_frontend/streamwebs/templates/streamwebs/register.html:61
+msgid "Email"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/forms.py:34
+#: streamwebs_frontend/streamwebs/templates/streamwebs/login.html:22
+msgid "Password:"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/forms.py:35
+#: streamwebs_frontend/streamwebs/templates/streamwebs/register.html:27
+msgid "First Name"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/forms.py:36
+#: streamwebs_frontend/streamwebs/templates/streamwebs/register.html:34
+msgid "Last Name"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/forms.py:41
+msgid "Passwords do not match"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/forms.py:171
+msgid "At least one zone must have at least"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/forms.py:258
+msgid "starting from"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/forms.py:262
+msgid "ending on"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/forms.py:268
+msgid "Add to Admin group"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/forms.py:269
+msgid "Remove from Admin group"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/forms.py:270
+msgid "Grant permission to view the Statistics page"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/forms.py:271
+msgid "Grant permission to upload to the Resources page"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/forms.py:272
+msgid "Revoke permission to view the Statistics page"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/forms.py:273
+msgid "Revoke permission to upload to the Resources page"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:27
+#: streamwebs_frontend/streamwebs/models.py:30
+#: streamwebs_frontend/streamwebs/models.py:234
+#: streamwebs_frontend/streamwebs/models.py:246
+msgid "Celsius"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:27
+#: streamwebs_frontend/streamwebs/models.py:233
+#: streamwebs_frontend/streamwebs/models.py:246
+msgid "Fahrenheit"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:28
+msgid "Invalid unit"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:52
+#: streamwebs_frontend/streamwebs/models.py:219
+msgid "Longitude is not within valid range."
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:54
+#: streamwebs_frontend/streamwebs/models.py:214
+msgid "Latitude is not within valid range."
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:65
+msgid "site name"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:67
+msgid "site description"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:72
+#: streamwebs_frontend/streamwebs/models.py:547
+msgid "location"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:74
+msgid "image"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:169
+#: streamwebs_frontend/streamwebs/models.py:172
+#: streamwebs_frontend/streamwebs/models.py:175
+msgid "You must be at least 13"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:182
+msgid "birthdate"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:238
+msgid "Level A"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:239
+msgid "Level B"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:240
+msgid "Level C"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:241
+msgid "Level D"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:242
+msgid "Level E"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:245
+msgid "Yes"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:245
+msgid "No"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:250
+msgid "Stream/Site name"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:253
+msgid "date"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:257
+msgid "DEQ data quality level"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:261
+#: streamwebs_frontend/streamwebs/models.py:699
+#: streamwebs_frontend/streamwebs/models.py:904
+#: streamwebs_frontend/streamwebs/models.py:1000
+#: streamwebs_frontend/streamwebs/models.py:1041
+msgid "school"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:265
+msgid "latitude"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:269
+msgid "longitude"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:274
+msgid "any fish present?"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:277
+msgid "number of live fish"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:280
+msgid "number of dead fish"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:284
+msgid "water temperature units"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:288
+msgid "air temperature units"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:290
+#: streamwebs_frontend/streamwebs/models.py:602
+#: streamwebs_frontend/streamwebs/models.py:916
+msgid "notes"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:303
+msgid "Unspecified site for data sheet "
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:382
+#: streamwebs_frontend/streamwebs/models.py:384
+#: streamwebs_frontend/streamwebs/models.py:400
+msgid "Vernier"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:383
+#: streamwebs_frontend/streamwebs/models.py:384
+#: streamwebs_frontend/streamwebs/models.py:399
+msgid "Manual"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:401
+msgid "(Select a sample number)"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:414
+msgid "water temperature"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:421
+msgid "air temperature"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:428
+msgid "dissolved oxygen (mg/L)"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:435
+#: streamwebs_frontend/streamwebs/templates/streamwebs/graphs/water_quality.html:63
+#: streamwebs_frontend/streamwebs/templates/streamwebs/graphs/water_quality.html:128
+#: streamwebs_frontend/streamwebs/templates/streamwebs/graphs/water_quality.html:132
+msgid "pH"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:442
+msgid "turbidity (NTU)"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:449
+msgid "salinity (PSU) PPT"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:457
+msgid "conductivity (µS/cm)"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:461
+msgid "total solids (mg/L)"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:465
+msgid "BOD (mg/L)"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:469
+msgid "ammonia (mg/L)"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:473
+msgid "nitrite (mg/L)"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:477
+msgid "nitrate (mg/L)"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:481
+msgid "phosphates (mg/L)"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:487
+msgid "fecal coliform (CFU/100 mL)"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:546
+#: streamwebs_frontend/streamwebs/models.py:594
+msgid "date established"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:549
+msgid "map datum"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:550
+msgid "description"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:557
+msgid "Camera point "
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:557
+#: streamwebs_frontend/streamwebs/models.py:926
+msgid " for site "
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:575
+msgid "camera point"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:576
+msgid "camera points"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:596
+msgid "compass bearing"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:599
+msgid "distance from camera point"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:601
+msgid "camera height"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:608
+msgid "Photo point "
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:608
+msgid " for camera point "
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:622
+msgid "photo point"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:623
+msgid "photo points"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:630
+msgid "photo"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:632
+msgid "date taken"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:635
+msgid " for photo point "
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:639
+msgid "photo point image"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:640
+msgid "photo point images"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:694
+msgid "riffle"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:695
+msgid "pool"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:701
+#: streamwebs_frontend/streamwebs/models.py:906
+#: streamwebs_frontend/streamwebs/models.py:1002
+#: streamwebs_frontend/streamwebs/models.py:1043
+msgid "date and time"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:703
+#: streamwebs_frontend/streamwebs/models.py:908
+#: streamwebs_frontend/streamwebs/models.py:1005
+#: streamwebs_frontend/streamwebs/models.py:1044
+msgid "weather"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:708
+msgid "time spent sorting/identifying"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:712
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/macroinvertebrate_view.html:39
+msgid "# of people sorting/identifying"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:714
+msgid "water type"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:716
+msgid "field notes"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:720
+msgid "caddisfly"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:722
+msgid "mayfly"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:724
+msgid "riffle beetle"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:727
+msgid "stonefly"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:729
+msgid "water penny"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:731
+msgid "dobsonfly"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:733
+msgid "sensitive total"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:738
+msgid "clam/mussel"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:740
+msgid "crane fly"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:742
+msgid "crayfish"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:744
+msgid "damselfly"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:746
+msgid "dragonfly"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:747
+msgid "scud"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:748
+msgid "fishfly"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:750
+msgid "alderfly"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:751
+msgid "mite"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:753
+msgid "somewhat sensitive total"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:758
+msgid "aquatic worm"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:760
+msgid "blackfly"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:761
+msgid "leech"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:762
+msgid "midge"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:763
+msgid "snail"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:765
+msgid "mosquito larva"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:768
+msgid "tolerant total"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:773
+msgid "water quality rating"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:820
+msgid "macroinvertebrate"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:821
+msgid "macroinvertebrates"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:825
+msgid "Aquatic Worm"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:826
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/macroinvertebrate_view.html:250
+msgid "Blackfly"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:827
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/macroinvertebrate_view.html:259
+msgid "Leech"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:828
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/macroinvertebrate_view.html:268
+msgid "Midge"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:829
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/macroinvertebrate_view.html:277
+msgid "Snail"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:830
+msgid "Mosquito Larva"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:835
+msgid "Mussel/Clam"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:836
+msgid "Crane Fly"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:837
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/macroinvertebrate_view.html:159
+msgid "Crayfish"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:838
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/macroinvertebrate_view.html:168
+msgid "Damselfly"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:839
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/macroinvertebrate_view.html:177
+msgid "Dragonfly"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:840
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/macroinvertebrate_view.html:186
+msgid "Scud"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:841
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/macroinvertebrate_view.html:195
+msgid "Fishfly"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:842
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/macroinvertebrate_view.html:204
+msgid "Alderfly"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:843
+msgid "Mite"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:848
+msgid "Riffle Beetle"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:849
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/macroinvertebrate_view.html:82
+msgid "Mayfly"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:850
+msgid "Water Penny"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:851
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/macroinvertebrate_view.html:99
+msgid "Stonefly"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:852
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/macroinvertebrate_view.html:73
+msgid "Caddisfly"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:853
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/macroinvertebrate_view.html:115
+msgid "Dobsonfly"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:874
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/macroinvertebrate_edit.html:117
+msgid "Tolerant"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:875
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/macroinvertebrate_view.html:130
+msgid "Somewhat Sensitive"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:876
+msgid "Sensitive"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:910
+#: streamwebs_frontend/streamwebs/models.py:1004
+#: streamwebs_frontend/streamwebs/models.py:1047
+msgid "site"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:914
+msgid "slope of stream bank (rise over run)"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:926
+msgid "Transect "
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:930
+msgid "riparian transect"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:931
+msgid "riparian transects"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:961
+msgid "conifers"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:963
+msgid "hardwoods"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:965
+msgid "shrubs"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:967
+msgid "additional comments"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:1008
+msgid "north canopy cover"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:1012
+msgid "east canopy cover"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:1016
+msgid "south canopy cover"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:1020
+msgid "west canopy cover"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:1024
+msgid "estimated canopy cover"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:1034
+msgid "canopy cover survey"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:1035
+msgid "canopy cover surveys"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:1050
+msgid "Summit"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:1051
+msgid "Slope"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:1052
+msgid "Depression"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:1053
+msgid "Large Flat Area"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:1054
+msgid "Stream Bank"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:1058
+msgid "Bare Soil"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:1059
+msgid "Rocks"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:1060
+msgid "Grass"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:1061
+#: streamwebs_frontend/streamwebs/templatetags/filters.py:59
+msgid "Shrubs"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:1062
+msgid "Trees"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:1066
+msgid "Urban"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:1067
+msgid "Agricultural"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:1068
+msgid "Recreation"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:1069
+msgid "Wilderness"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:1070
+#: streamwebs_frontend/streamwebs/models.py:1096
+msgid "Other"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:1081
+msgid "distance from stream"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:1084
+msgid "distinguishing site characteristics"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:1088
+msgid "Sand"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:1089
+msgid "Loamy Sand"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:1090
+msgid "Silt Loam"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:1091
+msgid "Loam"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:1092
+msgid "Clay Loam"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:1093
+msgid "Light Clay"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:1094
+msgid "Heavy Clay"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:1095
+msgid "N/A"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:1109
+msgid "soil survey"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:1110
+msgid "soil surveys"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:1128
+msgid "Data Sheet"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:1129
+msgid "Publication"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:1130
+msgid "Tutorial Video"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:1145
+msgid "resource"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:1146
+msgid "resources"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/models.py:1149
+msgid "Resource name "
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/admin/stats.html:5
+#: streamwebs_frontend/streamwebs/templates/streamwebs/admin/stats.html:6
+msgid "StreamWebs Statistics"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/admin/stats.html:12
+msgid "Calculate"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/admin/stats.html:16
+msgid "Users who have logged in within the last 3 years"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/admin/stats.html:19
+msgid "Users who joined between"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/admin/stats.html:19
+#: streamwebs_frontend/streamwebs/templates/streamwebs/admin/stats.html:26
+#: streamwebs_frontend/streamwebs/templates/streamwebs/admin/stats.html:31
+#: streamwebs_frontend/streamwebs/templates/streamwebs/admin/stats.html:37
+msgid "and"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/admin/stats.html:26
+msgid "Number of data sheets uploaded between"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/admin/stats.html:31
+msgid "Schools that uploaded data between"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/admin/stats.html:37
+msgid "Sites that uploaded data between"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/admin/user_promo.html:5
+#: streamwebs_frontend/streamwebs/templates/streamwebs/admin/user_promo.html:6
+msgid "Manage User Permissions"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/admin/user_promo.html:19
+msgid "Apply"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/admin/user_promo.html:43
+msgid "Page"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/admin/user_promo.html:43
+msgid "of"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/admin/user_promo.html:47
+msgid "next"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/create_site.html:12
+#: streamwebs_frontend/streamwebs/templates/streamwebs/create_site.html:13
+msgid "Add a New Site"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/create_site.html:22
+msgid "Add new site"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/data_edit.html:5
+#: streamwebs_frontend/streamwebs/templates/streamwebs/data_view.html:5
+msgid "Datasheet - Streamwebs"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/data_view.html:7
+msgid "Datasheet"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/camera_point_add.html:5
+msgid "Add a new camera point"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/camera_point_add.html:72
+#: streamwebs_frontend/streamwebs/views/general.py:675
+#: streamwebs_frontend/streamwebs/views/general.py:781
+msgid "You have successfully added a new camera point."
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/camera_point_add.html:79
+msgid "New Photo Point"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/camera_point_add.html:88
+msgid "Location Input"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/camera_point_add.html:91
+msgid "Camera Point Date"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/camera_point_add.html:98
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/camera_point_view.html:24
+msgid "Description"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/camera_point_add.html:105
+msgid "Map Datum"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/camera_point_add.html:123
+msgid "Photo Input"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/camera_point_add.html:128
+msgid "Photo"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/camera_point_add.html:131
+msgid "Compass Bearing"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/camera_point_add.html:170
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/canopy_cover_view.html:75
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/photo_point_add.html:23
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/photo_point_view.html:38
+#: streamwebs_frontend/streamwebs/templates/streamwebs/school_detail.html:56
+#: streamwebs_frontend/streamwebs/templates/streamwebs/school_detail.html:83
+#: streamwebs_frontend/streamwebs/templates/streamwebs/school_detail.html:108
+#: streamwebs_frontend/streamwebs/templates/streamwebs/school_detail.html:133
+#: streamwebs_frontend/streamwebs/templates/streamwebs/school_detail.html:158
+msgid "Date"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/camera_point_add.html:179
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/camera_point_add.html:180
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/canopy_cover_edit.html:324
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/macroinvertebrate_edit.html:140
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/photo_point_add.html:29
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/photo_point_view.html:60
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/riparian_transect_edit.html:130
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/soil_edit.html:124
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/water_quality.html:392
+msgid "Submit"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/camera_point_add.html:185
+msgid "You must be logged in to submit data."
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/camera_point_add.html:186
+msgid "Log in here."
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/camera_point_view.html:18
+msgid "Camera Point"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/camera_point_view.html:20
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/photo_point_view.html:16
+msgid "Date established"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/camera_point_view.html:22
+msgid "Location"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/camera_point_view.html:23
+msgid "Map datum"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/camera_point_view.html:32
+msgid "Photo points"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/camera_point_view.html:47
+msgid "Established"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/camera_point_view.html:50
+msgid "Number of Images"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/camera_point_view.html:53
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/photo_point_view.html:17
+msgid "Compass bearing"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/camera_point_view.html:54
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/photo_point_view.html:20
+msgid "Distance from camera point"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/camera_point_view.html:55
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/photo_point_view.html:24
+msgid "Camera height"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/camera_point_view.html:56
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/photo_point_view.html:25
+msgid "Notes"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/camera_point_view.html:62
+msgid "Photo point"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/canopy_cover_edit.html:5
+msgid "Add Canopy Cover Survey"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/canopy_cover_edit.html:58
+msgid "You have successfully submitted your Canopy Cover Survey."
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/canopy_cover_edit.html:65
+msgid "New Canopy Cover Sampling"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/canopy_cover_edit.html:132
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/canopy_cover_view.html:99
+msgid "North"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/canopy_cover_edit.html:177
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/canopy_cover_view.html:144
+msgid "West"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/canopy_cover_edit.html:224
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/canopy_cover_view.html:191
+msgid "East"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/canopy_cover_edit.html:269
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/canopy_cover_view.html:236
+msgid "South"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/canopy_cover_view.html:5
+msgid "View Canopy Cover Survey"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/canopy_cover_view.html:18
+msgid "Canopy Cover data"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/canopy_cover_view.html:71
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/macroinvertebrate_view.html:33
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/riparian_transect_view.html:36
+#: streamwebs_frontend/streamwebs/templates/streamwebs/register.html:49
+#: streamwebs_frontend/streamwebs/templates/streamwebs/schools.html:34
+msgid "School"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/canopy_cover_view.html:79
+#: streamwebs_frontend/streamwebs/templates/streamwebs/school_detail.html:55
+#: streamwebs_frontend/streamwebs/templates/streamwebs/school_detail.html:82
+#: streamwebs_frontend/streamwebs/templates/streamwebs/school_detail.html:107
+#: streamwebs_frontend/streamwebs/templates/streamwebs/school_detail.html:132
+#: streamwebs_frontend/streamwebs/templates/streamwebs/school_detail.html:157
+msgid "Site"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/canopy_cover_view.html:83
+msgid "Estimated Canopy Cover"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/macroinvertebrate_edit.html:5
+msgid "Macroinvertebrates Data Edit"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/macroinvertebrate_edit.html:20
+msgid "You have successfully submitted your Macroinvertebrate data sheet."
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/macroinvertebrate_edit.html:27
+msgid "New Macroinvertebrate Sampling"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/macroinvertebrate_edit.html:38
+msgid "minutes"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/macroinvertebrate_edit.html:70
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/macroinvertebrate_view.html:60
+msgid "Sensitivity to pollution"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/macroinvertebrate_edit.html:72
+msgid "Sensitive/intolerant"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/macroinvertebrate_edit.html:95
+msgid "Somewhat sensitive"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/macroinvertebrate_view.html:5
+msgid "View Macroinvertebrates Data"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/macroinvertebrate_view.html:29
+msgid "Macroinvertebrate data"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/macroinvertebrate_view.html:36
+#: streamwebs_frontend/streamwebs/templates/streamwebs/site_detail.html:106
+#: streamwebs_frontend/streamwebs/templates/streamwebs/site_detail.html:144
+msgid "Water quality"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/macroinvertebrate_view.html:42
+msgid "Water type"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/macroinvertebrate_view.html:45
+msgid "Time spent sorting/identifying"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/macroinvertebrate_view.html:48
+msgid "Percent EPT"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/macroinvertebrate_view.html:51
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/riparian_transect_view.html:49
+msgid "Weather"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/macroinvertebrate_view.html:55
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/riparian_transect_view.html:115
+msgid "Field notes"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/macroinvertebrate_view.html:62
+msgid "Sensitive/Intolerant"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/macroinvertebrate_view.html:67
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/macroinvertebrate_view.html:135
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/macroinvertebrate_view.html:235
+msgid "Count"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/macroinvertebrate_view.html:91
+msgid "Riffle beetle"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/macroinvertebrate_view.html:107
+msgid "Water penny"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/macroinvertebrate_view.html:122
+msgid "Sensitive total"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/macroinvertebrate_view.html:141
+msgid "Clam/mussel"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/macroinvertebrate_view.html:150
+msgid "Crane fly"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/macroinvertebrate_view.html:213
+msgid "Water mite"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/macroinvertebrate_view.html:222
+msgid "Somewhat sensitive total"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/macroinvertebrate_view.html:230
+msgid "Tolerant "
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/macroinvertebrate_view.html:241
+msgid "Aquatic worm"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/macroinvertebrate_view.html:286
+msgid "Mosquito larva"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/macroinvertebrate_view.html:295
+msgid "Tolerant total"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/photo_point_add.html:5
+msgid "New photo point"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/photo_point_add.html:9
+msgid "New photo point for camera point"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/photo_point_add.html:11
+msgid "You have successfully added a new photo point"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/photo_point_view.html:27
+msgid "Photos for this photo point"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/photo_point_view.html:54
+msgid "Add new photo"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/photo_point_view.html:67
+msgid "Log in to add photos for this photo point."
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/riparian_transect_edit.html:5
+msgid "Riparian Area Transect"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/riparian_transect_edit.html:27
+msgid "You have successfully submitted your Riparian Transect data sheet."
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/riparian_transect_edit.html:35
+msgid "New Riparian Area Transect Sampling"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/riparian_transect_view.html:5
+msgid "View Riparian Area Transect Data"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/riparian_transect_view.html:30
+msgid "Riparian Transect data"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/riparian_transect_view.html:44
+msgid "Date and time"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/riparian_transect_view.html:57
+msgid "Slope of stream bank"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/soil_edit.html:5
+msgid "Add/Edit Soil Survey"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/soil_edit.html:21
+msgid "You have successfully submitted your Soil Survey data sheet."
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/soil_edit.html:28
+msgid "New Riparian Soil Survey"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/soil_edit.html:58
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/soil_view.html:61
+msgid "Landscape Position"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/soil_edit.html:70
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/soil_view.html:73
+msgid "Cover Type"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/soil_edit.html:82
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/soil_view.html:85
+msgid "Land Use"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/soil_view.html:5
+msgid "View Soil Survey"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/soil_view.html:33
+msgid "Riparian Soil Survey: "
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/water_quality.html:15
+msgid "Success!"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/water_quality.html:47
+msgid "New Water Quality Sampling"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/water_quality.html:165
+msgid "Sample 1"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/water_quality.html:166
+msgid "Sample 2"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/water_quality.html:167
+msgid "Sample 3"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/water_quality.html:168
+msgid "Sample 4"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/water_quality.html:288
+msgid "Additional parameters"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/deactivate_site.html:6
+msgid "Delete"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/deactivate_site.html:11
+msgid " has been successfully deleted."
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/deactivate_site.html:14
+msgid "This site has data and can only be deleted by an administrator."
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/deactivate_site.html:18
+msgid "You must be logged in to delete a site."
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/graphs/macroinvertebrates.html:4
+#: streamwebs_frontend/streamwebs/templates/streamwebs/graphs/macroinvertebrates.html:17
+#: streamwebs_frontend/streamwebs/templates/streamwebs/school_detail.html:78
+#: streamwebs_frontend/streamwebs/templates/streamwebs/site_detail.html:111
+#: streamwebs_frontend/streamwebs/templates/streamwebs/site_detail.html:151
+msgid "Macroinvertebrates"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/graphs/macroinvertebrates.html:26
+msgid "Date range:"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/graphs/macroinvertebrates.html:29
+#: streamwebs_frontend/streamwebs/templates/streamwebs/graphs/water_quality.html:33
+msgid "After"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/graphs/macroinvertebrates.html:34
+#: streamwebs_frontend/streamwebs/templates/streamwebs/graphs/water_quality.html:36
+msgid "Before"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/graphs/macroinvertebrates.html:41
+msgid "Graph type:"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/graphs/macroinvertebrates.html:45
+msgid "Summary"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/graphs/macroinvertebrates.html:49
+msgid "Time"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/graphs/macroinvertebrates.html:58
+msgid "Macroinvertebrates Over Time"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/graphs/macroinvertebrates.html:64
+msgid "Sensitive species"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/graphs/macroinvertebrates.html:70
+msgid "Somewhat sensitive species"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/graphs/macroinvertebrates.html:76
+msgid "Tolerant species"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/graphs/macroinvertebrates.html:82
+msgid "Species type breakdown"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/graphs/water_quality.html:4
+#: streamwebs_frontend/streamwebs/templates/streamwebs/graphs/water_quality.html:26
+#: streamwebs_frontend/streamwebs/templates/streamwebs/school_detail.html:51
+msgid "Water Quality"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/graphs/water_quality.html:32
+msgid "Date Range:"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/graphs/water_quality.html:57
+msgid "Temperature"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/graphs/water_quality.html:60
+msgid "Dissolved Oxygen"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/graphs/water_quality.html:66
+msgid "Turbidity"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/graphs/water_quality.html:69
+msgid "Salinity"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/graphs/water_quality.html:72
+msgid "Conductivity"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/graphs/water_quality.html:75
+msgid "Dissolved Solids"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/graphs/water_quality.html:78
+msgid "Biochemical Oxygen Demand"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/graphs/water_quality.html:81
+msgid "Fecal Coliform"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/graphs/water_quality.html:86
+msgid "Load a site to compare"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/graphs/water_quality.html:96
+msgid "Site has no Water Quality data to compare."
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/graphs/water_quality.html:100
+msgid "Water Quality Over Time"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/graphs/water_quality.html:101
+msgid "Note: Outliers are not graphed."
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/graphs/water_quality.html:114
+#: streamwebs_frontend/streamwebs/templates/streamwebs/graphs/water_quality.html:118
+msgid "Temperature (°C)"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/graphs/water_quality.html:121
+#: streamwebs_frontend/streamwebs/templates/streamwebs/graphs/water_quality.html:125
+msgid "Dissolved Oxygen (mg/L)"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/graphs/water_quality.html:135
+#: streamwebs_frontend/streamwebs/templates/streamwebs/graphs/water_quality.html:139
+msgid "Turbidity (NTU)"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/graphs/water_quality.html:142
+#: streamwebs_frontend/streamwebs/templates/streamwebs/graphs/water_quality.html:147
+msgid "Salinity (PSU or PPT)"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/graphs/water_quality.html:152
+#: streamwebs_frontend/streamwebs/templates/streamwebs/graphs/water_quality.html:156
+msgid "Conductivity (µS/cm)"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/graphs/water_quality.html:159
+#: streamwebs_frontend/streamwebs/templates/streamwebs/graphs/water_quality.html:163
+msgid "Dissolved Matter (mg/L)"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/graphs/water_quality.html:166
+#: streamwebs_frontend/streamwebs/templates/streamwebs/graphs/water_quality.html:170
+msgid "Biochemical Oxygen Demand (mg/L)"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/graphs/water_quality.html:173
+#: streamwebs_frontend/streamwebs/templates/streamwebs/graphs/water_quality.html:177
+msgid "Fecal Coliform (CFU / 100 mL)"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/graphs/wq_histogram.html:4
+#: streamwebs_frontend/streamwebs/templates/streamwebs/graphs/wq_histogram.html:18
+msgid "Data on"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/index.html:32
+msgid "Student Stewardship Network"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/index.html:47
+msgid "About"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/index.html:48
+msgid ""
+"\n"
+"        The StreamWebs Student Stewardship Network is an educational\n"
+"        platform that provides teachers and students with resources to\n"
+"        conduct based hands-on watershed stewardship projects. The\n"
+"        StreamWebs program works to promote the teaching and learning of\n"
+"        field based science, enhance environmental literacy, and provide\n"
+"        resources that support\n"
+"        <a href=\"http://www.noaa.gov/explainers/noaa-meaningful-watershed-"
+"educational-experience\">\n"
+"          Meaningful Watershed Education Experiences\n"
+"        </a>\n"
+"        (MWEEs).\n"
+"        <br><br>\n"
+"        By providing students and teachers open-source, web-based tools\n"
+"        for watershed data collection, analysis, and a multimedia showcase\n"
+"        for their project and data reports, StreamWebs helps to bridge\n"
+"        student field experiences back to the classroom and vice versa.\n"
+"        StreamWebs hopes to increase understanding and stewardship of\n"
+"        watersheds and related ocean, coastal, riverine, and estuarine\n"
+"        ecosystems and to help students and teachers demonstrate their role\n"
+"        as vital contributors to watershed sustainability.\n"
+"        <br><br>\n"
+"        StreamWebs is a program of Oregon Sea Grant and Oregon State\n"
+"        University Extension Service and is supported by the National\n"
+"        Oceanic and Atmospheric Administration (NOAA) Bay and Watershed\n"
+"        Education Training (BWET) program.\n"
+"        <br><br>\n"
+"        If you have questions about StreamWebs, or how you can get\n"
+"        involved, email\n"
+"        <a href=\"mailto:StreamWebs@oregonstate.edu\">\n"
+"          StreamWebs@oregonstate.edu\n"
+"        </a>.\n"
+"      "
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/login.html:6
+msgid "Log In"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/login.html:19
+msgid "Username:"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/login.html:27
+msgid "Log in"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/navigation.html:6
+#: streamwebs_frontend/streamwebs/templates/streamwebs/sites.html:31
+msgid "Sites"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/navigation.html:8
+#: streamwebs_frontend/streamwebs/templates/streamwebs/schools.html:26
+msgid "Schools"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/navigation.html:10
+msgid "Resources"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/navigation.html:14
+msgid "View Site Statistics"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/navigation.html:17
+msgid "Manage Users"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/navigation.html:19
+msgid "Logout"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/navigation.html:21
+#: streamwebs_frontend/streamwebs/templates/streamwebs/register.html:87
+msgid "Create Account"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/navigation.html:22
+msgid "Login"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/register.html:3
+#: streamwebs_frontend/streamwebs/templates/streamwebs/register.html:11
+msgid "Register"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/register.html:16
+msgid "You have successfully created a StreamWebs account."
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/register.html:17
+msgid "Return to home"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/register.html:23
+msgid "Create an account."
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/register.html:41
+msgid "Birthdate"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/register.html:75
+msgid "Verify Password"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/resources.html:8
+msgid ""
+"StreamWebs offers a number of resources to get you started in the field."
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/resources.html:11
+msgid "DATA SHEETS"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/resources.html:13
+msgid ""
+"\n"
+"      These field data forms support a number of watershed field analyses,\n"
+"      including water quality sampling, macroinvertebrate sampling, and "
+"photo\n"
+"      point monitoring. Click on the link to see all of the data forms you "
+"can\n"
+"      download.\n"
+"      "
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/resources.html:21
+msgid "EDUCATOR KITS"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/resources.html:23
+msgid ""
+"\n"
+"      Streamwebs has education kits available for check-out at no charge. "
+"These\n"
+"      kits can be checked out by teachers, watershed educators, or other\n"
+"      non-profit groups or organizations in Oregon. Kits are available for\n"
+"      pick-up in Corvallis or Newport.\n"
+"      "
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/resources.html:30
+msgid "CURRICULUM PUBLICATIONS"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/resources.html:32
+msgid ""
+"\n"
+"      In this section, you will be able to download curriculum to use in "
+"the\n"
+"      field and the classroom, including Salmon Watch, Student Stewardship\n"
+"      Project Guide, and 1000 Drops.\n"
+"      "
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/resources.html:39
+msgid "NOAA EDUCATOR RESOURCES"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/resources.html:41
+msgid ""
+"\n"
+"      NOAA has a number of education resources that can support watershed\n"
+"      investigations both in the field and classroom. Examples include: "
+"data\n"
+"      resources, ocean acidification activities, and global systems "
+"activities.\n"
+"      "
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/resources.html:47
+msgid "TUTORIAL VIDEOS"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/resources.html:49
+msgid ""
+"\n"
+"      Here you will find a number of video tutorials covering field "
+"protocols\n"
+"      for using the Vernier LabQuest and water quality sensors in the field, "
+"in\n"
+"      addition to a field tutorial for conducting photo point monitoring.\n"
+"      "
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/resources.html:57
+#: streamwebs_frontend/streamwebs/templates/streamwebs/resources/resources_upload.html:6
+msgid "Upload a new resource"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/resources/resources_data_sheets.html:13
+msgid "Data Sheets"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/resources/resources_data_sheets.html:18
+#: streamwebs_frontend/streamwebs/templates/streamwebs/resources/resources_publications.html:18
+msgid "Name"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/resources/resources_data_sheets.html:19
+#: streamwebs_frontend/streamwebs/templates/streamwebs/resources/resources_publications.html:19
+msgid "Link"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/resources/resources_publications.html:13
+msgid "Curriculum Guides"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/resources/resources_tutorial_videos.html:13
+msgid "Tutorial Videos"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/resources/resources_upload.html:11
+msgid "Upload"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/school_detail.html:3
+msgid "School Detail - StreamWebs"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/school_detail.html:44
+msgid "Address"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/school_detail.html:103
+msgid "Canopy Cover"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/school_detail.html:128
+#: streamwebs_frontend/streamwebs/templates/streamwebs/site_detail.html:131
+#: streamwebs_frontend/streamwebs/templates/streamwebs/site_detail.html:172
+msgid "Soil Survey"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/school_detail.html:153
+msgid "Riparian Transect"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/schools.html:3
+msgid "Schools - StreamWebs"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/schools.html:35
+msgid "Type"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/schools.html:36
+msgid "City"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/site_detail.html:7
+msgid "Streamwebs"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/site_detail.html:48
+msgid "Created"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/site_detail.html:49
+msgid "Last modified"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/site_detail.html:55
+msgid "Graphs"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/site_detail.html:90
+msgid "No data for this site."
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/site_detail.html:101
+msgid "Add data to this site"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/site_detail.html:116
+#: streamwebs_frontend/streamwebs/templates/streamwebs/site_detail.html:158
+msgid "Riparian transect"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/site_detail.html:121
+#: streamwebs_frontend/streamwebs/templates/streamwebs/site_detail.html:165
+msgid "Canopy Cover Survey"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/site_detail.html:126
+msgid "Photo point monitoring"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/site_detail.html:138
+msgid "Export"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/sites.html:41
+msgid "Search sites"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/sites.html:63
+msgid "Select Site"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/sites.html:72
+msgid "Create Site"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/update_site.html:5
+msgid "Update Site"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templates/streamwebs/update_site.html:16
+msgid "Update site"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templatetags/filters.py:38
+msgid "Set 15' rope at 20' from the water"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templatetags/filters.py:40
+msgid "At 40' from the water"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templatetags/filters.py:42
+msgid "At 60' from the water"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templatetags/filters.py:44
+msgid "At 80' from the water"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templatetags/filters.py:46
+msgid "At 100' from the water"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templatetags/filters.py:53
+msgid "Zone"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templatetags/filters.py:55
+msgid "Conifers"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templatetags/filters.py:57
+msgid "Hardwoods"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/templatetags/filters.py:61
+msgid "Comments"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/views/general.py:54
+msgid "You have successfully added a new site."
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/views/general.py:223
+msgid "You have successfully updated "
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/views/general.py:310
+msgid "Invalid username or password."
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/views/general.py:450
+msgid "You have successfully added a new macroinvertebrates "
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/views/general.py:522
+msgid "You have successfully added a new riparian transect "
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/views/general.py:573
+msgid "You have successfully added a new canopy cover "
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/views/general.py:727
+msgid ""
+"A photo from that date already exists for this photo                         "
+"point."
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/views/general.py:826
+msgid "Water Quality Data"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/views/general.py:858
+msgid "You have successfully added a new water quality "
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/views/general.py:875
+msgid "Add water quality sample"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/views/general.py:908
+msgid "You have successfully submitted a new soil survey."
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/views/general.py:1082
+msgid "Tutorial video successfully uploaded"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/views/general.py:1090
+msgid "Sorry, that video type is unacceptable."
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/views/general.py:1091
+msgid "Please upload a .mp4, .webm, or .ogg"
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/views/general.py:1100
+msgid "Data sheet successfully uploaded a new data sheet."
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/views/general.py:1108
+msgid "Publication successfully uploaded."
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/views/general.py:1141
+#, python-format
+msgid "%s added to the Admin group."
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/views/general.py:1146
+#, python-format
+msgid "%s removed from the Admin group."
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/views/general.py:1151
+#, python-format
+msgid "%s wgranted permission to view Statistics."
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/views/general.py:1169
+#, python-format
+msgid "%s was revoked the permission to view Statistics."
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/views/general.py:1175
+#, python-format
+msgid "%s was granted permission to upload resources."
+msgstr ""
+
+#: streamwebs_frontend/streamwebs/views/general.py:1188
+#, python-format
+msgid "%s was revoked the permission to upload resources."
+msgstr ""
