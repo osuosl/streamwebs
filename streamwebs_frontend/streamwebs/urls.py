@@ -92,6 +92,10 @@ urlpatterns = [
     url(r'^user-promotion/$', views.admin_user_promotion, name='user_promo'),
 
     url(r'^register/$', views.register, name='register'),
+    url(r'^account/$', views.account, name='account'),
+    url(r'^account/update_email/$', views.update_email, name='update_email'),
+    url(r'^account/update_password/$', views.update_password,
+        name='update_password'),
     url(r'^login/$', views.user_login, name='login'),
     url(r'^logout/$', views.user_logout, name='logout'),
 
