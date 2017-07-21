@@ -9,6 +9,7 @@ var num_min = -9007199254740991
 var num_max = 9007199254740991
 var date_range = [num_min, num_max];
 var outerContainer = $('#graph-container');
+var hasPopup = false;
 
 var changeRangeStart = function changeRangeStart() {
     if (!$(this).val()) { // If the field is empty, clear the range
@@ -48,7 +49,11 @@ var changeRangeEnd = function changeRangeEnd() {
  *******************************************************************************
  ******************************************************************************/
 
+leavePopup = false;
+leavePopup = false;
+
 var showMouseover = function showMouseover(data) {
+    $('.popup').remove();
     var g = d3.select(this.parentElement.parentElement);
     var dotPos = [this.transform.baseVal[0].matrix['e'],
                  this.transform.baseVal[0].matrix['f']];
@@ -317,13 +322,14 @@ var createGraphTemplate = function createGraphTemplate(container, width, height,
     return g1;
 };
 
-var filterTemperature = function filterTemperature(filtered) {
-    filtered.air_temperature = filtered.air_temperature.filter(function(air_temp) {
-        return air_temp.value != 0;
+var filterZeroData = function filterZeroData(filtered) {
+  console.log(filtered);
+    var keys = Object.keys(filtered);
+    keys.forEach(function(key) {
+        filtered[key] = filtered[key].filter(function(dataPoint) {
+            return dataPoint.value != 0;
+        });
     });
-    filtered.water_temperature = filtered.water_temperature.filter(function(water_temp) {
-        return water_temp.value != 0;
-    })
 
     return filtered;
 }
@@ -437,7 +443,7 @@ var createGraph = function createGraph() {
         filtered1[key] = filterOutliers(types1[key]);
     }
 
-    filtered1 = filterTemperature(filtered1);
+    filtered1 = filterZeroData(filtered1);
 
     var formatted2 = [];
 
@@ -465,7 +471,7 @@ var createGraph = function createGraph() {
             filtered2[key] = filterOutliers(types2[key]);
         }
 
-        filtered2 = filterTemperature(filtered2);
+        filtered2 = filterZeroData(filtered2);
     }
     graphTemperature();
     graphOxygen();
@@ -561,7 +567,7 @@ var graphTemperature = function graphTemperature(responsive=false) {
                     return z(d.name);
                 })
                 .style('cursor', 'pointer')
-                .on('click', showMouseover);
+                .on('mouseover', showMouseover);
 
             var legend1 = g1.selectAll('.legend')
                 .data([
@@ -656,7 +662,7 @@ var graphTemperature = function graphTemperature(responsive=false) {
                     return z(d.name);
                 })
                 .style('cursor', 'pointer')
-                .on('click', showMouseover);
+                .on('mouseover', showMouseover);
 
             var legend2 = g2.selectAll('.legend')
                 .data([
@@ -769,7 +775,7 @@ var graphOxygen = function graphOxygen(responsive=false){
                 .style('stroke', '#000000')
                 .style('fill', '#000000')
                 .style('cursor', 'pointer')
-                .on('click', showMouseover);
+                .on('mouseover', showMouseover);
         }
 
         if (window.hasSiteTwo && filtered2.dissolved_oxygen.length) {
@@ -800,7 +806,7 @@ var graphOxygen = function graphOxygen(responsive=false){
                 .style('stroke', '#000000')
                 .style('fill', '#000000')
                 .style('cursor', 'pointer')
-                .on('click', showMouseover);
+                .on('mouseover', showMouseover);
         }
     } else {
         $('#oxygen-control').prop({
@@ -872,7 +878,7 @@ var graphPH = function graphPH(responsive=false) {
                 .style('stroke', '#000000')
                 .style('fill', '#000000')
                 .style('cursor', 'pointer')
-                .on('click', showMouseover);
+                .on('mouseover', showMouseover);
         }
 
         if (window.hasSiteTwo && filtered2.pH.length) {
@@ -903,7 +909,7 @@ var graphPH = function graphPH(responsive=false) {
                 .style('stroke', '#000000')
                 .style('fill', '#000000')
                 .style('cursor', 'pointer')
-                .on('click', showMouseover);
+                .on('mouseover', showMouseover);
         }
 
     } else {
@@ -977,7 +983,7 @@ var graphTurbidity = function graphTurbidity(responsive=false) {
                 .style('stroke', '#000000')
                 .style('fill', '#000000')
                 .style('cursor', 'pointer')
-                .on('click', showMouseover);
+                .on('mouseover', showMouseover);
         }
 
         if (window.hasSiteTwo && filtered2.turbidity.length) {
@@ -1009,7 +1015,7 @@ var graphTurbidity = function graphTurbidity(responsive=false) {
                 .style('stroke', '#000000')
                 .style('fill', '#000000')
                 .style('cursor', 'pointer')
-                .on('click', showMouseover);
+                .on('mouseover', showMouseover);
         }
     } else {
         $('#turbidity-control').prop({
@@ -1082,7 +1088,7 @@ var graphSalinity = function graphSalinity(responsive=false) {
                 .style('stroke', '#000000')
                 .style('fill', '#000000')
                 .style('cursor', 'pointer')
-                .on('click', showMouseover);
+                .on('mouseover', showMouseover);
         }
 
         if (window.hasSiteTwo && filtered2.salinity.length) {
@@ -1113,7 +1119,7 @@ var graphSalinity = function graphSalinity(responsive=false) {
                 .style('stroke', '#000000')
                 .style('fill', '#000000')
                 .style('cursor', 'pointer')
-                .on('click', showMouseover);
+                .on('mouseover', showMouseover);
         }
     } else {
         $('#salinity-control').prop({
@@ -1186,7 +1192,7 @@ var graphConductivity = function graphConductivity(responsive=false) {
                 .style('stroke', '#000000')
                 .style('fill', '#000000')
                 .style('cursor', 'pointer')
-                .on('click', showMouseover);
+                .on('mouseover', showMouseover);
         }
 
         if (window.hasSiteTwo && filtered2.conductivity.length) {
@@ -1217,7 +1223,7 @@ var graphConductivity = function graphConductivity(responsive=false) {
                 .style('stroke', '#000000')
                 .style('fill', '#000000')
                 .style('cursor', 'pointer')
-                .on('click', showMouseover);
+                .on('mouseover', showMouseover);
         }
     } else {
         $('#conductivity-control').prop({
@@ -1336,7 +1342,7 @@ var graphDissolved = function graphDissolved(responsive=false) {
                     return z(d.name);
                 })
                 .style('cursor', 'pointer')
-                .on('click', showMouseover);
+                .on('mouseover', showMouseover);
 
             var legend = g1.selectAll('.legend')
                 .data([
@@ -1461,7 +1467,7 @@ var graphDissolved = function graphDissolved(responsive=false) {
                     return z(d.name);
                 })
                 .style('cursor', 'pointer')
-                .on('click', showMouseover);
+                .on('mouseover', showMouseover);
 
             var legend = g2.selectAll('.legend')
                 .data([
@@ -1585,7 +1591,7 @@ var graphBod = function graphBod(responsive=false) {
                 .style('stroke', '#000000')
                 .style('fill', '#000000')
                 .style('cursor', 'pointer')
-                .on('click', showMouseover);
+                .on('mouseover', showMouseover);
         }
 
         if (window.hasSiteTwo && filtered2.bod.length) {
@@ -1616,7 +1622,7 @@ var graphBod = function graphBod(responsive=false) {
                 .style('stroke', '#000000')
                 .style('fill', '#000000')
                 .style('cursor', 'pointer')
-                .on('click', showMouseover);
+                .on('mouseover', showMouseover);
         }
     } else {
         $('#bod-control').prop({
@@ -1689,7 +1695,7 @@ var graphColiform = function graphColiform(responsive=false) {
                 .style('stroke', '#000000')
                 .style('fill', '#000000')
                 .style('cursor', 'pointer')
-                .on('click', showMouseover);
+                .on('mouseover', showMouseover);
         }
 
         if (window.hasSiteTwo && filtered2.fecal_coliform.length) {
@@ -1720,7 +1726,7 @@ var graphColiform = function graphColiform(responsive=false) {
                 .style('stroke', '#000000')
                 .style('fill', '#000000')
                 .style('cursor', 'pointer')
-                .on('click', showMouseover);
+                .on('mouseover', showMouseover);
         }
     } else {
         $('#coliform-control').prop({
@@ -1745,31 +1751,45 @@ $(function () {
     $('#date-start').change(changeRangeStart);
     $('#date-end').change(changeRangeEnd);
 
-    document.addEventListener('click', hideMouseover);
+    $('div.graph').on('click', function() {
+        $(this).find('.popup').remove();
+    })
+    $('#remove_site').on('click', function() {
+        window.hasSiteTwo = false;
+        window.data.site2 = null;
+        window.site2Id = null;
+        $('#site-names').hide();
+        $(this).addClass('disabled');
+        $('div.graph').removeClass("l6").addClass("l10 offset-l1");
+        $('div.graph').css("width", "");
+        createGraph();
+    })
 
+    $('div.graph h4').on('mouseenter', function() {
+        $(this).parent().find('div.data-range').show();
+    }).on('mouseleave', function() {
+        $(this).parent().find('div.data-range').hide();
+    })
     createGraph();
 });
 
 $(window).resize(function () {
+    if (window.hasSiteTwo) {
+        $('div.graph').css("width", "50%");
+    }
     createGraph();
 });
 
 var loadSite2 = function loadSite2(site_slug) {
     $.getJSON('/sites/'+site_slug+'/water/data/', function(data) {
-        if (!data.data || data.data.length === 0) {
-            window.hasSiteTwo = false;
-            window.data.site2 = null;
-            window.site2Id = null;
-            $('#site-names').hide();
-            $('#compare-error').show();
-        } else {
-            window.hasSiteTwo = true;
-            window.data.site2 = data.data;
-            window.site2Id = data.site.site_slug;
-            $('#site2-header').text(data.site.site_name);
-            $('#site-names').show();
-            $('#compare-error').hide();
-        }
+        window.hasSiteTwo = true;
+        window.data.site2 = data.data;
+        window.site2Id = data.site.site_slug;
+        $('#site2-header').text(data.site.site_name);
+        $('#site-names').show();
+        $('#remove_site').removeClass("disabled");
+        $("div.graph").removeClass("l10 offset-l1").addClass("l6")
+            .css("width", "50%");
         createGraph();
     })
 }
@@ -1795,25 +1815,6 @@ var toggleGraph = function toggleGraph(name) {
     var checkInput = $('input').toArray().filter(function(input) {
         return input.type == 'checkbox' && input.checked;
     });
-
-    if (checkInput.length == 1 && !window.hasSiteTwo) {
-        graphName = checkInput[0].id.split('-')[0];
-        focusGraph = graphName;
-        var graphDiv = $('div#graph-site1-' + graphName)
-            .removeClass('l6').addClass('l10 offset-l1')
-            .find('svg').remove();
-        graphFunc[graphName].call(this, true);
-    }
-
-    else {
-        if (focusGraph != "" && checkInput.length > 1) {
-            var graphDiv = $('div#graph-site1-' + focusGraph)
-                .removeClass('l10 offset-l1').addClass('l6')
-                .find('svg').remove();
-            graphFunc[focusGraph].call(this, false);
-            focusGraph = "";
-        }
-    }
 
     fadeInGraph(name);
 };
