@@ -1284,18 +1284,18 @@ def admin_user_promotion(request):
                 if action == 'add_admin':
                     user.groups.add(admins)
                     msgs.append(
-                        _('%s added to the Admin group.') % user.username)
+                        _('%s added to the Admin group.' % user.username))
 
                 elif action == 'del_admin':
                     user.groups.remove(admins)
                     msgs.append(
-                        _('%s removed from the Admin group.') % user.username)
+                        _('%s removed from the Admin group.' % user.username))
 
                 elif action == 'add_stats':
                     user.user_permissions.add(can_view_stats)
                     msgs.append(
-                        _('%s granted permission to view Statistics.')
-                        % user.username)
+                        _('%s granted permission to view Statistics.'
+                        % user.username))
 
                 elif action == 'del_stats':
                     # if they're an admin,
@@ -1312,14 +1312,14 @@ def admin_user_promotion(request):
                         user.user_permissions.remove(can_view_stats)
 
                     msgs.append(
-                        _('%s was revoked the permission to view Statistics.')
-                        % user.username)
+                        _('%s was revoked the permission to view Statistics.'
+                          % user.username))
 
                 elif action == 'add_upload':
                     user.user_permissions.add(can_upload_resources)
                     msgs.append(
-                        _('%s was granted permission to upload resources.')
-                        % user.username)
+                        _('%s was granted permission to upload resources.'
+                          % user.username))
 
                 elif action == 'del_upload':
                     if user.groups.filter(name='admin').exists():
@@ -1331,8 +1331,8 @@ def admin_user_promotion(request):
                         user.user_permissions.remove(can_upload_resources)
 
                     msgs.append(
-                        _('%s was revoked the permission to upload resources.')
-                        % user.username)
+                        _('%s was revoked the permission to upload resources.'
+                          % user.username))
 
     all_users = User.objects.all()
     user_info = dict()

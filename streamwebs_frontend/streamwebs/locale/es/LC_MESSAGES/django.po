@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-07-20 23:25+0000\n"
+"POT-Creation-Date: 2017-07-21 21:58+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
 #: streamwebs_frontend/streamwebs/forms.py:17
 #: streamwebs_frontend/streamwebs/templates/streamwebs/register.html:68
 msgid "Password"
@@ -52,7 +53,7 @@ msgid "Passwords do not match"
 msgstr ""
 
 #: streamwebs_frontend/streamwebs/forms.py:171
-msgid "At least one zone must have at least"
+msgid "At least one zone must have at least "
 msgstr ""
 
 #: streamwebs_frontend/streamwebs/forms.py:258
@@ -182,10 +183,10 @@ msgid "DEQ data quality level"
 msgstr ""
 
 #: streamwebs_frontend/streamwebs/models.py:261
-#: streamwebs_frontend/streamwebs/models.py:699
-#: streamwebs_frontend/streamwebs/models.py:904
-#: streamwebs_frontend/streamwebs/models.py:1000
-#: streamwebs_frontend/streamwebs/models.py:1041
+#: streamwebs_frontend/streamwebs/models.py:698
+#: streamwebs_frontend/streamwebs/models.py:903
+#: streamwebs_frontend/streamwebs/models.py:999
+#: streamwebs_frontend/streamwebs/models.py:1040
 msgid "school"
 msgstr ""
 
@@ -219,7 +220,7 @@ msgstr ""
 
 #: streamwebs_frontend/streamwebs/models.py:290
 #: streamwebs_frontend/streamwebs/models.py:602
-#: streamwebs_frontend/streamwebs/models.py:916
+#: streamwebs_frontend/streamwebs/models.py:915
 msgid "notes"
 msgstr ""
 
@@ -320,7 +321,7 @@ msgid "Camera point "
 msgstr ""
 
 #: streamwebs_frontend/streamwebs/models.py:557
-#: streamwebs_frontend/streamwebs/models.py:926
+#: streamwebs_frontend/streamwebs/models.py:925
 msgid " for site "
 msgstr ""
 
@@ -380,462 +381,462 @@ msgstr ""
 msgid "photo point images"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:694
+#: streamwebs_frontend/streamwebs/models.py:693
 msgid "riffle"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:695
+#: streamwebs_frontend/streamwebs/models.py:694
 msgid "pool"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:701
-#: streamwebs_frontend/streamwebs/models.py:906
-#: streamwebs_frontend/streamwebs/models.py:1002
-#: streamwebs_frontend/streamwebs/models.py:1043
+#: streamwebs_frontend/streamwebs/models.py:700
+#: streamwebs_frontend/streamwebs/models.py:905
+#: streamwebs_frontend/streamwebs/models.py:1001
+#: streamwebs_frontend/streamwebs/models.py:1042
 msgid "date and time"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:703
-#: streamwebs_frontend/streamwebs/models.py:908
-#: streamwebs_frontend/streamwebs/models.py:1005
-#: streamwebs_frontend/streamwebs/models.py:1044
+#: streamwebs_frontend/streamwebs/models.py:702
+#: streamwebs_frontend/streamwebs/models.py:907
+#: streamwebs_frontend/streamwebs/models.py:1004
+#: streamwebs_frontend/streamwebs/models.py:1043
 msgid "weather"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:708
+#: streamwebs_frontend/streamwebs/models.py:707
 msgid "time spent sorting/identifying"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:712
+#: streamwebs_frontend/streamwebs/models.py:711
 #: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/macroinvertebrate_view.html:39
 msgid "# of people sorting/identifying"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:714
+#: streamwebs_frontend/streamwebs/models.py:713
 msgid "water type"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:716
+#: streamwebs_frontend/streamwebs/models.py:715
 msgid "field notes"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:720
+#: streamwebs_frontend/streamwebs/models.py:719
 msgid "caddisfly"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:722
+#: streamwebs_frontend/streamwebs/models.py:721
 msgid "mayfly"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:724
+#: streamwebs_frontend/streamwebs/models.py:723
 msgid "riffle beetle"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:727
+#: streamwebs_frontend/streamwebs/models.py:726
 msgid "stonefly"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:729
+#: streamwebs_frontend/streamwebs/models.py:728
 msgid "water penny"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:731
+#: streamwebs_frontend/streamwebs/models.py:730
 msgid "dobsonfly"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:733
+#: streamwebs_frontend/streamwebs/models.py:732
 msgid "sensitive total"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:738
+#: streamwebs_frontend/streamwebs/models.py:737
 msgid "clam/mussel"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:740
+#: streamwebs_frontend/streamwebs/models.py:739
 msgid "crane fly"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:742
+#: streamwebs_frontend/streamwebs/models.py:741
 msgid "crayfish"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:744
+#: streamwebs_frontend/streamwebs/models.py:743
 msgid "damselfly"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:746
+#: streamwebs_frontend/streamwebs/models.py:745
 msgid "dragonfly"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:747
+#: streamwebs_frontend/streamwebs/models.py:746
 msgid "scud"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:748
+#: streamwebs_frontend/streamwebs/models.py:747
 msgid "fishfly"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:750
+#: streamwebs_frontend/streamwebs/models.py:749
 msgid "alderfly"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:751
+#: streamwebs_frontend/streamwebs/models.py:750
 msgid "mite"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:753
+#: streamwebs_frontend/streamwebs/models.py:752
 msgid "somewhat sensitive total"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:758
+#: streamwebs_frontend/streamwebs/models.py:757
 msgid "aquatic worm"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:760
+#: streamwebs_frontend/streamwebs/models.py:759
 msgid "blackfly"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:761
+#: streamwebs_frontend/streamwebs/models.py:760
 msgid "leech"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:762
+#: streamwebs_frontend/streamwebs/models.py:761
 msgid "midge"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:763
+#: streamwebs_frontend/streamwebs/models.py:762
 msgid "snail"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:765
+#: streamwebs_frontend/streamwebs/models.py:764
 msgid "mosquito larva"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:768
+#: streamwebs_frontend/streamwebs/models.py:767
 msgid "tolerant total"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:773
+#: streamwebs_frontend/streamwebs/models.py:772
 msgid "water quality rating"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:820
+#: streamwebs_frontend/streamwebs/models.py:819
 msgid "macroinvertebrate"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:821
+#: streamwebs_frontend/streamwebs/models.py:820
 msgid "macroinvertebrates"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:825
+#: streamwebs_frontend/streamwebs/models.py:824
 msgid "Aquatic Worm"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:826
+#: streamwebs_frontend/streamwebs/models.py:825
 #: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/macroinvertebrate_view.html:250
 msgid "Blackfly"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:827
+#: streamwebs_frontend/streamwebs/models.py:826
 #: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/macroinvertebrate_view.html:259
 msgid "Leech"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:828
+#: streamwebs_frontend/streamwebs/models.py:827
 #: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/macroinvertebrate_view.html:268
 msgid "Midge"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:829
+#: streamwebs_frontend/streamwebs/models.py:828
 #: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/macroinvertebrate_view.html:277
 msgid "Snail"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:830
+#: streamwebs_frontend/streamwebs/models.py:829
 msgid "Mosquito Larva"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:835
+#: streamwebs_frontend/streamwebs/models.py:834
 msgid "Mussel/Clam"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:836
+#: streamwebs_frontend/streamwebs/models.py:835
 msgid "Crane Fly"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:837
+#: streamwebs_frontend/streamwebs/models.py:836
 #: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/macroinvertebrate_view.html:159
 msgid "Crayfish"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:838
+#: streamwebs_frontend/streamwebs/models.py:837
 #: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/macroinvertebrate_view.html:168
 msgid "Damselfly"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:839
+#: streamwebs_frontend/streamwebs/models.py:838
 #: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/macroinvertebrate_view.html:177
 msgid "Dragonfly"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:840
+#: streamwebs_frontend/streamwebs/models.py:839
 #: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/macroinvertebrate_view.html:186
 msgid "Scud"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:841
+#: streamwebs_frontend/streamwebs/models.py:840
 #: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/macroinvertebrate_view.html:195
 msgid "Fishfly"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:842
+#: streamwebs_frontend/streamwebs/models.py:841
 #: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/macroinvertebrate_view.html:204
 msgid "Alderfly"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:843
+#: streamwebs_frontend/streamwebs/models.py:842
 msgid "Mite"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:848
+#: streamwebs_frontend/streamwebs/models.py:847
 msgid "Riffle Beetle"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:849
+#: streamwebs_frontend/streamwebs/models.py:848
 #: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/macroinvertebrate_view.html:82
 msgid "Mayfly"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:850
+#: streamwebs_frontend/streamwebs/models.py:849
 msgid "Water Penny"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:851
+#: streamwebs_frontend/streamwebs/models.py:850
 #: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/macroinvertebrate_view.html:99
 msgid "Stonefly"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:852
+#: streamwebs_frontend/streamwebs/models.py:851
 #: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/macroinvertebrate_view.html:73
 msgid "Caddisfly"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:853
+#: streamwebs_frontend/streamwebs/models.py:852
 #: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/macroinvertebrate_view.html:115
 msgid "Dobsonfly"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:874
+#: streamwebs_frontend/streamwebs/models.py:873
 #: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/macroinvertebrate_edit.html:117
 msgid "Tolerant"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:875
+#: streamwebs_frontend/streamwebs/models.py:874
 #: streamwebs_frontend/streamwebs/templates/streamwebs/datasheets/macroinvertebrate_view.html:130
 msgid "Somewhat Sensitive"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:876
+#: streamwebs_frontend/streamwebs/models.py:875
 msgid "Sensitive"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:910
-#: streamwebs_frontend/streamwebs/models.py:1004
-#: streamwebs_frontend/streamwebs/models.py:1047
+#: streamwebs_frontend/streamwebs/models.py:909
+#: streamwebs_frontend/streamwebs/models.py:1003
+#: streamwebs_frontend/streamwebs/models.py:1046
 msgid "site"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:914
+#: streamwebs_frontend/streamwebs/models.py:913
 msgid "slope of stream bank (rise over run)"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:926
+#: streamwebs_frontend/streamwebs/models.py:925
 msgid "Transect "
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:930
+#: streamwebs_frontend/streamwebs/models.py:929
 msgid "riparian transect"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:931
+#: streamwebs_frontend/streamwebs/models.py:930
 msgid "riparian transects"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:961
+#: streamwebs_frontend/streamwebs/models.py:960
 msgid "conifers"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:963
+#: streamwebs_frontend/streamwebs/models.py:962
 msgid "hardwoods"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:965
+#: streamwebs_frontend/streamwebs/models.py:964
 msgid "shrubs"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:967
+#: streamwebs_frontend/streamwebs/models.py:966
 msgid "additional comments"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:1008
+#: streamwebs_frontend/streamwebs/models.py:1007
 msgid "north canopy cover"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:1012
+#: streamwebs_frontend/streamwebs/models.py:1011
 msgid "east canopy cover"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:1016
+#: streamwebs_frontend/streamwebs/models.py:1015
 msgid "south canopy cover"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:1020
+#: streamwebs_frontend/streamwebs/models.py:1019
 msgid "west canopy cover"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:1024
+#: streamwebs_frontend/streamwebs/models.py:1023
 msgid "estimated canopy cover"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:1034
+#: streamwebs_frontend/streamwebs/models.py:1033
 msgid "canopy cover survey"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:1035
+#: streamwebs_frontend/streamwebs/models.py:1034
 msgid "canopy cover surveys"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:1050
+#: streamwebs_frontend/streamwebs/models.py:1049
 msgid "Summit"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:1051
+#: streamwebs_frontend/streamwebs/models.py:1050
 msgid "Slope"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:1052
+#: streamwebs_frontend/streamwebs/models.py:1051
 msgid "Depression"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:1053
+#: streamwebs_frontend/streamwebs/models.py:1052
 msgid "Large Flat Area"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:1054
+#: streamwebs_frontend/streamwebs/models.py:1053
 msgid "Stream Bank"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:1058
+#: streamwebs_frontend/streamwebs/models.py:1057
 msgid "Bare Soil"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:1059
+#: streamwebs_frontend/streamwebs/models.py:1058
 msgid "Rocks"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:1060
+#: streamwebs_frontend/streamwebs/models.py:1059
 msgid "Grass"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:1061
+#: streamwebs_frontend/streamwebs/models.py:1060
 #: streamwebs_frontend/streamwebs/templatetags/filters.py:59
 msgid "Shrubs"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:1062
+#: streamwebs_frontend/streamwebs/models.py:1061
 msgid "Trees"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:1066
+#: streamwebs_frontend/streamwebs/models.py:1065
 msgid "Urban"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:1067
+#: streamwebs_frontend/streamwebs/models.py:1066
 msgid "Agricultural"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:1068
+#: streamwebs_frontend/streamwebs/models.py:1067
 msgid "Recreation"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:1069
+#: streamwebs_frontend/streamwebs/models.py:1068
 msgid "Wilderness"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:1070
-#: streamwebs_frontend/streamwebs/models.py:1096
+#: streamwebs_frontend/streamwebs/models.py:1069
+#: streamwebs_frontend/streamwebs/models.py:1095
 msgid "Other"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:1081
+#: streamwebs_frontend/streamwebs/models.py:1080
 msgid "distance from stream"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:1084
+#: streamwebs_frontend/streamwebs/models.py:1083
 msgid "distinguishing site characteristics"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:1088
+#: streamwebs_frontend/streamwebs/models.py:1087
 msgid "Sand"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:1089
+#: streamwebs_frontend/streamwebs/models.py:1088
 msgid "Loamy Sand"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:1090
+#: streamwebs_frontend/streamwebs/models.py:1089
 msgid "Silt Loam"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:1091
+#: streamwebs_frontend/streamwebs/models.py:1090
 msgid "Loam"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:1092
+#: streamwebs_frontend/streamwebs/models.py:1091
 msgid "Clay Loam"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:1093
+#: streamwebs_frontend/streamwebs/models.py:1092
 msgid "Light Clay"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:1094
+#: streamwebs_frontend/streamwebs/models.py:1093
 msgid "Heavy Clay"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:1095
+#: streamwebs_frontend/streamwebs/models.py:1094
 msgid "N/A"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:1109
+#: streamwebs_frontend/streamwebs/models.py:1108
 msgid "soil survey"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:1110
+#: streamwebs_frontend/streamwebs/models.py:1109
 msgid "soil surveys"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:1128
+#: streamwebs_frontend/streamwebs/models.py:1127
 msgid "Data Sheet"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:1129
+#: streamwebs_frontend/streamwebs/models.py:1128
 msgid "Publication"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:1130
+#: streamwebs_frontend/streamwebs/models.py:1129
 msgid "Tutorial Video"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:1145
+#: streamwebs_frontend/streamwebs/models.py:1144
 msgid "resource"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:1146
+#: streamwebs_frontend/streamwebs/models.py:1145
 msgid "resources"
 msgstr ""
 
-#: streamwebs_frontend/streamwebs/models.py:1149
+#: streamwebs_frontend/streamwebs/models.py:1148
 msgid "Resource name "
 msgstr ""
 
@@ -1948,7 +1949,7 @@ msgstr ""
 
 #: streamwebs_frontend/streamwebs/views/general.py:1151
 #, python-format
-msgid "%s wgranted permission to view Statistics."
+msgid "%s granted permission to view Statistics."
 msgstr ""
 
 #: streamwebs_frontend/streamwebs/views/general.py:1169
