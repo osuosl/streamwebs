@@ -1754,6 +1754,16 @@ $(function () {
     $('div.graph').on('click', function() {
         $(this).find('.popup').remove();
     })
+    $('#remove_site').on('click', function() {
+        window.hasSiteTwo = false;
+        window.data.site2 = null;
+        window.site2Id = null;
+        $('#site-names').hide();
+        $(this).addClass('disabled');
+        $('div.graph').removeClass("l6").addClass("l10 offset-l1");
+        $('div.graph').css("width", "");
+        createGraph();
+    })
 
     $('div.graph h4').on('mouseenter', function() {
         $(this).parent().find('div.data-range').show();
@@ -1764,30 +1774,22 @@ $(function () {
 });
 
 $(window).resize(function () {
+    if (window.hasSiteTwo) {
+        $('div.graph').css("width", "50%");
+    }
     createGraph();
 });
 
 var loadSite2 = function loadSite2(site_slug) {
     $.getJSON('/sites/'+site_slug+'/water/data/', function(data) {
-        if (!data.data || data.data.length === 0) {
-            window.hasSiteTwo = false;
-            window.data.site2 = null;
-            window.site2Id = null;
-            $('#site-names').hide();
-            $('#compare-error').show();
-        } else {
-            window.hasSiteTwo = true;
-            window.data.site2 = data.data;
-            window.site2Id = data.site.site_slug;
-            $('#site2-header').text(data.site.site_name);
-            $('#site-names').show();
-            $('#compare-error').hide();
-        }
-        if (window.hasSiteTwo) {
-            $("div.graph").removeClass("l10 offset-l1").addClass("l6");
-        } else {
-            $("div.graph").removeClass("l6").addClass("l10 offset-l1");
-        }
+        window.hasSiteTwo = true;
+        window.data.site2 = data.data;
+        window.site2Id = data.site.site_slug;
+        $('#site2-header').text(data.site.site_name);
+        $('#site-names').show();
+        $('#remove_site').removeClass("disabled");
+        $("div.graph").removeClass("l10 offset-l1").addClass("l6")
+            .css("width", "50%");
         createGraph();
     })
 }
