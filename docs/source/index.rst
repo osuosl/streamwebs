@@ -9,13 +9,21 @@ Welcome to Streamwebs's documentation!
 Contents:
 
 .. toctree::
-   :maxdepth: 2
 
-   about.rst
-   usage.rst
-   outline.rst
-   dev_docs.rst
+    :maxdepth: 1
 
+    about.rst
+    development/dev_overview
+    development/sites
+    development/datasheets
+    development/graphing
+    development/users
+    development/resources
+    development/stats
+    development/schools
+    development/tests
+    development/translations
+    development/data_import
 
 Indices and tables
 ==================

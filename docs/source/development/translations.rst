@@ -1,0 +1,7 @@
+.. _translations:
+
+=====
+Sites
+=====
+
+Sites.
