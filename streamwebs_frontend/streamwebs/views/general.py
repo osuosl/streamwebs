@@ -326,6 +326,12 @@ def graph_water(request, site_slug):
     wq_data = Water_Quality.objects.filter(site=site)
     data = [m.to_dict() for m in wq_data]
     site_list = Site.objects.filter(active=True)
+    
+    for single_site in site_list:
+        wq_sheets = Water_Quality.objects.filter(site_id=single_site.id)
+        if len(list(wq_sheets)) == 0:
+            site_list = site_list.exclude(site_slug=single_site.site_slug)
+
     for x in data:
         x['school'] = str(x['school'])
     return render(request, 'streamwebs/graphs/water_quality.html', {
