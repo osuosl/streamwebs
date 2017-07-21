@@ -326,7 +326,7 @@ def graph_water(request, site_slug):
     wq_data = Water_Quality.objects.filter(site=site)
     data = [m.to_dict() for m in wq_data]
     site_list = Site.objects.filter(active=True)
-    
+
     for single_site in site_list:
         wq_sheets = Water_Quality.objects.filter(site_id=single_site.id)
         if len(list(wq_sheets)) == 0:
