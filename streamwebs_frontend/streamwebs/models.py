@@ -651,12 +651,11 @@ class MacroinvertebratesManager(models.Manager):
                      stonefly=0, water_penny=0, dobsonfly=0, clam_or_mussel=0,
                      crane_fly=0, crayfish=0, damselfly=0, dragonfly=0, scud=0,
                      fishfly=0, alderfly=0, mite=0, aquatic_worm=0, blackfly=0,
-                     leech=0, midge=0, snail=0, mosquito_larva=0, notes='',
-                     weather=''):
+                     leech=0, midge=0, snail=0, mosquito_larva=0, notes=''):
 
         info = self.create(school=school,
-                           date_time=timezone.now,
-                           weather=weather,
+                           date_time='2016-07-11 14:09',
+                           weather='bbbb',
                            site=site,
                            time_spent=time_spent,
                            num_people=num_people,

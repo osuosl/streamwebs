@@ -1294,7 +1294,7 @@ def admin_user_promotion(request):
                 elif action == 'add_stats':
                     user.user_permissions.add(can_view_stats)
                     msgs.append(
-                        _('%s wgranted permission to view Statistics.')
+                        _('%s granted permission to view Statistics.')
                         % user.username)
 
                 elif action == 'del_stats':

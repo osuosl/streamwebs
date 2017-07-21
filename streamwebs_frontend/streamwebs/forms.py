@@ -197,7 +197,7 @@ class BaseZoneInlineFormSet(BaseInlineFormSet):
 
         if blank == 5:
             raise forms.ValidationError(
-                _('At least one zone must have at least'
+                _('At least one zone must have at least '
                   + 'one value greater than 0.'))
 
 
