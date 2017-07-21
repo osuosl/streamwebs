@@ -43,8 +43,12 @@ with open(users_list, 'r') as csvfile:
                 username = row["Name"]
             if row["First name"]:
                 firstname = row["First name"]
+            else:
+                firstname = ""
             if row["Last name"]:
                 lastname = row["Last name"]
+            else:
+                lastname = ""
             if row["E-mail"]:
                 email = row["E-mail"]
             if row["Created date"]:
