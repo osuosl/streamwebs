@@ -438,7 +438,7 @@ var createGraph = function createGraph() {
         filtered1[key] = filterOutliers(types1[key]);
     }
 
-    //filtered1 = filterZeroData(filtered1);
+    filtered1 = filterZeroData(filtered1);
     var formatted2 = [];
 
     if (window.hasSiteTwo) {
@@ -465,7 +465,7 @@ var createGraph = function createGraph() {
             filtered2[key] = filterOutliers(types2[key]);
         }
 
-        //filtered2 = filterZeroData(filtered2);
+        filtered2 = filterZeroData(filtered2);
     }
     graphTemperature();
     graphOxygen();
@@ -1769,7 +1769,7 @@ $(function () {
     $('#date-start').change(changeRangeStart);
     $('#date-end').change(changeRangeEnd);
 
-    $('div.graph').on('click', function() {
+    $('div.graph').on('click mouseleave', function() {
         $(this).find('.popup').remove();
     });
     $('#remove_site').on('click', function() {
@@ -1805,8 +1805,6 @@ var centerHover = function centerHover() {
     $('div.graph:visible div.data-info, div#water-parameter-pdf').each(function(i, e) {
         var width = $(e).width();
         var parentWidth = $(e).parent().width();
-        console.log(width + " parent: " + parentWidth);
-        console.log(e.style.left);
         $(e).css("left", (parentWidth - width)/2 + "px");
     })
 }
