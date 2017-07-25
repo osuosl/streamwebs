@@ -259,5 +259,9 @@ i {
 }
 
 #site_detail_image{
-  width: 300px;
+  width: 400px;
+}
+
+#map{
+  height: 266.017px;
 }

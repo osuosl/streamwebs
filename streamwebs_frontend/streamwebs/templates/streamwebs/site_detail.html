@@ -35,13 +35,16 @@
 
   <!-- site info -->
   <div class="row">
-    <div class="col s12 center-align">
+    <div class="col s6 left">
       {% if site.image %}
-        <img src="{{ site.image.url }}" alt="site image" id="site_detail_image" />
+      <img src="{{ site.image.url }}" alt="site image" id="site_detail_image" />
       {% else %}
-        <img src="{% static 'streamwebs/images/img-default.jpg' %}"
-             alt="site image" id="site_detail_image" />
+      <img src="{% static 'streamwebs/images/img-default.jpg' %}"
+      alt="site image" id="site_detail_image" />
       {% endif %}
+    </div>
+    <div class="col m5 right">
+      <div id="map"></div>
     </div>
   </div>
   <div class="row">
@@ -49,137 +52,133 @@
       <p>{{ site.description }}</p>
     </div>
   </div>
-    <br/>
   <div class="row">
-    <div class="col s12 m10 l5" style="position:static">
+    <div class="col s2 m2 graphs left-align">
+      {% if has_wq or has_macros %}
+      <h4>{% trans "Graphs" %}</h4>
+      {% if has_wq %}
+      <p><a href="{% url 'streamwebs:graph_water' site.site_slug %}">
+        <img src="{% static 'streamwebs/images/graph-wq.png' %}"
+        alt="water quality graphs"/>
+      </a></p>
+      {% endif %}
+      {% if has_macros %}
+      <p><a href="{% url 'streamwebs:graph_macros' site.site_slug %}">
+        <img src="{% static 'streamwebs/images/graph-macros.png' %}"
+        alt="macroinvertebrate graphs"/>
+      </a></p>
+      {% endif %}
+      {% endif %}
+    </div>
+    <div class="col m8 center-align" >
       {% if has_wq or has_macros or has_cc or has_transect or has_soil %}
-        <ul class="collection" id="data-sheet-list">
-        </ul>
-        <ul class="pagination">
-          <li id="first-page" class="disabled"><a href="#1">
-            <i class="material-icons">fast_rewind</i>
-          </a></li>
-          <li id="page-1" class="page-select waves-effect"><a href="#1">1</a>
-          </li>
-          {% for i in data_len_range %}
-            <li id="page-{{ i }}" class="page-select waves-effect"><a
-                href="#{{ i }}">{{ i }}</a></li>
+      <ul class="collection" id="data-sheet-list">
+      </ul>
+      <ul class="pagination">
+        <li id="first-page" class="disabled"><a href="#1">
+          <i class="material-icons">fast_rewind</i>
+        </a></li>
+        <li id="page-1" class="page-select waves-effect"><a href="#1">1</a>
+        </li>
+        {% for i in data_len_range %}
+        <li id="page-{{ i }}" class="page-select waves-effect"><a
+          href="#{{ i }}">{{ i }}</a></li>
           {% endfor %}
           <li id="last-page" class="disabled"><a href="#{{ pages }}">
             <i class="material-icons">fast_forward</i>
           </a></li>
         </ul>
-      {% else %}
+        {% else %}
         <p>{% trans "No data for this site." %}</p>
-      {% endif %}
-    </div>
-    <div class="col s12 m2 graphs center-align">
-      {% if has_wq or has_macros %}
-        <h4>{% trans "Graphs" %}</h4>
-        {% if has_wq %}
-          <p><a href="{% url 'streamwebs:graph_water' site.site_slug %}">
-            <img src="{% static 'streamwebs/images/graph-wq.png' %}"
-                 alt="water quality graphs"/>
-          </a></p>
         {% endif %}
-        {% if has_macros %}
-          <p><a href="{% url 'streamwebs:graph_macros' site.site_slug %}">
-            <img src="{% static 'streamwebs/images/graph-macros.png' %}"
-                 alt="macroinvertebrate graphs"/>
-          </a></p>
-        {% endif %}
-      {% endif %}
+      </div>
     </div>
-    <div class="col m12 l5">
-      <div id="map"></div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col s12 center">
-      <a class="dropdown-button btn-large teal darken-4"
-         href="#" data-activates="export-data-dropdown">
-         <i class="material-icons right">arrow_drop_down</i>
+    <div class="row">
+      <div class="col s12 center">
+        <a class="dropdown-button btn-large teal darken-4"
+        href="#" data-activates="export-data-dropdown">
+        <i class="material-icons right">arrow_drop_down</i>
         {% trans "Export" %}
       </a>
       <ul id="export-data-dropdown" class="dropdown-content">
         {% if has_wq %}
-          <li>
-            <a href="{% url 'streamwebs:export_wq' site_slug=site.site_slug %}">
-              {% trans "Water quality" %}
-            </a>
-          </li>
-        {% endif %}
-        {% if has_macros %}
-          <li>
-            <a href="{% url 'streamwebs:export_macros' site.site_slug %}">
-              {% trans "Macroinvertebrates" %}
-            </a>
-          </li>
-        {% endif %}
-        {% if has_transects %}
-          <li>
-            <a href="{% url 'streamwebs:export_transects' site.site_slug %}">
-              {% trans "Riparian transect" %}
-            </a>
-          </li>
-        {% endif %}
-        {% if has_cc %}
-          <li>
-            <a href="{% url 'streamwebs:export_cc' site.site_slug %}">
-              {% trans "Canopy Cover Survey" %}
-            </a>
-          </li>
-        {% endif %}
-        {% if has_soil %}
-          <li>
-            <a href="{% url 'streamwebs:export_soil' site_slug=site.site_slug %}">
-              {% trans "Soil Survey" %}
-            </a>
-          </li>
-        {% endif %}
-      </ul>
-      <a class="dropdown-button btn-large teal darken-4"
-         href="#" data-activates="new-data-dropdown">
-         <i class="material-icons right">arrow_drop_down</i>
-        {% trans "Add data to this site" %}
-      </a>
-      <ul id="new-data-dropdown" class="dropdown-content">
         <li>
-          <a href="{% url 'streamwebs:water_quality_edit' site_slug=site.site_slug %}">
+          <a href="{% url 'streamwebs:export_wq' site_slug=site.site_slug %}">
             {% trans "Water quality" %}
           </a>
         </li>
+        {% endif %}
+        {% if has_macros %}
         <li>
-          <a href="{% url 'streamwebs:macroinvertebrate_edit' site.site_slug %}">
+          <a href="{% url 'streamwebs:export_macros' site.site_slug %}">
             {% trans "Macroinvertebrates" %}
           </a>
         </li>
+        {% endif %}
+        {% if has_transects %}
         <li>
-          <a href="{% url 'streamwebs:riparian_transect_edit' site.site_slug %}">
+          <a href="{% url 'streamwebs:export_transects' site.site_slug %}">
             {% trans "Riparian transect" %}
           </a>
         </li>
+        {% endif %}
+        {% if has_cc %}
         <li>
-          <a href="{% url 'streamwebs:canopy_cover_edit' site.site_slug %}">
+          <a href="{% url 'streamwebs:export_cc' site.site_slug %}">
             {% trans "Canopy Cover Survey" %}
           </a>
         </li>
+        {% endif %}
+        {% if has_soil %}
         <li>
-          <a href="{% url 'streamwebs:camera_point_add' site_slug=site.site_slug %}">
-            {% trans "Photo point monitoring" %}
-          </a>
-        </li>
-        <li>
-          <a href="{% url 'streamwebs:soil_edit' site_slug=site.site_slug %}">
+          <a href="{% url 'streamwebs:export_soil' site_slug=site.site_slug %}">
             {% trans "Soil Survey" %}
           </a>
         </li>
+        {% endif %}
       </ul>
-      <a href="{% url 'streamwebs:update_site' site_slug=site.site_slug %}"
-        class="btn-large teal darken-4">
-        <i class="material-icons right">mode_edit</i>
-        {% trans "Edit Site" %}</a>
-    </div>
+      <a class="dropdown-button btn-large teal darken-4"
+      href="#" data-activates="new-data-dropdown">
+      <i class="material-icons right">arrow_drop_down</i>
+      {% trans "Add data to this site" %}
+    </a>
+    <ul id="new-data-dropdown" class="dropdown-content">
+      <li>
+        <a href="{% url 'streamwebs:water_quality_edit' site_slug=site.site_slug %}">
+          {% trans "Water quality" %}
+        </a>
+      </li>
+      <li>
+        <a href="{% url 'streamwebs:macroinvertebrate_edit' site.site_slug %}">
+          {% trans "Macroinvertebrates" %}
+        </a>
+      </li>
+      <li>
+        <a href="{% url 'streamwebs:riparian_transect_edit' site.site_slug %}">
+          {% trans "Riparian transect" %}
+        </a>
+      </li>
+      <li>
+        <a href="{% url 'streamwebs:canopy_cover_edit' site.site_slug %}">
+          {% trans "Canopy Cover Survey" %}
+        </a>
+      </li>
+      <li>
+        <a href="{% url 'streamwebs:camera_point_add' site_slug=site.site_slug %}">
+          {% trans "Photo point monitoring" %}
+        </a>
+      </li>
+      <li>
+        <a href="{% url 'streamwebs:soil_edit' site_slug=site.site_slug %}">
+          {% trans "Soil Survey" %}
+        </a>
+      </li>
+    </ul>
+    <a href="{% url 'streamwebs:update_site' site_slug=site.site_slug %}"
+    class="btn-large teal darken-4">
+    <i class="material-icons right">mode_edit</i>
+    {% trans "Edit Site" %}</a>
   </div>
+</div>
 
 {% endblock %}
