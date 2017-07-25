@@ -559,11 +559,22 @@ def riparian_transect_view(request, site_slug, data_id):
     # template is necessary in order to pass Travis tests.
     # https://docs.djangoproject.com/en/1.9/ref/models/querysets/#when-querysets-are-evaluated
     zones = list(zones)
-
+    zones_json = list()
+    for i in zones:
+        zone = dict();
+        if i.conifers:
+            zone['conifers'] = i.conifers
+        if i.hardwoods:
+            zone['hardwoods'] = i.hardwoods
+        if i.shrubs:
+            zone['shrubs'] = i.shrubs
+        zones_json.append(zone)
+    print(zones_json)
     return render(
         request, 'streamwebs/datasheets/riparian_transect_view.html', {
             'transect': transect,
             'zones': zones,
+            'zones_json': json.dumps(zones_json),
             'site': site
             }
         )
