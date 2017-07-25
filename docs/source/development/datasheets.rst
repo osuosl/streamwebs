@@ -1,4 +1,4 @@
-.. _datasheets_dev:
+.. _dev_datasheets:
 
 ==========
 Datasheets

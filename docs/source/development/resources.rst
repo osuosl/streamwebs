@@ -1,4 +1,4 @@
-.. _resources_dev:
+.. _dev_resources:
 
 =========
 Resources

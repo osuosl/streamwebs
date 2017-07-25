@@ -1,4 +1,4 @@
-.. _users_dev:
+.. _dev_users:
 
 =====
 Users

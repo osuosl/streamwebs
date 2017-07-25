@@ -95,7 +95,7 @@ See `Custom Django Template Tags`_ for more information.
 
 In templates, filters are included using ``{% load filters %}`` at the topof
 the file. A filter is applied with the ``|`` character appended to a rendered
- template variable:
+template variable:
 
 ::
 
@@ -121,7 +121,6 @@ know is that links in templates are specified with the streamwebs namespace:
 ::
 
   {% url 'streamwebs:register' %}
-
 
 Sites
 =====
@@ -150,7 +149,7 @@ There are six datasheets currently defined:
 - Riparian Transect: records plant types in a cross-section of a streambed
 - Soil Survey: records the types of soil found
 - Water Quality: records various water measurments such as temperature and
-oxygen level
+  oxygen level
 
 Each datasheet has its own model, form, view and database table, and may have
 associated models, for example mulitple samples for a specific measurement.
