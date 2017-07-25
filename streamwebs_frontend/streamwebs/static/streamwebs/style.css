@@ -1,5 +1,10 @@
 @charset "UTF-8";
 
+/* Reset */
+p {
+    margin: 0;
+}
+
 /* WebKit/Blink Browsers */
 ::selection {
     background: #b9dce8;

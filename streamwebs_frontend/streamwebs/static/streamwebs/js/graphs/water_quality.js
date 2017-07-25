@@ -1769,7 +1769,7 @@ $(function () {
     $('#date-start').change(changeRangeStart);
     $('#date-end').change(changeRangeEnd);
 
-    $('div.graph').on('click mouseleave', function() {
+    $('div.graph').on('click', function() {
         $(this).find('.popup').remove();
     });
     $('#remove_site').on('click', function() {
@@ -1782,12 +1782,6 @@ $(function () {
         $('div.graph').css("width", "");
         centerHover();
         createGraph();
-    });
-
-    $('h2.graph-header').on('mouseenter', function() {
-        $('div#water-parameter-pdf').show();
-    }).on('mouseleave', function() {
-        $('div#water-parameter-pdf').hide();
     });
 
     $('div.graph h4').on('mouseenter', function() {
