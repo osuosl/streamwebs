@@ -106,7 +106,7 @@ class RegistrateTestCase(TestCase):
             bad_pw_response,
             'user_form',
             'password',
-            'Passwords do not match'
+            'Passwords did not match'
         )
         self.assertFalse(bad_pw_response.context['registered'])
 

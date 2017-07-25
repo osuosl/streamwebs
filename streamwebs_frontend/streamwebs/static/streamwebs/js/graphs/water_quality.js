@@ -8,6 +8,8 @@
 var num_min = -9007199254740991
 var num_max = 9007199254740991
 var date_range = [num_min, num_max];
+var outerContainer = $('#graph-container');
+var hasPopup = false;
 
 var changeRangeStart = function changeRangeStart() {
     if (!$(this).val()) { // If the field is empty, clear the range
@@ -47,7 +49,11 @@ var changeRangeEnd = function changeRangeEnd() {
  *******************************************************************************
  ******************************************************************************/
 
+leavePopup = false;
+leavePopup = false;
+
 var showMouseover = function showMouseover(data) {
+    $('.popup').remove();
     var g = d3.select(this.parentElement.parentElement);
     var dotPos = [this.transform.baseVal[0].matrix['e'],
                  this.transform.baseVal[0].matrix['f']];
@@ -281,8 +287,12 @@ var defineWidth = function defineWidth(container) {
     return container.width() - (margin.right + margin.left);
 };
 
-var defineHeight = function defineHeight() {
-    return 300 - (margin.top + margin.bottom);
+var defineHeight = function defineHeight(responsive) {
+    var height = 300;
+    if (responsive) {
+        height = 450;
+    }
+    return height - (margin.top + margin.bottom);
 };
 
 var createGraphTemplate = function createGraphTemplate(container, width, height, x, y) {
@@ -312,15 +322,15 @@ var createGraphTemplate = function createGraphTemplate(container, width, height,
     return g1;
 };
 
-var filterTemperature = function filterTemperature(filtered) {
-    filtered.air_temperature = filtered.air_temperature.filter(function(air_temp) {
-        return air_temp.value != 0;
+var filterZeroData = function filterZeroData(filtered) {
+  console.log(filtered);
+    var keys = Object.keys(filtered);
+    keys.forEach(function(key) {
+        filtered[key] = filtered[key].filter(function(dataPoint) {
+            return dataPoint.value != 0;
+        });
     });
-    filtered.water_temperature = filtered.water_temperature.filter(function(water_temp) {
-        return water_temp.value != 0;
-    })
 
-    console.log(filtered);
     return filtered;
 }
 
@@ -405,7 +415,6 @@ var getYDomain = function getY(keys) {
 };
 
 var createGraph = function createGraph() {
-    var outerContainer = $('#graph-container');
     outerContainer.find('svg').remove();
 
     var data = JSON.parse(JSON.stringify(window.data.site1)); // Copy the data so we don't change the original
@@ -434,7 +443,7 @@ var createGraph = function createGraph() {
         filtered1[key] = filterOutliers(types1[key]);
     }
 
-    filtered1 = filterTemperature(filtered1);
+    filtered1 = filterZeroData(filtered1);
 
     var formatted2 = [];
 
@@ -462,1263 +471,1272 @@ var createGraph = function createGraph() {
             filtered2[key] = filterOutliers(types2[key]);
         }
 
-        filtered2 = filterTemperature(filtered2);
+        filtered2 = filterZeroData(filtered2);
     }
-    console.log(filtered1);
-    /***************************************************************************
-     * Temperature
-     **************************************************************************/
-
-    {
-        var containerName1 = '#graph-site1-temperature';
-        var container1 = outerContainer.find(containerName1);
-        var width = defineWidth(container1);
-        var height = defineHeight(container1);
-
-        var containerName2 = '#graph-site2-temperature';
-        var container2 = outerContainer.find(containerName2);
-
-        var x = d3.scaleTime()
-            .range([0, width])
-            .domain(getXDomain(['water_temperature', 'air_temperature']));
-        var y = d3.scaleLinear()
-            .domain(getYDomain(['water_temperature', 'air_temperature']))
-            .range([height, 0]);
-        var z = d3.scaleOrdinal()
-            .domain(['Air Temperature', 'Water Temperature'])
-            .range(['#0000bf', '#bf0000']);
-
-        var g1 = createGraphTemplate(containerName1, width, height, x, y);
-
-        var g2 = createGraphTemplate(containerName2, width, height, x, y);
-
-        if ((filtered1.water_temperature.length ||
-        filtered1.air_temperature.length) ||
-        (window.hasSiteTwo && (filtered2.water_temperature.length ||
-        filtered2.air_temperature.length))) {
-            $('#temperature-control').prop({
-                disabled: null,
-                checked: true
-            });
-            container1.css({display: 'block'});
-            container2.css({display: window.hasSiteTwo ? 'block' : 'none'});
-
-            if (filtered1.water_temperature.length || filtered1.air_temperature.length) {
-                var type1 = g1.selectAll('.temp')
-                    .data([
-                        {
-                            name: "Water Temperature",
-                            key: 'water_temperature',
-                            values: filtered1.water_temperature
-                        },
-                        {
-                            name: "Air Temperature",
-                            key: 'air_temperature',
-                            values: filtered1.air_temperature
-                        },
-                    ])
-                    .enter()
-                    .append('g')
-                    .attr('class', 'temp');
-                type1.selectAll('dot')
-                    .data(function (d) {
-                        return d.values.map(function (e) {
-                            e['name'] = d.name;
-                            e['key'] = d.key;
-                            e['site'] = siteId;
-                            return e;
-                        });
-                    })
-                    .enter().append('path')
-                    .attr('transform', function (d) {
-                        return 'translate(' + x(new Date(d.date)) + ', ' +
-                                y(d.value) + ')';
-                    })
-                    .attr('d', d3.symbol()
-                        .type(function (d) {
-                            var symbolType = d.name === 'Water Temperature' ?
-                                d3.symbolCircle : d3.symbolTriangle;
-                            return symbolType;
-                        })
-                    )
-                    .style('stroke', function (d) {
-                        return z(d.name);
-                    })
-                    .style('fill', function (d) {
-                        return z(d.name);
-                    })
-                    .style('cursor', 'pointer')
-                    .on('click', showMouseover);
-
-                var legend1 = g1.selectAll('.legend')
-                    .data([
-                        {
-                            name: "Water Temperature",
-                            values: filtered1.water_temperature
-                        },
-                        {
-                            name: "Air Temperature",
-                            values: filtered1.air_temperature
-                        },
-                    ])
-                    .enter()
-                    .append('g')
-                    .attr('class', 'legend')
-                    .attr('transform', function (d, i) {
-                        return 'translate(' + (width + 10) + ', ' + i * 20 + ')';
-                    })
-                    .style('border', '1px solid black')
-                    .style('font', '12px sans-serif');
-
-                legend1.append('path')
-                    .attr('transform', 'translate(5,0)')
-                    .attr('d', d3.symbol()
-                        .type(function (d) {
-                            var symbolType = d.name === 'Water Temperature' ?
-                                d3.symbolCircle : d3.symbolTriangle;
-                            return symbolType;
-                        })
-                    )
-                    .attr('fill', function (d) {
-                        return z(d.name);
-                    });
-
-                legend1.append('text')
-                    .attr('x', 20)
-                    .attr('dy', '.35em')
-                    .attr('text-anchor', 'begin')
-                    .attr('fill', function (d) {
-                        return z(d.name);
-                    })
-                    .text(function (d) {
-                        return d.name;
-                    });
-            }
-
-            if (window.hasSiteTwo && (
-                filtered2.water_temperature.length || filtered2.air_temperature.length
-            )) {
-                var type2 = g2.selectAll('.temp')
-                    .data([
-                        {
-                            name: "Water Temperature",
-                            key: 'water_temperature',
-                            values: filtered2.water_temperature
-                        },
-                        {
-                            name: "Air Temperature",
-                            key: 'air_temperature',
-                            values: filtered2.air_temperature
-                        },
-                    ])
-                    .enter()
-                    .append('g')
-                    .attr('class', 'temp');
-
-                type2.selectAll('dot')
-                    .data(function (d) {
-                        return d.values.map(function (e) {
-                            e['name'] = d.name;
-                            e['key'] = d.key;
-                            e['site'] = window.site2Id;
-                            return e;
-                        });
-                    })
-                    .enter().append('path')
-                    .attr('transform', function (d) {
-                        return 'translate(' + x(new Date(d.date)) + ', ' +
-                                y(d.value) + ')';
-                    })
-                    .attr('d', d3.symbol()
-                        .type(function (d) {
-                            var symbolType = d.name === 'Water Temperature' ?
-                                d3.symbolCircle : d3.symbolTriangle;
-                            return symbolType;
-                        })
-                    )
-                    .style('stroke', function (d) {
-                        return z(d.name);
-                    })
-                    .style('fill', function (d) {
-                        return z(d.name);
-                    })
-                    .style('cursor', 'pointer')
-                    .on('click', showMouseover);
-
-                var legend2 = g2.selectAll('.legend')
-                    .data([
-                        {
-                            name: "Water Temperature",
-                            values: filtered2.water_temperature
-                        },
-                        {
-                            name: "Air Temperature",
-                            values: filtered2.air_temperature
-                        },
-                    ])
-                    .enter()
-                    .append('g')
-                    .attr('class', 'legend')
-                    .attr('transform', function (d, i) {
-                        return 'translate(' + (width + 10) + ', ' + i * 20 + ')';
-                    })
-                    .style('border', '1px solid black')
-                    .style('font', '12px sans-serif');
-
-                legend2.append('rect')
-                    .attr('x', 2)
-                    .attr('width', 18)
-                    .attr('height', 2)
-                    .attr('fill', function (d) {
-                        return z(d.name);
-                    });
-
-                legend2.append('text')
-                    .attr('x', 25)
-                    .attr('dy', '.35em')
-                    .attr('text-anchor', 'begin')
-                    .attr('fill', function (d) {
-                        return z(d.name);
-                    })
-                    .text(function (d) {
-                        return d.name;
-                    });
-            }
-
-        } else {
-            $('#temperature-control').prop({
-                disabled: 'disabled',
-                checked: false
-            });
-            container1.css({display: 'none'});
-            container2.css({display: 'none'});
-        }
-    }
-
-    /***************************************************************************
-     * Dissolved Oxygen
-     **************************************************************************/
-
-    {
-        var containerName1 = '#graph-site1-oxygen';
-        var container1 = outerContainer.find(containerName1);
-        var width = defineWidth(container1);
-        var height = defineHeight(container1);
-
-        var containerName2 = '#graph-site2-oxygen';
-        var container2 = outerContainer.find(containerName2);
-
-        var x = d3.scaleTime()
-            .range([0, width])
-            .domain(getXDomain(['dissolved_oxygen']));
-        var y = d3.scaleLinear()
-            .domain(getYDomain(['dissolved_oxygen']))
-            .range([height, 0]);
-
-        var g1 = createGraphTemplate(containerName1, width, height, x, y);
-
-        var g2 = createGraphTemplate(containerName2, width, height, x, y);
-
-        if (filtered1.dissolved_oxygen.length ||
-        (window.hasSiteTwo && filtered2.dissolved_oxygen.length)) {
-            $('#oxygen-control').prop({
-                disabled: null,
-                checked: true
-            });
-            container1.css({display: 'block'});
-            container2.css({display: window.hasSiteTwo ? 'block' : 'none'});
-
-            if (filtered1.dissolved_oxygen.length) {
-                var type1 = g1.selectAll('.do')
-                    .data([{
-                        name: 'Dissolved Oxygen',
-                        values: filtered1.dissolved_oxygen
-                    }])
-                    .enter()
-                    .append('g')
-                    .attr('class', 'do');
-
-                type1.selectAll('dot')
-                    .data(function (d) {
-                        return d.values.map(function (e) {
-                            e['name'] = d.name;
-                            e['key'] = 'dissolved_oxygen';
-                            e['site'] = siteId;
-                            return e;
-                        });
-                    })
-                    .enter().append('path')
-                    .attr('transform', function (d) {
-                        return 'translate(' + x(new Date(d.date)) + ', ' +
-                                y(d.value) + ')';
-                    })
-                    .attr('d', d3.symbol())
-                    .style('stroke', '#000000')
-                    .style('fill', '#000000')
-                    .style('cursor', 'pointer')
-                    .on('click', showMouseover);
-            }
-
-            if (window.hasSiteTwo && filtered2.dissolved_oxygen.length) {
-                var type2 = g2.selectAll('.do')
-                    .data([{
-                        name: 'Dissolved Oxygen',
-                        values: filtered2.dissolved_oxygen
-                    }])
-                    .enter()
-                    .append('g')
-                    .attr('class', 'do');
-
-                type2.selectAll('dot')
-                    .data(function (d) {
-                        return d.values.map(function (e) {
-                            e['name'] = d.name;
-                            e['key'] = 'dissolved_oxygen';
-                            e['site'] = window.site2Id;
-                            return e;
-                        });
-                    })
-                    .enter().append('path')
-                    .attr('transform', function (d) {
-                        return 'translate(' + x(new Date(d.date)) + ', ' +
-                                y(d.value) + ')';
-                    })
-                    .attr('d', d3.symbol())
-                    .style('stroke', '#000000')
-                    .style('fill', '#000000')
-                    .style('cursor', 'pointer')
-                    .on('click', showMouseover);
-            }
-        } else {
-            $('#oxygen-control').prop({
-                disabled: 'disabled',
-                checked: false
-            });
-            container1.css({display: 'none'});
-            container2.css({display: 'none'});
-        }
-    }
-
-    /***************************************************************************
-     * pH
-     **************************************************************************/
-
-    {
-        var containerName1 = '#graph-site1-ph';
-        var container1 = outerContainer.find(containerName1);
-        var width = defineWidth(container1);
-        var height = defineHeight(container1);
-
-        var containerName2 = '#graph-site2-ph';
-        var container2 = outerContainer.find(containerName2);
-
-        var x = d3.scaleTime()
-            .range([0, width])
-            .domain(getXDomain(['pH']));
-        var y = d3.scaleLinear()
-            .domain([0, 14])
-            .range([height, 0]);
-
-        var g1 = createGraphTemplate(containerName1, width, height, x, y);
-
-        var g2 = createGraphTemplate(containerName2, width, height, x, y);
-
-        if (filtered1.pH.length || (window.hasSiteTwo && filtered2.pH.length)) {
-            $('#ph-control').prop({
-                disabled: null,
-                checked: true
-            });
-            container1.css({display: 'block'});
-            container2.css({display: window.hasSiteTwo ? 'block' : 'none'});
-
-            if (filtered1.pH.length) {
-                var type1 = g1.selectAll('.ph')
-                    .data([{
-                        name: 'pH',
-                        values: filtered1.pH,
-                    }])
-                    .enter()
-                    .append('g')
-                    .attr('class', 'ph');
-
-                type1.selectAll('dot')
-                    .data(function (d) {
-                        return d.values.map(function (e) {
-                            e['name'] = d.name;
-                            e['key'] = 'pH';
-                            e['site'] = siteId;
-                            return e;
-                        });
-                    })
-                    .enter().append('path')
-                    .attr('transform', function (d) {
-                        return 'translate(' + x(new Date(d.date)) + ', ' +
-                                y(d.value) + ')';
-                    })
-                    .attr('d', d3.symbol())
-                    .style('stroke', '#000000')
-                    .style('fill', '#000000')
-                    .style('cursor', 'pointer')
-                    .on('click', showMouseover);
-            }
-
-            if (window.hasSiteTwo && filtered2.pH.length) {
-                var type2 = g2.selectAll('.ph')
-                    .data([{
-                        name: 'pH',
-                        values: filtered2.pH
-                    }])
-                    .enter()
-                    .append('g')
-                    .attr('class', 'ph');
-
-                type2.selectAll('dot')
-                    .data(function (d) {
-                        return d.values.map(function (e) {
-                            e['name'] = d.name;
-                            e['key'] = 'pH';
-                            e['site'] = window.site2Id;
-                            return e;
-                        });
-                    })
-                    .enter().append('path')
-                    .attr('transform', function (d) {
-                        return 'translate(' + x(new Date(d.date)) + ', ' +
-                                y(d.value) + ')';
-                    })
-                    .attr('d', d3.symbol())
-                    .style('stroke', '#000000')
-                    .style('fill', '#000000')
-                    .style('cursor', 'pointer')
-                    .on('click', showMouseover);
-            }
-
-        } else {
-            $('#ph-control').prop({
-                disabled: 'disabled',
-                checked: false
-            });
-            container1.css({display: 'none'});
-            container2.css({display: 'none'});
-        }
-    }
-
-    /***************************************************************************
-     * Turbidity
-     **************************************************************************/
-
-    {
-        var containerName1 = '#graph-site1-turbidity';
-        var container1 = outerContainer.find(containerName1);
-        var width = defineWidth(container1);
-        var height = defineHeight(container1);
-
-        var containerName2 = '#graph-site2-turbidity';
-        var container2 = outerContainer.find(containerName2);
-
-        var x = d3.scaleTime()
-            .range([0, width])
-            .domain(getXDomain(['turbidity']));
-        var y = d3.scaleLinear()
-            .domain(getYDomain(['turbidity']))
-            .range([height, 0]);
-
-        var g1 = createGraphTemplate(containerName1, width, height, x, y);
-
-        var g2 = createGraphTemplate(containerName2, width, height, x, y);
-
-        if (filtered1.turbidity.length ||
-        (window.hasSiteTwo && filtered2.turbidity.length)) {
-            $('#turbidity-control').prop({
-                disabled: null,
-                checked: true
-            });
-            container1.css({display: 'block'});
-            container2.css({display: window.hasSiteTwo ? 'block' : 'none'});
-
-            if (filtered1.turbidity.length) {
-                var type1 = g1.selectAll('.turb')
-                    .data([{
-                        name: 'Turbidity',
-                        values: filtered1.turbidity,
-                    }])
-                    .enter()
-                    .append('g')
-                    .attr('class', 'turb');
-
-                type1.selectAll('dot')
-                    .data(function (d) {
-                        return d.values.map(function (e) {
-                            e['name'] = d.name;
-                            e['key'] = 'turbidity';
-                            e['site'] = siteId;
-                            return e;
-                        });
-                    })
-                    .enter().append('path')
-                    .attr('transform', function (d) {
-                        return 'translate(' + x(new Date(d.date)) + ', ' +
-                                y(d.value) + ')';
-                    })
-                    .attr('d', d3.symbol())
-                    .style('stroke', '#000000')
-                    .style('fill', '#000000')
-                    .style('cursor', 'pointer')
-                    .on('click', showMouseover);
-            }
-
-            if (window.hasSiteTwo && filtered2.turbidity.length) {
-
-                var type2 = g2.selectAll('.turb')
-                    .data([{
-                        name: 'Turbidity',
-                        values: filtered2.turbidity,
-                    }])
-                    .enter()
-                    .append('g')
-                    .attr('class', 'turb');
-
-                type2.selectAll('dot')
-                    .data(function (d) {
-                        return d.values.map(function (e) {
-                            e['name'] = d.name;
-                            e['key'] = 'turbidity';
-                            e['site'] = window.site2Id;
-                            return e;
-                        });
-                    })
-                    .enter().append('path')
-                    .attr('transform', function (d) {
-                        return 'translate(' + x(new Date(d.date)) + ', ' +
-                                y(d.value) + ')';
-                    })
-                    .attr('d', d3.symbol())
-                    .style('stroke', '#000000')
-                    .style('fill', '#000000')
-                    .style('cursor', 'pointer')
-                    .on('click', showMouseover);
-            }
-        } else {
-            $('#turbidity-control').prop({
-                disabled: 'disabled',
-                checked: false
-            });
-            container1.css({display: 'none'});
-            container2.css({display: 'none'});
-        }
-    }
-
-    /***************************************************************************
-     * Salinity
-     **************************************************************************/
-
-    {
-        var containerName1 = '#graph-site1-salinity';
-        var container1 = outerContainer.find(containerName1);
-        var width = defineWidth(container1);
-        var height = defineHeight(container1);
-
-        var containerName2 = '#graph-site2-salinity';
-        var container2 = outerContainer.find(containerName2);
-
-        var x = d3.scaleTime()
-            .range([0, width])
-            .domain(getXDomain(['salinity']));
-        var y = d3.scaleLinear()
-            .domain(getYDomain(['salinity']))
-            .range([height, 0]);
-
-        var g1 = createGraphTemplate(containerName1, width, height, x, y);
-
-        var g2 = createGraphTemplate(containerName2, width, height, x, y);
-
-        if (filtered1.salinity.length ||
-        (window.hasSiteTwo && filtered2.salinity.length)) {
-            $('#salinity-control').prop({
-                disabled: null,
-                checked: true
-            });
-            container1.css({display: 'block'});
-            container2.css({display: window.hasSiteTwo ? 'block' : 'none'});
-
-            if (filtered1.salinity.length) {
-                var type1 = g1.selectAll('.sal')
-                    .data([{
-                        name: 'Salinity',
-                        values: filtered1.salinity,
-                    }])
-                    .enter()
-                    .append('g')
-                    .attr('class', 'sal');
-
-                type1.selectAll('dot')
-                    .data(function (d) {
-                        return d.values.map(function (e) {
-                            e['name'] = d.name;
-                            e['key'] = 'salinity';
-                            e['site'] = siteId;
-                            return e;
-                        });
-                    })
-                    .enter().append('path')
-                    .attr('transform', function (d) {
-                        return 'translate(' + x(new Date(d.date)) + ', ' +
-                                y(d.value) + ')';
-                    })
-                    .attr('d', d3.symbol())
-                    .style('stroke', '#000000')
-                    .style('fill', '#000000')
-                    .style('cursor', 'pointer')
-                    .on('click', showMouseover);
-            }
-
-            if (window.hasSiteTwo && filtered2.salinity.length) {
-                var type2 = g2.selectAll('.sal')
-                    .data([{
-                        name: 'Salinity',
-                        values: filtered2.salinity,
-                    }])
-                    .enter()
-                    .append('g')
-                    .attr('class', 'sal');
-
-                type2.selectAll('dot')
-                    .data(function (d) {
-                        return d.values.map(function (e) {
-                            e['name'] = d.name;
-                            e['key'] = 'salinity';
-                            e['site'] = window.site2Id;
-                            return e;
-                        });
-                    })
-                    .enter().append('path')
-                    .attr('transform', function (d) {
-                        return 'translate(' + x(new Date(d.date)) + ', ' +
-                                y(d.value) + ')';
-                    })
-                    .attr('d', d3.symbol())
-                    .style('stroke', '#000000')
-                    .style('fill', '#000000')
-                    .style('cursor', 'pointer')
-                    .on('click', showMouseover);
-            }
-        } else {
-            $('#salinity-control').prop({
-                disabled: 'disabled',
-                checked: false
-            });
-            container1.css({display: 'none'});
-            container2.css({display: 'none'});
-        }
-    }
-
-    /***************************************************************************
-     * Conductivity
-     **************************************************************************/
-
-    {
-        var containerName1 = '#graph-site1-conductivity';
-        var container1 = outerContainer.find(containerName1);
-        var width = defineWidth(container1);
-        var height = defineHeight(container1);
-
-        var containerName2 = '#graph-site2-conductivity';
-        var container2 = outerContainer.find(containerName2);
-
-        var x = d3.scaleTime()
-            .range([0, width])
-            .domain(getXDomain(['conductivity']));
-        var y = d3.scaleLinear()
-            .domain(getYDomain(['conductivity']))
-            .range([height, 0]);
-
-        var g1 = createGraphTemplate(containerName1, width, height, x, y);
-
-        var g2 = createGraphTemplate(containerName2, width, height, x, y);
-
-        if (filtered1.conductivity.length ||
-        (window.hasSiteTwo && filtered2.conductivity.length)) {
-            $('#conductivity-control').prop({
-                disabled: null,
-                checked: true
-            });
-            container1.css({display: 'block'});
-            container2.css({display: window.hasSiteTwo ? 'block' : 'none'});
-
-            if (filtered1.conductivity.length) {
-                var type1 = g1.selectAll('.cond')
-                    .data([{
-                        name: 'Conductivity',
-                        values: filtered1.conductivity,
-                    }])
-                    .enter()
-                    .append('g')
-                    .attr('class', 'cond');
-
-                type1.selectAll('dot')
-                    .data(function (d) {
-                        return d.values.map(function (e) {
-                            e['name'] = d.name;
-                            e['key'] = 'conducitivity';
-                            e['site'] = siteId;
-                            return e;
-                        });
-                    })
-                    .enter().append('path')
-                    .attr('transform', function (d) {
-                        return 'translate(' + x(new Date(d.date)) + ', ' +
-                                y(d.value) + ')';
-                    })
-                    .attr('d', d3.symbol())
-                    .style('stroke', '#000000')
-                    .style('fill', '#000000')
-                    .style('cursor', 'pointer')
-                    .on('click', showMouseover);
-            }
-
-            if (window.hasSiteTwo && filtered2.conductivity.length) {
-                var type2 = g2.selectAll('.cond')
-                    .data([{
-                        name: 'Conductivity',
-                        values: filtered2.conductivity,
-                    }])
-                    .enter()
-                    .append('g')
-                    .attr('class', 'cond');
-
-                type2.selectAll('dot')
-                    .data(function (d) {
-                        return d.values.map(function (e) {
-                            e['name'] = d.name;
-                            e['key'] = 'conductivity';
-                            e['site'] = window.site2Id;
-                            return e;
-                        });
-                    })
-                    .enter().append('path')
-                    .attr('transform', function (d) {
-                        return 'translate(' + x(new Date(d.date)) + ', ' +
-                                y(d.value) + ')';
-                    })
-                    .attr('d', d3.symbol())
-                    .style('stroke', '#000000')
-                    .style('fill', '#000000')
-                    .style('cursor', 'pointer')
-                    .on('click', showMouseover);
-            }
-        } else {
-            $('#conductivity-control').prop({
-                disabled: 'disabled',
-                checked: false
-            });
-            container1.css({display: 'none'});
-            container2.css({display: 'none'});
-        }
-    }
-
-    /***************************************************************************
-     * Dissolved Solids
-     **************************************************************************/
-
-    {
-        var containerName1 = '#graph-site1-dissolved';
-        var container1 = outerContainer.find(containerName1);
-        var width = defineWidth(container1);
-        var height = defineHeight(container1);
-
-        var containerName2 = '#graph-site2-dissolved';
-        var container2 = outerContainer.find(containerName2);
-
-        var x = d3.scaleTime()
-            .range([0, width])
-            .domain(getXDomain(['total_solids', 'ammonia', 'nitrite', 'nitrate', 'phosphates']));
-        var y = d3.scaleLinear()
-            .domain(getYDomain(['total_solids', 'ammonia', 'nitrite', 'nitrate', 'phosphates']))
-            .range([height, 0]);
-
-        var z = d3.scaleOrdinal()
-            .domain(['Total Solids', 'Ammonia', 'Nitrite', 'Nitrate', 'Phosphates'])
-            .range(['#000000', '#bf0000', '#00bf00', '#0000bf', '#bf00bf']);
-
-        var g1 = createGraphTemplate(containerName1, width, height, x, y);
-
-        var g2 = createGraphTemplate(containerName2, width, height, x, y);
-
-        if (filtered1.total_solids.length ||
-        (window.hasSiteTwo && filtered2.total_solids.length)) {
-            $('#dissolved-control').prop({
-                disabled: null,
-                checked: true
-            });
-            container1.css({display: 'block'});
-            container2.css({display: window.hasSiteTwo ? 'block' : 'none'});
-
-            if (filtered1.total_solids.length) {
-                var type = g1.selectAll('.solids')
-                    .data([
-                        {
-                            name: "Total Solids",
-                            values: filtered1.total_solids,
-                            key: 'total_solids',
-                        },
-                        {
-                            name: "Ammonia",
-                            values: filtered1.ammonia,
-                            key: 'ammonia',
-                        },
-                        {
-                            name: "Nitrite",
-                            values: filtered1.nitrite,
-                            key: 'nitrite',
-                        },
-                        {
-                            name: "Nitrate",
-                            values: filtered1.nitrate,
-                            key: 'nitrate',
-                        },
-                        {
-                            name: "Phosphates",
-                            values: filtered1.phosphates,
-                            key: 'phosphates',
-                        },
-                    ])
-                    .enter()
-                    .append('g')
-                    .attr('class', 'solids');
-
-                type.selectAll('dot')
-                    .data(function (d) {
-                        return d.values.map(function (e) {
-                            e['name'] = d.name;
-                            e['key'] = d.key;
-                            e['site'] = siteId;
-                            return e;
-                        });
-                    })
-                    .enter().append('path')
-                    .attr('transform', function (d) {
-                        return 'translate(' + x(new Date(d.date)) + ', ' +
-                                y(d.value) + ')';
-                    })
-                    .attr('d', d3.symbol()
-                        .type(function (d) {
-                            switch(d.name) {
-                                case "Total Solids":
-                                    return d3.symbolCircle;
-                                case "Ammonia":
-                                    return d3.symbolTriangle;
-                                case "Nitrite":
-                                    return d3.symbolDiamond;
-                                case "Nitrate":
-                                    return d3.symbolCross;
-                                case "Phosphates":
-                                    return d3.symbolWye;
-                            }
-                        })
-                    )
-                    .style('stroke', function (d) {
-                        return z(d.name);
-                    })
-                    .style('fill', function (d) {
-                        return z(d.name);
-                    })
-                    .style('cursor', 'pointer')
-                    .on('click', showMouseover);
-
-                var legend = g1.selectAll('.legend')
-                    .data([
-                        {
-                            name: "Total Solids",
-                            values: filtered1.total_solids
-                        },
-                        {
-                            name: "Ammonia",
-                            values: filtered1.ammonia
-                        },
-                        {
-                            name: "Nitrite",
-                            values: filtered1.nitrite
-                        },
-                        {
-                            name: "Nitrate",
-                            values: filtered1.nitrate
-                        },
-                        {
-                            name: "Phosphates",
-                            values: filtered1.phosphates
-                        },
-                    ])
-                    .enter()
-                    .append('g')
-                    .attr('class', 'legend')
-                    .attr('transform', function (d, i) {
-                        return 'translate(' + (width + 10) + ', ' + i * 20 + ')';
-                    })
-                    .style('border', '1px solid black')
-                    .style('font', '12px sans-serif');
-
-                legend.append('path')
-                    .attr('transform', 'translate(30,0)')
-                    .attr('d',  d3.symbol()
-                        .type(function (d) {
-                            switch(d.name) {
-                                case "Total Solids":
-                                    return d3.symbolCircle;
-                                case "Ammonia":
-                                    return d3.symbolTriangle;
-                                case "Nitrite":
-                                    return d3.symbolDiamond;
-                                case "Nitrate":
-                                    return d3.symbolCross;
-                                case "Phosphates":
-                                    return d3.symbolWye;
-                            }
-                        })
-                    )
-                    .attr('fill', function (d) {
-                        return z(d.name);
-                    });
-
-                legend.append('text')
-                    .attr('x', 40)
-                    .attr('dy', '.35em')
-                    .attr('text-anchor', 'begin')
-                    .attr('fill', function (d) {
-                        return z(d.name);
-                    })
-                    .text(function (d) {
-                        return d.name;
-                    });
-            }
-
-            if (window.hasSiteTwo && filtered2.total_solids.length) {
-                var type = g2.selectAll('.solids')
-                    .data([
-                        {
-                            name: "Total Solids",
-                            values: filtered2.total_solids,
-                            key: 'total_solids',
-                        },
-                        {
-                            name: "Ammonia",
-                            values: filtered2.ammonia,
-                            key: 'ammonia',
-                        },
-                        {
-                            name: "Nitrite",
-                            values: filtered2.nitrite,
-                            key: 'nitrite',
-                        },
-                        {
-                            name: "Nitrate",
-                            values: filtered2.nitrate,
-                            key: 'nitrate',
-                        },
-                        {
-                            name: "Phosphates",
-                            values: filtered2.phosphates,
-                            key: 'phosphates',
-                        },
-                    ])
-                    .enter()
-                    .append('g')
-                    .attr('class', 'solids');
-
-                type.selectAll('dot')
-                    .data(function (d) {
-                        return d.values.map(function (e) {
-                            e['name'] = d.name;
-                            e['key'] = d.key;
-                            e['site'] = window.site2Id;
-                            return e;
-                        });
-                    })
-                    .enter().append('circle')
-                    .attr('r', 3.5)
-                    .attr('cx', function (d) {
-                        return x(new Date(d.date));
-                    })
-                    .attr('cy', function (d) {
-                        return y(d.value);
-                    })
-                    .style('stroke', function (d) {
-                        return z(d.name);
-                    })
-                    .style('fill', function (d) {
-                        return z(d.name);
-                    })
-                    .style('cursor', 'pointer')
-                    .on('click', showMouseover);
-
-                var legend = g2.selectAll('.legend')
-                    .data([
-                        {
-                            name: "Total Solids",
-                            values: filtered2.total_solids
-                        },
-                        {
-                            name: "Ammonia",
-                            values: filtered2.ammonia
-                        },
-                        {
-                            name: "Nitrite",
-                            values: filtered2.nitrite
-                        },
-                        {
-                            name: "Nitrate",
-                            values: filtered2.nitrate
-                        },
-                        {
-                            name: "Phosphates",
-                            values: filtered2.phosphates
-                        },
-                    ])
-                    .enter()
-                    .append('g')
-                    .attr('class', 'legend')
-                    .attr('transform', function (d, i) {
-                        return 'translate(' + (width + 10) + ', ' + i * 20 + ')';
-                    })
-                    .style('border', '1px solid black')
-                    .style('font', '12px sans-serif');
-
-                legend.append('rect')
-                    .attr('x', 2)
-                    .attr('width', 18)
-                    .attr('height', 2)
-                    .attr('fill', function (d) {
-                        return z(d.name);
-                    });
-
-                legend.append('text')
-                    .attr('x', 25)
-                    .attr('dy', '.35em')
-                    .attr('text-anchor', 'begin')
-                    .attr('fill', function (d) {
-                        return z(d.name);
-                    })
-                    .text(function (d) {
-                        return d.name;
-                    });
-            }
-        } else {
-            $('#dissolved-control').prop({
-                disabled: 'disabled',
-                checked: false
-            });
-            container1.css({display: 'none'});
-            container2.css({display: 'none'});
-        }
-    }
-
-    /***************************************************************************
-     * BOD
-     **************************************************************************/
-
-    {
-        var containerName1 = '#graph-site1-bod';
-        var container1 = outerContainer.find(containerName1);
-        var width = defineWidth(container1);
-        var height = defineHeight(container1);
-
-        var containerName2 = '#graph-site2-bod';
-        var container2 = outerContainer.find(containerName2);
-
-        var x = d3.scaleTime()
-            .range([0, width])
-            .domain(getXDomain(['bod']));
-        var y = d3.scaleLinear()
-            .domain(getYDomain(['bod']))
-            .range([height, 0]);
-
-        var g1 = createGraphTemplate(containerName1, width, height, x, y);
-
-        var g2 = createGraphTemplate(containerName2, width, height, x, y);
-
-        if (filtered1.bod.length ||
-        (window.hasSiteTwo && filtered2.bod.length)) {
-            $('#bod-control').prop({
-                disabled: null,
-                checked: true
-            });
-            container1.css({display: 'block'});
-            container2.css({display: window.hasSiteTwo ? 'block' : 'none'});
-
-            if (filtered1.bod.length) {
-                var type1 = g1.selectAll('.bod')
-                    .data([{
-                        name: 'BOD',
-                        values: filtered1.bod,
-                    }])
-                    .enter()
-                    .append('g')
-                    .attr('class', 'bod');
-
-                type1.selectAll('dot')
-                    .data(function (d) {
-                        return d.values.map(function (e) {
-                            e['name'] = d.name;
-                            e['key'] = 'bod';
-                            e['site'] = siteId;
-                            return e;
-                        });
-                    })
-                    .enter().append('path')
-                    .attr('transform', function (d) {
-                        return 'translate(' + x(new Date(d.date)) + ', ' +
-                                y(d.value) + ')';
-                    })
-                    .attr('d', d3.symbol())
-                    .style('stroke', '#000000')
-                    .style('fill', '#000000')
-                    .style('cursor', 'pointer')
-                    .on('click', showMouseover);
-            }
-
-            if (window.hasSiteTwo && filtered2.bod.length) {
-                var type2 = g2.selectAll('.bod')
-                    .data([{
-                        name: 'BOD',
-                        values: filtered2.bod,
-                    }])
-                    .enter()
-                    .append('g')
-                    .attr('class', 'bod');
-
-                type2.selectAll('dot')
-                    .data(function (d) {
-                        return d.values.map(function (e) {
-                            e['name'] = d.name;
-                            e['key'] = 'bod';
-                            e['site'] = window.site2Id;
-                            return e;
-                        });
-                    })
-                    .enter().append('path')
-                    .attr('transform', function (d) {
-                        return 'translate(' + x(new Date(d.date)) + ', ' +
-                                y(d.value) + ')';
-                    })
-                    .attr('d', d3.symbol())
-                    .style('stroke', '#000000')
-                    .style('fill', '#000000')
-                    .style('cursor', 'pointer')
-                    .on('click', showMouseover);
-            }
-        } else {
-            $('#bod-control').prop({
-                disabled: 'disabled',
-                checked: false
-            });
-            container1.css({display: 'none'});
-            container2.css({display: 'none'});
-        }
-    }
-
-    /***************************************************************************
-     * Fecal Coliform
-     **************************************************************************/
-
-    {
-        var containerName1 = '#graph-site1-coliform';
-        var container1 = outerContainer.find(containerName1);
-        var width = defineWidth(container1);
-        var height = defineHeight(container1);
-
-        var containerName2 = '#graph-site2-coliform';
-        var container2 = outerContainer.find(containerName2);
-
-        var x = d3.scaleTime()
-            .range([0, width])
-            .domain(getXDomain(['fecal_coliform']));
-        var y = d3.scaleLinear()
-            .domain(getYDomain(['fecal_coliform']))
-            .range([height, 0]);
-
-        var g1 = createGraphTemplate(containerName1, width, height, x, y);
-
-        var g2 = createGraphTemplate(containerName2, width, height, x, y);
-
-        if (filtered1.fecal_coliform.length ||
-        (window.hasSiteTwo && filtered2.fecal_coliform.length)) {
-            $('#coliform-control').prop({
-                disabled: null,
-                checked: true
-            });
-            container1.css({display: 'block'});
-            container2.css({display: window.hasSiteTwo ? 'block' : 'none'});
-
-            if (filtered1.fecal_coliform.length) {
-                var type1 = g1.selectAll('.fecal')
-                    .data([{
-                        name: 'Fecal Coliform',
-                        values: filtered1.fecal_coliform,
-                    }])
-                    .enter()
-                    .append('g')
-                    .attr('class', 'fecal');
-
-                type1.selectAll('dot')
-                    .data(function (d) {
-                        return d.values.map(function (e) {
-                            e['name'] = d.name;
-                            e['key'] = 'fecal_coliform';
-                            e['site'] = siteId;
-                            return e;
-                        });
-                    })
-                    .enter().append('path')
-                    .attr('transform', function (d) {
-                        return 'translate(' + x(new Date(d.date)) + ', ' +
-                                y(d.value) + ')';
-                    })
-                    .attr('d', d3.symbol())
-                    .style('stroke', '#000000')
-                    .style('fill', '#000000')
-                    .style('cursor', 'pointer')
-                    .on('click', showMouseover);
-            }
-
-            if (window.hasSiteTwo && filtered2.fecal_coliform.length) {
-                var type2 = g2.selectAll('.fecal')
-                    .data([{
-                        name: 'Fecal Coliform',
-                        values: filtered2.fecal_coliform,
-                    }])
-                    .enter()
-                    .append('g')
-                    .attr('class', 'fecal');
-
-                type2.selectAll('dot')
-                    .data(function (d) {
-                        return d.values.map(function (e) {
-                            e['name'] = d.name;
-                            e['key'] = 'fecal_coliform';
-                            e['site'] = window.site2Id;
-                            return e;
-                        });
-                    })
-                    .enter().append('path')
-                    .attr('transform', function (d) {
-                        return 'translate(' + x(new Date(d.date)) + ', ' +
-                                y(d.value) + ')';
-                    })
-                    .attr('d', d3.symbol())
-                    .style('stroke', '#000000')
-                    .style('fill', '#000000')
-                    .style('cursor', 'pointer')
-                    .on('click', showMouseover);
-            }
-        } else {
-            $('#coliform-control').prop({
-                disabled: 'disabled',
-                checked: false
-            });
-            container1.css({display: 'none'});
-            container2.css({display: 'none'});
-        }
-    }
+    graphTemperature();
+    graphOxygen();
+    graphPH();
+    graphTurbidity();
+    graphSalinity();
+    graphConductivity();
+    graphDissolved();
+    graphBod();
+    graphColiform();
 };
+
+
+/***************************************************************************
+ * Temperature
+ **************************************************************************/
+var graphTemperature = function graphTemperature(responsive=false) {
+    var containerName1 = '#graph-site1-temperature';
+    var container1 = outerContainer.find(containerName1);
+    var width = defineWidth(container1);
+    var height = defineHeight(responsive);
+
+    var containerName2 = '#graph-site2-temperature';
+    var container2 = outerContainer.find(containerName2);
+
+    var x = d3.scaleTime()
+        .range([0, width])
+        .domain(getXDomain(['water_temperature', 'air_temperature']));
+    var y = d3.scaleLinear()
+        .domain(getYDomain(['water_temperature', 'air_temperature']))
+        .range([height, 0]);
+    var z = d3.scaleOrdinal()
+        .domain(['Air Temperature', 'Water Temperature'])
+        .range(['#0000bf', '#bf0000']);
+
+    var g1 = createGraphTemplate(containerName1, width, height, x, y);
+
+    var g2 = createGraphTemplate(containerName2, width, height, x, y);
+
+    if ((filtered1.water_temperature.length ||
+    filtered1.air_temperature.length) ||
+    (window.hasSiteTwo && (filtered2.water_temperature.length ||
+    filtered2.air_temperature.length))) {
+        $('#temperature-control').prop({
+            disabled: null,
+            checked: true
+        });
+        container1.css({display: 'block'});
+        container2.css({display: window.hasSiteTwo ? 'block' : 'none'});
+
+        if (filtered1.water_temperature.length || filtered1.air_temperature.length) {
+            var type1 = g1.selectAll('.temp')
+                .data([
+                    {
+                        name: "Water Temperature",
+                        key: 'water_temperature',
+                        values: filtered1.water_temperature
+                    },
+                    {
+                        name: "Air Temperature",
+                        key: 'air_temperature',
+                        values: filtered1.air_temperature
+                    },
+                ])
+                .enter()
+                .append('g')
+                .attr('class', 'temp');
+            type1.selectAll('dot')
+                .data(function (d) {
+                    return d.values.map(function (e) {
+                        e['name'] = d.name;
+                        e['key'] = d.key;
+                        e['site'] = siteId;
+                        return e;
+                    });
+                })
+                .enter().append('path')
+                .attr('transform', function (d) {
+                    return 'translate(' + x(new Date(d.date)) + ', ' +
+                            y(d.value) + ')';
+                })
+                .attr('d', d3.symbol()
+                    .type(function (d) {
+                        var symbolType = d.name === 'Water Temperature' ?
+                            d3.symbolCircle : d3.symbolTriangle;
+                        return symbolType;
+                    })
+                )
+                .style('stroke', function (d) {
+                    return z(d.name);
+                })
+                .style('fill', function (d) {
+                    return z(d.name);
+                })
+                .style('cursor', 'pointer')
+                .on('mouseover', showMouseover);
+
+            var legend1 = g1.selectAll('.legend')
+                .data([
+                    {
+                        name: "Water Temperature",
+                        values: filtered1.water_temperature
+                    },
+                    {
+                        name: "Air Temperature",
+                        values: filtered1.air_temperature
+                    },
+                ])
+                .enter()
+                .append('g')
+                .attr('class', 'legend')
+                .attr('transform', function (d, i) {
+                    return 'translate(' + (width + 10) + ', ' + i * 20 + ')';
+                })
+                .style('border', '1px solid black')
+                .style('font', '12px sans-serif');
+
+            legend1.append('path')
+                .attr('transform', 'translate(5,0)')
+                .attr('d', d3.symbol()
+                    .type(function (d) {
+                        var symbolType = d.name === 'Water Temperature' ?
+                            d3.symbolCircle : d3.symbolTriangle;
+                        return symbolType;
+                    })
+                )
+                .attr('fill', function (d) {
+                    return z(d.name);
+                });
+
+            legend1.append('text')
+                .attr('x', 20)
+                .attr('dy', '.35em')
+                .attr('text-anchor', 'begin')
+                .attr('fill', function (d) {
+                    return z(d.name);
+                })
+                .text(function (d) {
+                    return d.name;
+                });
+        }
+
+        if (window.hasSiteTwo && (
+            filtered2.water_temperature.length || filtered2.air_temperature.length
+        )) {
+            var type2 = g2.selectAll('.temp')
+                .data([
+                    {
+                        name: "Water Temperature",
+                        key: 'water_temperature',
+                        values: filtered2.water_temperature
+                    },
+                    {
+                        name: "Air Temperature",
+                        key: 'air_temperature',
+                        values: filtered2.air_temperature
+                    },
+                ])
+                .enter()
+                .append('g')
+                .attr('class', 'temp');
+
+            type2.selectAll('dot')
+                .data(function (d) {
+                    return d.values.map(function (e) {
+                        e['name'] = d.name;
+                        e['key'] = d.key;
+                        e['site'] = window.site2Id;
+                        return e;
+                    });
+                })
+                .enter().append('path')
+                .attr('transform', function (d) {
+                    return 'translate(' + x(new Date(d.date)) + ', ' +
+                            y(d.value) + ')';
+                })
+                .attr('d', d3.symbol()
+                    .type(function (d) {
+                        var symbolType = d.name === 'Water Temperature' ?
+                            d3.symbolCircle : d3.symbolTriangle;
+                        return symbolType;
+                    })
+                )
+                .style('stroke', function (d) {
+                    return z(d.name);
+                })
+                .style('fill', function (d) {
+                    return z(d.name);
+                })
+                .style('cursor', 'pointer')
+                .on('mouseover', showMouseover);
+
+            var legend2 = g2.selectAll('.legend')
+                .data([
+                    {
+                        name: "Water Temperature",
+                        values: filtered2.water_temperature
+                    },
+                    {
+                        name: "Air Temperature",
+                        values: filtered2.air_temperature
+                    },
+                ])
+                .enter()
+                .append('g')
+                .attr('class', 'legend')
+                .attr('transform', function (d, i) {
+                    return 'translate(' + (width + 10) + ', ' + i * 20 + ')';
+                })
+                .style('border', '1px solid black')
+                .style('font', '12px sans-serif');
+
+            legend2.append('rect')
+                .attr('x', 2)
+                .attr('width', 18)
+                .attr('height', 2)
+                .attr('fill', function (d) {
+                    return z(d.name);
+                });
+
+            legend2.append('text')
+                .attr('x', 25)
+                .attr('dy', '.35em')
+                .attr('text-anchor', 'begin')
+                .attr('fill', function (d) {
+                    return z(d.name);
+                })
+                .text(function (d) {
+                    return d.name;
+                });
+        }
+
+    } else {
+        $('#temperature-control').prop({
+            disabled: 'disabled',
+            checked: false
+        });
+        container1.css({display: 'none'});
+        container2.css({display: 'none'});
+    }
+}
+
+/***************************************************************************
+ * Dissolved Oxygen
+ **************************************************************************/
+
+var graphOxygen = function graphOxygen(responsive=false){
+    var containerName1 = '#graph-site1-oxygen';
+    var container1 = outerContainer.find(containerName1);
+    var width = defineWidth(container1);
+    var height = defineHeight(responsive);
+
+    var containerName2 = '#graph-site2-oxygen';
+    var container2 = outerContainer.find(containerName2);
+
+    var x = d3.scaleTime()
+        .range([0, width])
+        .domain(getXDomain(['dissolved_oxygen']));
+    var y = d3.scaleLinear()
+        .domain(getYDomain(['dissolved_oxygen']))
+        .range([height, 0]);
+
+    var g1 = createGraphTemplate(containerName1, width, height, x, y);
+
+    var g2 = createGraphTemplate(containerName2, width, height, x, y);
+
+    if (filtered1.dissolved_oxygen.length ||
+    (window.hasSiteTwo && filtered2.dissolved_oxygen.length)) {
+        $('#oxygen-control').prop({
+            disabled: null,
+            checked: true
+        });
+        container1.css({display: 'block'});
+        container2.css({display: window.hasSiteTwo ? 'block' : 'none'});
+
+        if (filtered1.dissolved_oxygen.length) {
+            var type1 = g1.selectAll('.do')
+                .data([{
+                    name: 'Dissolved Oxygen',
+                    values: filtered1.dissolved_oxygen
+                }])
+                .enter()
+                .append('g')
+                .attr('class', 'do');
+
+            type1.selectAll('dot')
+                .data(function (d) {
+                    return d.values.map(function (e) {
+                        e['name'] = d.name;
+                        e['key'] = 'dissolved_oxygen';
+                        e['site'] = siteId;
+                        return e;
+                    });
+                })
+                .enter().append('path')
+                .attr('transform', function (d) {
+                    return 'translate(' + x(new Date(d.date)) + ', ' +
+                            y(d.value) + ')';
+                })
+                .attr('d', d3.symbol())
+                .style('stroke', '#000000')
+                .style('fill', '#000000')
+                .style('cursor', 'pointer')
+                .on('mouseover', showMouseover);
+        }
+
+        if (window.hasSiteTwo && filtered2.dissolved_oxygen.length) {
+            var type2 = g2.selectAll('.do')
+                .data([{
+                    name: 'Dissolved Oxygen',
+                    values: filtered2.dissolved_oxygen
+                }])
+                .enter()
+                .append('g')
+                .attr('class', 'do');
+
+            type2.selectAll('dot')
+                .data(function (d) {
+                    return d.values.map(function (e) {
+                        e['name'] = d.name;
+                        e['key'] = 'dissolved_oxygen';
+                        e['site'] = window.site2Id;
+                        return e;
+                    });
+                })
+                .enter().append('path')
+                .attr('transform', function (d) {
+                    return 'translate(' + x(new Date(d.date)) + ', ' +
+                            y(d.value) + ')';
+                })
+                .attr('d', d3.symbol())
+                .style('stroke', '#000000')
+                .style('fill', '#000000')
+                .style('cursor', 'pointer')
+                .on('mouseover', showMouseover);
+        }
+    } else {
+        $('#oxygen-control').prop({
+            disabled: 'disabled',
+            checked: false
+        });
+        container1.css({display: 'none'});
+        container2.css({display: 'none'});
+    }
+}
+
+/***************************************************************************
+ * pH
+ **************************************************************************/
+
+var graphPH = function graphPH(responsive=false) {
+    var containerName1 = '#graph-site1-ph';
+    var container1 = outerContainer.find(containerName1);
+    var width = defineWidth(container1);
+    var height = defineHeight(responsive);
+
+    var containerName2 = '#graph-site2-ph';
+    var container2 = outerContainer.find(containerName2);
+
+    var x = d3.scaleTime()
+        .range([0, width])
+        .domain(getXDomain(['pH']));
+    var y = d3.scaleLinear()
+        .domain([0, 14])
+        .range([height, 0]);
+
+    var g1 = createGraphTemplate(containerName1, width, height, x, y);
+
+    var g2 = createGraphTemplate(containerName2, width, height, x, y);
+
+    if (filtered1.pH.length || (window.hasSiteTwo && filtered2.pH.length)) {
+        $('#ph-control').prop({
+            disabled: null,
+            checked: true
+        });
+        container1.css({display: 'block'});
+        container2.css({display: window.hasSiteTwo ? 'block' : 'none'});
+
+        if (filtered1.pH.length) {
+            var type1 = g1.selectAll('.ph')
+                .data([{
+                    name: 'pH',
+                    values: filtered1.pH,
+                }])
+                .enter()
+                .append('g')
+                .attr('class', 'ph');
+
+            type1.selectAll('dot')
+                .data(function (d) {
+                    return d.values.map(function (e) {
+                        e['name'] = d.name;
+                        e['key'] = 'pH';
+                        e['site'] = siteId;
+                        return e;
+                    });
+                })
+                .enter().append('path')
+                .attr('transform', function (d) {
+                    return 'translate(' + x(new Date(d.date)) + ', ' +
+                            y(d.value) + ')';
+                })
+                .attr('d', d3.symbol())
+                .style('stroke', '#000000')
+                .style('fill', '#000000')
+                .style('cursor', 'pointer')
+                .on('mouseover', showMouseover);
+        }
+
+        if (window.hasSiteTwo && filtered2.pH.length) {
+            var type2 = g2.selectAll('.ph')
+                .data([{
+                    name: 'pH',
+                    values: filtered2.pH
+                }])
+                .enter()
+                .append('g')
+                .attr('class', 'ph');
+
+            type2.selectAll('dot')
+                .data(function (d) {
+                    return d.values.map(function (e) {
+                        e['name'] = d.name;
+                        e['key'] = 'pH';
+                        e['site'] = window.site2Id;
+                        return e;
+                    });
+                })
+                .enter().append('path')
+                .attr('transform', function (d) {
+                    return 'translate(' + x(new Date(d.date)) + ', ' +
+                            y(d.value) + ')';
+                })
+                .attr('d', d3.symbol())
+                .style('stroke', '#000000')
+                .style('fill', '#000000')
+                .style('cursor', 'pointer')
+                .on('mouseover', showMouseover);
+        }
+
+    } else {
+        $('#ph-control').prop({
+            disabled: 'disabled',
+            checked: false
+        });
+        container1.css({display: 'none'});
+        container2.css({display: 'none'});
+    }
+}
+
+/***************************************************************************
+ * Turbidity
+ **************************************************************************/
+
+var graphTurbidity = function graphTurbidity(responsive=false) {
+    var containerName1 = '#graph-site1-turbidity';
+    var container1 = outerContainer.find(containerName1);
+    var width = defineWidth(container1);
+    var height = defineHeight(responsive);
+
+    var containerName2 = '#graph-site2-turbidity';
+    var container2 = outerContainer.find(containerName2);
+
+    var x = d3.scaleTime()
+        .range([0, width])
+        .domain(getXDomain(['turbidity']));
+    var y = d3.scaleLinear()
+        .domain(getYDomain(['turbidity']))
+        .range([height, 0]);
+
+    var g1 = createGraphTemplate(containerName1, width, height, x, y);
+
+    var g2 = createGraphTemplate(containerName2, width, height, x, y);
+
+    if (filtered1.turbidity.length ||
+    (window.hasSiteTwo && filtered2.turbidity.length)) {
+        $('#turbidity-control').prop({
+            disabled: null,
+            checked: true
+        });
+        container1.css({display: 'block'});
+        container2.css({display: window.hasSiteTwo ? 'block' : 'none'});
+
+        if (filtered1.turbidity.length) {
+            var type1 = g1.selectAll('.turb')
+                .data([{
+                    name: 'Turbidity',
+                    values: filtered1.turbidity,
+                }])
+                .enter()
+                .append('g')
+                .attr('class', 'turb');
+
+            type1.selectAll('dot')
+                .data(function (d) {
+                    return d.values.map(function (e) {
+                        e['name'] = d.name;
+                        e['key'] = 'turbidity';
+                        e['site'] = siteId;
+                        return e;
+                    });
+                })
+                .enter().append('path')
+                .attr('transform', function (d) {
+                    return 'translate(' + x(new Date(d.date)) + ', ' +
+                            y(d.value) + ')';
+                })
+                .attr('d', d3.symbol())
+                .style('stroke', '#000000')
+                .style('fill', '#000000')
+                .style('cursor', 'pointer')
+                .on('mouseover', showMouseover);
+        }
+
+        if (window.hasSiteTwo && filtered2.turbidity.length) {
+
+            var type2 = g2.selectAll('.turb')
+                .data([{
+                    name: 'Turbidity',
+                    values: filtered2.turbidity,
+                }])
+                .enter()
+                .append('g')
+                .attr('class', 'turb');
+
+            type2.selectAll('dot')
+                .data(function (d) {
+                    return d.values.map(function (e) {
+                        e['name'] = d.name;
+                        e['key'] = 'turbidity';
+                        e['site'] = window.site2Id;
+                        return e;
+                    });
+                })
+                .enter().append('path')
+                .attr('transform', function (d) {
+                    return 'translate(' + x(new Date(d.date)) + ', ' +
+                            y(d.value) + ')';
+                })
+                .attr('d', d3.symbol())
+                .style('stroke', '#000000')
+                .style('fill', '#000000')
+                .style('cursor', 'pointer')
+                .on('mouseover', showMouseover);
+        }
+    } else {
+        $('#turbidity-control').prop({
+            disabled: 'disabled',
+            checked: false
+        });
+        container1.css({display: 'none'});
+        container2.css({display: 'none'});
+    }
+}
+
+/***************************************************************************
+ * Salinity
+ **************************************************************************/
+
+var graphSalinity = function graphSalinity(responsive=false) {
+    var containerName1 = '#graph-site1-salinity';
+    var container1 = outerContainer.find(containerName1);
+    var width = defineWidth(container1);
+    var height = defineHeight(responsive);
+
+    var containerName2 = '#graph-site2-salinity';
+    var container2 = outerContainer.find(containerName2);
+
+    var x = d3.scaleTime()
+        .range([0, width])
+        .domain(getXDomain(['salinity']));
+    var y = d3.scaleLinear()
+        .domain(getYDomain(['salinity']))
+        .range([height, 0]);
+
+    var g1 = createGraphTemplate(containerName1, width, height, x, y);
+
+    var g2 = createGraphTemplate(containerName2, width, height, x, y);
+
+    if (filtered1.salinity.length ||
+    (window.hasSiteTwo && filtered2.salinity.length)) {
+        $('#salinity-control').prop({
+            disabled: null,
+            checked: true
+        });
+        container1.css({display: 'block'});
+        container2.css({display: window.hasSiteTwo ? 'block' : 'none'});
+
+        if (filtered1.salinity.length) {
+            var type1 = g1.selectAll('.sal')
+                .data([{
+                    name: 'Salinity',
+                    values: filtered1.salinity,
+                }])
+                .enter()
+                .append('g')
+                .attr('class', 'sal');
+
+            type1.selectAll('dot')
+                .data(function (d) {
+                    return d.values.map(function (e) {
+                        e['name'] = d.name;
+                        e['key'] = 'salinity';
+                        e['site'] = siteId;
+                        return e;
+                    });
+                })
+                .enter().append('path')
+                .attr('transform', function (d) {
+                    return 'translate(' + x(new Date(d.date)) + ', ' +
+                            y(d.value) + ')';
+                })
+                .attr('d', d3.symbol())
+                .style('stroke', '#000000')
+                .style('fill', '#000000')
+                .style('cursor', 'pointer')
+                .on('mouseover', showMouseover);
+        }
+
+        if (window.hasSiteTwo && filtered2.salinity.length) {
+            var type2 = g2.selectAll('.sal')
+                .data([{
+                    name: 'Salinity',
+                    values: filtered2.salinity,
+                }])
+                .enter()
+                .append('g')
+                .attr('class', 'sal');
+
+            type2.selectAll('dot')
+                .data(function (d) {
+                    return d.values.map(function (e) {
+                        e['name'] = d.name;
+                        e['key'] = 'salinity';
+                        e['site'] = window.site2Id;
+                        return e;
+                    });
+                })
+                .enter().append('path')
+                .attr('transform', function (d) {
+                    return 'translate(' + x(new Date(d.date)) + ', ' +
+                            y(d.value) + ')';
+                })
+                .attr('d', d3.symbol())
+                .style('stroke', '#000000')
+                .style('fill', '#000000')
+                .style('cursor', 'pointer')
+                .on('mouseover', showMouseover);
+        }
+    } else {
+        $('#salinity-control').prop({
+            disabled: 'disabled',
+            checked: false
+        });
+        container1.css({display: 'none'});
+        container2.css({display: 'none'});
+    }
+}
+
+/***************************************************************************
+ * Conductivity
+ **************************************************************************/
+
+var graphConductivity = function graphConductivity(responsive=false) {
+    var containerName1 = '#graph-site1-conductivity';
+    var container1 = outerContainer.find(containerName1);
+    var width = defineWidth(container1);
+    var height = defineHeight(responsive);
+
+    var containerName2 = '#graph-site2-conductivity';
+    var container2 = outerContainer.find(containerName2);
+
+    var x = d3.scaleTime()
+        .range([0, width])
+        .domain(getXDomain(['conductivity']));
+    var y = d3.scaleLinear()
+        .domain(getYDomain(['conductivity']))
+        .range([height, 0]);
+
+    var g1 = createGraphTemplate(containerName1, width, height, x, y);
+
+    var g2 = createGraphTemplate(containerName2, width, height, x, y);
+
+    if (filtered1.conductivity.length ||
+    (window.hasSiteTwo && filtered2.conductivity.length)) {
+        $('#conductivity-control').prop({
+            disabled: null,
+            checked: true
+        });
+        container1.css({display: 'block'});
+        container2.css({display: window.hasSiteTwo ? 'block' : 'none'});
+
+        if (filtered1.conductivity.length) {
+            var type1 = g1.selectAll('.cond')
+                .data([{
+                    name: 'Conductivity',
+                    values: filtered1.conductivity,
+                }])
+                .enter()
+                .append('g')
+                .attr('class', 'cond');
+
+            type1.selectAll('dot')
+                .data(function (d) {
+                    return d.values.map(function (e) {
+                        e['name'] = d.name;
+                        e['key'] = 'conducitivity';
+                        e['site'] = siteId;
+                        return e;
+                    });
+                })
+                .enter().append('path')
+                .attr('transform', function (d) {
+                    return 'translate(' + x(new Date(d.date)) + ', ' +
+                            y(d.value) + ')';
+                })
+                .attr('d', d3.symbol())
+                .style('stroke', '#000000')
+                .style('fill', '#000000')
+                .style('cursor', 'pointer')
+                .on('mouseover', showMouseover);
+        }
+
+        if (window.hasSiteTwo && filtered2.conductivity.length) {
+            var type2 = g2.selectAll('.cond')
+                .data([{
+                    name: 'Conductivity',
+                    values: filtered2.conductivity,
+                }])
+                .enter()
+                .append('g')
+                .attr('class', 'cond');
+
+            type2.selectAll('dot')
+                .data(function (d) {
+                    return d.values.map(function (e) {
+                        e['name'] = d.name;
+                        e['key'] = 'conductivity';
+                        e['site'] = window.site2Id;
+                        return e;
+                    });
+                })
+                .enter().append('path')
+                .attr('transform', function (d) {
+                    return 'translate(' + x(new Date(d.date)) + ', ' +
+                            y(d.value) + ')';
+                })
+                .attr('d', d3.symbol())
+                .style('stroke', '#000000')
+                .style('fill', '#000000')
+                .style('cursor', 'pointer')
+                .on('mouseover', showMouseover);
+        }
+    } else {
+        $('#conductivity-control').prop({
+            disabled: 'disabled',
+            checked: false
+        });
+        container1.css({display: 'none'});
+        container2.css({display: 'none'});
+    }
+}
+
+/***************************************************************************
+ * Dissolved Solids
+ **************************************************************************/
+
+var graphDissolved = function graphDissolved(responsive=false) {
+    var containerName1 = '#graph-site1-dissolved';
+    var container1 = outerContainer.find(containerName1);
+    var width = defineWidth(container1);
+    var height = defineHeight(responsive);
+
+    var containerName2 = '#graph-site2-dissolved';
+    var container2 = outerContainer.find(containerName2);
+
+    var x = d3.scaleTime()
+        .range([0, width])
+        .domain(getXDomain(['total_solids', 'ammonia', 'nitrite', 'nitrate', 'phosphates']));
+    var y = d3.scaleLinear()
+        .domain(getYDomain(['total_solids', 'ammonia', 'nitrite', 'nitrate', 'phosphates']))
+        .range([height, 0]);
+
+    var z = d3.scaleOrdinal()
+        .domain(['Total Solids', 'Ammonia', 'Nitrite', 'Nitrate', 'Phosphates'])
+        .range(['#000000', '#bf0000', '#00bf00', '#0000bf', '#bf00bf']);
+
+    var g1 = createGraphTemplate(containerName1, width, height, x, y);
+
+    var g2 = createGraphTemplate(containerName2, width, height, x, y);
+
+    if (filtered1.total_solids.length ||
+    (window.hasSiteTwo && filtered2.total_solids.length)) {
+        $('#dissolved-control').prop({
+            disabled: null,
+            checked: true
+        });
+        container1.css({display: 'block'});
+        container2.css({display: window.hasSiteTwo ? 'block' : 'none'});
+
+        if (filtered1.total_solids.length) {
+            var type = g1.selectAll('.solids')
+                .data([
+                    {
+                        name: "Total Solids",
+                        values: filtered1.total_solids,
+                        key: 'total_solids',
+                    },
+                    {
+                        name: "Ammonia",
+                        values: filtered1.ammonia,
+                        key: 'ammonia',
+                    },
+                    {
+                        name: "Nitrite",
+                        values: filtered1.nitrite,
+                        key: 'nitrite',
+                    },
+                    {
+                        name: "Nitrate",
+                        values: filtered1.nitrate,
+                        key: 'nitrate',
+                    },
+                    {
+                        name: "Phosphates",
+                        values: filtered1.phosphates,
+                        key: 'phosphates',
+                    },
+                ])
+                .enter()
+                .append('g')
+                .attr('class', 'solids');
+
+            type.selectAll('dot')
+                .data(function (d) {
+                    return d.values.map(function (e) {
+                        e['name'] = d.name;
+                        e['key'] = d.key;
+                        e['site'] = siteId;
+                        return e;
+                    });
+                })
+                .enter().append('path')
+                .attr('transform', function (d) {
+                    return 'translate(' + x(new Date(d.date)) + ', ' +
+                            y(d.value) + ')';
+                })
+                .attr('d', d3.symbol()
+                    .type(function (d) {
+                        switch(d.name) {
+                            case "Total Solids":
+                                return d3.symbolCircle;
+                            case "Ammonia":
+                                return d3.symbolTriangle;
+                            case "Nitrite":
+                                return d3.symbolDiamond;
+                            case "Nitrate":
+                                return d3.symbolCross;
+                            case "Phosphates":
+                                return d3.symbolWye;
+                        }
+                    })
+                )
+                .style('stroke', function (d) {
+                    return z(d.name);
+                })
+                .style('fill', function (d) {
+                    return z(d.name);
+                })
+                .style('cursor', 'pointer')
+                .on('mouseover', showMouseover);
+
+            var legend = g1.selectAll('.legend')
+                .data([
+                    {
+                        name: "Total Solids",
+                        values: filtered1.total_solids
+                    },
+                    {
+                        name: "Ammonia",
+                        values: filtered1.ammonia
+                    },
+                    {
+                        name: "Nitrite",
+                        values: filtered1.nitrite
+                    },
+                    {
+                        name: "Nitrate",
+                        values: filtered1.nitrate
+                    },
+                    {
+                        name: "Phosphates",
+                        values: filtered1.phosphates
+                    },
+                ])
+                .enter()
+                .append('g')
+                .attr('class', 'legend')
+                .attr('transform', function (d, i) {
+                    return 'translate(' + (width + 10) + ', ' + i * 20 + ')';
+                })
+                .style('border', '1px solid black')
+                .style('font', '12px sans-serif');
+
+            legend.append('path')
+                .attr('transform', 'translate(30,0)')
+                .attr('d',  d3.symbol()
+                    .type(function (d) {
+                        switch(d.name) {
+                            case "Total Solids":
+                                return d3.symbolCircle;
+                            case "Ammonia":
+                                return d3.symbolTriangle;
+                            case "Nitrite":
+                                return d3.symbolDiamond;
+                            case "Nitrate":
+                                return d3.symbolCross;
+                            case "Phosphates":
+                                return d3.symbolWye;
+                        }
+                    })
+                )
+                .attr('fill', function (d) {
+                    return z(d.name);
+                });
+
+            legend.append('text')
+                .attr('x', 40)
+                .attr('dy', '.35em')
+                .attr('text-anchor', 'begin')
+                .attr('fill', function (d) {
+                    return z(d.name);
+                })
+                .text(function (d) {
+                    return d.name;
+                });
+        }
+
+        if (window.hasSiteTwo && filtered2.total_solids.length) {
+            var type = g2.selectAll('.solids')
+                .data([
+                    {
+                        name: "Total Solids",
+                        values: filtered2.total_solids,
+                        key: 'total_solids',
+                    },
+                    {
+                        name: "Ammonia",
+                        values: filtered2.ammonia,
+                        key: 'ammonia',
+                    },
+                    {
+                        name: "Nitrite",
+                        values: filtered2.nitrite,
+                        key: 'nitrite',
+                    },
+                    {
+                        name: "Nitrate",
+                        values: filtered2.nitrate,
+                        key: 'nitrate',
+                    },
+                    {
+                        name: "Phosphates",
+                        values: filtered2.phosphates,
+                        key: 'phosphates',
+                    },
+                ])
+                .enter()
+                .append('g')
+                .attr('class', 'solids');
+
+            type.selectAll('dot')
+                .data(function (d) {
+                    return d.values.map(function (e) {
+                        e['name'] = d.name;
+                        e['key'] = d.key;
+                        e['site'] = window.site2Id;
+                        return e;
+                    });
+                })
+                .enter().append('circle')
+                .attr('r', 3.5)
+                .attr('cx', function (d) {
+                    return x(new Date(d.date));
+                })
+                .attr('cy', function (d) {
+                    return y(d.value);
+                })
+                .style('stroke', function (d) {
+                    return z(d.name);
+                })
+                .style('fill', function (d) {
+                    return z(d.name);
+                })
+                .style('cursor', 'pointer')
+                .on('mouseover', showMouseover);
+
+            var legend = g2.selectAll('.legend')
+                .data([
+                    {
+                        name: "Total Solids",
+                        values: filtered2.total_solids
+                    },
+                    {
+                        name: "Ammonia",
+                        values: filtered2.ammonia
+                    },
+                    {
+                        name: "Nitrite",
+                        values: filtered2.nitrite
+                    },
+                    {
+                        name: "Nitrate",
+                        values: filtered2.nitrate
+                    },
+                    {
+                        name: "Phosphates",
+                        values: filtered2.phosphates
+                    },
+                ])
+                .enter()
+                .append('g')
+                .attr('class', 'legend')
+                .attr('transform', function (d, i) {
+                    return 'translate(' + (width + 10) + ', ' + i * 20 + ')';
+                })
+                .style('border', '1px solid black')
+                .style('font', '12px sans-serif');
+
+            legend.append('rect')
+                .attr('x', 2)
+                .attr('width', 18)
+                .attr('height', 2)
+                .attr('fill', function (d) {
+                    return z(d.name);
+                });
+
+            legend.append('text')
+                .attr('x', 25)
+                .attr('dy', '.35em')
+                .attr('text-anchor', 'begin')
+                .attr('fill', function (d) {
+                    return z(d.name);
+                })
+                .text(function (d) {
+                    return d.name;
+                });
+        }
+    } else {
+        $('#dissolved-control').prop({
+            disabled: 'disabled',
+            checked: false
+        });
+        container1.css({display: 'none'});
+        container2.css({display: 'none'});
+    }
+}
+
+/***************************************************************************
+ * BOD
+ **************************************************************************/
+
+var graphBod = function graphBod(responsive=false) {
+    var containerName1 = '#graph-site1-bod';
+    var container1 = outerContainer.find(containerName1);
+    var width = defineWidth(container1);
+    var height = defineHeight(responsive);
+
+    var containerName2 = '#graph-site2-bod';
+    var container2 = outerContainer.find(containerName2);
+
+    var x = d3.scaleTime()
+        .range([0, width])
+        .domain(getXDomain(['bod']));
+    var y = d3.scaleLinear()
+        .domain(getYDomain(['bod']))
+        .range([height, 0]);
+
+    var g1 = createGraphTemplate(containerName1, width, height, x, y);
+
+    var g2 = createGraphTemplate(containerName2, width, height, x, y);
+
+    if (filtered1.bod.length ||
+    (window.hasSiteTwo && filtered2.bod.length)) {
+        $('#bod-control').prop({
+            disabled: null,
+            checked: true
+        });
+        container1.css({display: 'block'});
+        container2.css({display: window.hasSiteTwo ? 'block' : 'none'});
+
+        if (filtered1.bod.length) {
+            var type1 = g1.selectAll('.bod')
+                .data([{
+                    name: 'BOD',
+                    values: filtered1.bod,
+                }])
+                .enter()
+                .append('g')
+                .attr('class', 'bod');
+
+            type1.selectAll('dot')
+                .data(function (d) {
+                    return d.values.map(function (e) {
+                        e['name'] = d.name;
+                        e['key'] = 'bod';
+                        e['site'] = siteId;
+                        return e;
+                    });
+                })
+                .enter().append('path')
+                .attr('transform', function (d) {
+                    return 'translate(' + x(new Date(d.date)) + ', ' +
+                            y(d.value) + ')';
+                })
+                .attr('d', d3.symbol())
+                .style('stroke', '#000000')
+                .style('fill', '#000000')
+                .style('cursor', 'pointer')
+                .on('mouseover', showMouseover);
+        }
+
+        if (window.hasSiteTwo && filtered2.bod.length) {
+            var type2 = g2.selectAll('.bod')
+                .data([{
+                    name: 'BOD',
+                    values: filtered2.bod,
+                }])
+                .enter()
+                .append('g')
+                .attr('class', 'bod');
+
+            type2.selectAll('dot')
+                .data(function (d) {
+                    return d.values.map(function (e) {
+                        e['name'] = d.name;
+                        e['key'] = 'bod';
+                        e['site'] = window.site2Id;
+                        return e;
+                    });
+                })
+                .enter().append('path')
+                .attr('transform', function (d) {
+                    return 'translate(' + x(new Date(d.date)) + ', ' +
+                            y(d.value) + ')';
+                })
+                .attr('d', d3.symbol())
+                .style('stroke', '#000000')
+                .style('fill', '#000000')
+                .style('cursor', 'pointer')
+                .on('mouseover', showMouseover);
+        }
+    } else {
+        $('#bod-control').prop({
+            disabled: 'disabled',
+            checked: false
+        });
+        container1.css({display: 'none'});
+        container2.css({display: 'none'});
+    }
+}
+
+/***************************************************************************
+ * Fecal Coliform
+ **************************************************************************/
+
+var graphColiform = function graphColiform(responsive=false) {
+    var containerName1 = '#graph-site1-coliform';
+    var container1 = outerContainer.find(containerName1);
+    var width = defineWidth(container1);
+    var height = defineHeight(responsive);
+
+    var containerName2 = '#graph-site2-coliform';
+    var container2 = outerContainer.find(containerName2);
+
+    var x = d3.scaleTime()
+        .range([0, width])
+        .domain(getXDomain(['fecal_coliform']));
+    var y = d3.scaleLinear()
+        .domain(getYDomain(['fecal_coliform']))
+        .range([height, 0]);
+
+    var g1 = createGraphTemplate(containerName1, width, height, x, y);
+
+    var g2 = createGraphTemplate(containerName2, width, height, x, y);
+
+    if (filtered1.fecal_coliform.length ||
+    (window.hasSiteTwo && filtered2.fecal_coliform.length)) {
+        $('#coliform-control').prop({
+            disabled: null,
+            checked: true
+        });
+        container1.css({display: 'block'});
+        container2.css({display: window.hasSiteTwo ? 'block' : 'none'});
+
+        if (filtered1.fecal_coliform.length) {
+            var type1 = g1.selectAll('.fecal')
+                .data([{
+                    name: 'Fecal Coliform',
+                    values: filtered1.fecal_coliform,
+                }])
+                .enter()
+                .append('g')
+                .attr('class', 'fecal');
+
+            type1.selectAll('dot')
+                .data(function (d) {
+                    return d.values.map(function (e) {
+                        e['name'] = d.name;
+                        e['key'] = 'fecal_coliform';
+                        e['site'] = siteId;
+                        return e;
+                    });
+                })
+                .enter().append('path')
+                .attr('transform', function (d) {
+                    return 'translate(' + x(new Date(d.date)) + ', ' +
+                            y(d.value) + ')';
+                })
+                .attr('d', d3.symbol())
+                .style('stroke', '#000000')
+                .style('fill', '#000000')
+                .style('cursor', 'pointer')
+                .on('mouseover', showMouseover);
+        }
+
+        if (window.hasSiteTwo && filtered2.fecal_coliform.length) {
+            var type2 = g2.selectAll('.fecal')
+                .data([{
+                    name: 'Fecal Coliform',
+                    values: filtered2.fecal_coliform,
+                }])
+                .enter()
+                .append('g')
+                .attr('class', 'fecal');
+
+            type2.selectAll('dot')
+                .data(function (d) {
+                    return d.values.map(function (e) {
+                        e['name'] = d.name;
+                        e['key'] = 'fecal_coliform';
+                        e['site'] = window.site2Id;
+                        return e;
+                    });
+                })
+                .enter().append('path')
+                .attr('transform', function (d) {
+                    return 'translate(' + x(new Date(d.date)) + ', ' +
+                            y(d.value) + ')';
+                })
+                .attr('d', d3.symbol())
+                .style('stroke', '#000000')
+                .style('fill', '#000000')
+                .style('cursor', 'pointer')
+                .on('mouseover', showMouseover);
+        }
+    } else {
+        $('#coliform-control').prop({
+            disabled: 'disabled',
+            checked: false
+        });
+        container1.css({display: 'none'});
+        container2.css({display: 'none'});
+    }
+}
 
 /*******************************************************************************
  *******************************************************************************
@@ -1733,31 +1751,88 @@ $(function () {
     $('#date-start').change(changeRangeStart);
     $('#date-end').change(changeRangeEnd);
 
-    document.addEventListener('click', hideMouseover);
+    $('div.graph').on('click', function() {
+        $(this).find('.popup').remove();
+    })
+    $('#remove_site').on('click', function() {
+        window.hasSiteTwo = false;
+        window.data.site2 = null;
+        window.site2Id = null;
+        $('#site-names').hide();
+        $(this).addClass('disabled');
+        $('div.graph').removeClass("l6").addClass("l10 offset-l1");
+        $('div.graph').css("width", "");
+        createGraph();
+    })
 
+    $('div.graph h4').on('mouseenter', function() {
+        $(this).parent().find('div.data-range').show();
+    }).on('mouseleave', function() {
+        $(this).parent().find('div.data-range').hide();
+    })
     createGraph();
 });
 
 $(window).resize(function () {
+    if (window.hasSiteTwo) {
+        $('div.graph').css("width", "50%");
+    }
     createGraph();
 });
 
 var loadSite2 = function loadSite2(site_slug) {
     $.getJSON('/sites/'+site_slug+'/water/data/', function(data) {
-        if (!data.data || data.data.length === 0) {
-            window.hasSiteTwo = false;
-            window.data.site2 = null;
-            window.site2Id = null;
-            $('#site-names').hide();
-            $('#compare-error').show();
-        } else {
-            window.hasSiteTwo = true;
-            window.data.site2 = data.data;
-            window.site2Id = data.site.site_slug;
-            $('#site2-header').text(data.site.site_name);
-            $('#site-names').show();
-            $('#compare-error').hide();
-        }
+        window.hasSiteTwo = true;
+        window.data.site2 = data.data;
+        window.site2Id = data.site.site_slug;
+        $('#site2-header').text(data.site.site_name);
+        $('#site-names').show();
+        $('#remove_site').removeClass("disabled");
+        $("div.graph").removeClass("l10 offset-l1").addClass("l6")
+            .css("width", "50%");
         createGraph();
     })
+}
+
+var graphFunc = {
+    'temperature': graphTemperature,
+    'oxygen': graphOxygen,
+    'ph': graphPH,
+    'turbidity': graphTurbidity,
+    'salinity': graphSalinity,
+    'conductivity': graphConductivity,
+    'dissolved': graphDissolved,
+    'bod': graphBod,
+    'coliform': graphColiform
+};
+
+var focusGraph = "";
+
+var toggleGraph = function toggleGraph(name) {
+
+    fadeOutGraph(name);
+
+    var checkInput = $('input').toArray().filter(function(input) {
+        return input.type == 'checkbox' && input.checked;
+    });
+
+    fadeInGraph(name);
+};
+
+var fadeInGraph = function fadeInGraph(name) {
+    if ($('#' + name + '-control').prop('checked')) {
+        $('#graph-site1-' + name).fadeIn();
+        if (window.hasSiteTwo) {
+            $('#graph-site2-' + name).fadeIn();
+        }
+    }
+}
+
+var fadeOutGraph = function fadeOutGraph(name) {
+    if (!$('#' + name + '-control').prop('checked')){
+        $('#graph-site1-' + name).fadeOut();
+        if (window.hasSiteTwo) {
+            $('#graph-site2-' + name).fadeOut();
+        }
+    }
 }
