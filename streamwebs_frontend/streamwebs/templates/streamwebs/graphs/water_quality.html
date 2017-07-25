@@ -43,12 +43,22 @@
       margin-right: 1.5em;
     }
 
+    .inner-wrap {
+      min-width: 768px;
+    }
+
     #site_select {
       margin-top: 10px;
     }
 
+    #remove_site {
+      margin-top: 10px;
+    }
     .error {
       color: red;
+    }
+    div.half {
+      width: 50%;
     }
   </style>
 
@@ -79,102 +89,173 @@
   <input type="checkbox" id="coliform-control" checked="checked"
          onclick="toggleGraph('coliform')"/>
   <label for="coliform-control">{% trans "Fecal Coliform" %}</label>
-
-  <div id="site_select">
-    <a href="#!" class="dropdown-button btn select-button teal darken-4"
-       data-activates='dropdown'>
-      {% trans "Load a site to compare" %}
-      <i class="material-icons right">arrow_drop_down</i>
-    </a>
-    <ul id="dropdown" class="dropdown-content">
-      {% for site in sites %}
-        <li><a onclick="loadSite2('{{ site.site_slug }}')"
-               class="teal-text text-darken-4">{{ site.site_name }}</a></li>
-      {% endfor %}
-    </ul>
-    <p id="compare-error" class="error" style="display: none">
-      {% trans "Site has no Water Quality data to compare." %}
-    </p>
+  <div class="row">
+    <div id="site_select" class="col">
+      <a href="#!" class="dropdown-button btn select-button teal darken-4"
+         data-activates='dropdown'>
+        {% trans "Load a site to compare" %}
+        <i class="material-icons right">arrow_drop_down</i>
+      </a>
+      <ul id="dropdown" class="dropdown-content">
+        {% for site in sites %}
+          <li><a onclick="loadSite2('{{ site.site_slug }}')"
+                 class="teal-text text-darken-4">{{ site.site_name }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div class="col">
+      <input id="remove_site" type="button" class="btn teal darken-4 disabled"
+            value="Remove Site 2"/>
+    </div>
   </div>
+
 
   <h2 class="graph-header">{% trans "Water Quality Over Time" %}</h2>
   <h6 class="graph-header">{% trans "Note: Outliers are not graphed." %}</h6>
   <div id="graph-container">
     <div class="row" id="site-names" style="display: none">
-      <div class="col hide-on-med-and-down l6">
+      <div class="col half">
         <h3 id="site1-header">{{ site.site_name }}</h3>
       </div>
-      <div class="col hide-on-med-and-down l6">
+      <div class="col half">
         <h3 id="site2-header">Placeholder</h3>
       </div>
     </div>
     <div class="row">
       <div id="graph-site1-temperature"
-           class="graph line temperature col s12 l6">
+           class="graph line temperature col s12 l10 offset-l1">
         <h4 class="graph-header">{% trans "Temperature (°C)" %}</h4>
+        <div class="data-range" style="display:none;">
+          <p>Normal range of data:</p>
+          <p>Air Temperature: 0°C - 100°C</p>
+          <p>Water Temperature: 0°C - 100°C</p>
+        </div>
       </div>
       <div id="graph-site2-temperature"
-           class="graph line temperature col s12 l6" style="display: none">
+           class="graph line temperature col s12 l10 offset-l1" style="display: none">
         <h4 class="graph-header">{% trans "Temperature (°C)" %}</h4>
+        <div class="data-range" style="display:none;">
+          <p>Normal range of data:</p>
+          <p>Air Temperature: 0°C - 100°C</p>
+          <p>Water Temperature: 0°C - 100°C</p>
+        </div>
       </div>
-      <div id="graph-site1-oxygen" class="graph line oxygen col s12 l6">
+      <div id="graph-site1-oxygen" class="graph line oxygen col s12 l10 offset-l1">
         <h4 class="graph-header">{% trans "Dissolved Oxygen (mg/L)" %}</h4>
+        <div class="data-range" style="display:none;">
+          <p>Normal range of data: 0ml/L - 100mg/L</p>
+        </div>
       </div>
-      <div id="graph-site2-oxygen" class="graph line oxygen col s12 l6"
+      <div id="graph-site2-oxygen" class="graph line oxygen col s12 l10 offset-l1"
            style="display: none">
         <h4 class="graph-header">{% trans "Dissolved Oxygen (mg/L)" %}</h4>
+        <div class="data-range" style="display:none;">
+          <p>Normal range of data: 0ml/L - 100mg/L</p>
+        </div>
       </div>
-      <div id="graph-site1-ph" class="graph line ph col s12 l6">
+      <div id="graph-site1-ph" class="graph line ph col s12 l10 offset-l1">
         <h4 class="graph-header">{% trans "pH" %}</h4>
+        <div class="data-range" style="display:none;">
+          <p>Normal range of data: 0 - 14</p>
+        </div>
       </div>
-      <div id="graph-site2-ph" class="graph line ph col s12 l6"
+      <div id="graph-site2-ph" class="graph line ph col s12 l10 offset-l1"
            style="display: none">
         <h4 class="graph-header">{% trans "pH" %}</h4>
+        <div class="data-range" style="display:none;">
+          <p>Normal range of data: 0 - 14</p>
+        </div>
       </div>
-      <div id="graph-site1-turbidity" class="graph line turbidity col s12 l6">
+      <div id="graph-site1-turbidity" class="graph line turbidity col s12 l10 offset-l1">
         <h4 class="graph-header">{% trans "Turbidity (NTU)" %}</h4>
+        <div class="data-range" style="display:none;">
+          <p>Normal range of data: 0NTU - 100NTU</p>
+        </div>
       </div>
-      <div id="graph-site2-turbidity" class="graph line turbidity col s12 l6"
+      <div id="graph-site2-turbidity" class="graph line turbidity col s12 l10 offset-l1"
            style="display: none">
         <h4 class="graph-header">{% trans "Turbidity (NTU)" %}</h4>
+        <div class="data-range" style="display:none;">
+          <p>Normal range of data: 0NTU - 100NTU</p>
+        </div>
       </div>
-      <div id="graph-site1-salinity" class="graph line salinity col s12 l6">
+      <div id="graph-site1-salinity" class="graph line salinity col s12 l10 offset-l1">
         <h4 class="graph-header">{% trans "Salinity (PSU or PPT)" %}</h4>
         <!-- TODO: You need to ask Renee about this! -->
+        <div class="data-range" style="display:none;">
+          <p>Normal range of data: 0PSU - 100PSU</p>
+        </div>
       </div>
-      <div id="graph-site2-salinity" class="graph line salinity col s12 l6"
+      <div id="graph-site2-salinity" class="graph line salinity col s12 l10 offset-l1"
            style="display: none">
         <h4 class="graph-header">{% trans "Salinity (PSU or PPT)" %}</h4>
         <!-- TODO: You need to ask Renee about this! -->
+        <div class="data-range" style="display:none;">
+          <p>Normal range of data: 0PSU - 100PSU</p>
+        </div>
       </div>
       <div id="graph-site1-conductivity"
-           class="graph line conductivity col s12 l6">
+           class="graph line conductivity col s12 l10 offset-l1">
         <h4 class="graph-header">{% trans "Conductivity (µS/cm)" %}</h4>
+        <div class="data-range" style="display:none;">
+          <p>Normal range of data: 0µS/cm - 100µS/cm</p>
+        </div>
       </div>
       <div id="graph-site2-conductivity"
-           class="graph line conductivity col s12 l6" style="display: none">
+           class="graph line conductivity col s12 l10 offset-l1" style="display: none">
         <h4 class="graph-header">{% trans "Conductivity (µS/cm)" %}</h4>
+        <div class="data-range" style="display:none;">
+          <p>Normal range of data: 0µS/cm - 100µS/cm</p>
+        </div>
       </div>
-      <div id="graph-site1-dissolved" class="graph line dissolved col s12 l6">
+      <div id="graph-site1-dissolved" class="graph line dissolved col s12 l10 offset-l1">
         <h4 class="graph-header">{% trans "Dissolved Matter (mg/L)" %}</h4>
+        <div class="data-range" style="display:none;">
+          <p>Normal range of data:</p>
+          <p>Total Solids: 0mg/L - 100mg/L</p>
+          <p>Ammonia: 0mg/L - 100mg/L</p>
+          <p>Nitrite: 0mg/L - 100mg/L</p>
+          <p>Nitrate: 0mg/L - 100mg/L</p>
+          <p>Phosphates: 0mg/L - 100mg/L</p>
+        </div>
       </div>
-      <div id="graph-site2-dissolved" class="graph line dissolved col s12 l6"
+      <div id="graph-site2-dissolved" class="graph line dissolved col s12 l10 offset-l1"
            style="display: none">
         <h4 class="graph-header">{% trans "Dissolved Matter (mg/L)" %}</h4>
+        <div class="data-range" style="display:none;">
+          <p>Normal range of data:</p>
+          <p>Total Solids: 0mg/L - 100mg/L</p>
+          <p>Ammonia: 0mg/L - 100mg/L</p>
+          <p>Nitrite: 0mg/L - 100mg/L</p>
+          <p>Nitrate: 0mg/L - 100mg/L</p>
+          <p>Phosphates: 0mg/L - 100mg/L</p>
+        </div>
       </div>
-      <div id="graph-site1-bod" class="graph line bod col s12 l6">
+      <div id="graph-site1-bod" class="graph line bod col s12 l10 offset-l1">
         <h4 class="graph-header">{% trans "Biochemical Oxygen Demand (mg/L)" %}</h4>
+        <div class="data-range" style="display:none;">
+          <p>Normal range of data: 0mg/L - 100mg/L</p>
+        </div>
       </div>
-      <div id="graph-site2-bod" class="graph line bod col s12 l6"
+      <div id="graph-site2-bod" class="graph line bod col s12 l10 offset-l1"
            style="display: none">
         <h4 class="graph-header">{% trans "Biochemical Oxygen Demand (mg/L)" %}</h4>
+        <div class="data-range" style="display:none;">
+          <p>Normal range of data: 0mg/L - 100mg/L</p>
+        </div>
       </div>
-      <div id="graph-site1-coliform" class="graph line coliform col s12 l6">
+      <div id="graph-site1-coliform" class="graph line coliform col s12 l10 offset-l1">
         <h4 class="graph-header">{% trans "Fecal Coliform (CFU / 100 mL)" %}</h4>
+        <div class="data-range" style="display:none;">
+          <p>Normal range of data: 0(CFU/100ml) - 100(CFU/100ml)</p>
+        </div>
       </div>
-      <div id="graph-site2-coliform" class="graph line coliform col s12 l6"
+      <div id="graph-site2-coliform" class="graph line coliform col s12 l10 offset-l1"
            style="display: none">
         <h4 class="graph-header">{% trans "Fecal Coliform (CFU / 100 mL)" %}</h4>
+        <div class="data-range" style="display:none;">
+          <p>Normal range of data: 0CFU/100ml - 100CFU/100ml</p>
+        </div>
       </div>
     </div>
   </div>

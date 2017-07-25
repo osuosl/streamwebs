@@ -21,24 +21,9 @@
   <div class="container">
   <div class="row">
     <form action="">
-      <div id="dates">
-        <div class="col s2 offset-s1">
-          <h5>{% trans "Date range:" %}</h5>
-        </div>
-        <div class="col s4">
-          <label for="date-start">{% trans "After" %}</label>
-          <input type="date" name="date" id="date-start" class="datepicker"
-                 value=""/>
-        </div>
-        <div class="col s4">
-          <label for="date-end">{% trans "Before" %}</label>
-          <input type="date" name="date" id="date-end" class="datepicker"
-                 value=""/>
-        </div>
-      </div>
       <div id="type">
         <div class="col s2 offset-s1">
-          <h5>{% trans "Graph type:" %}</h5>
+          <h7>{% trans "Graph type:" %}</h7>
         </div>
         <div class="col s4">
           <input type="radio" name="type" id="type-bar" value="bar" checked/>
