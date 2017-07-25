@@ -70,6 +70,27 @@
     div.row {
       position:relative;
     }
+    div#water-parameter-pdf {
+      color: white;
+      background: #004d40;
+      padding: 20px;
+      font-size: 16px;
+      top: 50px;
+      text-align: center
+    }
+    div#water-parameter-pdf a {
+      color: white;
+      text-decoration: underline;
+    }
+    div#header:hover div {
+      display: block;
+    }
+    h2.graph-header div{
+      display:none
+    }
+    h2.graph-header div:hover {
+      display: block;
+    }
     div.data-info {
       position: absolute;
       display: none;
@@ -84,6 +105,10 @@
       padding: 10px;
       font-size: 16px;
       line-height: 20px;
+    }
+    div.graph svg p {
+      margin-top: 1em;
+      margin-bottom: 1em;
     }
   </style>
 
@@ -134,9 +159,12 @@
     </div>
   </div>
 
-  <div class="row">
+  <div class="row" id="header">
     <h2 class="graph-header">{% trans "Water Quality Over Time" %}</h2>
     <div class="data-info" id="water-parameter-pdf">
+      <p>
+        Here is the description of water quality, the water quality is very good
+      </p>
       <a href="{% static 'streamwebs/pdf/Parameters.sheets_full.color.pdf' %}"
           target="blank">Open Water Parameter pdf</a>
     </div>
@@ -155,7 +183,8 @@
       <div id="graph-site1-temperature"
            class="graph line temperature col s12 l10 offset-l1">
         <h4 class="graph-header">{% trans "Temperature (°C)" %}</h4>
-        <div class="data-info">
+        <div class="data-info teal darken-3 white-text">
+          <p>Here is a short description of temperature</p>
           <p>Normal range of data:</p>
           <p>Air Temperature: 0°C - 100°C</p>
           <p>Water Temperature: 0°C - 100°C</p>
@@ -164,7 +193,8 @@
       <div id="graph-site2-temperature"
            class="graph line temperature col s12 l10 offset-l1" style="display: none">
         <h4 class="graph-header">{% trans "Temperature (°C)" %}</h4>
-        <div class="data-info">
+        <div class="data-info teal darken-3 white-text">
+          <p>Here is a short description of temperature</p>
           <p>Normal range of data:</p>
           <p>Air Temperature: 0°C - 100°C</p>
           <p>Water Temperature: 0°C - 100°C</p>
@@ -172,47 +202,48 @@
       </div>
       <div id="graph-site1-oxygen" class="graph line oxygen col s12 l10 offset-l1">
         <h4 class="graph-header">{% trans "Dissolved Oxygen (mg/L)" %}</h4>
-        <div class="data-info">
-          <p>Normal range of data: 0ml/L - 100mg/L</p>
+        <div class="data-info teal darken-3 white-text">
+          <p>Dissolved Oxygen is the amount of oxygen in the water and is required by aquatic life to breathe.</p>
+          <p>A healthy range for salmon and their eggs is 7mg/L and above.</p>
         </div>
       </div>
       <div id="graph-site2-oxygen" class="graph line oxygen col s12 l10 offset-l1"
            style="display: none">
         <h4 class="graph-header">{% trans "Dissolved Oxygen (mg/L)" %}</h4>
-        <div class="data-info">
+        <div class="data-info teal darken-3 white-text">
           <p>Normal range of data: 0ml/L - 100mg/L</p>
         </div>
       </div>
       <div id="graph-site1-ph" class="graph line ph col s12 l10 offset-l1">
         <h4 class="graph-header">{% trans "pH" %}</h4>
-        <div class="data-info">
+        <div class="data-info teal darken-3 white-text">
           <p>Normal range of data: 0 - 14</p>
         </div>
       </div>
       <div id="graph-site2-ph" class="graph line ph col s12 l10 offset-l1"
            style="display: none">
         <h4 class="graph-header">{% trans "pH" %}</h4>
-        <div class="data-info">
+        <div class="data-info teal darken-3 white-text">
           <p>Normal range of data: 0 - 14</p>
         </div>
       </div>
       <div id="graph-site1-turbidity" class="graph line turbidity col s12 l10 offset-l1">
         <h4 class="graph-header">{% trans "Turbidity (NTU)" %}</h4>
-        <div class="data-info">
+        <div class="data-info teal darken-3 white-text">
           <p>Normal range of data: 0NTU - 100NTU</p>
         </div>
       </div>
       <div id="graph-site2-turbidity" class="graph line turbidity col s12 l10 offset-l1"
            style="display: none">
         <h4 class="graph-header">{% trans "Turbidity (NTU)" %}</h4>
-        <div class="data-info">
+        <div class="data-info teal darken-3 white-text">
           <p>Normal range of data: 0NTU - 100NTU</p>
         </div>
       </div>
       <div id="graph-site1-salinity" class="graph line salinity col s12 l10 offset-l1">
         <h4 class="graph-header">{% trans "Salinity (PSU or PPT)" %}</h4>
         <!-- TODO: You need to ask Renee about this! -->
-        <div class="data-info">
+        <div class="data-info teal darken-3 white-text">
           <p>Normal range of data: 0PSU - 100PSU</p>
         </div>
       </div>
@@ -220,27 +251,27 @@
            style="display: none">
         <h4 class="graph-header">{% trans "Salinity (PSU or PPT)" %}</h4>
         <!-- TODO: You need to ask Renee about this! -->
-        <div class="data-info">
+        <div class="data-info teal darken-3 white-text">
           <p>Normal range of data: 0PSU - 100PSU</p>
         </div>
       </div>
       <div id="graph-site1-conductivity"
            class="graph line conductivity col s12 l10 offset-l1">
         <h4 class="graph-header">{% trans "Conductivity (µS/cm)" %}</h4>
-        <div class="data-info">
+        <div class="data-info teal darken-3 white-text">
           <p>Normal range of data: 0µS/cm - 100µS/cm</p>
         </div>
       </div>
       <div id="graph-site2-conductivity"
            class="graph line conductivity col s12 l10 offset-l1" style="display: none">
         <h4 class="graph-header">{% trans "Conductivity (µS/cm)" %}</h4>
-        <div class="data-info">
+        <div class="data-info teal darken-3 white-text">
           <p>Normal range of data: 0µS/cm - 100µS/cm</p>
         </div>
       </div>
       <div id="graph-site1-dissolved" class="graph line dissolved col s12 l10 offset-l1">
         <h4 class="graph-header">{% trans "Dissolved Matter (mg/L)" %}</h4>
-        <div class="data-info">
+        <div class="data-info teal darken-3 white-text">
           <p>Normal range of data:</p>
           <p>Total Solids: 0mg/L - 100mg/L</p>
           <p>Ammonia: 0mg/L - 100mg/L</p>
@@ -252,7 +283,7 @@
       <div id="graph-site2-dissolved" class="graph line dissolved col s12 l10 offset-l1"
            style="display: none">
         <h4 class="graph-header">{% trans "Dissolved Matter (mg/L)" %}</h4>
-        <div class="data-info">
+        <div class="data-info teal darken-3 white-text">
           <p>Normal range of data:</p>
           <p>Total Solids: 0mg/L - 100mg/L</p>
           <p>Ammonia: 0mg/L - 100mg/L</p>
@@ -263,27 +294,27 @@
       </div>
       <div id="graph-site1-bod" class="graph line bod col s12 l10 offset-l1">
         <h4 class="graph-header">{% trans "Biochemical Oxygen Demand (mg/L)" %}</h4>
-        <div class="data-info">
+        <div class="data-info teal darken-3 white-text">
           <p>Normal range of data: 0mg/L - 100mg/L</p>
         </div>
       </div>
       <div id="graph-site2-bod" class="graph line bod col s12 l10 offset-l1"
            style="display: none">
         <h4 class="graph-header">{% trans "Biochemical Oxygen Demand (mg/L)" %}</h4>
-        <div class="data-info">
+        <div class="data-info teal darken-3 white-text">
           <p>Normal range of data: 0mg/L - 100mg/L</p>
         </div>
       </div>
       <div id="graph-site1-coliform" class="graph line coliform col s12 l10 offset-l1">
         <h4 class="graph-header">{% trans "Fecal Coliform (CFU / 100 mL)" %}</h4>
-        <div class="data-info">
+        <div class="data-info teal darken-3 white-text">
           <p>Normal range of data: 0(CFU/100ml) - 100(CFU/100ml)</p>
         </div>
       </div>
       <div id="graph-site2-coliform" class="graph line coliform col s12 l10 offset-l1"
            style="display: none">
         <h4 class="graph-header">{% trans "Fecal Coliform (CFU / 100 mL)" %}</h4>
-        <div class="data-info">
+        <div class="data-info teal darken-3 white-text">
           <p>Normal range of data: 0CFU/100ml - 100CFU/100ml</p>
         </div>
       </div>
