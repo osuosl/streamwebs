@@ -6,14 +6,28 @@
 Welcome to Streamwebs's documentation!
 ======================================
 
-Contents:
-=========
+General Documentation
+=====================
 
 .. toctree::
-
     :maxdepth: 1
 
-    about.rst
+    about
+
+User Documentation
+==================
+
+.. toctree::
+    :maxdepth: 1
+
+    usage/usage.rst
+
+Development Documentation:
+==========================
+
+.. toctree::
+    :maxdepth: 1
+
     development/dev_overview
     development/urls
     development/sites
@@ -26,6 +40,7 @@ Contents:
     development/tests
     development/translations
     development/data_import
+    development/dev_notes
 
 Indices and tables
 ==================
