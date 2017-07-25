@@ -282,23 +282,19 @@ var filterOutliers = function filterOutliers(entries) {
     });
 };
 
-var margin = {top: 20, right: 150, bottom: 50, left: 40};
+var margin = {top: 20, right: 20, bottom: 50, left: 40};
 var defineWidth = function defineWidth(container) {
     return container.width() - (margin.right + margin.left);
 };
 
-var defineHeight = function defineHeight(responsive) {
-    var height = 300;
-    if (responsive) {
-        height = 450;
-    }
-    return height - (margin.top + margin.bottom);
+var defineHeight = function defineHeight() {
+    return 300 - (margin.top + margin.bottom);
 };
 
-var createGraphTemplate = function createGraphTemplate(container, width, height, x, y) {
+var createGraphTemplate = function createGraphTemplate(container, width, height, x, y, extraHeight = 0) {
     var svg1 = d3.select(container).append('svg')
         .attr('width', width + margin.left + margin.right)
-        .attr('height', height + margin.top + margin.bottom)
+        .attr('height', height + margin.top + margin.bottom + extraHeight)
         .style('border', '1px solid #808080');
 
     var g1 = svg1.append('g')
@@ -323,7 +319,6 @@ var createGraphTemplate = function createGraphTemplate(container, width, height,
 };
 
 var filterZeroData = function filterZeroData(filtered) {
-  console.log(filtered);
     var keys = Object.keys(filtered);
     keys.forEach(function(key) {
         filtered[key] = filtered[key].filter(function(dataPoint) {
@@ -443,8 +438,7 @@ var createGraph = function createGraph() {
         filtered1[key] = filterOutliers(types1[key]);
     }
 
-    filtered1 = filterZeroData(filtered1);
-
+    //filtered1 = filterZeroData(filtered1);
     var formatted2 = [];
 
     if (window.hasSiteTwo) {
@@ -471,7 +465,7 @@ var createGraph = function createGraph() {
             filtered2[key] = filterOutliers(types2[key]);
         }
 
-        filtered2 = filterZeroData(filtered2);
+        //filtered2 = filterZeroData(filtered2);
     }
     graphTemperature();
     graphOxygen();
@@ -507,9 +501,11 @@ var graphTemperature = function graphTemperature(responsive=false) {
         .domain(['Air Temperature', 'Water Temperature'])
         .range(['#0000bf', '#bf0000']);
 
-    var g1 = createGraphTemplate(containerName1, width, height, x, y);
+    var numberLegends = 2;
+    var legendHeight = 20 * numberLegends + 10;
+    var g1 = createGraphTemplate(containerName1, width, height, x, y, legendHeight);
 
-    var g2 = createGraphTemplate(containerName2, width, height, x, y);
+    var g2 = createGraphTemplate(containerName2, width, height, x, y, legendHeight);
 
     if ((filtered1.water_temperature.length ||
     filtered1.air_temperature.length) ||
@@ -584,7 +580,7 @@ var graphTemperature = function graphTemperature(responsive=false) {
                 .append('g')
                 .attr('class', 'legend')
                 .attr('transform', function (d, i) {
-                    return 'translate(' + (width + 10) + ', ' + i * 20 + ')';
+                    return 'translate(' + 10 + ', ' + (height + 50 + i * 20) + ')';
                 })
                 .style('border', '1px solid black')
                 .style('font', '12px sans-serif');
@@ -679,15 +675,20 @@ var graphTemperature = function graphTemperature(responsive=false) {
                 .append('g')
                 .attr('class', 'legend')
                 .attr('transform', function (d, i) {
-                    return 'translate(' + (width + 10) + ', ' + i * 20 + ')';
+                    return 'translate(' + 10 + ', ' + (height + 50 + i * 20) + ')';
                 })
                 .style('border', '1px solid black')
                 .style('font', '12px sans-serif');
 
-            legend2.append('rect')
-                .attr('x', 2)
-                .attr('width', 18)
-                .attr('height', 2)
+            legend2.append('path')
+                .attr('transform', 'translate(5,0)')
+                .attr('d', d3.symbol()
+                    .type(function (d) {
+                        var symbolType = d.name === 'Water Temperature' ?
+                            d3.symbolCircle : d3.symbolTriangle;
+                        return symbolType;
+                    })
+                )
                 .attr('fill', function (d) {
                     return z(d.name);
                 });
@@ -718,11 +719,11 @@ var graphTemperature = function graphTemperature(responsive=false) {
  * Dissolved Oxygen
  **************************************************************************/
 
-var graphOxygen = function graphOxygen(responsive=false){
+var graphOxygen = function graphOxygen(){
     var containerName1 = '#graph-site1-oxygen';
     var container1 = outerContainer.find(containerName1);
     var width = defineWidth(container1);
-    var height = defineHeight(responsive);
+    var height = defineHeight();
 
     var containerName2 = '#graph-site2-oxygen';
     var container2 = outerContainer.find(containerName2);
@@ -822,11 +823,11 @@ var graphOxygen = function graphOxygen(responsive=false){
  * pH
  **************************************************************************/
 
-var graphPH = function graphPH(responsive=false) {
+var graphPH = function graphPH() {
     var containerName1 = '#graph-site1-ph';
     var container1 = outerContainer.find(containerName1);
     var width = defineWidth(container1);
-    var height = defineHeight(responsive);
+    var height = defineHeight();
 
     var containerName2 = '#graph-site2-ph';
     var container2 = outerContainer.find(containerName2);
@@ -926,11 +927,11 @@ var graphPH = function graphPH(responsive=false) {
  * Turbidity
  **************************************************************************/
 
-var graphTurbidity = function graphTurbidity(responsive=false) {
+var graphTurbidity = function graphTurbidity() {
     var containerName1 = '#graph-site1-turbidity';
     var container1 = outerContainer.find(containerName1);
     var width = defineWidth(container1);
-    var height = defineHeight(responsive);
+    var height = defineHeight();
 
     var containerName2 = '#graph-site2-turbidity';
     var container2 = outerContainer.find(containerName2);
@@ -1031,11 +1032,11 @@ var graphTurbidity = function graphTurbidity(responsive=false) {
  * Salinity
  **************************************************************************/
 
-var graphSalinity = function graphSalinity(responsive=false) {
+var graphSalinity = function graphSalinity() {
     var containerName1 = '#graph-site1-salinity';
     var container1 = outerContainer.find(containerName1);
     var width = defineWidth(container1);
-    var height = defineHeight(responsive);
+    var height = defineHeight();
 
     var containerName2 = '#graph-site2-salinity';
     var container2 = outerContainer.find(containerName2);
@@ -1135,11 +1136,11 @@ var graphSalinity = function graphSalinity(responsive=false) {
  * Conductivity
  **************************************************************************/
 
-var graphConductivity = function graphConductivity(responsive=false) {
+var graphConductivity = function graphConductivity() {
     var containerName1 = '#graph-site1-conductivity';
     var container1 = outerContainer.find(containerName1);
     var width = defineWidth(container1);
-    var height = defineHeight(responsive);
+    var height = defineHeight();
 
     var containerName2 = '#graph-site2-conductivity';
     var container2 = outerContainer.find(containerName2);
@@ -1239,11 +1240,11 @@ var graphConductivity = function graphConductivity(responsive=false) {
  * Dissolved Solids
  **************************************************************************/
 
-var graphDissolved = function graphDissolved(responsive=false) {
+var graphDissolved = function graphDissolved() {
     var containerName1 = '#graph-site1-dissolved';
     var container1 = outerContainer.find(containerName1);
     var width = defineWidth(container1);
-    var height = defineHeight(responsive);
+    var height = defineHeight();
 
     var containerName2 = '#graph-site2-dissolved';
     var container2 = outerContainer.find(containerName2);
@@ -1259,9 +1260,12 @@ var graphDissolved = function graphDissolved(responsive=false) {
         .domain(['Total Solids', 'Ammonia', 'Nitrite', 'Nitrate', 'Phosphates'])
         .range(['#000000', '#bf0000', '#00bf00', '#0000bf', '#bf00bf']);
 
-    var g1 = createGraphTemplate(containerName1, width, height, x, y);
+    var numberLegends = 5;
+    var legendHeight = 20 * numberLegends + 10;
 
-    var g2 = createGraphTemplate(containerName2, width, height, x, y);
+    var g1 = createGraphTemplate(containerName1, width, height, x, y, legendHeight);
+
+    var g2 = createGraphTemplate(containerName2, width, height, x, y, legendHeight);
 
     if (filtered1.total_solids.length ||
     (window.hasSiteTwo && filtered2.total_solids.length)) {
@@ -1371,13 +1375,13 @@ var graphDissolved = function graphDissolved(responsive=false) {
                 .append('g')
                 .attr('class', 'legend')
                 .attr('transform', function (d, i) {
-                    return 'translate(' + (width + 10) + ', ' + i * 20 + ')';
+                    return 'translate(' + 10 + ', ' + (height + 50 + i * 20) + ')';
                 })
                 .style('border', '1px solid black')
                 .style('font', '12px sans-serif');
 
             legend.append('path')
-                .attr('transform', 'translate(30,0)')
+                .attr('transform', 'translate(10,0)')
                 .attr('d',  d3.symbol()
                     .type(function (d) {
                         switch(d.name) {
@@ -1496,15 +1500,29 @@ var graphDissolved = function graphDissolved(responsive=false) {
                 .append('g')
                 .attr('class', 'legend')
                 .attr('transform', function (d, i) {
-                    return 'translate(' + (width + 10) + ', ' + i * 20 + ')';
+                    return 'translate(' + 10 + ', ' + (height + 50 + i * 20) + ')';
                 })
                 .style('border', '1px solid black')
                 .style('font', '12px sans-serif');
 
-            legend.append('rect')
-                .attr('x', 2)
-                .attr('width', 18)
-                .attr('height', 2)
+            legend.append('path')
+                .attr('transform', 'translate(10,0)')
+                .attr('d',  d3.symbol()
+                    .type(function (d) {
+                        switch(d.name) {
+                            case "Total Solids":
+                                return d3.symbolCircle;
+                            case "Ammonia":
+                                return d3.symbolTriangle;
+                            case "Nitrite":
+                                return d3.symbolDiamond;
+                            case "Nitrate":
+                                return d3.symbolCross;
+                            case "Phosphates":
+                                return d3.symbolWye;
+                        }
+                    })
+                )
                 .attr('fill', function (d) {
                     return z(d.name);
                 });
@@ -1534,11 +1552,11 @@ var graphDissolved = function graphDissolved(responsive=false) {
  * BOD
  **************************************************************************/
 
-var graphBod = function graphBod(responsive=false) {
+var graphBod = function graphBod() {
     var containerName1 = '#graph-site1-bod';
     var container1 = outerContainer.find(containerName1);
     var width = defineWidth(container1);
-    var height = defineHeight(responsive);
+    var height = defineHeight();
 
     var containerName2 = '#graph-site2-bod';
     var container2 = outerContainer.find(containerName2);
@@ -1638,11 +1656,11 @@ var graphBod = function graphBod(responsive=false) {
  * Fecal Coliform
  **************************************************************************/
 
-var graphColiform = function graphColiform(responsive=false) {
+var graphColiform = function graphColiform() {
     var containerName1 = '#graph-site1-coliform';
     var container1 = outerContainer.find(containerName1);
     var width = defineWidth(container1);
-    var height = defineHeight(responsive);
+    var height = defineHeight();
 
     var containerName2 = '#graph-site2-coliform';
     var container2 = outerContainer.find(containerName2);
@@ -1751,9 +1769,9 @@ $(function () {
     $('#date-start').change(changeRangeStart);
     $('#date-end').change(changeRangeEnd);
 
-    $('div.graph').on('click', function() {
+    $('div.graph').on('click mouseleave', function() {
         $(this).find('.popup').remove();
-    })
+    });
     $('#remove_site').on('click', function() {
         window.hasSiteTwo = false;
         window.data.site2 = null;
@@ -1762,14 +1780,22 @@ $(function () {
         $(this).addClass('disabled');
         $('div.graph').removeClass("l6").addClass("l10 offset-l1");
         $('div.graph').css("width", "");
+        centerHover();
         createGraph();
-    })
+    });
+
+    $('h2.graph-header').on('mouseenter', function() {
+        $('div#water-parameter-pdf').show();
+    }).on('mouseleave', function() {
+        $('div#water-parameter-pdf').hide();
+    });
 
     $('div.graph h4').on('mouseenter', function() {
-        $(this).parent().find('div.data-range').show();
+        $(this).parent().find('div.data-info').show();
     }).on('mouseleave', function() {
-        $(this).parent().find('div.data-range').hide();
-    })
+        $(this).parent().find('div.data-info').hide();
+    });
+    centerHover()
     createGraph();
 });
 
@@ -1777,8 +1803,19 @@ $(window).resize(function () {
     if (window.hasSiteTwo) {
         $('div.graph').css("width", "50%");
     }
+    centerHover();
     createGraph();
 });
+
+var centerHover = function centerHover() {
+    $('div.graph:visible div.data-info, div#water-parameter-pdf').each(function(i, e) {
+        var width = $(e).width();
+        var parentWidth = $(e).parent().width();
+        console.log(width + " parent: " + parentWidth);
+        console.log(e.style.left);
+        $(e).css("left", (parentWidth - width)/2 + "px");
+    })
+}
 
 var loadSite2 = function loadSite2(site_slug) {
     $.getJSON('/sites/'+site_slug+'/water/data/', function(data) {
@@ -1790,6 +1827,7 @@ var loadSite2 = function loadSite2(site_slug) {
         $('#remove_site').removeClass("disabled");
         $("div.graph").removeClass("l10 offset-l1").addClass("l6")
             .css("width", "50%");
+        centerHover();
         createGraph();
     })
 }
@@ -1805,8 +1843,6 @@ var graphFunc = {
     'bod': graphBod,
     'coliform': graphColiform
 };
-
-var focusGraph = "";
 
 var toggleGraph = function toggleGraph(name) {
 
