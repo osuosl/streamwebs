@@ -7,6 +7,7 @@ Welcome to Streamwebs's documentation!
 ======================================
 
 Contents:
+=========
 
 .. toctree::
 
@@ -14,6 +15,7 @@ Contents:
 
     about.rst
     development/dev_overview
+    development/urls
     development/sites
     development/datasheets
     development/graphing

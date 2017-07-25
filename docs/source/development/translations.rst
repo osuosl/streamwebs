@@ -1,7 +1,5 @@
 .. _translations:
 
-=====
-Sites
-=====
-
-Sites.
+============
+Translations
+============

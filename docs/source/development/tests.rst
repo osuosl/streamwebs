@@ -1,7 +1,5 @@
 .. _tests:
 
-=====
-Sites
-=====
-
-Sites.
+=======
+Testing
+=======

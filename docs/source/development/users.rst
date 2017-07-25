@@ -1,7 +1,5 @@
 .. _users_dev:
 
 =====
-Sites
+Users
 =====
-
-Sites.

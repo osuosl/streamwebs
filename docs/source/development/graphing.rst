@@ -1,7 +1,5 @@
 .. _dev_graphs:
 
-=====
-Sites
-=====
-
-Sites.
+========
+Graphing
+========
