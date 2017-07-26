@@ -259,26 +259,10 @@ i {
   font-size: 24px;
 }
 
-
 #site_detail_image{
   width: 400px;
 }
 
 #map{
   height: 266.017px;
-}
-
-div.data-range {
-    position: absolute;
-    background: white;
-    z-index: 10;
-    border: 2px solid #004d40;
-    border-radius: 10px;
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
-    top: 60px;
-    left: 40px;
-    padding: 10px;
-    font-size: 16px;
-    line-height: 10px;
 }
