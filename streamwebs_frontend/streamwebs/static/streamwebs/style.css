@@ -259,6 +259,15 @@ i {
   font-size: 24px;
 }
 
+
+#site_detail_image{
+  width: 400px;
+}
+
+#map{
+  height: 266.017px;
+}
+
 div.data-range {
     position: absolute;
     background: white;
