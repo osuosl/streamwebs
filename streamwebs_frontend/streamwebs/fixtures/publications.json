@@ -1,0 +1,91 @@
+[
+{
+  "model": "streamwebs.resource",
+  "pk": 26,
+  "fields": {
+    "name": "Streamwebs Student Stewardship Project Field Book",
+    "res_type": "publication",
+    "downloadable": "assets/student_stewardship_project_guide_pg3.4-3.20.pdf",
+    "thumbnail": "assets/thumbnails/project_guide.png",
+    "sort_order": 1000
+  }
+},
+{
+  "model": "streamwebs.resource",
+  "pk": 27,
+  "fields": {
+    "name": "Salmon Watch 10th Edition Curriculum Guide", 
+    "res_type": "publication",
+    "downloadable": "assets/sw_2010_teacher_curriculum_guide_final.pdf",
+    "thumbnail": "assets/thumbnails/curriculum_guide.png",
+    "sort_order": 1000
+  }
+},
+{
+  "model": "streamwebs.resource",
+  "pk": 28,
+  "fields": {
+    "name": "Salmon Watch 10th Volunteer Resource Packet",
+    "res_type": "publication",
+    "downloadable": "assets/sw_volunteer_resource_packet_2010.pdf",
+    "thumbnail": "assets/thumbnails/volunteer_guide.png",
+    "sort_order": 1000
+  }
+},
+{
+  "model": "streamwebs.resource", 
+  "pk": 29,
+  "fields": {
+    "name": "1000 Drops Curriculum Guide",
+    "res_type": "publication",
+    "downloadable": "assets/1000_Drops_Teacher_Guide_First_Edition_WEB.pdf",
+    "thumbnail": "assets/thumbnails/1000.png",
+    "sort_order": 1000
+  }
+},
+{
+  "model": "streamwebs.resource",
+  "pk": 30,
+  "fields": {
+    "name": "Hometown Waters - Marys River",
+    "res_type": "publication",
+    "downloadable": "assets/hometown_waters-marys_river_web.pdf",
+    "thumbnail": "assets/thumbnails/hometown_marys_river.png",
+    "sort_order": 1000
+  }
+},
+{
+  "model": "streamwebs.resource",
+  "pk": 31,
+  "fields": {
+    "name": "Hometown Waters - Bear Creek",
+    "res_type": "publication",
+    "downloadable": "assets/hometown_waters-bear_creek_web.pdf",
+    "thumbnail": "assets/thumbnails/hometown_bear_creek.png",
+    "sort_order": 1000
+  }
+},
+{
+  "model": "streamwebs.resource",
+  "pk": 32,
+  "fields": {
+    "name": "Hometown Waters - Johnson Creek",
+    "res_type": "publication",
+    "downloadable": "assets/hometown_waters-johnson_creek_web.pdf",
+    "thumbnail": "assets/thumbnails/hometown_johnson_creek.png",
+    "sort_order": 1000
+  }
+},
+{
+  "model": "streamwebs.resource",
+  "pk": 33,
+  "fields": {
+    "name": "Hometown Waters - Upper Deschutes",
+    "res_type": "publication",
+    "downloadable": "assets/hometown_waters-upper_deschutes_web.pdf",
+    "thumbnail": "assets/thumbnails/hometown_deschutes.png",
+    "sort_order": 1000
+  }
+}
+]
+

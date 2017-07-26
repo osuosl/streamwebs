@@ -1144,4 +1144,4 @@ class Resource(models.Model):
         verbose_name_plural = 'resources'
 
     def __str__(self):
-        return 'Resource name ' + self.name
+        return self.name
