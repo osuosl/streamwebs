@@ -1,0 +1,113 @@
+[
+{
+  "model": "streamwebs.resource",
+  "pk": 16,
+  "fields": {
+    "name": "Water Quality",
+    "res_type": "data_sheet",
+    "downloadable": "assets/WaterQuality_OSU_yAw7uJa.pdf",
+    "thumbnail": "assets/thumbnails/water_quality_zAAZrNr.png",
+    "sort_order": 1000
+  }
+},
+{
+  "model": "streamwebs.resource",
+  "pk": 17,
+  "fields": {
+    "name": "Streamflow",
+    "res_type": "data_sheet",
+    "downloadable": "assets/Streamflow_OSU.pdf",
+    "thumbnail": "assets/thumbnails/stream_flow.png",
+    "sort_order": 1000
+  }
+},
+{
+  "model": "streamwebs.resource",
+  "pk": 18,
+  "fields": {
+    "name": "Soil Survey",
+    "res_type": "data_sheet",
+    "downloadable": "assets/Soil_Survey_OSU.pdf",
+    "thumbnail": "assets/thumbnails/soil_survey.png",
+    "sort_order": 1000
+  }
+},
+{
+  "model": "streamwebs.resource",
+  "pk": 19,
+  "fields": {
+    "name": "Riparian Transect",
+    "res_type": "data_sheet",
+    "downloadable": "assets/RiparianTransect_OSU.pdf",
+    "thumbnail": "assets/thumbnails/riparian_transect.png",
+    "sort_order": 1000
+  }
+},
+{
+  "model": "streamwebs.resource",
+  "pk": 20,
+  "fields": {
+    "name": "Riparian & Aquatic Survey",
+    "res_type": "data_sheet",
+    "downloadable": "assets/Riparian_AquaticSurvey_OSU.pdf",
+    "thumbnail": "assets/thumbnails/riparian_aquatic.png",
+    "sort_order": 1000
+    }
+},
+{
+  "model": "streamwebs.resource",
+  "pk": 21,
+  "fields": {
+    "name": "Photo Point Monitoring",
+    "res_type": "data_sheet",
+    "downloadable": "assets/Photopoints_OSU.pdf",
+    "thumbnail": "assets/thumbnails/photopoints.png",
+    "sort_order": 1000
+    }
+},
+{
+  "model": "streamwebs.resource",
+  "pk": 22,
+  "fields": {
+    "name": "Pebble Count",
+    "res_type": "data_sheet",
+    "downloadable": "assets/PEBBLE_COUNT_OSU.pdf",
+    "thumbnail": "assets/thumbnails/pebble_count.png",
+    "sort_order": 1000
+  }
+},
+{
+  "model": "streamwebs.resource",
+  "pk": 23,
+  "fields": {
+    "name": "Aquatic Macroinvertebrates",
+    "res_type": "data_sheet",
+    "downloadable": "assets/Macros_OSU.pdf",
+    "thumbnail": "assets/thumbnails/macros_osu.png",
+    "sort_order": 1000
+    }
+},
+{
+  "model": "streamwebs.resource",
+  "pk": 24,
+  "fields": {
+    "name": "Invasive Species Mapping",
+    "res_type": "data_sheet",
+    "downloadable": "assets/Invasive_Mapping_OSU.pdf",
+    "thumbnail": "assets/thumbnails/invasive_mapping.png",
+    "sort_order": 1000
+  }
+},
+{
+  "model": "streamwebs.resource",
+  "pk": 25,
+  "fields": {
+    "name": "Canopy Cover Survey",
+    "res_type": "data_sheet",
+    "downloadable": "assets/Canopy_OSU.pdf",
+    "thumbnail": "assets/thumbnails/canopy_osu.png",
+    "sort_order": 1000
+  }
+}
+]
+
