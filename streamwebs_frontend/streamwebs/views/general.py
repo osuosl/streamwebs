@@ -564,12 +564,18 @@ def riparian_transect_view(request, site_slug, data_id):
         zone = dict();
         if i.conifers:
             zone['conifers'] = i.conifers
+        else:
+            zone['conifers'] = 0
         if i.hardwoods:
             zone['hardwoods'] = i.hardwoods
+        else:
+            zone['hardwoods'] = 0
         if i.shrubs:
             zone['shrubs'] = i.shrubs
+        else:
+            zone['shrubs'] = 0
         zones_json.append(zone)
-    print(zones_json)
+
     return render(
         request, 'streamwebs/datasheets/riparian_transect_view.html', {
             'transect': transect,
