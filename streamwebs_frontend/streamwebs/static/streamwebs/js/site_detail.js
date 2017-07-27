@@ -6,12 +6,12 @@ var path = "m 0,0 c -7.08163,-14.59707 -5.50487,-20.97294 5.18667,-20.97294 " +
            "-5.18667,-9.05306 z";
 
 var initialize = function initialize() {
-    map = new google.maps.Map(document.getElementById('map'), {
+    map = new google.maps.Map(document.getElementById("detail_map"), {
         zoom: 15,
         maxZoom: 20,
         minZoom: 1,
         center: new google.maps.LatLng(site_location.y, site_location.x),
-        mapTypeId: google.maps.MapTypeId.TERRAIN,
+        mapTypeId: window.mapTypeId,
         disableDefaultUI: true,
         draggable: true,
         clickableIcons: false
