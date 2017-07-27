@@ -1,13 +1,21 @@
 var zonesData = window.zones_json;
-var margin = {top: 10, right: 10, bottom:10, left:28};
+var margin = {top: 10, right: 16, bottom:10, left:28};
 var dimension = {maxWidth: 800, HtoWRatio: 0.6, graphZoneMargin: 3};
 var zoneNames = [
-                    'Zone 1 (20\')',
-                    'Zone 2 (40\')',
-                    'Zone 3 (60\')',
-                    'Zone 4 (80\')',
-                    'Zone 5 (100\')'
-                ];
+    'Zone 1',
+    'Zone 2',
+    'Zone 3',
+    'Zone 4',
+    'Zone 5'
+];
+var distances = [
+    '(0\')',
+    '(20\')',
+    '(40\')',
+    '(60\')',
+    '(80\')',
+    '(100\')'
+]
 var transectNames = ['Conifers', 'Hardwoods', 'Shrubs'];
 
 var createGraph = function createGraph() {
@@ -35,17 +43,20 @@ var createAxis = function createAxis(graphContainer, graphWidth, graphHeight) {
                         .domain([0, 1])
                         .range([0, graphWidth]);
 
+    var xBackground = d3.scaleOrdinal()
+                        .domain(distances)
+                        .range(getDistanceRange(graphWidth));
+
     var x = d3.scaleOrdinal()
               .domain(zoneNames)
-              .range([50,150,250,350,450]);
+              .range(getZoneRange(graphWidth));
 
     var y = d3.scaleLinear()
               .domain([0, getXMax()])
               .range([graphHeight, 0]);
 
     var xBackgroundAxis = d3.axisBottom(xBackground)
-                            .ticks(6)
-                            .tickFormat("");
+                            .ticks(6);
 
     var xAxis = d3.axisBottom(x)
                   .tickSize(0);
@@ -65,6 +76,24 @@ var createAxis = function createAxis(graphContainer, graphWidth, graphHeight) {
                   .attr('transform', 'translate(' + margin.left + ', ' + 0 + ')');
 }
 
+var getDistanceRange = function getDistanceRange(graphWidth) {
+    var rangeArr = [];
+    var rangeWidth = graphWidth / 5;
+    for (var i = 0; i < 6; i++) {
+        rangeArr.push(i * rangeWidth);
+    }
+    return rangeArr;
+}
+
+var getZoneRange = function getZoneRange(graphWidth) {
+    var rangeArr = [];
+    var rangeWidth = graphWidth / 5;
+    for (var i = 0; i < 5; i++) {
+        rangeArr.push((i + 0.5) * rangeWidth);
+    }
+    return rangeArr;
+}
+
 var getXMax = function getXMax() {
     // Get the max number of zones data to set up y axis range
     var max = 0;
@@ -77,12 +106,12 @@ var getXMax = function getXMax() {
 }
 
 var createBars = function createBars(graphContainer, graphWidth, graphHeight) {
-    /*graphContainer.append('g').selectAll('g')
+    graphContainer.append('g').selectAll('g')
         .data(zonesData)
         .enter().append('g')
             .attr('transform', function(d, i) {
 
-            })*/
+            })
 
 }
 
