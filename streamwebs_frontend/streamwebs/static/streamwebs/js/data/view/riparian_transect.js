@@ -1,6 +1,19 @@
+// Data related variables
 var zonesData = window.zones_json;
-var margin = {top: 10, right: 16, bottom:10, left:28};
-var dimension = {maxWidth: 800, HtoWRatio: 0.6, graphZoneMargin: 3};
+var dataKeys = ['conifers', 'hardwoods', 'shrubs'];
+
+// Properties of the graph
+var barColor = ['#F73A23','#A14728', '#65B239'];
+var margin = {top: 16, right: 16, bottom:16, left:28};
+var dimension = {
+    maxWidth: 800,
+    HtoWRatio: 0.6,
+    graphZoneMargin: 6,
+    graphBarMargin: 2,
+    xAxisHeight: 10 // Change depend on xAxis label font size
+};
+
+// Strings for each zones and ticks
 var zoneNames = [
     'Zone 1',
     'Zone 2',
@@ -16,7 +29,6 @@ var distances = [
     '(80\')',
     '(100\')'
 ]
-var transectNames = ['Conifers', 'Hardwoods', 'Shrubs'];
 
 var createGraph = function createGraph() {
     // Set up width and height for the container div#rip-graph and actual graph
@@ -28,55 +40,62 @@ var createGraph = function createGraph() {
     $('div#rip-graph').width(containerWidth).height(containerHeight);
 
     var svg = d3.select('div#rip-graph').append('svg')
-                .attr('width', "100%")
-                .attr('height', "100%");
+                .attr('width', '100%')
+                .attr('height', '100%');
 
     var graph = svg.append('g')
-                   .attr('transform', 'translate(' + 0 + ', ' + 0 + ')');
+                    .attr('transform', 'translate(' + 0 + ', ' + 0 + ')');
 
-    createAxis(graph, graphWidth, graphHeight);
-    createBars(graph, graphWidth, graphHeight)
-}
-
-var createAxis = function createAxis(graphContainer, graphWidth, graphHeight) {
-    var xBackground = d3.scaleLinear()
-                        .domain([0, 1])
-                        .range([0, graphWidth]);
-
+    // Set up the scales for the axis
     var xBackground = d3.scaleOrdinal()
                         .domain(distances)
                         .range(getDistanceRange(graphWidth));
 
     var x = d3.scaleOrdinal()
-              .domain(zoneNames)
-              .range(getZoneRange(graphWidth));
+                .domain(zoneNames)
+                .range(getZoneRange(graphWidth));
 
     var y = d3.scaleLinear()
-              .domain([0, getXMax()])
-              .range([graphHeight, 0]);
+                .domain([0, getXMax()])
+                .range([graphHeight - dimension.xAxisHeight, 0]);
 
+    createAxis(graph, graphWidth, graphHeight, xBackground, x, y);
+    createDashLines(graph, graphWidth, graphHeight);
+    createBars(graph, graphWidth, graphHeight, y);
+}
+
+var createAxis = function createAxis(graphContainer, graphWidth, graphHeight, xBackground, x, y) {
+
+    // Take in the x and y scales to create axis, and append them to containers
     var xBackgroundAxis = d3.axisBottom(xBackground)
                             .ticks(6);
 
     var xAxis = d3.axisBottom(x)
-                  .tickSize(0);
+                    .tickSize(0);
 
     var yAxis = d3.axisLeft(y);
 
     graphContainer.append('g')
-                  .call(xBackgroundAxis)
-                  .attr('transform', 'translate(' + margin.left + ', ' + graphHeight + ')');
+                    .call(xBackgroundAxis)
+                    .attr('transform', 'translate(' + margin.left + ', '
+                        + (graphHeight + margin.top - dimension.xAxisHeight) + ')'
+                    );
 
     graphContainer.append('g')
-                  .call(xAxis)
-                  .attr('transform', 'translate(' + margin.left + ', ' + graphHeight + ')');
+                    .call(xAxis)
+                    .attr('transform', 'translate(' + margin.left + ', '
+                        + (graphHeight + margin.top - dimension.xAxisHeight) + ')'
+                    );
 
     graphContainer.append('g')
-                  .call(yAxis)
-                  .attr('transform', 'translate(' + margin.left + ', ' + 0 + ')');
+                    .call(yAxis)
+                    .attr('transform', 'translate(' + margin.left + ', '
+                        + margin.top + ')'
+                    );
 }
 
 var getDistanceRange = function getDistanceRange(graphWidth) {
+    // Output the array of coordinates for ticks for distances
     var rangeArr = [];
     var rangeWidth = graphWidth / 5;
     for (var i = 0; i < 6; i++) {
@@ -86,6 +105,7 @@ var getDistanceRange = function getDistanceRange(graphWidth) {
 }
 
 var getZoneRange = function getZoneRange(graphWidth) {
+    // Output the array of coordinates for ticks for zones
     var rangeArr = [];
     var rangeWidth = graphWidth / 5;
     for (var i = 0; i < 5; i++) {
@@ -105,19 +125,49 @@ var getXMax = function getXMax() {
     return Math.ceil(max / 10) + max;
 }
 
-var createBars = function createBars(graphContainer, graphWidth, graphHeight) {
-    graphContainer.append('g').selectAll('g')
+var createDashLines = function createCashLines(graphContainer, graphWidth, graphHeight) {
+    for (var i = 1; i < 5; i++) {
+        return;
+    }
+}
+
+var createBars = function createBars(graphContainer, graphWidth, graphHeight, yScale) {
+    var groupWidth = graphWidth / 5;
+    var barWidth = (groupWidth - 2 * dimension.graphZoneMargin - 4 * dimension.graphBarMargin) / 3;
+    var groups = graphContainer.append('g').selectAll('g')
         .data(zonesData)
         .enter().append('g')
             .attr('transform', function(d, i) {
-
+                return ('translate('
+                    + (i * groupWidth + dimension.graphZoneMargin + margin.left)
+                    + ', ' + margin.top + ')'
+                );
             })
-
+        .selectAll('rect')
+        .data(function(d) {
+            return dataKeys.map(function(key) {
+                return {key: key, value: d[key]}
+            });
+        })
+        .enter().append('rect')
+            .attr('width', barWidth)
+            .attr('height', function(d, i) {
+                return (graphHeight - yScale(d.value) - dimension.xAxisHeight);
+            })
+            .attr('fill', function(d, i) { return barColor[i]; })
+            .attr('x', function(d, i) {
+                return i * barWidth + (i + 1) * dimension.graphBarMargin;
+            })
+            .attr('y', function(d, i) { return yScale(d.value); });
 }
 
 var clearGraph = function clearGraph() {
     $('div#rip-graph svg').remove();
 }
+
+/***********************************************************************
+*               Initializing & window related
+***********************************************************************/
 
 $(function() {
     // Create graph on page load
