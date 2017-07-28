@@ -168,7 +168,7 @@ var createBars = function createBars(graphContainer, graphWidth, graphHeight, yS
 
 var createLegends = function createlegends(legendsContainer) {
     var legendHeight = (dimension.legendBoxHeight - 2 * dimension.marginBetweenLegend) / 3;
-    var font-size = 14;
+    var font_size = 14;
 
     dataKeys.forEach(function(d, i) {
         var legend = legendsContainer.append('g')
@@ -183,8 +183,8 @@ var createLegends = function createlegends(legendsContainer) {
 
         legend.append('text')
             .attr('x', 24)
-            .attr('y', font-size)
-            .attr('font-size', font-size + 'px')
+            .attr('y', font_size)
+            .attr('font-size', font_size + 'px')
             .text(d);
     });
 }
