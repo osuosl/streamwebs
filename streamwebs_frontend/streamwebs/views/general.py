@@ -561,7 +561,7 @@ def riparian_transect_view(request, site_slug, data_id):
     zones = list(zones)
     zones_json = list()
     for i in zones:
-        zone = dict();
+        zone = dict()
         if i.conifers:
             zone['conifers'] = i.conifers
         else:
