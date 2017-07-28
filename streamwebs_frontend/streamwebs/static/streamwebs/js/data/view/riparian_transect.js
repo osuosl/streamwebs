@@ -4,14 +4,20 @@ var dataKeys = ['conifers', 'hardwoods', 'shrubs'];
 
 // Properties of the graph
 var barColor = ['#F73A23','#A14728', '#65B239'];
-var margin = {top: 16, right: 16, bottom:16, left:28};
+var margin = {top: 16, right: 16, bottom:30, left:28};
 var dimension = {
     maxWidth: 800,
     HtoWRatio: 0.6,
     graphZoneMargin: 6,
     graphBarMargin: 2,
-    xAxisHeight: 10 // Change depend on xAxis label font size
+    xAxisHeight: 10, // Change depend on xAxis label font size
+
+    legendBoxHeight: 72,
+    legendLeftMargin: 40,
+    marginBetweenLegend: 6,
 };
+
+
 
 // Strings for each zones and ticks
 var zoneNames = [
@@ -33,10 +39,9 @@ var distances = [
 var createGraph = function createGraph() {
     // Set up width and height for the container div#rip-graph and actual graph
     var containerWidth = Math.min($('div#rip-graph').parent().width(), dimension.maxWidth);
-    var containerHeight = containerWidth * dimension.HtoWRatio;
+    var containerHeight = containerWidth * dimension.HtoWRatio + dimension.legendBoxHeight;
     var graphWidth = containerWidth - margin.left - margin.right;
-    var graphHeight = containerHeight - margin.top - margin.bottom;
-
+    var graphHeight = containerHeight - margin.top - margin.bottom - dimension.legendBoxHeight;
     $('div#rip-graph').width(containerWidth).height(containerHeight);
 
     var svg = d3.select('div#rip-graph').append('svg')
@@ -45,6 +50,12 @@ var createGraph = function createGraph() {
 
     var graph = svg.append('g')
                     .attr('transform', 'translate(' + 0 + ', ' + 0 + ')');
+
+    var legendsContainer = svg.append('g')
+                        .attr('transform', 'translate(' + dimension.legendLeftMargin
+                            + ', ' + (containerHeight - dimension.legendBoxHeight)
+                            + ')'
+                        );
 
     // Set up the scales for the axis
     var xBackground = d3.scaleOrdinal()
@@ -60,8 +71,8 @@ var createGraph = function createGraph() {
                 .range([graphHeight - dimension.xAxisHeight, 0]);
 
     createAxis(graph, graphWidth, graphHeight, xBackground, x, y);
-    createDashLines(graph, graphWidth, graphHeight);
     createBars(graph, graphWidth, graphHeight, y);
+    createLegends(legendsContainer);
 }
 
 var createAxis = function createAxis(graphContainer, graphWidth, graphHeight, xBackground, x, y) {
@@ -125,12 +136,6 @@ var getXMax = function getXMax() {
     return Math.ceil(max / 10) + max;
 }
 
-var createDashLines = function createCashLines(graphContainer, graphWidth, graphHeight) {
-    for (var i = 1; i < 5; i++) {
-        return;
-    }
-}
-
 var createBars = function createBars(graphContainer, graphWidth, graphHeight, yScale) {
     var groupWidth = graphWidth / 5;
     var barWidth = (groupWidth - 2 * dimension.graphZoneMargin - 4 * dimension.graphBarMargin) / 3;
@@ -159,6 +164,29 @@ var createBars = function createBars(graphContainer, graphWidth, graphHeight, yS
                 return i * barWidth + (i + 1) * dimension.graphBarMargin;
             })
             .attr('y', function(d, i) { return yScale(d.value); });
+}
+
+var createLegends = function createlegends(legendsContainer) {
+    var legendHeight = (dimension.legendBoxHeight - 2 * dimension.marginBetweenLegend) / 3;
+    var font-size = 14;
+
+    dataKeys.forEach(function(d, i) {
+        var legend = legendsContainer.append('g')
+            .attr('transform', 'translate(' + 0 + ', '
+                + (i * (dimension.marginBetweenLegend + legendHeight)) + ')');
+        legend.append('rect')
+            .attr('x', 0)
+            .attr('y', 0)
+            .attr('width', legendHeight)
+            .attr('height', legendHeight)
+            .attr('fill', barColor[i]);
+
+        legend.append('text')
+            .attr('x', 24)
+            .attr('y', font-size)
+            .attr('font-size', font-size + 'px')
+            .text(d);
+    });
 }
 
 var clearGraph = function clearGraph() {
