@@ -1,0 +1,2 @@
+streamwebs_frontend/streamwebs/media/assets/* filter=lfs diff=lfs merge=lfs -text
+streamwebs_frontend/streamwebs/media/assets/thumbnails/* filter=lfs diff=lfs merge=lfs -text
