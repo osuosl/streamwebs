@@ -122,6 +122,9 @@ know is that links in templates are specified with the streamwebs namespace:
 
   {% url 'streamwebs:register' %}
 
+This contruction will render the URL named ``register`` in the ``streamwebs``
+application.
+
 Sites
 =====
 

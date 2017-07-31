@@ -7,7 +7,7 @@ Welcome to Streamwebs's documentation!
 ======================================
 
 General Documentation
-=====================
+---------------------
 
 .. toctree::
     :maxdepth: 1
@@ -15,7 +15,7 @@ General Documentation
     about
 
 User Documentation
-==================
+------------------
 
 .. toctree::
     :maxdepth: 1
@@ -23,7 +23,7 @@ User Documentation
     usage/usage.rst
 
 Development Documentation:
-==========================
+--------------------------
 
 .. toctree::
     :maxdepth: 1
@@ -43,7 +43,7 @@ Development Documentation:
     development/dev_notes
 
 Indices and tables
-==================
+------------------
 
 * :ref:`genindex`
 * :ref:`modindex`
