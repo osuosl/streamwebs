@@ -11,6 +11,29 @@ var date_range = [num_min, num_max];
 var outerContainer = $('#graph-container');
 var hasPopup = false;
 
+function search() {
+    if($('div.search-results').css('display') == 'none'){
+      $('div.search-results').show();
+    }
+    var search_value = $('#search').val().toLowerCase();
+
+    dropdownShown = 0;
+
+    $('.search-item').each(function () {
+        var name = $(this).text().toLowerCase();
+        var search_point = $('#search').offset().top + parseInt($('#search').css('height'));
+
+        if (search_value && name.includes(search_value)) {
+            $(this).removeClass('hide');
+            $(this).css("top", search_point + (dropdownShown * 40));
+            $(this).css("left", $('#search').offset().left);
+            dropdownShown += 1;
+        } else {
+            $(this).addClass('hide');
+        }
+    });
+}
+
 var changeRangeStart = function changeRangeStart() {
     if (!$(this).val()) { // If the field is empty, clear the range
         date_range[0] = num_min;
@@ -1789,8 +1812,14 @@ $(function () {
     }).on('mouseleave', function() {
         $(this).parent().find('div.data-info').hide();
     });
-    centerHover()
+    centerHover();
     createGraph();
+});
+
+$(window).click(function(){
+  if($('div.search-results')){
+    $('div.search-results').hide();
+  }
 });
 
 $(window).resize(function () {
@@ -1821,6 +1850,8 @@ var loadSite2 = function loadSite2(site_slug) {
             .css("width", "50%");
         centerHover();
         createGraph();
+        $('div.search-results').hide();
+        $('input#search').val('');
     })
 }
 
