@@ -1,9 +1,7 @@
 var dropdownShown = 0;
 var markerList = [];
 function search() {
-  console.log('Searched!');
   var search_value = $('#search').val().toLowerCase();
-  console.log(search_value);
   for(var i = 0; i < markerList.length; i++){ //searches marker list for name
     if(!markerList[i].title.toLowerCase().includes(search_value)){
       markerList[i].setVisible(false);
