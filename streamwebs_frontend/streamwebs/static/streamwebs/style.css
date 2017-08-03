@@ -15,59 +15,42 @@ p {
     background: #b9dce8;
 }
 
-.title {
-    width: 100%;
-    font-size: 3em;
-    font-weight: bolder;
-    text-align: center;
-    display: inline-block;
-    line-height: 2.5em;
-}
-
 html,
 body {
     width: 100%;
-    height: 100%;
 
     overflow: auto;
     background-color: #fafafa;
 }
 
-.page-wrap {
+div.page-wrap {
     position: relative;
     width: 100%;
     min-height: 100%;
+<<<<<<< HEAD
     background: url("images/bg-main.png") no-repeat fixed;
+=======
+    background: url("images/streamrocks.png") no-repeat fixed;
+    background-size: 100%;
+>>>>>>> fixed header, adding float navbar
 }
 
-.header {
-    width: 74%;
-    height: 240px;
+div.header {
+    width: 100%;
+    height: 200px;
     margin-left: auto;
     margin-right: auto;
     position: relative;
     z-index: 1;
 }
 
-.header > .logo {
+div.header > a.logo {
     position: absolute;
-    bottom: 20px;
-    left: 10%;
+    bottom: 50px;
+    left: 40px;
 }
 
-.header-img {
-    position: absolute;
-    left: 13%;
-    top: 0;
-    width: 86%;
-    height: 420px;
-    background: url("images/header-decor.png") no-repeat;
-    background-size: 100% 420px;
-    z-index: 0;
-    pointer-events: none;
-}
-
-#language-button {
+a#language-button {
     height: 1.5em;
     line-height: 1.6em;
     font-size: 1.2em;
@@ -76,57 +59,36 @@ body {
 }
 
 .inner-wrap {
-    width: 74%;
+    width: 100%;
+    min-width: 768px;
     min-height: 700px;
     margin-left: auto;
     margin-right: auto;
-    padding-bottom: 20px;
-    z-index: 1;
+    padding-bottom: 80px;
     position: relative;
 }
 
 .content {
-    padding-left: 15px;
-    padding-right: 15px;
     z-index: 2;
-}
-
-#map {
-    width: 100%;
-    height: 500px;
-    margin-bottom: 10px;
-}
-
-.search-nav {
-    /* Make the search bar behave as if it were not in a navbar */
-
-    padding: 0 0 0 0 !important;
-    margin-left: 0.75rem !important;
-    margin-right: -0.75rem !important;
-    margin-bottom: 0 !important;
-}
-
-#search {
-    margin-bottom: 0;
 }
 
 /* Search placeholder color */
 ::-webkit-input-placeholder { /* WebKit, Blink, Edge */
-    color: #fff;
+    color: white;
 }
 
 :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-   color: #fff;
+   color: white;
    opacity: 1;
 }
 
 ::-moz-placeholder { /* Mozilla Firefox 19+ */
-   color: #fff;
+   color: white;
    opacity: 1;
 }
 
 :-ms-input-placeholder { /* Internet Explorer 10-11 */
-   color: #fff;
+   color: white;
 }
 
 .search-results {
@@ -141,8 +103,24 @@ nav {
     box-shadow: unset;
 }
 
+nav#navbar {
+    height: 64px;
+    width: 100%;
+    background: white;
+}
+
+nav#navbar div#nav-container {
+    height: 100%;
+    width: 100%;
+}
+
+div.nav-float {
+    position: fixed;
+    top: 0;
+}
+
 nav a.btn,
-nav ul#languages {
+ul#languages {
     margin-left: 10px;
 }
 
@@ -151,7 +129,7 @@ nav ul#languages {
 }
 
 .nav-wrapper i {
-    line-height: 36px !important;
+    line-height: 36px;
 }
 
 #date {

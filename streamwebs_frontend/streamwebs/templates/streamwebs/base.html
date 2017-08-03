@@ -21,7 +21,7 @@
     <div class="header">
       <a href="/" class="logo">
         <img
-            src="//streamwebs.org/sites/streamwebs.org/themes/streamwebs_110107/logo.png"
+            src="{% static 'streamwebs/images/logo.png' %}"
             alt="Home">
       </a>
     </div>
@@ -40,11 +40,25 @@
               {% endfor %}
           </ul>
       </form>
-      <nav>
-          <div class="nav-wrapper grey lighten-5">
-              {% include "streamwebs/navigation.html" %}
-          </div>
+      <nav id="navbar">
+        <div id="nav-container">
+          {% include "streamwebs/navigation.html" %}
+        </div>
       </nav>
+
+      <a href="#!" id="language-button" class="btn dropdown-button teal darken-4"
+         data-activates="languages">
+        <ul class="left">
+          <li>
+            {% for lang in LANGUAGES %}
+              {% if lang.0 == LANGUAGE_CODE %}
+                {{ lang.1 }}
+              {% endif %}
+            {% endfor %}
+            <i class="material-icons right">arrow_drop_down</i>
+          </li>
+        </ul>
+      </a>
 
       <div class="content">
         <h3 class="brand-logo center teal-text text-darken-4">
@@ -67,6 +81,24 @@
     $('#lang_input').val(language);
     $('#langform').submit();
   }
+
+  var floatNav = function floatNav() {
+    console.log($(window).scrollTop());
+    console.log($('div.header').height());
+    if($(window).scrollTop() > $('div.header').height()) {
+      $('div.nav-container').addClass('nav-float');
+    } else {
+      $('div.nav-container').removeClass('nav-float');
+    }
+  }
+
+  $(window).scroll(function() {
+    floatNav();
+  });
+
+  $('html, body').scroll(function() {
+    floatNav();
+  })
 </script>
 </body>
 </html>
