@@ -72,7 +72,6 @@ class UploadResourceTestCase(TestCase):
             response,
             "StreamWebs offers a number of resources to get you started in " +
             "the field")
-        self.assertContains(response, "Upload a new resource")
         self.client.logout()
 
     def test_reg_user_has_upload_perm(self):
@@ -96,7 +95,6 @@ class UploadResourceTestCase(TestCase):
             response,
             "StreamWebs offers a number of resources to get you started in " +
             "the field")
-        self.assertContains(response, "Upload a new resource")
 
         self.client.logout()
 
