@@ -2,22 +2,8 @@
 {% load staticfiles %}
 {% load i18n %}
 {% load filters %}
+
 {% block title %}{% trans "View Soil Survey" %}{% endblock %}
-
-{% block scripts %}
-  <script type="application/javascript"
-          src="{% static 'streamwebs/js/data.js' %}"></script>
-
-  <style>
-    .material-icons {
-      font-size: 1.5em;
-    }
-
-    .errorlist {
-      color: red;
-    }
-  </style>
-{% endblock %}}
 
 {% block content %}
   <div class="container">
@@ -26,6 +12,7 @@
         <strong>{{ message }}</strong>
       {% endfor %}
     {% endif %}
+    
     <h3 align="center">
       <a href="{% url 'streamwebs:site' site.site_slug %}">
         {{ site.site_name }}
@@ -124,4 +111,9 @@
       </div>
     </div>
   </div>  <!-- end container -->
+{% endblock %}
+
+{% block scripts %}
+  <script type="application/javascript"
+          src="{% static 'streamwebs/js/data.js' %}"></script>
 {% endblock %}

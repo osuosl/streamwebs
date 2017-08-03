@@ -4,16 +4,6 @@
 {% load filters %}
 {% block title %}{% trans "View Riparian Area Transect Data" %}{% endblock %}
 
-{% block scripts %}
-  <script type="application/javascript"
-          src="{% static 'streamwebs/js/data.js' %}"></script>
-  <style>
-    .material-icons {
-      font-size: 1.5em;
-    }
-  </style>
-{% endblock %}
-
 {% block content %}
   <div class="container">
     {% if messages %}
@@ -116,4 +106,9 @@
       </div>
     </div>
   </div>
+{% endblock %}
+
+{% block scripts %}
+  <script type="application/javascript"
+          src="{% static 'streamwebs/js/data.js' %}"></script>
 {% endblock %}

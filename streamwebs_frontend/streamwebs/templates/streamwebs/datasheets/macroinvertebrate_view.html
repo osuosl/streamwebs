@@ -4,15 +4,6 @@
 {% load filters %}
 {% block title %}{% trans "View Macroinvertebrates Data" %}{% endblock %}
 
-{% block scripts %}
-  <script type="application/javascript"
-          src="{% static 'streamwebs/js/data.js' %}"></script>
-  <style>
-    .material-icons {
-      font-size: 1.5em;
-    }
-  </style>
-{% endblock %}
 
 {% block content %}
   <div class="container">
@@ -21,6 +12,7 @@
         <strong>{{ message }}</strong>
       {% endfor %}
     {% endif %}
+    
     <h3 align="center">
       <a href="{% url 'streamwebs:site' site.site_slug %}">
         {{ site.site_name }}
@@ -301,4 +293,9 @@
       </div>
     </div>
   </div>
+{% endblock %}
+
+{% block scripts %}
+  <script type="application/javascript"
+          src="{% static 'streamwebs/js/data.js' %}"></script>
 {% endblock %}

@@ -5,6 +5,7 @@
 <head>
   <meta charset="utf-8"/>
   <title>{% block title %}Streamwebs{% endblock %}</title>
+  <link href="https://fonts.googleapis.com/css?family=Lato|Montserrat" rel="stylesheet">
   <link rel="stylesheet" type="text/css"
         href="{% static 'streamwebs/bower_components/materialize/dist/css/materialize.css' %}"/>
   <link href="http://fonts.googleapis.com/icon?family=Material+Icons"
@@ -26,46 +27,55 @@
       </a>
     </div>
 
-    <div class="header-img">
-    </div>
+    <nav id="navbar">
+      <div id="nav-container">
+        <div id="nav-logo">
+          <h3>STREAMWEBS</h3>
+          <!-- ADD IMAGE -->
+        </div>
+        {% include "streamwebs/navigation.html" %}
+      </div>
+    </nav>
 
     <div class="inner-wrap grey lighten-5">
-      <form id="langform" action="/i18n/setlang/" method="post">
-          {% csrf_token %}
-          <input name="next" type="hidden" value="{{ request.path }}" />
-          <input id="lang_input" name="language" type="hidden" />
-          <ul id="languages" class="dropdown-content">
-              {% for lang in LANGUAGES %}
-                  <li><a href="#!" onclick="submitLang('{{ lang.0 }}');">{{ lang.1 }}</a></li>
-              {% endfor %}
-          </ul>
-      </form>
-      <nav id="navbar">
-        <div id="nav-container">
-          {% include "streamwebs/navigation.html" %}
-        </div>
-      </nav>
-
-      <a href="#!" id="language-button" class="btn dropdown-button teal darken-4"
-         data-activates="languages">
-        <ul class="left">
-          <li>
-            {% for lang in LANGUAGES %}
-              {% if lang.0 == LANGUAGE_CODE %}
-                {{ lang.1 }}
-              {% endif %}
-            {% endfor %}
-            <i class="material-icons right">arrow_drop_down</i>
-          </li>
-        </ul>
-      </a>
-
       <div class="content">
-        <h3 class="brand-logo center teal-text text-darken-4">
+        <h3 class="center teal-text text-darken-4">
           {% block body_title %}{% endblock %}</h3>
         {% block content %}{% endblock %}
       </div>
     </div>
+
+    <footer>
+      <div id="filter">
+      </div>
+      <div id="footer">
+        BLAHBLAHBLAH
+        <!--<form id="langform" action="/i18n/setlang/" method="post">
+          {% csrf_token %}
+          <input name="next" type="hidden" value="{{ request.path }}" />
+          <input id="lang_input" name="language" type="hidden" />
+          <ul id="languages" class="dropdown-content">
+            {% for lang in LANGUAGES %}
+              <li><a href="#!" onclick="submitLang('{{ lang.0 }}');">{{ lang.1 }}</a></li>
+            {% endfor %}
+          </ul>
+        </form>
+
+        <a href="#!" id="language-button" class="btn dropdown-button teal darken-4"
+           data-activates="languages">
+          <ul class="left">
+            <li>
+              {% for lang in LANGUAGES %}
+                {% if lang.0 == LANGUAGE_CODE %}
+                  {{ lang.1 }}
+                {% endif %}
+              {% endfor %}
+              <i class="material-icons right">arrow_drop_down</i>
+            </li>
+          </ul>
+        </a>-->
+      </div>
+    </footer>
   </div>
 
 <script
@@ -83,12 +93,13 @@
   }
 
   var floatNav = function floatNav() {
-    console.log($(window).scrollTop());
-    console.log($('div.header').height());
     if($(window).scrollTop() > $('div.header').height()) {
-      $('div.nav-container').addClass('nav-float');
+      $('div#nav-container').addClass('nav-float');
+      $('div#nav-logo').fadeIn();
+
     } else {
-      $('div.nav-container').removeClass('nav-float');
+      $('div#nav-container').removeClass('nav-float');
+      $('div#nav-logo').fadeOut();
     }
   }
 

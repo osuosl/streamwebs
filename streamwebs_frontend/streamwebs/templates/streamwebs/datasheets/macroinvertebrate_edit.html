@@ -2,18 +2,9 @@
 {% load staticfiles %}
 {% load i18n %}
 {% load filters %}
-{% block title %}{% trans "Macroinvertebrates Data Edit" %}{% endblock %}
-{% block stylesheets %}
-  <style>
-    .material-icons {
-      font-size: 1.5em;
-    }
 
-    .errorlist {
-      color: red;
-    }
-  </style>
-{% endblock %}
+{% block title %}{% trans "Macroinvertebrates Data Edit" %}{% endblock %}
+
 {% block content %}
   <div class="container">
     {% if added %}
