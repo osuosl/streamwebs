@@ -2,6 +2,7 @@
 {% load staticfiles %}
 {% load i18n %}
 {% load filters %}
+
 {% block title %}{% trans "Add Canopy Cover Survey" %}{% endblock %}
 
 {% block content %}
@@ -43,10 +44,8 @@
       margin-right: -3px;
     }
 
-    @media (max-width: 991px) {
-      .canopy-square {
-        margin-right: -2px;
-      }
+    .canopy-square {
+      margin-right: -2px;
     }
 
     .canopy-square.hidden {

@@ -27,12 +27,8 @@ div.page-wrap {
     position: relative;
     width: 100%;
     min-height: 100%;
-<<<<<<< HEAD
-    background: url("images/bg-main.png") no-repeat fixed;
-=======
     background: url("images/streamrocks.png") no-repeat fixed;
     background-size: 100%;
->>>>>>> fixed header, adding float navbar
 }
 
 div.header {

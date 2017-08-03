@@ -4,22 +4,8 @@
 {% load filters %}
 {% block title %}{% trans "View Riparian Area Transect Data" %}{% endblock %}
 
-{% block scripts %}
-  <script type="application/javascript"
-          src="{% static 'streamwebs/js/data.js' %}"></script>
-  <script>
-    window.zones_json = {{ zones_json|safe }};
-  </script>
-  <script type="application/javascript"
-          src="{% static 'streamwebs/js/data/view/riparian_transect.js' %}"></script>
-  <style>
-{% endblock %}
-
 {% block content %}
   <style>
-    .material-icons {
-      font-size: 1.5em;
-    }
     .inner-wrap {
       min-width: 768px;
     }
@@ -27,6 +13,7 @@
         margin: 0 auto;
     }
   </style>
+
   <div class="container">
     {% if messages %}
       {% for message in messages %}
@@ -132,4 +119,16 @@
       </div>
     </div>
   </div>
+{% endblock %}
+
+{% block scripts %}
+  <script type="application/javascript"
+          src="{% static 'streamwebs/js/data.js' %}"></script>
+  <script type="application/javascript"
+          src="{% static 'streamwebs/js/data.js' %}"></script>
+  <script>
+    window.zones_json = {{ zones_json|safe }};
+  </script>
+  <script type="application/javascript"
+          src="{% static 'streamwebs/js/data/view/riparian_transect.js' %}"></script>
 {% endblock %}
