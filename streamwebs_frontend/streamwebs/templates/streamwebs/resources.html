@@ -1,50 +1,162 @@
 {% extends "streamwebs/base.html" %}
 {% load i18n %}
-
 {% block content %}
-  <div class="container">
-    <h3>
+<style>
+.resource i {
+  margin: 15px;
+  color: #004d40;
+  font-size: 72px;
+}
+
+.resource-name{
+  font-size:40px;
+  margin-bottom:5px;
+  margin:10px;
+
+}
+
+.resource-link{
+  color: inherit;
+  display: block;
+  width: 100%;
+  padding:5%;
+}
+
+.resource-link:hover{
+  background: #e0f2f1
+}
+.resource-title{
+  text-align: center;
+  color:#004d40;
+}
+
+.resource-subtext{
+  font-size:21px;
+  text-align: center;
+}
+.flex-container{
+  display: flex;
+  flex-wrap:wrap;
+  flex:auto;
+  justify-content: center;
+}
+.description{
+  margin-bottom: 15px;
+}
+
+.resource-upload{
+  color:inherit;
+  text-decoration: none;
+  align-content: left;
+  margin: 20px;
+  color: #00bdc4;
+}
+@media screen and (min-width: 1000px){
+  .resource-link{
+    width: 50%;
+    float:left;
+  }
+}@media screen and (min-width: 1500px){
+  .resource-link{
+    width: 33%;
+    float:left;
+  }
+}
+</style>
+
+    <h2 class="resource-title">
+      {% trans "Resources" %}
+    </h2>
+
+    <h5 class="resource-subtext">
       <strong>
         {% trans "StreamWebs offers a number of resources to get you started in the field." %}
       </strong>
-    </h3>
-    <p><a href="data-sheets">{% trans "DATA SHEETS" %}</a>:
-      <br>
-      These field data forms support a number of watershed field analyses,
-      including water quality sampling, macroinvertebrate sampling, and photo
-      point monitoring. Click on the link to see all of the data forms you can
-      download.
-    </p>
-    <p><a
-        href="http://seagrant.oregonstate.edu/education/kits">{% trans "EDUCATOR KITS" %}</a>:
-      <br>
-      Streamwebs has education kits available for check-out at no charge. These
-      kits can be checked out by teachers, watershed educators, or other
-      non-profit groups or organizations in Oregon. Kits are available for
-      pick-up in Corvallis or Newport.
-    </p>
-    <p><a href="curriculum-guides/">{% trans "CURRICULUM PUBLICATIONS" %}</a>:
-      <br>
-      In this section, you will be able to download curriculum to use in the
-      field and the classroom, including Salmon Watch, Student Stewardship
-      Project Guide, and 1000 Drops.
-    </p>
-    <p><a
-        href="http://www.education.noaa.gov">{% trans "NOAA EDUCATOR RESOURCES" %}</a>:
-      <br>
-      NOAA has a number of education resources that can support watershed
-      investigations both in the field and classroom. Examples include: data
-      resources, ocean acidification activities, and global systems activities.
-    </p>
-    <p><a href="tutorial-videos">{% trans "TUTORIAL VIDEOS" %}</a>:
-      <br>
-      Here you will find a number of video tutorials covering field protocols
-      for using the Vernier LabQuest and water quality sensors in the field, in
-      addition to a field tutorial for conducting photo point monitoring.
-    </p>
-    {% if perms.streamwebs.can_upload_resources %}
-      <p>
-      <a href="{% url 'streamwebs:resources-upload' %}">{% trans "Upload a new resource" %}</a>
-    {% endif %}
-  </div>
+    </h5>
+
+    <div class="flex-container">
+      <a class="resource-link"href="data-sheets">
+       <div class="col s4 resource-block">
+         <div class="center resource">
+           <i class="material-icons">insert_drive_file</i>
+           <p class="resource-name">{% trans "Data Sheets" %}</p>
+           <p class="light center">
+             These field data forms support a number of watershed field analyses,
+             including water quality sampling, macroinvertebrate sampling, and photo
+             point monitoring. Click on the link to see all of the data forms you can
+             download.
+           </p>
+         </div>
+       </div>
+     </a>
+     <a class="resource-link" href="tutorial-videos">
+       <div class="col s4 resource-block">
+         <div class="center resource">
+           <i class="material-icons">video_library</i>
+           <p class="resource-name">{% trans "Tutorial Videos" %}</p>
+           <p class="light center">
+             Here you will find a number of video tutorials covering field protocols
+             for using the Vernier LabQuest and water quality sensors in the field, in
+             addition to a field tutorial for conducting photo point monitoring.
+           </p>
+         </div>
+       </div>
+     </a>
+     <a class="resource-link" href="curriculum-guides">
+       <div class="resource-block">
+         <div class="center resource">
+           <i class="material-icons">border_color</i>
+           <p class="resource-name">{% trans "Curriculum Publications" %}</p>
+           <p class="description light center">
+             In this section, you will be able to download curriculum to use in the
+             field and the classroom, including Salmon Watch, Student Stewardship
+             Project Guide, and 1000 Drops.
+           </p>
+         </div>
+       </div>
+   </a>
+      <a class="resource-link" href="http://www.education.noaa.gov">
+       <div class="resource-block">
+         <div class="center resource">
+           <i class="material-icons">business</i>
+           <p class="resource-name">{% trans "NOAA Educator Resources" %}</p>
+           <p class="light center">
+             NOAA has a number of education resources that can support watershed
+             investigations both in the field and classroom. Examples include: data
+             resources, ocean acidification activities, and global systems activities.
+           </p>
+         </div>
+       </div>
+     </a>
+      <a class="resource-link"href="http://seagrant.oregonstate.edu/education/kits">
+       <div class="resource-block">
+          <div class="center resource">
+            <i class="material-icons">build</i>
+            <p class="resource-name">{% trans "Educator Kits" %}</p>
+            <p class="light center">
+              Streamwebs has education kits available for check-out at no charge. These
+              kits can be checked out by teachers, watershed educators, or other
+              non-profit groups or organizations in Oregon. Kits are available for
+              pick-up in Corvallis or Newport.
+            </p>
+          </div>
+       </div>
+   </a>
+  {% if perms.streamwebs.can_upload_resources %}
+    <a class="resource-link"href="{% url 'streamwebs:resources-upload' %}">
+       <div class="resource-block">
+          <div class="center resource">
+            <i class="material-icons">file_upload</i>
+            <p class="resource-name">{% trans "Upload a New Resource" %}</p>
+            <p class="light center">
+              Streamwebs has education kits available for check-out at no charge. These
+              kits can be checked out by teachers, watershed educators, or other
+              non-profit groups or organizations in Oregon. Kits are available for
+              pick-up in Corvallis or Newport.
+            </p>
+          </div>
+       </div>
+   </a>
+  {% endif %}
+</div>
 {% endblock %}
