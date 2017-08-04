@@ -1,24 +1,15 @@
 var dropdownShown = 0;
+var markerList = [];
 function search() {
-    console.log('Searched!');
-
-    var search_value = $('#search').val().toLowerCase();
-
-    dropdownShown = 0;
-
-    $('.search-item').each(function () {
-        var name = $(this).text().toLowerCase();
-        var search_point = $('#search').offset().top + parseInt($('#search').css('height'));
-
-        if (search_value && name.includes(search_value)) {
-            $(this).removeClass('hide');
-            $(this).css("top", search_point + (dropdownShown * 40));
-            $(this).css("left", $('#search').offset().left);
-            dropdownShown += 1;
-        } else {
-            $(this).addClass('hide');
-        }
-    });
+  var search_value = $('#search').val().toLowerCase();
+  for(var i = 0; i < markerList.length; i++){ //searches marker list for name
+    if(!markerList[i].title.toLowerCase().includes(search_value)){
+      markerList[i].setVisible(false);
+    }
+    else{ //this resets the map if user deletes from search box
+      markerList[i].setVisible(true);
+    }
+  }
 }
 
 var map;
@@ -37,7 +28,6 @@ function initialize() {
 
     var latSum = 0, lngSum = 0;
 
-    var markerList = [];
     var infoWindows = [];
 
     for (var i = 0; i < sites.length; i++) {
