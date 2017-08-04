@@ -131,35 +131,6 @@ div#footer {
     color: white;
 }
 
-a#language-button {
-    height: 1.5em;
-    line-height: 1.6em;
-    font-size: 1.2em;
-    padding-left: .5em;
-    padding-right: .5em;
-}
-
-nav#navbar {
-    height: 64px;
-    width: 100%;
-    background: white;
-}
-
-nav#navbar div#nav-container {
-    height: 64px;
-    width: 100%;
-}
-
-div.nav-float {
-    position: fixed;
-    top: 0;
-}
-
-nav a.btn,
-ul#languages {
-    margin-left: 10px;
-}
-
 
 
 

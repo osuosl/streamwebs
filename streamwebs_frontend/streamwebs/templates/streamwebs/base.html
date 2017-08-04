@@ -92,6 +92,10 @@
     $('#langform').submit();
   }
 
+  $(function() {
+    floatNav();
+  })
+
   var floatNav = function floatNav() {
     if($(window).scrollTop() > $('div.header').height()) {
       $('div#nav-container').addClass('nav-float');
