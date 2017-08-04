@@ -139,26 +139,33 @@
   <input type="checkbox" id="coliform-control" checked="checked"
          onclick="toggleGraph('coliform')"/>
   <label for="coliform-control">{% trans "Fecal Coliform" %}</label>
-  <div class="row">
-    <div id="site_select" class="col">
-      <a href="#!" class="dropdown-button btn select-button teal darken-4"
-         data-activates='dropdown'>
-        {% trans "Load a site to compare" %}
-        <i class="material-icons right">arrow_drop_down</i>
-      </a>
-      <ul id="dropdown" class="dropdown-content">
-        {% for site in sites %}
-          <li><a onclick="loadSite2('{{ site.site_slug }}')"
-                 class="teal-text text-darken-4">{{ site.site_name }}</a></li>
-        {% endfor %}
-      </ul>
-    </div>
-    <div class="col">
-      <input id="remove_site" type="button" class="btn teal darken-4 disabled"
-            value="Remove Site 2"/>
-    </div>
-  </div>
+  <div class="row"></div>
+    <div id="site_search">
+      <div class="row">
+      <nav class="search-nav col s5 teal darken-4">
+        <div class="nav-wrapper">
+          <div class="input-field">
+            <input id="search" type="search" autocomplete="off"
+                placeholder="{% trans 'Load a Site to Compare' %}"
+                oninput="search()">
+              <label for="search"><i class="material-icons">search</i></label>
+              <div class="search-results collection">
+                {% for site in sites %}
+                  <a onclick="loadSite2('{{ site.site_slug }}')"
+                    class="collection-item search-item {{ site.site_type }} tea-text text-darken-4 hide">{{ site.site_name }}</a>
+                {% endfor %}
+          </div>
+        </div>
+        </div>
+      </nav>
+      <div class="col right">
+        <input id="remove_site" type="button" class="btn teal darken-4 disabled"
+              value="Remove Site 2"/>
+          </div>
+      </div>
+    <div class="row">
 
+  </div>
   <div class="row" id="header">
     <h2 class="graph-header">{% trans "Water Quality Over Time" %}</h2>
     <div class="data-info" id="water-parameter-pdf">
