@@ -7,14 +7,26 @@
 {% block scripts %}
   <script type="application/javascript"
           src="{% static 'streamwebs/js/data.js' %}"></script>
+  <script>
+    window.zones_json = {{ zones_json|safe }};
+  </script>
+  <script type="application/javascript"
+          src="{% static 'streamwebs/js/data/view/riparian_transect.js' %}"></script>
+  <style>
+{% endblock %}
+
+{% block content %}
   <style>
     .material-icons {
       font-size: 1.5em;
     }
+    .inner-wrap {
+      min-width: 768px;
+    }
+    div#rip-graph {
+        margin: 0 auto;
+    }
   </style>
-{% endblock %}
-
-{% block content %}
   <div class="container">
     {% if messages %}
       {% for message in messages %}
@@ -113,6 +125,10 @@
         <input disabled value="{{ transect.notes }}" id="notes" type="text"
                class="validate">
         <label for="notes">{% trans "Field notes" %}</label>
+      </div>
+    </div>
+    <div class="row">
+      <div id="rip-graph">
       </div>
     </div>
   </div>
