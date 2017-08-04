@@ -41,6 +41,9 @@ NOCAPTCHA = True
 # Google maps API key
 GOOGLE_MAPS_API = 'AIzaSyCHaUYTiJJ2RZtqstos6VAFFUxN5I6saIA'
 
+#Google maps map Type
+GOOGLE_MAPS_TYPE = 'google.maps.MapTypeId.TERRAIN'
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 

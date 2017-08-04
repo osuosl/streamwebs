@@ -72,7 +72,8 @@ def create_site(request):
         'site_form': site_form,
         'created': created,
         'sites': site_list,
-        'maps_api': settings.GOOGLE_MAPS_API
+        'maps_api': settings.GOOGLE_MAPS_API,
+        'map_type': settings.GOOGLE_MAPS_TYPE
         })
 
 
@@ -81,7 +82,8 @@ def sites(request):
     site_list = Site.objects.filter(active=True)
     return render(request, 'streamwebs/sites.html', {
         'sites': site_list,
-        'maps_api': settings.GOOGLE_MAPS_API
+        'maps_api': settings.GOOGLE_MAPS_API,
+        'map_type': settings.GOOGLE_MAPS_TYPE
     })
 
 
@@ -184,6 +186,7 @@ def site(request, site_slug):
     return render(request, 'streamwebs/site_detail.html', {
         'site': site,
         'maps_api': settings.GOOGLE_MAPS_API,
+        'map_type': settings.GOOGLE_MAPS_TYPE,
         'data': json.dumps(data, cls=DjangoJSONEncoder),
         'pages': pages,
         'data_len_range': data_len_range,

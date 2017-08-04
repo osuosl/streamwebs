@@ -19,11 +19,12 @@
     var imageWidth = '200';
 </script>
 
-<script src="https://maps.googleapis.com/maps/api/js?key= {{ maps_api }}"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key={{ maps_api }}"></script>
 <script type="application/javascript" src="{% static 'streamwebs/js/site_detail.js' %}"></script>
 
   <script>
   $(document).ready(function(){
+    window.mapTypeId = {{ map_type }};
     {% if messages %}
       {% for message in messages %}
       Materialize.toast('{{ message }}', 4000, 'green');
@@ -32,8 +33,6 @@
   });
   </script>
 
-  <script
-      src="https://maps.googleapis.com/maps/api/js?key={{ maps_api }}"></script>
   <script type="application/javascript"
           src="{% static 'streamwebs/js/site_detail.js' %}"></script>
 {% endblock %}
@@ -52,7 +51,7 @@
       {% endif %}
     </div>
     <div class="col m5 right">
-      <div id="map"></div>
+      <div id="detail_map"></div>
     </div>
   </div>
   <div class="row">

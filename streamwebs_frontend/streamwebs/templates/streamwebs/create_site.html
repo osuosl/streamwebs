@@ -14,7 +14,7 @@ $(document).ready(function() {
   var myLatLng = new google.maps.LatLng(43.8041, -120.5542);
   map = new google.maps.Map(document.getElementById('map'), {
     zoom: 7,
-    mapTypeId: 'terrain',
+    mapTypeId: {{ map_type }},
     center: myLatLng,
     streetViewControl: false
   });
