@@ -1,17 +1,18 @@
 {% extends 'streamwebs/base.html' %}
-{% load i18n %}
 {% load staticfiles %}
+{% load i18n %}
 
 {% block title %} Manage User Permissions {% endblock %}
+
 {% block body_title %} Manage User Permissions {% endblock %}
 
 {% block content %}
 <div class="container">
-{% if msgs %}
-  {% for message in msgs %}
-  <strong>{{ message }}</strong><br>
-  {% endfor %}
-{% endif %}
+  {% if msgs %}
+    {% for message in msgs %}
+    <strong>{{ message }}</strong><br>
+    {% endfor %}
+  {% endif %}
 
   <form id='promo_form' method='post'>
     {% csrf_token %}
@@ -48,9 +49,8 @@
       {% endif %}
     </span>
   </div>
+{% endblock %}
 
 {% block scripts %}
   <script type="application/javascript" src="{% static 'streamwebs/js/data.js' %}"></script>
-{% endblock %}
-
 {% endblock %}

@@ -3,7 +3,9 @@
 {% load i18n %}
 {% load filters %}
 {% block content %}
+
   <div class="container">
+
     {% if messages %}
       {% for message in messages %}
       <strong>{{ message }}</strong>

@@ -1,44 +1,15 @@
 {% extends "streamwebs/base.html" %}
 {% load staticfiles %}
-{% block title %}Water Quality - {{ site.site_name }} -{% endblock %}
 {% load i18n %}
-
-{% block scripts %}
-  <script type="application/javascript">
-    window.data = {site1: {{data|safe}}, site2: null};
-    var siteId = '{{site.site_slug}}';
-    window.site2Id = null;
-    window.hasSiteTwo = false;
-
-    $('.datepicker').pickadate({
-      selectMonths: true,
-      selectYears: 20,
-    });
-  </script>
-
-  <script type="application/javascript"
-          src="{% static 'streamwebs/js/graphs/water_quality.js' %}">
-  </script>
-{% endblock %}
+{% block title %}Water Quality - {{ site.site_name }} -{% endblock %}
 
 {% block body_title %}
-  <a href="/sites/{{ site.site_slug }}">{{ site.site_name }}</a>:
+  <a href="/sites/{{ site.site_slug }}">{{ site.site_name }}</a>
   {% trans "Water Quality" %}
 {% endblock %}
 
 {% block content %}
-  <form action="">
-    <div id="dates">
-      <p>{% trans "Date Range:" %}</p>
-      <label for="date-start">{% trans "After" %}</label>
-      <input type="date" name="date" class="datepicker" id="date-start"
-             value=""/>
-      <label for="date-end">{% trans "Before" %}</label>
-      <input type="date" name="date" class="datepicker" id="date-end" value=""/>
-    </div>
-  </form>
-
-  <style>
+<style>
     label {
       margin-right: 1.5em;
     }
@@ -111,6 +82,17 @@
       margin-bottom: 1em;
     }
   </style>
+
+  <form action="">
+    <div id="dates">
+      <p>{% trans "Date Range:" %}</p>
+      <label for="date-start">{% trans "After" %}</label>
+      <input type="date" name="date" class="datepicker" id="date-start"
+             value=""/>
+      <label for="date-end">{% trans "Before" %}</label>
+      <input type="date" name="date" class="datepicker" id="date-end" value=""/>
+    </div>
+  </form>
 
   <input type="checkbox" id="temperature-control" checked="checked"
          onclick="toggleGraph('temperature')"/>
@@ -327,4 +309,22 @@
       </div>
     </div>
   </div>
+{% endblock %}
+
+{% block scripts %}
+  <script type="application/javascript">
+    window.data = {site1: {{data|safe}}, site2: null};
+    var siteId = '{{site.site_slug}}';
+    window.site2Id = null;
+    window.hasSiteTwo = false;
+
+    $('.datepicker').pickadate({
+      selectMonths: true,
+      selectYears: 20,
+    });
+  </script>
+
+  <script type="application/javascript"
+          src="{% static 'streamwebs/js/graphs/water_quality.js' %}">
+  </script>
 {% endblock %}

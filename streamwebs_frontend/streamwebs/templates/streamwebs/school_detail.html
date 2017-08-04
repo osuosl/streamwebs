@@ -8,11 +8,154 @@
 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css">
 {% endblock %}
 
-{% block scripts %}
+{% block body_title %}{% trans school_data.name %}{% endblock %}
 
-<script src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
-<script>
-$(document).ready(function() {
+{% block content %}
+
+  <div class="container">
+    <!-- School details: -->
+    <h5>Address:</h5>
+    <p>
+      {{ school_data.address }}
+      <<br/>>
+      {{ school_data.city }}, {{ school_data.province }}
+      <<br/>>
+      {{ school_data.zipcode }}
+    </p>
+    <<br/>>
+    <!-- wq table -->
+    {% if wq_data %}
+    <center><h5>Water Quality</h5></center>
+      <table id="wq_table" class="display">
+        <thead>
+          <tr>
+            <th>Site</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for w in wq_data %}
+            <tr>
+              <td>
+                <a href="/sites/{{w.site.site_slug}}/water/{{w.id}}">
+                {{ w.site }}
+                </a>
+              </td>
+              <td>{{ w.date }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <<br/>>
+    {% endif %}
+
+
+    <!-- macroinverti<br/>ates table -->
+    {% if mac_data %}
+    <center><h5>Macroinverte<br/>ates</h5></center>
+      <table id="mac_table" class="display">
+        <thead>
+          <tr>
+            <th>Site</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for m in mac_data %}
+            <tr>
+              <td>
+                <a href="/sites/{{m.site.site_slug}}/macro/{{m.id}}">
+                {{ m.site }}</a></td>
+              <td>{{ m.date_time }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <<br/>>
+    {% endif %}
+
+
+    <!-- canopy cover table -->
+    {% if can_data %}
+    <center><h5>Canopy Cover</h5></center>
+      <table id="can_table" class="display">
+        <thead>
+          <tr>
+            <th>Site</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for c in can_data %}
+            <tr>
+              <td>
+                <a href="/sites/{{c.site.site_slug}}/canopy/{{c.id}}">
+                {{ c.site }}</a></td>
+              <td>{{ c.date_time }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <<br/>>
+    {% endif %}
+
+
+    <!-- soil survey table -->
+    {% if soil_data %}
+    <center><h5>Soil Survey</h5></center>
+      <table id="soil_table" class="display">
+        <thead>
+          <tr>
+            <th>Site</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for s in soil_data %}
+            <tr>
+              <td>
+                <a href="/sites/{{s.site.site_slug}}/soil/{{s.id}}">
+                {{ s.site }}</a></td>
+              <td>{{ s.date }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <<br/>>
+    {% endif %}
+
+
+    <!-- riparrian table -->
+    {% if rip_data %}
+    <center><h5>Riparian Transect</h5></center>
+      <table id="rip_table" class="display">
+        <thead>
+          <tr>
+            <th>Site</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for r in rip_data %}
+            <tr>
+              <td>
+                <a href="/sites/{{r.site.site_slug}}/soil/{{r.id}}">
+                {{ r.site }}</a></td>
+              <td>{{ r.date_time }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <<br/>>
+    {% endif %}
+
+  </div>
+{% endblock %}
+
+{% block scripts %}
+  <script src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+  <script>
+  $(document).ready(function() {
     $('#wq_table').DataTable({
       "bLengthChange": false,
     });
@@ -30,147 +173,6 @@ $(document).ready(function() {
     });
 
     $('select').material_select();
-
-} );
-</script>
-{% endblock %}
-
-{% block body_title %}{% trans school_data.name %}{% endblock %}
-
-{% block content %}
-
-    <div class="container">
-      <!-- School details: -->
-      <h5>Address:</h5>
-      <p> {{ school_data.address }}
-      <br>{{ school_data.city }}, {{ school_data.province }}
-      <br>{{ school_data.zipcode }}</p>
-      <br>
-      <!-- wq table -->
-      {% if wq_data %}
-      <center><h5>Water Quality</h5></center>
-        <table id="wq_table" class="display">
-          <thead>
-            <tr>
-              <th>Site</th>
-              <th>Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for w in wq_data %}
-              <tr>
-                <td>
-                  <a href="/sites/{{w.site.site_slug}}/water/{{w.id}}">
-                  {{ w.site }}
-                  </a>
-                </td>
-                <td>{{ w.date }}</td>
-              </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-        <br>
-      {% endif %}
-
-
-      <!-- macroinvertibrates table -->
-      {% if mac_data %}
-      <center><h5>Macroinvertebrates</h5></center>
-        <table id="mac_table" class="display">
-          <thead>
-            <tr>
-              <th>Site</th>
-              <th>Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for m in mac_data %}
-              <tr>
-                <td>
-                  <a href="/sites/{{m.site.site_slug}}/macro/{{m.id}}">
-                  {{ m.site }}</a></td>
-                <td>{{ m.date_time }}</td>
-              </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-        <br>
-      {% endif %}
-
-
-      <!-- canopy cover table -->
-      {% if can_data %}
-      <center><h5>Canopy Cover</h5></center>
-        <table id="can_table" class="display">
-          <thead>
-            <tr>
-              <th>Site</th>
-              <th>Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for c in can_data %}
-              <tr>
-                <td>
-                  <a href="/sites/{{c.site.site_slug}}/canopy/{{c.id}}">
-                  {{ c.site }}</a></td>
-                <td>{{ c.date_time }}</td>
-              </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-        <br>
-      {% endif %}
-
-
-      <!-- soil survey table -->
-      {% if soil_data %}
-      <center><h5>Soil Survey</h5></center>
-        <table id="soil_table" class="display">
-          <thead>
-            <tr>
-              <th>Site</th>
-              <th>Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for s in soil_data %}
-              <tr>
-                <td>
-                  <a href="/sites/{{s.site.site_slug}}/soil/{{s.id}}">
-                  {{ s.site }}</a></td>
-                <td>{{ s.date }}</td>
-              </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-        <br>
-      {% endif %}
-
-
-      <!-- riparrian table -->
-      {% if rip_data %}
-      <center><h5>Riparian Transect</h5></center>
-        <table id="rip_table" class="display">
-          <thead>
-            <tr>
-              <th>Site</th>
-              <th>Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for r in rip_data %}
-              <tr>
-                <td>
-                  <a href="/sites/{{r.site.site_slug}}/soil/{{r.id}}">
-                  {{ r.site }}</a></td>
-                <td>{{ r.date_time }}</td>
-              </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-        <br>
-      {% endif %}
-
-    </div>
+  } );
+  </script>
 {% endblock %}

@@ -5,11 +5,6 @@
 
 {% block title %}{{ title }}{% endblock %}
 
-{% block scripts %}
-  <script type="application/javascript"
-          src="{% static 'streamwebs/js/data.js' %}"></script>
-{% endblock %}
-
 {% block content %}
   {% if added %}
     <strong>{% trans "Success!" %}</strong>
@@ -392,4 +387,9 @@
       {% endif %}
     </form>
   </div>
+{% endblock %}
+
+{% block scripts %}
+  <script type="application/javascript"
+          src="{% static 'streamwebs/js/data.js' %}"></script>
 {% endblock %}

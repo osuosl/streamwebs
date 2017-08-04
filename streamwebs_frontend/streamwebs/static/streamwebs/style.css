@@ -15,164 +15,124 @@ p {
     background: #b9dce8;
 }
 
-.title {
-    width: 100%;
-    font-size: 3em;
-    font-weight: bolder;
-    text-align: center;
-    display: inline-block;
-    line-height: 2.5em;
-}
 
+/* Base.html styling */
 html,
 body {
+    font-family: 'Lato', sans-serif;
     width: 100%;
-    height: 100%;
-
     overflow: auto;
     background-color: #fafafa;
 }
 
-.page-wrap {
-    position: relative;
-    width: 100%;
-    min-height: 100%;
-    background: url("images/bg-main.png") no-repeat fixed;
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Montserrat', sans-serif;
 }
 
-.header {
-    width: 74%;
-    height: 240px;
+div.page-wrap {
+    position: relative;
+    width: 100%;
+    background: url("images/streamrocks.png") no-repeat fixed;
+    background-size: 100%;
+}
+
+div.header {
+    width: 100%;
+    height: 200px;
     margin-left: auto;
     margin-right: auto;
     position: relative;
     z-index: 1;
 }
 
-.header > .logo {
+div.header > a.logo {
     position: absolute;
-    bottom: 20px;
-    left: 10%;
-}
-
-.header-img {
-    position: absolute;
-    left: 13%;
-    top: 0;
-    width: 86%;
-    height: 420px;
-    background: url("images/header-decor.png") no-repeat;
-    background-size: 100% 420px;
-    z-index: 0;
-    pointer-events: none;
-}
-
-#language-button {
-    height: 1.5em;
-    line-height: 1.6em;
-    font-size: 1.2em;
-    padding-left: .5em;
-    padding-right: .5em;
-}
-
-.inner-wrap {
-    width: 74%;
-    min-height: 700px;
-    margin-left: auto;
-    margin-right: auto;
-    padding-bottom: 20px;
-    z-index: 1;
-    position: relative;
-}
-
-.content {
-    padding-left: 15px;
-    padding-right: 15px;
-    z-index: 2;
-}
-
-#map {
-    width: 100%;
-    height: 500px;
-    margin-bottom: 10px;
-}
-
-.search-nav {
-    /* Make the search bar behave as if it were not in a navbar */
-
-    padding: 0 0 0 0 !important;
-    margin-left: 0.75rem !important;
-    margin-right: -0.75rem !important;
-    margin-bottom: 0 !important;
-}
-
-#search {
-    margin-bottom: 0;
-}
-
-/* Search placeholder color */
-::-webkit-input-placeholder { /* WebKit, Blink, Edge */
-    color: #fff;
-}
-
-:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-   color: #fff;
-   opacity: 1;
-}
-
-::-moz-placeholder { /* Mozilla Firefox 19+ */
-   color: #fff;
-   opacity: 1;
-}
-
-:-ms-input-placeholder { /* Internet Explorer 10-11 */
-   color: #fff;
-}
-
-.search-results {
-    margin-top: 0;
-    position: absolute;
-    z-index: 10;
-    width: 100%;
+    bottom: 50px;
+    left: 40px;
 }
 
 nav {
-    margin-bottom: 25px;
     box-shadow: unset;
 }
 
-nav a.btn,
-nav ul#languages {
-    margin-left: 10px;
+nav#navbar {
+    font-family: 'Source Sans Pro', sans-serif;
+    margin-bottom: 0px;
+    height: 66px;
+    width: 100%;
+    background: white;
 }
 
-.brand-logo a {
-    color: inherit;
+nav#navbar div#nav-container {
+    background: white;
+    height: 66px;
+    width: 100%;
+    border-bottom: 2px white solid;
+    transition: border 300ms linear 0s;
 }
 
-.nav-wrapper i {
-    line-height: 36px !important;
+nav#navbar div#nav-logo {
+    color: black; /* Used for h3, can be taken out */
+    height: 64px;
+    width: 250px;
+    float: left;
+    display: none;
 }
 
-#date {
-    margin-bottom: 5px;
+div.nav-float {
+    position: fixed;
+    top: 0px;
+    z-index: 10;
+    border-bottom: 2px #95A5A6 solid !important;
 }
 
-.rowchk {
-    margin-top: 23px;
+.inner-wrap {
+    width: 100%;
+    min-width: 768px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 300px;
+    padding: 25px 0px 80px 0px;
+    position: relative;
+    z-index: 3;
 }
 
-.rowchk > label {
-    margin-right: 15px;
+.content {
+    z-index: 4;
 }
 
-.data-table td {
-    font-weight: bold;
+footer {
+    width: 100%;
+    height: 300px;
+    position: fixed;
+    z-index: 1;
+    bottom: 0px;
+    background: url("images/streamrocks.png") no-repeat fixed;
 }
 
-.form-cell {
-    min-width: 300px;
+footer:hover > div#filter {
+    background: rgba(0, 0, 0, 0.55);
 }
+
+div#filter {
+    width: 100%;
+    height: 300px;
+    position: relative;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 1;
+    transition: background 0.3s linear 0s;
+}
+
+div#footer {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    z-index: 1;
+    color: white;
+}
+
+
+
 
 /* CSS for D3 graphs; ALL FREE TO BE CHANGED */
 .graph {
@@ -260,14 +220,81 @@ i {
     margin-bottom: 0;
 }
 
-.tutorial-th {
-  font-size: 24px;
+
+
+/* Genral styling for all sites */
+
+/* Search placeholder color */
+::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color: white;
 }
 
-#site_detail_image{
-  width: 400px;
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color: white;
+    opacity: 1;
 }
 
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color: white;
+    opacity: 1;
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: white;
+}
+
+.search-results {
+    margin-top: 0px;
+    position: absolute;
+    z-index: 10;
+    width: 100%;
+}
+
+div.center-content {
+    text-align: center;
+}
+
+.errorlist {
+    color: #D35400;
+}
+
+strong.message {
+    color: #D35400;
+}
+
+.material-icons {
+    font-size: 1.5em;
+}
+
+.brand-logo a {
+    color: inherit;
+}
+
+.nav-wrapper i {
+    line-height: 36px;
+}
+
+#date {
+    margin-bottom: 5px;
+}
+
+<<<<<<< HEAD
 #detail_map{
   height: 266.017px;
+=======
+.rowchk {
+    margin-top: 23px;
+}
+
+.rowchk > label {
+    margin-right: 15px;
+}
+
+.data-table td {
+    font-weight: bold;
+}
+
+.form-cell {
+    min-width: 300px;
+>>>>>>> fecb416c2d47a16db7fd04caf392b1f2c50057cc
 }
