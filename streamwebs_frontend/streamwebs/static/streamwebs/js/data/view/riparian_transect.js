@@ -4,7 +4,7 @@ var dataKeys = ['conifers', 'hardwoods', 'shrubs'];
 
 // Properties of the graph
 var barColor = ['#F73A23','#A14728', '#65B239'];
-var margin = {top: 16, right: 16, bottom:30, left:28};
+var margin = {top: 16, right: 16, bottom:50, left:28};
 var dimension = {
     maxWidth: 800,
     HtoWRatio: 0.6,
@@ -67,11 +67,12 @@ var createGraph = function createGraph() {
                 .range(getZoneRange(graphWidth));
 
     var y = d3.scaleLinear()
-                .domain([0, getXMax()])
+                .domain([0, getYMax()])
                 .range([graphHeight - dimension.xAxisHeight, 0]);
 
     createAxis(graph, graphWidth, graphHeight, xBackground, x, y);
     createBars(graph, graphWidth, graphHeight, y);
+    createLabels(graph, graphWidth, graphHeight);
     createLegends(legendsContainer);
 }
 
@@ -125,7 +126,7 @@ var getZoneRange = function getZoneRange(graphWidth) {
     return rangeArr;
 }
 
-var getXMax = function getXMax() {
+var getYMax = function getYMax() {
     // Get the max number of zones data to set up y axis range
     var max = 0;
     zonesData.forEach(function(zone) {
@@ -164,6 +165,13 @@ var createBars = function createBars(graphContainer, graphWidth, graphHeight, yS
                 return i * barWidth + (i + 1) * dimension.graphBarMargin;
             })
             .attr('y', function(d, i) { return yScale(d.value); });
+}
+
+var createLabels = function createLabels(graphContainer, graphWidth, graphHeight) {
+    graphContainer.append("text")
+      .attr("text-anchor", "middle")
+      .attr("transform", "translate("+ (graphWidth/2 + 40) + ", " + (graphHeight + 50) +")")
+      .text("Zones (Interval of 20 feet)");
 }
 
 var createLegends = function createlegends(legendsContainer) {
