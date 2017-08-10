@@ -53,12 +53,13 @@
     }
   </style>
 
-  {% if messages %}
-    {% for message in messages %}
-    <strong>{{ message }}</strong>
-    {% endfor %}
-  {% endif %}
   <div class="container">
+    {% if messages %}
+      {% for message in messages %}
+      <strong>{{ message }}</strong>
+      {% endfor %}
+    {% endif %}
+    
     <div class="container">
       <h3 align="center">
         <a href="{% url 'streamwebs:site' site.site_slug %}">

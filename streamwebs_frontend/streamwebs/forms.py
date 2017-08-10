@@ -160,7 +160,7 @@ class WQSampleFormReadOnly(WQSampleForm):
 class Canopy_Cover_Form(forms.ModelForm):
     class Meta:
         model = Canopy_Cover
-        fields = ('school', 'date_time', 'weather', 'est_canopy_cover',
+        fields = ('date_time', 'weather', 'est_canopy_cover',
                   'north_cc', 'west_cc', 'east_cc', 'south_cc')
 
 

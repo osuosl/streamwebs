@@ -663,16 +663,17 @@ def canopy_cover_edit(request, site_slug):
     """
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     canopy_cover = Canopy_Cover()
+    userprofile = request.user.userprofile
+    school = School.objects.filter(active=True).get(userprofile=userprofile)
 
     if request.method == 'POST':
         canopy_cover_form = Canopy_Cover_Form(data=request.POST)
 
         if (canopy_cover_form.is_valid()):
-
             canopy_cover = canopy_cover_form.save()
             canopy_cover.site = site
+            canopy_cover.school = school
             canopy_cover.save()
-
             messages.success(
                 request,
                 'You have successfully added a new canopy cover ' +
