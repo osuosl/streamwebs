@@ -86,11 +86,10 @@ class UserProfileForm(forms.ModelForm):
 
 
 class MacroinvertebratesForm(forms.ModelForm):
-    school = forms.ModelChoiceField(queryset=School.objects.all())
 
     class Meta:
         model = Macroinvertebrates
-        fields = ('school', 'date_time', 'weather', 'time_spent',
+        fields = ('date_time', 'weather', 'time_spent',
                   'num_people', 'water_type', 'caddisfly', 'mayfly',
                   'riffle_beetle', 'stonefly', 'water_penny', 'dobsonfly',
                   'clam_or_mussel', 'crane_fly', 'crayfish',

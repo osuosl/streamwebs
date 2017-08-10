@@ -518,19 +518,22 @@ def macroinvertebrate_edit(request, site_slug):
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     added = False
     macro_form = MacroinvertebratesForm()
+    userprofile = request.user.userprofile
+    school = School.objects.filter(active=True).get(userprofile=userprofile)
 
     # the following are the form's fields broken up into chunks to
     # facilitate CSS manipulation in the template
-    intolerant = list(macro_form)[6:12]
-    somewhat = list(macro_form)[12:21]
-    tolerant = list(macro_form)[21:27]
+    intolerant = list(macro_form)[5:11]
+    somewhat = list(macro_form)[11:20]
+    tolerant = list(macro_form)[20:28]
 
     if request.method == 'POST':
         macro_form = MacroinvertebratesForm(data=request.POST)
-
+        print(macro_form.errors)
         if macro_form.is_valid():
             macro = macro_form.save(commit=False)
             macro.site = site
+            macro.school = school
             macro.save()
             added = True
             messages.success(

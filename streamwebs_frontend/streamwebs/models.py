@@ -704,11 +704,11 @@ class Macroinvertebrates(models.Model):
                              limit_choices_to={'active': True})
     time_spent = models.PositiveIntegerField(
         default=None, null=True,
-        verbose_name=_('time spent sorting/identifying')
+        verbose_name=_('Time spent sorting/identifying')
         )
     num_people = models.PositiveIntegerField(
         default=None, null=True,
-        verbose_name=_('# of people sorting/identifying')
+        verbose_name=_('Number of people sorting/identifying')
         )
     water_type = models.CharField(max_length=4, verbose_name=_('water type'),
                                   choices=WATER_TYPE_CHOICES, default=None)

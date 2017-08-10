@@ -12,7 +12,7 @@
         <strong>{{ message }}</strong>
       {% endfor %}
     {% endif %}
-    
+
     <h3 align="center">
       <a href="{% url 'streamwebs:site' site.site_slug %}">
         {{ site.site_name }}
@@ -28,7 +28,7 @@
           <p>{% trans "Water quality" %}: {{ rating }}</p>
       </div>
       <div class="col s6">
-          <p>{% trans "# of people sorting/identifying" %}: {{ data.num_people }}</p>
+          <p>{% trans "Number of people sorting/identifying" %}: {{ data.num_people }}</p>
       </div>
       <div class="col s6">
           <p>{% trans "Water type" %}: {{ data.get_water_type_display }}</p>
