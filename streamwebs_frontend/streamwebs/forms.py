@@ -203,14 +203,13 @@ class BaseZoneInlineFormSet(BaseInlineFormSet):
 
 
 class RiparianTransectForm(forms.ModelForm):
-    school = forms.ModelChoiceField(queryset=School.objects.all())
 
     class Meta:
         model = RiparianTransect
         widgets = {
             'notes': forms.Textarea(attrs={'class': 'materialize-textarea'})
         }
-        fields = ('school', 'date_time', 'weather', 'slope', 'notes')
+        fields = ('date_time', 'weather', 'slope', 'notes')
 
 
 class PhotoPointImageForm(forms.ModelForm):

@@ -601,6 +601,8 @@ def riparian_transect_edit(request, site_slug):
         extra=5,
         formset=BaseZoneInlineFormSet
     )
+    userprofile = request.user.userprofile
+    school = School.objects.filter(active=True).get(userprofile=userprofile)
 
     if request.method == 'POST':
         # process the zone formset
@@ -615,6 +617,7 @@ def riparian_transect_edit(request, site_slug):
             zones = zone_formset.save(commit=False)     # save forms to objs
             transect = transect_form.save()             # save form to object
             transect.site = site
+            transect.school = school
             transect.save()                             # save object
 
             for index, zone in enumerate(zones):        # for each zone,
