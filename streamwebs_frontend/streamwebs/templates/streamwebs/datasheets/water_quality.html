@@ -34,6 +34,7 @@
         <strong>{{ message }}</strong>
         {% endfor %}
     {% endif %}
+
     <h3 align="center">
       <a href="{% url 'streamwebs:site' site.site_slug %}">
         {{ site.site_name }}
@@ -47,21 +48,21 @@
         <div class="row">
           <div class="col s12">
             <div class="input-field">
-              <label
-                  for="{{ wq_form.date.id_for_label }}">{{ wq_form.date.label }}</label>
+              {{ wq_form.school.label }}
 
-              {{ wq_form.date.errors | striptags }}
-              {{ wq_form.date }}
+              {{ wq_form.school.errors | striptags }}
+              {{ wq_form.school }}
             </div>
           </div>
         </div>
         <div class="row">
           <div class="col s6">
             <div class="input-field">
-              {{ wq_form.school.label }}
+              <label
+                  for="{{ wq_form.date.id_for_label }}">{{ wq_form.date.label }}</label>
 
-              {{ wq_form.school.errors | striptags }}
-              {{ wq_form.school }}
+              {{ wq_form.date.errors | striptags }}
+              {{ wq_form.date }}
             </div>
           </div>
           <div class="col s6">

@@ -529,7 +529,6 @@ def macroinvertebrate_edit(request, site_slug):
 
     if request.method == 'POST':
         macro_form = MacroinvertebratesForm(data=request.POST)
-        print(macro_form.errors)
         if macro_form.is_valid():
             macro = macro_form.save(commit=False)
             macro.site = site
@@ -864,6 +863,8 @@ def add_photo_point(request, site_slug, cp_id):
     cp = CameraPoint.objects.get(id=cp_id)
     photo_point = PhotoPoint()
     photo_point.camera_point = cp
+    userprofile = request.user.userprofile
+    school = School.objects.filter(active=True).get(userprofile=userprofile)
 
     PPImageInlineFormset = inlineformset_factory(
         PhotoPoint, PhotoPointImage,
@@ -880,6 +881,7 @@ def add_photo_point(request, site_slug, cp_id):
             photo_point.camera_point = cp
             # use parent camera point date
             photo_point.pp_date = cp.cp_date
+            photo_point.school = school
             photo_point.save()
 
             pp_images = ppi_formset.save(commit=False)
@@ -951,6 +953,8 @@ def water_quality_edit(request, site_slug):
         max_num=4, min_num=4,
         extra=4      # always return exactly 4 samples
     )
+    userprofile = request.user.userprofile
+    school = School.objects.filter(active=True).get(userprofile=userprofile)
 
     if request.method == 'POST':
         sample_formset = WQInlineFormSet(
@@ -960,6 +964,7 @@ def water_quality_edit(request, site_slug):
         if (sample_formset.is_valid() and wq_form.is_valid()):
             water_quality = wq_form.save()   # save form to object
             water_quality.site = site
+            water_quality.school = school
             water_quality.save()             # save object to db
             allSamples = sample_formset.save(commit=False)
             for sample in allSamples:
