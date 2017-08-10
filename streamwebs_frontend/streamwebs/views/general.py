@@ -986,9 +986,10 @@ def soil_survey(request, site_slug, data_id):
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     soil_data = Soil_Survey.objects.get(id=data_id)
     soil_form = SoilSurveyFormReadOnly(instance=soil_data)
+    school = soil_data.school
     return render(
         request, 'streamwebs/datasheets/soil_view.html', {
-            'soil_form': soil_form, 'site': site
+            'soil_form': soil_form, 'site': site, 'school': school
         }
     )
 
@@ -1000,6 +1001,8 @@ def soil_survey_edit(request, site_slug):
     """
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     soil_form = SoilSurveyForm()
+    userprofile = request.user.userprofile
+    school = School.objects.filter(active=True).get(userprofile=userprofile)
 
     if request.method == 'POST':
         soil_form = SoilSurveyForm(data=request.POST)
@@ -1007,6 +1010,7 @@ def soil_survey_edit(request, site_slug):
         if soil_form.is_valid():
             soil = soil_form.save(commit=False)
             soil.site = site
+            soil.school = school
             soil.save()
             messages.success(
                 request, 'You have successfully submitted a new soil survey.'

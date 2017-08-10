@@ -269,7 +269,7 @@ class SoilSurveyForm(forms.ModelForm):
                 forms.Textarea(attrs={'class': 'materialize-textarea'})
         }
         fields = (
-            'school', 'date', 'weather', 'landscape_pos', 'cover_type',
+            'date', 'weather', 'landscape_pos', 'cover_type',
             'land_use', 'soil_type', 'distance', 'site_char'
         )
 

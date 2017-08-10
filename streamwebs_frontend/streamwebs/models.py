@@ -1076,7 +1076,7 @@ class Soil_Survey(models.Model):
                                 choices=land_use_choices)
 
     distance = models.DecimalField(max_digits=5, decimal_places=2, null=True,
-                                   verbose_name=_('distance from stream'))
+                                   verbose_name=_('distance from stream (ft)'))
     site_char = models.TextField(blank=True,
                                  verbose_name=_('distinguishing site \
                                  characteristics'))

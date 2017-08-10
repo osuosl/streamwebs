@@ -18,23 +18,15 @@
       <h4 align="center">{% trans "New Riparian Soil Survey" %}</h4>
       <form id='soil_from' method='post' action='{{ request.path }}'>
         {% csrf_token %}
-
+        <br/>
         <div class="row">
-          <div class="col s6">
-            <div class="input-field">
-              <p>{{ soil_form.school.label }}</p>
-              <p>{{ soil_form.school.errors | striptags }}</p>
-              <p>{{ soil_form.school }}</p>
-            </div>
-          </div>
-
           <div class="col s6">
             <p>{{ soil_form.date.label }}</p>
             <p>{{ soil_form.date.errors | striptags }}</p>
             <p>{{ soil_form.date }}</p>
           </div>
 
-          <div class="col s12">
+          <div class="col s6">
             <p>{{ soil_form.weather.label }}</p>
             <p>{{ soil_form.weather.errors | striptags }}</p>
             <p>{{ soil_form.weather }}</p>
