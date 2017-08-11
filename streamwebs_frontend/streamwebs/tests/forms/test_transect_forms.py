@@ -33,23 +33,13 @@ class RiparianTransectFormTestCase(TestCase):
 
     def setUp(self):
         self.expected_fields = (
-            'school',
             'date_time',
             'weather',
             'slope',
             'notes',
         )
 
-        self.required_fields = (
-            'school',
-        )
-
     def test_form_fields_exist(self):
         transect_form = RiparianTransectForm()
         self.assertEqual(set(transect_form.Meta.fields),
                          set(self.expected_fields))
-
-    def test_required_fields(self):
-        transect_form = RiparianTransectForm()
-        for field in self.required_fields:
-            self.assertEqual(transect_form.base_fields[field].required, True)

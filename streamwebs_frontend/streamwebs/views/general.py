@@ -518,8 +518,12 @@ def macroinvertebrate_edit(request, site_slug):
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     added = False
     macro_form = MacroinvertebratesForm()
-    userprofile = request.user.userprofile
-    school = School.objects.filter(active=True).get(userprofile=userprofile)
+
+    school = None
+    if hasattr(request.user, 'userprofile'):
+        userprofile = request.user.userprofile
+        school = School.objects.filter(active=True) \
+            .get(userprofile=userprofile)
 
     # the following are the form's fields broken up into chunks to
     # facilitate CSS manipulation in the template
@@ -603,8 +607,12 @@ def riparian_transect_edit(request, site_slug):
         extra=5,
         formset=BaseZoneInlineFormSet
     )
-    userprofile = request.user.userprofile
-    school = School.objects.filter(active=True).get(userprofile=userprofile)
+
+    school = None
+    if hasattr(request.user, 'userprofile'):
+        userprofile = request.user.userprofile
+        school = School.objects.filter(active=True) \
+            .get(userprofile=userprofile)
 
     if request.method == 'POST':
         # process the zone formset
@@ -668,8 +676,12 @@ def canopy_cover_edit(request, site_slug):
     """
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     canopy_cover = Canopy_Cover()
-    userprofile = request.user.userprofile
-    school = School.objects.filter(active=True).get(userprofile=userprofile)
+
+    school = None
+    if hasattr(request.user, 'userprofile'):
+        userprofile = request.user.userprofile
+        school = School.objects.filter(active=True) \
+            .get(userprofile=userprofile)
 
     if request.method == 'POST':
         canopy_cover_form = Canopy_Cover_Form(data=request.POST)
@@ -726,8 +738,12 @@ def add_camera_point(request, site_slug):
     """Add new CP to site + 3 PPs and respective photos"""
     site = Site.objects.get(site_slug=site_slug)
     camera = CameraPoint()
-    userprofile = request.user.userprofile
-    school = School.objects.filter(active=True).get(userprofile=userprofile)
+
+    school = None
+    if hasattr(request.user, 'userprofile'):
+        userprofile = request.user.userprofile
+        school = School.objects.filter(active=True) \
+            .get(userprofile=userprofile)
 
     PhotoPointInlineFormset = inlineformset_factory(  # photo point formset (3)
         CameraPoint, PhotoPoint,
@@ -954,8 +970,12 @@ def water_quality_edit(request, site_slug):
         max_num=4, min_num=4,
         extra=4      # always return exactly 4 samples
     )
-    userprofile = request.user.userprofile
-    school = School.objects.filter(active=True).get(userprofile=userprofile)
+
+    school = None
+    if hasattr(request.user, 'userprofile'):
+        userprofile = request.user.userprofile
+        school = School.objects.filter(active=True) \
+            .get(userprofile=userprofile)
 
     if request.method == 'POST':
         sample_formset = WQInlineFormSet(
@@ -1014,8 +1034,12 @@ def soil_survey_edit(request, site_slug):
     """
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     soil_form = SoilSurveyForm()
-    userprofile = request.user.userprofile
-    school = School.objects.filter(active=True).get(userprofile=userprofile)
+
+    school = None
+    if hasattr(request.user, 'userprofile'):
+        userprofile = request.user.userprofile
+        school = School.objects.filter(active=True) \
+            .get(userprofile=userprofile)
 
     if request.method == 'POST':
         soil_form = SoilSurveyForm(data=request.POST)

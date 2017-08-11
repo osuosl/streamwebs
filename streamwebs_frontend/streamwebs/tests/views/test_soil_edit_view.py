@@ -28,8 +28,6 @@ class AddSoilSurveyTestCase(TestCase):
                 kwargs={'site_slug': site.site_slug}
             ), {}
         )
-        self.assertFormError(response, 'soil_form', 'school',
-                             'This field is required.')
         self.assertTemplateUsed(response,
                                 'streamwebs/datasheets/soil_edit.html')
 
