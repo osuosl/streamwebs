@@ -544,6 +544,8 @@ class CameraPoint(models.Model):
     letter = models.CharField(null=True, max_length=5, editable=False)
     cp_date = models.DateField(default=datetime.date.today,
                                verbose_name=_('date established'))
+    school = models.ForeignKey(School, null=True, on_delete=models.CASCADE,
+                               verbose_name=_('school'))
     location = models.PointField(null=True, verbose_name=_('location'))
     map_datum = models.CharField(max_length=255, blank=True,
                                  verbose_name=_('map datum'))

@@ -18,9 +18,11 @@
           {{ site.site_name }}
         </a>: {% trans "Camera Point" %} {{ cp.letter }}
       </h3>
+
+      <p><b>{% trans "School" %}:</b> {{ cp.school }}</p>
       <p><b>{% trans "Date established" %}:</b> {{ cp.cp_date|date:"m-d-Y" }}
       </p>
-      <p><b>{% trans "Location" %}:</b> {{ cp.location }}</p>
+      <p><b>{% trans "Location" %}:</b> {{ cp.location.x }}</p>
       <p><b>{% trans "Map datum" %}:</b> {{ cp.map_datum }} </p>
       <p><b>{% trans "Description" %}:</b> {{ cp.description }}</p>
     </div>

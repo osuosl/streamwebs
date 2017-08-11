@@ -151,7 +151,7 @@ def site(request, site_slug):
     for x in ppm_sheets:
         ppm_data = {'id': x['id'], 'uri': 'camera', 'type': 'Camera Point',
                     'date': x['cp_date']}
-        if 'school_id' in x and x['school_id']:
+        if 'school_id' in x and x['school_id'] is not None:
             ppm_data['school_id'] = x['school_id']
         else:
             ppm_data['school_id'] = -1
@@ -726,6 +726,9 @@ def add_camera_point(request, site_slug):
     """Add new CP to site + 3 PPs and respective photos"""
     site = Site.objects.get(site_slug=site_slug)
     camera = CameraPoint()
+    userprofile = request.user.userprofile
+    school = School.objects.filter(active=True).get(userprofile=userprofile)
+
     PhotoPointInlineFormset = inlineformset_factory(  # photo point formset (3)
         CameraPoint, PhotoPoint,
         form=PhotoPointForm,
@@ -765,6 +768,7 @@ def add_camera_point(request, site_slug):
         if (camera_form.is_valid() and pp_formset.is_valid() and
                 ppi_formset.is_valid()):
             camera = camera_form.save()
+            camera.school = school
             camera.save()
 
             photo_points = pp_formset.save(commit=False)
@@ -863,8 +867,6 @@ def add_photo_point(request, site_slug, cp_id):
     cp = CameraPoint.objects.get(id=cp_id)
     photo_point = PhotoPoint()
     photo_point.camera_point = cp
-    userprofile = request.user.userprofile
-    school = School.objects.filter(active=True).get(userprofile=userprofile)
 
     PPImageInlineFormset = inlineformset_factory(
         PhotoPoint, PhotoPointImage,
@@ -881,7 +883,6 @@ def add_photo_point(request, site_slug, cp_id):
             photo_point.camera_point = cp
             # use parent camera point date
             photo_point.pp_date = cp.cp_date
-            photo_point.school = school
             photo_point.save()
 
             pp_images = ppi_formset.save(commit=False)
