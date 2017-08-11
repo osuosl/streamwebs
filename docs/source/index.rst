@@ -11,6 +11,7 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
+   about.rst
    usage.rst
    outline.rst
    dev_docs.rst
