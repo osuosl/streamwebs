@@ -24,7 +24,8 @@
         {% trans "Password:" %}<input type='password' name='password' value=''
                                       size='50'/>
         <br/>
-
+        <a href="{% url 'password_reset' %}">Forgot your password?</a>
+        <br/><br/>
         <input class="btn waves-effect waves-light teal darken-4" type='submit'
                name='submit' value='{% trans "Log in" %}'/>
 
