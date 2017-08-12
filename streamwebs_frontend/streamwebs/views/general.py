@@ -61,7 +61,7 @@ def create_site(request):
             site.save()
             created = True
             messages.success(request,
-                             'You have successfully added a new site.')
+                             _('You have successfully added a new site.'))
             return redirect(reverse('streamwebs:site',
                             kwargs={'site_slug': site.site_slug}))
 
@@ -237,7 +237,7 @@ def update_site(request, site_slug):
                 site.modified = timezone.now()
                 site.save()
 
-            messages.success(request, 'You have successfully updated ' +
+            messages.success(request, _('You have successfully updated ') +
                              site.site_name + '.')
             return redirect(reverse('streamwebs:site',
                                     kwargs={'site_slug': site.site_slug}))
@@ -389,7 +389,7 @@ def user_login(request):
         # login while remembering which page to redirect them to if they login
         # successfully this time
         else:
-            messages.error(request, 'Invalid username or password.')
+            messages.error(request, _('Invalid username or password.'))
             return redirect(reverse(
                                 'streamwebs:login') + '?next=' + redirect_to)
 
@@ -541,7 +541,7 @@ def macroinvertebrate_edit(request, site_slug):
             added = True
             messages.success(
                 request,
-                'You have successfully added a new macroinvertebrates ' +
+                _('You have successfully added a new macroinvertebrates ') +
                 'data sheet.')
             return redirect(reverse('streamwebs:macroinvertebrate_view',
                             kwargs={'site_slug': site.site_slug,
@@ -637,7 +637,7 @@ def riparian_transect_edit(request, site_slug):
 
             messages.success(
                 request,
-                'You have successfully added a new riparian transect ' +
+                _('You have successfully added a new riparian transect ') +
                 'data sheet.')
 
             return redirect(reverse('streamwebs:riparian_transect',
@@ -693,7 +693,7 @@ def canopy_cover_edit(request, site_slug):
             canopy_cover.save()
             messages.success(
                 request,
-                'You have successfully added a new canopy cover ' +
+                _('You have successfully added a new canopy cover ') +
                 'data sheet.')
 
             return redirect(reverse('streamwebs:canopy_cover',
@@ -803,7 +803,7 @@ def add_camera_point(request, site_slug):
 
             messages.success(
                 request,
-                'You have successfully added a new camera point.')
+                _('You have successfully added a new camera point.'))
 
             return redirect(reverse('streamwebs:camera_point',
                                     kwargs={'site_slug': site.site_slug,
@@ -855,8 +855,8 @@ def view_pp_and_add_img(request, site_slug, cp_id, pp_id):
                 else:
                     messages.add_message(
                         request, messages.INFO,
-                        'A photo from that date already exists for this photo \
-                        point.',
+                        _('A photo from that date already exists for this photo \
+                        point.'),
                     )
     else:
         ppi_formset = PPImageModelFormset(
@@ -909,7 +909,7 @@ def add_photo_point(request, site_slug, cp_id):
 
             messages.success(
                 request,
-                'You have successfully added a new camera point.')
+                _('You have successfully added a new camera point.'))
 
             return redirect(reverse('streamwebs:photo_point',
                                     kwargs={'site_slug': site.site_slug,
@@ -993,7 +993,7 @@ def water_quality_edit(request, site_slug):
                 sample.save()
             messages.success(
                 request,
-                'You have successfully added a new water quality ' +
+                _('You have successfully added a new water quality ') +
                 'data sheet.')
             return redirect(reverse('streamwebs:water_quality',
                             kwargs={'site_slug': site.site_slug,
@@ -1050,7 +1050,8 @@ def soil_survey_edit(request, site_slug):
             soil.school = school
             soil.save()
             messages.success(
-                request, 'You have successfully submitted a new soil survey.'
+                request,
+                _('You have successfully submitted a new soil survey.')
             )
             return redirect(reverse('streamwebs:soil',
                             kwargs={'site_slug': site.site_slug,
@@ -1224,7 +1225,7 @@ def resources_upload(request):
                     res.save()
                     messages.success(
                         request,
-                        'You have successfully uploaded a new tutorial video'
+                        _('Tutorial video successfully uploaded')
                     )
                     return redirect(reverse(
                         'streamwebs:resources-tutorial_videos'))
@@ -1232,8 +1233,8 @@ def resources_upload(request):
                     # otherwise, tell the admin that the video is no good
                     messages.error(
                         request,
-                        'Sorry, that video type is unacceptable.'
-                        + 'Please upload a .mp4, .webm, or .ogg'
+                        _('Sorry, that video type is unacceptable.')
+                        + _('Please upload a .mp4, .webm, or .ogg')
                     )
                     return redirect(reverse(
                         'streamwebs:resources-tutorial_videos'))
@@ -1242,7 +1243,7 @@ def resources_upload(request):
                 res.save()
                 messages.success(
                     request,
-                    'You have successfully uploaded a new data sheet resource.'
+                    _('Data sheet successfully uploaded a new data sheet.')
                 )
                 return redirect(reverse('streamwebs:resources-data-sheets'))
             elif res_form.cleaned_data['res_type'] == 'publication':
@@ -1250,7 +1251,7 @@ def resources_upload(request):
                 res.save()
                 messages.success(
                     request,
-                    'You have successfully uploaded a new publication.'
+                    _('Publication successfully uploaded.')
                 )
                 return redirect(reverse('streamwebs:resources-publications'))
     return render(
@@ -1283,18 +1284,18 @@ def admin_user_promotion(request):
                 if action == 'add_admin':
                     user.groups.add(admins)
                     msgs.append(
-                        '%s was added to the Admin group.' % user.username)
+                        _('%s added to the Admin group.' % user.username))
 
                 elif action == 'del_admin':
                     user.groups.remove(admins)
                     msgs.append(
-                        '%s was removed from the Admin group.' % user.username)
+                        _('%s removed from the Admin group.' % user.username))
 
                 elif action == 'add_stats':
                     user.user_permissions.add(can_view_stats)
                     msgs.append(
-                        '%s was granted permission to view Statistics.'
-                        % user.username)
+                        _('%s granted permission to view Statistics.'
+                          % user.username))
 
                 elif action == 'del_stats':
                     # if they're an admin,
@@ -1311,14 +1312,14 @@ def admin_user_promotion(request):
                         user.user_permissions.remove(can_view_stats)
 
                     msgs.append(
-                        '%s was revoked the permission to view Statistics.'
-                        % user.username)
+                        _('%s was revoked the permission to view Statistics.'
+                          % user.username))
 
                 elif action == 'add_upload':
                     user.user_permissions.add(can_upload_resources)
                     msgs.append(
-                        '%s was granted permission to upload resources.'
-                        % user.username)
+                        _('%s was granted permission to upload resources.'
+                          % user.username))
 
                 elif action == 'del_upload':
                     if user.groups.filter(name='admin').exists():
@@ -1330,8 +1331,8 @@ def admin_user_promotion(request):
                         user.user_permissions.remove(can_upload_resources)
 
                     msgs.append(
-                        '%s was revoked the permission to upload resources.'
-                        % user.username)
+                        _('%s was revoked the permission to upload resources.'
+                          % user.username))
 
     all_users = User.objects.all()
     user_info = dict()

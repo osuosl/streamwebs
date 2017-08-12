@@ -34,9 +34,9 @@ class AdminPromoTestCase(TestCase):
         self.regAdmin.groups.add(self.admins)
 
         # flash message strings
-        self.add_admin_msg = ' was added to the Admin group.'
-        self.del_admin_msg = ' was removed from the Admin group.'
-        self.add_stats_msg = ' was granted permission to view Statistics.'
+        self.add_admin_msg = ' added to the Admin group.'
+        self.del_admin_msg = ' removed from the Admin group.'
+        self.add_stats_msg = ' granted permission to view Statistics.'
         self.del_stats_msg = ' was revoked the permission to view Statistics.'
         self.add_upload_msg = ' was granted permission to upload resources.'
         self.del_upload_msg = (

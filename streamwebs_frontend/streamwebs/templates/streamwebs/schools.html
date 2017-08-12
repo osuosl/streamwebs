@@ -1,8 +1,9 @@
 {% extends "streamwebs/base.html" %}
 {% load staticfiles %}
-{% block title %}Schools - StreamWebs{% endblock %}
 {% load i18n %}
 {% load filters %}
+
+{% block title %}{% trans "Schools - StreamWebs" %}{% endblock %}
 
 {% block head %}
   <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css">
@@ -16,9 +17,9 @@
     <table id="schools_table" class="display">
       <thead>
         <tr>
-          <th>School</th>
-          <th>Type</th>
-          <th>City</th>
+          <th>{% trans "School" %}</th>
+          <th>{% trans "Type" %}</th>
+          <th>{% trans "City" %}</th>
         </tr>
       </thead>
       <tbody>

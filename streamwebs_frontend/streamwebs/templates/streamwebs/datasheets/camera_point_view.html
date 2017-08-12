@@ -50,7 +50,7 @@
                   <li>{% trans "Established" %}: {{ pp.pp_date|date:"m-d-Y" }}</li>
                   {% for pp_num, img_set in pp_images.items %}
                     {% if pp_num == pp.number %}
-                      <li>Number of Images: {{ img_set.count }}</li>
+                      <li>{% trans "Number of Images" %}: {{ img_set.count }}</li>
                     {% endif %}
                   {% endfor %}
                   <li>{% trans "Compass bearing" %}: {{ pp.compass_bearing }}</li>

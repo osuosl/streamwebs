@@ -1,7 +1,7 @@
 {% extends "streamwebs/base.html" %}
 {% load staticfiles %}
 {% load i18n %}
-{% block title %}Water Quality - {{ site.site_name }} -{% endblock %}
+{% block title %}{% trans "Water Quality" %} - {{ site.site_name }} -{% endblock %}
 
 {% block body_title %}
   <a href="/sites/{{ site.site_slug }}">{{ site.site_name }}</a>

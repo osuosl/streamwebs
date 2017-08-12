@@ -1,6 +1,6 @@
 {% extends "streamwebs/base.html" %}
 {% load staticfiles %}
-{% block title %}School Detail - StreamWebs{% endblock %}
+{% block title %}{% trans "School Detail - StreamWebs" %}{% endblock %}
 {% load i18n %}
 {% load filters %}
 
@@ -14,7 +14,7 @@
 
   <div class="container">
     <!-- School details: -->
-    <h5>Address:</h5>
+    <h5>{% trans "Address" %}:</h5>
     <p>
       {{ school_data.address }}
       <<br/>>
@@ -25,7 +25,7 @@
     <<br/>>
     <!-- wq table -->
     {% if wq_data %}
-    <center><h5>Water Quality</h5></center>
+    <center><h5>{% trans "Water Quality" %}</h5></center>
       <table id="wq_table" class="display">
         <thead>
           <tr>
@@ -52,7 +52,7 @@
 
     <!-- macroinverti<br/>ates table -->
     {% if mac_data %}
-    <center><h5>Macroinverte<br/>ates</h5></center>
+    <center><h5>{% trans "Macroinvertebrates" %}</h5></center>
       <table id="mac_table" class="display">
         <thead>
           <tr>
@@ -77,7 +77,7 @@
 
     <!-- canopy cover table -->
     {% if can_data %}
-    <center><h5>Canopy Cover</h5></center>
+    <center><h5>{% trans "Canopy Cover" %}</h5></center>
       <table id="can_table" class="display">
         <thead>
           <tr>
@@ -102,7 +102,7 @@
 
     <!-- soil survey table -->
     {% if soil_data %}
-    <center><h5>Soil Survey</h5></center>
+    <center><h5>{% trans "Soil Survey" %}</h5></center>
       <table id="soil_table" class="display">
         <thead>
           <tr>
@@ -127,7 +127,7 @@
 
     <!-- riparrian table -->
     {% if rip_data %}
-    <center><h5>Riparian Transect</h5></center>
+    <center><h5>{% trans "Riparian Transect" %}</h5></center>
       <table id="rip_table" class="display">
         <thead>
           <tr>

@@ -196,8 +196,9 @@ class BaseZoneInlineFormSet(BaseInlineFormSet):
                 blank += 1
 
         if blank == 5:
-            raise forms.ValidationError('At least one zone must have at ' +
-                                        'least one value greater than 0.')
+            raise forms.ValidationError(
+                _('At least one zone must have at least '
+                  + 'one value greater than 0.'))
 
 
 class RiparianTransectForm(forms.ModelForm):
