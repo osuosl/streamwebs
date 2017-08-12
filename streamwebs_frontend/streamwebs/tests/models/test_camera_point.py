@@ -11,6 +11,8 @@ class CameraPointTestCase(TestCase):
 
     def setUp(self):
         self.expected_fields = {
+            'school': models.ForeignKey,
+            'school_id': models.ForeignKey,
             'site': models.ForeignKey,
             'site_id': models.ForeignKey,
             'letter': models.CharField,

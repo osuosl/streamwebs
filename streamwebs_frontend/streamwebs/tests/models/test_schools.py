@@ -22,6 +22,7 @@ class SchoolTestCase(TestCase):
 
             'id': models.AutoField,
             'userprofile': models.ManyToOneRel,
+            'camerapoint': models.ManyToOneRel,
             'water_quality': models.ManyToOneRel,
             'macroinvertebrates': models.ManyToOneRel,
             'ripariantransect': models.ManyToOneRel,

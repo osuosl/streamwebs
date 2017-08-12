@@ -151,7 +151,7 @@ def site(request, site_slug):
     for x in ppm_sheets:
         ppm_data = {'id': x['id'], 'uri': 'camera', 'type': 'Camera Point',
                     'date': x['cp_date']}
-        if 'school_id' in x and x['school_id']:
+        if 'school_id' in x and x['school_id'] is not None:
             ppm_data['school_id'] = x['school_id']
         else:
             ppm_data['school_id'] = -1
@@ -519,18 +519,24 @@ def macroinvertebrate_edit(request, site_slug):
     added = False
     macro_form = MacroinvertebratesForm()
 
+    school = None
+    if hasattr(request.user, 'userprofile'):
+        userprofile = request.user.userprofile
+        school = School.objects.filter(active=True) \
+            .get(userprofile=userprofile)
+
     # the following are the form's fields broken up into chunks to
     # facilitate CSS manipulation in the template
-    intolerant = list(macro_form)[6:12]
-    somewhat = list(macro_form)[12:21]
-    tolerant = list(macro_form)[21:27]
+    intolerant = list(macro_form)[5:11]
+    somewhat = list(macro_form)[11:20]
+    tolerant = list(macro_form)[20:28]
 
     if request.method == 'POST':
         macro_form = MacroinvertebratesForm(data=request.POST)
-
         if macro_form.is_valid():
             macro = macro_form.save(commit=False)
             macro.site = site
+            macro.school = school
             macro.save()
             added = True
             messages.success(
@@ -602,6 +608,12 @@ def riparian_transect_edit(request, site_slug):
         formset=BaseZoneInlineFormSet
     )
 
+    school = None
+    if hasattr(request.user, 'userprofile'):
+        userprofile = request.user.userprofile
+        school = School.objects.filter(active=True) \
+            .get(userprofile=userprofile)
+
     if request.method == 'POST':
         # process the zone formset
         zone_formset = TransectZoneInlineFormSet(
@@ -615,6 +627,7 @@ def riparian_transect_edit(request, site_slug):
             zones = zone_formset.save(commit=False)     # save forms to objs
             transect = transect_form.save()             # save form to object
             transect.site = site
+            transect.school = school
             transect.save()                             # save object
 
             for index, zone in enumerate(zones):        # for each zone,
@@ -664,15 +677,20 @@ def canopy_cover_edit(request, site_slug):
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     canopy_cover = Canopy_Cover()
 
+    school = None
+    if hasattr(request.user, 'userprofile'):
+        userprofile = request.user.userprofile
+        school = School.objects.filter(active=True) \
+            .get(userprofile=userprofile)
+
     if request.method == 'POST':
         canopy_cover_form = Canopy_Cover_Form(data=request.POST)
 
         if (canopy_cover_form.is_valid()):
-
             canopy_cover = canopy_cover_form.save()
             canopy_cover.site = site
+            canopy_cover.school = school
             canopy_cover.save()
-
             messages.success(
                 request,
                 'You have successfully added a new canopy cover ' +
@@ -720,6 +738,13 @@ def add_camera_point(request, site_slug):
     """Add new CP to site + 3 PPs and respective photos"""
     site = Site.objects.get(site_slug=site_slug)
     camera = CameraPoint()
+
+    school = None
+    if hasattr(request.user, 'userprofile'):
+        userprofile = request.user.userprofile
+        school = School.objects.filter(active=True) \
+            .get(userprofile=userprofile)
+
     PhotoPointInlineFormset = inlineformset_factory(  # photo point formset (3)
         CameraPoint, PhotoPoint,
         form=PhotoPointForm,
@@ -759,6 +784,7 @@ def add_camera_point(request, site_slug):
         if (camera_form.is_valid() and pp_formset.is_valid() and
                 ppi_formset.is_valid()):
             camera = camera_form.save()
+            camera.school = school
             camera.save()
 
             photo_points = pp_formset.save(commit=False)
@@ -945,6 +971,12 @@ def water_quality_edit(request, site_slug):
         extra=4      # always return exactly 4 samples
     )
 
+    school = None
+    if hasattr(request.user, 'userprofile'):
+        userprofile = request.user.userprofile
+        school = School.objects.filter(active=True) \
+            .get(userprofile=userprofile)
+
     if request.method == 'POST':
         sample_formset = WQInlineFormSet(
             data=request.POST, instance=Water_Quality()
@@ -953,6 +985,7 @@ def water_quality_edit(request, site_slug):
         if (sample_formset.is_valid() and wq_form.is_valid()):
             water_quality = wq_form.save()   # save form to object
             water_quality.site = site
+            water_quality.school = school
             water_quality.save()             # save object to db
             allSamples = sample_formset.save(commit=False)
             for sample in allSamples:
@@ -986,9 +1019,10 @@ def soil_survey(request, site_slug, data_id):
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     soil_data = Soil_Survey.objects.get(id=data_id)
     soil_form = SoilSurveyFormReadOnly(instance=soil_data)
+    school = soil_data.school
     return render(
         request, 'streamwebs/datasheets/soil_view.html', {
-            'soil_form': soil_form, 'site': site
+            'soil_form': soil_form, 'site': site, 'school': school
         }
     )
 
@@ -1001,12 +1035,19 @@ def soil_survey_edit(request, site_slug):
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     soil_form = SoilSurveyForm()
 
+    school = None
+    if hasattr(request.user, 'userprofile'):
+        userprofile = request.user.userprofile
+        school = School.objects.filter(active=True) \
+            .get(userprofile=userprofile)
+
     if request.method == 'POST':
         soil_form = SoilSurveyForm(data=request.POST)
 
         if soil_form.is_valid():
             soil = soil_form.save(commit=False)
             soil.site = site
+            soil.school = school
             soil.save()
             messages.success(
                 request, 'You have successfully submitted a new soil survey.'

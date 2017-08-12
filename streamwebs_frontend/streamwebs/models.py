@@ -544,6 +544,8 @@ class CameraPoint(models.Model):
     letter = models.CharField(null=True, max_length=5, editable=False)
     cp_date = models.DateField(default=datetime.date.today,
                                verbose_name=_('date established'))
+    school = models.ForeignKey(School, null=True, on_delete=models.CASCADE,
+                               verbose_name=_('school'))
     location = models.PointField(null=True, verbose_name=_('location'))
     map_datum = models.CharField(max_length=255, blank=True,
                                  verbose_name=_('map datum'))
@@ -704,11 +706,11 @@ class Macroinvertebrates(models.Model):
                              limit_choices_to={'active': True})
     time_spent = models.PositiveIntegerField(
         default=None, null=True,
-        verbose_name=_('time spent sorting/identifying')
+        verbose_name=_('Time spent sorting/identifying')
         )
     num_people = models.PositiveIntegerField(
         default=None, null=True,
-        verbose_name=_('# of people sorting/identifying')
+        verbose_name=_('Number of people sorting/identifying')
         )
     water_type = models.CharField(max_length=4, verbose_name=_('water type'),
                                   choices=WATER_TYPE_CHOICES, default=None)
@@ -1076,7 +1078,7 @@ class Soil_Survey(models.Model):
                                 choices=land_use_choices)
 
     distance = models.DecimalField(max_digits=5, decimal_places=2, null=True,
-                                   verbose_name=_('distance from stream'))
+                                   verbose_name=_('distance from stream (ft)'))
     site_char = models.TextField(blank=True,
                                  verbose_name=_('distinguishing site \
                                  characteristics'))

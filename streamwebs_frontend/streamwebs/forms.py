@@ -86,11 +86,10 @@ class UserProfileForm(forms.ModelForm):
 
 
 class MacroinvertebratesForm(forms.ModelForm):
-    school = forms.ModelChoiceField(queryset=School.objects.all())
 
     class Meta:
         model = Macroinvertebrates
-        fields = ('school', 'date_time', 'weather', 'time_spent',
+        fields = ('date_time', 'weather', 'time_spent',
                   'num_people', 'water_type', 'caddisfly', 'mayfly',
                   'riffle_beetle', 'stonefly', 'water_penny', 'dobsonfly',
                   'clam_or_mussel', 'crane_fly', 'crayfish',
@@ -100,7 +99,6 @@ class MacroinvertebratesForm(forms.ModelForm):
 
 
 class WQForm(forms.ModelForm):
-    school = forms.ModelChoiceField(queryset=School.objects.all())
 
     class Meta:
         model = Water_Quality
@@ -112,7 +110,7 @@ class WQForm(forms.ModelForm):
                 forms.Textarea(attrs={'class': 'materialize-textarea'})
         }
         fields = (
-            'date', 'DEQ_dq_level', 'school',
+            'date', 'DEQ_dq_level',
             'latitude', 'longitude', 'fish_present', 'live_fish',
             'dead_fish', 'water_temp_unit', 'air_temp_unit', 'notes'
         )
@@ -160,7 +158,7 @@ class WQSampleFormReadOnly(WQSampleForm):
 class Canopy_Cover_Form(forms.ModelForm):
     class Meta:
         model = Canopy_Cover
-        fields = ('school', 'date_time', 'weather', 'est_canopy_cover',
+        fields = ('date_time', 'weather', 'est_canopy_cover',
                   'north_cc', 'west_cc', 'east_cc', 'south_cc')
 
 
@@ -203,14 +201,13 @@ class BaseZoneInlineFormSet(BaseInlineFormSet):
 
 
 class RiparianTransectForm(forms.ModelForm):
-    school = forms.ModelChoiceField(queryset=School.objects.all())
 
     class Meta:
         model = RiparianTransect
         widgets = {
             'notes': forms.Textarea(attrs={'class': 'materialize-textarea'})
         }
-        fields = ('school', 'date_time', 'weather', 'slope', 'notes')
+        fields = ('date_time', 'weather', 'slope', 'notes')
 
 
 class PhotoPointImageForm(forms.ModelForm):
@@ -269,7 +266,7 @@ class SoilSurveyForm(forms.ModelForm):
                 forms.Textarea(attrs={'class': 'materialize-textarea'})
         }
         fields = (
-            'school', 'date', 'weather', 'landscape_pos', 'cover_type',
+            'date', 'weather', 'landscape_pos', 'cover_type',
             'land_use', 'soil_type', 'distance', 'site_char'
         )
 
