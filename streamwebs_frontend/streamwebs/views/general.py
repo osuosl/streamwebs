@@ -234,9 +234,7 @@ def update_site(request, site_slug):
             request.POST['location'] = point
 
         site_form = SiteForm(request.POST, request.FILES, instance=site)
-        print(site_form.errors)
         if site_form.is_valid():
-            print("HERRO")
             site = site_form.save(commit=False)
 
             if (site.site_name != temp.site_name or
