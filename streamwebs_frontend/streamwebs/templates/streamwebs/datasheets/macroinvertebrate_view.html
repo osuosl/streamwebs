@@ -6,6 +6,14 @@
 
 
 {% block content %}
+
+<style>
+.notes{
+  overflow-wrap: break-word;
+}
+</style>
+
+}
   <div class="container">
     {% if messages %}
       {% for message in messages %}
@@ -42,7 +50,7 @@
       <div class="col s6">
           <p>{% trans "Weather" %}: {{ data.weather }}</p>
       </div>
-      <div class="col s12">
+      <div class="notes col s12">
           {% if data.notes %}
           <p>{% trans "Field notes" %}: {{ data.notes }}</p>
           {% endif %}

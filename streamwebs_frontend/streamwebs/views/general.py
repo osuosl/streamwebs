@@ -179,6 +179,7 @@ def site(request, site_slug):
 
     data.sort(cmp=sort_date, key=lambda x: x['date'])
     data.sort(key=lambda x: -x['school_id'])
+    pages = len(data)/10 + 1
     data_len_range = range(2, len(data)/10 + 2)
     data = add_school_name(data)
 
@@ -188,6 +189,7 @@ def site(request, site_slug):
         'map_type': settings.GOOGLE_MAPS_TYPE,
         'data': json.dumps(data, cls=DjangoJSONEncoder),
         'data_len_range': data_len_range,
+        'pages': pages,
         'has_wq': len(wq_sheets) > 0,
         'has_macros': len(macro_sheets) > 0,
         'has_transect': len(transect_sheets) > 0,
@@ -536,9 +538,10 @@ def macroinvertebrate_edit(request, site_slug):
 
     # the following are the form's fields broken up into chunks to
     # facilitate CSS manipulation in the template
+    print(list(macro_form))
     intolerant = list(macro_form)[5:11]
     somewhat = list(macro_form)[11:20]
-    tolerant = list(macro_form)[20:28]
+    tolerant = list(macro_form)[20:26]
 
     if request.method == 'POST':
         macro_form = MacroinvertebratesForm(data=request.POST)
