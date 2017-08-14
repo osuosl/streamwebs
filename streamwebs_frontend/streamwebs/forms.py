@@ -89,7 +89,7 @@ class MacroinvertebratesForm(forms.ModelForm):
 
     class Meta:
         model = Macroinvertebrates
-        widgets={
+        widgets = {
             'notes': forms.Textarea(
                 attrs={'class': 'materialize-textarea'})
         }
