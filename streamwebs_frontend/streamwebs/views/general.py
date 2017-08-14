@@ -79,7 +79,7 @@ def create_site(request):
 
 def sites(request):
     """ View for streamwebs/sites """
-    site_list = Site.objects.filter(active=True)
+    site_list = Site.objects.filter(active=True).order_by('site_name')
     return render(request, 'streamwebs/sites.html', {
         'sites': site_list,
         'maps_api': settings.GOOGLE_MAPS_API,
