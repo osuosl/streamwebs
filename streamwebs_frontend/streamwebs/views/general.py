@@ -179,7 +179,6 @@ def site(request, site_slug):
 
     data.sort(cmp=sort_date, key=lambda x: x['date'])
     data.sort(key=lambda x: -x['school_id'])
-    pages = len(data)/10 + 1
     data_len_range = range(2, len(data)/10 + 2)
     data = add_school_name(data)
 
@@ -188,7 +187,6 @@ def site(request, site_slug):
         'maps_api': settings.GOOGLE_MAPS_API,
         'map_type': settings.GOOGLE_MAPS_TYPE,
         'data': json.dumps(data, cls=DjangoJSONEncoder),
-        'pages': pages,
         'data_len_range': data_len_range,
         'has_wq': len(wq_sheets) > 0,
         'has_macros': len(macro_sheets) > 0,
@@ -226,15 +224,23 @@ def update_site(request, site_slug):
     temp = copy.copy(site)
 
     if request.method == 'POST':
-        site_form = SiteForm(request.POST, request.FILES, instance=site)
+        if not request.POST._mutable:
+            request.POST._mutable = True
 
+        if 'lat' in request.POST and 'lng' in request.POST:
+            # convert lat/lng to pointfield object
+            point = ("SRID=4326;POINT(%s %s)" %
+                     (request.POST['lng'], request.POST['lat']))
+            request.POST['location'] = point
+
+        site_form = SiteForm(request.POST, request.FILES, instance=site)
         if site_form.is_valid():
+            site = site_form.save(commit=False)
+
             if (site.site_name != temp.site_name or
                     site.description != temp.description or
                     site.location != temp.location or
                     site.image != temp.image):
-                site = site_form.save(commit=False)
-                site.modified = timezone.now()
                 site.save()
 
             messages.success(request, _('You have successfully updated ') +
@@ -251,7 +257,10 @@ def update_site(request, site_slug):
     return render(request, 'streamwebs/update_site.html', {
         'site': site,
         'site_form': site_form,
-        'modified_time': site.modified,
+        'map_type': settings.GOOGLE_MAPS_TYPE,
+        'latitude': site.location.y,
+        'longitude': site.location.x,
+
     })
 
 
