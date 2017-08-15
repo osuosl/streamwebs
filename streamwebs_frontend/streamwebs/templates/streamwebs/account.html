@@ -9,12 +9,22 @@
   <br/>
   <div class="row">
     <div class="col offset-s4 s4" style="text-align:center;">
+      <b>Name:{{ user.first_name }} {{ user.last_name }}</b>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col offset-s4 s4" style="text-align:center;">
       <b>Email: {{ user.email }}</b>
     </div>
   </div>
   <div class="row">
     <div class="col offset-s4 s4" style="text-align:center;">
       <b>Username: {{ user.username }}</b>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col offset-s4 s4" style="text-align:center;">
+      <b>School: {{ user.userprofile.school }}</b>
     </div>
   </div>
   <br/>
