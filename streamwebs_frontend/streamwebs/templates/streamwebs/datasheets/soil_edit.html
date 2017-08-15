@@ -8,7 +8,9 @@
 {% block content %}
   <div class="container">
     {% if added %}
-      <strong>{% trans "You have successfully submitted your Soil Survey data sheet." %}</strong>
+      <div class="center-content">
+        <strong>{% trans "You have successfully submitted your Soil Survey data sheet." %}</strong>
+      </div>
     {% else %}
       <h3 align="center">
         <a href="{% url 'streamwebs:site' site.site_slug %}">

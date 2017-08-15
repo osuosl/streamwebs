@@ -5,6 +5,14 @@
 {% block body_title %}{% trans "Edit Account" %}{% endblock %}
 
 {% block content %}
+
+  {% if messages %}
+    <div class="center-content">
+      {% for message in messages %}
+        <strong>{{ message }}</strong>
+      {% endfor %}
+    </div>
+  {% endif %}
   <hr/>
   <br/>
   <div class="row">

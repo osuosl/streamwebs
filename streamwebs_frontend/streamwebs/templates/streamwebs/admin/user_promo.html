@@ -9,9 +9,11 @@
 {% block content %}
 <div class="container">
   {% if msgs %}
-    {% for message in msgs %}
-    <strong>{{ message }}</strong><br>
-    {% endfor %}
+    <div class="center-content">
+      {% for message in msgs %}
+        <strong>{{ message }}</strong><br>
+      {% endfor %}
+    </div>
   {% endif %}
 
   <form id='promo_form' method='post'>

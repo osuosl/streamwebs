@@ -258,11 +258,15 @@ div.center-content {
 }
 
 .errorlist {
-    color: #D35400;
+    color: #FF5722;
 }
 
-strong.message {
-    color: #D35400;
+strong {
+    color: #FF5722;
+}
+
+strong.normal {
+    color: black;
 }
 
 .material-icons {

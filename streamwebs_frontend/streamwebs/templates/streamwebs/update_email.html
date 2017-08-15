@@ -10,7 +10,7 @@
       <form class="col s8 offset-s2" id="user_form" method="post" action="{% url 'streamwebs:update_email' %}">
         {% csrf_token %}
         <br/><br/>
-        <strong>{% trans "Change your email:" %}</strong><br/>
+        <strong class="normal">{% trans "Change your email:" %}</strong><br/>
         <br/>
 
         <div class="input-field col s12">

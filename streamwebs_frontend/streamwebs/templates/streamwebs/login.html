@@ -9,9 +9,11 @@
 {% block content %}
   <div class="container center-content">
     {% if messages %}
-      {% for message in messages %}
-        <strong class="message">{{ message }}</strong>
-      {% endfor %}
+      <div class="center-content">
+        {% for message in messages %}
+          <strong>{{ message }}</strong>
+        {% endfor %}
+      </div>
     {% endif %}
     <div class="row">
       <form class="col s4 offset-s4" id='login_form' method='post'

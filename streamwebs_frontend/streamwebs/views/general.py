@@ -364,7 +364,6 @@ def update_password(request):
 
                 user = authenticate(username=username, password=password)
                 login(request, user)
-
                 return redirect(reverse('streamwebs:account'))
 
         else:

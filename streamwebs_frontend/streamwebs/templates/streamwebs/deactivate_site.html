@@ -8,7 +8,7 @@
 {% block content %}
   {% if user.is_authenticated %}
     {% if deactivated %}
-      <strong>{{ site.site_name }} {% trans ' has been successfully deleted.' %}</strong>
+      <strong class="normal">{{ site.site_name }} {% trans ' has been successfully deleted.' %}</strong>
 
     {% else %}
       <strong>{% trans 'This site has data and can only be deleted by an administrator.' %}</strong>
