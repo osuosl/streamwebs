@@ -124,7 +124,7 @@
   <div class="row"></div>
     <div id="site_search">
       <div class="row">
-      <nav class="search-nav col s5 teal darken-4">
+      <nav class="search-nav col s5 teal darken-3">
         <div class="nav-wrapper">
           <div class="input-field">
             <input id="search" type="search" autocomplete="off"
@@ -134,14 +134,14 @@
               <div class="search-results collection">
                 {% for site in sites %}
                   <a onclick="loadSite2('{{ site.site_slug }}')"
-                    class="collection-item search-item {{ site.site_type }} tea-text text-darken-4 hide">{{ site.site_name }}</a>
+                    class="collection-item search-item {{ site.site_type }} tea-text text-darken-3 hide">{{ site.site_name }}</a>
                 {% endfor %}
           </div>
         </div>
         </div>
       </nav>
       <div class="col right">
-        <input id="remove_site" type="button" class="btn teal darken-4 disabled"
+        <input id="remove_site" type="button" class="btn teal darken-3 disabled"
               value="Remove Site 2"/>
           </div>
       </div>
