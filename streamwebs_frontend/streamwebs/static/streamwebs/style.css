@@ -41,6 +41,7 @@ div.header {
     margin-left: auto;
     margin-right: auto;
     background: url("images/streamrocks.png") no-repeat fixed;
+    background-size: 100%;
     position: relative;
     z-index: 2;
 }
@@ -109,6 +110,7 @@ footer {
     z-index: 1;
     bottom: 0px;
     background: url("images/streamrocks.png") no-repeat fixed;
+    background-size: cover;
 }
 
 footer:hover > div#filter {
