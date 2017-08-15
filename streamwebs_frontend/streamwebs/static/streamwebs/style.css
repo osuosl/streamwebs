@@ -73,6 +73,10 @@ nav#navbar div.nav-container {
     z-index: 3;
 }
 
+nav#navbar div.nav-container div.right.grey.lighten-5{
+    font-weight: 700 !important;
+}
+
 nav#navbar div#nav-logo {
     color: black; /* Used for h3, can be taken out */
     height: 64px;
@@ -101,6 +105,8 @@ nav#navbar div.nav-float {
 
 .content {
     z-index: 4;
+    max-width: 1440px;
+    margin: 0 auto;
 }
 
 footer {
