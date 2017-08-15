@@ -57,7 +57,7 @@
         <form id='ppi_form' , method='post' , enctype='multipart/form-data'>
           {% csrf_token %}
           {{ ppi_formset.as_p }}
-          <button class="btn-large waves-effect waves-light teal darken-4"
+          <button class="btn-large waves-effect waves-light teal darken-3"
                   type="submit" name="action" value='Submit'>
             {% trans "Submit" %}
             <i class="material-icons right">send</i>

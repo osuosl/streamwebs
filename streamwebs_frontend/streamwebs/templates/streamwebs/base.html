@@ -28,7 +28,7 @@
     </div>
 
     <nav id="navbar">
-      <div id="nav-container">
+      <div class="nav-container">
         <div id="nav-logo">
           <h3>STREAMWEBS</h3>
           <!-- ADD IMAGE -->
@@ -39,7 +39,7 @@
 
     <div class="inner-wrap grey lighten-5">
       <div class="content">
-        <h3 class="center teal-text text-darken-4">
+        <h3 class="center teal-text text-darken-3">
           {% block body_title %}{% endblock %}</h3>
         {% block content %}{% endblock %}
       </div>
@@ -60,7 +60,7 @@
           </ul>
         </form>
 
-        <a href="#!" id="language-button" class="btn dropdown-button teal darken-4"
+        <a href="#!" id="language-button" class="btn dropdown-button teal darken-1"
            data-activates="languages">
           <ul class="left">
             <li>
@@ -97,11 +97,11 @@
 
   var floatNav = function floatNav() {
     if($(window).scrollTop() > $('div.header').height()) {
-      $('div#nav-container').addClass('nav-float');
+      $('div.nav-container').addClass('nav-float');
       $('div#nav-logo').fadeIn();
 
     } else {
-      $('div#nav-container').removeClass('nav-float');
+      $('div.nav-container').removeClass('nav-float');
       $('div#nav-logo').fadeOut();
     }
   }

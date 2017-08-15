@@ -90,7 +90,7 @@ function pan(){
 <p>
   <label for="id_image">Image:</label>
   <div class="file-field input-field">
-    <div class="btn teal darken-4">
+    <div class="btn teal darken-3">
       <span>Upload</span>
       <input type="file" id="id_image" name="image">
     </div>
@@ -110,7 +110,7 @@ function pan(){
 <i class="material-icons prefix">my_location</i>
 <label for="{{ site_form.location.id_for_label }}">{% trans "Longitude" %}</label>
 <input type ="text" id="input_lng" name="lng" required>
-<input type="button" class="btn waves-effect waves-light teal darken-4"
+<input type="button" class="btn waves-effect waves-light teal darken-3"
 value='{% trans 'Update Location' %}' onclick="pan()" />
 <i class="material-icons prefix"> error_outline</i>
 Select site location with latitude and longitude above, or find on map below.
@@ -126,7 +126,7 @@ Select site location with latitude and longitude above, or find on map below.
 
 <br/>
 <br/>
-<input id="button" class="btn waves-effect waves-light teal darken-4"
+<input id="button" class="btn waves-effect waves-light teal darken-3"
 type='submit' name='submit' value='{% trans 'Add new site' %}'/>
 
 
