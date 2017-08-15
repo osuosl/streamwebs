@@ -21,11 +21,11 @@ var dimension = {
 
 // Strings for each zones and ticks
 var zoneNames = [
-    'Zone 1',
-    'Zone 2',
-    'Zone 3',
+    'Zone 5',
     'Zone 4',
-    'Zone 5'
+    'Zone 3',
+    'Zone 2',
+    'Zone 1'
 ];
 var distances = [
     '(0\')',
