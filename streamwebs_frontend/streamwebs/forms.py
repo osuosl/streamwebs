@@ -89,6 +89,10 @@ class MacroinvertebratesForm(forms.ModelForm):
 
     class Meta:
         model = Macroinvertebrates
+        widgets = {
+            'notes': forms.TextArea(
+            attrs={'class': 'materialize-textarea'})
+        }
         fields = ('date_time', 'weather', 'time_spent',
                   'num_people', 'water_type', 'caddisfly', 'mayfly',
                   'riffle_beetle', 'stonefly', 'water_penny', 'dobsonfly',
