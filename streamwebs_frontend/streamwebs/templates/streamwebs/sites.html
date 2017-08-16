@@ -29,7 +29,7 @@
   <div class="container">
     <div id="site_search">
       <div class="row">
-        <nav class="search-nav col s8 teal darken-4">
+        <nav class="search-nav col s8 teal darken-3">
           <div class="nav-wrapper">
             <div class="input-field">
               <input id="search" type="search" autocomplete="off"
@@ -41,7 +41,7 @@
               <div class="search-results collection">
                 {% for site in sites %}
                   <a href="{{ site.site_slug }}"
-                     class="collection-item search-item {{ site.site_type }} teal-text text-darken-4 hide">{{ site.site_name }}</a>
+                     class="collection-item search-item {{ site.site_type }} teal-text text-darken-3 hide">{{ site.site_name }}</a>
                 {% endfor %}
               </div>
             </div>
@@ -55,16 +55,16 @@
     </div>
 
     <div id="site_select">
-        <a href="#!" class="dropdown-button btn select-button teal darken-4" data-activates='dropdown'>{% trans "Select Site" %}<i class="material-icons right">arrow_drop_down</i></a>
+        <a href="#!" class="dropdown-button btn select-button teal darken-3" data-activates='dropdown'>{% trans "Select Site" %}<i class="material-icons right">arrow_drop_down</i></a>
         <ul id="dropdown" class="dropdown-content">
         {% for site in sites %}
-            <li><a href="{{site.site_slug}}" class="teal-text text-darken-4">{{ site.site_name }}</a></li>
+            <li><a href="{{site.site_slug}}" class="teal-text text-darken-3">{{site.site_name}}</a></li>
         {% endfor %}
         </ul>
     </div>
     <br>
     <div id="create-site">
-        <a href="{% url 'streamwebs:create_site' %}" class="btn teal darken-4">{% trans "Create Site" %}</a>
+        <a href="{% url 'streamwebs:create_site' %}" class="btn teal darken-3">{% trans "Create Site" %}</a>
     </div>
     </div>
   </div>

@@ -25,14 +25,13 @@ body {
     background-color: #fafafa;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1, h2, h3, h4, h5, h6, p {
     font-family: 'Montserrat', sans-serif;
 }
 
 div.page-wrap {
     position: relative;
     width: 100%;
-    background: url("images/streamrocks.png") no-repeat fixed;
     background-size: 100%;
 }
 
@@ -41,8 +40,10 @@ div.header {
     height: 200px;
     margin-left: auto;
     margin-right: auto;
+    background: url("images/streamrocks.png") no-repeat fixed;
+    background-size: 100%;
     position: relative;
-    z-index: 1;
+    z-index: 2;
 }
 
 div.header > a.logo {
@@ -56,19 +57,24 @@ nav {
 }
 
 nav#navbar {
-    font-family: 'Source Sans Pro', sans-serif;
     margin-bottom: 0px;
     height: 66px;
     width: 100%;
     background: white;
 }
 
-nav#navbar div#nav-container {
+nav#navbar div.nav-container {
     background: white;
     height: 66px;
     width: 100%;
     border-bottom: 2px white solid;
     transition: border 300ms linear 0s;
+    position: relative;
+    z-index: 3;
+}
+
+nav#navbar div.nav-container div.right.grey.lighten-5{
+    font-weight: 700 !important;
 }
 
 nav#navbar div#nav-logo {
@@ -79,11 +85,11 @@ nav#navbar div#nav-logo {
     display: none;
 }
 
-div.nav-float {
+nav#navbar div.nav-float {
     position: fixed;
     top: 0px;
     z-index: 10;
-    border-bottom: 2px #95A5A6 solid !important;
+    border-bottom: 2px #117A65 solid !important;
 }
 
 .inner-wrap {
@@ -99,6 +105,8 @@ div.nav-float {
 
 .content {
     z-index: 4;
+    max-width: 1440px;
+    margin: 0 auto;
 }
 
 footer {
@@ -108,6 +116,7 @@ footer {
     z-index: 1;
     bottom: 0px;
     background: url("images/streamrocks.png") no-repeat fixed;
+    background-size: cover;
 }
 
 footer:hover > div#filter {
@@ -255,11 +264,15 @@ div.center-content {
 }
 
 .errorlist {
-    color: #D35400;
+    color: #FF5722;
 }
 
-strong.message {
-    color: #D35400;
+strong {
+    color: #FF5722;
+}
+
+strong.normal {
+    color: black;
 }
 
 .material-icons {

@@ -8,9 +8,11 @@
 {% block content %}
   <div class="container">
     {% if messages %}
-      {% for message in messages %}
-        <strong>{{ message }}</strong>
-      {% endfor %}
+      <div class="center-content">
+        {% for message in messages %}
+          <strong>{{ message }}</strong>
+        {% endfor %}
+      </div>
     {% endif %}
 
     {% if added %}
@@ -116,7 +118,7 @@
           </div>
         </div>
 
-        <input class="btn waves-effect waves-light teal darken-4" type='submit'
+        <input class="btn waves-effect waves-light teal darken-3" type='submit'
                value='{% trans "Submit" %}'/>
       </form>
     {% endif %}

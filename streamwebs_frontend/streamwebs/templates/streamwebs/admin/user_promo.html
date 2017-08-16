@@ -9,15 +9,17 @@
 {% block content %}
 <div class="container">
   {% if msgs %}
-    {% for message in msgs %}
-    <strong>{{ message }}</strong><br>
-    {% endfor %}
+    <div class="center-content">
+      {% for message in msgs %}
+        <strong>{{ message }}</strong><br>
+      {% endfor %}
+    </div>
   {% endif %}
 
   <form id='promo_form' method='post'>
     {% csrf_token %}
     {{ promo_form.as_p }}
-    <input class="btn waves-effect waves-light teal darken-4" type='submit' name='submit' value='{% trans 'Apply' %}'/>
+    <input class="btn waves-effect waves-light teal darken-3" type='submit' name='submit' value='{% trans 'Apply' %}'/>
   </form>
 
   {% for user in page_of_users %}
@@ -49,6 +51,7 @@
       {% endif %}
     </span>
   </div>
+</div>
 {% endblock %}
 
 {% block scripts %}

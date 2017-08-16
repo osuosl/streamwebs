@@ -7,9 +7,11 @@
 
   <div class="container">
     {% if messages %}
-      {% for message in messages %}
-      <strong>{{ message }}</strong>
-      {% endfor %}
+      <div class="center-content">
+        {% for message in messages %}
+          <strong>{{ message }}</strong>
+        {% endfor %}
+      </div>
     {% endif %}
     <!-- CP info -->
     <div>

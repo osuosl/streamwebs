@@ -16,9 +16,11 @@
 }
   <div class="container">
     {% if messages %}
-      {% for message in messages %}
-        <strong>{{ message }}</strong>
-      {% endfor %}
+      <div class="center-content">
+        {% for message in messages %}
+          <strong>{{ message }}</strong>
+        {% endfor %}
+      </div>
     {% endif %}
 
     <h3 align="center">
@@ -46,6 +48,9 @@
       </div>
       <div class="col s6">
           <p>{% trans "Percent EPT" %}: {{ EPT|floatformat:2 }}%</p>
+          <p><b>Note: </b>
+            EPT is the total number of caddisflies, mayflies, and stoneflies found divided by number of all bugs
+          </p>
       </div>
       <div class="col s6">
           <p>{% trans "Weather" %}: {{ data.weather }}</p>

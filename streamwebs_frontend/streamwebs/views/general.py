@@ -179,8 +179,15 @@ def site(request, site_slug):
 
     data.sort(cmp=sort_date, key=lambda x: x['date'])
     data.sort(key=lambda x: -x['school_id'])
-    pages = len(data)/10 + 1
-    data_len_range = range(2, len(data)/10 + 2)
+
+    num_schools = count_schools(data)
+    number_item = len(data) + num_schools
+
+    pages = (number_item)/10
+    if number_item % 10 != 0:
+        pages += 1
+
+    data_len_range = range(2, pages + 1)
     data = add_school_name(data)
 
     return render(request, 'streamwebs/site_detail.html', {
@@ -196,6 +203,16 @@ def site(request, site_slug):
         'has_cc': len(canopy_sheets) > 0,
         'has_soil': len(soil_sheets) > 0
     })
+
+
+def count_schools(data):
+    schools = []
+    num_schools = 0
+    for i in data:
+        if i['school_id'] not in schools:
+            schools.append(i['school_id'])
+            num_schools += 1
+    return num_schools
 
 
 def add_school_name(data):
@@ -364,7 +381,6 @@ def update_password(request):
 
                 user = authenticate(username=username, password=password)
                 login(request, user)
-
                 return redirect(reverse('streamwebs:account'))
 
         else:

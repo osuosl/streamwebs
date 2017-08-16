@@ -7,7 +7,9 @@
 
 {% block content %}
   {% if added %}
-    <strong>{% trans "Success!" %}</strong>
+    <div class="center-content">
+      <strong class="normal">{% trans "Success!" %}</strong>
+    </div>
 
     <!-- Display errors, if any (should be improved/more CSS friendly) -->
     <!-- {% for field in wq_form %}
@@ -30,9 +32,11 @@
 
   <div class="container">
     {% if messages %}
+      <div class="center-content">
         {% for message in messages %}
-        <strong>{{ message }}</strong>
+          <strong>{{ message }}</strong>
         {% endfor %}
+      </div>
     {% endif %}
 
     <h3 align="center">
@@ -384,7 +388,7 @@
       </div>
 
       {% if editable %}
-        <input class="btn waves-effect waves-light teal darken-4" type="submit"
+        <input class="btn waves-effect waves-light teal darken-3" type="submit"
                value='{% trans "Submit" %}'>
       {% endif %}
     </form>

@@ -8,7 +8,9 @@
 {% block content %}
   <div class="container">
     {% if added %}
-      <strong>{% trans "You have successfully submitted your Soil Survey data sheet." %}</strong>
+      <div class="center-content">
+        <strong>{% trans "You have successfully submitted your Soil Survey data sheet." %}</strong>
+      </div>
     {% else %}
       <h3 align="center">
         <a href="{% url 'streamwebs:site' site.site_slug %}">
@@ -102,7 +104,7 @@
           </div>
         </div>
 
-        <input class="btn waves-effect waves-light teal darken-4" type='submit'
+        <input class="btn waves-effect waves-light teal darken-3" type='submit'
                name='submit' value='{% trans "Submit" %}'/>
       </form>
     {% endif %}
