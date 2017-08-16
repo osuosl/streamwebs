@@ -199,7 +199,7 @@ def site(request, site_slug):
         'pages': pages,
         'has_wq': len(wq_sheets) > 0,
         'has_macros': len(macro_sheets) > 0,
-        'has_transect': len(transect_sheets) > 0,
+        'has_transects': len(transect_sheets) > 0,
         'has_cc': len(canopy_sheets) > 0,
         'has_soil': len(soil_sheets) > 0
     })
