@@ -182,8 +182,8 @@ def site(request, site_slug):
 
     num_schools = count_schools(data)
     number_item = len(data) + num_schools
-    
-    pages = (number_item)/10;
+
+    pages = (number_item)/10
     if number_item % 10 != 0:
         pages += 1
 
@@ -205,6 +205,7 @@ def site(request, site_slug):
         'has_soil': len(soil_sheets) > 0
     })
 
+
 def count_schools(data):
     schools = []
     num_schools = 0
@@ -214,6 +215,7 @@ def count_schools(data):
             num_schools += 1
     print(schools)
     return num_schools
+
 
 def add_school_name(data):
     if len(data) == 0:
