@@ -213,7 +213,6 @@ def count_schools(data):
         if i['school_id'] not in schools:
             schools.append(i['school_id'])
             num_schools += 1
-    print(schools)
     return num_schools
 
 
