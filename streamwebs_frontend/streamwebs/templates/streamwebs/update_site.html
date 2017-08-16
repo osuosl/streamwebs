@@ -53,6 +53,17 @@ function pan(){
     placeMarker(panPoint, map);
 }
 
+var checkbox = $("input#check")
+$('input[name=checkbox]').change(function(){
+    if($(this).is(':checked')) {
+        $('input#id_image').prop("disabled", true);
+        $('#upload_btn').removeClass("teal darken-3").addClass("grey");
+    } else {
+        $('input#id_image').prop("disabled", false);
+        $('#upload_btn').removeClass("grey").addClass("teal darken-3");
+    }
+});
+$
 </script>
 {% endblock %}
 
@@ -90,11 +101,19 @@ function pan(){
       {{ site_form.description.errors | striptags }}
     </div>
   </div>
+<div class="row">
+<form action="#">
+  <p>
+    <input type="checkbox" id="check" name="checkbox" />
+    <label for="check">Use default image</label>
+  </p>
+</div>
 
+<div class="row">
   <p>
     <label for="id_image">Image:</label>
     <div class="file-field input-field">
-      <div class="btn teal darken-3">
+      <div class="btn teal darken-3" id="upload_btn">
         <span>Upload</span>
         <input type="file" id="id_image" name="image">
       </div>
@@ -103,6 +122,7 @@ function pan(){
       </div>
     </div>
   </p>
+</div>
 
   <i class="material-icons prefix">my_location</i>
   <label for="{{ site_form.location.id_for_label }}">{% trans "Latitude" %}</label>
@@ -116,7 +136,7 @@ function pan(){
   <input type="button" class="btn waves-effect waves-light teal darken-3"
   value='{% trans 'Update Location' %}' onclick="pan()" />
   <i class="material-icons prefix"> error_outline</i>
-  Select site location with latitude and longitude above, or find on map below.
+  Edit site location with latitude and longitude above, or find on map below.
   <br/>
   <br/>
   <br/>
