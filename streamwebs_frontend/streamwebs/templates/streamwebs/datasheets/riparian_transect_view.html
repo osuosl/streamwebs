@@ -16,9 +16,11 @@
 
   <div class="container">
     {% if messages %}
-      {% for message in messages %}
-        <strong>{{ message }}</strong>
-      {% endfor %}
+      <div class="center-content">
+        {% for message in messages %}
+          <strong>{{ message }}</strong>
+        {% endfor %}
+      </div>
     {% endif %}
 
     <h3 align="center">
@@ -69,7 +71,9 @@
         <th>{{ 'comments'|get_zone_labels }}</th>
       </tr>
       <tr>
-        <td width="20%"><strong>{{ zones.0.zone_num }}<br>(0 to 20 ft)</strong>
+        <td width="20%"><strong class="normal">
+          {{ zones.0.zone_num }}<br>(0 to 20 ft)
+        </strong>
         </td>
         <td>{{ zones.0.conifers|default_if_none:0 }}</td>
         <td>{{ zones.0.hardwoods|default_if_none:0 }}</td>
@@ -77,28 +81,36 @@
         <td>{{ zones.0.comments|default_if_none:"" }}</td>
       </tr>
       <tr>
-        <td><strong>{{ zones.1.zone_num }}<br>(20 to 40 ft)</strong></td>
+        <td><strong class="normal">
+          {{ zones.1.zone_num }}<br>(20 to 40 ft)</strong>
+        </td>
         <td>{{ zones.1.conifers|default_if_none:0 }}</td>
         <td>{{ zones.1.hardwoods|default_if_none:0 }}</td>
         <td>{{ zones.1.shrubs|default_if_none:0 }}</td>
         <td>{{ zones.1.comments|default_if_none:"" }}</td>
       </tr>
       <tr>
-        <td><strong>{{ zones.2.zone_num }}<br>(40 to 60 ft)</strong></td>
+        <td><strong class="normal">
+          {{ zones.2.zone_num }}<br>(40 to 60 ft)</strong>
+        </td>
         <td>{{ zones.2.conifers|default_if_none:0 }}</td>
         <td>{{ zones.2.hardwoods|default_if_none:0 }}</td>
         <td>{{ zones.2.shrubs|default_if_none:0 }}</td>
         <td>{{ zones.2.comments|default_if_none:"" }}</td>
       </tr>
       <tr>
-        <td><strong>{{ zones.3.zone_num }}<br>(60 to 80 ft)</strong></td>
+        <td><strong class="normal">
+          {{ zones.3.zone_num }}<br>(60 to 80 ft)</strong>
+        </td>
         <td>{{ zones.3.conifers|default_if_none:0 }}</td>
         <td>{{ zones.3.hardwoods|default_if_none:0 }}</td>
         <td>{{ zones.3.shrubs|default_if_none:0 }}</td>
         <td>{{ zones.3.comments|default_if_none:"" }}</td>
       </tr>
       <tr>
-        <td><strong>{{ zones.4.zone_num }}<br>(80 to 100 ft)</strong></td>
+        <td><strong class="normal">
+          {{ zones.4.zone_num }}<br>(80 to 100 ft)</strong>
+        </td>
         <td>{{ zones.4.conifers|default_if_none:0 }}</td>
         <td>{{ zones.4.hardwoods|default_if_none:0 }}</td>
         <td>{{ zones.4.shrubs|default_if_none:0 }}</td>

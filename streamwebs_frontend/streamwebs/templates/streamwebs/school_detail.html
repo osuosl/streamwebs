@@ -1,8 +1,9 @@
 {% extends "streamwebs/base.html" %}
 {% load staticfiles %}
-{% block title %}{% trans "School Detail - StreamWebs" %}{% endblock %}
 {% load i18n %}
 {% load filters %}
+
+{% block title %}{% trans "School Detail - StreamWebs" %}{% endblock %}
 
 {% block head %}
 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css">
@@ -17,12 +18,12 @@
     <h5>{% trans "Address" %}:</h5>
     <p>
       {{ school_data.address }}
-      <<br/>>
+      <br/>
       {{ school_data.city }}, {{ school_data.province }}
-      <<br/>>
+      <br/>
       {{ school_data.zipcode }}
     </p>
-    <<br/>>
+    <br/>
     <!-- wq table -->
     {% if wq_data %}
     <center><h5>{% trans "Water Quality" %}</h5></center>
@@ -46,7 +47,7 @@
           {% endfor %}
         </tbody>
       </table>
-      <<br/>>
+      <br/>
     {% endif %}
 
 
@@ -71,7 +72,7 @@
           {% endfor %}
         </tbody>
       </table>
-      <<br/>>
+      <br/>
     {% endif %}
 
 
@@ -96,7 +97,7 @@
           {% endfor %}
         </tbody>
       </table>
-      <<br/>>
+      <br/>
     {% endif %}
 
 
@@ -121,7 +122,7 @@
           {% endfor %}
         </tbody>
       </table>
-      <<br/>>
+      <br/>
     {% endif %}
 
 
@@ -146,7 +147,7 @@
           {% endfor %}
         </tbody>
       </table>
-      <<br/>>
+      <br/>
     {% endif %}
 
   </div>

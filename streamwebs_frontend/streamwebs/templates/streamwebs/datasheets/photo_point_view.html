@@ -7,9 +7,11 @@
   <div class="container">
 
     {% if messages %}
-      {% for message in messages %}
-      <strong>{{ message }}</strong>
-      {% endfor %}
+      <div class="center-content">
+        {% for message in messages %}
+          <strong>{{ message }}</strong>
+        {% endfor %}
+      </div>
     {% endif %}
     <!-- PP info -->
     <div>
@@ -26,7 +28,7 @@
       <p><b>{% trans "Camera height" %}:</b> {{ pp.camera_height }}</p>
       <p><b>{% trans "Notes" %}:</b> {{ pp.notes }}</p>
 
-      <strong>{% trans "Photos for this photo point" %}:</strong>
+      <strong class="normal">{% trans "Photos for this photo point" %}:</strong>
       <div class="row">
         <div class="col s12 m7">
           {% for img in pp_images %}
@@ -57,7 +59,7 @@
         <form id='ppi_form' , method='post' , enctype='multipart/form-data'>
           {% csrf_token %}
           {{ ppi_formset.as_p }}
-          <button class="btn-large waves-effect waves-light teal darken-4"
+          <button class="btn-large waves-effect waves-light teal darken-3"
                   type="submit" name="action" value='Submit'>
             {% trans "Submit" %}
             <i class="material-icons right">send</i>

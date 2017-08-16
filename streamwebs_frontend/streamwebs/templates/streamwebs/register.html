@@ -21,7 +21,7 @@
       {% if registered %}
         <div class="center-content">
           <br/><br/>
-          <strong>{% trans "You have successfully created a StreamWebs account." %}</strong>
+          <strong class="normal">{% trans "You have successfully created a StreamWebs account." %}</strong>
           <br/>
           <a href="{% url 'streamwebs:index' %}">{% trans "Return to home" %}</a>
           <br/>
@@ -30,7 +30,7 @@
       {% else %}
         <form class="col s8 offset-s2" id='user_form' method='post'
               action="{% url 'streamwebs:register' %}">
-          <strong>{% trans "Create an account." %}</strong>
+          <strong class="normal">{% trans "Create an account." %}</strong>
           <br/>
           {% csrf_token %}
           <div class="input-field col s6">
@@ -94,7 +94,7 @@
           </div>
           <div class="col s12">
             <div class="center-content">
-              <input class="btn waves-effect waves-light teal darken-4" type='submit'
+              <input class="btn waves-effect waves-light teal darken-3" type='submit'
                  name='submit' value='{% trans "Create Account" %}'/>
             </div>
           </div>

@@ -188,7 +188,6 @@ def site(request, site_slug):
         pages += 1
 
     data_len_range = range(2, pages + 1)
-
     data = add_school_name(data)
 
     return render(request, 'streamwebs/site_detail.html', {
@@ -382,7 +381,6 @@ def update_password(request):
 
                 user = authenticate(username=username, password=password)
                 login(request, user)
-
                 return redirect(reverse('streamwebs:account'))
 
         else:
