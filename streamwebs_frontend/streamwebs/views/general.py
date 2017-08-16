@@ -79,7 +79,7 @@ def create_site(request):
 
 def sites(request):
     """ View for streamwebs/sites """
-    site_list = Site.objects.filter(active=True)
+    site_list = Site.objects.filter(active=True).order_by('site_name')
     return render(request, 'streamwebs/sites.html', {
         'sites': site_list,
         'maps_api': settings.GOOGLE_MAPS_API,
@@ -556,7 +556,7 @@ def macroinvertebrate_edit(request, site_slug):
     # facilitate CSS manipulation in the template
     intolerant = list(macro_form)[5:11]
     somewhat = list(macro_form)[11:20]
-    tolerant = list(macro_form)[20:28]
+    tolerant = list(macro_form)[20:26]
 
     if request.method == 'POST':
         macro_form = MacroinvertebratesForm(data=request.POST)
