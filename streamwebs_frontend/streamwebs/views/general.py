@@ -252,6 +252,9 @@ def update_site(request, site_slug):
                      (request.POST['lng'], request.POST['lat']))
             request.POST['location'] = point
 
+        if 'checkbox' in request.POST:
+            site.image = None
+
         site_form = SiteForm(request.POST, request.FILES, instance=site)
         if site_form.is_valid():
             site = site_form.save(commit=False)

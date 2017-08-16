@@ -21,7 +21,7 @@ var path = "m 0,0 c -7.08163,-14.59707 -5.50487,-20.97294 5.18667,-20.97294 " +
 
 function initialize() {
     map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 7,
+        zoom: 6,
         center: new google.maps.LatLng(44, -122),
         mapTypeId: window.mapTypeId,
     });
