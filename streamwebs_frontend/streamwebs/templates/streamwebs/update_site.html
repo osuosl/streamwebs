@@ -2,15 +2,152 @@
 
 {% load i18n %}
 
-{% block title %} Update Site {% endblock %}
+{% block scripts %}
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?key={{ maps_api }}"></script>
+<script>
+var map;
+var markers = [];
+
+
+$(document).ready(function() {
+  document.getElementById("site_form").reset();
+  var myLatLng = new google.maps.LatLng(43.8041, -120.5542);
+  map = new google.maps.Map(document.getElementById('update_map'), {
+    zoom: 7,
+    center: myLatLng,
+    mapTypeId: {{ map_type }},
+    streetViewControl: false
+  });
+
+  google.maps.event.addListener(map, 'click', function(e){
+    placeMarker(e.latLng, map);
+  });
+  console.log({{latitude}});
+  var original_marker= new google.maps.LatLng({{ latitude }}, {{ longitude }});
+  placeMarker(original_marker,map);
+});
+
+  function clearMarkers(){
+    if(markers[0]!== undefined){
+      markers[0].setMap(null);
+      markers.pop();
+    }
+  }
+
+  function placeMarker(position, map) {
+    clearMarkers();
+    var marker = new google.maps.Marker({
+      position: position,
+      map: map
+    });
+    markers.push(marker);
+    map.panTo(position);
+    $('#input_lat').val(position.lat());
+    $('#input_lng').val(position.lng());
+
+  }
+
+function pan(){
+    var panPoint = new google.maps.LatLng(document.getElementById("input_lat").value, document.getElementById("input_lng").value);
+    map.panTo(panPoint);
+    placeMarker(panPoint, map);
+}
+
+var checkbox = $("input#check")
+$('input[name=checkbox]').change(function(){
+    if($(this).is(':checked')) {
+        $('input#id_image').prop("disabled", true);
+        $('#upload_btn').removeClass("teal darken-3").addClass("grey");
+    } else {
+        $('input#id_image').prop("disabled", false);
+        $('#upload_btn').removeClass("grey").addClass("teal darken-3");
+    }
+});
+$
+</script>
+{% endblock %}
+
+{% block title %}{% trans "Update Site" %}{% endblock %}
 {% block body_title %}{{ site.site_name }}{% endblock %}
 
 {% block content %}
-    <form id='site_form' method='post' enctype="multipart/form-data" action={% url 'streamwebs:update_site' site.site_slug %}>
-        {% csrf_token %}
-        {{ site_form.media }}
-        {{ site_form.as_p }}
+<style>
+#update_map{
+  height:400px;
+  width:100%;
+}
+</style>
+<div class="container">
+  <form id='site_form' method='post' enctype="multipart/form-data"
+  action={% url 'streamwebs:update_site' site.site_slug %}>
 
-        <input class="btn waves-effect waves-light teal darken-4" type='submit' name='submit' value='{% trans 'Update site' %}'/>
-    </form>
+  {% csrf_token %}
+
+  <div class="row">
+    <div class="input-field col s12">
+      <i class="material-icons prefix">flag</i>
+      <label for="{{ site_form.site_name.id_for_label }}">Site Name:</label>
+      {{ site_form.site_name }}
+      <strong>{{ site_form.site_name.errors | striptags }}</strong>
+
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="input-field col s12">
+      <i class="material-icons prefix">sort</i>
+      <label for="{{ site_form.description.id_for_label }}">Description:</label>
+      {{ site_form.description }}
+      {{ site_form.description.errors | striptags }}
+    </div>
+  </div>
+<div class="row">
+<form action="#">
+  <p>
+    <input type="checkbox" id="check" name="checkbox" />
+    <label for="check">Use default image</label>
+  </p>
+</div>
+
+<div class="row">
+  <p>
+    <label for="id_image">Image:</label>
+    <div class="file-field input-field">
+      <div class="btn teal darken-3" id="upload_btn">
+        <span>Upload</span>
+        <input type="file" id="id_image" name="image">
+      </div>
+      <div class="file-path-wrapper">
+        <input class="file-path validate" type="text">
+      </div>
+    </div>
+  </p>
+</div>
+
+  <i class="material-icons prefix">my_location</i>
+  <label for="{{ site_form.location.id_for_label }}">{% trans "Latitude" %}</label>
+  <input type="text" id="input_lat" name="lat" value="{{ site.location.y }}">
+  <br/>
+  <br/>
+  <br/>
+  <i class="material-icons prefix">my_location</i>
+  <label for="{{ site_form.location.id_for_label }}">{% trans "Longitude" %}</label>
+  <input type ="text" id="input_lng" name="lng" value="{{ site.location.x }}">
+  <input type="button" class="btn waves-effect waves-light teal darken-3"
+  value='{% trans 'Update Location' %}' onclick="pan()" />
+  <i class="material-icons prefix"> error_outline</i>
+  Edit site location with latitude and longitude above, or find on map below.
+  <br/>
+  <br/>
+  <br/>
+
+  <div class="row">
+    <div class="col s12 l12">
+      <div id="update_map"> </div>
+    </div>
+  </div>
+  <input class="btn waves-effect waves-light teal darken-3" type='submit'
+  name='submit' value='{% trans 'Update site' %}'/>
+</form>
+</div>
 {% endblock %}

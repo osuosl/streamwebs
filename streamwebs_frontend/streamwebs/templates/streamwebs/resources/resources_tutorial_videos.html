@@ -1,0 +1,52 @@
+{% extends "streamwebs/base.html" %}
+{% load staticfiles %}
+{% load i18n %}
+
+{% block content %}
+  <style>
+    .tutorial-th {
+        font-size: 24px;
+    }
+  </style>
+
+  <div class="container">
+    {% if messages %}
+        {% for message in messages %}
+        <strong>{{ message }}</strong>
+        {% endfor %}
+    {% endif %}
+
+    <h1 align="center">{% trans "Tutorial Videos" %}</h1>
+
+    <table class="bordered centered responsive-table">
+      <thead>
+        <tr>
+            <th class="tutorial-th" data-field="name">Name</th>
+            <th class="tutorial-th" data-field="Thumbnail">Video</th>
+        </tr>
+      </thead>
+    <tbody>
+      {% for video in data %}
+      {% if video.downloadable %}
+        <tr>
+          <td>
+            <h4>
+              {{ video.name }}
+              {{ video.thumnail.url }}
+
+            </h4>
+          </td>
+          <td>
+            <video width="320" height="240" poster= "{{ video.thumbnail.url }} " controls>
+              <source src={{ video.downloadable.url }} >
+            </video
+            </a>
+          </td>
+        </tr>
+        {% endif %}
+      {% endfor %}
+    </tbody>
+    </table>
+  </div>
+
+{% endblock %}

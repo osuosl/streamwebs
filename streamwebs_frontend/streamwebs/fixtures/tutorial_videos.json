@@ -1,0 +1,56 @@
+[
+{
+  "model": "streamwebs.resource",
+  "pk": 36,
+  "fields": {
+    "name": "Photo Point Monitoring",
+    "res_type": "tutorial_video",
+    "downloadable": "assets/Photo_Point_Monitoring_Draft_original_481_C2KxLsC.mp4",
+    "thumbnail": "assets/thumbnails/PPM.png",
+    "sort_order": 1000
+  }
+},
+{
+  "model": "streamwebs.resource",
+  "pk": 37,
+  "fields": {
+    "name": "Turbidity",
+    "res_type": "tutorial_video",
+    "downloadable": "assets/vernier_turbidity_2010_final_original_531_aJMtTZI.mp4",
+    "thumbnail": "assets/thumbnails/turbidity.png",
+    "sort_order": 1000
+  }
+},
+{
+  "model": "streamwebs.resource",
+  "pk": 38,
+  "fields": {
+    "name": "Temperature & pH",
+    "res_type": "tutorial_video",
+    "downloadable": "assets/vernier_temp_ph_2010_original_538_Luopg9e.mp4",
+    "thumbnail": "assets/thumbnails/temp_pH.png",
+    "sort_order": 1000
+  }
+},
+{
+  "model": "streamwebs.resource",
+  "pk": 39,
+  "fields": {
+    "name": "Streamflow",
+    "res_type": "tutorial_video",
+    "downloadable": "assets/vernier_flow_2010_2_original_536_FE5ZgqP.mp4",
+    "thumbnail": "assets/thumbnails/flow.png", "sort_order": 1000
+  }
+},
+{
+  "model": "streamwebs.resource",
+  "pk": 40,
+  "fields": {
+    "name": "Dissolved Oxygen",
+    "res_type": "tutorial_video",
+    "downloadable": "assets/vernier_do_2010_original_517_2nPVh7M.mp4",
+    "thumbnail": "assets/thumbnails/DO.png",
+    "sort_order": 1000
+  }
+}
+]

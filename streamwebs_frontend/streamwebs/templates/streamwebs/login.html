@@ -1,27 +1,37 @@
 {% extends 'streamwebs/base.html' %}
 {% load staticfiles %}
 {% load i18n %}
-{% block stylesheets %}{% endblock %}
+
 {% block title %}Log In -{% endblock %}
+
 {% block body_title %}{% trans "Log In" %}{% endblock %}
+
 {% block content %}
-  <div class="container">
+  <div class="container center-content">
     {% if messages %}
+      <div class="center-content">
         {% for message in messages %}
-        <strong>{{ message }}</strong>
+          <strong>{{ message }}</strong>
         {% endfor %}
+      </div>
     {% endif %}
     <div class="row">
-        <form class="col s4 offset-s4" id='login_form' method='post' action="{% url 'streamwebs:login' %}?next={{ redirect_to }}">
-            {% csrf_token %}
-            <input type="hidden" name="next" value="{{ request.GET.next }}" />
-            {% trans "Username:" %}<input type='text' name='username' value='' size='50' />
-            <br />
-            {% trans "Password:" %}<input type='password' name='password' value='' size='50' />
-            <br />
+      <form class="col s4 offset-s4" id='login_form' method='post'
+            action="{% url 'streamwebs:login' %}?next={{ redirect_to }}">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ request.GET.next }}"/>
+        {% trans "Username:" %}<input type='text' name='username' value=''
+                                      size='50'/>
+        <br/>
+        {% trans "Password:" %}<input type='password' name='password' value=''
+                                      size='50'/>
+        <br/>
+        <a href="{% url 'password_reset' %}">Forgot your password?</a>
+        <br/><br/>
+        <input class="btn waves-effect waves-light teal darken-3" type='submit'
+               name='submit' value='{% trans "Log in" %}'/>
 
-            <input class="btn waves-effect waves-light teal darken-4" type='submit' name='submit' value='{% trans "Log in" %}' />
-
-        </form>
+      </form>
+    </div>
   </div>
 {% endblock %}

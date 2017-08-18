@@ -1,0 +1,59 @@
+{% extends 'streamwebs/base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+
+{% block title %}{% trans "Manage User Permissions" %}{% endblock %}
+
+{% block body_title %}{% trans "Manage User Permissions" %}{% endblock %}
+
+{% block content %}
+<div class="container">
+  {% if msgs %}
+    <div class="center-content">
+      {% for message in msgs %}
+        <strong>{{ message }}</strong><br>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <form id='promo_form' method='post'>
+    {% csrf_token %}
+    {{ promo_form.as_p }}
+    <input class="btn waves-effect waves-light teal darken-3" type='submit' name='submit' value='{% trans 'Apply' %}'/>
+  </form>
+
+  {% for user in page_of_users %}
+    {% for user_key, info in user_info.items %}
+      {% if user.username == user_key.username %}
+        {{ user_key }}
+        {% for perm, status in info.items %}
+          {% if status == True %}
+          || {{ perm }}
+          {% endif %}
+        {% endfor %}
+        <br>
+      {% endif %}
+    {% endfor %}
+  {% endfor %}
+
+  <div class="pagination">
+    <span class="step-links">
+      {% if page_of_users.has_previous %}
+        <a href="?page={{ page_of_users.previous_page_number }}">{% trans previous %}</a>
+      {% endif %}
+
+      <span class="current">
+      {% trans "Page" %}{{ page_of_users.number }}{% trans "of" %}{{ page_of_users.paginator.num_pages }}.
+      </span>
+
+      {% if page_of_users.has_next %}
+        <a href="?page={{ page_of_users.next_page_number }}">{% trans "next" %}</a>
+      {% endif %}
+    </span>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+  <script type="application/javascript" src="{% static 'streamwebs/js/data.js' %}"></script>
+{% endblock %}

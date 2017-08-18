@@ -88,6 +88,8 @@ with open(datafile, 'r') as csvfile:
             snail = row[26]
             mosquito_larva = row[27]
 
+            uid = row[28]
+
             # Create the foreign key relation between datasheet and site
             site = Site.objects.get(site_name=row[0])
             site_id = site.id
@@ -104,7 +106,7 @@ with open(datafile, 'r') as csvfile:
                 scud=scud, fishfly=fishfly, alderfly=alderfly, mite=mite,
                 aquatic_worm=aquatic_worm, blackfly=blackfly, leech=leech,
                 midge=midge, snail=snail, mosquito_larva=mosquito_larva,
-                site_id=site_id
+                site_id=site_id, uid=uid
             )
 
 print 'Macroinvertebrates loaded.'

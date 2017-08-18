@@ -1,0 +1,54 @@
+{% extends "streamwebs/base.html" %}
+{% load staticfiles %}
+{% load i18n %}
+{% load filters %}
+
+{% block title %}{% trans "Schools - StreamWebs" %}{% endblock %}
+
+{% block head %}
+  <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css">
+{% endblock %}
+
+{% block body_title %}{% trans "Schools" %}{% endblock %}
+
+{% block content %}
+
+  <div class="container">
+    <table id="schools_table" class="display">
+      <thead>
+        <tr>
+          <th>{% trans "School" %}</th>
+          <th>{% trans "Type" %}</th>
+          <th>{% trans "City" %}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for s in schools %}
+          <tr>
+            <td>
+              <a href="{% url 'streamwebs:school_detail' s.id %}">
+                {{ s.name }}
+              </a>
+            </td>
+            <td>{{ s.school_type }}</td>
+            <td>{{ s.city }}, {{ s.province }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+{% endblock %}
+
+{% block scripts %}
+
+  <script src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+  <script>
+  $(document).ready(function() {
+      $('#schools_table').DataTable();
+      $('select').material_select();
+
+  } );
+  </script>
+
+{% endblock %}

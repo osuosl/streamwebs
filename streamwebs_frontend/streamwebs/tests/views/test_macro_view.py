@@ -1,14 +1,15 @@
 from django.test import TestCase
 from django.core.urlresolvers import reverse
-from streamwebs.models import Site, Macroinvertebrates
+from streamwebs.models import Site, School, Macroinvertebrates
 
 
 class MacroViewTestCase(TestCase):
     def setUp(self):
         self.site = Site.test_objects.create_site('site name')
+        self.school = School.test_objects.create_school('school name')
         self.macro = Macroinvertebrates.test_objects.create_macro(
-            self.site, 2, 3, 'pool', 4, 5, 6, 7, 8, 9, 1, 2, 3, 4, 5,
-            6, 7, 8, 9, 1, 2, 3, 4, 5, 6, 'wow, bugs')
+            self.site, self.school, 2, 3, 'pool', 4, 5, 6, 7, 8, 9, 1, 2, 3, 4,
+            5, 6, 7, 8, 9, 1, 2, 3, 4, 5, 6, 'wow, bugs')
         self.response = self.client.get(
             reverse(
                 'streamwebs:macroinvertebrate_view',
@@ -36,6 +37,7 @@ class MacroViewTestCase(TestCase):
         self.assertContains(self.response, 'wow, bugs')
         self.assertContains(self.response, 'bbbb')
         self.assertContains(self.response, self.macro.site.site_name)
+        self.assertContains(self.response, self.macro.school.name)
 
     def test_wq_rating_adjective(self):
         self.assertEqual(self.response.context['rating'], 'Excellent')

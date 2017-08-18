@@ -3,274 +3,312 @@
 {% load i18n %}
 {% load filters %}
 {% block title %}{% trans "View Macroinvertebrates Data" %}{% endblock %}
- 
-{% block scripts %}
-    <script type="application/javascript" src="{% static 'streamwebs/js/data.js' %}"></script>
-    <style>
-      .material-icons {
-        font-size: 1.5em;
-      }
-    </style>
-{% endblock %}
+
 
 {% block content %}
-<div class="container">
+
+<style>
+.notes{
+  overflow-wrap: break-word;
+}
+</style>
+
+}
+  <div class="container">
     {% if messages %}
+      <div class="center-content">
         {% for message in messages %}
-        <strong>{{ message }}</strong>
+          <strong>{{ message }}</strong>
         {% endfor %}
+      </div>
     {% endif %}
+
     <h3 align="center">
-        <a href="{% url 'streamwebs:site' site.site_slug %}">
-            {{ site.site_name }}
-        </a>
+      <a href="{% url 'streamwebs:site' site.site_slug %}">
+        {{ site.site_name }}
+      </a>
     </h3>
-    <h4 align="center">Macroinvertebrate data: {{ data.date_time|date:"m-d-Y" }}</h4>
-   
-    <div class="row">
-        <div class="col s6">
-            <p>Water quality: {{ rating }}</p>
-        </div>
-        <div class="col s6">
-            <p># of people sorting/identifying: {{ data.num_people }}</p>
-        </div>
-        <div class="col s6">
-            <p>Water type: {{ data.get_water_type_display }}</p>
-        </div>
-        <div class="col s6">
-            <p>Time spent sorting/identifying: {{ data.time_spent }} minutes</p>
-        </div>
-        <div class="col s6">
-            <p>Percent EPT: {{ EPT|floatformat:2 }}%</p>
-        </div>
-        <div class="col s6">
-            <p>Weather: {{ data.weather }}</p>
-        </div>
-        <div class="col s12">
-            {% if data.notes %}
-            <p>Field notes: {{ data.notes }}</p>
-            {% endif %}
-        </div>
-    </div>
-    <div class="row">
-        <h5 align="center">Sensitivity to pollution</h5>
-        <div class="col s3">
-            <table class="bordered">
-                <thead>
-                        <h6 align=center>{% trans "Sensitive/Intolerant" %}</h6>
-                    <tr>
-                        <th></th>
-                        <th>Count</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="label">
-                            Caddisfly<br>
-                            <img src="{% static 'streamwebs/images/macroinvertebrates/macro_caddisfly.png' %}">
-                        </td>
+    <h4 align="center">{% trans "Macroinvertebrate data" %}: {{ data.date_time|date:"m-d-Y" }}</h4>
 
-                        <td class="value">{{ data.caddisfly }}</td>
-                    </tr>
-                    <tr>
-                        <td class="label">
-                        Mayfly<br>
-                        <img src="{% static 'streamwebs/images/macroinvertebrates/macro_mayfly.png' %}">
-                        </td>
-                        
-                        <td class="value">{{ data.mayfly }}</td>
-                    </tr>
-                    <tr>
-                        <td class="label">
-                        Riffle beetle<br>
-                        <img src="{% static 'streamwebs/images/macroinvertebrates/macro_riffle_beetle.png' %}">
-                    </td>
-                        <td class="value">{{ data.riffle_beetle }}</td>
-                    </tr>
-                    <tr>
-                        <td class="label">
-                        Stonefly<br>
-                        <img src="{% static 'streamwebs/images/macroinvertebrates/macro_stonefly.png' %}">
-                        </td>
-                        <td class="value">{{ data.stonefly }}</td>
-                    </tr>
-                    <tr>
-                        <td class="label">
-                        Water penny<br>
-                        <img src="{% static 'streamwebs/images/macroinvertebrates/macro_water_penny.png' %}">
-                        </td>
-                        <td class="value">{{ data.water_penny }}</td>
-                    </tr>
-                    <tr>
-                        <td class="label">
-                        Dobsonfly<br>
-                        <img src="{% static 'streamwebs/images/macroinvertebrates/macro_dobsonfly.png' %}">
-                        </td>
-                        <td class="value">{{ data.dobsonfly }}</td>
-                    </tr>
-                    <tr>
-                        <td class="label total">{% trans "Sensitive total" %}<br></td>
-                        <td class="value total">{{ data.sensitive_total }}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-    <div class="col s3 offset-s1">
-        <table class="bordered">
-            <thead>
-                <h6 align="center">{% trans "Somewhat Sensitive" %}</h6>
-                <tr>
-                    <th></th>
-                    <th>Count</th>
-                </tr>
-            </thead>
-          <tbody>
-          <tr>
-            <td class="label">
-              Clam/mussel
-              <br>
-              <img src="{% static 'streamwebs/images/macroinvertebrates/macro_clam_mussel.png' %}">
-            </td>
-            <td class="value">{{ data.clam_or_mussel }}</td>
-          </tr>
-          <tr>
-            <td class="label">
-              Crane fly
-              <br>
-              <img src="{% static 'streamwebs/images/macroinvertebrates/macro_crane_fly.png' %}">
-            </td>
-            <td class="value">{{ data.crane_fly }}</td>
-          </tr>
-          <tr>
-            <td class="label">
-              Crayfish
-              <br>
-              <img src="{% static 'streamwebs/images/macroinvertebrates/macro_crayfish.png' %}">
-            </td>
-            <td class="value">{{ data.crayfish }}</td>
-          </tr>
-          <tr>
-            <td class="label">
-              Damselfly
-              <br>
-              <img src="{% static 'streamwebs/images/macroinvertebrates/macro_damselfly.png' %}">
-            </td>
-            <td class="value">{{ data.damselfly }}</td>
-          </tr>
-          <tr>
-            <td class="label">
-              Dragonfly
-              <br>
-              <img src="{% static 'streamwebs/images/macroinvertebrates/macro_dragonfly.png' %}">
-            </td>
-            <td class="value">{{ data.dragonfly }}</td>
-          </tr>
-          <tr>
-            <td class="label">
-              Scud
-              <br>
-              <img src="{% static 'streamwebs/images/macroinvertebrates/macro_scud.png' %}">
-            </td>
-            <td class="value">{{ data.scud }}</td>
-          </tr>
-          <tr>
-            <td class="label">
-              Fishfly
-              <br>
-              <img src="{% static 'streamwebs/images/macroinvertebrates/macro_fishfly.png' %}">
-            </td>
-            <td class="value">{{ data.fishfly }}</td>
-          </tr>
-          <tr>
-            <td class="label">
-              Alderfly
-              <br>
-              <img src="{% static 'streamwebs/images/macroinvertebrates/macro_alderfly.png' %}">
-            </td>
-            <td class="value">{{ data.alderfly }}</td>
-          </tr>
-          <tr>
-            <td class="label">
-              Water mite
-              <br>
-              <img src="{% static 'streamwebs/images/macroinvertebrates/macro_mite.png' %}">
-            </td>
-            <td class="value">{{ data.mite }}</td>
-          </tr>
-          <tr>
-            <td class="label total">
-              {% trans "Somewhat sensitive total" %}<br>
-            </td>
-            <td class="value total">{{ data.somewhat_sensitive_total }}</td>
-          </tr>
-          </tbody></table></div>
-        <div class="col s3 offset-s1">
-        <table class="bordered">
-            <thead>
-            <h6 align="center">{% trans "Tolerant " %}</h6>
-            <tr>
-                <th></th>
-                <th>Count</th>
-            </tr>
-            </thead>
-          <tbody>
-          <tr>
-            <td class="label">
-              Aquatic worm
-              <br>
-              <img src="{% static 'streamwebs/images/macroinvertebrates/macro_aquatic_worm.png' %}">
-            </td>
-            <td class="value">{{ data.aquatic_worm }}</td>
-          </tr>
-          <tr>
-            <td class="label">
-              Blackfly
-              <br>
-              <img src="{% static 'streamwebs/images/macroinvertebrates/macro_blackfly.png' %}">
-            </td>
-            <td class="value">{{ data.blackfly }}</td>
-          </tr>
-          <tr>
-            <td class="label">
-              Leech
-              <br>
-              <img src="{% static 'streamwebs/images/macroinvertebrates/macro_leech.png' %}">
-            </td>
-            <td class="value">{{ data.leech }}</td>
-          </tr>
-          <tr>
-            <td class="label">
-              Midge
-              <br>
-              <img src="{% static 'streamwebs/images/macroinvertebrates/macro_midge.png' %}">
-            </td>
-            <td class="value">{{ data.midge }}</td>
-          </tr>
-          <tr>
-            <td class="label">
-              Snail
-              <br>
-              <img src="{% static 'streamwebs/images/macroinvertebrates/macro_snail.png' %}">
-            </td>
-            <td class="value">{{ data.snail }}</td>
-          </tr>
-          <tr>
-            <td class="label">
-              Mosquito larva
-              <br>
-              <img src="{% static 'streamwebs/images/macroinvertebrates/macro_mosquito_larva.png' %}">
-            </td>
-            <td class="value">{{ data.mosquito_larva }}</td>
-          </tr>
-          <tr>
-            <td class="label total">
-              {% trans "Tolerant total" %}<br>
-            </td>
-            <td class="value total">{{ data.tolerant_total }}</td>
-          </tr>
-          </tbody></table></div>
+    <div class="row">
+      <div class="col s12">
+          <p>{% trans "School" %}: {{ data.school }} </>
+      </div>
+      <div class="col s6">
+          <p>{% trans "Water quality" %}: {{ rating }}</p>
+      </div>
+      <div class="col s6">
+          <p>{% trans "Number of people sorting/identifying" %}: {{ data.num_people }}</p>
+      </div>
+      <div class="col s6">
+          <p>{% trans "Water type" %}: {{ data.get_water_type_display }}</p>
+      </div>
+      <div class="col s6">
+          <p>{% trans "Time spent sorting/identifying" %}: {{ data.time_spent }} minutes</p>
+      </div>
+      <div class="col s6">
+          <p>{% trans "Percent EPT" %}: {{ EPT|floatformat:2 }}%</p>
+          <p><b>Note: </b>
+            EPT is the total number of caddisflies, mayflies, and stoneflies found divided by number of all bugs
+          </p>
+      </div>
+      <div class="col s6">
+          <p>{% trans "Weather" %}: {{ data.weather }}</p>
+      </div>
+      <div class="notes col s12">
+          {% if data.notes %}
+          <p>{% trans "Field notes" %}: {{ data.notes }}</p>
+          {% endif %}
       </div>
     </div>
-</div>
+    <div class="row">
+      <h5 align="center">{% trans "Sensitivity to pollution" %}</h5>
+      <div class="col s3">
+        <h6 align=center>{% trans "Sensitive"%}</h6>
+        <table class="bordered">
+          <thead>
+            <tr>
+              <th></th>
+              <th>{% trans "Count" %}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="label">
+                {% trans "Caddisfly" %}<br>
+                <img
+                    src="{% static 'streamwebs/images/macroinvertebrates/macro_caddisfly.png' %}">
+              </td>
+
+              <td class="value">{{ data.caddisfly }}</td>
+            </tr>
+            <tr>
+              <td class="label">
+                {% trans "Mayfly" %}<br>
+                <img
+                    src="{% static 'streamwebs/images/macroinvertebrates/macro_mayfly.png' %}">
+              </td>
+
+              <td class="value">{{ data.mayfly }}</td>
+            </tr>
+            <tr>
+              <td class="label">
+                {% trans "Riffle beetle" %}<br>
+                <img
+                    src="{% static 'streamwebs/images/macroinvertebrates/macro_riffle_beetle.png' %}">
+              </td>
+              <td class="value">{{ data.riffle_beetle }}</td>
+            </tr>
+            <tr>
+              <td class="label">
+                {% trans "Stonefly" %}<br>
+                <img
+                    src="{% static 'streamwebs/images/macroinvertebrates/macro_stonefly.png' %}">
+              </td>
+              <td class="value">{{ data.stonefly }}</td>
+            </tr>
+            <tr>
+              <td class="label">
+                {% trans "Water penny" %}<br>
+                <img
+                    src="{% static 'streamwebs/images/macroinvertebrates/macro_water_penny.png' %}">
+              </td>
+              <td class="value">{{ data.water_penny }}</td>
+            </tr>
+            <tr>
+              <td class="label">
+                {% trans "Dobsonfly" %}<br>
+                <img
+                    src="{% static 'streamwebs/images/macroinvertebrates/macro_dobsonfly.png' %}">
+              </td>
+              <td class="value">{{ data.dobsonfly }}</td>
+            </tr>
+            <tr>
+              <td class="label total">{% trans "Sensitive total" %}<br></td>
+              <td class="value total">{{ data.sensitive_total }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="col s3 offset-s1">
+        <h6 align="center">{% trans "Somewhat Sensitive" %}</h6>
+        <table class="bordered">
+          <thead>
+            <tr>
+              <th></th>
+              <th>{% trans "Count" %}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="label">
+                {% trans "Clam/mussel" %}
+                <br>
+                <img
+                    src="{% static 'streamwebs/images/macroinvertebrates/macro_clam_mussel.png' %}">
+              </td>
+              <td class="value">{{ data.clam_or_mussel }}</td>
+            </tr>
+            <tr>
+              <td class="label">
+                {% trans "Crane fly" %}
+                <br>
+                <img
+                    src="{% static 'streamwebs/images/macroinvertebrates/macro_crane_fly.png' %}">
+              </td>
+              <td class="value">{{ data.crane_fly }}</td>
+            </tr>
+            <tr>
+              <td class="label">
+                {% trans "Crayfish" %}
+                <br>
+                <img
+                    src="{% static 'streamwebs/images/macroinvertebrates/macro_crayfish.png' %}">
+              </td>
+              <td class="value">{{ data.crayfish }}</td>
+            </tr>
+            <tr>
+              <td class="label">
+                {% trans "Damselfly" %}
+                <br>
+                <img
+                    src="{% static 'streamwebs/images/macroinvertebrates/macro_damselfly.png' %}">
+              </td>
+              <td class="value">{{ data.damselfly }}</td>
+            </tr>
+            <tr>
+              <td class="label">
+                {% trans "Dragonfly" %}
+                <br>
+                <img
+                    src="{% static 'streamwebs/images/macroinvertebrates/macro_dragonfly.png' %}">
+              </td>
+              <td class="value">{{ data.dragonfly }}</td>
+            </tr>
+            <tr>
+              <td class="label">
+                {% trans "Scud" %}
+                <br>
+                <img
+                    src="{% static 'streamwebs/images/macroinvertebrates/macro_scud.png' %}">
+              </td>
+              <td class="value">{{ data.scud }}</td>
+            </tr>
+            <tr>
+              <td class="label">
+                {% trans "Fishfly" %}
+                <br>
+                <img
+                    src="{% static 'streamwebs/images/macroinvertebrates/macro_fishfly.png' %}">
+              </td>
+              <td class="value">{{ data.fishfly }}</td>
+            </tr>
+            <tr>
+              <td class="label">
+                {% trans "Alderfly" %}
+                <br>
+                <img
+                    src="{% static 'streamwebs/images/macroinvertebrates/macro_alderfly.png' %}">
+              </td>
+              <td class="value">{{ data.alderfly }}</td>
+            </tr>
+            <tr>
+              <td class="label">
+                {% trans "Water mite" %}
+                <br>
+                <img
+                    src="{% static 'streamwebs/images/macroinvertebrates/macro_mite.png' %}">
+              </td>
+              <td class="value">{{ data.mite }}</td>
+            </tr>
+            <tr>
+              <td class="label total">
+                {% trans "Somewhat sensitive total" %}<br>
+              </td>
+              <td class="value total">{{ data.somewhat_sensitive_total }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="col s3 offset-s1">
+        <h6 align="center">{% trans "Tolerant " %}</h6>
+        <table class="bordered">
+          <thead>
+            <tr>
+              <th></th>
+              <th>{% trans "Count" %}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="label">
+                {% trans "Aquatic worm" %}
+                <br>
+                <img
+                    src="{% static 'streamwebs/images/macroinvertebrates/macro_aquatic_worm.png' %}">
+              </td>
+              <td class="value">{{ data.aquatic_worm }}</td>
+            </tr>
+            <tr>
+              <td class="label">
+                {% trans "Blackfly" %}
+                <br>
+                <img
+                    src="{% static 'streamwebs/images/macroinvertebrates/macro_blackfly.png' %}">
+              </td>
+              <td class="value">{{ data.blackfly }}</td>
+            </tr>
+            <tr>
+              <td class="label">
+                {% trans "Leech" %}
+                <br>
+                <img
+                    src="{% static 'streamwebs/images/macroinvertebrates/macro_leech.png' %}">
+              </td>
+              <td class="value">{{ data.leech }}</td>
+            </tr>
+            <tr>
+              <td class="label">
+                {% trans "Midge" %}
+                <br>
+                <img
+                    src="{% static 'streamwebs/images/macroinvertebrates/macro_midge.png' %}">
+              </td>
+              <td class="value">{{ data.midge }}</td>
+            </tr>
+            <tr>
+              <td class="label">
+                {% trans "Snail" %}
+                <br>
+                <img
+                    src="{% static 'streamwebs/images/macroinvertebrates/macro_snail.png' %}">
+              </td>
+              <td class="value">{{ data.snail }}</td>
+            </tr>
+            <tr>
+              <td class="label">
+                {% trans "Mosquito larva" %}
+                <br>
+                <img
+                    src="{% static 'streamwebs/images/macroinvertebrates/macro_mosquito_larva.png' %}">
+              </td>
+              <td class="value">{{ data.mosquito_larva }}</td>
+            </tr>
+            <tr>
+              <td class="label total">
+                {% trans "Tolerant total" %}<br>
+              </td>
+              <td class="value total">{{ data.tolerant_total }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+  <script type="application/javascript"
+          src="{% static 'streamwebs/js/data.js' %}"></script>
 {% endblock %}

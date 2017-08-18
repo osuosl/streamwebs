@@ -92,6 +92,8 @@ for dir in directions:
                                 row['Collected'][0:15],
                                 "%a, %Y-%m-%d"
                             )
+                        cc.uid = row['Uid']
+
                     CCs[row['Nid']] = cc
                     count = 0
 
@@ -111,7 +113,7 @@ for cc in CCs.values():
     Canopy_Cover.objects.update_or_create(
         site=cc.site, school=None, date_time=cc.date_time, weather='',
         north_cc=cc.north_cc, east_cc=cc.east_cc, south_cc=cc.south_cc,
-        west_cc=cc.west_cc, est_canopy_cover=cc.est_canopy_cover
+        west_cc=cc.west_cc, est_canopy_cover=cc.est_canopy_cover, uid=cc.uid
     )
 
 print('Canopy Covers loaded.')

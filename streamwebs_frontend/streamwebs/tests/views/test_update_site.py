@@ -26,7 +26,6 @@ class UpdateSiteTestCase(TestCase):
     def test_successful_site_update(self):
         """Tests that update is successful if all data valid"""
         site = Site.test_objects.create_site('Creaky Creek')
-        modified = site.modified
 
         response = self.client.post(reverse(
             'streamwebs:update_site',
@@ -41,7 +40,6 @@ class UpdateSiteTestCase(TestCase):
                     kwargs={'site_slug': Site.test_objects.last().site_slug}),
             status_code=302,
             target_status_code=200)
-        self.assertNotEqual(modified, Site.test_objects.last().modified)
 
     def test_unsuccessful_site_update(self):
         """Tests that update is unsuccessful if some/all data invalid"""

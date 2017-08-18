@@ -1,17 +1,17 @@
 "use strict";
 
 function toFixed(value, precision) {
-    const power = Math.pow(10, precision || 0);
+    var power = Math.pow(10, precision || 0);
     return String(Math.round(value * power) / power);
 }
 
-const createGraph = function createGraph() {
+var createGraph = function createGraph() {
     $('svg').remove();
 
-    let data = JSON.parse(JSON.stringify(window.data));
+    var data = JSON.parse(JSON.stringify(window.data));
 
-    const formatted = data.map(d => {
-        return d.samples.reduce((prev, curr, idx) => {
+    var formatted = data.map(function (d) {
+        return d.samples.reduce(function (prev, curr, idx) {
             /*
              * This is more straightforward than it looks. Prev is the average
              * of samples[0] through samples[idx-1]. We multiply it by the
@@ -26,46 +26,48 @@ const createGraph = function createGraph() {
         }, 0);
     });
 
-    const margin = {top: 50, right: 20, bottom: 20, left: 50};
+    var margin = {top: 50, right: 20, bottom: 20, left: 50};
 
-    const containerName = '#histogram';
-    const container = $(containerName);
-    const width = container.width() - margin.left - margin.right;
-    const height = (container.width() * 0.6) - margin.top - margin.bottom;
+    var containerName = '#histogram';
+    var container = $(containerName);
+    var width = container.width() - margin.left - margin.right;
+    var height = (container.width() * 0.6) - margin.top - margin.bottom;
 
-    const svg = d3.select(containerName).append('svg')
+    var svg = d3.select(containerName).append('svg')
         .attr('width', width + margin.left + margin.right)
         .attr('height', height + margin.top + margin.bottom)
     .append('g')
         .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
-    const range = d3.extent(formatted);
+    var range = d3.extent(formatted);
 
     if (range[0] === range[1]) {
         range[0]--;
         range[1]++;
     }
 
-    const x = d3.scaleLinear()
+    var x = d3.scaleLinear()
         .domain(range)
         .range([0, width])
         .nice();
 
-    const bins = d3.histogram()
+    var bins = d3.histogram()
         .domain(x.domain())
         .thresholds(20)
         (formatted);
 
-    const y = d3.scaleLinear()
+    var y = d3.scaleLinear()
         .range([height, 0])
-        .domain(d3.extent(bins, d => d.length))
+        .domain(d3.extent(bins, function (d) {
+            return d.length
+        }))
         .nice();
 
-    const xAxis = d3.axisBottom(x);
+    var xAxis = d3.axisBottom(x);
     xAxis.ticks(0);
 
-    const yAxis = d3.axisLeft(y);
-    const yMax = y.domain()[1];
+    var yAxis = d3.axisLeft(y);
+    var yMax = y.domain()[1];
     /*
      * Array(n) creates an array of n values. Array.keys() returns an array
      * iterator which returns the keys of the array (i.e. the numbers 0-n);
@@ -84,38 +86,54 @@ const createGraph = function createGraph() {
         .attr('class', 'axis axis--y')
         .call(yAxis);
 
-    const histogram = svg.selectAll('.bar')
+    var histogram = svg.selectAll('.bar')
         .data(bins)
         .enter().append('g')
             .attr('class', 'bar')
-            .attr('transform', d => 'translate(' + x(d.x0) + ',' + y(d.length) + ')');
+            .attr('transform', function (d) {
+                return 'translate(' + x(d.x0) + ',' + y(d.length) + ')';
+            });
 
     histogram.append('rect')
         .attr('x', 1)
-        .attr('width', d => x(d.x1) - x(d.x0) - 1)
-        .attr('height', d => height - y(d.length));
+        .attr('width', function (d) {
+            return x(d.x1) - x(d.x0) - 1;
+        })
+        .attr('height', function (d) {
+            return height - y(d.length);
+        });
 
     histogram.append('text')
         .attr('class', 'label')
         .attr('dy', '.75em')
-        .attr('x', d => (x(d.x1) - x(d.x0))/2)
+        .attr('x', function (d) {
+            return (x(d.x1) - x(d.x0))/2;
+        })
         .attr('y', 6)
         .attr('text-anchor', 'middle')
-        .text(d => d.length ? d3.format(',.0f')(d.length) : '');
+        .text(function (d) {
+            return d.length ? d3.format(',.0f')(d.length) : ''
+        });
 
     histogram.append('text')
         .attr('class', 'value')
         .attr('dy', '.75em')
-        .attr('x', d => (x(d.x1) - x(d.x0))/2)
-        .attr('y', d => height - y(d.length) + 6)
+        .attr('x', function (d) {
+            return (x(d.x1) - x(d.x0))/2;
+        })
+        .attr('y', function (d) {
+            return height - y(d.length) + 6;
+        })
         .attr('text-anchor', 'middle')
-        .text(d => toFixed(Number.parseFloat(d.x0), 2));
+        .text(function (d) {
+            return toFixed(Number.parseFloat(d.x0), 2);
+        });
 };
 
-$(() => {
+$(function () {
     createGraph();
 });
 
-$(window).resize(() => {
+$(window).resize(function () {
     createGraph();
 });

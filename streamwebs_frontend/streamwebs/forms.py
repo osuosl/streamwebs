@@ -33,12 +33,43 @@ class UserForm(forms.ModelForm):
             'email': _('Email'),
             'password': _('Password:'),
             'first_name': _('First Name'),
-            'last_name': _('Last Name'),
         }
 
     def clean_password(self):
         if self.data['password'] != self.data['password_check']:
-            raise forms.ValidationError(_('Passwords do not match'))
+            raise forms.ValidationError(_('Passwords did not match'))
+        return self.data['password']
+
+
+class UserEmailForm(forms.ModelForm):
+    email = forms.CharField(required=True)
+
+    class Meta:
+        model = User
+        fields = ('email',)
+
+
+class UserPasswordForm(forms.ModelForm):
+    old_password = forms.CharField(
+        widget=forms.PasswordInput(),
+        label=_('Old Password'))
+    password = forms.CharField(
+        widget=forms.PasswordInput(),
+        label=_('New Password'))
+    password_check = forms.CharField(
+        widget=forms.PasswordInput(),
+        label=_('New Password Repeat'))
+
+    class Meta:
+        model = User
+        fields = ('password',)
+
+    def clean_password(self):
+        if self.data['password'] != self.data['password_check']:
+            raise forms.ValidationError(_('New Passwords did not match.'))
+        if self.data['old_password'] == self.data['password']:
+            raise forms.ValidationError(_('Your old password and new ' +
+                                          'password cannot be the same.'))
         return self.data['password']
 
 
@@ -55,11 +86,14 @@ class UserProfileForm(forms.ModelForm):
 
 
 class MacroinvertebratesForm(forms.ModelForm):
-    school = forms.ModelChoiceField(queryset=School.objects.all())
 
     class Meta:
         model = Macroinvertebrates
-        fields = ('school', 'date_time', 'weather', 'time_spent',
+        widgets = {
+            'notes': forms.Textarea(
+                attrs={'class': 'materialize-textarea'})
+        }
+        fields = ('date_time', 'weather', 'time_spent',
                   'num_people', 'water_type', 'caddisfly', 'mayfly',
                   'riffle_beetle', 'stonefly', 'water_penny', 'dobsonfly',
                   'clam_or_mussel', 'crane_fly', 'crayfish',
@@ -69,7 +103,6 @@ class MacroinvertebratesForm(forms.ModelForm):
 
 
 class WQForm(forms.ModelForm):
-    school = forms.ModelChoiceField(queryset=School.objects.all())
 
     class Meta:
         model = Water_Quality
@@ -81,7 +114,7 @@ class WQForm(forms.ModelForm):
                 forms.Textarea(attrs={'class': 'materialize-textarea'})
         }
         fields = (
-            'date', 'DEQ_dq_level', 'school',
+            'date', 'DEQ_dq_level',
             'latitude', 'longitude', 'fish_present', 'live_fish',
             'dead_fish', 'water_temp_unit', 'air_temp_unit', 'notes'
         )
@@ -129,7 +162,7 @@ class WQSampleFormReadOnly(WQSampleForm):
 class Canopy_Cover_Form(forms.ModelForm):
     class Meta:
         model = Canopy_Cover
-        fields = ('school', 'date_time', 'weather', 'est_canopy_cover',
+        fields = ('date_time', 'weather', 'est_canopy_cover',
                   'north_cc', 'west_cc', 'east_cc', 'south_cc')
 
 
@@ -167,19 +200,19 @@ class BaseZoneInlineFormSet(BaseInlineFormSet):
                 blank += 1
 
         if blank == 5:
-            raise forms.ValidationError('At least one zone must have at ' +
-                                        'least one value greater than 0.')
+            raise forms.ValidationError(
+                _('At least one zone must have at least '
+                  + 'one value greater than 0.'))
 
 
 class RiparianTransectForm(forms.ModelForm):
-    school = forms.ModelChoiceField(queryset=School.objects.all())
 
     class Meta:
         model = RiparianTransect
         widgets = {
             'notes': forms.Textarea(attrs={'class': 'materialize-textarea'})
         }
-        fields = ('school', 'date_time', 'weather', 'slope', 'notes')
+        fields = ('date_time', 'weather', 'slope', 'notes')
 
 
 class PhotoPointImageForm(forms.ModelForm):
@@ -218,6 +251,12 @@ class CameraPointForm(forms.ModelForm):
 class SiteForm(forms.ModelForm):
     class Meta:
         model = Site
+        widgets = {
+            'site_name': forms.TextInput(
+                attrs={'class': 'materialize-textarea, validate'}),
+            'description': forms.Textarea(
+                attrs={'class': 'materialize-textarea'})
+        }
         fields = ('site_name', 'description', 'location', 'image')
 
 
@@ -232,7 +271,7 @@ class SoilSurveyForm(forms.ModelForm):
                 forms.Textarea(attrs={'class': 'materialize-textarea'})
         }
         fields = (
-            'school', 'date', 'weather', 'landscape_pos', 'cover_type',
+            'date', 'weather', 'landscape_pos', 'cover_type',
             'land_use', 'soil_type', 'distance', 'site_char'
         )
 
@@ -260,3 +299,18 @@ class StatisticsForm(forms.Form):
         widget=forms.DateInput(attrs={'class': 'datepicker'}),
         label=_('ending on'), required=False
     )
+
+
+class AdminPromotionForm(forms.Form):
+    PERM_OPTIONS = (
+        ('add_admin', _('Add to Admin group')),
+        ('del_admin', _('Remove from Admin group')),
+        ('add_stats', _('Grant permission to view the Statistics page')),
+        ('add_upload', _('Grant permission to upload to the Resources page')),
+        ('del_stats', _('Revoke permission to view the Statistics page')),
+        ('del_upload', _('Revoke permission to upload to the Resources page')),
+    )
+
+    users = forms.ModelMultipleChoiceField(queryset=User.objects.all(),
+                                           widget=forms.SelectMultiple)
+    perms = forms.ChoiceField(choices=PERM_OPTIONS)

@@ -10,7 +10,7 @@ from django.contrib.gis.db import models
 from django.utils.encoding import python_2_unicode_compatible
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext as _
 from django.utils.text import slugify
 from django.utils.dateformat import format
 
@@ -137,7 +137,26 @@ class School(models.Model):
     created = models.DateTimeField(default=timezone.now)
     modified = models.DateTimeField(default=timezone.now)
 
+    # nid and assoc_uid are only used by the data_scripts to make relations
+    # between the models
+    # nid = models.PositiveIntegerField(blank=True, null=True)
+    # assoc_uid = models.PositiveIntegerField(blank=True, null=True)
+
     test_objects = SchoolManager()
+    objects = models.Manager()
+
+    def __str__(self):
+        return self.name
+
+
+@python_2_unicode_compatible
+class SchoolRelations(models.Model):
+    uid = models.PositiveIntegerField(blank=True, null=True)
+    school = models.ForeignKey(
+        School, null=True, on_delete=models.CASCADE,
+        limit_choices_to={'active': True}
+    )
+
     objects = models.Manager()
 
     def __str__(self):
@@ -216,11 +235,11 @@ class Water_Quality(models.Model):
 
     DEQ_DQ_CHOICES = (
         (None, '-----'),
-        (LEVEL_A, 'Level A'),
-        (LEVEL_B, 'Level B'),
-        (LEVEL_C, 'Level C'),
-        (LEVEL_D, 'Level D'),
-        (LEVEL_E, 'Level E'),
+        (LEVEL_A, _('Level A')),
+        (LEVEL_B, _('Level B')),
+        (LEVEL_C, _('Level C')),
+        (LEVEL_D, _('Level D')),
+        (LEVEL_E, _('Level E')),
     )
 
     BOOL_CHOICES = (('True', _('Yes')), ('False', _('No')))
@@ -271,6 +290,9 @@ class Water_Quality(models.Model):
     notes = models.TextField(blank=True, verbose_name=_('notes'))
     nid = models.PositiveIntegerField(blank=True, null=True)
 
+    # Uid used to make relations between school and data sheet
+    uid = models.PositiveIntegerField(blank=True, null=True)
+
     test_objects = WaterQualityManager()
     objects = models.Manager()
 
@@ -278,7 +300,7 @@ class Water_Quality(models.Model):
         if self.site is not None:
             return self.site.site_name + ' data sheet ' + str(self.id)
         else:
-            return 'Unspecified site for data sheet ' + str(self.id)
+            return _('Unspecified site for data sheet ') + str(self.id)
 
     def to_dict(self):
         samples = WQ_Sample.objects.filter(water_quality=self)
@@ -374,9 +396,9 @@ class WQ_Sample(models.Model):
     THREE = 3
     FOUR = 4
     TOOL_CHOICES = ((NOT_ACCESSED, None),
-                    (MANUAL, 'Manual'),
-                    (VERNIER, 'Vernier'),)
-    SAMPLE_CHOICES = ((DEFAULT, '(Select a sample number)'),
+                    (MANUAL, _('Manual')),
+                    (VERNIER, _('Vernier')),)
+    SAMPLE_CHOICES = ((DEFAULT, _('(Select a sample number)')),
                       (ONE, 1),
                       (TWO, 2),
                       (THREE, 3),
@@ -522,6 +544,8 @@ class CameraPoint(models.Model):
     letter = models.CharField(null=True, max_length=5, editable=False)
     cp_date = models.DateField(default=datetime.date.today,
                                verbose_name=_('date established'))
+    school = models.ForeignKey(School, null=True, on_delete=models.CASCADE,
+                               verbose_name=_('school'))
     location = models.PointField(null=True, verbose_name=_('location'))
     map_datum = models.CharField(max_length=255, blank=True,
                                  verbose_name=_('map datum'))
@@ -532,7 +556,7 @@ class CameraPoint(models.Model):
     objects = models.Manager()
 
     def __str__(self):
-        return ('Camera point ' + self.letter + ' for site ' +
+        return (_('Camera point ') + self.letter + _(' for site ') +
                 self.site.site_name)
 
     def save(self, **kwargs):
@@ -550,8 +574,8 @@ class CameraPoint(models.Model):
         super(CameraPoint, self).save()
 
     class Meta:
-        verbose_name = 'camera point'
-        verbose_name_plural = 'camera points'
+        verbose_name = _('camera point')
+        verbose_name_plural = _('camera points')
 
 
 class PhotoPointManager(models.Manager):
@@ -583,8 +607,8 @@ class PhotoPoint(models.Model):
     objects = models.Manager()
 
     def __str__(self):
-        return ('Photo point ' + str(self.number) + ' for camera point ' +
-                self.camera_point.letter)
+        return (_('Photo point ') + str(self.number) + _(' for camera point ')
+                + self.camera_point.letter)
 
     def save(self, **kwargs):
         if not self.number:
@@ -597,8 +621,8 @@ class PhotoPoint(models.Model):
         super(PhotoPoint, self).save()
 
     class Meta:
-        verbose_name = 'photo point'
-        verbose_name_plural = 'photo points'
+        verbose_name = _('photo point')
+        verbose_name_plural = _('photo points')
 
 
 class PhotoPointImage(models.Model):
@@ -610,28 +634,28 @@ class PhotoPointImage(models.Model):
                             verbose_name=_('date taken'))
 
     def __str__(self):
-        return (str(self.date) + ' for photo point ' +
+        return (str(self.date) + _(' for photo point ') +
                 str(self.photo_point.number))
 
     class Meta:
-        verbose_name = 'photo point image'
-        verbose_name_plural = 'photo point images'
+        verbose_name = _('photo point image')
+        verbose_name_plural = _('photo point images')
 
 
 class MacroinvertebratesManager(models.Manager):
     """
     Manager for the Macroinvertebrates model.
     """
-    def create_macro(self, site, time_spent=0, num_people=0, water_type='riff',
-                     caddisfly=0, mayfly=0, riffle_beetle=0, stonefly=0,
-                     water_penny=0, dobsonfly=0, clam_or_mussel=0, crane_fly=0,
-                     crayfish=0, damselfly=0, dragonfly=0, scud=0, fishfly=0,
-                     alderfly=0, mite=0, aquatic_worm=0, blackfly=0, leech=0,
-                     midge=0, snail=0, mosquito_larva=0, notes=''):
+    def create_macro(self, site, school, time_spent=0, num_people=0,
+                     water_type='riff', caddisfly=0, mayfly=0, riffle_beetle=0,
+                     stonefly=0, water_penny=0, dobsonfly=0, clam_or_mussel=0,
+                     crane_fly=0, crayfish=0, damselfly=0, dragonfly=0, scud=0,
+                     fishfly=0, alderfly=0, mite=0, aquatic_worm=0, blackfly=0,
+                     leech=0, midge=0, snail=0, mosquito_larva=0, notes=''):
 
-        info = self.create(school='aaaa',
+        info = self.create(school=school,
                            date_time='2016-07-11 14:09',
-                           weather="bbbb",
+                           weather='bbbb',
                            site=site,
                            time_spent=time_spent,
                            num_people=num_people,
@@ -672,7 +696,8 @@ class Macroinvertebrates(models.Model):
         (POOL, _('pool')),
     )
 
-    school = models.CharField(max_length=250, verbose_name=_('school'))
+    school = models.ForeignKey(School, null=True, on_delete=models.CASCADE,
+                               verbose_name=_('school'))
     date_time = models.DateTimeField(default=timezone.now,
                                      verbose_name=_('date and time'))
     weather = models.CharField(max_length=250,
@@ -681,11 +706,11 @@ class Macroinvertebrates(models.Model):
                              limit_choices_to={'active': True})
     time_spent = models.PositiveIntegerField(
         default=None, null=True,
-        verbose_name=_('time spent sorting/identifying')
+        verbose_name=_('Time spent sorting/identifying')
         )
     num_people = models.PositiveIntegerField(
         default=None, null=True,
-        verbose_name=_('# of people sorting/identifying')
+        verbose_name=_('Number of people sorting/identifying')
         )
     water_type = models.CharField(max_length=4, verbose_name=_('water type'),
                                   choices=WATER_TYPE_CHOICES, default=None)
@@ -749,6 +774,9 @@ class Macroinvertebrates(models.Model):
         default=0, verbose_name=_('water quality rating')
         )
 
+    # Uid used to make relations between school and data sheet
+    uid = models.PositiveIntegerField(blank=True, null=True)
+
     objects = models.Manager()
     test_objects = MacroinvertebratesManager()
 
@@ -790,40 +818,40 @@ class Macroinvertebrates(models.Model):
         super(Macroinvertebrates, self).save()
 
     class Meta:
-        verbose_name = 'macroinvertebrate'
-        verbose_name_plural = 'macroinvertebrates'
+        verbose_name = _('macroinvertebrate')
+        verbose_name_plural = _('macroinvertebrates')
 
     def get_tolerant_counts(self):
         return [
-            {'name': 'Aquatic Worm', 'value': self.aquatic_worm},
-            {'name': 'Blackfly', 'value': self.blackfly},
-            {'name': 'Leech', 'value': self.leech},
-            {'name': 'Midge', 'value': self.midge},
-            {'name': 'Snail', 'value': self.snail},
-            {'name': 'Mosquito Larva', 'value': self.mosquito_larva}
+            {'name': _('Aquatic Worm'), 'value': self.aquatic_worm},
+            {'name': _('Blackfly'), 'value': self.blackfly},
+            {'name': _('Leech'), 'value': self.leech},
+            {'name': _('Midge'), 'value': self.midge},
+            {'name': _('Snail'), 'value': self.snail},
+            {'name': _('Mosquito Larva'), 'value': self.mosquito_larva}
         ]
 
     def get_somewhat_sensitive_counts(self):
         return [
-            {'name': 'Mussel/Clam', 'value': self.clam_or_mussel},
-            {'name': 'Crane Fly', 'value': self.crane_fly},
-            {'name': 'Crayfish', 'value': self.crayfish},
-            {'name': 'Damselfly', 'value': self.damselfly},
-            {'name': 'Dragonfly', 'value': self.dragonfly},
-            {'name': 'Scud', 'value': self.scud},
-            {'name': 'Fishfly', 'value': self.fishfly},
-            {'name': 'Alderfly', 'value': self.alderfly},
-            {'name': 'Mite', 'value': self.mite}
+            {'name': _('Mussel/Clam'), 'value': self.clam_or_mussel},
+            {'name': _('Crane Fly'), 'value': self.crane_fly},
+            {'name': _('Crayfish'), 'value': self.crayfish},
+            {'name': _('Damselfly'), 'value': self.damselfly},
+            {'name': _('Dragonfly'), 'value': self.dragonfly},
+            {'name': _('Scud'), 'value': self.scud},
+            {'name': _('Fishfly'), 'value': self.fishfly},
+            {'name': _('Alderfly'), 'value': self.alderfly},
+            {'name': _('Mite'), 'value': self.mite}
         ]
 
     def get_sensitive_counts(self):
         return [
-            {'name': 'Riffle Beetle', 'value': self.riffle_beetle},
-            {'name': 'Mayfly', 'value': self.mayfly},
-            {'name': 'Water Penny', 'value': self.water_penny},
-            {'name': 'Stonefly', 'value': self.stonefly},
-            {'name': 'Caddisfly', 'value': self.caddisfly},
-            {'name': 'Dobsonfly', 'value': self.dobsonfly}
+            {'name': _('Riffle Beetle'), 'value': self.riffle_beetle},
+            {'name': _('Mayfly'), 'value': self.mayfly},
+            {'name': _('Water Penny'), 'value': self.water_penny},
+            {'name': _('Stonefly'), 'value': self.stonefly},
+            {'name': _('Caddisfly'), 'value': self.caddisfly},
+            {'name': _('Dobsonfly'), 'value': self.dobsonfly}
         ]
 
     def get_totals(self):
@@ -844,9 +872,9 @@ class Macroinvertebrates(models.Model):
                     int(self.mosquito_larva))
 
         return {
-            'Tolerant': tolerant,
-            'Somewhat Sensitive': somewhat,
-            'Sensitive': sensitive
+            _('Tolerant'): tolerant,
+            _('Somewhat Sensitive'): somewhat,
+            _('Sensitive'): sensitive
         }
 
 
@@ -873,7 +901,8 @@ class RiparianTransect(models.Model):
     This model corresponds to the Riparian Transect data sheet and has a one-to
     -one relationship with its specified Site.
     """
-    school = models.CharField(max_length=255, verbose_name=_('school'))
+    school = models.ForeignKey(School, null=True, on_delete=models.CASCADE,
+                               verbose_name=_('school'))
     date_time = models.DateTimeField(default=timezone.now,
                                      verbose_name=_('date and time'))
     weather = models.CharField(max_length=255, blank=True,
@@ -888,15 +917,19 @@ class RiparianTransect(models.Model):
     notes = models.TextField(blank=True, verbose_name=_('notes'))
     nid = models.PositiveIntegerField(blank=True, null=True)
 
+    # Uid used to make relations between school and data sheet
+    uid = models.PositiveIntegerField(blank=True, null=True)
+
     test_objects = RipTransectManager()
     objects = models.Manager()
 
     def __str__(self):
-        return 'Transect ' + str(self.id) + ' for site ' + self.site.site_name
+        return (_('Transect ') + str(self.id) + _(' for site ')
+                + self.site.site_name)
 
     class Meta:
-        verbose_name = 'riparian transect'
-        verbose_name_plural = 'riparian transects'
+        verbose_name = _('riparian transect')
+        verbose_name_plural = _('riparian transects')
 
 
 class TransectZoneManager(models.Manager):
@@ -992,12 +1025,15 @@ class Canopy_Cover(models.Model):
         verbose_name=_('estimated canopy cover')
         )
 
+    # Uid used to make relations between school and data sheet
+    uid = models.PositiveIntegerField(blank=True, null=True)
+
     def __str__(self):
         return(str(self.date_time) + ' ' + self.site.site_name)
 
     class Meta:
-        verbose_name = 'canopy cover survey'
-        verbose_name_plural = 'canopy cover surveys'
+        verbose_name = _('canopy cover survey')
+        verbose_name_plural = _('canopy cover surveys')
 
 
 @python_2_unicode_compatible
@@ -1012,27 +1048,27 @@ class Soil_Survey(models.Model):
                              verbose_name=_('site'))
 
     landscape_pos_choices = [
-        ('summit', 'Summit'),
-        ('slope', 'Slope'),
-        ('depression', 'Depression'),
-        ('large_flat', 'Large Flat Area'),
-        ('stream_bank', 'Stream Bank')
+        ('summit', _('Summit')),
+        ('slope', _('Slope')),
+        ('depression', _('Depression')),
+        ('large_flat', _('Large Flat Area')),
+        ('stream_bank', _('Stream Bank'))
     ]
 
     cover_type_choices = [
-        ('bare_soil', 'Bare Soil'),
-        ('rocks', 'Rocks'),
-        ('grass', 'Grass'),
-        ('shrubs', 'Shrubs'),
-        ('trees', 'Trees')
+        ('bare_soil', _('Bare Soil')),
+        ('rocks', _('Rocks')),
+        ('grass', _('Grass')),
+        ('shrubs', _('Shrubs')),
+        ('trees', _('Trees'))
     ]
 
     land_use_choices = [
-        ('urban', 'Urban'),
-        ('agricultural', 'Agricultural'),
-        ('recreation', 'Recreation'),
-        ('wilderness', 'Wilderness'),
-        ('other', 'Other')
+        ('urban', _('Urban')),
+        ('agricultural', _('Agricultural')),
+        ('recreation', _('Recreation')),
+        ('wilderness', _('Wilderness')),
+        ('other', _('Other'))
     ]
 
     landscape_pos = models.CharField(max_length=11, default=None,
@@ -1043,33 +1079,36 @@ class Soil_Survey(models.Model):
                                 choices=land_use_choices)
 
     distance = models.DecimalField(max_digits=5, decimal_places=2, null=True,
-                                   verbose_name=_('distance from stream'))
+                                   verbose_name=_('distance from stream (ft)'))
     site_char = models.TextField(blank=True,
                                  verbose_name=_('distinguishing site \
                                  characteristics'))
 
     soil_type_choices = [
         (None, '-----'),
-        ('sand', 'Sand'),
-        ('loamy_sand', 'Loamy Sand'),
-        ('silt_loam', 'Silt Loam'),
-        ('loam', 'Loam'),
-        ('clay_loam', 'Clay Loam'),
-        ('light_clay', 'Light Clay'),
-        ('heavy_clay', 'Heavy Clay'),
-        ('n/a', 'N/A'),
-        ('other', 'Other')
+        ('sand', _('Sand')),
+        ('loamy_sand', _('Loamy Sand')),
+        ('silt_loam', _('Silt Loam')),
+        ('loam', _('Loam')),
+        ('clay_loam', _('Clay Loam')),
+        ('light_clay', _('Light Clay')),
+        ('heavy_clay', _('Heavy Clay')),
+        ('n/a', _('N/A')),
+        ('other', _('Other'))
     ]
 
     soil_type = models.CharField(max_length=10, default=None,
                                  choices=soil_type_choices)
 
+    # Uid used to make relations between school and data sheet
+    uid = models.PositiveIntegerField(blank=True, null=True)
+
     def __str__(self):
         return self.site.site_name
 
     class Meta:
-        verbose_name = 'soil survey'
-        verbose_name_plural = 'soil surveys'
+        verbose_name = _('soil survey')
+        verbose_name_plural = _('soil surveys')
 
 
 class ResourceManager(models.Model):
@@ -1104,8 +1143,8 @@ class Resource(models.Model):
     test_objects = ResourceManager()
 
     class Meta:
-        verbose_name = 'resource'
-        verbose_name_plural = 'resources'
+        verbose_name = _('resource')
+        verbose_name_plural = _('resources')
 
     def __str__(self):
-        return 'Resource name ' + self.name
+        return self.name

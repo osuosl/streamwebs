@@ -41,15 +41,27 @@ NOCAPTCHA = True
 # Google maps API key
 GOOGLE_MAPS_API = 'AIzaSyCHaUYTiJJ2RZtqstos6VAFFUxN5I6saIA'
 
+#Google maps map Type
+GOOGLE_MAPS_TYPE = 'google.maps.MapTypeId.TERRAIN'
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# Email Host
+EMAIL_HOST = 'smtp.osuosl.org'
+EMAIL_PORT = 465
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
+DEFAULT_FROM_EMAIL = 'TestSite Team <noreply@example.com>'
 
 # Application definition
 
 INSTALLED_APPS = [
+    'streamwebs',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -58,7 +70,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.gis',
     'captcha',
-    'streamwebs',
 ]
 
 MIDDLEWARE_CLASSES = [

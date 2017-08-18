@@ -17,8 +17,13 @@ class IndexViewTest(TestCase):
             'admin@example.com',
             'adminpassword'
         )
+        self.superAdmin = User.objects.create_superuser(
+            'superadmin',
+            'super@example.com',
+            'superpassword'
+        )
         admins = Group.objects.get(name='admin')
-        self.admin.groups.set([admins])
+        self.admin.groups.add(admins)
 
     def test_index(self):
         response = self.client.get('/')
@@ -29,34 +34,57 @@ class IndexViewTest(TestCase):
         """When regular user logged in, can see standard tabs but not Admin."""
         self.client.login(username='reg', password="regpassword")
         response = self.client.get(reverse('streamwebs:index'))
-        self.assertContains(response, 'Administration', 1)
         self.assertNotContains(response, 'Login')
         self.assertContains(response, 'Sites')
         self.assertContains(response, 'Resources')
         self.assertContains(response, 'Logout')
         self.assertNotContains(response, 'Login')
         self.assertNotContains(response, 'Create Account')
+        self.assertNotContains(response, 'Manage Users')
+        self.assertNotContains(response, 'View Site Statistics')
+
+        # can't see stats, can't see users
         self.client.logout()
 
     def test_admin_navigation_menu(self):
         """When admin user logged in, can see standard tabs and Admin tab."""
         self.client.login(username='admin', password="adminpassword")
         response = self.client.get(reverse('streamwebs:index'))
-        self.assertContains(response, 'Administration', 2)
         self.assertNotContains(response, 'Login')
         self.assertContains(response, 'Sites')
         self.assertContains(response, 'Resources')
         self.assertContains(response, 'Logout')
         self.assertNotContains(response, 'Login')
         self.assertNotContains(response, 'Create Account')
+        # can see stats, can't see users
+        self.assertNotContains(response, 'Manage Users')
+        self.assertContains(response, 'View Site Statistics')
+
         self.client.logout()
 
     def test_anon_navigation_menu(self):
         """When user not logged in, has Create Acct tab but no Admin tab."""
         response = self.client.get(reverse('streamwebs:index'))
-        self.assertContains(response, 'Administration', 1)
         self.assertContains(response, 'Sites')
         self.assertContains(response, 'Resources')
         self.assertContains(response, 'Login')
         self.assertNotContains(response, 'Logout')
         self.assertContains(response, 'Create Account')
+        # can't see stats, can't see users
+        self.assertNotContains(response, 'Manage Users')
+        self.assertNotContains(response, 'View Site Statistics')
+        self.client.logout()
+
+    def test_can_manage_users(self):
+        """When user logged in with user promo perm, can see that tab"""
+        self.client.login(username='superadmin', password='superpassword')
+        response = self.client.get(reverse('streamwebs:index'))
+        self.assertNotContains(response, 'Login')
+        self.assertContains(response, 'Sites')
+        self.assertContains(response, 'Resources')
+        self.assertContains(response, 'Logout')
+        self.assertNotContains(response, 'Login')
+        self.assertNotContains(response, 'Create Account')
+        self.assertContains(response, 'View Site Statistics')
+        self.assertContains(response, 'Manage Users')
+        self.client.logout()

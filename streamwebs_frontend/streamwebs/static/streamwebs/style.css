@@ -1,5 +1,10 @@
 @charset "UTF-8";
 
+/* Reset */
+p {
+    margin: 0;
+}
+
 /* WebKit/Blink Browsers */
 ::selection {
     background: #b9dce8;
@@ -10,167 +15,137 @@
     background: #b9dce8;
 }
 
-.title {
-    width: 100%;
-    font-size: 3em;
-    font-weight: bolder;
-    text-align: center;
-    display: inline-block;
-    line-height: 2.5em;
-}
 
+/* Base.html styling */
 html,
 body {
+    font-family: 'Lato', sans-serif;
     width: 100%;
-    height: 100%;
-
     overflow: auto;
     background-color: #fafafa;
 }
 
-.page-wrap {
+h1, h2, h3, h4, h5, h6, p {
+    font-family: 'Montserrat', sans-serif;
+}
+
+div.page-wrap {
     position: relative;
     width: 100%;
-    min-height: 100%;
-    background: url("images/bg-main.png") repeat;
+    background-size: 100%;
 }
 
-.header {
-    width: 74%;
-    height: 240px;
+div.header {
+    width: 100%;
+    height: 200px;
     margin-left: auto;
     margin-right: auto;
+    background: url("images/streamrocks.png") no-repeat fixed;
+    background-size: 100%;
     position: relative;
-    z-index: 1;
-}
-
-.header > .logo {
-    position: absolute;
-    bottom: 20px;
-    left: 10%;
-}
-
-.header-img {
-    position: absolute;
-    left: 13%;
-    top: 0;
-    width: 86%;
-    height: 420px;
-    background: url("images/header-decor.png") no-repeat;
-    background-size: 100% 420px;
-    z-index: 0;
-    pointer-events: none;
-}
-
-#language-button {
-    height: 1.5em;
-    line-height: 1.6em;
-    font-size: 1.2em;
-    padding-left: .5em;
-    padding-right: .5em;
-}
-
-.inner-wrap {
-    width: 74%;
-    min-height: 700px;
-    margin-left: auto;
-    margin-right: auto;
-    padding-bottom: 20px;
-    z-index: 1;
-    position: relative;
-}
-
-.content {
-    padding-left: 15px;
-    padding-right: 15px;
     z-index: 2;
 }
 
-#map {
-    width: 100%;
-    height: 500px;
-    margin-bottom: 10px;
-}
-
-.search-nav {
-    /* Make the search bar behave as if it were not in a navbar */
-
-    padding: 0 0 0 0 !important;
-    margin-left: 0.75rem !important;
-    margin-right: -0.75rem !important;
-    margin-bottom: 0 !important;
-}
-
-#search {
-    margin-bottom: 0;
-}
-
-/* Search placeholder color */
-::-webkit-input-placeholder { /* WebKit, Blink, Edge */
-    color: #fff;
-}
-
-:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-   color: #fff;
-   opacity: 1;
-}
-
-::-moz-placeholder { /* Mozilla Firefox 19+ */
-   color: #fff;
-   opacity: 1;
-}
-
-:-ms-input-placeholder { /* Internet Explorer 10-11 */
-   color: #fff;
-}
-
-.search-results {
-    margin-top: 0;
+div.header > a.logo {
     position: absolute;
-    z-index: 10;
-    width: 100%;
+    bottom: 50px;
+    left: 40px;
 }
 
 nav {
-    margin-bottom: 25px;
     box-shadow: unset;
 }
 
-nav a.btn,
-nav ul#languages {
-    margin-left: 10px;
+nav#navbar {
+    margin-bottom: 0px;
+    height: 66px;
+    width: 100%;
+    background: white;
 }
 
-.brand-logo a {
-    color: inherit;
+nav#navbar div.nav-container {
+    background: white;
+    height: 66px;
+    width: 100%;
+    border-bottom: 2px white solid;
+    transition: border 300ms linear 0s;
+    position: relative;
+    z-index: 3;
 }
 
-.nav-wrapper i {
-    line-height: 36px !important;
+nav#navbar div.nav-container div.right.grey.lighten-5{
+    font-weight: 700 !important;
 }
 
-#date {
-    margin-bottom: 5px;
+nav#navbar div#nav-logo {
+    color: black; /* Used for h3, can be taken out */
+    height: 64px;
+    width: 250px;
+    float: left;
+    display: none;
 }
 
-.rowchk {
-    margin-top: 23px;
+nav#navbar div.nav-float {
+    position: fixed;
+    top: 0px;
+    z-index: 10;
+    border-bottom: 2px #117A65 solid !important;
 }
 
-.rowchk > label {
-    margin-right: 15px;
+.inner-wrap {
+    width: 100%;
+    min-width: 768px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 300px;
+    padding: 25px 0px 80px 0px;
+    position: relative;
+    z-index: 3;
 }
 
-.data-table td {
-    font-weight: bold;
+.content {
+    z-index: 4;
+    max-width: 1440px;
+    margin: 0 auto;
 }
 
-.form-cell {
-    min-width: 300px;
+footer {
+    width: 100%;
+    height: 300px;
+    position: fixed;
+    z-index: 1;
+    bottom: 0px;
+    background: url("images/streamrocks.png") no-repeat fixed;
+    background-size: cover;
 }
+
+footer:hover > div#filter {
+    background: rgba(0, 0, 0, 0.55);
+}
+
+div#filter {
+    width: 100%;
+    height: 300px;
+    position: relative;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 1;
+    transition: background 0.3s linear 0s;
+}
+
+div#footer {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    z-index: 1;
+    color: white;
+}
+
+
+
 
 /* CSS for D3 graphs; ALL FREE TO BE CHANGED */
 .graph {
+    position: relative;
     width: 100%;
 }
 
@@ -252,4 +227,82 @@ i {
 
 .infogroup .row {
     margin-bottom: 0;
+}
+
+
+
+/* Genral styling for all sites */
+
+/* Search placeholder color */
+::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color: white;
+}
+
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color: white;
+    opacity: 1;
+}
+
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color: white;
+    opacity: 1;
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: white;
+}
+
+.search-results {
+    margin-top: 0px;
+    position: absolute;
+    z-index: 10;
+    width: 100%;
+}
+
+div.center-content {
+    text-align: center;
+}
+
+.errorlist {
+    color: #FF5722;
+}
+
+strong {
+    color: #FF5722;
+}
+
+strong.normal {
+    color: black;
+}
+
+.material-icons {
+    font-size: 1.5em;
+}
+
+.brand-logo a {
+    color: inherit;
+}
+
+.nav-wrapper i {
+    line-height: 36px;
+}
+
+#date {
+    margin-bottom: 5px;
+}
+
+.rowchk {
+    margin-top: 23px;
+}
+
+.rowchk > label {
+    margin-right: 15px;
+}
+
+.data-table td {
+    font-weight: bold;
+}
+
+.form-cell {
+    min-width: 300px;
 }

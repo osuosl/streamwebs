@@ -23,7 +23,7 @@ class UploadResourceTestCase(TestCase):
         can_upload = Permission.objects.get(codename='can_upload_resources')
         self.special_user.user_permissions.add(can_upload)
 
-        # admin user with all permissions
+        # admin user with admin permissions (stats and resources)
         admins = Group.objects.get(name='admin')
         self.admin = User.objects.create_user('admin', 'admin@example.com',
                                               'adminpassword')
@@ -35,11 +35,7 @@ class UploadResourceTestCase(TestCase):
 
     def test_not_logged_in_user(self):
         """If user is not logged in, can't view the upload page or link"""
-        # grab resources view: can't see link
-        response = self.client.get(reverse('streamwebs:resources'))
-        self.assertEquals(response.status_code, 200)
-        self.assertNotContains(response, 'Upload a new resource')
-        # grab resources upload: redirected to login
+        # Can't access upload page:
         response = self.client.get(reverse('streamwebs:resources-upload'))
         self.assertRedirects(
             response,
@@ -50,7 +46,7 @@ class UploadResourceTestCase(TestCase):
         self.assertTemplateNotUsed(
             response, 'streamwebs/resources/resources-upload.html')
 
-        """Should not be able to view link in resources.html"""
+        # Can't view link on resources page:
         response = self.client.get(reverse('streamwebs:resources'))
         self.assertContains(
             response,
@@ -62,11 +58,10 @@ class UploadResourceTestCase(TestCase):
         """User in admin group with upload perm should be able to view page"""
         self.client.login(username='admin', password='adminpassword')
         self.assertTrue(self.admin.has_perms(
-            ['streamwebs.can_upload_resources', 'streamwebs.can_promote_users',
-             'streamwebs.can_view_stats']))
+            ['streamwebs.can_upload_resources', 'streamwebs.can_view_stats']))
         self.assertTrue(self.admin.groups.filter(name='admin').exists())
         response = self.client.get(reverse('streamwebs:resources-upload'))
-        self.assertTrue(response.status_code, 200)
+        self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(
             response, 'streamwebs/resources/resources_upload.html')
         self.assertContains(response, 'Upload a new resource')
@@ -77,7 +72,6 @@ class UploadResourceTestCase(TestCase):
             response,
             "StreamWebs offers a number of resources to get you started in " +
             "the field")
-        self.assertContains(response, "Upload a new resource")
         self.client.logout()
 
     def test_reg_user_has_upload_perm(self):
@@ -90,7 +84,7 @@ class UploadResourceTestCase(TestCase):
             self.special_user.groups.filter(name='admin').exists())
         self.client.login(username='special_user', password='specialpassword')
         response = self.client.get(reverse('streamwebs:resources-upload'))
-        self.assertTrue(response.status_code, 200)
+        self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(
             response, 'streamwebs/resources/resources_upload.html')
         self.assertContains(response, 'Upload a new resource')
@@ -101,7 +95,6 @@ class UploadResourceTestCase(TestCase):
             response,
             "StreamWebs offers a number of resources to get you started in " +
             "the field")
-        self.assertContains(response, "Upload a new resource")
 
         self.client.logout()
 

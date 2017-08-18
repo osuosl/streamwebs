@@ -5,7 +5,7 @@ from streamwebs.forms import MacroinvertebratesForm
 class MacroinvertebrateFormTestCase(TestCase):
 
     def setUp(self):
-        self.expected_fields = ('school', 'date_time', 'weather', 'time_spent',
+        self.expected_fields = ('date_time', 'weather', 'time_spent',
                                 'num_people', 'water_type', 'caddisfly',
                                 'mayfly', 'riffle_beetle', 'stonefly',
                                 'water_penny', 'dobsonfly', 'clam_or_mussel',

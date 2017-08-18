@@ -3,18 +3,18 @@
 {% load i18n %}
 
 {% block title %} {{ site.site_name }} {% endblock %}
-{% block body_title %} Delete {{ site.site_name }} {% endblock %}
+{% block body_title %}{% trans "Delete" %} {{ site.site_name }} {% endblock %}
 
 {% block content %}
-    {% if user.is_authenticated %}
-        {% if deactivated %}
-        <strong>{{ site.site_name }} {% trans ' has been successfully deleted.' %}</strong>
-
-        {% else %}
-        <strong>{% trans 'This site has data and can only be deleted by an administrator.' %}</strong>
-        {% endif %}
+  {% if user.is_authenticated %}
+    {% if deactivated %}
+      <strong class="normal">{{ site.site_name }} {% trans ' has been successfully deleted.' %}</strong>
 
     {% else %}
-    <strong>{% trans 'You must be logged in to delete a site.' %}</strong>
+      <strong>{% trans 'This site has data and can only be deleted by an administrator.' %}</strong>
     {% endif %}
+
+  {% else %}
+    <strong>{% trans 'You must be logged in to delete a site.' %}</strong>
+  {% endif %}
 {% endblock %}

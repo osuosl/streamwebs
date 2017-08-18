@@ -1,0 +1,28 @@
+{% extends 'streamwebs/base.html' %}
+{% load i18n %}
+{% block title %}Change Email{% endblock %}
+
+{% block body_title %}{% trans "Change Email" %}{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <div class="row">
+      <form class="col s8 offset-s2" id="user_form" method="post" action="{% url 'streamwebs:update_email' %}">
+        {% csrf_token %}
+        <br/><br/>
+        <strong class="normal">{% trans "Change your email:" %}</strong><br/>
+        <br/>
+
+        <div class="input-field col s12">
+          <label for="{{ user_form.email.id_for_label }}">Email:</label>
+            {{ user_form.email }}
+            <b>{{ user_form.email.errors }}</b>
+        </div>
+
+        <div class="center-content">
+          <input class="btn waves-effect waves-light teal darken-3" type='submit' name='update_email' value='{% trans "Change Email"%}' />
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}

@@ -33,10 +33,6 @@ class RetrieveSiteTestCase(TestCase):
         self.assertContains(self.response, 'Test site description')
         self.assertContains(self.response, 44.0612385000000017)
         self.assertContains(self.response, -121.3846841000000012)
-        self.assertContains(self.response,
-                            self.site.created.strftime('%m-%d-%Y %H:%M %Z'))
-        self.assertContains(self.response,
-                            self.site.modified.strftime('%m-%d-%Y %H:%M %Z'))
 
     def test_site_view_with_sheets(self):
         """Tests that site displays sheet links if sheets exist"""
@@ -47,14 +43,20 @@ class RetrieveSiteTestCase(TestCase):
             self.site, '2016-07-25', self.school, 'E', 45, 45, 'False', 0, 0,
             'Fahrenheit', 'Fahrenheit')  # NOQA
 
-        macro_sheet_1 = Macroinvertebrates.test_objects.create_macro(self.site)  # NOQA
-        macro_sheet_2 = Macroinvertebrates.test_objects.create_macro(self.site)  # NOQA
+        macro_sheet_1 = Macroinvertebrates.test_objects.create_macro( # NOQA
+            self.site, self.school
+        )
+        macro_sheet_2 = Macroinvertebrates.test_objects.create_macro(
+            self.site, self.school
+        )
         macro_sheet_2.date_time = '2016-08-11 14:09'  # NOQA
 
         transect_sheet_1 = RiparianTransect.test_objects.create_transect(  # NOQA
-            'Test School', '2016-06-25 10:20', self.site)  # NOQA
+            self.school, '2016-06-25 10:20', self.site
+        )  # NOQA
         transect_sheet_2 = RiparianTransect.test_objects.create_transect(  # NOQA
-            'Test School', '2016-05-25 10:20', self.site)  # NOQA
+            self.school, '2016-05-25 10:20', self.site
+        )  # NOQA
 
         new_response = self.client.get(reverse(
             'streamwebs:site', kwargs={'site_slug': self.site.site_slug}))
