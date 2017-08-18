@@ -5,7 +5,7 @@
   "fields": {
     "name": "Water Quality",
     "res_type": "data_sheet",
-    "downloadable": "assets/WaterQuality_OSU.pdf",
+    "downloadable": "assets/Water_quality_OSU.pdf",
     "thumbnail": "assets/thumbnails/water_quality.png",
     "sort_order": 1000
   }
