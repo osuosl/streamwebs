@@ -1,33 +1,8 @@
-.. _dev_docs:
+.. _dev_notes:
 
-=======================
-Developer Documentation
-=======================
-StreamWebs is built with the Django web framework. You can view and clone the
-StreamWebs Github repository `here <https://github.com/osuosl/streamwebs>`_.
-
-Testing
--------
-The tests directory is located in streamwebs_frontend/streamwebs/ and contains
-subdirectories (such as " models" and "views"), each of which contains files
-that test individual models, views, etc. To run tests, you must be in the
-same directory in which manage.py is located, i.e. /streamwebs_frontend/:
-
-::
-
-    python manage.py test streamwebs/tests/<subdirectory>/
-
-For example,
-
-::
-
-    python manage.py test streamwebs/tests/models/
-
-would run all the model tests. You can find a thorough explanation of how the
-Django testing framework works in its `official documentation
-<https://docs.djangoproject.com/en/1.8/topics/testing/overview/#running-tests>`_.
-
-.. _error:
+===================
+Miscellaneous Notes
+===================
 
 Resolving the "relation does not exist" error
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -63,24 +38,11 @@ commands again to generate an up-to-date migration that accurately represents
 the current state of your models, but this should fix the problem. See the next
 section for more details on how this project manages migrations.
 
-Handling Migrations
--------------------
-This project currently does not track migrations on GitHub. As Django models
-are developed, they go through many changes and thus generate many migrations.
-Since this is a team project with multiple developers responsible for the
-creation of multiple models, these migrations can conflict with each other upon
-merges. To avoid this inconvenience, we have decided not to track migrations on
-Github by deleting them on our own branches prior to making pull requests. The
-only file in the repository's streamwebs_frontend/streamwebs/migrations should
-be an __init__.py file. For an example of how keeping migrations can cause
-problems during development, see the previous section on :ref:`error`. You can
-also read `this Stack Overflow discussion
-<http://stackoverflow.com/questions/28035119/should-i-be-adding-the-django-migration-files-in-the-gitignore-file>`_
-that shares the insights and experiences of other developers concerning
-migrations and version control.
+
 
 Translation
--------------------
+-----------
+
 In order to make a Django project translatable, you have to add a minimal number
 of hooks to your Python code and templates. Django then provides utilities to
 extract the translation strings into a message file. This file is a convenient

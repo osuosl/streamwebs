@@ -1,0 +1,14 @@
+How to build this documentation
+===============================
+
+1. Have Python
+2. Have and activate a python virtualenv (optional)
+3. Have the Sphinx python package (pip install sphinx)
+4. in this directory:
+
+  make html
+
+5. View generated html documentation in the build/html/ directory
+6. Optinally, serve the html with python's built-in http server by entering the build/html directory and doing:
+
+  python -m SimpleHTTPServer 8000
