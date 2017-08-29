@@ -28,6 +28,13 @@
             {{ camera_form.media }}
             <h5>{% trans "Location Input" %}</h5>
             <div class="input-field col s12">
+              <label for="{{ camera_form.school.label }}">
+                {% trans "School" %}
+              </label>
+              {{ camera_form.school }}
+              {{ camera_form.school.errors | striptags }}
+            </div>
+            <div class="input-field col s12">
               <label for="{{ camera_form.cp_date.label }}">
                 {% trans "Camera Point Date" %}
               </label>
