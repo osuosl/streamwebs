@@ -1030,19 +1030,12 @@ def soil_survey_edit(request, site_slug):
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     soil_form = SoilSurveyForm()
 
-    school = None
-    if hasattr(request.user, 'userprofile'):
-        userprofile = request.user.userprofile
-        school = School.objects.filter(active=True) \
-            .get(userprofile=userprofile)
-
     if request.method == 'POST':
         soil_form = SoilSurveyForm(data=request.POST)
 
         if soil_form.is_valid():
             soil = soil_form.save(commit=False)
             soil.site = site
-            soil.school = school
             soil.save()
             messages.success(
                 request,

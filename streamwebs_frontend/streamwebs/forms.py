@@ -239,6 +239,7 @@ class PhotoPointForm(forms.ModelForm):
 
 
 class CameraPointForm(forms.ModelForm):
+    school = forms.ModelChoiceField(queryset=School.objects.all())
     cp_date = forms.DateField(
         widget=forms.DateInput(attrs={'class': 'datepicker'}),
     )

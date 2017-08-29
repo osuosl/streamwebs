@@ -22,18 +22,17 @@
           {% csrf_token %}
 
           <p>{{ camera_form.site }}</p>
-
+          <div class="row">
+            <div class="input-field col s12">
+              {{ camera_form.school.label }}
+              {{ camera_form.school }}
+              {{ camera_form.school.errors | striptags }}
+            </div>
+          </div>
           <div class="loc-input">
             <!-- CAMERA FORM: -->
             {{ camera_form.media }}
             <h5>{% trans "Location Input" %}</h5>
-            <div class="input-field col s12">
-              <label for="{{ camera_form.school.label }}">
-                {% trans "School" %}
-              </label>
-              {{ camera_form.school }}
-              {{ camera_form.school.errors | striptags }}
-            </div>
             <div class="input-field col s12">
               <label for="{{ camera_form.cp_date.label }}">
                 {% trans "Camera Point Date" %}
@@ -140,7 +139,13 @@
   <script type="application/javascript"
           src="http://maps.google.com/maps/api/js?key=AIzaSyBV71HBuAFMtHEAaSEVpRDPUQyGvJwTX1k"></script>
   <script
-      src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+      src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/pickadate.js/3.5.6/compressed/picker.js"></script>
+  <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/pickadate.js/3.5.6/compressed/picker.date.js"></script>
+  <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
   <script type="application/javascript">
     // initialize curr_marker
     var curr_marker = null;
