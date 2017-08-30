@@ -250,8 +250,7 @@ class CameraPointForm(forms.ModelForm):
     class Meta:
         model = CameraPoint
         fields = ('school', 'site', 'cp_date', 'location', 'map_datum',
-                  'description'
-        )
+                  'description')
 
 
 class SiteForm(forms.ModelForm):
