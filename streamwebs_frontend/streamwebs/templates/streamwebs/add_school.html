@@ -1,0 +1,77 @@
+{% extends "streamwebs/base.html" %}
+
+{% load staticfiles %}
+{% load i18n %}
+
+{% block title %}{% trans "Add School/Organization" %}{% endblock %}
+
+
+{% block body_title %}Add a School or Organization{% endblock %}
+
+{%block scripts %}
+<style>
+#type{
+  font-size: 18px;
+}
+
+</style>
+
+{% endblock %}
+{% block content %}
+
+<div class="container">
+  <form method='post' enctype='multipart/form-data' id='school_form'>
+    {% csrf_token %}
+    <div class="row">
+      <div class="input-field col s12">
+        <label for="{{ school_form.name.id_for_label }}">{% trans "Name" %}</label>
+        {{ school_form.name }}
+        {{ school_form.name.errors | striptags }}
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col s12">
+        <label for="{{ school_form.school_type.id_for_label }}" id="type">{% trans "Type:" %}</label>
+        <div class="input-field">
+          {% for radio in school_form.school_type %}
+          {{ radio.tag }}
+          <label for="{{ radio.id_for_label }}"> {{ radio.choice_label }}</label>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="input-field col s12">
+        <label for="{{ school_form.address.id_for_label }}">{% trans "Address" %}</label>
+        {{ school_form.address }}
+        {{ school_form.address | striptags }}
+      </div>
+    </div>
+    <div class="row">
+      <div class="input-field col s12">
+        <label for="{{ school_form.city.id_for_label }}">{% trans "City" %}</label>
+        {{ school_form.city }}
+        {{ school_form.city | striptags }}
+      </div>
+    </div>
+    <div class="row">
+      <div class="input-field col s12">
+        <label for="{{ school_form.province.id_for_label }}">{% trans "State" %}</label>
+        {{ school_form.province }}
+        {{ school_form.province | striptags }}
+      </div>
+    </div>
+    <div class="row">
+      <div class="input-field col s12">
+        <label for="{{ school_form.zipcode.id_for_label }}">{% trans "Zipcode" %}</label>
+        {{ school_form.zipcode }}
+        {{ school_form.zipcode | striptags }}
+      </div>
+    </div>
+    <input class="btn waves-effect waves-light teal darken-3" type="submit"
+    value='{% trans "Submit" %}'>
+  </form>
+</div>
+
+{% endblock %}

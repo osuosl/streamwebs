@@ -110,6 +110,7 @@ urlpatterns = [
 
     url(r'^schools/$', views.schools, name='schools'),
     url(r'^schools/(?P<school_id>[0-9]+)/$',
-        views.school_detail, name='school_detail')
+        views.school_detail, name='school_detail'),
+    url(r'^schools/add', views.create_school, name='create_school')
 
 ]
