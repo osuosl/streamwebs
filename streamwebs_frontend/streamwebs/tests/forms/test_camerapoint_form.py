@@ -6,6 +6,7 @@ class CameraPointFormTestCase(TestCase):
 
     def setUp(self):
         self.expected_fields = (
+            'school',
             'site',
             'cp_date',
             'location',
