@@ -235,9 +235,9 @@ var useLineGraph = function useLineGraph() {
     });
 
     var container = outerContainer;
-    var margin = {top: 20, right: 200, bottom: 50, left: 40};
+    var margin = {top: 20, right: 40, bottom: 50, left: 40};
     var width = container.width() - margin.left - margin.right;
-    var height = 250 - margin.top - margin.bottom;
+    var height = 320 - margin.top - margin.bottom;
 
     var x = d3.scaleTime()
         .range([0, width]);
@@ -269,7 +269,7 @@ var useLineGraph = function useLineGraph() {
 
     var svg = d3.select('#graph-' + siteId).append('svg')
         .attr('width', width + margin.left + margin.right)
-        .attr('height', height + margin.top + margin.bottom);
+        .attr('height', height + margin.top + margin.bottom + 100);
 
     var g = svg.append('g')
         .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
@@ -340,7 +340,8 @@ var useLineGraph = function useLineGraph() {
             .append('g')
             .attr('class', 'legend')
             .attr('transform', function (d, i) {
-                return 'translate(' + (width + margin.left + 5) + ', ' + i * 20 + ')';
+                return 'translate(' + margin.left + ', ' +
+                    (height + margin.top + margin.bottom + i * 20) + ')';
             })
             .style('border', '1px solid black')
             .style('font', '12px sans-serif');
@@ -363,6 +364,17 @@ var useLineGraph = function useLineGraph() {
             .text(function (d) {
                 return d.name;
             });
+
+        var dateRange = 'Date Range: ' + formatted[0].date + ' ~ ' +
+            formatted[formatted.length - 1].date;
+
+        g.append('text')
+            .attr('x', 260)
+            .attr('y', height + margin.bottom+ 40)
+            .attr('dy', '.35em')
+            .style('font-size', '14px')
+            .text(dateRange);
+
     }
 };
 
