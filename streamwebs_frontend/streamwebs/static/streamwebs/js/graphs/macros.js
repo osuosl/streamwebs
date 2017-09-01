@@ -149,7 +149,9 @@ var useLineGraph = function useLineGraph() {
             return x;
         })
         .filter(function (x) {
-            return x.date.getTime() === curr.date.getTime();
+            d1 = new Date(x.date);
+            d2 = new Date(curr.date);
+            return d1.getTime() === d2.getTime();
         });
         if (data === [] || data.length === 0) {
             /*
@@ -286,7 +288,6 @@ var useLineGraph = function useLineGraph() {
     g.append('g')
         .attr('class', 'axis axis--y')
         .call(d3.axisLeft(y));
-
     if (formatted.length > 0) {
         var type = g.selectAll('.type')
             .data(types)
@@ -314,6 +315,23 @@ var useLineGraph = function useLineGraph() {
             })
             .style('fill', function (d) {
                 return z(d.name);
+            });
+
+        var line = d3.line()
+            .x(function(d) {
+                return x(new Date(d.date));
+            })
+            .y(function(d) {
+                return y(d.value);
+            });
+
+        type.selectAll('svg g')
+            .data(types)
+            .enter().append('path')
+            .attr('class', 'line')
+            .attr('d', function(d) { return line(d.values); })
+            .style('stroke', function(d) {
+              return z(d.name);
             });
 
         var legend = g.selectAll('.legend')
