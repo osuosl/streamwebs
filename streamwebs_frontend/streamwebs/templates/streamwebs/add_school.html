@@ -9,6 +9,7 @@
 {% block body_title %}Add a School or Organization{% endblock %}
 
 
+{% block content %}
 <div class="container">
   <form method='post' enctype='multipart/form-data' name= "school_form" id='school_form'>
     {% csrf_token %}
@@ -90,4 +91,3 @@ function(){
 </script>
 
 {% endblock %}
-{% block content %}
