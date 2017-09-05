@@ -18,16 +18,15 @@
       <h4><a href="{% url 'streamwebs:camera_point' pp.camera_point.site.site_slug pp.camera_point.id %}">{{ pp.camera_point.site.site_name }}:
         camera point {{ pp.camera_point.letter }}</a></h4>
       <p><b>{% trans "Date established" %}:</b> {{ pp.pp_date|date:"m-d-Y" }}</p>
-      <p><b>{% trans "Compass bearing" %}:</b> {{ pp.compass_bearing }}</p>
+      <p><b>{% trans "Compass bearing" %}:</b> {{ pp.compass_bearing }} °</p>
       <p>
         <b>
           {% trans "Distance from camera point" %} {{ pp.camera_point.letter }}:
         </b>
-        {{ pp.distance }}
+        {{ pp.distance }} ft
       </p>
-      <p><b>{% trans "Camera height" %}:</b> {{ pp.camera_height }}</p>
+      <p><b>{% trans "Camera height" %}:</b> {{ pp.camera_height }} ft</p>
       <p><b>{% trans "Notes" %}:</b> {{ pp.notes }}</p>
-
       <strong class="normal">{% trans "Photos for this photo point" %}:</strong>
       <div class="row">
         <div class="col s12 m7">

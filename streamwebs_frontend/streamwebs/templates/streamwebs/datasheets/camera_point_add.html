@@ -69,7 +69,7 @@
                   <h6>{% trans "Photo" %} #{{ forloop.counter }}</h6>
                   <div class="input-field">
                     <label for="{{ p_form.compass_bearing.label }}">
-                      {% trans "Compass Bearing" %}
+                      {% trans "Compass Bearing" %} (degrees)
                     </label>
                     {{ p_form.compass_bearing }}
                     {{ p_form.compass_bearing.errors | striptags }}
