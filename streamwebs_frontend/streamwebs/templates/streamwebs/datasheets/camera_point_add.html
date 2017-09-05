@@ -17,7 +17,7 @@
             {{ site.site_name }}
           </a>
         </h3>
-        <h4 align="center">{% trans 'New Photo Point' %}</h4>
+        <h4 align="center">{% trans 'New Camera Point' %}</h4>
         <form id='pp_monitoring_form' method='post' enctype='multipart/form-data'>
           {% csrf_token %}
 
@@ -29,7 +29,7 @@
             <h5>{% trans "Location Input" %}</h5>
             <div class="input-field col s12">
               <label for="{{ camera_form.cp_date.label }}">
-                {% trans "Camera Point Date" %}
+                {% trans "Camera Point Date (YYYY-MM-DD)" %}
               </label>
               {{ camera_form.cp_date }}
               {{ camera_form.cp_date.errors | striptags }}
@@ -61,7 +61,7 @@
           </div>
           <br>
           <div class="photo-input">
-            <h5>{% trans "Photo Input" %}</h5>
+            <h5>{% trans "Photo Points" %}</h5>
             <div class="row">
               {{ pp_formset.management_form }}
               {% for p_form in pp_formset %}
@@ -76,14 +76,14 @@
                   </div>
                   <div class="input-field">
                     <label for="{{ p_form.distance.label }}">
-                      {{ p_form.distance.label }}
+                      {{ p_form.distance.label }} (ft)
                     </label>
                     {{ p_form.distance }}
                     {{ p_form.distance.errors | striptags }}
                   </div>
                   <div class="input-field">
                     <label for="{{ p_form.camera_height.label }}">
-                      {{ p_form.camera_height.label }}
+                      {{ p_form.camera_height.label }} (ft)
                     </label>
                     {{ p_form.camera_height }}
                     {{ p_form.camera_height.errors | striptags }}
@@ -108,7 +108,7 @@
                     {{ ppi_form.image.errors | striptags }}
                   </div>
                   <div class="input-field">
-                    <label for="{{ ppi_form.date.label }}">{% trans "Date" %}</label>
+                    <label for="{{ ppi_form.date.label }}">{% trans "Date (YYYY-MM-DD)" %}</label>
                     {{ ppi_form.date }}
                     {{ ppi_form.date.errors | striptags }}
                   </div>
