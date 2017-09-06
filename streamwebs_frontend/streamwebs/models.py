@@ -126,12 +126,23 @@ class SchoolManager(models.Manager):
 
 @python_2_unicode_compatible
 class School(models.Model):
+    OPTIONS = (
+            ('Elementary School', _('Elementary School')),
+            ('Middle School', _('Middle School')),
+            ('High School', _('High School')),
+            ('Organization', _('Organization')),
+            ('Community College', _('Community College')),
+            ('State College', _('State College')),
+            )
+
     name = models.CharField(max_length=250)
-    school_type = models.CharField(max_length=250)
-    address = models.CharField(max_length=250, blank=True)
-    city = models.CharField(max_length=250, blank=True)
-    province = models.CharField(max_length=250, blank=True)
-    zipcode = models.CharField(max_length=250, blank=True)
+    school_type = models.CharField(
+        max_length=250, choices=OPTIONS, default=0, null=True,
+        verbose_name=_('school type'))
+    address = models.CharField(max_length=250)
+    city = models.CharField(max_length=250)
+    province = models.CharField(max_length=250)
+    zipcode = models.CharField(max_length=250)
     active = models.BooleanField(default=True)
 
     created = models.DateTimeField(default=timezone.now)

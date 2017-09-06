@@ -20,7 +20,7 @@ from streamwebs.forms import (
     WQSampleFormReadOnly, WQForm, WQFormReadOnly, SiteForm, Canopy_Cover_Form,
     SoilSurveyForm, SoilSurveyFormReadOnly, StatisticsForm, TransectZoneForm,
     BaseZoneInlineFormSet, ResourceForm, AdminPromotionForm, UserEmailForm,
-    UserPasswordForm)
+    UserPasswordForm, SchoolForm)
 
 from streamwebs.models import (
     Macroinvertebrates, Site, Water_Quality, WQ_Sample, RiparianTransect,
@@ -38,6 +38,27 @@ def _timestamp(dt):
 
 def index(request):
     return render(request, 'streamwebs/index.html', {})
+
+
+def create_school(request):
+    if request.method == 'POST':
+        if not request.POST._mutable:
+            request.POST._mutable = True
+        school_form = SchoolForm(data=request.POST)
+
+        if school_form.is_valid():
+            school = school_form.save()
+            school.province = (school.province + ', United States')
+            school.save()
+            messages.success(request,
+                             _('You have successfully added a new school'))
+            return render(request, 'streamwebs/index.html')
+    else:
+        school_form = SchoolForm()
+
+    return render(request, 'streamwebs/add_school.html', {
+        'school_form': school_form
+    })
 
 
 @login_required
@@ -1357,7 +1378,7 @@ def admin_user_promotion(request):
 
 def schools(request):
     return render(request, 'streamwebs/schools.html', {
-        'schools': School.objects.all(),
+        'schools': School.objects.all().order_by('name')
     })
 
 

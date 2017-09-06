@@ -319,3 +319,29 @@ class AdminPromotionForm(forms.Form):
     users = forms.ModelMultipleChoiceField(queryset=User.objects.all(),
                                            widget=forms.SelectMultiple)
     perms = forms.ChoiceField(choices=PERM_OPTIONS)
+
+
+class SchoolForm(forms.ModelForm):
+    class Meta:
+        model = School
+        widgets = {
+            'school_type': forms.RadioSelect(attrs={'required': True}),
+            'name': forms.TextInput(
+                attrs={'class': 'materialize-textarea, validate',
+                       'required': True}),
+            'address': forms.TextInput(
+                attrs={'class': 'materialize-textarea, validate',
+                       'required': True}),
+            'city': forms.TextInput(
+                attrs={'class': 'materialize-textarea, validate',
+                       'required': True}),
+            'province': forms.TextInput(
+                attrs={'class': 'materialize-textarea, validate',
+                       'required': True}),
+            'zipcode': forms.TextInput(
+                attrs={'class': 'materialize-textarea, validate',
+                       'required': True})
+        }
+        fields = ('name', 'school_type',
+                  'address', 'city',
+                  'province', 'zipcode')
