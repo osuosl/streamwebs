@@ -86,7 +86,10 @@ class UserProfileForm(forms.ModelForm):
 
 
 class MacroinvertebratesForm(forms.ModelForm):
-    school = forms.ModelChoiceField(queryset=School.objects.all())
+    school = forms.ModelChoiceField(queryset=School.objects.all(), empty_label=None)
+    weather = forms.CharField(required=False)
+    time_spent = forms.IntegerField(required=False)
+    num_people = forms.IntegerField(required=False)
 
     class Meta:
         model = Macroinvertebrates

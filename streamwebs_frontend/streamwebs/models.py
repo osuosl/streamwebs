@@ -724,7 +724,8 @@ class Macroinvertebrates(models.Model):
         verbose_name=_('Number of people sorting/identifying')
         )
     water_type = models.CharField(max_length=4, verbose_name=_('water type'),
-                                  choices=WATER_TYPE_CHOICES, default=None)
+                                  choices=WATER_TYPE_CHOICES, default=None,
+                                  blank=True)
     notes = models.TextField(blank=True, verbose_name=_('field notes'))
 
     # Sensitive/intolerant to pollution
