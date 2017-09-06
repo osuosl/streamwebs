@@ -267,6 +267,10 @@ div.center-content {
     color: #FF5722;
 }
 
+span.optional {
+    color: #757575;
+}
+
 strong {
     color: #FF5722;
 }

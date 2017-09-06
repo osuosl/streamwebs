@@ -165,6 +165,9 @@ class WQSampleFormReadOnly(WQSampleForm):
 
 
 class Canopy_Cover_Form(forms.ModelForm):
+    school = forms.ModelChoiceField(queryset=School.objects.all(),
+                                    empty_label=None)
+    weather = forms.CharField(required=False)
     class Meta:
         model = Canopy_Cover
         fields = ('school', 'date_time', 'weather', 'est_canopy_cover',

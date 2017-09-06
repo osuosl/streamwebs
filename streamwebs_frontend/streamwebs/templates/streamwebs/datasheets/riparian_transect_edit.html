@@ -55,7 +55,7 @@
           <div class="col s6">
             <div class="input-field">
               <label for="{{ transect_form.weather.id_for_label }}">
-                {{ transect_form.weather.label }}
+                {{ transect_form.weather.label }} <span class="optional">(Optional)</span>
               </label>
               {{ transect_form.weather.errors | striptags }}
               {{ transect_form.weather }}
@@ -66,7 +66,7 @@
         <div class="row">
           <div class="input-field">
             <label for="{{ transect_form.slope.id_for_label }}">
-              {{ transect_form.slope.label }}
+              {{ transect_form.slope.label }} <span class="optional">(Optional)</span>
             </label>
             {{ transect_form.slope.errors | striptags }}
             {{ transect_form.slope }}
@@ -89,13 +89,6 @@
           </tr>
           {% for zone_form in zone_formset %}
             <tr>
-              <th></th>
-              <td>{{ zone_form.conifers.errors }}</td>
-              <td>{{ zone_form.hardwoods.errors }}</td>
-              <td>{{ zone_form.shrubs.errors }}</td>
-              <td>{{ zone_form.comments.errors }}</td>
-            </tr>
-            <tr>
               <th>
                 {{ forloop.counter0|plus_one }}<br>
                 {{ forloop.counter0|get_zone }}
@@ -104,6 +97,13 @@
               <td>{{ zone_form.hardwoods }}</td>
               <td>{{ zone_form.shrubs }}</td>
               <td>{{ zone_form.comments }}</td>
+            </tr>
+            <tr>
+              <th></th>
+              <td>{{ zone_form.conifers.errors }}</td>
+              <td>{{ zone_form.hardwoods.errors }}</td>
+              <td>{{ zone_form.shrubs.errors }}</td>
+              <td>{{ zone_form.comments.errors }}</td>
             </tr>
           {% endfor %}
         </table> <!-- end zones subtable -->
@@ -114,7 +114,7 @@
         <div class="row">
           <div class="input-field">
             <label for="{{ transect_form.notes.id_for_label }}">
-              {{ transect_form.notes.label }}
+              {{ transect_form.notes.label }} <span class="optional">(Optional)</span>
             </label>
             {{ transect_form.notes.errors | striptags }}
             {{ transect_form.notes }}
