@@ -142,7 +142,7 @@ var showMouseover = function showMouseover(data) {
                 '<a href="' +
                     '/sites/' + data.site + '/water/' + data.key + '/' +
                     data.date.toISOString().substring(0, 10) + '/' +
-                '">View this date as a histogram</a>' +
+                '" target="_blank">View this date as a histogram</a>' +
             '</p>'
         );
 
@@ -490,6 +490,13 @@ var createGraph = function createGraph() {
 
         filtered2 = filterZeroData(filtered2);
     }
+
+    var noValidData = dataIsEmpty(filtered1);
+    if (noValidData) {
+        $('h6#no-valid-data').show();
+    }
+    showDateRange(filtered1, filtered2);
+
     graphTemperature();
     graphOxygen();
     graphPH();
@@ -501,6 +508,65 @@ var createGraph = function createGraph() {
     graphColiform();
 };
 
+var dataIsEmpty = function dataIsEmpty(data) {
+  var isEmpty = Object.entries(data).every(function(e, i) {
+      return e[1].length === 0;
+  });
+  return isEmpty;
+}
+
+var showDateRange = function showDateRange(filtered1, filtered2) {
+    console.log(filtered1);
+    console.log(filtered2);
+    console.log(dataIsEmpty(filtered1));
+    console.log(dataIsEmpty(filtered2));
+    if (dataIsEmpty(filtered1)) {
+        $('p#date-range-1').hide();
+    } else {
+        var dateRange = getDateRange(filtered1);
+        $('p#date-range-1').show();
+        $('p#date-range-1').text(
+            'Date range of site 1 data: ' + dateRange[0] + '~' + dateRange[1]
+        );
+    }
+
+    if (dataIsEmpty(filtered2)) {
+        $('p#date-range-2').hide();
+    } else {
+        var dateRange = getDateRange(filtered2);
+        $('p#date-range-2').show();
+        $('p#date-range-2').text(
+            'Date range of site 2 data: ' + dateRange[0] + '~' + dateRange[1]
+        );
+    }
+}
+
+var getDateRange = function getDataRange(data) {
+    var min, max;
+    Object.entries(data).forEach(function(category) {
+        category[1].forEach(function(e) {
+            if (min === undefined || e.date < min) {
+                min = e.date;
+            }
+            if (max === undefined || e.date > max) {
+              max = e.date;
+            }
+        })
+    });
+    min = dateToStr(min);
+    max = dateToStr(max);
+    return [min, max];
+}
+
+var dateToStr = function dateToStr(date) {
+    var str = "";
+    var month = date.getUTCMonth() + 1;
+    var day = date.getUTCDate();
+    var monthStr = month < 10 ? '0' + month.toString() : month.toString();
+    var dayStr = day < 10 ? '0' + day.toString() : day.toString();
+    str = str + monthStr + '/' + dayStr + '/' + date.getUTCFullYear();
+    return str;
+}
 
 /***************************************************************************
  * Temperature
@@ -1799,6 +1865,7 @@ $(function () {
         window.hasSiteTwo = false;
         window.data.site2 = null;
         window.site2Id = null;
+        filtered2 = {};
         $('#site-names').hide();
         $(this).addClass('disabled');
         $('div.graph').removeClass("l6").addClass("l10 offset-l1");
