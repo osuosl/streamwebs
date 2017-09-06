@@ -55,9 +55,9 @@
                       <li>{% trans "Number of Images" %}: {{ img_set.count }}</li>
                     {% endif %}
                   {% endfor %}
-                  <li>{% trans "Compass bearing" %}: {{ pp.compass_bearing }}</li>
-                  <li>{% trans "Distance from camera point" %}: {{ pp.distance }}</li>
-                  <li>{% trans "Camera height" %}: {{ pp.camera_height }}</li>
+                  <li>{% trans "Compass bearing" %}: {{ pp.compass_bearing }}°</li>
+                  <li>{% trans "Distance from camera point" %}: {{ pp.distance }} ft</li>
+                  <li>{% trans "Camera height" %}: {{ pp.camera_height }} ft</li>
                   <li>{% trans "Notes" %}: {{ pp.notes }}</li>
                 </ul>
               </div>
