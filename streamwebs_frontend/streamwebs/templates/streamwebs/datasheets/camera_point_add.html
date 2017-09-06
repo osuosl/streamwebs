@@ -28,6 +28,7 @@
               {{ camera_form.school }}
               {{ camera_form.school.errors | striptags }}
             </div>
+            <a href="{% url 'streamwebs:create_school' %}" class="btn waves-effect waves-light teal darken-3">{% trans "Add A School/Organization" %}</a>
           </div>
           <div class="loc-input">
             <!-- CAMERA FORM: -->
