@@ -184,14 +184,10 @@
               </a>
             </li>
           </ul>
-          {% if request.user.is_superuser %}
             <a href="{% url 'streamwebs:update_site' site_slug=site.site_slug %}"
               class="btn-large teal darken-3">
               <i class="material-icons right">mode_edit</i>
               {% trans "Edit Site" %}</a>
-          {% else %}
-
-          {% endif %}
         </div>
       </div>
     </div>
