@@ -27,6 +27,9 @@
             <p>{{ soil_form.school.errors | striptags }}</p>
             <p>{{ soil_form.school }}</p>
           </div>
+          <div class="col s12">
+            <a href="{% url 'streamwebs:create_school' %}" class="btn waves-effect waves-light teal darken-3">{% trans "Add A School/Organization" %}</a>
+          </div>
           <div class="col s6">
             <p>{{ soil_form.date.label }} (YYYY-MM-DD / HH:MM:SS)</p>
             <p>{{ soil_form.date.errors | striptags }}</p>
@@ -39,6 +42,7 @@
             <p>{{ soil_form.weather }}</p>
           </div>
         </div>
+
 
         <!-- Container so that radio buttons render vertically -->
         <div class="container">
