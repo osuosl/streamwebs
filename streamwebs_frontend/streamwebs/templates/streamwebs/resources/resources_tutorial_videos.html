@@ -32,12 +32,11 @@
           <td>
             <h4>
               {{ video.name }}
-              {{ video.thumbnail.url }}
 
             </h4>
           </td>
           <td>
-            <video width="320" height="240" poster= "{{ video.thumbnail.url }} " controls>
+            <video width="320" height="240" poster= "{{ video.thumbnail.url | default_if_none:'#' }} " controls>
               <source src={{ video.downloadable.url }} >
             </video
             </a>
