@@ -6,6 +6,7 @@ class SoilSurveyFormTestCase(TestCase):
 
     def setUp(self):
         self.expected_fields = (
+            'school',
             'date',
             'weather',
             'landscape_pos',
