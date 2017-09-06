@@ -211,8 +211,8 @@ class BaseZoneInlineFormSet(BaseInlineFormSet):
 
 
 class RiparianTransectForm(forms.ModelForm):
-    school = forms.ModelChoiceField(queryset=School.objects.all())
-
+    school = forms.ModelChoiceField(queryset=School.objects.all(),
+                                    empty_label=None)
     class Meta:
         model = RiparianTransect
         widgets = {
