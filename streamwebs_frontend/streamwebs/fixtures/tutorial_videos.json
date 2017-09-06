@@ -39,7 +39,8 @@
     "name": "Streamflow",
     "res_type": "tutorial_video",
     "downloadable": "assets/vernier_flow_2010_2_original_536_FE5ZgqP.mp4",
-    "thumbnail": "assets/thumbnails/flow.png", "sort_order": 1000
+    "thumbnail": "assets/thumbnails/flow.png",
+    "sort_order": 1000
   }
 },
 {
