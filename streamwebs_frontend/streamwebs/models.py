@@ -1159,3 +1159,8 @@ class Resource(models.Model):
 
     def __str__(self):
         return self.name
+
+    @property
+    def thumbnail_url(self):
+        if self.thumbnail and hasattr(self.thumbnail, 'url'):
+            return self.thumbnail.url
