@@ -78,7 +78,8 @@ class UserProfileForm(forms.ModelForm):
     birthdate = forms.DateField(
         widget=forms.DateInput(attrs={'class': 'datepicker'}),
     )
-    school = forms.ModelChoiceField(queryset=School.objects.all())
+    school = forms.ModelChoiceField(queryset=School.objects.all(),
+                                    empty_label=None)
 
     class Meta:
         model = UserProfile
