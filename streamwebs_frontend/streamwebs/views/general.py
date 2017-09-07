@@ -113,11 +113,11 @@ def site(request, site_slug):
     """ View an individual site """
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     wq_sheets = Water_Quality.objects.filter(site_id=site.id)
-    wq_sheets = list(wq_sheets.order_by('-date').values())
+    wq_sheets = list(wq_sheets.order_by('-date_time').values())
     wq_sheets_new = []
     for x in wq_sheets:
         wq_data = {'id': x['id'], 'uri': 'water', 'type': 'Water Quality',
-                   'date': x['date']}
+                   'date': x['date_time']}
         if 'school_id' in x and x['school_id']:
             wq_data['school_id'] = x['school_id']
         else:
@@ -491,7 +491,7 @@ def water_histogram(request, site_slug, data_type, date):
     site = Site.objects.get(site_slug=site_slug)
     day = datetime.datetime.strptime(date, '%Y-%m-%d').date()
     wq_data = Water_Quality.objects.filter(site=site)
-    data = [m.to_dict() for m in wq_data if m.date == day]
+    data = [m.to_dict() for m in wq_data if m.date_time.date() == day]
     if data_type == 'pH':
         data_name = data_type
     elif data_type == 'bod':

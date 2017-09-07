@@ -91,7 +91,7 @@ with open(datafile, 'r') as csvfile:
                 site_id = None
 
             waterq = Water_Quality.objects.update_or_create(
-                date=collected, DEQ_dq_level=DEQ_dq_level, school=school,
+                date_time=collected, DEQ_dq_level=DEQ_dq_level, school=school,
                 fish_present=fish_present, live_fish=live_fish,
                 dead_fish=dead_fish, air_temp_unit=air_temp_unit,
                 water_temp_unit=water_temp_unit, latitude=latitude,

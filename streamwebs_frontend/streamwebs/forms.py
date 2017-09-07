@@ -107,7 +107,10 @@ class MacroinvertebratesForm(forms.ModelForm):
 
 
 class WQForm(forms.ModelForm):
-    school = forms.ModelChoiceField(queryset=School.objects.all())
+    school = forms.ModelChoiceField(queryset=School.objects.all(),
+                                    empty_label=None)
+    latitude = forms.DecimalField(required=False)
+    longitude = forms.DecimalField(required=False)
 
     class Meta:
         model = Water_Quality
@@ -119,7 +122,7 @@ class WQForm(forms.ModelForm):
                 forms.Textarea(attrs={'class': 'materialize-textarea'})
         }
         fields = (
-            'date', 'DEQ_dq_level', 'school',
+            'date_time', 'DEQ_dq_level', 'school',
             'latitude', 'longitude', 'fish_present', 'live_fish',
             'dead_fish', 'water_temp_unit', 'air_temp_unit', 'notes'
         )

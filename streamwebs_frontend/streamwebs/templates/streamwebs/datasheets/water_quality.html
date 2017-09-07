@@ -63,16 +63,14 @@
         <div class="row">
           <div class="col s6">
             <div class="input-field">
-              <label
-                  for="{{ wq_form.date.id_for_label }}">{{ wq_form.date.label }} (YYYY-MM-DD)</label>
-
-              {{ wq_form.date.errors | striptags }}
-              {{ wq_form.date }}
+              {{ wq_form.date_time.label }} (YYYY-MM-DD / HH:MM:SS)
+              {{ wq_form.date_time.errors | striptags }}
+              {{ wq_form.date_time }}
             </div>
           </div>
           <div class="col s6">
             <div class="input-field">
-              {{ wq_form.DEQ_dq_level.label }}
+              {{ wq_form.DEQ_dq_level.label }} <span class="optional">(Optional)<span>
 
               {{ wq_form.DEQ_dq_level.errors | striptags }}
               {{ wq_form.DEQ_dq_level }}
@@ -83,9 +81,7 @@
         <div class="row">
           <div class="col s6">
             <div class="input-field">
-              <label
-                  for="{{ wq_form.latitude.id_for_label }}">{{ wq_form.latitude.label }}</label>
-
+              {{ wq_form.latitude.label }} <span class="optional">(Optional)<span>
               {{ wq_form.latitude.errors | striptags }}
               {{ wq_form.latitude }}
             </div>
@@ -93,9 +89,7 @@
 
           <div class="col s6">
             <div class="input-field">
-              <label
-                  for="{{ wq_form.longitude.id_for_label }}">{{ wq_form.longitude.label }}</label>
-
+              {{ wq_form.longitude.label }} <span class="optional">(Optional)<span>
               {{ wq_form.longitude.errors | striptags }}
               {{ wq_form.longitude }}
             </div>
