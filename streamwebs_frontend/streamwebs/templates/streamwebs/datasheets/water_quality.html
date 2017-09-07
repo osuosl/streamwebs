@@ -71,7 +71,6 @@
           <div class="col s6">
             <div class="input-field">
               {{ wq_form.DEQ_dq_level.label }} <span class="optional">(Optional)<span>
-
               {{ wq_form.DEQ_dq_level.errors | striptags }}
               {{ wq_form.DEQ_dq_level }}
             </div>
@@ -98,7 +97,7 @@
       </div>
 
       <div class="row">
-        <div class="col s4">
+        <div class="col s4 fish-presence">
           <p>{{ wq_form.fish_present.label }}</p>
           {{ wq_form.fish_present.errors | striptags }}
           <div class="input-field">
@@ -124,9 +123,9 @@
           {{ wq_form.dead_fish }}
         </div>
       </div>
-
+      <br/><br/><br/>
       <div class="row">
-        <div class="col s6">
+        <div class="col s6 water-temp">
           <p>{{ wq_form.water_temp_unit.label }}</p>
           {{ wq_form.water_temp_unit.errors | striptags }}
           <div class="input-field">
@@ -138,7 +137,7 @@
           </div>
         </div>
 
-        <div class="col s6">
+        <div class="col s6 air-temp">
           <p>{{ wq_form.air_temp_unit.label }}</p>
           {{ wq_form.air_temp_unit.errors | striptags }}
           <div class="input-field">
@@ -289,6 +288,15 @@
 
       <div class="collapse">
         <table>
+          <thead>
+            <tr>
+              <th data-field="test"></th>
+              <th data-field="sample1">{% trans "Sample 1" %}</th>
+              <th data-field="sample2">{% trans "Sample 2" %}</th>
+              <th data-field="sample3">{% trans "Sample 3" %}</th>
+              <th data-field="sample4">{% trans "Sample 4" %}</th>
+            </tr>
+          </thead>
           <tr>
             {% for sample in sample_formset %}
               {% if forloop.first %}
@@ -384,7 +392,7 @@
 
       {% if editable %}
         <input class="btn waves-effect waves-light teal darken-3" type="submit"
-               value='{% trans "Submit" %}'>
+               value='{% trans "Submit" %}' id="submit">
       {% endif %}
     </form>
   </div>
@@ -393,4 +401,29 @@
 {% block scripts %}
   <script type="application/javascript"
           src="{% static 'streamwebs/js/data.js' %}"></script>
+  <script>
+    var radioFields = [];
+    radioFields.push({name: 'if there are any fish present', val: $('div.fish-presence input')});
+    radioFields.push({name: 'water temperature unit', val: $('div.water-temp input')});
+    radioFields.push({name: 'an air temperature unit', val: $('div.air-temp input')});
+
+    var checked = function checked(inputs) {
+      var checked;
+      checked = inputs.toArray().some(function(e) {
+        return e.checked;
+      });
+      return checked;
+    }
+
+    $('input#submit').on('click', function() {
+      for (var i = 0; i < radioFields.length; i++) {
+        if (!checked(radioFields[i].val)) {
+          Materialize.toast("Please select " + radioFields[i].name, 4000, 'red');
+          return;
+        }
+      }
+    });
+
+
+  </script>
 {% endblock %}
