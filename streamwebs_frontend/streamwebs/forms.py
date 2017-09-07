@@ -272,6 +272,9 @@ class SiteForm(forms.ModelForm):
 
 
 class SoilSurveyForm(forms.ModelForm):
+    school = forms.ModelChoiceField(queryset=School.objects.all(),
+                                    empty_label=None)
+    weather = forms.CharField(required=False)
     class Meta:
         model = Soil_Survey
         widgets = {

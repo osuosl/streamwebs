@@ -1091,7 +1091,7 @@ class Soil_Survey(models.Model):
                                 choices=land_use_choices)
 
     distance = models.DecimalField(max_digits=5, decimal_places=2, null=True,
-                                   verbose_name=_('distance from stream (ft)'))
+                                   verbose_name=_('distance from stream'))
     site_char = models.TextField(blank=True,
                                  verbose_name=_('distinguishing site \
                                  characteristics'))
@@ -1109,7 +1109,7 @@ class Soil_Survey(models.Model):
         ('other', _('Other'))
     ]
 
-    soil_type = models.CharField(max_length=10, default=None,
+    soil_type = models.CharField(max_length=10, default=None, blank=True,
                                  choices=soil_type_choices)
 
     # Uid used to make relations between school and data sheet
