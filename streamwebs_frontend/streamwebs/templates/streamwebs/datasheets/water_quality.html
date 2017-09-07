@@ -109,14 +109,14 @@
           </div>
         </div>
 
-        <div class="col s4">
+        <div class="col s4 live-fish">
           <p>{{ wq_form.live_fish.label }}</p>
 
           {{ wq_form.live_fish.errors | striptags }}
           {{ wq_form.live_fish }}
         </div>
 
-        <div class="col s4">
+        <div class="col s4 dead-fish">
           <p>{{ wq_form.dead_fish.label }}</p>
 
           {{ wq_form.dead_fish.errors | striptags }}
@@ -150,7 +150,7 @@
         </div>
       </div>
 
-      <table>
+      <table id="samples">
         {{ sample_formset.management_form }}
 
         <thead>
@@ -415,15 +415,52 @@
       return checked;
     }
 
-    $('input#submit').on('click', function() {
-      for (var i = 0; i < radioFields.length; i++) {
-        if (!checked(radioFields[i].val)) {
-          Materialize.toast("Please select " + radioFields[i].name, 4000, 'red');
-          return;
+    var submitRadioCheck = function submitRadioCheck(){
+      $('input#submit').on('click', function() {
+        for (var i = 0; i < radioFields.length; i++) {
+          if (!checked(radioFields[i].val)) {
+            Materialize.toast("Please select " + radioFields[i].name, 4000, 'red');
+            return;
+          }
         }
-      }
+      });
+    }
+
+    var toggleFishFields = function toggleFishFields() {
+      $('div.fish-presence input').on('click', function(e) {
+        if ($(e.target).next().context.value === "False") {
+          $('div.live-fish input').prop('disabled', true);
+          $('div.live-fish input').val(0);
+          $('div.dead-fish input').prop('disabled', true);
+          $('div.dead-fish input').val(0);
+        } else {
+          $('div.live-fish input').prop('disabled', false);
+          $('div.dead-fish input').prop('disabled', false);
+        }
+      });
+    }
+
+    var toggleSampleFields = function toggleSampleFields() {
+      $('table#samples input[type=radio]').on('click', function(e) {
+        var inputField = $(e.target).parent().find('div.input-field').children();
+        if ($(e.target).context.value === "N/A") {
+          inputField.prop('disabled', true);
+          inputField.val(0);
+        } else {
+          inputField.prop('disabled', false);
+        }
+      });
+    }
+
+    var disableAllSampleFields = function disableAllSampleFields() {
+      $('table#samples div.input-field input').prop('disabled', true);
+    }
+
+    $(function() {
+      disableAllSampleFields();
+      toggleFishFields();
+      toggleSampleFields();
+      submitRadioCheck();
     });
-
-
   </script>
 {% endblock %}
