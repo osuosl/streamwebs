@@ -53,7 +53,6 @@
           <div class="col s12">
             <div class="input-field">
               {{ wq_form.school.label }}
-
               {{ wq_form.school.errors | striptags }}
               {{ wq_form.school }}
             </div>
@@ -111,14 +110,12 @@
 
         <div class="col s4 live-fish">
           <p>{{ wq_form.live_fish.label }}</p>
-
           {{ wq_form.live_fish.errors | striptags }}
           {{ wq_form.live_fish }}
         </div>
 
         <div class="col s4 dead-fish">
           <p>{{ wq_form.dead_fish.label }}</p>
-
           {{ wq_form.dead_fish.errors | striptags }}
           {{ wq_form.dead_fish }}
         </div>
@@ -152,7 +149,10 @@
 
       <table id="samples">
         {{ sample_formset.management_form }}
-
+        <br/>
+        <p><strong>Note: </strong>
+          The "None" option will reset its data field to 0.
+        </p>
         <thead>
           <tr>
             <th data-field="test"></th>
@@ -417,6 +417,17 @@
 
     var submitRadioCheck = function submitRadioCheck(){
       $('input#submit').on('click', function() {
+        if ($('div.fish-presence input')[1].checked === true) {
+          $('div.live-fish input').val(0);
+          $('div.dead-fish input').val(0);
+        }
+        $('table#sample input').filter(function() {
+          return $(this).context.value === 'N/A' && $(this).context.checked === true;
+        }).parent().find('div.input-field').children().val(0);
+        $('div.live-fish input').prop('disabled', false);
+        $('div.dead-fish input').prop('disabled', false);
+        $('table#samples div.input-field input').prop('disabled', false);
+
         for (var i = 0; i < radioFields.length; i++) {
           if (!checked(radioFields[i].val)) {
             Materialize.toast("Please select " + radioFields[i].name, 4000, 'red');
@@ -454,6 +465,8 @@
 
     var disableAllSampleFields = function disableAllSampleFields() {
       $('table#samples div.input-field input').prop('disabled', true);
+      $('div.live-fish input').prop('disabled', true);
+      $('div.dead-fish input').prop('disabled', true);
     }
 
     $(function() {
