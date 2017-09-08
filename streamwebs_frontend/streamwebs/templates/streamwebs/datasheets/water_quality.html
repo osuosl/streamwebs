@@ -174,7 +174,10 @@
               {% endif %}
 
               <td>
-                <div class="input-field">{{ sample.water_temperature }}</div>
+                <div class="input-field">
+                  {{ sample.water_temperature }}
+                  <p> {{ sample.water_temperature.errors }} </p>
+                </div>
                 {{ sample.water_temp_tool.errors | striptags }}
 
                 {% for radio in sample.water_temp_tool %}
@@ -193,7 +196,10 @@
               {% endif %}
 
               <td>
-                <div class="input-field">{{ sample.air_temperature }}</div>
+                <div class="input-field">
+                  {{ sample.air_temperature }}
+                  <p> {{ sample.air_temperature.errors }} </p>
+                </div>
                 {{ sample.air_temp_tool.errors | striptags }}
 
                 {% for radio in sample.air_temp_tool %}
@@ -212,7 +218,10 @@
               {% endif %}
 
               <td>
-                <div class="input-field">{{ sample.dissolved_oxygen }}</div>
+                <div class="input-field">
+                  {{ sample.dissolved_oxygen }}
+                  <p> {{ sample.dissolved_oxygen.errors }} </p>
+                </div>
                 {{ sample.oxygen_tool.errors | striptags }}
 
                 {% for radio in sample.oxygen_tool %}
@@ -231,7 +240,10 @@
               {% endif %}
 
               <td>
-                <div class="input-field">{{ sample.pH }}</div>
+                <div class="input-field">
+                  {{ sample.pH }}
+                  <p> {{ sample.pH.errors }} </p>
+                </div>
                 {{ sample.pH_tool.errors | striptags }}
 
                 {% for radio in sample.pH_tool %}
@@ -250,7 +262,10 @@
               {% endif %}
 
               <td>
-                <div class="input-field">{{ sample.turbidity }}</div>
+                <div class="input-field">
+                  {{ sample.turbidity }}
+                  <p> {{ sample.turbidity.errors }} </p>
+                </div>
                 {{ sample.turbid_tool.errors | striptags }}
 
                 {% for radio in sample.turbid_tool %}
@@ -269,7 +284,10 @@
               {% endif %}
 
               <td>
-                <div class="input-field">{{ sample.salinity }}</div>
+                <div class="input-field">
+                  {{ sample.salinity }}
+                  <p> {{ sample.salinity.errors }} </p>
+                </div>
                 {{ sample.salt_tool.errors | striptags }}
 
                 {% for radio in sample.salt_tool %}
@@ -418,6 +436,8 @@
       return checked;
     }
 
+    // Upon submission, Change all associated field with radio field
+    // "None" "No" to 0.
     var submitRadioCheck = function submitRadioCheck(){
       $('input#submit').on('click', function() {
         if ($('div.fish-presence input')[1].checked === true) {
@@ -427,9 +447,6 @@
         $('table#sample input').filter(function() {
           return $(this).context.value === 'N/A' && $(this).context.checked === true;
         }).parent().find('div.input-field').children().val(0);
-        $('div.live-fish input').prop('disabled', false);
-        $('div.dead-fish input').prop('disabled', false);
-        $('table#samples div.input-field input').prop('disabled', false);
 
         for (var i = 0; i < radioFields.length; i++) {
           if (!checked(radioFields[i].val)) {
@@ -440,40 +457,29 @@
       });
     }
 
+    // Selecting "No" in radio field will change the
+    // associated fields' values to 0
     var toggleFishFields = function toggleFishFields() {
       $('div.fish-presence input').on('click', function(e) {
         if ($(e.target).next().context.value === "False") {
-          $('div.live-fish input').prop('disabled', true);
           $('div.live-fish input').val(0);
-          $('div.dead-fish input').prop('disabled', true);
           $('div.dead-fish input').val(0);
-        } else {
-          $('div.live-fish input').prop('disabled', false);
-          $('div.dead-fish input').prop('disabled', false);
         }
       });
     }
 
+    // Selecting "None" in radio field will change the
+    // associated fields' values to 0
     var toggleSampleFields = function toggleSampleFields() {
       $('table#samples input[type=radio]').on('click', function(e) {
         var inputField = $(e.target).parent().find('div.input-field').children();
         if ($(e.target).context.value === "N/A") {
-          inputField.prop('disabled', true);
           inputField.val(0);
-        } else {
-          inputField.prop('disabled', false);
         }
       });
     }
 
-    var disableAllSampleFields = function disableAllSampleFields() {
-      $('table#samples div.input-field input').prop('disabled', true);
-      $('div.live-fish input').prop('disabled', true);
-      $('div.dead-fish input').prop('disabled', true);
-    }
-
     $(function() {
-      disableAllSampleFields();
       toggleFishFields();
       toggleSampleFields();
       submitRadioCheck();
