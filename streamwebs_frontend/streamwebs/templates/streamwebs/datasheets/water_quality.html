@@ -96,9 +96,12 @@
       </div>
       <br/><br/>
       <div class="row">
-        <p><strong>Note: </strong>
-          Choosing "No" for fish presence will reset "number of live fish", "number of dead fish" to 0.
-        </p>
+        <div class="container">
+          <p><strong>Note: </strong>
+            Choosing "No" for fish presence below will reset "number of live fish", "number of dead fish" to 0 upon form submission.
+          </p>
+        </div>
+        <br/><br/>
         <div class="col s4 fish-presence">
           <p>{{ wq_form.fish_present.label }}</p>
           {{ wq_form.fish_present.errors | striptags }}
@@ -153,9 +156,12 @@
       <table id="samples">
         {{ sample_formset.management_form }}
         <br/>
-        <p><strong>Note: </strong>
-          The "None" option will reset its data field to 0.
-        </p>
+        <div class="container">
+          <p><strong>Note: </strong>
+            Choosing the "None" options below will reset its related data field to 0 upon submission.
+          </p>
+        </div>
+        <br/>
         <thead>
           <tr>
             <th data-field="test"></th>
@@ -444,7 +450,8 @@
           $('div.live-fish input').val(0);
           $('div.dead-fish input').val(0);
         }
-        $('table#sample input').filter(function() {
+
+        $('table#samples input').filter(function() {
           return $(this).context.value === 'N/A' && $(this).context.checked === true;
         }).parent().find('div.input-field').children().val(0);
 
