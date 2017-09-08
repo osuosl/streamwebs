@@ -6,6 +6,7 @@ class Canopy_Cover_Form_TestCase(TestCase):
 
     def setUp(self):
         self.expected_fields = (
+            'school',
             'date_time',
             'weather',
             'est_canopy_cover',

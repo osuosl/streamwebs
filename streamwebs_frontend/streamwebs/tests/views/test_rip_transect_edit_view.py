@@ -15,6 +15,17 @@ class AddTransectTestCase(TestCase):
     def test_view_with_bad_blank_data(self):
         """When bad (blank) form submitted, form errors should be displayed"""
         site = Site.test_objects.create_site('Site Name')
+        response = self.client.post(
+            reverse('streamwebs:riparian_transect_edit',
+                    kwargs={'site_slug': site.site_slug}
+                    ), {
+                'transect-TOTAL_FORMS': '5',
+                'transect-INITIAL_FORMS': '0',
+                'transect-MAX_NUM_FORMS': '5'
+                }
+        )
+        self.assertFormError(response, 'transect_form', 'school',
+                             'This field is required.')
 
         # No riparian transect or zone objects should be created.
         self.assertFalse(

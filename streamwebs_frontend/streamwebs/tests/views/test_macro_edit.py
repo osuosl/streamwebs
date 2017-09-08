@@ -37,6 +37,8 @@ class MacroFormTestCase(TestCase):
                 'site_slug': self.site.site_slug
                 }), {}
         )
+        self.assertFormError(response, 'macro_form', 'school',
+                             'This field is required.')
         self.assertFalse(response.context['added'])
 
     def test_edit_view_with_good_data(self):

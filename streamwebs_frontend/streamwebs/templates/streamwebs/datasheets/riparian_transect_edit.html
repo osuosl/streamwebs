@@ -37,12 +37,15 @@
             {{ transect_form.school }}
           </div>
         </div>
+        <div class="row">
+          <a href="{% url 'streamwebs:create_school' %}" class="btn waves-effect waves-light teal darken-3">{% trans "Add A School/Organization" %}</a>
+        </div>
 
         <div class="row">
           <div class="col s6">
             <div class="input-field">
               <label for="{{ transect_form.date_time.id_for_label }}">
-                {{ transect_form.date_time.label }}
+                {{ transect_form.date_time.label }} (YYYY-MM-DD / HH:MM:SS)
               </label>
               {{ transect_form.date_time.errors | striptags }}
               {{ transect_form.date_time }}

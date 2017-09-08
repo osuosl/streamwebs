@@ -20,7 +20,7 @@ from streamwebs.forms import (
     WQSampleFormReadOnly, WQForm, WQFormReadOnly, SiteForm, Canopy_Cover_Form,
     SoilSurveyForm, SoilSurveyFormReadOnly, StatisticsForm, TransectZoneForm,
     BaseZoneInlineFormSet, ResourceForm, AdminPromotionForm, UserEmailForm,
-    UserPasswordForm)
+    UserPasswordForm, SchoolForm)
 
 from streamwebs.models import (
     Macroinvertebrates, Site, Water_Quality, WQ_Sample, RiparianTransect,
@@ -38,6 +38,27 @@ def _timestamp(dt):
 
 def index(request):
     return render(request, 'streamwebs/index.html', {})
+
+
+def create_school(request):
+    if request.method == 'POST':
+        if not request.POST._mutable:
+            request.POST._mutable = True
+        school_form = SchoolForm(data=request.POST)
+
+        if school_form.is_valid():
+            school = school_form.save()
+            school.province = (school.province + ', United States')
+            school.save()
+            messages.success(request,
+                             _('You have successfully added a new school'))
+            return render(request, 'streamwebs/index.html')
+    else:
+        school_form = SchoolForm()
+
+    return render(request, 'streamwebs/add_school.html', {
+        'school_form': school_form
+    })
 
 
 @login_required
@@ -549,24 +570,17 @@ def macroinvertebrate_edit(request, site_slug):
     added = False
     macro_form = MacroinvertebratesForm()
 
-    school = None
-    if hasattr(request.user, 'userprofile'):
-        userprofile = request.user.userprofile
-        school = School.objects.filter(active=True) \
-            .get(userprofile=userprofile)
-
     # the following are the form's fields broken up into chunks to
     # facilitate CSS manipulation in the template
-    intolerant = list(macro_form)[5:11]
-    somewhat = list(macro_form)[11:20]
-    tolerant = list(macro_form)[20:26]
+    intolerant = list(macro_form)[6:12]
+    somewhat = list(macro_form)[12:21]
+    tolerant = list(macro_form)[21:27]
 
     if request.method == 'POST':
         macro_form = MacroinvertebratesForm(data=request.POST)
         if macro_form.is_valid():
             macro = macro_form.save(commit=False)
             macro.site = site
-            macro.school = school
             macro.save()
             added = True
             messages.success(
@@ -638,12 +652,6 @@ def riparian_transect_edit(request, site_slug):
         formset=BaseZoneInlineFormSet
     )
 
-    school = None
-    if hasattr(request.user, 'userprofile'):
-        userprofile = request.user.userprofile
-        school = School.objects.filter(active=True) \
-            .get(userprofile=userprofile)
-
     if request.method == 'POST':
         # process the zone formset
         zone_formset = TransectZoneInlineFormSet(
@@ -657,7 +665,6 @@ def riparian_transect_edit(request, site_slug):
             zones = zone_formset.save(commit=False)     # save forms to objs
             transect = transect_form.save()             # save form to object
             transect.site = site
-            transect.school = school
             transect.save()                             # save object
 
             for index, zone in enumerate(zones):        # for each zone,
@@ -707,19 +714,12 @@ def canopy_cover_edit(request, site_slug):
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     canopy_cover = Canopy_Cover()
 
-    school = None
-    if hasattr(request.user, 'userprofile'):
-        userprofile = request.user.userprofile
-        school = School.objects.filter(active=True) \
-            .get(userprofile=userprofile)
-
     if request.method == 'POST':
         canopy_cover_form = Canopy_Cover_Form(data=request.POST)
 
         if (canopy_cover_form.is_valid()):
             canopy_cover = canopy_cover_form.save()
             canopy_cover.site = site
-            canopy_cover.school = school
             canopy_cover.save()
             messages.success(
                 request,
@@ -769,12 +769,6 @@ def add_camera_point(request, site_slug):
     site = Site.objects.get(site_slug=site_slug)
     camera = CameraPoint()
 
-    school = None
-    if hasattr(request.user, 'userprofile'):
-        userprofile = request.user.userprofile
-        school = School.objects.filter(active=True) \
-            .get(userprofile=userprofile)
-
     PhotoPointInlineFormset = inlineformset_factory(  # photo point formset (3)
         CameraPoint, PhotoPoint,
         form=PhotoPointForm,
@@ -814,7 +808,6 @@ def add_camera_point(request, site_slug):
         if (camera_form.is_valid() and pp_formset.is_valid() and
                 ppi_formset.is_valid()):
             camera = camera_form.save()
-            camera.school = school
             camera.save()
 
             photo_points = pp_formset.save(commit=False)
@@ -1001,12 +994,6 @@ def water_quality_edit(request, site_slug):
         extra=4      # always return exactly 4 samples
     )
 
-    school = None
-    if hasattr(request.user, 'userprofile'):
-        userprofile = request.user.userprofile
-        school = School.objects.filter(active=True) \
-            .get(userprofile=userprofile)
-
     if request.method == 'POST':
         sample_formset = WQInlineFormSet(
             data=request.POST, instance=Water_Quality()
@@ -1015,7 +1002,6 @@ def water_quality_edit(request, site_slug):
         if (sample_formset.is_valid() and wq_form.is_valid()):
             water_quality = wq_form.save()   # save form to object
             water_quality.site = site
-            water_quality.school = school
             water_quality.save()             # save object to db
             allSamples = sample_formset.save(commit=False)
             for sample in allSamples:
@@ -1065,19 +1051,12 @@ def soil_survey_edit(request, site_slug):
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     soil_form = SoilSurveyForm()
 
-    school = None
-    if hasattr(request.user, 'userprofile'):
-        userprofile = request.user.userprofile
-        school = School.objects.filter(active=True) \
-            .get(userprofile=userprofile)
-
     if request.method == 'POST':
         soil_form = SoilSurveyForm(data=request.POST)
 
         if soil_form.is_valid():
             soil = soil_form.save(commit=False)
             soil.site = site
-            soil.school = school
             soil.save()
             messages.success(
                 request,
@@ -1399,7 +1378,7 @@ def admin_user_promotion(request):
 
 def schools(request):
     return render(request, 'streamwebs/schools.html', {
-        'schools': School.objects.all(),
+        'schools': School.objects.all().order_by('name')
     })
 
 

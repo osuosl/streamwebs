@@ -17,19 +17,26 @@
             {{ site.site_name }}
           </a>
         </h3>
-        <h4 align="center">{% trans 'New Photo Point' %}</h4>
+        <h4 align="center">{% trans 'New Camera Point' %}</h4>
         <form id='pp_monitoring_form' method='post' enctype='multipart/form-data'>
           {% csrf_token %}
 
           <p>{{ camera_form.site }}</p>
-
+          <div class="row">
+            <div class="input-field col s12">
+              {{ camera_form.school.label }}
+              {{ camera_form.school }}
+              {{ camera_form.school.errors | striptags }}
+            </div>
+            <a href="{% url 'streamwebs:create_school' %}" class="btn waves-effect waves-light teal darken-3">{% trans "Add A School/Organization" %}</a>
+          </div>
           <div class="loc-input">
             <!-- CAMERA FORM: -->
             {{ camera_form.media }}
             <h5>{% trans "Location Input" %}</h5>
             <div class="input-field col s12">
               <label for="{{ camera_form.cp_date.label }}">
-                {% trans "Camera Point Date" %}
+                {% trans "Camera Point Date (YYYY-MM-DD)" %}
               </label>
               {{ camera_form.cp_date }}
               {{ camera_form.cp_date.errors | striptags }}
@@ -61,7 +68,7 @@
           </div>
           <br>
           <div class="photo-input">
-            <h5>{% trans "Photo Input" %}</h5>
+            <h5>{% trans "Photo Points" %}</h5>
             <div class="row">
               {{ pp_formset.management_form }}
               {% for p_form in pp_formset %}
@@ -69,21 +76,21 @@
                   <h6>{% trans "Photo" %} #{{ forloop.counter }}</h6>
                   <div class="input-field">
                     <label for="{{ p_form.compass_bearing.label }}">
-                      {% trans "Compass Bearing" %}
+                      {% trans "Compass Bearing" %} (degrees)
                     </label>
                     {{ p_form.compass_bearing }}
                     {{ p_form.compass_bearing.errors | striptags }}
                   </div>
                   <div class="input-field">
                     <label for="{{ p_form.distance.label }}">
-                      {{ p_form.distance.label }}
+                      {{ p_form.distance.label }} (ft)
                     </label>
                     {{ p_form.distance }}
                     {{ p_form.distance.errors | striptags }}
                   </div>
                   <div class="input-field">
                     <label for="{{ p_form.camera_height.label }}">
-                      {{ p_form.camera_height.label }}
+                      {{ p_form.camera_height.label }} (ft)
                     </label>
                     {{ p_form.camera_height }}
                     {{ p_form.camera_height.errors | striptags }}
@@ -108,7 +115,7 @@
                     {{ ppi_form.image.errors | striptags }}
                   </div>
                   <div class="input-field">
-                    <label for="{{ ppi_form.date.label }}">{% trans "Date" %}</label>
+                    <label for="{{ ppi_form.date.label }}">{% trans "Date (YYYY-MM-DD)" %}</label>
                     {{ ppi_form.date }}
                     {{ ppi_form.date.errors | striptags }}
                   </div>
@@ -133,7 +140,13 @@
   <script type="application/javascript"
           src="http://maps.google.com/maps/api/js?key=AIzaSyBV71HBuAFMtHEAaSEVpRDPUQyGvJwTX1k"></script>
   <script
-      src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+      src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/pickadate.js/3.5.6/compressed/picker.js"></script>
+  <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/pickadate.js/3.5.6/compressed/picker.date.js"></script>
+  <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
   <script type="application/javascript">
     // initialize curr_marker
     var curr_marker = null;

@@ -27,6 +27,9 @@ class AddCanopyCoverTestCase(TestCase):
                }
         )
         # At least one field should raise an error
+        self.assertFormError(
+            response, 'canopy_cover_form', 'school', 'This field is required.'
+        )
         self.assertTemplateUsed(
             response,
             'streamwebs/datasheets/canopy_cover_edit.html'

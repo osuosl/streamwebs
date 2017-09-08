@@ -9,6 +9,7 @@ class WQFormTestCase(TestCase):
         self.expected_fields = (
             'date',
             'DEQ_dq_level',
+            'school',
             'latitude',
             'longitude',
             'fish_present',

@@ -86,6 +86,7 @@ class UserProfileForm(forms.ModelForm):
 
 
 class MacroinvertebratesForm(forms.ModelForm):
+    school = forms.ModelChoiceField(queryset=School.objects.all())
 
     class Meta:
         model = Macroinvertebrates
@@ -93,7 +94,7 @@ class MacroinvertebratesForm(forms.ModelForm):
             'notes': forms.Textarea(
                 attrs={'class': 'materialize-textarea'})
         }
-        fields = ('date_time', 'weather', 'time_spent',
+        fields = ('school', 'date_time', 'weather', 'time_spent',
                   'num_people', 'water_type', 'caddisfly', 'mayfly',
                   'riffle_beetle', 'stonefly', 'water_penny', 'dobsonfly',
                   'clam_or_mussel', 'crane_fly', 'crayfish',
@@ -103,6 +104,7 @@ class MacroinvertebratesForm(forms.ModelForm):
 
 
 class WQForm(forms.ModelForm):
+    school = forms.ModelChoiceField(queryset=School.objects.all())
 
     class Meta:
         model = Water_Quality
@@ -114,7 +116,7 @@ class WQForm(forms.ModelForm):
                 forms.Textarea(attrs={'class': 'materialize-textarea'})
         }
         fields = (
-            'date', 'DEQ_dq_level',
+            'date', 'DEQ_dq_level', 'school',
             'latitude', 'longitude', 'fish_present', 'live_fish',
             'dead_fish', 'water_temp_unit', 'air_temp_unit', 'notes'
         )
@@ -162,7 +164,7 @@ class WQSampleFormReadOnly(WQSampleForm):
 class Canopy_Cover_Form(forms.ModelForm):
     class Meta:
         model = Canopy_Cover
-        fields = ('date_time', 'weather', 'est_canopy_cover',
+        fields = ('school', 'date_time', 'weather', 'est_canopy_cover',
                   'north_cc', 'west_cc', 'east_cc', 'south_cc')
 
 
@@ -206,13 +208,14 @@ class BaseZoneInlineFormSet(BaseInlineFormSet):
 
 
 class RiparianTransectForm(forms.ModelForm):
+    school = forms.ModelChoiceField(queryset=School.objects.all())
 
     class Meta:
         model = RiparianTransect
         widgets = {
             'notes': forms.Textarea(attrs={'class': 'materialize-textarea'})
         }
-        fields = ('date_time', 'weather', 'slope', 'notes')
+        fields = ('school', 'date_time', 'weather', 'slope', 'notes')
 
 
 class PhotoPointImageForm(forms.ModelForm):
@@ -236,6 +239,7 @@ class PhotoPointForm(forms.ModelForm):
 
 
 class CameraPointForm(forms.ModelForm):
+    school = forms.ModelChoiceField(queryset=School.objects.all())
     cp_date = forms.DateField(
         widget=forms.DateInput(attrs={'class': 'datepicker'}),
     )
@@ -245,7 +249,8 @@ class CameraPointForm(forms.ModelForm):
 
     class Meta:
         model = CameraPoint
-        fields = ('site', 'cp_date', 'location', 'map_datum', 'description')
+        fields = ('school', 'site', 'cp_date', 'location', 'map_datum',
+                  'description')
 
 
 class SiteForm(forms.ModelForm):
@@ -271,7 +276,7 @@ class SoilSurveyForm(forms.ModelForm):
                 forms.Textarea(attrs={'class': 'materialize-textarea'})
         }
         fields = (
-            'date', 'weather', 'landscape_pos', 'cover_type',
+            'school', 'date', 'weather', 'landscape_pos', 'cover_type',
             'land_use', 'soil_type', 'distance', 'site_char'
         )
 
@@ -314,3 +319,29 @@ class AdminPromotionForm(forms.Form):
     users = forms.ModelMultipleChoiceField(queryset=User.objects.all(),
                                            widget=forms.SelectMultiple)
     perms = forms.ChoiceField(choices=PERM_OPTIONS)
+
+
+class SchoolForm(forms.ModelForm):
+    class Meta:
+        model = School
+        widgets = {
+            'school_type': forms.RadioSelect(attrs={'required': True}),
+            'name': forms.TextInput(
+                attrs={'class': 'materialize-textarea, validate',
+                       'required': True}),
+            'address': forms.TextInput(
+                attrs={'class': 'materialize-textarea, validate',
+                       'required': True}),
+            'city': forms.TextInput(
+                attrs={'class': 'materialize-textarea, validate',
+                       'required': True}),
+            'province': forms.TextInput(
+                attrs={'class': 'materialize-textarea, validate',
+                       'required': True}),
+            'zipcode': forms.TextInput(
+                attrs={'class': 'materialize-textarea, validate',
+                       'required': True})
+        }
+        fields = ('name', 'school_type',
+                  'address', 'city',
+                  'province', 'zipcode')

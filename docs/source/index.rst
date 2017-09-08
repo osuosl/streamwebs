@@ -6,19 +6,44 @@
 Welcome to Streamwebs's documentation!
 ======================================
 
-Contents:
+General Documentation
+---------------------
 
 .. toctree::
-   :maxdepth: 2
+    :maxdepth: 1
 
-   about.rst
-   usage.rst
-   outline.rst
-   dev_docs.rst
+    about
 
+User Documentation
+------------------
+
+.. toctree::
+    :maxdepth: 1
+
+    usage/usage.rst
+
+Development Documentation:
+--------------------------
+
+.. toctree::
+    :maxdepth: 1
+
+    development/dev_overview
+    development/urls
+    development/sites
+    development/datasheets
+    development/graphing
+    development/users
+    development/resources
+    development/stats
+    development/schools
+    development/tests
+    development/translations
+    development/data_import
+    development/dev_notes
 
 Indices and tables
-==================
+------------------
 
 * :ref:`genindex`
 * :ref:`modindex`
