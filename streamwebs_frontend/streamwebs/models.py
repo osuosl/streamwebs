@@ -1098,7 +1098,6 @@ class Soil_Survey(models.Model):
                                  characteristics'))
 
     soil_type_choices = [
-        (None, '-----'),
         ('sand', _('Sand')),
         ('loamy_sand', _('Loamy Sand')),
         ('silt_loam', _('Silt Loam')),
@@ -1110,7 +1109,7 @@ class Soil_Survey(models.Model):
         ('other', _('Other'))
     ]
 
-    soil_type = models.CharField(max_length=10, default=None, blank=True,
+    soil_type = models.CharField(max_length=10, default=None, blank=False,
                                  choices=soil_type_choices)
 
     # Uid used to make relations between school and data sheet

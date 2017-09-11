@@ -7,7 +7,7 @@ class WQFormTestCase(TestCase):
 
     def setUp(self):
         self.expected_fields = (
-            'date',
+            'date_time',
             'DEQ_dq_level',
             'school',
             'latitude',
@@ -43,7 +43,7 @@ class WQFormTestCase(TestCase):
             'DEQ_dq_level': u'A',
             'air_temp_unit': u'Fahrenheit',
             'water_temp_unit': u'Fahrenheit',
-            'date': u'2016-08-22',
+            'date_time': u'2016-08-22 10:00',
             'dead_fish': 2,
             'fish_present': u'True',
             'initial-date': u'2016-08-22',

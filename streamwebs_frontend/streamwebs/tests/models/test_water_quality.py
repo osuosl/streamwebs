@@ -13,7 +13,7 @@ class WaterQualityTestCase(TestCase):
             'site': models.ForeignKey,
             'site_id': models.ForeignKey,
             'DEQ_dq_level': models.CharField,
-            'date': models.DateField,
+            'date_time': models.DateTimeField,
             'school': models.ForeignKey,
             'school_id': models.ForeignKey,
             'latitude': models.DecimalField,

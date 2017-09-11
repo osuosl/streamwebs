@@ -41,7 +41,7 @@
           </div>
 
           <div class="col s6">
-            <p>{{ soil_form.weather.label }} <span class="optional">(Optional)</span></p>
+            <p>{{ soil_form.weather.label }}</p>
             <p>{{ soil_form.weather.errors | striptags }}</p>
             <p>{{ soil_form.weather }}</p>
           </div>
@@ -94,7 +94,7 @@
         <div class="row">
           <div class="col s6">
             <div class="input-field">
-              {{ soil_form.soil_type.label }} <span class="optional">(Optional)</span>
+              {{ soil_form.soil_type.label }}
               {{ soil_form.soil_type.errors | striptags }}
               {{ soil_form.soil_type }}
             </div>
@@ -111,7 +111,7 @@
 
         <div class="row">
           <div class="input-field">
-            {{ soil_form.site_char.label }} <span class="optional">(Optional)</span>
+            {{ soil_form.site_char.label }}
             {{ soil_form.site_char.errors | striptags }}
             {{ soil_form.site_char }}
           </div>
