@@ -342,11 +342,8 @@ var createGraphTemplate = function createGraphTemplate(container, width, height,
 };
 
 var filterZeroData = function filterZeroData(filtered) {
-    var keys = Object.keys(filtered);
-    keys.forEach(function(key) {
-        filtered[key] = filtered[key].filter(function(dataPoint) {
-            return dataPoint.value != 0;
-        });
+    filtered = filtered.filter(function(dataPoint) {
+      return dataPoint.value != 0;
     });
 
     return filtered;
@@ -458,10 +455,10 @@ var createGraph = function createGraph() {
     'pH', 'turbidity', 'salinity', 'conductivity', 'fecal_coliform', 'bod',
     'total_solids', 'ammonia', 'nitrite', 'nitrate', 'phosphates']) {
         types1[key] = formatData(formatted1, key);
-        filtered1[key] = filterOutliers(types1[key]);
+        filtered1[key] = filterZeroData(types1[key]);
+        filtered1[key] = filterOutliers(filtered1[key]);
     }
 
-    filtered1 = filterZeroData(filtered1);
     var formatted2 = [];
 
     if (window.hasSiteTwo) {
@@ -485,10 +482,9 @@ var createGraph = function createGraph() {
         'pH', 'turbidity', 'salinity', 'conductivity', 'fecal_coliform', 'bod',
         'total_solids', 'ammonia', 'nitrite', 'nitrate', 'phosphates']) {
             types2[key] = formatData(formatted2, key);
-            filtered2[key] = filterOutliers(types2[key]);
+            filtered2[key] = filterZeroData(types2[key]);
+            filtered2[key] = filterOutliers(filtered2[key]);
         }
-
-        filtered2 = filterZeroData(filtered2);
     }
 
     var noValidData = dataIsEmpty(filtered1);
@@ -516,10 +512,6 @@ var dataIsEmpty = function dataIsEmpty(data) {
 }
 
 var showDateRange = function showDateRange(filtered1, filtered2) {
-    console.log(filtered1);
-    console.log(filtered2);
-    console.log(dataIsEmpty(filtered1));
-    console.log(dataIsEmpty(filtered2));
     if (dataIsEmpty(filtered1)) {
         $('p#date-range-1').hide();
     } else {
