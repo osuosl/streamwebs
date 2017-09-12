@@ -35,13 +35,13 @@
         </div>
         <div class="row">
           <div class="col s6">
-            <p>{{ soil_form.date.label }} (YYYY-MM-DD / HH:MM:SS)</p>
+            <p>{{ soil_form.date.label }} (YYYY-MM-DD HH:MM)</p>
             <p>{{ soil_form.date.errors | striptags }}</p>
             <p>{{ soil_form.date }}</p>
           </div>
 
           <div class="col s6">
-            <p>{{ soil_form.weather.label }}</p>
+            <p>{{ soil_form.weather.label }}<p>
             <p>{{ soil_form.weather.errors | striptags }}</p>
             <p>{{ soil_form.weather }}</p>
           </div>
