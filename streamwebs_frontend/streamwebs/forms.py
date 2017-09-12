@@ -87,7 +87,8 @@ class UserProfileForm(forms.ModelForm):
 
 
 class MacroinvertebratesForm(forms.ModelForm):
-    school = forms.ModelChoiceField(queryset=School.objects.all(), empty_label=None)
+    school = forms.ModelChoiceField(
+        queryset=School.objects.all(), empty_label=None)
     weather = forms.CharField(required=False)
     time_spent = forms.IntegerField(required=False)
     num_people = forms.IntegerField(required=False)
@@ -172,6 +173,7 @@ class Canopy_Cover_Form(forms.ModelForm):
     school = forms.ModelChoiceField(queryset=School.objects.all(),
                                     empty_label=None)
     weather = forms.CharField(required=False)
+
     class Meta:
         model = Canopy_Cover
         fields = ('school', 'date_time', 'weather', 'est_canopy_cover',
@@ -220,6 +222,7 @@ class BaseZoneInlineFormSet(BaseInlineFormSet):
 class RiparianTransectForm(forms.ModelForm):
     school = forms.ModelChoiceField(queryset=School.objects.all(),
                                     empty_label=None)
+
     class Meta:
         model = RiparianTransect
         widgets = {
@@ -280,6 +283,7 @@ class SoilSurveyForm(forms.ModelForm):
     school = forms.ModelChoiceField(queryset=School.objects.all(),
                                     empty_label=None)
     weather = forms.CharField(required=False)
+
     class Meta:
         model = Soil_Survey
         widgets = {
