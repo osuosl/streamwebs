@@ -1122,7 +1122,8 @@ def admin_site_statistics(request):
         date_time__range=(start, end)).count()
     num_canopy = Canopy_Cover.objects.filter(
         date_time__range=(start, end)).count()
-    num_water = Water_Quality.objects.filter(date__range=(start, end)).count()
+    num_water = Water_Quality.objects.filter(
+        date_time__range=(start, end)).count()
     total = (num_soil + num_transect + num_camera + num_macro + num_canopy +
              num_water)
 
@@ -1137,7 +1138,7 @@ def admin_site_statistics(request):
     canopy_sites = set(Site.objects.filter(
         canopy_cover__date_time__range=(start, end)))
     water_sites = set(Site.objects.filter(
-        water_quality__date__range=(start, end)))
+        water_quality__date_time__range=(start, end)))
     all_sites = (soil_sites | transect_sites | camera_sites | macro_sites |
                  canopy_sites | water_sites)
 
@@ -1152,7 +1153,7 @@ def admin_site_statistics(request):
     canopy_sch = set(School.objects.filter(
         canopy_cover__date_time__range=(start, end)))
     water_sch = set(School.objects.filter(
-        water_quality__date__range=(start, end)))
+        water_quality__date_time__range=(start, end)))
     # all_schools = (soil_sch | transect_sch | camera_sch | macro_sch |
     #                canopy_sch | water_sch)
     all_schools = soil_sch | canopy_sch | water_sch

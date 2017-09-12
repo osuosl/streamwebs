@@ -200,13 +200,13 @@ class WaterQualityManager(models.Manager):
     """
     Manager for the Water_Quality model/datasheet.
     """
-    def create_water_quality(self, site, date, school, DEQ_dq_level,
+    def create_water_quality(self, site, date_time, school, DEQ_dq_level,
                              latitude, longitude, fish_present,
                              live_fish, dead_fish, air_temp_unit,
                              water_temp_unit, notes=''):
 
         wq_info = self.create(site=site,
-                              date=date,
+                              date_time=date_time,
                               school=school,
                               DEQ_dq_level=DEQ_dq_level,
                               latitude=latitude,

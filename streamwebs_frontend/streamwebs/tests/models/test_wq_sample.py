@@ -102,11 +102,11 @@ class WQSampleTestCase(TestCase):
         )
 
         self.assertEqual(sample_1.water_quality.school.name, 'test school')
-        self.assertEqual(sample_1.water_quality.date, '2016-08-03')
+        self.assertEqual(sample_1.water_quality.date_time, '2016-08-03')
         self.assertEqual(sample_1.water_quality.site.site_name, 'test site')
 
         self.assertEqual(sample_2.water_quality.school.name, 'test school')
-        self.assertEqual(sample_2.water_quality.date, '2016-08-03')
+        self.assertEqual(sample_2.water_quality.date_time, '2016-08-03')
         self.assertEqual(sample_2.water_quality.site.site_name, 'test site')
 
     def test_sample_creation_req_fields(self):
