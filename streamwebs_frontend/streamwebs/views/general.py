@@ -35,12 +35,6 @@ import datetime
 def toDateTime(date, time, period):
     date_time = datetime.datetime.strptime((date + " " + time + " " + period),
         '%Y-%m-%d %I:%M %p')
-    if period == 'AM' and date_time.hour == 12:
-        print("SUBSTRACT")
-        date_time = date_time.replace(hour=(date_time.hour-12))
-    if period == 'PM' and date_time.hour != 12:
-        print("ADD")
-        date_time = date_time.replace(hour=(date_time.hour+12))
     return date_time
 
 
@@ -584,14 +578,19 @@ def macroinvertebrate_edit(request, site_slug):
 
     # the following are the form's fields broken up into chunks to
     # facilitate CSS manipulation in the template
-    intolerant = list(macro_form)[6:12]
-    somewhat = list(macro_form)[12:21]
-    tolerant = list(macro_form)[21:27]
+    intolerant = list(macro_form)[8:14]
+    somewhat = list(macro_form)[14:23]
+    tolerant = list(macro_form)[23:29]
 
     if request.method == 'POST':
         macro_form = MacroinvertebratesForm(data=request.POST)
         if macro_form.is_valid():
             macro = macro_form.save(commit=False)
+            macro.date_time = toDateTime(
+                macro_form.data['date'],
+                macro_form.data['time'],
+                macro_form.data['ampm']
+            )
             macro.site = site
             macro.save()
             added = True
@@ -676,6 +675,11 @@ def riparian_transect_edit(request, site_slug):
         if (zone_formset.is_valid() and transect_form.is_valid()):
             zones = zone_formset.save(commit=False)     # save forms to objs
             transect = transect_form.save()             # save form to object
+            transect.date_time = toDateTime(
+                transect_form.data['date'],
+                transect_form.data['time'],
+                transect_form.data['ampm']
+            )
             transect.site = site
             transect.save()                             # save object
 
@@ -1018,6 +1022,11 @@ def water_quality_edit(request, site_slug):
         wq_form = WQForm(data=request.POST)
         if (sample_formset.is_valid() and wq_form.is_valid()):
             water_quality = wq_form.save()   # save form to object
+            water_quality.date_time = toDateTime(
+                wq_form.data['date'],
+                wq_form.data['time'],
+                wq_form.data['ampm']
+            )
             water_quality.site = site
             water_quality.save()             # save object to db
             allSamples = sample_formset.save(commit=False)
@@ -1073,6 +1082,11 @@ def soil_survey_edit(request, site_slug):
 
         if soil_form.is_valid():
             soil = soil_form.save(commit=False)
+            soil.date_time = toDateTime(
+                soil_form.data['date'],
+                soil_form.data['time'],
+                soil_form.data['ampm']
+            )
             soil.site = site
             soil.save()
             messages.success(

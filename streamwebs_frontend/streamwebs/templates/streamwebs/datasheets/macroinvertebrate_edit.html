@@ -20,20 +20,31 @@
         {% csrf_token %}
 
         <div class="row">
-          <div class="col s6">
+          <div class="col s12">
             <p>{{ macro_form.school.label }}</p>
             <p>{{ macro_form.school }}</p>
             <p>{{ macro_form.school.errors }}</p>
           </div>
-          <div class="col s6">
-            <p>{{ macro_form.date_time.label }} (YYYY-MM-DD HH:MM)</p>
-            <p>{{ macro_form.date_time }}</p>
-            <p>{{ macro_form.date_time.errors }}</p>
-          </div>
+
           <div class="row">
             <div class="col s12 left">
               <a href="{% url 'streamwebs:create_school' %}" class="btn waves-effect waves-light teal darken-3">{% trans "Add A School/Organization" %}</a>
             </div>
+          </div>
+          <div class="col s6">
+            <p>{{ macro_form.date.label }} (YYYY-MM-DD)</p>
+            <p>{{ macro_form.date }}</p>
+            <p>{{ macro_form.date.errors }}</p>
+          </div>
+          <div class="col s3">
+            <p>{{ macro_form.time.label }} (HH:MM)</p>
+            <p>{{ macro_form.time }}</p>
+            <p>{{ macro_form.time.errors }}</p>
+          </div>
+          <div class="col s3">
+            <p>{{ macro_form.ampm.label }}</p>
+            <p>{{ macro_form.ampm }}</p>
+            <p>{{ macro_form.ampm.errors }}</p>
           </div>
           <div class="col s6">
             <p>{{ macro_form.time_spent.label }} ({% trans 'minutes' %}) </p>

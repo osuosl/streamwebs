@@ -10,24 +10,6 @@
     <div class="center-content">
       <strong class="normal">{% trans "Success!" %}</strong>
     </div>
-
-    <!-- Display errors, if any (should be improved/more CSS friendly) -->
-    <!-- {% for field in wq_form %}
-        {% if field.errors %}
-            <br>{{ field.label }}</br>
-            {% for error in field.errors %}
-                <br>...{{ error }}</br>
-            {% endfor %}
-        {% endif %}
-    {% endfor %}
-    {% for field in sample_formset %}
-        {% if field.errors %}
-            <br>{{ field.label }}</br>
-            {% for error in field.errors %}
-                <br>,,,{{ error }}</br>
-            {% endfor %}
-        {% endif %}
-    {% endfor %} -->
   {% endif %}
 
   <div class="container">
@@ -62,9 +44,23 @@
         <div class="row">
           <div class="col s6">
             <div class="input-field">
-              {{ wq_form.date_time.label }} (YYYY-MM-DD HH:MM)
-              {{ wq_form.date_time.errors | striptags }}
-              {{ wq_form.date_time }}
+              {{ wq_form.date.label }} (YYYY-MM-DD)
+              {{ wq_form.date.errors | striptags }}
+              {{ wq_form.date }}
+            </div>
+          </div>
+          <div class="col s3">
+            <div class="input-field">
+              {{ wq_form.time.label }} (HH:MM)
+              {{ wq_form.time.errors | striptags }}
+              {{ wq_form.time }}
+            </div>
+          </div>
+          <div class="col s3">
+            <div class="input-field">
+              {{ wq_form.ampm.label }}
+              {{ wq_form.ampm.errors | striptags }}
+              {{ wq_form.ampm }}
             </div>
           </div>
           <div class="col s6">
