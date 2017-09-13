@@ -10,6 +10,11 @@ from django.forms import BaseInlineFormSet
 from django.utils.translation import ugettext_lazy as _
 from captcha.fields import ReCaptchaField
 
+TIME_PERIOD_CHOICES = (
+    ('AM', _('AM')),
+    ('PM', _('PM'))
+)
+
 
 class UserForm(forms.ModelForm):
     password = forms.CharField(
@@ -173,11 +178,15 @@ class Canopy_Cover_Form(forms.ModelForm):
     school = forms.ModelChoiceField(queryset=School.objects.all(),
                                     empty_label=None)
     weather = forms.CharField(required=False)
-
+    date = forms.DateField()
+    time = forms.TimeField(
+        input_formats=['%I:%M'])
+    ampm = forms.ChoiceField(choices=TIME_PERIOD_CHOICES, label="AM/PM")
     class Meta:
         model = Canopy_Cover
-        fields = ('school', 'date_time', 'weather', 'est_canopy_cover',
-                  'north_cc', 'west_cc', 'east_cc', 'south_cc')
+        fields = ('school', 'date', 'time', 'ampm', 'weather',
+                  'est_canopy_cover', 'north_cc', 'west_cc', 'east_cc',
+                  'south_cc')
 
 
 class TransectZoneForm(forms.ModelForm):

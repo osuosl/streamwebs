@@ -81,13 +81,28 @@
         <div class="row">
           <div class="col s6">
             <div class="input-field">
-              {{ canopy_cover_form.date_time.label }} (YYYY-MM-DD HH:MM)
+              {{ canopy_cover_form.date.label }} (YYYY-MM-DD)
 
-              {{ canopy_cover_form.date_time.errors | striptags }}
-              {{ canopy_cover_form.date_time }}
+              {{ canopy_cover_form.date.errors | striptags }}
+              {{ canopy_cover_form.date }}
             </div>
           </div>
+          <div class="col s3">
+            <div class="input-field">
+              {{ canopy_cover_form.time.label }} (HH:MM)
 
+              {{ canopy_cover_form.time.errors | striptags }}
+              {{ canopy_cover_form.time }}
+            </div>
+          </div>
+          <div class="col s3">
+            <div class="input-field">
+              {{ canopy_cover_form.ampm.label }}
+
+              {{ canopy_cover_form.ampm.errors | striptags }}
+              {{ canopy_cover_form.ampm }}
+            </div>
+          </div>
           <div class="col s6">
             <div class="input-field">
               {{ canopy_cover_form.weather.label }}

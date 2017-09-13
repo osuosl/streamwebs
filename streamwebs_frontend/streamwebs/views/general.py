@@ -32,6 +32,18 @@ import copy
 import datetime
 
 
+def toDateTime(date, time, period):
+    date_time = datetime.datetime.strptime((date + " " + time + " " + period),
+        '%Y-%m-%d %I:%M %p')
+    if period == 'AM' and date_time.hour == 12:
+        print("SUBSTRACT")
+        date_time = date_time.replace(hour=(date_time.hour-12))
+    if period == 'PM' and date_time.hour != 12:
+        print("ADD")
+        date_time = date_time.replace(hour=(date_time.hour+12))
+    return date_time
+
+
 def _timestamp(dt):
     return (dt - datetime.datetime(1970, 1, 1)).total_seconds()
 
@@ -117,7 +129,7 @@ def site(request, site_slug):
     wq_sheets_new = []
     for x in wq_sheets:
         wq_data = {'id': x['id'], 'uri': 'water', 'type': 'Water Quality',
-                   'date': x['date_time']}
+                   'date': x['date_time'].date()}
         if 'school_id' in x and x['school_id']:
             wq_data['school_id'] = x['school_id']
         else:
@@ -184,7 +196,7 @@ def site(request, site_slug):
     soil_sheets_new = []
     for x in soil_sheets:
         soil_data = {'id': x['id'], 'uri': 'soil', 'type': 'Soil Survey',
-                     'date': x['date_time']}
+                     'date': x['date_time'].date()}
         if 'school_id' in x and x['school_id']:
             soil_data['school_id'] = x['school_id']
         else:
@@ -719,6 +731,11 @@ def canopy_cover_edit(request, site_slug):
 
         if (canopy_cover_form.is_valid()):
             canopy_cover = canopy_cover_form.save()
+            canopy_cover.date_time = toDateTime(
+                canopy_cover_form.data['date'],
+                canopy_cover_form.data['time'],
+                canopy_cover_form.data['ampm']
+            )
             canopy_cover.site = site
             canopy_cover.save()
             messages.success(
