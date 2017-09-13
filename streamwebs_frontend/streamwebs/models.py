@@ -315,7 +315,6 @@ class Water_Quality(models.Model):
 
     def to_dict(self):
         samples = WQ_Sample.objects.filter(water_quality=self)
-        print(_timestamp(self.date_time))
         return {
             'DEQ_dq_level': self.DEQ_dq_level,
             'date': _timestamp(self.date_time),
@@ -1053,7 +1052,7 @@ class Canopy_Cover(models.Model):
 class Soil_Survey(models.Model):
     school = models.ForeignKey(School, null=True, on_delete=models.CASCADE,
                                verbose_name=_('school'))
-    date = models.DateTimeField(default=timezone.now,
+    date_time = models.DateTimeField(default=timezone.now,
                                 verbose_name=_('date and time'))
     weather = models.CharField(max_length=250, verbose_name=_('weather'),
                                blank=True)

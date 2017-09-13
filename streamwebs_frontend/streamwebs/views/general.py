@@ -180,11 +180,11 @@ def site(request, site_slug):
     ppm_sheets = ppm_sheets_new
 
     soil_sheets = Soil_Survey.objects.filter(site_id=site.id)
-    soil_sheets = list(soil_sheets.order_by('-date').values())
+    soil_sheets = list(soil_sheets.order_by('-date_time').values())
     soil_sheets_new = []
     for x in soil_sheets:
         soil_data = {'id': x['id'], 'uri': 'soil', 'type': 'Soil Survey',
-                     'date': x['date']}
+                     'date': x['date_time']}
         if 'school_id' in x and x['school_id']:
             soil_data['school_id'] = x['school_id']
         else:
@@ -1113,7 +1113,8 @@ def admin_site_statistics(request):
     else:
         users = User.objects.filter(last_login__range=(user_start, end))
 
-    num_soil = Soil_Survey.objects.filter(date__range=(start, end)).count()
+    num_soil = Soil_Survey.objects.filter(
+        date_time__range=(start, end)).count()
     num_transect = RiparianTransect.objects.filter(
         date_time__range=(start, end)).count()
     num_camera = CameraPoint.objects.filter(
@@ -1128,7 +1129,7 @@ def admin_site_statistics(request):
              num_water)
 
     soil_sites = set(Site.objects.filter(
-        soil_survey__date__range=(start, end)))
+        soil_survey__date_time__range=(start, end)))
     transect_sites = set(Site.objects.filter(
         ripariantransect__date_time__range=(start, end)))
     camera_sites = set(Site.objects.filter(
@@ -1143,7 +1144,7 @@ def admin_site_statistics(request):
                  canopy_sites | water_sites)
 
     soil_sch = set(School.objects.filter(
-        soil_survey__date__range=(start, end)))
+        soil_survey__date_time__range=(start, end)))
     # transect_sch = set(School.objects.filter(
     #     ripariantransect__date_time__range=(start, end)))
     # camera_sch = set(School.objects.filter(
