@@ -271,12 +271,12 @@ span.optional {
     color: #757575;
 }
 
-strong {
-    color: #FF5722;
-}
-
 strong.normal {
     color: black;
+}
+
+strong {
+    color: #FF5722;
 }
 
 .material-icons {

@@ -7,13 +7,15 @@
 
 {% block content %}
 
-<style>
-.notes{
-  overflow-wrap: break-word;
-}
-</style>
+  <style>
+    .notes {
+      overflow-wrap: break-word;
+    }
+    strong.normal {
+      color: black;
+    }
+  </style>
 
-}
   <div class="container">
     {% if messages %}
       <div class="center-content">
@@ -29,39 +31,82 @@
       </a>
     </h3>
     <h4 align="center">{% trans "Macroinvertebrate data" %}: {{ data.date_time|date:"m-d-Y" }}</h4>
-
+    <br/><br/>
     <div class="row">
-      <div class="col s12">
-          <p>{% trans "School" %}: {{ data.school }} </>
-      </div>
-      <div class="col s12">
-          <p>{% trans "Date and time" %}: {{ data.date_time }} </>
+      <div class="col s6">
+        <p>
+          <b>{% trans "School" %}: </b>
+          {{ data.school }}
+        </p>
       </div>
       <div class="col s6">
-          <p>{% trans "Water quality" %}: {{ rating }}</p>
+        <p>
+          <b>{% trans "Date and time" %}: </b>
+          {{ data.date_time }}
+        </p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s6">
+        <p>
+          <b>{% trans "Water quality" %}: </b>
+          {{ rating }}
+        </p>
       </div>
       <div class="col s6">
-          <p>{% trans "Number of people sorting/identifying" %}: {{ data.num_people }}</p>
-      </div>
-      <div class="col s6">
-          <p>{% trans "Water type" %}: {{ data.get_water_type_display }}</p>
-      </div>
-      <div class="col s6">
-          <p>{% trans "Time spent sorting/identifying" %}: {{ data.time_spent }} minutes</p>
-      </div>
-      <div class="col s6">
-          <p>{% trans "Percent EPT" %}: {{ EPT|floatformat:2 }}%</p>
-          <p><b>Note: </b>
-            EPT is the total number of caddisflies, mayflies, and stoneflies found divided by number of all bugs
-          </p>
-      </div>
-      <div class="col s6">
-          <p>{% trans "Weather" %}: {{ data.weather }}</p>
-      </div>
-      <div class="notes col s12">
-          {% if data.notes %}
-          <p>{% trans "Field notes" %}: {{ data.notes }}</p>
+        <p>
+          <b>{% trans "Number of people sorting/identifying" %}: </b>
+          {% if data.num_people %}
+            {{ data.num_people }}
           {% endif %}
+        </p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s6">
+        <p>
+          <b>{% trans "Water type" %}: </b>
+          {% if data.get_water_type_display %}
+            {{ data.get_water_type_display }}
+          {% endif %}
+        </p>
+      </div>
+      <div class="col s6">
+        <p>
+          <b>{% trans "Time spent sorting/identifying" %}: </b>
+          {% if data.time_spent %}
+            {{ data.time_spent }} minutes
+          {% endif %}
+        </p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s6">
+        <p>
+          <b>{% trans "Percent EPT" %}: </b>
+          {{ EPT|floatformat:2 }}%
+        </p>
+        <p><strong>Note: </strong>
+          EPT is the total number of caddisflies, mayflies, and stoneflies found divided by number of all bugs
+        </p>
+      </div>
+      <div class="col s6">
+        <p>
+          <b>{% trans "Weather" %}: </b>
+          {% if data.weather %}
+            {{ data.weather }}
+          {% endif %}
+        </p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="notes col s12">
+        {% if data.notes %}
+          <p>
+            <b>{% trans "Field notes" %}: </b>
+            {{ data.notes }}
+          </p>
+        {% endif %}
       </div>
     </div>
     <div class="row">

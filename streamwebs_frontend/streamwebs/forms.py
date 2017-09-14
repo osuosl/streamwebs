@@ -335,13 +335,6 @@ class SoilSurveyForm(forms.ModelForm):
         )
 
 
-class SoilSurveyFormReadOnly(SoilSurveyForm):
-    def __init__(self, *args, **kwargs):
-        super(SoilSurveyFormReadOnly, self).__init__(*args, **kwargs)
-        for field in self.fields:
-            self.fields[field].widget.attrs.update({'disabled': True})
-
-
 class ResourceForm(forms.ModelForm):
     class Meta:
         model = Resource

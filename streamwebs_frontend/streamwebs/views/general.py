@@ -18,9 +18,9 @@ from streamwebs.forms import (
     UserForm, UserProfileForm, RiparianTransectForm, MacroinvertebratesForm,
     PhotoPointImageForm, PhotoPointForm, CameraPointForm, WQSampleForm,
     WQSampleFormReadOnly, WQForm, WQFormReadOnly, SiteForm, Canopy_Cover_Form,
-    SoilSurveyForm, SoilSurveyFormReadOnly, StatisticsForm, TransectZoneForm,
-    BaseZoneInlineFormSet, ResourceForm, AdminPromotionForm, UserEmailForm,
-    UserPasswordForm, SchoolForm)
+    SoilSurveyForm, StatisticsForm, TransectZoneForm, BaseZoneInlineFormSet,
+    ResourceForm, AdminPromotionForm, UserEmailForm, UserPasswordForm,
+    SchoolForm)
 
 from streamwebs.models import (
     Macroinvertebrates, Site, Water_Quality, WQ_Sample, RiparianTransect,
@@ -1060,11 +1060,11 @@ def water_quality_edit(request, site_slug):
 def soil_survey(request, site_slug, data_id):
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     soil_data = Soil_Survey.objects.get(id=data_id)
-    soil_form = SoilSurveyFormReadOnly(instance=soil_data)
     school = soil_data.school
+
     return render(
         request, 'streamwebs/datasheets/soil_view.html', {
-            'soil_form': soil_form, 'site': site, 'school': school
+            'soil_data': soil_data, 'site': site, 'school': school
         }
     )
 

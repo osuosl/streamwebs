@@ -29,33 +29,47 @@
       </a>
     </h3>
     <h4 align="center">{% trans "Riparian Transect data" %}: {{ transect.date_time|date:"m-d-Y" }}</h4>
-
+    <br/><br/>
     <div class="row">
-      <div class="input-field col s12">
-        <input disabled value="{{ transect.school }}" id="school" type="text"
-               class="validate">
-        <label for="school">{% trans "School" %}</label>
+      <div class="col s6">
+        <p>
+          <b>{% trans "School" %}: </b>
+          {{ transect.school }}
+        </p>
+      </div>
+      <div class="col s6">
+        <p>
+          <b>{% trans "Date and Time" %}: </b>
+          {{ transect.date_time }}
+        </p>
       </div>
     </div>
-
     <div class="row">
-      <div class="input-field col s6">
-        <input disabled value="{{ transect.date_time }}" id="dt" type="text"
-               class="validate">
-        <label for="dt">{% trans "Date and time" %}</label>
+      <div class="col s6">
+        <p>
+          <b>{% trans "Weather" %}: </b>
+          {% if transect.weather %}
+            {{ transect.weather }}
+          {% endif %}
+        </p>
       </div>
-      <div class="input-field col s6">
-        <input disabled value="{{ transect.weather }}" id="weather" type="text"
-               class="validate">
-        <label for="weather">{% trans "Weather" %}</label>
+      <div class="col s6">
+        <p>
+          <b>{% trans "Slope of Stream Bank" %}: </b>
+          {% if transect.slope %}
+            {{ transect.slope }}
+          {% endif %}
+        </p>
       </div>
     </div>
-
     <div class="row">
-      <div class="input-field col s12">
-        <input disabled value="{{ transect.slope }}" id="stream bank"
-               type="text" class="validate">
-        <label for="stream bank">{% trans "Slope of stream bank" %}</label>
+      <div class="col s12">
+        <p>
+          {% if transect.notes %}
+            <b>{% trans "Field Notes" %}</b>
+            {{ transect.notes }}
+          {% endif %}
+        </p>
       </div>
     </div>
 
@@ -117,15 +131,8 @@
         <td>{{ zones.4.comments|default_if_none:"" }}</td>
       </tr>
     </table>
+    <br/>
 
-    <br>
-    <div class="row">
-      <div class="input-field col s12">
-        <input disabled value="{{ transect.notes }}" id="notes" type="text"
-               class="validate">
-        <label for="notes">{% trans "Field notes" %}</label>
-      </div>
-    </div>
     <div class="row">
       <div id="rip-graph">
       </div>

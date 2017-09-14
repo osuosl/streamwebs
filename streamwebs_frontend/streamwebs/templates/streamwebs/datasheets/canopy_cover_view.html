@@ -69,28 +69,36 @@
       </a>
     </h3>
     <h4 align="center">{% trans "Canopy Cover data" %}: {{ canopy_cover.date_time|date:"m-d-Y" }}</h4>
-
+    <br/><br/>
     <div class="row">
-      <div class="col m6 offset-m3">
-        <div>
-          <table>
-            <tr>
-              <th align='left' width="20%">{% trans "School" %}</th>
-              <td>{{ canopy_cover.school }}</td>
-            </tr>
-            <tr>
-              <th align='left' width="20%">{% trans "Date" %}</th>
-              <td>{{ canopy_cover.date_time }}</td>
-            </tr>
-            <tr>
-              <th align='left' width="20%">{% trans "Site" %}</th>
-              <td>{{ site.site_name }}</td>
-            </tr>
-            <tr>
-              <th align='left' width="20%">{% trans "Estimated Canopy Cover" %}</th>
-              <td>{{ canopy_cover.est_canopy_cover | get_cc_percentage }}%</td>
-            </tr>
-          </table>
+      <div class="row">
+        <div class="col s6">
+          <p>
+            <b>{% trans "School" %}: </b>
+            {{ canopy_cover.school }}
+          </p>
+        </div>
+        <div class="col s6">
+          <p>
+            <b>{% trans "Date and Time" %}: </b>
+            {{ canopy_cover.date_time }}
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s6">
+          <p>
+            <b>{% trans "Estimated Canopy Cover" %}: </b>
+            {{ canopy_cover.est_canopy_cover | get_cc_percentage }}%
+          </p>
+        </div>
+        <div class="col s6">
+          <p>
+            <b>{% trans "Weather" %}: </b>
+            {% if canopy_cover.weather %}
+              {{ canopy_cover.weather }}
+            {% endif %}
+          </p>
         </div>
       </div>
     </div>
