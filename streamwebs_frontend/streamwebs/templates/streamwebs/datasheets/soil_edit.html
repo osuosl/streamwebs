@@ -23,9 +23,9 @@
         <br/>
         <div class="row">
           <div class="col s12">
-            <p>{{ soil_form.school.label }}</p>
-            <p>{{ soil_form.school.errors | striptags }}</p>
-            <p>{{ soil_form.school }}</p>
+            {{ soil_form.school.label }}
+            {{ soil_form.school.errors }}
+            {{ soil_form.school }}
           </div>
         </div>
         <div class="row">
@@ -35,24 +35,24 @@
         </div>
         <div class="row">
           <div class="col s6">
-            <p>{{ soil_form.date.label }} (YYYY-MM-DD)</p>
-            <p>{{ soil_form.date.errors | striptags }}</p>
-            <p>{{ soil_form.date }}</p>
+            {{ soil_form.date.label }} (YYYY-MM-DD)
+            {{ soil_form.date.errors }}
+            {{ soil_form.date }}
           </div>
           <div class="col s3">
-            <p>{{ soil_form.time.label }} (HH:MM)</p>
-            <p>{{ soil_form.time.errors | striptags }}</p>
-            <p>{{ soil_form.time }}</p>
+            {{ soil_form.time.label }} (HH:MM)
+            {{ soil_form.time.errors }}
+            {{ soil_form.time }}
           </div>
           <div class="col s3">
-            <p>{{ soil_form.ampm.label }}</p>
-            <p>{{ soil_form.ampm.errors | striptags }}</p>
-            <p>{{ soil_form.ampm }}</p>
+            {{ soil_form.ampm.label }}
+            {{ soil_form.ampm.errors }}
+            {{ soil_form.ampm }}
           </div>
           <div class="col s6">
-            <p>{{ soil_form.weather.label }}<p>
-            <p>{{ soil_form.weather.errors | striptags }}</p>
-            <p>{{ soil_form.weather }}</p>
+            {{ soil_form.weather.label }}
+            {{ soil_form.weather.errors }}
+            {{ soil_form.weather }}
           </div>
         </div>
 
@@ -62,7 +62,7 @@
           <div class="row">
             <div class="col s4 pull-s2 landscape-pos">
               <p>{% trans "Landscape Position" %}</p>
-              {{ soil_form.landscape_pos.errors| striptags }}
+              {{ soil_form.landscape_pos.errors }}
               <div class="input-field">
                 {% for radio in soil_form.landscape_pos %}
                   {{ radio.tag }}
@@ -74,7 +74,7 @@
             </div>
             <div class="col s4 push-s1 cover-type">
               <p>{% trans "Cover Type" %}</p>
-              {{ soil_form.cover_type.errors| striptags }}
+              {{ soil_form.cover_type.errors }}
               <div class="input-field">
                 {% for radio in soil_form.cover_type %}
                   {{ radio.tag }}
@@ -86,7 +86,7 @@
             </div>
             <div class="col s4 push-s3 land-use">
               <p>{% trans "Land Use" %}</p>
-              {{ soil_form.land_use.errors| striptags }}
+              {{ soil_form.land_use.errors }}
               <div class="input-field">
                 {% for radio in soil_form.land_use %}
                   {{ radio.tag }}
@@ -104,7 +104,7 @@
           <div class="col s6">
             <div class="input-field">
               {{ soil_form.soil_type.label }}
-              {{ soil_form.soil_type.errors | striptags }}
+              {{ soil_form.soil_type.errors }}
               {{ soil_form.soil_type }}
             </div>
           </div>
@@ -112,7 +112,7 @@
           <div class="col s6">
             <div class="input-field">
               {{ soil_form.distance.label }} (ft)
-              {{ soil_form.distance.errors | striptags }}
+              {{ soil_form.distance.errors }}
               {{ soil_form.distance }}
             </div>
           </div>
@@ -121,7 +121,7 @@
         <div class="row">
           <div class="input-field">
             {{ soil_form.site_char.label }}
-            {{ soil_form.site_char.errors | striptags }}
+            {{ soil_form.site_char.errors }}
             {{ soil_form.site_char }}
           </div>
         </div>

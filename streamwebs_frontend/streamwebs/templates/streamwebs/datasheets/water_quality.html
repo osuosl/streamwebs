@@ -30,12 +30,12 @@
     <form id="water_quality_form" action="" method="POST">
       {% csrf_token %}
       <div class="infogroup">
-        <p>{{ wq_form.site.errors | striptags }}</p>
+        <p>{{ wq_form.site.errors }}</p>
         <div class="row">
           <div class="col s12">
             <div class="input-field">
               {{ wq_form.school.label }}
-              {{ wq_form.school.errors | striptags }}
+              {{ wq_form.school.errors }}
               {{ wq_form.school }}
             </div>
             <a href="{% url 'streamwebs:create_school' %}" class="btn waves-effect waves-light teal darken-3">{% trans "Add A School/Organization" %}</a>
@@ -45,28 +45,28 @@
           <div class="col s6">
             <div class="input-field">
               {{ wq_form.date.label }} (YYYY-MM-DD)
-              {{ wq_form.date.errors | striptags }}
+              {{ wq_form.date.errors }}
               {{ wq_form.date }}
             </div>
           </div>
           <div class="col s3">
             <div class="input-field">
               {{ wq_form.time.label }} (HH:MM)
-              {{ wq_form.time.errors | striptags }}
+              {{ wq_form.time.errors }}
               {{ wq_form.time }}
             </div>
           </div>
           <div class="col s3">
             <div class="input-field">
               {{ wq_form.ampm.label }}
-              {{ wq_form.ampm.errors | striptags }}
+              {{ wq_form.ampm.errors }}
               {{ wq_form.ampm }}
             </div>
           </div>
           <div class="col s6">
             <div class="input-field">
               {{ wq_form.DEQ_dq_level.label }}
-              {{ wq_form.DEQ_dq_level.errors | striptags }}
+              {{ wq_form.DEQ_dq_level.errors }}
               {{ wq_form.DEQ_dq_level }}
             </div>
           </div>
@@ -76,7 +76,7 @@
           <div class="col s6">
             <div class="input-field">
               {{ wq_form.latitude.label }} <span class="optional">(Optional)<span>
-              {{ wq_form.latitude.errors | striptags }}
+              {{ wq_form.latitude.errors }}
               {{ wq_form.latitude }}
             </div>
           </div>
@@ -84,7 +84,7 @@
           <div class="col s6">
             <div class="input-field">
               {{ wq_form.longitude.label }} <span class="optional">(Optional)<span>
-              {{ wq_form.longitude.errors | striptags }}
+              {{ wq_form.longitude.errors }}
               {{ wq_form.longitude }}
             </div>
           </div>
@@ -100,7 +100,7 @@
         <br/><br/>
         <div class="col s4 fish-presence">
           <p>{{ wq_form.fish_present.label }}</p>
-          {{ wq_form.fish_present.errors | striptags }}
+          {{ wq_form.fish_present.errors }}
           <div class="input-field">
             {% for radio in wq_form.fish_present %}
               {{ radio.tag }}
@@ -112,13 +112,13 @@
 
         <div class="col s4 live-fish">
           <p>{{ wq_form.live_fish.label }}</p>
-          {{ wq_form.live_fish.errors | striptags }}
+          {{ wq_form.live_fish.errors }}
           {{ wq_form.live_fish }}
         </div>
 
         <div class="col s4 dead-fish">
           <p>{{ wq_form.dead_fish.label }}</p>
-          {{ wq_form.dead_fish.errors | striptags }}
+          {{ wq_form.dead_fish.errors }}
           {{ wq_form.dead_fish }}
         </div>
       </div>
@@ -126,7 +126,7 @@
       <div class="row">
         <div class="col s6 water-temp">
           <p>{{ wq_form.water_temp_unit.label }}</p>
-          {{ wq_form.water_temp_unit.errors | striptags }}
+          {{ wq_form.water_temp_unit.errors }}
           <div class="input-field">
             {% for radio in wq_form.water_temp_unit %}
               {{ radio.tag }}
@@ -138,7 +138,7 @@
 
         <div class="col s6 air-temp">
           <p>{{ wq_form.air_temp_unit.label }}</p>
-          {{ wq_form.air_temp_unit.errors | striptags }}
+          {{ wq_form.air_temp_unit.errors }}
           <div class="input-field">
             {% for radio in wq_form.air_temp_unit %}
               {{ radio.tag }}
@@ -177,10 +177,10 @@
 
               <td>
                 <div class="input-field">
+                  {{ sample.water_temperature.errors }}
                   {{ sample.water_temperature }}
-                  <p> {{ sample.water_temperature.errors }} </p>
                 </div>
-                {{ sample.water_temp_tool.errors | striptags }}
+                {{ sample.water_temp_tool.errors }}
 
                 {% for radio in sample.water_temp_tool %}
                   {{ radio.tag }}
@@ -199,10 +199,10 @@
 
               <td>
                 <div class="input-field">
+                  {{ sample.air_temperature.errors }}
                   {{ sample.air_temperature }}
-                  <p> {{ sample.air_temperature.errors }} </p>
                 </div>
-                {{ sample.air_temp_tool.errors | striptags }}
+                {{ sample.air_temp_tool.errors }}
 
                 {% for radio in sample.air_temp_tool %}
                   {{ radio.tag }}
@@ -221,10 +221,10 @@
 
               <td>
                 <div class="input-field">
+                  {{ sample.dissolved_oxygen.errors }}
                   {{ sample.dissolved_oxygen }}
-                  <p> {{ sample.dissolved_oxygen.errors }} </p>
                 </div>
-                {{ sample.oxygen_tool.errors | striptags }}
+                {{ sample.oxygen_tool.errors }}
 
                 {% for radio in sample.oxygen_tool %}
                   {{ radio.tag }}
@@ -243,10 +243,10 @@
 
               <td>
                 <div class="input-field">
+                  {{ sample.pH.errors }}
                   {{ sample.pH }}
-                  <p> {{ sample.pH.errors }} </p>
                 </div>
-                {{ sample.pH_tool.errors | striptags }}
+                {{ sample.pH_tool.errors }}
 
                 {% for radio in sample.pH_tool %}
                   {{ radio.tag }}
@@ -265,10 +265,10 @@
 
               <td>
                 <div class="input-field">
+                  {{ sample.turbidity.errors }}
                   {{ sample.turbidity }}
-                  <p> {{ sample.turbidity.errors }} </p>
                 </div>
-                {{ sample.turbid_tool.errors | striptags }}
+                {{ sample.turbid_tool.errors }}
 
                 {% for radio in sample.turbid_tool %}
                   {{ radio.tag }}
@@ -287,10 +287,10 @@
 
               <td>
                 <div class="input-field">
+                  {{ sample.salinity.errors }}
                   {{ sample.salinity }}
-                  <p> {{ sample.salinity.errors }} </p>
                 </div>
-                {{ sample.salt_tool.errors | striptags }}
+                {{ sample.salt_tool.errors }}
 
                 {% for radio in sample.salt_tool %}
                   {{ radio.tag }}
@@ -327,7 +327,10 @@
               {% endif %}
 
               <td>
-                <div class="input-field">{{ sample.conductivity }}</div>
+                <div class="input-field">
+                  {{ sample.conductivity.errors}}
+                  {{ sample.conductivity }}
+                </div>
               </td>
             {% endfor %}
           </tr>
@@ -339,7 +342,10 @@
               {% endif %}
 
               <td>
-                <div class="input-field">{{ sample.total_solids }}</div>
+                <div class="input-field">
+                  {{ sample.total_solids.errors }}
+                  {{ sample.total_solids }}
+                </div>
               </td>
             {% endfor %}
           </tr>
@@ -351,7 +357,10 @@
               {% endif %}
 
               <td>
-                <div class="input-field">{{ sample.bod }}</div>
+                <div class="input-field">
+                  {{ sample.bod.errors }}
+                  {{ sample.bod }}
+                </div>
               </td>
             {% endfor %}
           </tr>
@@ -363,7 +372,10 @@
               {% endif %}
 
               <td>
-                <div class="input-field">{{ sample.ammonia }}</div>
+                <div class="input-field">
+                  {{ sample.ammonia.errors }}
+                  {{ sample.ammonia }}
+                </div>
               </td>
             {% endfor %}
           </tr>
@@ -375,7 +387,10 @@
               {% endif %}
 
               <td>
-                <div class="input-field">{{ sample.nitrite }}</div>
+                <div class="input-field">
+                  {{ sample.nitrite.errors }}
+                  {{ sample.nitrite }}
+                </div>
               </td>
             {% endfor %}
           </tr>
@@ -387,7 +402,10 @@
               {% endif %}
 
               <td>
-                <div class="input-field">{{ sample.phosphates }}</div>
+                <div class="input-field">
+                  {{ sample.phosphates.errors }}
+                  {{ sample.phosphates }}
+                </div>
               </td>
             {% endfor %}
           </tr>
@@ -399,17 +417,19 @@
               {% endif %}
 
               <td>
-                <div class="input-field">{{ sample.fecal_coliform }}</div>
+                <div class="input-field">
+                  {{ sample.fecal_coliform.errors }}
+                  {{ sample.fecal_coliform }}
+                </div>
               </td>
             {% endfor %}
           </tr>
         </table>
       </div>
-
+      <br/><br/>
       <div class="input-field">
-        <label
-            for="{{ wq_form.notes.id_for_label }}">{{ wq_form.notes.label }}</label>
-        {{ wq_form.notes.errors | striptags }}
+        {{ wq_form.notes.label }}
+        {{ wq_form.notes.errors }}
         {{ wq_form.notes }}
       </div>
 

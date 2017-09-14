@@ -33,7 +33,7 @@
         <div class="row">
           <div class="input-field">
             {{ transect_form.school.label }}
-            {{ transect_form.school.errors | striptags }}
+            {{ transect_form.school.errors }}
             {{ transect_form.school }}
           </div>
         </div>
@@ -45,30 +45,28 @@
           <div class="col s6">
             <div class="input-field">
               {{ transect_form.date.label }} (YYYY-MM-DD)
-              {{ transect_form.date.errors | striptags }}
+              {{ transect_form.date.errors }}
               {{ transect_form.date }}
             </div>
           </div>
           <div class="col s3">
             <div class="input-field">
               {{ transect_form.time.label }} (HH:MM)
-              {{ transect_form.time.errors | striptags }}
+              {{ transect_form.time.errors}}
               {{ transect_form.time }}
             </div>
           </div>
           <div class="col s3">
             <div class="input-field">
               {{ transect_form.ampm.label }}
-              {{ transect_form.ampm.errors | striptags }}
+              {{ transect_form.ampm.errors }}
               {{ transect_form.ampm }}
             </div>
           </div>
           <div class="col s6">
             <div class="input-field">
-              <label for="{{ transect_form.weather.id_for_label }}">
-                {{ transect_form.weather.label }}
-              </label>
-              {{ transect_form.weather.errors | striptags }}
+              {{ transect_form.weather.label }}
+              {{ transect_form.weather.errors }}
               {{ transect_form.weather }}
             </div>
           </div>
@@ -76,10 +74,8 @@
 
         <div class="row">
           <div class="input-field">
-            <label for="{{ transect_form.slope.id_for_label }}">
-              {{ transect_form.slope.label }}
-            </label>
-            {{ transect_form.slope.errors | striptags }}
+            {{ transect_form.slope.label }}
+            {{ transect_form.slope.errors }}
             {{ transect_form.slope }}
           </div>
         </div>
@@ -124,10 +120,8 @@
 
         <div class="row">
           <div class="input-field">
-            <label for="{{ transect_form.notes.id_for_label }}">
-              {{ transect_form.notes.label }}
-            </label>
-            {{ transect_form.notes.errors | striptags }}
+            {{ transect_form.notes.label }}
+            {{ transect_form.notes.errors }}
             {{ transect_form.notes }}
           </div>
         </div>
