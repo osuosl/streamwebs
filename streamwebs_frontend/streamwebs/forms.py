@@ -97,7 +97,10 @@ class MacroinvertebratesForm(forms.ModelForm):
     weather = forms.CharField(required=False)
     time_spent = forms.IntegerField(required=False)
     num_people = forms.IntegerField(required=False)
-    date = forms.DateField(input_formats=['%Y-%m-%d'])
+    date = forms.DateField(
+        input_formats=['%Y-%m-%d'],
+        widget=forms.DateInput(attrs={'class': 'datepicker'}),
+    )
     time = forms.TimeField(input_formats=['%I:%M'])
     ampm = forms.ChoiceField(choices=TIME_PERIOD_CHOICES, label="AM/PM")
 
@@ -121,7 +124,10 @@ class WQForm(forms.ModelForm):
                                     empty_label=None)
     latitude = forms.DecimalField(required=False)
     longitude = forms.DecimalField(required=False)
-    date = forms.DateField(input_formats=['%Y-%m-%d'])
+    date = forms.DateField(
+        input_formats=['%Y-%m-%d'],
+        widget=forms.DateInput(attrs={'class': 'datepicker'}),
+    )
     time = forms.TimeField(input_formats=['%I:%M'])
     ampm = forms.ChoiceField(choices=TIME_PERIOD_CHOICES, label="AM/PM")
 
@@ -184,7 +190,10 @@ class Canopy_Cover_Form(forms.ModelForm):
     school = forms.ModelChoiceField(queryset=School.objects.all(),
                                     empty_label=None)
     weather = forms.CharField(required=False)
-    date = forms.DateField(input_formats=['%Y-%m-%d'])
+    date = forms.DateField(
+        input_formats=['%Y-%m-%d'],
+        widget=forms.DateInput(attrs={'class': 'datepicker'}),
+    )
     time = forms.TimeField(input_formats=['%I:%M'])
     ampm = forms.ChoiceField(choices=TIME_PERIOD_CHOICES, label="AM/PM")
     class Meta:
@@ -236,7 +245,10 @@ class BaseZoneInlineFormSet(BaseInlineFormSet):
 class RiparianTransectForm(forms.ModelForm):
     school = forms.ModelChoiceField(queryset=School.objects.all(),
                                     empty_label=None)
-    date = forms.DateField(input_formats=['%Y-%m-%d'])
+    date = forms.DateField(
+        input_formats=['%Y-%m-%d'],
+        widget=forms.DateInput(attrs={'class': 'datepicker'}),
+    )
     time = forms.TimeField(input_formats=['%I:%M'])
     ampm = forms.ChoiceField(choices=TIME_PERIOD_CHOICES, label="AM/PM")
 
@@ -301,7 +313,10 @@ class SoilSurveyForm(forms.ModelForm):
     school = forms.ModelChoiceField(queryset=School.objects.all(),
                                     empty_label=None)
     weather = forms.CharField(required=False)
-    date = forms.DateField(input_formats=['%Y-%m-%d'])
+    date = forms.DateField(
+        input_formats=['%Y-%m-%d'],
+        widget=forms.DateInput(attrs={'class': 'datepicker'}),
+    )
     time = forms.TimeField(input_formats=['%I:%M'])
     ampm = forms.ChoiceField(choices=TIME_PERIOD_CHOICES, label="AM/PM")
 
