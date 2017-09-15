@@ -1,0 +1,531 @@
+{% extends 'streamwebs/base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+{% load filters %}
+
+{% block title %}{% trans "Add water quality sample" %}{% endblock %}
+
+{% block content %}
+  {% if added %}
+    <div class="center-content">
+      <strong class="normal">{% trans "Success!" %}</strong>
+    </div>
+  {% endif %}
+
+  <div class="container">
+    {% if messages %}
+      <div class="center-content">
+        {% for message in messages %}
+          <strong>{{ message }}</strong>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <h3 align="center">
+      <a href="{% url 'streamwebs:site' site.site_slug %}">
+        {{ site.site_name }}
+      </a>
+    </h3>
+    <h4 align="center">{% trans 'New Water Quality Sampling' %}</h4>
+    <form id="water_quality_form" action="" method="POST">
+      {% csrf_token %}
+      <div class="infogroup">
+        <p>{{ wq_form.site.errors }}</p>
+        <div class="row">
+          <div class="col s12">
+            <div class="input-field">
+              {{ wq_form.school.label }}
+              {{ wq_form.school.errors }}
+              {{ wq_form.school }}
+            </div>
+            <a href="{% url 'streamwebs:create_school' %}" class="btn waves-effect waves-light teal darken-3">{% trans "Add A School/Organization" %}</a>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col s6">
+            <div class="input-field">
+              {{ wq_form.date.label }} (YYYY-MM-DD)
+              {{ wq_form.date.errors }}
+              {{ wq_form.date }}
+            </div>
+          </div>
+          <div class="col s3">
+            <div class="input-field">
+              {{ wq_form.time.label }} (HH:MM)
+              {{ wq_form.time.errors }}
+              {{ wq_form.time }}
+            </div>
+          </div>
+          <div class="col s3">
+            <div class="input-field">
+              {{ wq_form.ampm.label }}
+              {{ wq_form.ampm.errors }}
+              {{ wq_form.ampm }}
+            </div>
+          </div>
+          <div class="col s6">
+            <div class="input-field">
+              {{ wq_form.DEQ_dq_level.label }}
+              {{ wq_form.DEQ_dq_level.errors }}
+              {{ wq_form.DEQ_dq_level }}
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s6">
+            <div class="input-field">
+              {{ wq_form.latitude.label }} <span class="optional">(Optional)<span>
+              {{ wq_form.latitude.errors }}
+              {{ wq_form.latitude }}
+            </div>
+          </div>
+
+          <div class="col s6">
+            <div class="input-field">
+              {{ wq_form.longitude.label }} <span class="optional">(Optional)<span>
+              {{ wq_form.longitude.errors }}
+              {{ wq_form.longitude }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <br/><br/>
+      <div class="row">
+        <div class="container">
+          <p><strong>Note: </strong>
+            Choosing "No" for fish presence below will reset "number of live fish", "number of dead fish" to 0 upon form submission.
+          </p>
+        </div>
+        <br/><br/>
+        <div class="col s4 fish-presence">
+          <p>{{ wq_form.fish_present.label }}</p>
+          {{ wq_form.fish_present.errors }}
+          <div class="input-field">
+            {% for radio in wq_form.fish_present %}
+              {{ radio.tag }}
+              <label
+                  for="{{ radio.id_for_label }}">{{ radio.choice_label }}</label>
+            {% endfor %}
+          </div>
+        </div>
+
+        <div class="col s4 live-fish">
+          <p>{{ wq_form.live_fish.label }}</p>
+          {{ wq_form.live_fish.errors }}
+          {{ wq_form.live_fish }}
+        </div>
+
+        <div class="col s4 dead-fish">
+          <p>{{ wq_form.dead_fish.label }}</p>
+          {{ wq_form.dead_fish.errors }}
+          {{ wq_form.dead_fish }}
+        </div>
+      </div>
+      <br/><br/><br/>
+      <div class="row">
+        <div class="col s6 water-temp">
+          <p>{{ wq_form.water_temp_unit.label }}</p>
+          {{ wq_form.water_temp_unit.errors }}
+          <div class="input-field">
+            {% for radio in wq_form.water_temp_unit %}
+              {{ radio.tag }}
+              <label
+                  for="{{ radio.id_for_label }}">{{ radio.choice_label }}</label>
+            {% endfor %}
+          </div>
+        </div>
+
+        <div class="col s6 air-temp">
+          <p>{{ wq_form.air_temp_unit.label }}</p>
+          {{ wq_form.air_temp_unit.errors }}
+          <div class="input-field">
+            {% for radio in wq_form.air_temp_unit %}
+              {{ radio.tag }}
+              <label
+                  for="{{ radio.id_for_label }}">{{ radio.choice_label }}</label>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
+      <table id="samples">
+        {{ sample_formset.management_form }}
+        <br/>
+        <div class="container">
+          <p><strong>Note: </strong>
+            Choosing the "None" options below will reset its related data field to 0 upon submission.
+          </p>
+        </div>
+        <br/>
+        <thead>
+          <tr>
+            <th data-field="test"></th>
+            <th data-field="sample1">{% trans "Sample 1" %}</th>
+            <th data-field="sample2">{% trans "Sample 2" %}</th>
+            <th data-field="sample3">{% trans "Sample 3" %}</th>
+            <th data-field="sample4">{% trans "Sample 4" %}</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            {% for sample in sample_formset %}
+              {% if forloop.first %}
+                <td>{{ sample.water_temperature.label }}</td>
+              {% endif %}
+
+              <td>
+                <div class="input-field">
+                  {{ sample.water_temperature.errors }}
+                  {{ sample.water_temperature }}
+                </div>
+                {{ sample.water_temp_tool.errors }}
+
+                {% for radio in sample.water_temp_tool %}
+                  {{ radio.tag }}
+                  <label
+                      for="{{ radio.id_for_label }}">{{ radio.choice_label }}</label>
+                {% endfor %}
+              </td>
+            {% endfor %}
+          </tr>
+
+          <tr>
+            {% for sample in sample_formset %}
+              {% if forloop.first %}
+                <td>{{ sample.air_temperature.label }}</td>
+              {% endif %}
+
+              <td>
+                <div class="input-field">
+                  {{ sample.air_temperature.errors }}
+                  {{ sample.air_temperature }}
+                </div>
+                {{ sample.air_temp_tool.errors }}
+
+                {% for radio in sample.air_temp_tool %}
+                  {{ radio.tag }}
+                  <label
+                      for="{{ radio.id_for_label }}">{{ radio.choice_label }}</label>
+                {% endfor %}
+              </td>
+            {% endfor %}
+          </tr>
+
+          <tr>
+            {% for sample in sample_formset %}
+              {% if forloop.first %}
+                <td>{{ sample.dissolved_oxygen.label }}</td>
+              {% endif %}
+
+              <td>
+                <div class="input-field">
+                  {{ sample.dissolved_oxygen.errors }}
+                  {{ sample.dissolved_oxygen }}
+                </div>
+                {{ sample.oxygen_tool.errors }}
+
+                {% for radio in sample.oxygen_tool %}
+                  {{ radio.tag }}
+                  <label
+                      for="{{ radio.id_for_label }}">{{ radio.choice_label }}</label>
+                {% endfor %}
+              </td>
+            {% endfor %}
+          </tr>
+
+          <tr>
+            {% for sample in sample_formset %}
+              {% if forloop.first %}
+                <td>{{ sample.pH.label }}</td>
+              {% endif %}
+
+              <td>
+                <div class="input-field">
+                  {{ sample.pH.errors }}
+                  {{ sample.pH }}
+                </div>
+                {{ sample.pH_tool.errors }}
+
+                {% for radio in sample.pH_tool %}
+                  {{ radio.tag }}
+                  <label
+                      for="{{ radio.id_for_label }}">{{ radio.choice_label }}</label>
+                {% endfor %}
+              </td>
+            {% endfor %}
+          </tr>
+
+          <tr>
+            {% for sample in sample_formset %}
+              {% if forloop.first %}
+                <td>{{ sample.turbidity.label }}</td>
+              {% endif %}
+
+              <td>
+                <div class="input-field">
+                  {{ sample.turbidity.errors }}
+                  {{ sample.turbidity }}
+                </div>
+                {{ sample.turbid_tool.errors }}
+
+                {% for radio in sample.turbid_tool %}
+                  {{ radio.tag }}
+                  <label
+                      for="{{ radio.id_for_label }}">{{ radio.choice_label }}</label>
+                {% endfor %}
+              </td>
+            {% endfor %}
+          </tr>
+
+          <tr>
+            {% for sample in sample_formset %}
+              {% if forloop.first %}
+                <td>{{ sample.salinity.label }}</td>
+              {% endif %}
+
+              <td>
+                <div class="input-field">
+                  {{ sample.salinity.errors }}
+                  {{ sample.salinity }}
+                </div>
+                {{ sample.salt_tool.errors }}
+
+                {% for radio in sample.salt_tool %}
+                  {{ radio.tag }}
+                  <label
+                      for="{{ radio.id_for_label }}">{{ radio.choice_label }}</label>
+                {% endfor %}
+              </td>
+            {% endfor %}
+          </tr>
+
+          <tr class="collapse-btn">
+            <th>{% trans "Additional parameters" %}
+              <i class="material-icons">arrow_drop_down</i>
+            </th>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="collapse">
+        <table>
+          <thead>
+            <tr>
+              <th data-field="test"></th>
+              <th data-field="sample1">{% trans "Sample 1" %}</th>
+              <th data-field="sample2">{% trans "Sample 2" %}</th>
+              <th data-field="sample3">{% trans "Sample 3" %}</th>
+              <th data-field="sample4">{% trans "Sample 4" %}</th>
+            </tr>
+          </thead>
+          <tr>
+            {% for sample in sample_formset %}
+              {% if forloop.first %}
+                <td>{{ sample.conductivity.label }}</td>
+              {% endif %}
+
+              <td>
+                <div class="input-field">
+                  {{ sample.conductivity.errors}}
+                  {{ sample.conductivity }}
+                </div>
+              </td>
+            {% endfor %}
+          </tr>
+
+          <tr>
+            {% for sample in sample_formset %}
+              {% if forloop.first %}
+                <td>{{ sample.total_solids.label }}</td>
+              {% endif %}
+
+              <td>
+                <div class="input-field">
+                  {{ sample.total_solids.errors }}
+                  {{ sample.total_solids }}
+                </div>
+              </td>
+            {% endfor %}
+          </tr>
+
+          <tr>
+            {% for sample in sample_formset %}
+              {% if forloop.first %}
+                <td>{{ sample.bod.label }}</td>
+              {% endif %}
+
+              <td>
+                <div class="input-field">
+                  {{ sample.bod.errors }}
+                  {{ sample.bod }}
+                </div>
+              </td>
+            {% endfor %}
+          </tr>
+
+          <tr>
+            {% for sample in sample_formset %}
+              {% if forloop.first %}
+                <td>{{ sample.ammonia.label }}</td>
+              {% endif %}
+
+              <td>
+                <div class="input-field">
+                  {{ sample.ammonia.errors }}
+                  {{ sample.ammonia }}
+                </div>
+              </td>
+            {% endfor %}
+          </tr>
+
+          <tr>
+            {% for sample in sample_formset %}
+              {% if forloop.first %}
+                <td>{{ sample.nitrite.label }}</td>
+              {% endif %}
+
+              <td>
+                <div class="input-field">
+                  {{ sample.nitrite.errors }}
+                  {{ sample.nitrite }}
+                </div>
+              </td>
+            {% endfor %}
+          </tr>
+
+          <tr>
+            {% for sample in sample_formset %}
+              {% if forloop.first %}
+                <td>{{ sample.nitrate.label }}</td>
+              {% endif %}
+
+              <td>
+                <div class="input-field">
+                  {{ sample.nitrate.errors }}
+                  {{ sample.nitrate }}
+                </div>
+              </td>
+            {% endfor %}
+          </tr>
+
+          <tr>
+            {% for sample in sample_formset %}
+              {% if forloop.first %}
+                <td>{{ sample.phosphates.label }}</td>
+              {% endif %}
+
+              <td>
+                <div class="input-field">
+                  {{ sample.phosphates.errors }}
+                  {{ sample.phosphates }}
+                </div>
+              </td>
+            {% endfor %}
+          </tr>
+
+          <tr>
+            {% for sample in sample_formset %}
+              {% if forloop.first %}
+                <td>{{ sample.fecal_coliform.label }}</td>
+              {% endif %}
+
+              <td>
+                <div class="input-field">
+                  {{ sample.fecal_coliform.errors }}
+                  {{ sample.fecal_coliform }}
+                </div>
+              </td>
+            {% endfor %}
+          </tr>
+        </table>
+      </div>
+      <br/><br/>
+      <div class="input-field">
+        {{ wq_form.notes.label }}
+        {{ wq_form.notes.errors }}
+        {{ wq_form.notes }}
+      </div>
+
+      {% if editable %}
+        <input class="btn waves-effect waves-light teal darken-3" type="submit"
+               value='{% trans "Submit" %}' id="submit">
+      {% endif %}
+    </form>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+  <script type="application/javascript"
+          src="{% static 'streamwebs/js/data.js' %}"></script>
+  <script>
+    var radioFields = [];
+    radioFields.push({name: 'if there are any fish present', val: $('div.fish-presence input')});
+    radioFields.push({name: 'water temperature unit', val: $('div.water-temp input')});
+    radioFields.push({name: 'an air temperature unit', val: $('div.air-temp input')});
+
+    var checked = function checked(inputs) {
+      var checked;
+      checked = inputs.toArray().some(function(e) {
+        return e.checked;
+      });
+      return checked;
+    }
+
+    // Upon submission, Change all associated field with radio field
+    // "None" "No" to 0.
+    var submitRadioCheck = function submitRadioCheck(){
+      $('input#submit').on('click', function() {
+        if ($('div.fish-presence input')[1].checked === true) {
+          $('div.live-fish input').val(0);
+          $('div.dead-fish input').val(0);
+        }
+
+        if ($('div.live-fish input').val() === '0' && $('div.dead-fish input').val() === '0') {
+          $('div.fish-presence input')[0].checked = false;
+          $('div.fish-presence input')[1].checked = true;
+        }
+
+        $('table#samples input').filter(function() {
+          return $(this).context.value === 'N/A' && $(this).context.checked === true;
+        }).parent().find('div.input-field').children().val(0);
+
+        for (var i = 0; i < radioFields.length; i++) {
+          if (!checked(radioFields[i].val)) {
+            Materialize.toast("Please select " + radioFields[i].name, 4000, 'red');
+            return;
+          }
+        }
+      });
+    }
+
+    // Selecting "No" in radio field will change the
+    // associated fields' values to 0
+    var toggleFishFields = function toggleFishFields() {
+      $('div.fish-presence input').on('click', function(e) {
+        if ($(e.target).next().context.value === "False") {
+          $('div.live-fish input').val(0);
+          $('div.dead-fish input').val(0);
+        }
+      });
+    }
+
+    // Selecting "None" in radio field will change the
+    // associated fields' values to 0
+    var toggleSampleFields = function toggleSampleFields() {
+      $('table#samples input[type=radio]').on('click', function(e) {
+        var inputField = $(e.target).parent().find('div.input-field').children();
+        if ($(e.target).context.value === "N/A") {
+          inputField.val(0);
+        }
+      });
+    }
+
+    $(function() {
+      toggleFishFields();
+      toggleSampleFields();
+      submitRadioCheck();
+    });
+  </script>
+{% endblock %}

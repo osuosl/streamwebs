@@ -978,7 +978,7 @@ def water_quality(request, site_slug, data_id):
     """ View a water quality sample """
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     wq_data = Water_Quality.objects.get(id=data_id)
-    wq_sample = WQ_Sample.objects.filter(water_quality=data_id)\
+    wq_samples = WQ_Sample.objects.filter(water_quality=data_id)\
         .order_by('sample')
 
     return render(
@@ -986,7 +986,7 @@ def water_quality(request, site_slug, data_id):
         {
             'site': site,
             'wq_data': wq_data,
-            'wq_sample': wq_sample,
+            'wq_samples': wq_samples,
         }
     )
 
