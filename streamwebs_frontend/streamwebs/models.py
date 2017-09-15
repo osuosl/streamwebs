@@ -1173,3 +1173,107 @@ class Resource(models.Model):
     def thumbnail_url(self):
         if self.thumbnail and hasattr(self.thumbnail, 'url'):
             return self.thumbnail.url
+
+class RipAquaticSurvey(models.Model):
+    OPTIONS = (
+            ('Very Little', _('Very Little')),
+            ('Some', _('Some')),
+            ('A Lot', _('A Lot'))
+            )
+    school = models.ForeignKey(School, null=True, on_delete=models.CASCADE,
+        verbose_name=_('school'), limit_choices_to={'active':True}
+    )
+    site = models.ForeignKey(Site, null=True, on_delete=models.CASCADE,
+        verbose_name=_('site'), limit_choices_to={'active':True}
+    )
+    date = models.DateField(
+        default=datetime.date.today, verbose_name=_('date')
+    )
+    weather = models.CharField(
+        max_length=20, verbose_name=_('weather')
+    )
+    riffle_count = models.PositiveIntegerField(
+        blank=True, null=True, verbose_name=_('number of riffles')
+    )
+    pool_count = models.PositiveIntegerField(
+        blank=True, null=True, verbose_name=_('number of pools')
+    )
+    silt = models.CharField(
+        max_length=250, choices=OPTIONS, null=True, blank=True,
+        verbose_name=_('silt')
+    )
+    sand = models.CharField(
+        max_length=250, choices=OPTIONS, null=True, blank=True,
+        verbose_name=_('sand')
+    )
+    gravel = models.CharField(
+        max_length=250, choices=OPTIONS, null=True, blank=True,
+        verbose_name=_('gravel')
+    )
+    cobble = models.CharField(
+        max_length=250, choices=OPTIONS, null=True, blank=True,
+        verbose_name=_('cobble')
+    )
+    boulders = models.CharField(
+        max_length=250, choices=OPTIONS, null=True, blank=True,
+        verbose_name=_('boulders')
+    )
+    bedrock = models.CharField(
+        max_length=250, choices=OPTIONS, null=True, blank=True,
+        verbose_name=_('bedrock')
+    )
+    small_debris = models.CharField(
+        max_length=250, choices=OPTIONS, null=True, blank=True,
+        verbose_name=_('small_debris')
+    )
+    medium_debris = models.CharField(
+        max_length=250, choices=OPTIONS, null=True, blank=True,
+        verbose_name=_('medium_debris')
+    )
+    large_debris = models.CharField(
+        max_length=250, choices=OPTIONS, null=True, blank=True,
+        verbose_name=_('large_debris')
+    )
+    comments = models.CharField(
+        max_length=250, null=True, verbose_name=_('comments'), blank=True
+    )
+    coniferous_trees = models.CharField(
+        max_length=250, choices=OPTIONS, null=True, blank=True,
+        verbose_name=_('coniferous_trees')
+    )
+    deciduous_trees = models.CharField(
+        max_length=250, choices=OPTIONS, null=True, blank=True,
+        verbose_name=_('deciduous_trees')
+    )
+    shrubs = models.CharField(
+        max_length=250, choices=OPTIONS, null=True, blank=True,
+        verbose_name=_('shrubs')
+    )
+    small_plants = models.CharField(
+        max_length=250, choices=OPTIONS, null=True, blank=True,
+        verbose_name=_('small_plants')
+    )
+    ferns = models.CharField(
+        max_length=250, choices=OPTIONS, null=True, blank=True,
+        verbose_name=_('ferns')
+    )
+    grasses = models.CharField(
+        max_length=250, choices=OPTIONS, null=True, blank=True,
+        verbose_name=_('grasses')
+    )
+    species = models.CharField(
+        max_length=250, null=True, blank=True,
+        verbose_name=_('species')
+    )
+    significance = models.CharField(
+        max_length=250, null=True, blank=True,
+        verbose_name=_('significance to riparian area')
+    )
+    wildlife_type = models.CharField(
+        max_length=500, null=True, blank=True,
+        verbose_name =_('type, species, or track/sign')
+    )
+    wildlife_comments = models.CharField(
+        max_length=500, null=True, blank=True,
+        verbose_name =_('# or comments')
+    )

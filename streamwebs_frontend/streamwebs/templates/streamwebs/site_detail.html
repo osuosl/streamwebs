@@ -204,6 +204,11 @@
                 {% trans "Soil Survey" %}
               </a>
             </li>
+            <li>
+              <a href="{% url 'streamwebs:rip_aqua_edit' site_slug=site.site_slug %}">
+                {% trans "Riparian Aquatic Survey" %}
+              </a>
+            </li>
           </ul>
             <a href="{% url 'streamwebs:update_site' site_slug=site.site_slug %}"
               class="btn-large teal darken-3">

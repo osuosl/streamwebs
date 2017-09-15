@@ -19,12 +19,12 @@ from streamwebs.forms import (
     PhotoPointImageForm, PhotoPointForm, CameraPointForm, WQSampleForm,
     WQForm, SiteForm, Canopy_Cover_Form, SoilSurveyForm, StatisticsForm,
     TransectZoneForm, BaseZoneInlineFormSet, ResourceForm, AdminPromotionForm,
-    UserEmailForm, UserPasswordForm, SchoolForm)
+    UserEmailForm, UserPasswordForm, SchoolForm, RipAquaForm)
 
 from streamwebs.models import (
     Macroinvertebrates, Site, Water_Quality, WQ_Sample, RiparianTransect,
     TransectZone, Canopy_Cover, CameraPoint, PhotoPoint,
-    PhotoPointImage, Soil_Survey, Resource, School)
+    PhotoPointImage, Soil_Survey, Resource, School, RipAquaticSurvey)
 
 import json
 import copy
@@ -193,12 +193,26 @@ def site(request, site_slug):
         if 'school_id' in x and x['school_id']:
             soil_data['school_id'] = x['school_id']
         else:
-            canopy_data['school_id'] = -1
+            soil_data['school_id'] = -1
         soil_sheets_new.append(soil_data)
     soil_sheets = soil_sheets_new
 
+    rip_aqua_sheets = RipAquaticSurvey.objects.filter(site_id=site.id)
+    rip_aqua_sheets = list(rip_aqua_sheets.order_by('-date').values())
+    rip_aqua_sheets_new = []
+    for x in rip_aqua_sheets:
+        rip_data = {'id': x['id'], 'uri': 'rip_aqua',
+                    'type': 'Riparian Aquatic', 'date': x['date']}
+        if 'school_id' in x and x['school_id']:
+            rip_data['school_id'] = x['school_id']
+        else:
+            rip_data['school_id'] = -1
+        rip_aqua_sheets_new.append(rip_data)
+    rip_aqua_sheets = rip_aqua_sheets_new
+
+
     data = wq_sheets + macro_sheets + transect_sheets + canopy_sheets +\
-        ppm_sheets + soil_sheets
+        ppm_sheets + soil_sheets + rip_aqua_sheets
 
     def sort_date(x, y):
         return y.year - x.year or y.month - x.month or y.day - x.day
@@ -613,7 +627,80 @@ def macroinvertebrate_edit(request, site_slug):
         }
     )
 
+def riparian_aquatic_edit(request, site_slug):
+    site = Site.objects.filter(active=True).get(site_slug=site_slug)
+    rip_aqua_form = RipAquaForm()
+    print("tototottitititopeiweothji")
+    print(rip_aqua_form.errors)
 
+    if request.method == 'POST':
+        print(rip_aqua_form.errors)
+        print('heyheyhey')
+        rip_aqua_form = RipAquaForm(data=request.POST)
+        if rip_aqua_form.is_valid():
+            rip_aqua = rip_aqua_form.save(commit=False)
+            rip_aqua.site = site
+            rip_aqua.save()
+            messages.success(
+                request,
+                _('You have successfully added a Riparian Aquatic Survey.'))
+            return redirect(reverse('streamwebs:rip_aqua_view',
+                            kwargs={'site_slug': site.site_slug,
+                                    'data_id': rip_aqua.id}))
+
+    return render(
+        request,'streamwebs/datasheets/rip_aqua_edit.html', {
+        'rip_aqua_form': rip_aqua_form,
+        'site': site
+
+        }
+    )
+
+def riparian_aquatic_view(request, site_slug, data_id):
+    site = Site.objects.filter(active=True).get(site_slug=site_slug)
+    data = RipAquaticSurvey.objects.get(id=data_id)
+
+    return render(
+        request,
+        'streamwebs/datasheets/rip_aqua_view.html', {
+            'data': data, 'site': site
+        }
+)
+
+
+
+def macroinvertebrate(request, site_slug, data_id):
+    site = Site.objects.filter(active=True).get(site_slug=site_slug)
+    data = Macroinvertebrates.objects.get(id=data_id)
+
+    if data.wq_rating > 22:
+        rating = "Excellent"
+    elif data.wq_rating >= 17 and data.wq_rating <= 22:
+        rating = "Good"
+    elif data.wq_rating >= 11 and data.wq_rating <= 16:
+        rating = "Fair"
+    else:
+        rating = "Poor"
+
+    counts = data.get_totals()
+    bug_count = (counts['Tolerant'] + counts['Somewhat Sensitive'] +
+                 counts['Sensitive'])
+
+    # thwart divide-by-0 error
+    if bug_count == 0:
+        EPT = 0
+
+    # The EPT is the proportion of caddisflies, mayflies, and stoneflies found
+    else:
+        EPT = 100 * (float(data.caddisfly + data.mayfly + data.stonefly) /
+                     float(bug_count))
+
+    return render(
+        request,
+        'streamwebs/datasheets/macroinvertebrate_view.html', {
+            'data': data, 'site': site, 'rating': rating, 'EPT': EPT,
+        }
+    )
 def riparian_transect_view(request, site_slug, data_id):
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     transect = RiparianTransect.objects.get(id=data_id)
