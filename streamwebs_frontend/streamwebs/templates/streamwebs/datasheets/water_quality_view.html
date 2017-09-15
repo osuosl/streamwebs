@@ -87,15 +87,13 @@
       </div>
       <table>
         <thead>
-          <thead>
-            <tr>
-              <th data-field="test"></th>
-              <th data-field="sample1">{% trans "Sample 1" %}</th>
-              <th data-field="sample2">{% trans "Sample 2" %}</th>
-              <th data-field="sample3">{% trans "Sample 3" %}</th>
-              <th data-field="sample4">{% trans "Sample 4" %}</th>
-            </tr>
-          </thead>
+          <tr>
+            <th data-field="test"></th>
+            <th data-field="sample1">{% trans "Sample 1" %}</th>
+            <th data-field="sample2">{% trans "Sample 2" %}</th>
+            <th data-field="sample3">{% trans "Sample 3" %}</th>
+            <th data-field="sample4">{% trans "Sample 4" %}</th>
+          </tr>
         </thead>
         <tbody>
           <tr>
@@ -176,6 +174,26 @@
               </td>
             {% endfor %}
           </tr>
+          <tr class="collapse-btn">
+            <th>{% trans "Additional parameters" %}
+              <i class="material-icons">arrow_drop_down</i>
+            </th>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="collapse">
+      <table>
+        <thead>
+          <tr>
+            <th data-field="test"></th>
+            <th data-field="sample1">{% trans "Sample 1" %}</th>
+            <th data-field="sample2">{% trans "Sample 2" %}</th>
+            <th data-field="sample3">{% trans "Sample 3" %}</th>
+            <th data-field="sample4">{% trans "Sample 4" %}</th>
+          </tr>
+        </thead>
+        <tbody>
           <tr>
             <td>Conductivity (µS/cm)</td>
             {% for sample in wq_samples %}
@@ -259,8 +277,18 @@
         </tbody>
       </table>
     </div>
+    <br/>
+
+    <div class="row">
+      <div class="col s6">
+        <b>{% trans "Note" %}: </b>
+        {{ wq_data.notes }}
+      </div>
+    </div>
   </div>
 {% endblock %}
 
-{% block script %}
+{% block scripts %}
+  <script type="application/javascript"
+          src="{% static 'streamwebs/js/data.js' %}"></script>
 {% endblock %}
