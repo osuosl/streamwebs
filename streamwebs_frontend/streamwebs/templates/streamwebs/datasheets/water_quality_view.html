@@ -38,22 +38,28 @@
     <div class="row">
       <div class="col s4">
         <b>{% trans "DEQ data quality level" %}: </b>
-        {{ wq_data.DEQ_dq_level}}
+        {% if wq_data.DEQ_dq_level %}
+          {{ wq_data.DEQ_dq_level}}
+        {% endif %}
       </div>
       <div class="col s4">
         <b>{% trans "Latitude" %}: </b>
-        {{ wq_data.latitude }}
+        {% if wq_data.latitude %}
+          {{ wq_data.latitude }}
+        {% endif %}
       </div>
       <div class="col s4">
         <b>{% trans "Longitude" %}: </b>
-        {{ wq_data.longitude }}
+        {% if wq_data.longitude %}
+          {{ wq_data.longitude }}
+        {% endif %}
       </div>
     </div>
 
     <div class="row">
       <div class="col s4">
         <b>{% trans "Any fish present?" %} </b>
-        {{ wq_data.fish_present }}
+        <span id="fish-present">{{ wq_data.fish_present }}</span>
       </div>
       <div class="col s4">
         <b>{% trans "Number of live fish" %}: </b>
@@ -139,10 +145,10 @@
             <td>pH</td>
             {% for sample in wq_samples %}
               <td>
-                {% if sample.ph_tool %}
-                  {% if sample.ph %}
-                    <p> {{ sample.ph }}</p>
-                    <p> {{ sample.ph_tool }}</p>
+                {% if sample.pH_tool %}
+                  {% if sample.pH %}
+                    <p> {{ sample.pH }}</p>
+                    <p> {{ sample.pH_tool }}</p>
                   {% endif %}
                 {% endif %}
               </td>
@@ -238,8 +244,8 @@
             <td>Nitrite (mg/L)</td>
             {% for sample in wq_samples %}
               <td>
-                {% if sample.nit %}
-                  <p> {{ sample.conductivity }}</p>
+                {% if sample.nitrite %}
+                  <p> {{ sample.nitrite }}</p>
                 {% endif %}
               </td>
             {% endfor %}
@@ -281,8 +287,10 @@
 
     <div class="row">
       <div class="col s6">
-        <b>{% trans "Note" %}: </b>
-        {{ wq_data.notes }}
+        {% if wq_data.notes %}
+          <b>{% trans "Note" %}: </b>
+          <p> {{ wq_data.notes }} </p>
+        {% endif %}
       </div>
     </div>
   </div>
@@ -291,4 +299,15 @@
 {% block scripts %}
   <script type="application/javascript"
           src="{% static 'streamwebs/js/data.js' %}"></script>
+  <script>
+    $(function() {
+      var fishPresent = $('span#fish-present').text();
+
+      if (fishPresent === "True") {
+        $('span#fish-present').text("Yes");
+      } else {
+        $('span#fish-present').text("No");
+      }
+    });
+  </script>
 {% endblock %}
