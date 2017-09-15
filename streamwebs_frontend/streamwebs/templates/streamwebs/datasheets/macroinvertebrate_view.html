@@ -81,21 +81,23 @@
       </div>
     </div>
     <div class="row">
-      <div class="col s6">
+      <div class="col s12">
+        <p>
+          <b>{% trans "Weather" %}: </b>
+          {% if data.weather %}
+            {{ data.weather }}
+          {% endif %}
+        </p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s8">
         <p>
           <b>{% trans "Percent EPT" %}: </b>
           {{ EPT|floatformat:2 }}%
         </p>
         <p><strong>Note: </strong>
           EPT is the total number of caddisflies, mayflies, and stoneflies found divided by number of all bugs
-        </p>
-      </div>
-      <div class="col s6">
-        <p>
-          <b>{% trans "Weather" %}: </b>
-          {% if data.weather %}
-            {{ data.weather }}
-          {% endif %}
         </p>
       </div>
     </div>
@@ -357,6 +359,4 @@
 {% endblock %}
 
 {% block scripts %}
-  <script type="application/javascript"
-          src="{% static 'streamwebs/js/data.js' %}"></script>
 {% endblock %}

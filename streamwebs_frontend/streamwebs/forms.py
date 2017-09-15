@@ -147,13 +147,6 @@ class WQForm(forms.ModelForm):
         )
 
 
-class WQFormReadOnly(WQForm):
-    def __init__(self, *args, **kwargs):
-        super(WQFormReadOnly, self).__init__(*args, **kwargs)
-        for field in self.fields:
-            self.fields[field].widget.attrs.update({'disabled': True})
-
-
 class WQSampleForm(forms.ModelForm):
     class Meta:
         model = WQ_Sample
@@ -177,13 +170,6 @@ class WQSampleForm(forms.ModelForm):
             'nitrite', 'nitrate',
             'phosphates', 'fecal_coliform'
         )
-
-
-class WQSampleFormReadOnly(WQSampleForm):
-    def __init__(self, *args, **kwargs):
-        super(WQSampleFormReadOnly, self).__init__(*args, **kwargs)
-        for field in self.fields:
-            self.fields[field].widget.attrs.update({'disabled': True})
 
 
 class Canopy_Cover_Form(forms.ModelForm):

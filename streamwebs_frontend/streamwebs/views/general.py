@@ -17,10 +17,9 @@ from django.conf import settings
 from streamwebs.forms import (
     UserForm, UserProfileForm, RiparianTransectForm, MacroinvertebratesForm,
     PhotoPointImageForm, PhotoPointForm, CameraPointForm, WQSampleForm,
-    WQSampleFormReadOnly, WQForm, WQFormReadOnly, SiteForm, Canopy_Cover_Form,
-    SoilSurveyForm, StatisticsForm, TransectZoneForm, BaseZoneInlineFormSet,
-    ResourceForm, AdminPromotionForm, UserEmailForm, UserPasswordForm,
-    SchoolForm)
+    WQForm, SiteForm, Canopy_Cover_Form, SoilSurveyForm, StatisticsForm,
+    TransectZoneForm, BaseZoneInlineFormSet, ResourceForm, AdminPromotionForm,
+    UserEmailForm, UserPasswordForm, SchoolForm)
 
 from streamwebs.models import (
     Macroinvertebrates, Site, Water_Quality, WQ_Sample, RiparianTransect,
@@ -978,27 +977,16 @@ def add_photo_point(request, site_slug, cp_id):
 def water_quality(request, site_slug, data_id):
     """ View a water quality sample """
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
-    wq_form = WQFormReadOnly(instance=Water_Quality.objects.get(id=data_id))
-
-    WQInlineFormSet = modelformset_factory(
-        WQ_Sample,
-        form=WQSampleFormReadOnly,
-        can_delete=False,
-        max_num=4, min_num=4,
-        extra=4      # always return exactly 4 samples
-    )
-    sample_formset = WQInlineFormSet(
-        queryset=WQ_Sample.objects.filter(water_quality=data_id)
-    )
+    wq_data = Water_Quality.objects.get(id=data_id)
+    wq_sample = WQ_Sample.objects.filter(water_quality=data_id)\
+        .order_by('sample')
 
     return render(
-        request, 'streamwebs/datasheets/water_quality.html',
+        request, 'streamwebs/datasheets/water_quality_view.html',
         {
-            'editable': False,
             'site': site,
-            'wq_form': wq_form,
-            'sample_formset': sample_formset,
-            'title': _('Water Quality Data')
+            'wq_data': wq_data,
+            'wq_sample': wq_sample,
         }
     )
 
@@ -1046,13 +1034,12 @@ def water_quality_edit(request, site_slug):
         wq_form = WQForm()
         sample_formset = WQInlineFormSet(instance=Water_Quality())
     return render(
-        request, 'streamwebs/datasheets/water_quality.html',
+        request, 'streamwebs/datasheets/water_quality_edit.html',
         {
             'editable': True,
             'site': site,
             'wq_form': wq_form,
             'sample_formset': sample_formset,
-            'title': _('Add water quality sample')
         }
     )
 
