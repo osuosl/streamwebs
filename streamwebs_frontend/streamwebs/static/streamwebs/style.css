@@ -267,6 +267,10 @@ div.center-content {
     color: #FF5722;
 }
 
+a#back {
+    margin-left: 30px;
+}
+
 span.optional {
     color: #757575;
 }

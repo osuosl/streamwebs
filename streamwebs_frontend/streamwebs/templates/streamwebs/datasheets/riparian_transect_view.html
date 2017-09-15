@@ -14,6 +14,11 @@
     }
   </style>
 
+  <a href="{% url 'streamwebs:site' site.site_slug %}" id="back"
+      class="wave-effects wave-light btn white-text teal darken-3">
+    <i class="material-icons">chevron_left</i>
+    Back to {{ site.site_name }}
+  </a>
   <div class="container">
     {% if messages %}
       <div class="center-content">
@@ -23,10 +28,8 @@
       </div>
     {% endif %}
 
-    <h3 align="center">
-      <a href="{% url 'streamwebs:site' site.site_slug %}">
-        {{ site.site_name }}
-      </a>
+    <h3 align="center" class="teal-text">
+      {{ site.site_name }}
     </h3>
     <h4 align="center">{% trans "Riparian Transect data" %}: {{ transect.date_time|date:"m-d-Y" }}</h4>
     <br/><br/>

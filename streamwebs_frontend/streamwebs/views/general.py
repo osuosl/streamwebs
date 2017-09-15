@@ -1036,7 +1036,6 @@ def water_quality_edit(request, site_slug):
     return render(
         request, 'streamwebs/datasheets/water_quality_edit.html',
         {
-            'editable': True,
             'site': site,
             'wq_form': wq_form,
             'sample_formset': sample_formset,
