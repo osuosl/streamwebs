@@ -19,5 +19,3 @@ docs/build
 bower_components
 
 streamwebs_frontend/streamwebs_frontend/settings.py
-streamwebs_frontend/streamwebs_frontend/media
-media
