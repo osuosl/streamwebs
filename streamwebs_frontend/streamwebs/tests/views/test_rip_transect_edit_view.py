@@ -42,7 +42,9 @@ class AddTransectTestCase(TestCase):
                 kwargs={'site_slug': site.site_slug}
             ), {
                     'school': self.school.id,
-                    'date_time': '2016-07-18 14:09:07',
+                    'date': '2016-07-18',
+                    'time': '2:09',
+                    'ampm': 'PM',
                     'weather': 'cloudy',
                     'site': site.id,
                     'slope': 5,
@@ -102,7 +104,9 @@ class AddTransectTestCase(TestCase):
                 kwargs={'site_slug': site.site_slug}
             ), {
                     'school': self.school.id,
-                    'date_time': '2016-07-18 14:09:07',
+                    'date': '2016-07-18',
+                    'time': '2:09',
+                    'ampm': 'PM',
                     'weather': 'cloudy',
                     'site': site.id,
                     'slope': 5,
@@ -161,7 +165,9 @@ class AddTransectTestCase(TestCase):
                 kwargs={'site_slug': site.site_slug}
             ), {
                     'school': self.school.id,
-                    'date_time': '2016-07-18 14:09:07',
+                    'date': '2016-07-18',
+                    'time': '2:09',
+                    'ampm': 'PM',
                     'weather': 'cloudy',
                     'site': site.id,
                     'slope': 5,
@@ -218,7 +224,9 @@ class AddTransectTestCase(TestCase):
                 kwargs={'site_slug': site.site_slug}
             ), {
                     'school': self.school.id,
-                    'date_time': '2016-07-18 14:09:07',
+                    'date': '2016-07-18',
+                    'time': '2:09',
+                    'ampm': 'PM',
                     'weather': 'cloudy',
                     'site': site.id,
                     'slope': 5,
@@ -273,7 +281,9 @@ class AddTransectTestCase(TestCase):
                 kwargs={'site_slug': site.site_slug}
             ), {
                     'school': self.school.id,
-                    'date_time': '2016-07-18 14:09:07',
+                    'date': '2016-07-18',
+                    'time': '2:09',
+                    'ampm': 'PM',
                     'weather': 'cloudy',
                     'site': site.id,
                     'slope': 5,

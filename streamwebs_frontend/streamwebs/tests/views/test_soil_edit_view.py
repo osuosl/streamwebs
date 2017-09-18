@@ -45,7 +45,9 @@ class AddSoilSurveyTestCase(TestCase):
                 kwargs={'site_slug': self.site.site_slug}
             ), {
                   'school': school.id,
-                  'date_time': '2016-10-19 15:25',
+                  'date': '2016-10-19',
+                  'time': '03:25',
+                  'ampm': 'PM',
                   'weather': 'gray',
                   'landscape_pos': 'summit',
                   'cover_type': 'trees',

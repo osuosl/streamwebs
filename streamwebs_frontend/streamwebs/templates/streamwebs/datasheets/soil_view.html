@@ -46,22 +46,22 @@
     <div class="row">
       <div class="col s4">
         <b>{% trans "Landscape Position" %}: </b>
-        {{ soil_data.landscape_pos }}
+        <p>{{ soil_data.get_landscape_pos_display }}</p>
       </div>
       <div class="col s4">
         <b>{% trans "Cover Type" %}: </b>
-        {{ soil_data.cover_type }}
+        <p>{{ soil_data.get_cover_type_display }}</p>
       </div>
       <div class="col s4">
         <b>{% trans "Land Use" %}: </b>
-        {{ soil_data.land_use }}
+        <p>{{ soil_data.get_land_use_display }}</p>
       </div>
     </div>
 
     <div class="row">
       <div class="col s4">
         <b>{% trans "Soil Type" %}: </b>
-        {{ soil_data.soil_type }}
+        <p>{{ soil_data.get_soil_type_display }}</p>
       </div>
       <div class="col s4">
         <b>{% trans "Distance from stream" %} (ft): </b>
