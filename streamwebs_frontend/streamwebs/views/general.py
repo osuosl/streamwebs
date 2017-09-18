@@ -33,7 +33,7 @@ import datetime
 
 def toDateTime(date, time, period):
     date_time = datetime.datetime.strptime((date + " " + time + " " + period),
-        '%Y-%m-%d %I:%M %p')
+                                           '%Y-%m-%d %I:%M %p')
     return date_time
 
 

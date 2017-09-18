@@ -1053,7 +1053,7 @@ class Soil_Survey(models.Model):
     school = models.ForeignKey(School, null=True, on_delete=models.CASCADE,
                                verbose_name=_('school'))
     date_time = models.DateTimeField(default=timezone.now,
-                                verbose_name=_('date and time'))
+                                     verbose_name=_('date and time'))
     weather = models.CharField(max_length=250, verbose_name=_('weather'),
                                blank=True)
     site = models.ForeignKey(Site, null=True, on_delete=models.CASCADE,

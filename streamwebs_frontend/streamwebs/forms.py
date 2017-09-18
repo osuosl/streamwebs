@@ -182,6 +182,7 @@ class Canopy_Cover_Form(forms.ModelForm):
     )
     time = forms.TimeField(input_formats=['%I:%M'])
     ampm = forms.ChoiceField(choices=TIME_PERIOD_CHOICES, label="AM/PM")
+
     class Meta:
         model = Canopy_Cover
         fields = ('school', 'date', 'time', 'ampm', 'weather',
