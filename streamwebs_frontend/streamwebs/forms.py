@@ -260,7 +260,8 @@ class PhotoPointImageForm(forms.ModelForm):
 
 class PhotoPointForm(forms.ModelForm):
     notes = forms.CharField(
-        widget=forms.Textarea(attrs={'class': 'materialize-textarea'})
+        widget=forms.Textarea(attrs={'class': 'materialize-textarea'}),
+        required=False,
     )
 
     class Meta:
@@ -275,7 +276,8 @@ class CameraPointForm(forms.ModelForm):
         widget=forms.DateInput(attrs={'class': 'datepicker'}),
     )
     description = forms.CharField(
-        widget=forms.Textarea(attrs={'class': 'materialize-textarea'})
+        widget=forms.Textarea(attrs={'class': 'materialize-textarea'}),
+        required=False
     )
 
     class Meta:

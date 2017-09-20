@@ -79,6 +79,9 @@ urlpatterns = [
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/camera/edit/',
         views.add_camera_point, name='camera_point_add'),
 
+    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/camera/$',
+        views.site_camera, name='site_camera'),
+
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/soil/(?P<data_id>\d+)/$',
         views.soil_survey, name='soil'),
 

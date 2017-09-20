@@ -30,10 +30,6 @@ class AddPhotoPointTestCase(TestCase):
         )
         self.assertFormError(response, 'pp_form', 'compass_bearing',
                              'This field is required.')
-        self.assertFormError(response, 'pp_form', 'distance',
-                             'This field is required.')
-        self.assertFormError(response, 'pp_form', 'camera_height',
-                             'This field is required.')
         self.assertTemplateUsed(
             response,
             'streamwebs/datasheets/photo_point_add.html'

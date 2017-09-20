@@ -15,19 +15,53 @@
     {% endif %}
     <!-- PP info -->
     <div>
-      <h4><a href="{% url 'streamwebs:camera_point' pp.camera_point.site.site_slug pp.camera_point.id %}">{{ pp.camera_point.site.site_name }}:
+      <h4 class="center"><a href="{% url 'streamwebs:camera_point' pp.camera_point.site.site_slug pp.camera_point.id %}">{{ pp.camera_point.site.site_name }}:
         camera point {{ pp.camera_point.letter }}</a></h4>
-      <p><b>{% trans "Date established" %}:</b> {{ pp.pp_date|date:"m-d-Y" }}</p>
-      <p><b>{% trans "Compass bearing" %}:</b> {{ pp.compass_bearing }} °</p>
-      <p>
-        <b>
-          {% trans "Distance from camera point" %} {{ pp.camera_point.letter }}:
-        </b>
-        {{ pp.distance }} ft
-      </p>
-      <p><b>{% trans "Camera height" %}:</b> {{ pp.camera_height }} ft</p>
-      <p><b>{% trans "Notes" %}:</b> {{ pp.notes }}</p>
-      <strong class="normal">{% trans "Photos for this photo point" %}:</strong>
+      <br/><br/>
+      <div class="row">
+        <div class="col s6">
+          <p>
+            <b>{% trans "Date established" %}:</b>
+            {{ pp.pp_date|date:"m-d-Y" }}
+          </p>
+        </div>
+        <div class="col s6">
+          <p>
+            <b>{% trans "Compass bearing" %}:</b>
+            {{ pp.compass_bearing }} °
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s6">
+          <p>
+            <b>{% trans "Distance from camera point" %} {{ pp.camera_point.letter }}: </b>
+            {% if pp.distance %}
+              {{ pp.distance }} ft
+            {% endif %}
+          </p>
+        </div>
+        <div class="col s6">
+          <p>
+            <b>{% trans "Camera height" %}:</b>
+            {% if pp.camera_height %}
+              {{ pp.camera_height }} ft
+            {% endif %}
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s6">
+          <p>
+            <b>{% trans "Notes" %}:</b>
+            {% if pp.notes %}
+              {{ pp.notes }}
+            {% endif %}
+          </p>
+        </div>
+      </div>
+      <br/>
+      <h4>{% trans "Photos for this photo point" %}</h4>
       <div class="row">
         <div class="col s12 m7">
           {% for img in pp_images %}
@@ -57,7 +91,19 @@
         <h5>{% trans "Add new photo" %}</h5>
         <form id='ppi_form' , method='post' , enctype='multipart/form-data'>
           {% csrf_token %}
-          {{ ppi_formset.as_p }}
+          {{ ppi_formset.management_form }}
+          {% for ppi_form in ppi_formset %}
+            <div class="input-field">
+              {{ ppi_form.image.label }}
+              {{ ppi_form.image }}
+              {{ ppi_form.image.errors }}
+            </div>
+            <div class="input-field">
+              {{ ppi_form.date.label }}
+              {{ ppi_form.date }}
+              {{ ppi_form.date.errors }}
+            </div>
+          {% endfor %}
           <button class="btn-large waves-effect waves-light teal darken-3"
                   type="submit" name="action" value='Submit'>
             {% trans "Submit" %}

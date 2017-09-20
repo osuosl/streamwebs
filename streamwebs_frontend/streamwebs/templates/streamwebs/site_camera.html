@@ -1,0 +1,44 @@
+{% extends 'streamwebs/base.html' %}
+
+{% load staticfiles %}
+{% load filters %}
+{% load i18n %}
+
+{% block title %}{{ site.site_name  }} Camera Points- {% trans "Streamwebs" %}{% endblock %}
+
+{% block body_title %}{{ site.site_name }}: Camera Points List{% endblock %}
+
+{% block content %}
+  <br/><br/>
+  <div class="container">
+    <table>
+      <thead>
+        <tr>
+          <th>Camera Point</th>
+          <th>Date</th>
+          <th>School</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for p in cp %}
+          <tr>
+            <td>
+              <a href="{% url 'streamwebs:camera_point' site.site_slug p.id %}">
+              Camera Point {{ p.letter }}
+              </a>
+            </td>
+            <td>
+              {{ p.cp_date }}
+            </td>
+            <td>
+              {{ p.school }}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

@@ -8,28 +8,50 @@
 {% block content %}
   <div class="container">
     <h4>{% trans "New photo point for camera point" %}</h4>
-    {% if added %}
-      <strong>{% trans "You have successfully added a new photo point" %}</strong>
-    {% else %}
-      <form id='pp_form' method='post' enctype='multipart/form-data'>
-        {% csrf_token %}
-        {{ pp_form.as_p }}
-        {{ ppi_formset.management_form }}
-        {% for ppi_form in ppi_formset %}
-          <div class="input-field">
-            {{ ppi_form.image }}
-            {{ ppi_form.image.errors | striptags }}
-          </div>
-          <div class="input-field">
-            <label for="{{ ppi_form.date.label }}">{% trans 'Date' %}</label>
-            {{ ppi_form.date }}
-            {{ ppi_form.date.errors | striptags }}
-          </div>
-        {% endfor %}
-        <input class="btn waves-effect waves-light teal darken-3" type='submit'
-               name='submit' value='{% trans "Submit" %}'/>
-      </form>
-    {% endif %}
+    <br/>
+    <div class="col s8">
+      <p><strong><b>Note: </b></strong>
+        You can add more photos to photopoints after this form is submitted.
+      </p>
+    </div>
+    <br/>
+    <form id='pp_form' method='post' enctype='multipart/form-data'>
+      {% csrf_token %}
+      <div class="input-field">
+        {{ pp_form.compass_bearing.label }} (degrees)
+        {{ pp_form.compass_bearing }}
+        {{ pp_form.compass_bearing.errors }}
+      </div>
+      <div class="input-field">
+        {{ pp_form.distance.label }} (ft)
+        {{ pp_form.distance }}
+        {{ pp_form.distance.errors }}
+      </div>
+      <div class="input-field">
+        {{ pp_form.camera_height.label }} (ft)
+        {{ pp_form.camera_height }}
+        {{ pp_form.camera_height.errors }}
+      </div>
+      <div class="input-field">
+        {{ pp_form.notes.label }}
+        {{ pp_form.notes }}
+        {{ pp_form.notes.errors }}
+      </div>
+      {{ ppi_formset.management_form }}
+      {% for ppi_form in ppi_formset %}
+        <div class="input-field">
+          {{ ppi_form.image }}
+          {{ ppi_form.image.errors}}
+        </div>
+        <div class="input-field">
+          {{ ppi_form.date.label }} (YYYY-MM-DD)
+          {{ ppi_form.date }}
+          {{ ppi_form.date.errors}}
+        </div>
+      {% endfor %}
+      <input class="btn waves-effect waves-light teal darken-3" type='submit'
+             name='submit' value='{% trans "Submit" %}'/>
+    </form>
   </div>
 {% endblock %}
 
