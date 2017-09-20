@@ -1,0 +1,287 @@
+{% extends 'streamwebs/base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+{% load filters %}
+
+{% block title %}{% trans "Riparian Aquatic Survey" %}{% endblock %}
+
+{% block content %}
+
+<style>
+.flex-container{
+  display: flex;
+  flex-wrap: wrap;
+  flex:auto;
+}
+
+.input-field{
+  margin-bottom: 10px;
+}
+
+.box{
+  border-bottom: #bdbdbd 2px solid;
+  border-radius: 2px;
+  padding: 5px;
+  margin:10px;
+  flex-grow:1;
+}
+</style>
+<div class="container">
+  <h3 align="center">
+    <a href="{% url 'streamwebs:site' site.site_slug %}">
+      {{ site.site_name }}
+    </a>
+  </h3>
+  <h4 align="center">{% trans 'New Riparian and Aquatic Survey' %}</h4>
+  <form id="rip_aqua_form" method="post" action="{{ request.path }}">
+    {% csrf_token %}
+
+    <div class="row">
+      <div class="col s6">
+        {{ rip_aqua_form.school.label }}
+        {{ rip_aqua_form.school.errors }}
+        {{ rip_aqua_form.school }}
+      </div>
+      <div class="col s6">
+        {{ rip_aqua_form.date.label }} (YYYY-MM-DD)
+        {{ rip_aqua_form.date.errors }}
+        {{ rip_aqua_form.date }}
+      </div>
+    </div>
+    <a href="{% url 'streamwebs:create_school' %}" class="btn waves-effect waves-light teal darken-3">{% trans "Add A School/Organization" %}</a>
+    <div class="row">
+      <div class="col s12">
+        {{ rip_aqua_form.weather.label }}
+        {{ rip_aqua_form.weather.errors }}
+        {{ rip_aqua_form.weather }}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s6">
+        <div class="input-field">
+          {{ rip_aqua_form.riffle_count.label }}
+          {{ rip_aqua_form.riffle_count.errors }}
+          {{ rip_aqua_form.riffle_count }}
+        </div>
+      </div>
+      <div class="col s6">
+        <div class="input-field">
+          {{ rip_aqua_form.pool_count.label }}
+          {{ rip_aqua_form.pool_count.errors }}
+          {{ rip_aqua_form.pool_count }}
+        </div>
+      </div>
+    </div>
+    <h4 align="center">Substrates</h4>
+    <div class="flex-container">
+      <div class="col s4 box center">
+        Silt<br/>
+        (stays suspended)
+        <div class="input-field">
+          {% for radio in rip_aqua_form.silt %}
+          {{ radio.tag }}
+          <label for="{{ radio.id_for_label }}">
+            {{ radio.choice_label }}</label>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="col s4 box center">
+        Sand<br/>
+        (settles to bottom when disturbed)
+        <br/>
+        <div class="input-field">
+          {% for radio in rip_aqua_form.sand %}
+          {{ radio.tag }}
+          <label for="{{ radio.id_for_label }}">
+            {{ radio.choice_label }}</label>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="col s4 box center">
+        Gravel<br/>
+        (pea to baseball size)
+        <br/>
+        <div class="input-field">
+          {% for radio in rip_aqua_form.gravel %}
+          {{ radio.tag }}
+          <label for="{{ radio.id_for_label }}">
+             {{ radio.choice_label }}</label>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="col s4 box center">
+        Cobble<br/>
+        (baseball to bowling ball size)
+        <br/>
+        <div class="input-field">
+          {% for radio in rip_aqua_form.cobble %}
+          {{ radio.tag }}
+          <label for="{{ radio.id_for_label }}">
+             {{ radio.choice_label }}</label>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="col s4 box center">
+        Boulders<br/>
+        (larger than a bowling ball)
+        <br/>
+        <div class="input-field">
+          {% for radio in rip_aqua_form.boulders %}
+          {{ radio.tag }}
+          <label for="{{ radio.id_for_label }}">
+            {{ radio.choice_label }}</label>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="col s4 box center">
+        Bedrock<br/>
+        (solid rock)
+        <br/>
+        <div class="input-field">
+          {% for radio in rip_aqua_form.bedrock %}
+          {{ radio.tag }}
+          <label for="{{ radio.id_for_label }}">
+            {{ radio.choice_label }}</label>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    <h4 align="center">Instream Woody Debris</h4>
+    <div class="flex-container">
+      <div class="col s4 box center">
+        Small Debris<br/>
+        (6" diameter X 10' length)
+        <br/>
+        <div class="input-field">
+          {% for radio in rip_aqua_form.small_debris %}
+            {{ radio.tag }}
+            <label for="{{ radio.id_for_label }}">
+              {{ radio.choice_label }}</label>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="col s4 box center">
+        Medium Debris<br/>
+        (12" diameter X 20' length)
+        <br/>
+        <div class="input-field">
+          {% for radio in rip_aqua_form.medium_debris %}
+          {{ radio.tag }}
+          <label for="{{ radio.id_for_label }}"> {{ radio.choice_label }}</label>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="col s4 box center">
+        Large Debris<br/>
+        (24" diameter X 35' length)
+        <br/>
+        <div class="input-field">
+          {% for radio in rip_aqua_form.large_debris %}
+          {{ radio.tag }}
+          <label for="{{ radio.id_for_label }}"> {{ radio.choice_label }}</label>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    <div class="col s4 center">
+      <div class="input-field">
+        {{ rip_aqua_form.comments.label}}
+        {{ rip_aqua_form.comments.errors}}
+        {{ rip_aqua_form.comments }}
+      </div>
+    </div>
+    <h4 align="center">Vegetation Type</h4>
+    <div class="flex-container">
+      <div class="col s4 box center">
+        Coniferous Trees <br/>
+        (with needles)
+        <br/>
+        <div class="input-field">
+          {% for radio in rip_aqua_form.coniferous_trees %}
+          {{ radio.tag }}
+          <label for="{{ radio.id_for_label }}"> {{ radio.choice_label }}</label>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="col s4 box center">
+        Deciduous Trees <br/>
+        (with leaves)
+        <br/>
+        <div class="input-field">
+          {% for radio in rip_aqua_form.deciduous_trees %}
+          {{ radio.tag }}
+          <label for="{{ radio.id_for_label }}"> {{ radio.choice_label }}</label>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="col s4 box center">
+        Shrubs
+        <div class="input-field">
+          {% for radio in rip_aqua_form.shrubs %}
+          {{ radio.tag }}
+          <label for="{{ radio.id_for_label }}"> {{ radio.choice_label }}</label>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="col s4 box center">
+        Small Plants
+        <div class="input-field">
+          {% for radio in rip_aqua_form.small_plants %}
+          {{ radio.tag }}
+          <label for="{{ radio.id_for_label }}"> {{ radio.choice_label }}</label>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="col s4 box center">
+        Ferns
+        <div class="input-field">
+          {% for radio in rip_aqua_form.ferns %}
+          {{ radio.tag }}
+          <label for="{{ radio.id_for_label }}"> {{ radio.choice_label }}</label>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="col s4 box center">
+        Grasses
+        <div class="input-field">
+          {% for radio in rip_aqua_form.grasses %}
+          {{ radio.tag }}
+          <label for="{{ radio.id_for_label }}"> {{ radio.choice_label }}</label>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    <h4 align="center">Plants Identified</h4>
+    <div class="row">
+      Species
+      {{ rip_aqua_form.species }}
+      {{ rip_aqua_form.species.errors }}
+    </div>
+    <div class="row">
+      Significance
+      {{ rip_aqua_form.significance }}
+      {{ rip_aqua_form.significance.errors }}
+    </div>
+    <h4 align="center">Wildlife and Birds Identified</h4>
+    <div class="row">
+      Type, Species, or Track/Sign
+      {{ rip_aqua_form.wildlife_type }}
+      {{ rip_aqua_form.wildlife_type.errors }}
+    </div>
+    <div class="row">
+      # or comments
+      {{ rip_aqua_form.wildlife_comments }}
+      {{ rip_aqua_form.wildlife_comments.errors }}
+    </div>
+  <input class="btn waves-effect waves-light teal darken-3" type='submit'
+         name="submit" value='{% trans "Submit" %}'/>
+
+</form>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+
+<script type="application/javascript" src="{% static 'streamwebs/js/data.js' %}"></script>
+{% endblock %}
