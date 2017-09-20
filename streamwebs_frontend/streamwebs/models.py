@@ -1174,6 +1174,7 @@ class Resource(models.Model):
         if self.thumbnail and hasattr(self.thumbnail, 'url'):
             return self.thumbnail.url
 
+
 class RipAquaticSurvey(models.Model):
     OPTIONS = (
             ('Very Little', _('Very Little')),
@@ -1181,11 +1182,13 @@ class RipAquaticSurvey(models.Model):
             ('A Lot', _('A Lot'))
             )
     school = models.ForeignKey(School, null=True, on_delete=models.CASCADE,
-        verbose_name=_('school'), limit_choices_to={'active':True}
-    )
+                               verbose_name=_('school'),
+                               limit_choices_to={'active': True}
+                               )
     site = models.ForeignKey(Site, null=True, on_delete=models.CASCADE,
-        verbose_name=_('site'), limit_choices_to={'active':True}
-    )
+                             verbose_name=_('site'),
+                             limit_choices_to={'active': True}
+                             )
     date = models.DateField(
         default=datetime.date.today, verbose_name=_('date')
     )
@@ -1271,9 +1274,9 @@ class RipAquaticSurvey(models.Model):
     )
     wildlife_type = models.CharField(
         max_length=500, null=True, blank=True,
-        verbose_name =_('type, species, or track/sign')
+        verbose_name=_('type, species, or track/sign')
     )
     wildlife_comments = models.CharField(
         max_length=500, null=True, blank=True,
-        verbose_name =_('# or comments')
+        verbose_name=_('# or comments')
     )

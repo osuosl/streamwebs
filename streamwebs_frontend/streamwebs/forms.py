@@ -382,6 +382,7 @@ class SchoolForm(forms.ModelForm):
                   'address', 'city',
                   'province', 'zipcode')
 
+
 class RipAquaForm(forms.ModelForm):
     class Meta:
         model = RipAquaticSurvey
@@ -415,6 +416,6 @@ class RipAquaForm(forms.ModelForm):
             'school', 'date', 'weather', 'riffle_count', 'pool_count', 'silt',
             'sand', 'gravel', 'cobble', 'boulders', 'bedrock', 'small_debris',
             'medium_debris', 'large_debris', 'comments', 'coniferous_trees',
-            'deciduous_trees','shrubs', 'small_plants', 'ferns', 'grasses',
+            'deciduous_trees', 'shrubs', 'small_plants', 'ferns', 'grasses',
             'species', 'significance', 'wildlife_type', 'wildlife_comments'
             )
