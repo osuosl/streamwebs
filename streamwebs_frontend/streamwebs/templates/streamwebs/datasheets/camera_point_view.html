@@ -70,7 +70,7 @@
             <p><strong><b>Note: </b></strong>
             If you'd like to add more photo points, click the button <b>above</b>.</p>
             <p>If you'd like to add more photos to existing photopoints, click on the
-            "View / Add Photo Points" buttons <b>in each photopoint</b></p>
+            "View / Add Photo" buttons <b>in each photopoint summary</b>.</p>
           </div>
         </div>
       </div>
@@ -124,9 +124,9 @@
               </div>
               <div class="card-action">
                 <a href="{% url 'streamwebs:photo_point' site.site_slug cp.id pp.id %}" class="btn teal white-text">
-                  View Photo Point / Add Photos
+                  View / Add Photos
                 </a>
-                <h5 class='teal-text center'>
+                <h5 class='teal-text'>
                   {% trans "Photo point" %} {{ pp.number }}
                 </h5>
               </div>
