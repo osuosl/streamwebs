@@ -138,10 +138,47 @@ div#footer {
     top: 0;
     z-index: 1;
     color: white;
+    height: 100%;
 }
 
+div#footer-content {
+    height: 100%;
+    width: 900px;
+    background: black;
+    margin: 0 auto;
+}
 
+div#footer-links {
+    height: 100%;
+    width: 300px;
+    float:left;
+    background: teal;
+}
 
+div#footer-branding {
+    height: 220px;
+    width: 280px;
+    float: right;
+    margin-right: 40px;
+    margin-top: 40px;
+}
+
+div#footer-branding img#b-wet {
+    width: 120px;
+    height: 96px;
+}
+
+div#footer-branding img#seagrant {
+    margin-left: 10px;
+    width: 139px;
+    height: 96px;
+}
+
+div#footer-branding img#osu {
+    margin-top: 20px;
+    width: 270px;
+    height: 86px;
+}
 
 /* CSS for D3 graphs; ALL FREE TO BE CHANGED */
 .graph {

@@ -49,6 +49,19 @@
       <div id="filter">
       </div>
       <div id="footer">
+        <div id="footer-content">
+          <div id="footer-links">
+
+          </div>
+          <div id="footer-branding">
+            <img src="{% static 'streamwebs/images/b-wet-logo.jpg' %}" id="b-wet"/>
+            <img src="{% static 'streamwebs/images/seagrant-logo.jpg' %}" id="seagrant"/>
+            <img src="{% static 'streamwebs/images/osu-logo.png' %}" id="osu"/>
+          </div>
+        </div>
+
+        <!-- Below is code for translation, commented out since it is
+        not currently working -->
         <!--<form id="langform" action="/i18n/setlang/" method="post">
           {% csrf_token %}
           <input name="next" type="hidden" value="{{ request.path }}" />
