@@ -25,7 +25,7 @@ class SiteTestCase(TestCase):
             # Datasheets
             'water_quality': models.ManyToOneRel,
             'macroinvertebrates': models.ManyToOneRel,
-            'ripaquaticsurvey' : models.ManyToOneRel,
+            'ripaquaticsurvey': models.ManyToOneRel,
             'ripariantransect': models.ManyToOneRel,
             'canopy_cover': models.ManyToOneRel,
             'camerapoint': models.ManyToOneRel,  # "Photo Point Monitoring"
