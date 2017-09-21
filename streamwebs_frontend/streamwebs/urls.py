@@ -55,6 +55,9 @@ urlpatterns = [
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/rip_aqua/(?P<data_id>\d+)/$',
         views.riparian_aquatic_view, name='rip_aqua_view'),
 
+    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/rip_aqua/export/$',
+        views.export_rip_aqua, name='export_rip_aqua'),
+
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/transect/(?P<data_id>\d+)/',
         views.riparian_transect_view, name='riparian_transect'),
 

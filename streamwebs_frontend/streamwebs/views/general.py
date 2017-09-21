@@ -242,6 +242,7 @@ def site(request, site_slug):
         'has_cc': len(canopy_sheets) > 0,
         'has_soil': len(soil_sheets) > 0,
         'has_camera': len(ppm_sheets) > 0,
+        'has_aqua': len(rip_aqua_sheets) > 0
     })
 
 

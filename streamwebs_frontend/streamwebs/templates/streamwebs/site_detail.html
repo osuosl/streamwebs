@@ -167,6 +167,13 @@
                 </a>
               </li>
             {% endif %}
+            {% if has_aqua %}
+              <li>
+                <a href="{% url 'streamwebs:export_rip_aqua' site_slug=site.site_slug %}">
+                  {% trans "Riparian Aquatic Survey" %}
+                </a>
+              </li>
+            {% endif %}
           </ul>
           <a class="dropdown-button btn-large teal darken-3"
              href="#" data-activates="new-data-dropdown">
