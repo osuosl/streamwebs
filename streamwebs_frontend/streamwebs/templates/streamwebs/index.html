@@ -4,23 +4,36 @@
 
 {% block content %}
   <style>
+    div.sections {
+      background: #B2DFDB;
+      padding-top: 40px;
+    }
     section {
-      width: 100%;
+      width: 49%;
       height: auto;
       float: left;
-      background: #00695C;
-      border-radius: 10px;
+    }
+    section.left {
+      margin-right: 2%;
+    }
+    a.section-title {
+      display: block;
+      width: 240px;
+      height: 50px;
+      font-size: 20px;
+      line-height: 48px;
+      color: white;
+      text-align: center;
+      background: #00897B;
+      margin: 0 auto;
       transition: background 0.2s linear 0s;
     }
-    section:hover {
-      background: #00897B;
+    a.section-title:hover {
+      background: #00695C;
     }
-    a.section {
-      display: block;
-      width: 100%;
-      height: auto;
-      color: white;
-      padding: 0px 40px 24px 40px;
+    section p {
+      text-align: justify;
+      margin: 30px 30px 50px 30px;
     }
   </style>
 
@@ -44,67 +57,59 @@
       </div>
     </div>
     <br/>
-    <div class="row">
+    <div class="container">
+      <img class="responsive-img"
+           src="{% static 'streamwebs/images/SW_5.jpg' %}"
+           alt="homepage img">
+    </div>
+    <br/><br/>
+    <div class="row sections">
       {% if not user.is_authenticated %}
-        <div class="row">
-          <section>
-            <a class="section" href="{% url 'streamwebs:register' %}">
-              <br/>
-              <h5 class="center">Create An account</h5>
-              <br/>
-              <p>
-                Once you fill out the form and submit you will quickly receive an
-                email that will allow you to continue with registration. Once you
-                click on the link in the email, you will be ready to set your
-                password and start exploring StreamWebs! It is recommended that you
-                make a single account that your class can login.
-              </p>
-            </a>
-          </section>
-          <section>
-            <a class="section" href="{% url 'streamwebs:sites' %}">
-              <br/>
-              <p class="center">Search Project Sites</p>
-              <br/><br/>
-              <p>
-                StreamWebs allows you to enter your data by location, you can go to
-                the sites page map to see if there is a project site for the
-                location you are interested in. Click on the site peg to navigate to
-                the site page and you are ready to begin entering your data!
-              </p>
-            </a>
-          </section>
-        </div>
-        <div class="row">
-          <section>
-            <a class="section" href="{% url 'streamwebs:create_site' %}">
-              <br/>
-              <p class="center">Create Site</p>
-              <br/><br/>
-              <p>
-                By selecting the “Add Project” button you can create your own
-                project site. Just enter the information about your project site
-                that is requested and personalize your site page with a photo. You
-                are now ready to enter your data!
-              </p>
-            </a>
-          </section>
-          <section>
-            <a class="section" href="{% url 'streamwebs:resources' %}">
-              <br/>
-              <p class="center">View Resources</p>
-              <br/><br/>
-              <p>
-                StreamWebs offers a number of resources that educators can use to
-                support field experiences including curricula, tutorial videos,
-                watershed monitoring protocols and data sheets.
-              </p>
-            </a>
-          </section>
-        </div>
-      {% else %}
-
+        <section class="left">
+          <a class="section-title" href="{% url 'streamwebs:register' %}">
+            Create An account
+          </a>
+          <p>
+            Once you fill out the form and submit you will quickly receive an
+            email that will allow you to continue with registration. Once you
+            click on the link in the email, you will be ready to set your
+            password and start exploring StreamWebs! It is recommended that you
+            make a single account that your class can login.
+          </p>
+        </section>
       {% endif %}
+      <section>
+        <a class="section-title" href="{% url 'streamwebs:sites' %}">
+          Search Project Sites
+        </a>
+        <p>
+          StreamWebs allows you to enter your data by location, you can go to
+          the sites page map to see if there is a project site for the
+          location you are interested in. Click on the site peg to navigate to
+          the site page and you are ready to begin entering your data!
+        </p>
+      </section>
+      <section class="left">
+        <a class="section-title" href="{% url 'streamwebs:create_site' %}">
+          Create Site
+        </a>
+        <p>
+          By selecting the “Add Project” button you can create your own
+          project site. Just enter the information about your project site
+          that is requested and personalize your site page with a photo. You
+          are now ready to enter your data!
+        </p>
+      </section>
+      <section>
+        <a class="section-title" href="{% url 'streamwebs:resources' %}">
+          View Resources
+        </a>
+        <p>
+          StreamWebs offers a number of resources that educators can use to
+          support field experiences including curricula, tutorial videos,
+          watershed monitoring protocols and data sheets.
+        </p>
+      </section>
     </div>
   </div>
 {% endblock %}

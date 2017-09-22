@@ -144,15 +144,28 @@ div#footer {
 div#footer-content {
     height: 100%;
     width: 900px;
-    background: black;
     margin: 0 auto;
 }
 
 div#footer-links {
-    height: 100%;
-    width: 300px;
+    height: 124px;
+    width: 150px;
     float:left;
-    background: teal;
+    margin: 30px 0px 0px 150px;
+    padding: 10px 10px 10px 10px;
+    background: rgba(255, 255, 255, 0.3);
+}
+
+div#footer-links a.footer-link {
+    display: block;
+    font-size: 18px;
+    color: white;
+    height: 26px;
+    line-height: 26px;
+}
+
+div#footer-links a.footer-link:hover {
+    background: rgba(255, 255, 255, 0.3);
 }
 
 div#footer-branding {
@@ -160,7 +173,7 @@ div#footer-branding {
     width: 280px;
     float: right;
     margin-right: 40px;
-    margin-top: 40px;
+    margin-top: 30px;
 }
 
 div#footer-branding img#b-wet {
@@ -175,7 +188,7 @@ div#footer-branding img#seagrant {
 }
 
 div#footer-branding img#osu {
-    margin-top: 20px;
+    margin-top: 10px;
     width: 270px;
     height: 86px;
 }
