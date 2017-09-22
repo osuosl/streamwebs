@@ -3,9 +3,12 @@
 {% load i18n %}
 {% load filters %}
 {% block content %}
-
+  <a href="{% url 'streamwebs:camera_point' site.site_slug cp.id %}" id="back"
+      class="wave-effects wave-light btn white-text teal darken-3">
+    <i class="material-icons">chevron_left</i>
+    Back to <span>{{ site.site_name }} {% trans "Camera Point" %}</span>
+  </a>
   <div class="container">
-
     {% if messages %}
       <div class="center-content">
         {% for message in messages %}
@@ -15,8 +18,10 @@
     {% endif %}
     <!-- PP info -->
     <div>
-      <h4 class="center"><a href="{% url 'streamwebs:camera_point' pp.camera_point.site.site_slug pp.camera_point.id %}">{{ pp.camera_point.site.site_name }}:
-        camera point {{ pp.camera_point.letter }}</a></h4>
+      <h4 class="center teal-text">
+        {{ pp.camera_point.site.site_name }}:
+        camera point {{ pp.camera_point.letter }}
+      </h4>
       <br/><br/>
       <div class="row">
         <div class="col s6">

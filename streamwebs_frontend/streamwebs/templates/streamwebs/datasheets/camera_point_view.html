@@ -4,7 +4,11 @@
 {% load filters %}
 
 {% block content %}
-
+  <a href="{% url 'streamwebs:site' site.site_slug %}" id="back"
+      class="wave-effects wave-light btn white-text teal darken-3">
+    <i class="material-icons">chevron_left</i>
+    Back to <span>{{ site.site_name }}</span>
+  </a>
   <div class="container">
     {% if messages %}
       <div class="center-content">
@@ -14,12 +18,10 @@
       </div>
     {% endif %}
     <!-- CP info -->
-    <h3 class="center">
-      <a href="{% url 'streamwebs:site' site.site_slug %}">
-        {{ site.site_name }}
-      </a>: {% trans "Camera Point" %} {{ cp.letter }}
+    <h3 align="center" class="teal-text">
+      {{ site.site_name }} {% trans "Camera Point" %} {{ cp.letter }}
     </h3>
-    <br/><br/>
+    <br/>
 
     <div class="row">
       <div class="col s6">

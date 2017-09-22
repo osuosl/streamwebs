@@ -887,6 +887,9 @@ def view_pp_and_add_img(request, site_slug, cp_id, pp_id):
     """View a specific photopoint and add photos while you're at it"""
     added = False
     pp = PhotoPoint.objects.get(id=pp_id)
+    site = Site.objects.get(site_slug=site_slug)
+    cp = CameraPoint.objects.get(id=cp_id)
+
     PPImageModelFormset = modelformset_factory(
         PhotoPointImage,
         form=PhotoPointImageForm,
@@ -925,6 +928,8 @@ def view_pp_and_add_img(request, site_slug, cp_id, pp_id):
     return render(
         request,
         'streamwebs/datasheets/photo_point_view.html', {
+            'site': site,
+            'cp': cp,
             'pp': pp,
             'ppi_formset': ppi_formset,
             'pp_images': all_images,

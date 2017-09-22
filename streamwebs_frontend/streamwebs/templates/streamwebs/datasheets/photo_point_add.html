@@ -6,8 +6,15 @@
 {% block title %}{% trans "New photo point" %}{% endblock %}
 
 {% block content %}
+  <a href="{% url 'streamwebs:camera_point' site.site_slug cp.id %}" id="back"
+      class="wave-effects wave-light btn white-text teal darken-3">
+    <i class="material-icons">chevron_left</i>
+    Back to <span>{{ site.site_name }} {% trans "Camera Point" %}</span>
+  </a>
   <div class="container">
-    <h4>{% trans "New photo point for camera point" %}</h4>
+    <h4 class="teal-text">
+      {% trans "New photo point for camera point" %}
+    </h4>
     <br/>
     <div class="col s8">
       <p><strong><b>Note: </b></strong>
