@@ -27,7 +27,7 @@ with open(datafile, 'r') as csvfile:  # 'r' is for read
     reader = csv.DictReader(csvfile)    # dict v. regular: name instead of idx
     for row in reader:
         # Strip ``Collected`` so that it is in the correct format
-        date = row['Collected'].strip('MonTuesWdhurFiSat(Aly), ')
+        date_time = row['Collected'].strip('MonTuesWdhurFiSat(Aly), ')
 
         # Create foreign key relation between datasheet and site
         site = Site.objects.get(site_name=row['Stream/Site name'])
@@ -89,7 +89,7 @@ with open(datafile, 'r') as csvfile:  # 'r' is for read
         school = None
 
         soil = Soil_Survey.objects.update_or_create(
-            date=date, site_id=site_id, landscape_pos=landscape_pos,
+            date_time=date_time, site_id=site_id, landscape_pos=landscape_pos,
             cover_type=cover_type, land_use=land_use, distance=dist,
             site_char=site_char, soil_type=soil_type, weather=weather,
             uid=uid, school=school

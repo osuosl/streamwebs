@@ -13,7 +13,7 @@ class WaterQualityTestCase(TestCase):
             'site': models.ForeignKey,
             'site_id': models.ForeignKey,
             'DEQ_dq_level': models.CharField,
-            'date': models.DateField,
+            'date_time': models.DateTimeField,
             'school': models.ForeignKey,
             'school_id': models.ForeignKey,
             'latitude': models.DecimalField,
@@ -69,7 +69,7 @@ class WaterQualityTestCase(TestCase):
         school = School.test_objects.create_school('test school')
 
         waterq = Water_Quality.test_objects.create(
-            site=site, DEQ_dq_level='A', date='2016-08-03',
+            site=site, DEQ_dq_level='A', date_time='2016-08-03',
             school=school, latitude=90, longitude=123, fish_present='False',
             live_fish=0, dead_fish=0, water_temp_unit='Fahrenheit',
             air_temp_unit='Fahrenheit', notes='Test data made')
@@ -85,7 +85,7 @@ class WaterQualityTestCase(TestCase):
         )
         # required
         self.assertEqual(wq.site.site_name, 'test site')
-        self.assertEqual(wq.date, '2016-08-04')
+        self.assertEqual(wq.date_time, '2016-08-04')
         self.assertEqual(wq.school.name, 'test school')
         self.assertEqual(wq.DEQ_dq_level, 'A')
         self.assertEqual(wq.latitude, 90)
@@ -106,7 +106,7 @@ class WaterQualityTestCase(TestCase):
         )
         # required
         self.assertEqual(wq.site.site_name, 'test site')
-        self.assertEqual(wq.date, '2016-08-04')
+        self.assertEqual(wq.date_time, '2016-08-04')
         self.assertEqual(wq.school.name, 'test school')
         self.assertEqual(wq.DEQ_dq_level, 'A')
         self.assertEqual(wq.latitude, 90)

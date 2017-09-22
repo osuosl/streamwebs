@@ -267,12 +267,24 @@ div.center-content {
     color: #FF5722;
 }
 
-strong {
-    color: #FF5722;
+a#back {
+    margin-left: 30px;
+}
+
+a#back span {
+  text-decoration: underline;
+}
+
+span.optional {
+    color: #757575;
 }
 
 strong.normal {
     color: black;
+}
+
+strong {
+    color: #FF5722;
 }
 
 .material-icons {

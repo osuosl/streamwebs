@@ -10,6 +10,11 @@ from django.forms import BaseInlineFormSet
 from django.utils.translation import ugettext_lazy as _
 from captcha.fields import ReCaptchaField
 
+TIME_PERIOD_CHOICES = (
+    ('AM', _('AM')),
+    ('PM', _('PM'))
+)
+
 
 class UserForm(forms.ModelForm):
     password = forms.CharField(
@@ -78,7 +83,8 @@ class UserProfileForm(forms.ModelForm):
     birthdate = forms.DateField(
         widget=forms.DateInput(attrs={'class': 'datepicker'}),
     )
-    school = forms.ModelChoiceField(queryset=School.objects.all())
+    school = forms.ModelChoiceField(queryset=School.objects.all(),
+                                    empty_label=None)
 
     class Meta:
         model = UserProfile
@@ -86,7 +92,17 @@ class UserProfileForm(forms.ModelForm):
 
 
 class MacroinvertebratesForm(forms.ModelForm):
-    school = forms.ModelChoiceField(queryset=School.objects.all())
+    school = forms.ModelChoiceField(
+        queryset=School.objects.all(), empty_label=None)
+    weather = forms.CharField(required=False)
+    time_spent = forms.IntegerField(required=False)
+    num_people = forms.IntegerField(required=False)
+    date = forms.DateField(
+        input_formats=['%Y-%m-%d'],
+        widget=forms.DateInput(attrs={'class': 'datepicker'}),
+    )
+    time = forms.TimeField(input_formats=['%I:%M'])
+    ampm = forms.ChoiceField(choices=TIME_PERIOD_CHOICES, label="AM/PM")
 
     class Meta:
         model = Macroinvertebrates
@@ -94,7 +110,7 @@ class MacroinvertebratesForm(forms.ModelForm):
             'notes': forms.Textarea(
                 attrs={'class': 'materialize-textarea'})
         }
-        fields = ('school', 'date_time', 'weather', 'time_spent',
+        fields = ('school', 'date', 'time', 'ampm', 'weather', 'time_spent',
                   'num_people', 'water_type', 'caddisfly', 'mayfly',
                   'riffle_beetle', 'stonefly', 'water_penny', 'dobsonfly',
                   'clam_or_mussel', 'crane_fly', 'crayfish',
@@ -104,7 +120,16 @@ class MacroinvertebratesForm(forms.ModelForm):
 
 
 class WQForm(forms.ModelForm):
-    school = forms.ModelChoiceField(queryset=School.objects.all())
+    school = forms.ModelChoiceField(queryset=School.objects.all(),
+                                    empty_label=None)
+    latitude = forms.DecimalField(required=False)
+    longitude = forms.DecimalField(required=False)
+    date = forms.DateField(
+        input_formats=['%Y-%m-%d'],
+        widget=forms.DateInput(attrs={'class': 'datepicker'}),
+    )
+    time = forms.TimeField(input_formats=['%I:%M'])
+    ampm = forms.ChoiceField(choices=TIME_PERIOD_CHOICES, label="AM/PM")
 
     class Meta:
         model = Water_Quality
@@ -116,17 +141,10 @@ class WQForm(forms.ModelForm):
                 forms.Textarea(attrs={'class': 'materialize-textarea'})
         }
         fields = (
-            'date', 'DEQ_dq_level', 'school',
+            'date', 'time', 'ampm', 'DEQ_dq_level', 'school',
             'latitude', 'longitude', 'fish_present', 'live_fish',
             'dead_fish', 'water_temp_unit', 'air_temp_unit', 'notes'
         )
-
-
-class WQFormReadOnly(WQForm):
-    def __init__(self, *args, **kwargs):
-        super(WQFormReadOnly, self).__init__(*args, **kwargs)
-        for field in self.fields:
-            self.fields[field].widget.attrs.update({'disabled': True})
 
 
 class WQSampleForm(forms.ModelForm):
@@ -154,18 +172,22 @@ class WQSampleForm(forms.ModelForm):
         )
 
 
-class WQSampleFormReadOnly(WQSampleForm):
-    def __init__(self, *args, **kwargs):
-        super(WQSampleFormReadOnly, self).__init__(*args, **kwargs)
-        for field in self.fields:
-            self.fields[field].widget.attrs.update({'disabled': True})
-
-
 class Canopy_Cover_Form(forms.ModelForm):
+    school = forms.ModelChoiceField(queryset=School.objects.all(),
+                                    empty_label=None)
+    weather = forms.CharField(required=False)
+    date = forms.DateField(
+        input_formats=['%Y-%m-%d'],
+        widget=forms.DateInput(attrs={'class': 'datepicker'}),
+    )
+    time = forms.TimeField(input_formats=['%I:%M'])
+    ampm = forms.ChoiceField(choices=TIME_PERIOD_CHOICES, label="AM/PM")
+
     class Meta:
         model = Canopy_Cover
-        fields = ('school', 'date_time', 'weather', 'est_canopy_cover',
-                  'north_cc', 'west_cc', 'east_cc', 'south_cc')
+        fields = ('school', 'date', 'time', 'ampm', 'weather',
+                  'est_canopy_cover', 'north_cc', 'west_cc', 'east_cc',
+                  'south_cc')
 
 
 class TransectZoneForm(forms.ModelForm):
@@ -208,14 +230,22 @@ class BaseZoneInlineFormSet(BaseInlineFormSet):
 
 
 class RiparianTransectForm(forms.ModelForm):
-    school = forms.ModelChoiceField(queryset=School.objects.all())
+    school = forms.ModelChoiceField(queryset=School.objects.all(),
+                                    empty_label=None)
+    date = forms.DateField(
+        input_formats=['%Y-%m-%d'],
+        widget=forms.DateInput(attrs={'class': 'datepicker'}),
+    )
+    time = forms.TimeField(input_formats=['%I:%M'])
+    ampm = forms.ChoiceField(choices=TIME_PERIOD_CHOICES, label="AM/PM")
 
     class Meta:
         model = RiparianTransect
         widgets = {
             'notes': forms.Textarea(attrs={'class': 'materialize-textarea'})
         }
-        fields = ('school', 'date_time', 'weather', 'slope', 'notes')
+        fields = ('school', 'date', 'time', 'ampm',
+                  'weather', 'slope', 'notes')
 
 
 class PhotoPointImageForm(forms.ModelForm):
@@ -239,7 +269,8 @@ class PhotoPointForm(forms.ModelForm):
 
 
 class CameraPointForm(forms.ModelForm):
-    school = forms.ModelChoiceField(queryset=School.objects.all())
+    school = forms.ModelChoiceField(queryset=School.objects.all(),
+                                    empty_label=None)
     cp_date = forms.DateField(
         widget=forms.DateInput(attrs={'class': 'datepicker'}),
     )
@@ -266,6 +297,16 @@ class SiteForm(forms.ModelForm):
 
 
 class SoilSurveyForm(forms.ModelForm):
+    school = forms.ModelChoiceField(queryset=School.objects.all(),
+                                    empty_label=None)
+    weather = forms.CharField(required=False)
+    date = forms.DateField(
+        input_formats=['%Y-%m-%d'],
+        widget=forms.DateInput(attrs={'class': 'datepicker'}),
+    )
+    time = forms.TimeField(input_formats=['%I:%M'])
+    ampm = forms.ChoiceField(choices=TIME_PERIOD_CHOICES, label="AM/PM")
+
     class Meta:
         model = Soil_Survey
         widgets = {
@@ -276,16 +317,9 @@ class SoilSurveyForm(forms.ModelForm):
                 forms.Textarea(attrs={'class': 'materialize-textarea'})
         }
         fields = (
-            'school', 'date', 'weather', 'landscape_pos', 'cover_type',
-            'land_use', 'soil_type', 'distance', 'site_char'
+            'school', 'date', 'time', 'ampm', 'weather', 'landscape_pos',
+            'cover_type', 'land_use', 'soil_type', 'distance', 'site_char'
         )
-
-
-class SoilSurveyFormReadOnly(SoilSurveyForm):
-    def __init__(self, *args, **kwargs):
-        super(SoilSurveyFormReadOnly, self).__init__(*args, **kwargs)
-        for field in self.fields:
-            self.fields[field].widget.attrs.update({'disabled': True})
 
 
 class ResourceForm(forms.ModelForm):

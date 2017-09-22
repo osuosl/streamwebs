@@ -11,7 +11,7 @@ class AddSoilSurveyTestCase(TestCase):
                                              'johnpassword')
         self.client.login(username='john', password='johnpassword')
         self.site = Site.test_objects.create_site('A site')
-        self.expected_fields = ('school', 'date', 'weather', 'site',
+        self.expected_fields = ('school', 'date_time', 'weather', 'site',
                                 'landscape_pos', 'cover_type', 'land_use',
                                 'distance', 'site_char', 'soil_type')
         self.optional_fields = ('site_char')
@@ -45,7 +45,9 @@ class AddSoilSurveyTestCase(TestCase):
                 kwargs={'site_slug': self.site.site_slug}
             ), {
                   'school': school.id,
-                  'date': '2016-10-19 15:25',
+                  'date': '2016-10-19',
+                  'time': '03:25',
+                  'ampm': 'PM',
                   'weather': 'gray',
                   'landscape_pos': 'summit',
                   'cover_type': 'trees',

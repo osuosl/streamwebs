@@ -31,19 +31,25 @@
   div.half {
     width: 50%;
   }
-  .graph-header{
-      text-align: center;
+  div#header, .graph-header {
+    text-align: center;
+  }
+  #no-valid-data {
+    color: #00695C;
+  }
+  p.date-range {
+    color: #009688;
   }
   #site1-header, #site2-header {
-      margin-bottom: 0;
-      text-align: center;
+    margin-bottom: 0;
+    text-align: center;
   }
   div.row {
     position:relative;
   }
   div#water-parameter-pdf {
     color: white;
-    background: #004d40;
+    background: #00695C;
     padding: 20px;
     font-size: 16px;
     top: 50px;
@@ -67,7 +73,7 @@
     display: none;
     background: white;
     z-index: 10;
-    border: 2px solid #004d40;
+    border: 2px solid #00695C;
     border-radius: 10px;
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
@@ -85,7 +91,7 @@
   <div class="container">
     <form action="">
       <div id="dates">
-        <p>{% trans "Date Range:" %}</p>
+        <p>{% trans "Set Date Range:" %}</p>
         <label for="date-start">{% trans "After" %}</label>
         <input type="date" name="date" class="datepicker" id="date-start"
                value=""/>
@@ -148,7 +154,7 @@
       </div>
     </div>
     <div class="row" id="header">
-      <h2 class="graph-header">{% trans "Water Quality Over Time" %}</h2>
+      <h2>{% trans "Water Quality Over Time" %}</h2>
       <div class="data-info" id="water-parameter-pdf">
         <p>
           Here is the description of water quality, the water quality is very good
@@ -156,7 +162,12 @@
         <a href="{% static 'streamwebs/pdf/Parameters.sheets_full.color.pdf' %}"
             target="blank">Open Water Parameter pdf</a>
       </div>
-      <h6 class="graph-header">{% trans "Note: Outliers are not graphed." %}</h6>
+      <h6>{% trans "Note: Outliers are not graphed." %}</h6>
+      <h6 id="no-valid-data" style="display:none;">
+        {% trans "There is no valid data to graph on this site" %}
+      </h6>
+      <p id="date-range-1" class="date-range"></p>
+      <p id="date-range-2" class="date-range"></p>
     </div>
     <div id="graph-container">
       <div class="row" id="site-names" style="display: none">

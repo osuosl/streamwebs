@@ -1,0 +1,316 @@
+{% extends 'streamwebs/base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+{% load filters %}
+
+{% block title %}{% trans "Water Quality Data" %}{% endblock %}
+
+{% block content %}
+  <a href="{% url 'streamwebs:site' site.site_slug %}" id="back"
+      class="wave-effects wave-light btn white-text teal darken-3">
+    <i class="material-icons">chevron_left</i>
+    Back to <span>{{ site.site_name }}</span>
+  </a>
+  <div class="container">
+    {% if messages %}
+      <div class="center-content">
+        {% for message in messages %}
+          <strong>{{ message }}</strong>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <h3 align="center" class="teal-text">
+      {{ site.site_name }}
+    </h3>
+    <h4 align="center">{% trans "Water Quality Data" %}: {{ wq_data.date_time|date:"m-d-Y" }}</h4>
+    <br/><br/>
+
+    <div class="row">
+      <div class="col s6">
+        <b>{% trans "School" %}: </b>
+        {{ wq_data.school }}
+      </div>
+      <div class="col s6">
+        <b>{% trans "Date and Time" %}: </b>
+        {{ wq_data.date_time }}
+      </div>
+    </div>
+    <br/>
+
+    <div class="row">
+      <div class="col s4">
+        <b>{% trans "DEQ data quality level" %}: </b>
+        {% if wq_data.DEQ_dq_level %}
+          {{ wq_data.DEQ_dq_level}}
+        {% endif %}
+      </div>
+      <div class="col s4">
+        <b>{% trans "Latitude" %}: </b>
+        {% if wq_data.latitude %}
+          {{ wq_data.latitude }}
+        {% endif %}
+      </div>
+      <div class="col s4">
+        <b>{% trans "Longitude" %}: </b>
+        {% if wq_data.longitude %}
+          {{ wq_data.longitude }}
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col s4">
+        <b>{% trans "Any fish present?" %} </b>
+        <span id="fish-present">{{ wq_data.fish_present }}</span>
+      </div>
+      <div class="col s4">
+        <b>{% trans "Number of live fish" %}: </b>
+        {{ wq_data.live_fish }}
+      </div>
+      <div class="col s4">
+        <b>{% trans "Number of dead fish" %}: </b>
+        {{ wq_data.dead_fish }}
+      </div>
+    </div>
+    <br/>
+
+    <div class="row">
+      <div class="col s12">
+        <h5 class="teal-text text-darken-1">Unit Selections</h5>
+      </div>
+      <div class="col s6">
+        <b>{% trans "Water Temperature Units" %}: </b>
+        {{ wq_data.water_temp_unit }}
+      </div>
+      <div class="col s6">
+        <b>{% trans "Air Temperature Units" %}: </b>
+        {{ wq_data.air_temp_unit }}
+      </div>
+    </div>
+    <br>
+
+    <div class="row">
+      <div class="col s12">
+        <h5 class="teal-text text-darken-1">Samples</h5>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th data-field="test"></th>
+            <th data-field="sample1">{% trans "Sample 1" %}</th>
+            <th data-field="sample2">{% trans "Sample 2" %}</th>
+            <th data-field="sample3">{% trans "Sample 3" %}</th>
+            <th data-field="sample4">{% trans "Sample 4" %}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Water Temperature</td>
+            {% for sample in wq_samples %}
+              <td>
+                {% if sample.water_temp_tool %}
+                  {% if sample.water_temperature %}
+                    <p> {{ sample.water_temperature }}</p>
+                    <p> {{ sample.water_temp_tool }}</p>
+                  {% endif %}
+                {% endif %}
+              </td>
+            {% endfor %}
+          </tr>
+          <tr>
+            <td>Air Temperature</td>
+            {% for sample in wq_samples %}
+              <td>
+                {% if sample.air_temp_tool %}
+                  {% if sample.air_temperature %}
+                    <p> {{ sample.air_temperature }}</p>
+                    <p> {{ sample.air_temp_tool }}</p>
+                  {% endif %}
+                {% endif %}
+              </td>
+            {% endfor %}
+          </tr>
+          <tr>
+            <td>Dissolved Oxygen (mg/L)</td>
+            {% for sample in wq_samples %}
+              <td>
+                {% if sample.oxygen_tool %}
+                  {% if sample.dissolved_oxygen %}
+                    <p> {{ sample.dissolved_oxygen }}</p>
+                    <p> {{ sample.oxygen_tool }}</p>
+                  {% endif %}
+                {% endif %}
+              </td>
+            {% endfor %}
+          </tr>
+          <tr>
+            <td>pH</td>
+            {% for sample in wq_samples %}
+              <td>
+                {% if sample.pH_tool %}
+                  {% if sample.pH %}
+                    <p> {{ sample.pH }}</p>
+                    <p> {{ sample.pH_tool }}</p>
+                  {% endif %}
+                {% endif %}
+              </td>
+            {% endfor %}
+          </tr>
+          <tr>
+            <td>Turbidity (NTU)</td>
+            {% for sample in wq_samples %}
+              <td>
+                {% if sample.turbid_tool %}
+                  {% if sample.turbidity %}
+                    <p> {{ sample.turbidity }}</p>
+                    <p> {{ sample.turbid_tool }}</p>
+                  {% endif %}
+                {% endif %}
+              </td>
+            {% endfor %}
+          </tr>
+          <tr>
+            <td>Salinity (PSU or PPT)</td>
+            {% for sample in wq_samples %}
+              <td>
+                {% if sample.salt_tool %}
+                  {% if sample.salinity %}
+                    <p> {{ sample.salinity }}</p>
+                    <p> {{ sample.salt_tool }}</p>
+                  {% endif %}
+                {% endif %}
+              </td>
+            {% endfor %}
+          </tr>
+          <tr class="collapse-btn">
+            <th>{% trans "Additional parameters" %}
+              <i class="material-icons">arrow_drop_down</i>
+            </th>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="collapse">
+      <table>
+        <thead>
+          <tr>
+            <th data-field="test"></th>
+            <th data-field="sample1">{% trans "Sample 1" %}</th>
+            <th data-field="sample2">{% trans "Sample 2" %}</th>
+            <th data-field="sample3">{% trans "Sample 3" %}</th>
+            <th data-field="sample4">{% trans "Sample 4" %}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Conductivity (µS/cm)</td>
+            {% for sample in wq_samples %}
+              <td>
+                {% if sample.conductivity %}
+                  <p> {{ sample.conductivity }}</p>
+                {% endif %}
+              </td>
+            {% endfor %}
+          </tr>
+          <tr>
+            <td>Total Solids (mg/L)</td>
+            {% for sample in wq_samples %}
+              <td>
+                {% if sample.total_solids %}
+                  <p> {{ sample.total_solids }}</p>
+                {% endif %}
+              </td>
+            {% endfor %}
+          </tr>
+          <tr>
+            <td>BOD (mg/L)</td>
+            {% for sample in wq_samples %}
+              <td>
+                {% if sample.bod %}
+                  <p> {{ sample.bod }}</p>
+                {% endif %}
+              </td>
+            {% endfor %}
+          </tr>
+          <tr>
+            <td>Ammonia (mg/L)</td>
+            {% for sample in wq_samples %}
+              <td>
+                {% if sample.ammonia %}
+                  <p> {{ sample.ammonia }}</p>
+                {% endif %}
+              </td>
+            {% endfor %}
+          </tr>
+          <tr>
+            <td>Nitrite (mg/L)</td>
+            {% for sample in wq_samples %}
+              <td>
+                {% if sample.nitrite %}
+                  <p> {{ sample.nitrite }}</p>
+                {% endif %}
+              </td>
+            {% endfor %}
+          </tr>
+          <tr>
+            <td>Nitrate (mg/L)</td>
+            {% for sample in wq_samples %}
+              <td>
+                {% if sample.nitrate %}
+                  <p> {{ sample.nitrate }}</p>
+                {% endif %}
+              </td>
+            {% endfor %}
+          </tr>
+          <tr>
+            <td>Phosphates (mg/L)</td>
+            {% for sample in wq_samples %}
+              <td>
+                {% if sample.phosphates %}
+                  <p> {{ sample.phosphates }}</p>
+                {% endif %}
+              </td>
+            {% endfor %}
+          </tr>
+          <tr>
+            <td>Fecal Coliform (CFU/100 mL)</td>
+            {% for sample in wq_samples %}
+              <td>
+                {% if sample.fecal_coliform %}
+                  <p> {{ sample.fecal_coliform }}</p>
+                {% endif %}
+              </td>
+            {% endfor %}
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <br/>
+
+    <div class="row">
+      <div class="col s6">
+        {% if wq_data.notes %}
+          <b>{% trans "Note" %}: </b>
+          <p> {{ wq_data.notes }} </p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+  <script type="application/javascript"
+          src="{% static 'streamwebs/js/data.js' %}"></script>
+  <script>
+    $(function() {
+      var fishPresent = $('span#fish-present').text();
+
+      if (fishPresent === "True") {
+        $('span#fish-present').text("Yes");
+      } else {
+        $('span#fish-present').text("No");
+      }
+    });
+  </script>
+{% endblock %}

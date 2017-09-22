@@ -6,6 +6,11 @@
 {% block title %}{% trans "View Soil Survey" %}{% endblock %}
 
 {% block content %}
+  <a href="{% url 'streamwebs:site' site.site_slug %}" id="back"
+      class="wave-effects wave-light btn white-text teal darken-3">
+    <i class="material-icons">chevron_left</i>
+    Back to <span>{{ site.site_name }}</span>
+  </a>
   <div class="container">
     {% if messages %}
       <div class="messages">
@@ -15,108 +20,66 @@
       </div>
     {% endif %}
 
-    <h3 align="center">
-      <a href="{% url 'streamwebs:site' site.site_slug %}">
-        {{ site.site_name }}
-      </a>
+    <h3 align="center" class="teal-text">
+      {{ site.site_name }}
     </h3>
     <h4 align="center">{% trans "Riparian Soil Survey: " %}{{ soil.date }}</h4>
+    <br/><br/>
 
     <div class="row">
-      <div class="col s6">
-        <div class="input-field">
-          <p>School</p>
-          <p>
-            <input type="text" name="School" value="{{ school }}" disabled/>
-          </p>
-        </div>
-      </div>
-
-      <div class="col s6">
-        <p>{{ soil_form.date.label }}</p>
-        <p>{{ soil_form.date.errors | striptags }}</p>
-        <p>{{ soil_form.date }}</p>
-      </div>
-
       <div class="col s12">
-        <p>{{ soil_form.weather.label }}</p>
-        <p>{{ soil_form.weather.errors | striptags }}</p>
-        <p>{{ soil_form.weather }}</p>
+        <b>{% trans "School" %}: </b>
+        {{ soil_data.school }}
+      </div>
+      <div class="col s12">
+        <b>{% trans "Date and Time" %}: </b>
+        {{ soil_data.date_time }}
+      </div>
+      <div class="col s12">
+        <b>{% trans "Weather" %}: </b>
+        {% if soil_data.weather %}
+          {{ soil_data.weather }}
+        {% endif %}
       </div>
     </div>
 
-    <!-- Container so that radio buttons render vertically -->
-    <div class="container">
-      <div class="row">
-        <div class="col s3 pull-s1">
-          <p>{% trans "Landscape Position" %}</p>
-          {{ soil_form.landscape_pos.errors| striptags }}
-          <div class="input-field">
-            {% for radio in soil_form.landscape_pos %}
-              {{ radio.tag }}
-              <label for="{{ radio.id_for_label }}">
-                {{ radio.choice_label }}
-              </label>
-            {% endfor %}
-          </div>
-        </div>
-        <div class="col s3 push-s1">
-          <p>{% trans "Cover Type" %}</p>
-          {{ soil_form.cover_type.errors| striptags }}
-          <div class="input-field">
-            {% for radio in soil_form.cover_type %}
-              {{ radio.tag }}
-              <label for="{{ radio.id_for_label }}">
-                {{ radio.choice_label }}
-              </label>
-            {% endfor %}
-          </div>
-        </div>
-        <div class="col s3 push-s3">
-          <p>{% trans "Land Use" %}</p>
-          {{ soil_form.land_use.errors| striptags }}
-          <div class="input-field">
-            {% for radio in soil_form.land_use %}
-              {{ radio.tag }}
-              <label for="{{ radio.id_for_label }}">
-                {{ radio.choice_label }}
-              </label>
-            {% endfor %}
-          </div>
-        </div>
+    <div class="row">
+      <div class="col s4">
+        <b>{% trans "Landscape Position" %}: </b>
+        <p>{{ soil_data.get_landscape_pos_display }}</p>
       </div>
-    </div> <!-- end middle container -->
+      <div class="col s4">
+        <b>{% trans "Cover Type" %}: </b>
+        <p>{{ soil_data.get_cover_type_display }}</p>
+      </div>
+      <div class="col s4">
+        <b>{% trans "Land Use" %}: </b>
+        <p>{{ soil_data.get_land_use_display }}</p>
+      </div>
+    </div>
 
+    <div class="row">
+      <div class="col s4">
+        <b>{% trans "Soil Type" %}: </b>
+        <p>{{ soil_data.get_soil_type_display }}</p>
+      </div>
+      <div class="col s4">
+        <b>{% trans "Distance from stream" %} (ft): </b>
+        {{ soil_data.distance }}
+      </div>
+    </div>
     <br/>
-    <div class="row">
-      <div class="col s6">
-        <div class="input-field">
-          {{ soil_form.soil_type.label }}
-          {{ soil_form.soil_type.errors | striptags }}
-          {{ soil_form.soil_type }}
-        </div>
-      </div>
-
-      <div class="col s6">
-        <div class="input-field">
-          {{ soil_form.distance.label }}
-          {{ soil_form.distance.errors | striptags }}
-          {{ soil_form.distance }}
-        </div>
-      </div>
-    </div>
 
     <div class="row">
-      <div class="input-field">
-        {{ soil_form.site_char.label }}
-        {{ soil_form.site_char.errors | striptags }}
-        {{ soil_form.site_char }}
+      <div class="col s12">
+        {% if soil_data.site_char %}
+          <p><b>{% trans "Distinguishing site characteristics" %}</b></p>
+          {{ soil_data.site_char }}
+        {% endif %}
       </div>
     </div>
-  </div>  <!-- end container -->
+  </div>
 {% endblock %}
 
 {% block scripts %}
-  <script type="application/javascript"
-          src="{% static 'streamwebs/js/data.js' %}"></script>
 {% endblock %}

@@ -51,6 +51,8 @@ class AddWaterQualityTestCase(TestCase):
                 'air_temp_unit': u'Fahrenheit',
                 'water_temp_unit': u'Fahrenheit',
                 'date': u'2016-08-22',
+                'time': u'02:00',
+                'ampm': u'PM',
                 'dead_fish': 2,
                 'fish_present': u'True',
                 'initial-date': u'2016-08-22',

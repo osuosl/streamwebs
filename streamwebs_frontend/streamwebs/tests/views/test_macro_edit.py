@@ -52,7 +52,9 @@ class MacroFormTestCase(TestCase):
             reverse('streamwebs:macroinvertebrate_edit', kwargs={
                 'site_slug': self.site.site_slug}), {
                 'school': test_school.id,
-                'date_time': '2016-07-11 14:09',
+                'date': '2016-07-11',
+                'time': '02:09',
+                'ampm': 'PM',
                 'weather': "aaaa",
                 'time_spent': 1,
                 'num_people': 2,
