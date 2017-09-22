@@ -227,7 +227,8 @@ def site(request, site_slug):
         'has_macros': len(macro_sheets) > 0,
         'has_transects': len(transect_sheets) > 0,
         'has_cc': len(canopy_sheets) > 0,
-        'has_soil': len(soil_sheets) > 0
+        'has_soil': len(soil_sheets) > 0,
+        'has_camera': len(ppm_sheets) > 0,
     })
 
 
@@ -762,6 +763,19 @@ def canopy_cover_edit(request, site_slug):
     )
 
 
+def site_camera(request, site_slug):
+    site = Site.objects.filter(active=True).get(site_slug=site_slug)
+    cp = CameraPoint.objects.filter(site_id=site.id)
+
+    return render(
+        request,
+        'streamwebs/site_camera.html', {
+            'site': site,
+            'cp': cp,
+        }
+    )
+
+
 def camera_point_view(request, site_slug, cp_id):
     """View a site's CP: includes all of its PPs/PPIs"""
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
@@ -792,12 +806,12 @@ def add_camera_point(request, site_slug):
     PhotoPointInlineFormset = inlineformset_factory(  # photo point formset (3)
         CameraPoint, PhotoPoint,
         form=PhotoPointForm,
-        extra=3, max_num=3, min_num=3                 # three PPs per CP
+        extra=1, max_num=1, min_num=1                 # three PPs per CP
     )
     PPImageModelFormset = modelformset_factory(       # pp image formset (3)
         PhotoPointImage,
         form=PhotoPointImageForm,
-        extra=3, max_num=3, min_num=3                 # one PPI for each PP
+        extra=1, max_num=1, min_num=1                 # one PPI for each PP
     )
 
     if request.method == 'POST':
@@ -873,6 +887,9 @@ def view_pp_and_add_img(request, site_slug, cp_id, pp_id):
     """View a specific photopoint and add photos while you're at it"""
     added = False
     pp = PhotoPoint.objects.get(id=pp_id)
+    site = Site.objects.get(site_slug=site_slug)
+    cp = CameraPoint.objects.get(id=cp_id)
+
     PPImageModelFormset = modelformset_factory(
         PhotoPointImage,
         form=PhotoPointImageForm,
@@ -911,6 +928,8 @@ def view_pp_and_add_img(request, site_slug, cp_id, pp_id):
     return render(
         request,
         'streamwebs/datasheets/photo_point_view.html', {
+            'site': site,
+            'cp': cp,
             'pp': pp,
             'ppi_formset': ppi_formset,
             'pp_images': all_images,

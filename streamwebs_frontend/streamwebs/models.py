@@ -551,6 +551,13 @@ class CameraPointManager(models.Manager):
 
 
 class CameraPoint(models.Model):
+    map_datum_choices = [
+        (None, 'Not Recorded'),
+        ('NAD27', _('NAD 27 CONUS')),
+        ('NAD83', _('NAD 83')),
+        ('WGS84', _('WGS84')),
+    ]
+
     site = models.ForeignKey(Site, on_delete=models.CASCADE, null=True)
     letter = models.CharField(null=True, max_length=5, editable=False)
     cp_date = models.DateField(default=datetime.date.today,
@@ -558,8 +565,9 @@ class CameraPoint(models.Model):
     school = models.ForeignKey(School, null=True, on_delete=models.CASCADE,
                                verbose_name=_('school'))
     location = models.PointField(null=True, verbose_name=_('location'))
-    map_datum = models.CharField(max_length=255, blank=True,
-                                 verbose_name=_('map datum'))
+    map_datum = models.CharField(
+        max_length=5, null=True, blank=True, verbose_name=_('map datum'),
+        choices=map_datum_choices, default=None)
     description = models.TextField(blank=True, verbose_name=_('description'))
     created = models.DateTimeField(default=timezone.now)
 
@@ -608,10 +616,11 @@ class PhotoPoint(models.Model):
     compass_bearing = models.PositiveSmallIntegerField(
         verbose_name=_('compass bearing'))
     distance = models.DecimalField(
-        max_digits=3, decimal_places=0,
+        max_digits=3, decimal_places=0, null=True, blank=True,
         verbose_name=_('distance from camera point'))
-    camera_height = models.DecimalField(max_digits=3, decimal_places=0,
-                                        verbose_name=_('camera height'))
+    camera_height = models.DecimalField(
+        max_digits=3, decimal_places=0, null=True, blank=True,
+        verbose_name=_('camera height'))
     notes = models.TextField(blank=True, verbose_name=_('notes'))
 
     test_objects = PhotoPointManager()
