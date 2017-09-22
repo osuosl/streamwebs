@@ -7,6 +7,15 @@
 
 {% block content %}
 
+  <div class="container">
+    {% if messages %}
+      <div class="center-content">
+        {% for message in messages %}
+          <strong>{{ message }}</strong>
+        {% endfor %}
+      </div>
+    {% endif %}
+
 <div class="container">
   <h3 align="center">
    <a href="{% url 'streamwebs:site' site.site_slug %}">

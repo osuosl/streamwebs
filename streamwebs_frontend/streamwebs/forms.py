@@ -386,10 +386,12 @@ class SchoolForm(forms.ModelForm):
 class RipAquaForm(forms.ModelForm):
     class Meta:
         model = RipAquaticSurvey
-        school = forms.ModelChoiceField(queryset=School.objects.all())
+        school = forms.ModelChoiceField(
+            queryset=School.objects.all())
         date = forms.DateField(
             widget=forms.DateInput(attrs={'class': 'datepicker'}))
         widgets = {
+            'weather': forms.TextInput(attrs={'required': False}),
             'silt': forms.RadioSelect(attrs={'required': False}),
             'sand': forms.RadioSelect(attrs={'required': False}),
             'gravel': forms.RadioSelect(attrs={'required': False}),
