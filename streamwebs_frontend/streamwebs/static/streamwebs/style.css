@@ -162,6 +162,7 @@ div#footer-links a.footer-link {
     color: white;
     height: 26px;
     line-height: 26px;
+    padding-left: 10px;
 }
 
 div#footer-links a.footer-link:hover {
