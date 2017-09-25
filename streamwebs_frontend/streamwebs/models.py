@@ -1193,7 +1193,7 @@ class RipAquaticSurvey(models.Model):
         default=datetime.date.today, verbose_name=_('date')
     )
     weather = models.CharField(
-        max_length=20, verbose_name=_('weather')
+        max_length=20, verbose_name=_('weather'), blank=True, null=True
     )
     riffle_count = models.PositiveIntegerField(
         blank=True, null=True, verbose_name=_('number of riffles')
