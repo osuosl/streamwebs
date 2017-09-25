@@ -112,40 +112,42 @@
         </section>
       {% else %}
         <div class="row">
-          <section>
-            <a class="section-title" href="{% url 'streamwebs:sites' %}">
-              Search Project Sites
-            </a>
-            <p>
-              StreamWebs allows you to enter your data by location, you can go to
-              the sites page map to see if there is a project site for the
-              location you are interested in. Click on the site peg to navigate to
-              the site page and you are ready to begin entering your data!
-            </p>
-          </section>
-          <section class="left">
-            <a class="section-title" href="{% url 'streamwebs:create_site' %}">
-              Create Site
-            </a>
-            <p>
-              By selecting the “Add Project” button you can create your own
-              project site. Just enter the information about your project site
-              that is requested and personalize your site page with a photo. You
-              are now ready to enter your data!
-            </p>
-          </section>
-        </div>
-        <div class="row">
-          <section>
-            <a class="section-title" href="{% url 'streamwebs:resources' %}">
-              View Resources
-            </a>
-            <p>
-              StreamWebs offers a number of resources that educators can use to
-              support field experiences including curricula, tutorial videos,
-              watershed monitoring protocols and data sheets.
-            </p>
-          </section>
+          <div class="col s12">
+            <section>
+              <a class="section-title" href="{% url 'streamwebs:sites' %}">
+                Search Sites
+              </a>
+              <p>
+                StreamWebs allows you to enter your data by location, you can go to
+                the sites page map to see if there is a project site for the
+                location you are interested in. Click on the site peg to navigate to
+                the site page and you are ready to begin entering your data!
+              </p>
+            </section>
+            <section class="left">
+              <a class="section-title" href="{% url 'streamwebs:create_site' %}">
+                Create Site
+              </a>
+              <p>
+                By selecting the “Create Site” button you can create your own
+                project site. Just enter the information about your project site
+                that is requested and personalize your site page with a photo. You
+                are now ready to enter your data!
+              </p>
+            </section>
+          </div>
+          <div class="col 12">
+            <section>
+              <a class="section-title" href="{% url 'streamwebs:resources' %}">
+                View Resources
+              </a>
+              <p>
+                StreamWebs offers a number of resources that educators can use to
+                support field experiences including curricula, tutorial videos,
+                watershed monitoring protocols and data sheets.
+              </p>
+            </section>
+          </div>
         </div>
       {% endif %}
     </div>
