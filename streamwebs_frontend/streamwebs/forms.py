@@ -387,7 +387,7 @@ class RipAquaForm(forms.ModelForm):
     class Meta:
         model = RipAquaticSurvey
         school = forms.ModelChoiceField(
-            queryset=School.objects.all())
+            queryset=School.objects.all(), empty_label=None)
         date = forms.DateField(
             widget=forms.DateInput(attrs={'class': 'datepicker'}))
         widgets = {
