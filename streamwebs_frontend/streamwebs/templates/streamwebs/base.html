@@ -49,6 +49,26 @@
       <div id="filter">
       </div>
       <div id="footer">
+        <div id="footer-content">
+          <div id="footer-links">
+            <a href="{% url 'streamwebs:create_site' %}"
+                   class="footer-link">{% trans "Create Sites" %}</a>
+            <a href="{% url 'streamwebs:sites' %}"
+                   class="footer-link">{% trans "Search Sites" %}</a>
+            <a href="{% url 'streamwebs:schools' %}"
+                   class="footer-link">{% trans "View Schools" %}</a>
+            <a href="{% url 'streamwebs:about' %}"
+                   class="footer-link">{% trans "About" %}</a>
+          </div>
+          <div id="footer-branding">
+            <img src="{% static 'streamwebs/images/b-wet-logo.jpg' %}" id="b-wet"/>
+            <img src="{% static 'streamwebs/images/seagrant-logo.jpg' %}" id="seagrant"/>
+            <img src="{% static 'streamwebs/images/osu-logo.png' %}" id="osu"/>
+          </div>
+        </div>
+
+        <!-- Below is code for translation, commented out since it is
+        not currently working -->
         <!--<form id="langform" action="/i18n/setlang/" method="post">
           {% csrf_token %}
           <input name="next" type="hidden" value="{{ request.path }}" />

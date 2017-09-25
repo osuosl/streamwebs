@@ -3,67 +3,165 @@
 {% load i18n %}
 
 {% block content %}
+  <style>
+    div.sections {
+      background: #B2DFDB;
+      padding-top: 40px;
+    }
+    section {
+      width: 49%;
+      height: auto;
+      float: left;
+    }
+    section.left {
+      margin-right: 2%;
+    }
+    a.section-title {
+      display: block;
+      width: 240px;
+      height: 50px;
+      font-size: 20px;
+      line-height: 48px;
+      color: white;
+      text-align: center;
+      background: #00897B;
+      margin: 0 auto;
+      transition: background 0.2s linear 0s;
+    }
+    a.section-title:hover {
+      background: #00695C;
+    }
+    section p {
+      text-align: justify;
+      margin: 30px 30px 50px 30px;
+    }
+  </style>
 
-  <div class="section no-pad-bot" id="index-banner">
-    <div id="banner-text" class="center-align">
-      <h4>{% trans "Student Stewardship Network" %}</h4>
-    </div>
-  </div>
-  <br/>
   <div class="container">
-    <div class="h-img">
+    <div class="row">
+      <div class="col s12">
+        <h4 class="center">{% trans "Welcome to StreamWebs" %}</h4>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s12">
+        <p>
+        Every year thousands of students from around the state of Oregon collect
+        a wide range of watershed data in the field, StreamWebs provides a way
+        for students to follow up with the field experience back in the classroom.
+        StreamWebs offers a suite of online applications for students to share and
+        analyze their data and review the work of their peers. Students are able
+        to upload their data and share their valuable contributions to watershed
+        health with their community.
+        </p>
+      </div>
+    </div>
+    <br/>
+    <div class="container">
       <img class="responsive-img"
            src="{% static 'streamwebs/images/SW_5.jpg' %}"
            alt="homepage img">
     </div>
+    <br/><br/>
+    <div class="row sections">
+      {% if not user.is_authenticated %}
+        <section class="left">
+          <a class="section-title" href="{% url 'streamwebs:register' %}">
+            Create An account
+          </a>
+          <p>
+            Once you fill out the form and submit you will quickly receive an
+            email that will allow you to continue with registration. Once you
+            click on the link in the email, you will be ready to set your
+            password and start exploring StreamWebs! It is recommended that you
+            make a single account that your class can login.
+          </p>
+        </section>
+        <section>
+          <a class="section-title" href="{% url 'streamwebs:sites' %}">
+            Search Sites
+          </a>
+          <p>
+            StreamWebs allows you to enter your data by location, you can go to
+            the sites page map to see if there is a project site for the
+            location you are interested in. Click on the site peg to navigate to
+            the site page and you are ready to begin entering your data!
+          </p>
+        </section>
+        <section class="left">
+          <a class="section-title" href="{% url 'streamwebs:create_site' %}">
+            Create Site
+          </a>
+          <p>
+            By selecting the “Create Site” button you can create your own
+            project site. Just enter the information about your project site
+            that is requested and personalize your site page with a photo. You
+            are now ready to enter your data!
+          </p>
+        </section>
+        <br/>
+        <section>
+          <a class="section-title" href="{% url 'streamwebs:resources' %}">
+            View Resources
+          </a>
+          <p>
+            StreamWebs offers a number of resources that educators can use to
+            support field experiences including curricula, tutorial videos,
+            watershed monitoring protocols and data sheets.
+          </p>
+        </section>
+      {% else %}
+        <div class="row">
+          <div class="col s12">
+            <section>
+              <a class="section-title" href="{% url 'streamwebs:sites' %}">
+                Search Sites
+              </a>
+              <p>
+                StreamWebs allows you to enter your data by location, you can go to
+                the sites page map to see if there is a project site for the
+                location you are interested in. Click on the site peg to navigate to
+                the site page and you are ready to begin entering your data!
+              </p>
+            </section>
+            <section class="left">
+              <a class="section-title" href="{% url 'streamwebs:create_site' %}">
+                Create Site
+              </a>
+              <p>
+                By selecting the “Create Site” button you can create your own
+                project site. Just enter the information about your project site
+                that is requested and personalize your site page with a photo. You
+                are now ready to enter your data!
+              </p>
+            </section>
+          </div>
+          <div class="col 12">
+            <section>
+              <a class="section-title" href="{% url 'streamwebs:resources' %}">
+                View Resources
+              </a>
+              <p>
+                StreamWebs offers a number of resources that educators can use to
+                support field experiences including curricula, tutorial videos,
+                watershed monitoring protocols and data sheets.
+              </p>
+            </section>
+          </div>
+        </div>
+      {% endif %}
+    </div>
   </div>
-  <br/>
-  <div class="container about">
-    <h5>{% trans "About" %}</h5>
-    <p>
-      The StreamWebs Student Stewardship Network is an educational
-      platform that provides teachers and students with resources to
-      conduct based hands-on watershed stewardship projects. The
-      StreamWebs program works to promote the teaching and learning of
-      field based science, enhance environmental literacy, and provide
-      resources that support
-      <a href="http://www.noaa.gov/explainers/noaa-meaningful-watershed-educational-experience">
-        Meaningful Watershed Education Experiences
-      </a>
-      (MWEEs).
-      <br/><br/>
-      By providing students and teachers open-source, web-based tools
-      for watershed data collection, analysis, and a multimedia showcase
-      for their project and data reports, StreamWebs helps to bridge
-      student field experiences back to the classroom and vice versa.
-      StreamWebs hopes to increase understanding and stewardship of
-      watersheds and related ocean, coastal, riverine, and estuarine
-      ecosystems and to help students and teachers demonstrate their role
-      as vital contributors to watershed sustainability.
-      <br/><br/>
-      StreamWebs is a program of Oregon Sea Grant and Oregon State
-      University Extension Service and is supported by the National
-      Oceanic and Atmospheric Administration (NOAA) Bay and Watershed
-      Education Training (BWET) program.
-      <br/><br/>
-      If you have questions about StreamWebs, or how you can get
-      involved, email
-      <a href="mailto:StreamWebs@oregonstate.edu">
-        StreamWebs@oregonstate.edu
-      </a>.
-    </p>
-  </div>
-
 {% endblock %}
 
 {% block scripts %}
-<script>
-  $(document).ready(function(){
-    {% if messages %}
-      {% for message in messages %}
-      Materialize.toast('{{ message }}', 4000, 'green');
-      {% endfor %}
-    {% endif %}
-  });
-</script>
+  <script>
+    $(document).ready(function(){
+      {% if messages %}
+        {% for message in messages %}
+          Materialize.toast('{{ message }}', 4000, 'green');
+        {% endfor %}
+      {% endif %}
+    });
+  </script>
 {% endblock %}

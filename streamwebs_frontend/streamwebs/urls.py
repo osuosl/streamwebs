@@ -5,6 +5,7 @@ app_name = 'streamwebs'
 urlpatterns = [
     url(r'^i18n/', include('django.conf.urls.i18n')),
     url(r'^$', views.index, name='index'),
+    url(r'^about/$', views.about, name='about'),
 
     url(r'^sites/new/$', views.create_site, name='create_site'),
 
