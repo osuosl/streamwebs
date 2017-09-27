@@ -268,9 +268,10 @@ class PhotoPointForm(forms.ModelForm):
         model = PhotoPoint
         fields = ('compass_bearing', 'distance', 'camera_height', 'notes')
 
+
 class CameraPointForm(forms.ModelForm):
-    school = forms.ModelChoiceField(queryset=School.objects.all().order_by('name'),
-                                    empty_label=None)
+    school = forms.ModelChoiceField(
+        queryset=School.objects.all().order_by('name'), empty_label=None)
     cp_date = forms.DateField(
         widget=forms.DateInput(attrs={'class': 'datepicker'}),
     )
@@ -387,6 +388,7 @@ class RipAquaForm(forms.ModelForm):
         queryset=School.objects.all().order_by('name'), empty_label=None)
     date = forms.DateField(
         widget=forms.DateInput(attrs={'class': 'datepicker'}))
+
     class Meta:
         model = RipAquaticSurvey
         widgets = {
