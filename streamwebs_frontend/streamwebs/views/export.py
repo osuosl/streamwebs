@@ -4,10 +4,52 @@ from django.http import HttpResponse
 
 from streamwebs.models import (
     Macroinvertebrates, Site, Water_Quality, WQ_Sample, RiparianTransect,
-    TransectZone, Canopy_Cover, Soil_Survey,)
+    TransectZone, Canopy_Cover, Soil_Survey, RipAquaticSurvey)
 
 from djqscsv import render_to_csv_response
 import csv
+
+
+def export_rip_aqua(request, site_slug):
+    site = Site.objects.get(site_slug=site_slug)
+    print(site)
+    ripaq = RipAquaticSurvey.objects.filter(site_id=site.id).values(
+        'site__site_name', 'school', 'date', 'weather', 'riffle_count',
+        'pool_count', 'silt', 'sand', 'gravel', 'cobble', 'boulders',
+        'bedrock', 'small_debris', 'medium_debris', 'large_debris',
+        'comments', 'coniferous_trees', 'deciduous_trees',
+        'shrubs', 'small_plants', 'ferns', 'grasses', 'species',
+        'significance', 'wildlife_type', 'wildlife_comments'
+    )
+    return render_to_csv_response(
+        ripaq, field_header_map={
+            'site__site_name': 'site',
+            'date': 'date',
+            'school': 'school',
+            'weather': 'weather',
+            'riffle_count': '# of riffles', 'pool_count': '# of pools',
+            'silt': 'silt count',
+            'sand': 'sand count',
+            'gravel': 'gravel count',
+            'cobble': 'cobble count',
+            'boulders': 'boulder count',
+            'bedrock': 'bedrock count',
+            'small_debris': 'small debris',
+            'medium_debris': 'medium_debris',
+            'large_debris': 'large debris',
+            'comments': 'comments',
+            'coniferous_trees': '# of coniferous trees',
+            'deciduous_trees': '#of deciduous trees',
+            'shrubs': '# of shrubs',
+            'small_plants': '# of small plants',
+            'ferns': '# of ferns',
+            'grasses': '# of grasses',
+            'species': '# of species',
+            'significance': 'significance',
+            'wildlife_type': 'wildlife type',
+            'wildlife_comments': 'wildlife comments'
+            }
+        )
 
 
 def export_wq(request, site_slug):

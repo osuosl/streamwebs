@@ -1,0 +1,203 @@
+{% extends 'streamwebs/base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+{% load filters %}
+
+{% block title %}{% trans "Riparian Aquatic Survey Data" %}{% endblock %}
+
+{% block content %}
+
+<div class="container">
+  {% if messages %}
+  <div class="center-content">
+    {% for message in messages %}
+    <strong>{{ message }}</strong>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <div class="container">
+    <h3 align="center">
+      <a href="{% url 'streamwebs:site' site.site_slug %}">
+        {{ site.site_name }}
+      </a>
+    </h3>
+    <h4 align="center"> {% trans "Riparian Aquatic Data" %}: {{ data.date|date:"m-d-y" }}</h4>
+    <h5 align="center">{{ data.school }}</h5>
+    <br/>
+
+
+    <h4 class="teal-text">Substrates</h4>
+    <div class="row">
+      <div class="col s4">
+        <p>
+          <b>
+            {% trans "Silt" %}
+          </b>: {{ data.silt }}
+        </p>
+      </div>
+      <div class="col s4">
+        <p>
+          <b>
+            {% trans "Sand" %}
+          </b>: {{ data.sand }}
+        </p>
+      </div>
+      <div class="col s4">
+        <p>
+          <b>
+            {% trans "Gravel" %}
+          </b>: {{ data.gravel }}
+        </p>
+      </div>
+      <div class="col s4">
+        <p>
+          <b>
+            {% trans "Cobble" %}
+          </b>: {{ data.cobble }}
+        </p>
+      </div>
+      <div class="col s4">
+        <p>
+          <b>
+            {% trans "Boulders" %}
+          </b>: {{ data.boulders }}
+        </p>
+      </div>
+      <div class="col s4">
+        <p>
+          <b>
+            {% trans "Bedrock" %}
+          </b>: {{ data.bedrock }}
+        </p>
+      </div>
+    </div>
+
+    <h4 class='teal-text'>Instream Woody Debris</h4>
+    <div class="row">
+      <div class="col s4">
+        <p>
+          <b>
+            {% trans 'Small Debris' %
+          </b>: {{ data.small_debris }}
+        </p>
+      </div>
+
+      <div class="col s4">
+        <p>
+          <b>
+            {% trans 'Medium Debris' %}
+          </b>: {{ data.medium_debris }}
+        </p>
+      </div>
+
+      <div class="col s4">
+        <p>
+          <b>
+            {% trans 'Large Debris' %}
+          </b>: {{ data.large_debris }}
+        </p>
+      </div>
+
+    </div>
+
+    <h4 class='teal-text'>Vegetation Type</h4>
+    <div class="row">
+      <div class="col s4">
+        <p>
+          <b>
+            {% trans "Coniferous Trees" %}
+          </b>: {{ data.coniferous_trees}}
+        </p>
+      </div>
+      <div class="col s4">
+        <p>
+          <b>
+            {% trans "Deciduous Trees" %}
+          </b>: {{ data.deciduous_trees }}
+        </p>
+      </div>
+      <div class="col s4">
+        <p>
+          <b>
+            {% trans "Shrubs" %}
+          </b>: {{ data.shrubs }}
+        </p>
+      </div>
+      <div class="col s4">
+        <p>
+          <b>{% trans "Small Plants" %}</b>: {{ data.small_plants }}
+        </p>
+      </div>
+      <div class="col s4">
+        <p>
+          <b>
+            {% trans "Ferns" %}
+          </b>: {{ data.ferns }}
+        </p>
+      </div>
+      <div class="col s4">
+        <p>
+          <b>{% trans "Grasses" %}</b>: {{ data.grasses }}
+        </p>
+      </div>
+    </div>
+
+    <h4 class="teal-text">Plants Identified</h4>
+    <div class="row">
+      <div class="col s12">
+        <p>
+          <b>
+            {% trans 'Species' %}
+          </b>: {{ data.species }}
+        </p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s12 ">
+        <p>
+          <b>
+            {% trans 'Significance' %}
+          </b>: {{ data.significance }}
+        </p>
+      </div>
+    </div>
+
+    <h4 class="teal-text">Wildlife and Birds Identified</h4>
+    <div class="row">
+      <div class="col s12">
+        <p>
+          <b>
+            {% trans 'Type, Species, Track or Sign' %}
+          </b>: {{ data.wildlife_type }}
+        </p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s12">
+        <p>
+          <b>
+            {% trans 'Number or Comments' %}
+          </b>: {{ data.wildlife_comments }}
+        </p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s6">
+        <p>
+          <b>
+            {% trans 'Number of Riffles' %}
+          </b>: {{ data.riffle_count }}
+        </p>
+      </div>
+      <div class="col s6">
+        <p>
+          <b>
+            {% trans 'Number of Pools' %}</b>: {{ data.pool_count }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {%  endblock %}

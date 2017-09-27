@@ -50,6 +50,15 @@ urlpatterns = [
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/macro/export/$',
         views.export_macros, name='export_macros'),
 
+    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/rip_aqua/edit/$',
+        views.riparian_aquatic_edit, name='rip_aqua_edit'),
+
+    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/rip_aqua/(?P<data_id>\d+)/$',
+        views.riparian_aquatic_view, name='rip_aqua_view'),
+
+    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/rip_aqua/export/$',
+        views.export_rip_aqua, name='export_rip_aqua'),
+
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/transect/(?P<data_id>\d+)/',
         views.riparian_transect_view, name='riparian_transect'),
 

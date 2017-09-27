@@ -25,6 +25,7 @@ class SiteTestCase(TestCase):
             # Datasheets
             'water_quality': models.ManyToOneRel,
             'macroinvertebrates': models.ManyToOneRel,
+            'ripaquaticsurvey': models.ManyToOneRel,
             'ripariantransect': models.ManyToOneRel,
             'canopy_cover': models.ManyToOneRel,
             'camerapoint': models.ManyToOneRel,  # "Photo Point Monitoring"
@@ -44,7 +45,7 @@ class SiteTestCase(TestCase):
 
     def test_no_extra_fields(self):
         # the following is equivalent to MyField._meta.get_all_field_names()
-        # which was deprecated in Django 1.9
+        # which was deprecated  bin Django 1.9
         fields = list(set(chain.from_iterable(
             (field.name, field.attname) if hasattr(field, 'attname') else
             (field.name,) for field in Site._meta.get_fields()
