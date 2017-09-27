@@ -1862,7 +1862,6 @@ $(function () {
         $(this).addClass('disabled');
         $('div.graph').removeClass("l6").addClass("l10 offset-l1");
         $('div.graph').css("width", "");
-        centerHover();
         createGraph();
     });
 
@@ -1871,7 +1870,6 @@ $(function () {
     }).on('mouseleave', function() {
         $(this).parent().find('div.data-info').hide();
     });
-    centerHover();
     createGraph();
 });
 
@@ -1885,7 +1883,6 @@ $(window).resize(function () {
     if (window.hasSiteTwo) {
         $('div.graph').css("width", "50%");
     }
-    centerHover();
     createGraph();
 });
 
@@ -1907,7 +1904,6 @@ var loadSite2 = function loadSite2(site_slug) {
         $('#remove_site').removeClass("disabled");
         $("div.graph").removeClass("l10 offset-l1").addClass("l6")
             .css("width", "50%");
-        centerHover();
         createGraph();
         $('div.search-results').hide();
         $('input#search').val('');
