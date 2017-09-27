@@ -5,6 +5,7 @@ app_name = 'streamwebs'
 urlpatterns = [
     url(r'^i18n/', include('django.conf.urls.i18n')),
     url(r'^$', views.index, name='index'),
+    url(r'^about/$', views.about, name='about'),
 
     url(r'^sites/new/$', views.create_site, name='create_site'),
 
@@ -78,6 +79,9 @@ urlpatterns = [
 
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/camera/edit/',
         views.add_camera_point, name='camera_point_add'),
+
+    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/camera/$',
+        views.site_camera, name='site_camera'),
 
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/soil/(?P<data_id>\d+)/$',
         views.soil_survey, name='soil'),

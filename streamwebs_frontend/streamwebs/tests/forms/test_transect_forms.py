@@ -34,7 +34,9 @@ class RiparianTransectFormTestCase(TestCase):
     def setUp(self):
         self.expected_fields = (
             'school',
-            'date_time',
+            'date',
+            'time',
+            'ampm',
             'weather',
             'slope',
             'notes',

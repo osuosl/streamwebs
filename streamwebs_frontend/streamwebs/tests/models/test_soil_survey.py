@@ -14,7 +14,7 @@ class SoilSurveyTestCase(TestCase):
         self.expected_fields = {
             'school': models.ForeignKey,
             'school_id': models.ForeignKey,
-            'date': models.DateTimeField,
+            'date_time': models.DateTimeField,
             'weather': models.CharField,
             'site': models.ForeignKey,
             'site_id': models.ForeignKey,

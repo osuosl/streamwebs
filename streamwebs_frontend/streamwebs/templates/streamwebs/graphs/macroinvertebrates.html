@@ -4,12 +4,18 @@
 {% block title %}{% trans "Macroinvertebrates" %} - {{ site.site_name }} -{% endblock %}
 
 {% block body_title %}
-  <a href="/sites/{{ site.site_slug }}">{{ site.site_name }}</a>:
-  {% trans "Macroinvertebrates" %}
 {% endblock %}
 
 {% block content %}
+  <a href="{% url 'streamwebs:site' site.site_slug %}" id="back"
+      class="wave-effects wave-light btn white-text teal darken-3">
+    <i class="material-icons">chevron_left</i>
+    Back to <span>{{ site.site_name }}</span>
+  </a>
   <div class="container">
+    <h3 align="center" class="teal-text">
+      {{ site.site_name }} {% trans "Macroinvertebrates" %}
+    </h3>
     <div class="row">
       <form action="">
         <div id="type">

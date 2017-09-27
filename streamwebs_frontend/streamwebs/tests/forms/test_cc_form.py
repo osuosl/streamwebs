@@ -7,8 +7,21 @@ class Canopy_Cover_Form_TestCase(TestCase):
     def setUp(self):
         self.expected_fields = (
             'school',
-            'date_time',
+            'date',
+            'time',
+            'ampm',
             'weather',
+            'est_canopy_cover',
+            'north_cc',
+            'east_cc',
+            'south_cc',
+            'west_cc'
+        )
+        self.required_fields = (
+            'school',
+            'date',
+            'time',
+            'ampm',
             'est_canopy_cover',
             'north_cc',
             'east_cc',
@@ -25,5 +38,5 @@ class Canopy_Cover_Form_TestCase(TestCase):
     def test_Canopy_Cover_Form_required_fields(self):
         """Tests that required fields in Canopy Cover form are required."""
         cc_form = Canopy_Cover_Form()
-        for field in self.expected_fields:
+        for field in self.required_fields:
             self.assertEqual(cc_form.base_fields[field].required, True)

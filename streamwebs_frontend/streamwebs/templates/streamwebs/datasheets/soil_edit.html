@@ -6,16 +6,19 @@
 {% block title %}{% trans "Add/Edit Soil Survey" %}{% endblock %}
 
 {% block content %}
+  <a href="{% url 'streamwebs:site' site.site_slug %}" id="back"
+      class="wave-effects wave-light btn white-text teal darken-3">
+    <i class="material-icons">chevron_left</i>
+    Back to <span>{{ site.site_name }}</span>
+  </a>
   <div class="container">
     {% if added %}
       <div class="center-content">
         <strong>{% trans "You have successfully submitted your Soil Survey data sheet." %}</strong>
       </div>
     {% else %}
-      <h3 align="center">
-        <a href="{% url 'streamwebs:site' site.site_slug %}">
-          {{ site.site_name }}
-        </a>
+      <h3 align="center" class="teal-text">
+        {{ site.site_name }}
       </h3>
       <h4 align="center">{% trans "New Riparian Soil Survey" %}</h4>
       <form id='soil_from' method='post' action='{{ request.path }}'>
@@ -23,23 +26,36 @@
         <br/>
         <div class="row">
           <div class="col s12">
-            <p>{{ soil_form.school.label }}</p>
-            <p>{{ soil_form.school.errors | striptags }}</p>
-            <p>{{ soil_form.school }}</p>
+            {{ soil_form.school.label }}
+            {{ soil_form.school.errors }}
+            {{ soil_form.school }}
           </div>
+        </div>
+        <div class="row">
           <div class="col s12">
             <a href="{% url 'streamwebs:create_school' %}" class="btn waves-effect waves-light teal darken-3">{% trans "Add A School/Organization" %}</a>
           </div>
+        </div>
+        <div class="row">
           <div class="col s6">
-            <p>{{ soil_form.date.label }} (YYYY-MM-DD / HH:MM:SS)</p>
-            <p>{{ soil_form.date.errors | striptags }}</p>
-            <p>{{ soil_form.date }}</p>
+            {{ soil_form.date.label }} (YYYY-MM-DD)
+            {{ soil_form.date.errors }}
+            {{ soil_form.date }}
           </div>
-
+          <div class="col s3">
+            {{ soil_form.time.label }} (HH:MM)
+            {{ soil_form.time.errors }}
+            {{ soil_form.time }}
+          </div>
+          <div class="col s3">
+            {{ soil_form.ampm.label }}
+            {{ soil_form.ampm.errors }}
+            {{ soil_form.ampm }}
+          </div>
           <div class="col s6">
-            <p>{{ soil_form.weather.label }}</p>
-            <p>{{ soil_form.weather.errors | striptags }}</p>
-            <p>{{ soil_form.weather }}</p>
+            {{ soil_form.weather.label }}
+            {{ soil_form.weather.errors }}
+            {{ soil_form.weather }}
           </div>
         </div>
 
@@ -47,9 +63,9 @@
         <!-- Container so that radio buttons render vertically -->
         <div class="container">
           <div class="row">
-            <div class="col s4 pull-s2">
+            <div class="col s4 pull-s2 landscape-pos">
               <p>{% trans "Landscape Position" %}</p>
-              {{ soil_form.landscape_pos.errors| striptags }}
+              {{ soil_form.landscape_pos.errors }}
               <div class="input-field">
                 {% for radio in soil_form.landscape_pos %}
                   {{ radio.tag }}
@@ -59,9 +75,9 @@
                 {% endfor %}
               </div>
             </div>
-            <div class="col s4 push-s1">
+            <div class="col s4 push-s1 cover-type">
               <p>{% trans "Cover Type" %}</p>
-              {{ soil_form.cover_type.errors| striptags }}
+              {{ soil_form.cover_type.errors }}
               <div class="input-field">
                 {% for radio in soil_form.cover_type %}
                   {{ radio.tag }}
@@ -71,9 +87,9 @@
                 {% endfor %}
               </div>
             </div>
-            <div class="col s4 push-s3">
+            <div class="col s4 push-s3 land-use">
               <p>{% trans "Land Use" %}</p>
-              {{ soil_form.land_use.errors| striptags }}
+              {{ soil_form.land_use.errors }}
               <div class="input-field">
                 {% for radio in soil_form.land_use %}
                   {{ radio.tag }}
@@ -91,15 +107,15 @@
           <div class="col s6">
             <div class="input-field">
               {{ soil_form.soil_type.label }}
-              {{ soil_form.soil_type.errors | striptags }}
+              {{ soil_form.soil_type.errors }}
               {{ soil_form.soil_type }}
             </div>
           </div>
 
           <div class="col s6">
             <div class="input-field">
-              {{ soil_form.distance.label }}
-              {{ soil_form.distance.errors | striptags }}
+              {{ soil_form.distance.label }} (ft)
+              {{ soil_form.distance.errors }}
               {{ soil_form.distance }}
             </div>
           </div>
@@ -108,13 +124,13 @@
         <div class="row">
           <div class="input-field">
             {{ soil_form.site_char.label }}
-            {{ soil_form.site_char.errors | striptags }}
+            {{ soil_form.site_char.errors }}
             {{ soil_form.site_char }}
           </div>
         </div>
 
         <input class="btn waves-effect waves-light teal darken-3" type='submit'
-               name='submit' value='{% trans "Submit" %}'/>
+               name='submit' id='submit' value='{% trans "Submit" %}'/>
       </form>
     {% endif %}
   </div>  <!-- end container -->
@@ -123,4 +139,27 @@
 {% block scripts %}
   <script type="application/javascript"
           src="{% static 'streamwebs/js/data.js' %}"></script>
+  <script type="text/javascript">
+    var radioFields = [];
+    radioFields.push({name: 'landscape position', val: $('div.landscape-pos input')});
+    radioFields.push({name: 'cover type', val: $('div.cover-type input')});
+    radioFields.push({name: 'land use', val: $('div.land-use input')});
+
+    var checked = function checked(inputs) {
+      var checked;
+      checked = inputs.toArray().some(function(e) {
+        return e.checked;
+      });
+      return checked;
+    }
+
+    $('input#submit').on('click', function() {
+      for (var i = 0; i < radioFields.length; i++) {
+        if (!checked(radioFields[i].val)) {
+          Materialize.toast("Please select a " + radioFields[i].name, 4000, 'red');
+          return;
+        }
+      }
+    });
+  </script>
 {% endblock %}

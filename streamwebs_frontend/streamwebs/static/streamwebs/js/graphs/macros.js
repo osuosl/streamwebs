@@ -149,7 +149,9 @@ var useLineGraph = function useLineGraph() {
             return x;
         })
         .filter(function (x) {
-            return x.date.getTime() === curr.date.getTime();
+            d1 = new Date(x.date);
+            d2 = new Date(curr.date);
+            return d1.getTime() === d2.getTime();
         });
         if (data === [] || data.length === 0) {
             /*
@@ -233,9 +235,9 @@ var useLineGraph = function useLineGraph() {
     });
 
     var container = outerContainer;
-    var margin = {top: 20, right: 200, bottom: 50, left: 40};
+    var margin = {top: 20, right: 40, bottom: 50, left: 40};
     var width = container.width() - margin.left - margin.right;
-    var height = 250 - margin.top - margin.bottom;
+    var height = 320 - margin.top - margin.bottom;
 
     var x = d3.scaleTime()
         .range([0, width]);
@@ -267,7 +269,7 @@ var useLineGraph = function useLineGraph() {
 
     var svg = d3.select('#graph-' + siteId).append('svg')
         .attr('width', width + margin.left + margin.right)
-        .attr('height', height + margin.top + margin.bottom);
+        .attr('height', height + margin.top + margin.bottom + 100);
 
     var g = svg.append('g')
         .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
@@ -286,7 +288,6 @@ var useLineGraph = function useLineGraph() {
     g.append('g')
         .attr('class', 'axis axis--y')
         .call(d3.axisLeft(y));
-
     if (formatted.length > 0) {
         var type = g.selectAll('.type')
             .data(types)
@@ -316,13 +317,31 @@ var useLineGraph = function useLineGraph() {
                 return z(d.name);
             });
 
+        var line = d3.line()
+            .x(function(d) {
+                return x(new Date(d.date));
+            })
+            .y(function(d) {
+                return y(d.value);
+            });
+
+        type.selectAll('svg g')
+            .data(types)
+            .enter().append('path')
+            .attr('class', 'line')
+            .attr('d', function(d) { return line(d.values); })
+            .style('stroke', function(d) {
+              return z(d.name);
+            });
+
         var legend = g.selectAll('.legend')
             .data(types)
             .enter()
             .append('g')
             .attr('class', 'legend')
             .attr('transform', function (d, i) {
-                return 'translate(' + (width + margin.left + 5) + ', ' + i * 20 + ')';
+                return 'translate(' + margin.left + ', ' +
+                    (height + margin.top + margin.bottom + i * 20) + ')';
             })
             .style('border', '1px solid black')
             .style('font', '12px sans-serif');
@@ -345,6 +364,17 @@ var useLineGraph = function useLineGraph() {
             .text(function (d) {
                 return d.name;
             });
+
+        var dateRange = 'Date Range: ' + formatted[0].date + ' ~ ' +
+            formatted[formatted.length - 1].date;
+
+        g.append('text')
+            .attr('x', 260)
+            .attr('y', height + margin.bottom+ 40)
+            .attr('dy', '.35em')
+            .style('font-size', '14px')
+            .text(dateRange);
+
     }
 };
 

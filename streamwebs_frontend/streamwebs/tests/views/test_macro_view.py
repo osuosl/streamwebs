@@ -43,4 +43,5 @@ class MacroViewTestCase(TestCase):
         self.assertEqual(self.response.context['rating'], 'Excellent')
 
     def test_EPT(self):
-        self.assertContains(self.response, 'Percent EPT: 15.24%')
+        self.assertContains(self.response, 'Percent EPT: ')
+        self.assertContains(self.response, '15.24%')

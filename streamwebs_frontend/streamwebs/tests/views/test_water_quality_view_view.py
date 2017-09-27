@@ -39,7 +39,7 @@ class AddWaterQualityTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(
             response,
-            'streamwebs/datasheets/water_quality.html'
+            'streamwebs/datasheets/water_quality_view.html'
         )
         self.assertContains(response, u'Test School')
         self.assertContains(response, u"Call your mom on Mothers Day!")

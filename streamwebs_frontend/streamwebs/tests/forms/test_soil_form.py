@@ -8,6 +8,8 @@ class SoilSurveyFormTestCase(TestCase):
         self.expected_fields = (
             'school',
             'date',
+            'time',
+            'ampm',
             'weather',
             'landscape_pos',
             'cover_type',

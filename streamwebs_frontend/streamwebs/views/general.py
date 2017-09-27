@@ -17,10 +17,9 @@ from django.conf import settings
 from streamwebs.forms import (
     UserForm, UserProfileForm, RiparianTransectForm, MacroinvertebratesForm,
     PhotoPointImageForm, PhotoPointForm, CameraPointForm, WQSampleForm,
-    WQSampleFormReadOnly, WQForm, WQFormReadOnly, SiteForm, Canopy_Cover_Form,
-    SoilSurveyForm, SoilSurveyFormReadOnly, StatisticsForm, TransectZoneForm,
-    BaseZoneInlineFormSet, ResourceForm, AdminPromotionForm, UserEmailForm,
-    UserPasswordForm, SchoolForm)
+    WQForm, SiteForm, Canopy_Cover_Form, SoilSurveyForm, StatisticsForm,
+    TransectZoneForm, BaseZoneInlineFormSet, ResourceForm, AdminPromotionForm,
+    UserEmailForm, UserPasswordForm, SchoolForm)
 
 from streamwebs.models import (
     Macroinvertebrates, Site, Water_Quality, WQ_Sample, RiparianTransect,
@@ -32,12 +31,22 @@ import copy
 import datetime
 
 
+def toDateTime(date, time, period):
+    date_time = datetime.datetime.strptime((date + " " + time + " " + period),
+                                           '%Y-%m-%d %I:%M %p')
+    return date_time
+
+
 def _timestamp(dt):
     return (dt - datetime.datetime(1970, 1, 1)).total_seconds()
 
 
 def index(request):
     return render(request, 'streamwebs/index.html', {})
+
+
+def about(request):
+    return render(request, 'streamwebs/about.html', {})
 
 
 def create_school(request):
@@ -113,11 +122,11 @@ def site(request, site_slug):
     """ View an individual site """
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     wq_sheets = Water_Quality.objects.filter(site_id=site.id)
-    wq_sheets = list(wq_sheets.order_by('-date').values())
+    wq_sheets = list(wq_sheets.order_by('-date_time').values())
     wq_sheets_new = []
     for x in wq_sheets:
         wq_data = {'id': x['id'], 'uri': 'water', 'type': 'Water Quality',
-                   'date': x['date']}
+                   'date': x['date_time'].date()}
         if 'school_id' in x and x['school_id']:
             wq_data['school_id'] = x['school_id']
         else:
@@ -180,11 +189,11 @@ def site(request, site_slug):
     ppm_sheets = ppm_sheets_new
 
     soil_sheets = Soil_Survey.objects.filter(site_id=site.id)
-    soil_sheets = list(soil_sheets.order_by('-date').values())
+    soil_sheets = list(soil_sheets.order_by('-date_time').values())
     soil_sheets_new = []
     for x in soil_sheets:
         soil_data = {'id': x['id'], 'uri': 'soil', 'type': 'Soil Survey',
-                     'date': x['date']}
+                     'date': x['date_time'].date()}
         if 'school_id' in x and x['school_id']:
             soil_data['school_id'] = x['school_id']
         else:
@@ -222,7 +231,8 @@ def site(request, site_slug):
         'has_macros': len(macro_sheets) > 0,
         'has_transects': len(transect_sheets) > 0,
         'has_cc': len(canopy_sheets) > 0,
-        'has_soil': len(soil_sheets) > 0
+        'has_soil': len(soil_sheets) > 0,
+        'has_camera': len(ppm_sheets) > 0,
     })
 
 
@@ -491,7 +501,7 @@ def water_histogram(request, site_slug, data_type, date):
     site = Site.objects.get(site_slug=site_slug)
     day = datetime.datetime.strptime(date, '%Y-%m-%d').date()
     wq_data = Water_Quality.objects.filter(site=site)
-    data = [m.to_dict() for m in wq_data if m.date == day]
+    data = [m.to_dict() for m in wq_data if m.date_time.date() == day]
     if data_type == 'pH':
         data_name = data_type
     elif data_type == 'bod':
@@ -572,14 +582,19 @@ def macroinvertebrate_edit(request, site_slug):
 
     # the following are the form's fields broken up into chunks to
     # facilitate CSS manipulation in the template
-    intolerant = list(macro_form)[6:12]
-    somewhat = list(macro_form)[12:21]
-    tolerant = list(macro_form)[21:27]
+    intolerant = list(macro_form)[8:14]
+    somewhat = list(macro_form)[14:23]
+    tolerant = list(macro_form)[23:29]
 
     if request.method == 'POST':
         macro_form = MacroinvertebratesForm(data=request.POST)
         if macro_form.is_valid():
             macro = macro_form.save(commit=False)
+            macro.date_time = toDateTime(
+                macro_form.data['date'],
+                macro_form.data['time'],
+                macro_form.data['ampm']
+            )
             macro.site = site
             macro.save()
             added = True
@@ -664,6 +679,11 @@ def riparian_transect_edit(request, site_slug):
         if (zone_formset.is_valid() and transect_form.is_valid()):
             zones = zone_formset.save(commit=False)     # save forms to objs
             transect = transect_form.save()             # save form to object
+            transect.date_time = toDateTime(
+                transect_form.data['date'],
+                transect_form.data['time'],
+                transect_form.data['ampm']
+            )
             transect.site = site
             transect.save()                             # save object
 
@@ -719,6 +739,11 @@ def canopy_cover_edit(request, site_slug):
 
         if (canopy_cover_form.is_valid()):
             canopy_cover = canopy_cover_form.save()
+            canopy_cover.date_time = toDateTime(
+                canopy_cover_form.data['date'],
+                canopy_cover_form.data['time'],
+                canopy_cover_form.data['ampm']
+            )
             canopy_cover.site = site
             canopy_cover.save()
             messages.success(
@@ -738,6 +763,19 @@ def canopy_cover_edit(request, site_slug):
         'streamwebs/datasheets/canopy_cover_edit.html', {
             'canopy_cover_form': canopy_cover_form,
             'site': site
+        }
+    )
+
+
+def site_camera(request, site_slug):
+    site = Site.objects.filter(active=True).get(site_slug=site_slug)
+    cp = CameraPoint.objects.filter(site_id=site.id)
+
+    return render(
+        request,
+        'streamwebs/site_camera.html', {
+            'site': site,
+            'cp': cp,
         }
     )
 
@@ -772,12 +810,12 @@ def add_camera_point(request, site_slug):
     PhotoPointInlineFormset = inlineformset_factory(  # photo point formset (3)
         CameraPoint, PhotoPoint,
         form=PhotoPointForm,
-        extra=3, max_num=3, min_num=3                 # three PPs per CP
+        extra=1, max_num=1, min_num=1                 # three PPs per CP
     )
     PPImageModelFormset = modelformset_factory(       # pp image formset (3)
         PhotoPointImage,
         form=PhotoPointImageForm,
-        extra=3, max_num=3, min_num=3                 # one PPI for each PP
+        extra=1, max_num=1, min_num=1                 # one PPI for each PP
     )
 
     if request.method == 'POST':
@@ -853,6 +891,9 @@ def view_pp_and_add_img(request, site_slug, cp_id, pp_id):
     """View a specific photopoint and add photos while you're at it"""
     added = False
     pp = PhotoPoint.objects.get(id=pp_id)
+    site = Site.objects.get(site_slug=site_slug)
+    cp = CameraPoint.objects.get(id=cp_id)
+
     PPImageModelFormset = modelformset_factory(
         PhotoPointImage,
         form=PhotoPointImageForm,
@@ -891,6 +932,8 @@ def view_pp_and_add_img(request, site_slug, cp_id, pp_id):
     return render(
         request,
         'streamwebs/datasheets/photo_point_view.html', {
+            'site': site,
+            'cp': cp,
             'pp': pp,
             'ppi_formset': ppi_formset,
             'pp_images': all_images,
@@ -957,27 +1000,16 @@ def add_photo_point(request, site_slug, cp_id):
 def water_quality(request, site_slug, data_id):
     """ View a water quality sample """
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
-    wq_form = WQFormReadOnly(instance=Water_Quality.objects.get(id=data_id))
-
-    WQInlineFormSet = modelformset_factory(
-        WQ_Sample,
-        form=WQSampleFormReadOnly,
-        can_delete=False,
-        max_num=4, min_num=4,
-        extra=4      # always return exactly 4 samples
-    )
-    sample_formset = WQInlineFormSet(
-        queryset=WQ_Sample.objects.filter(water_quality=data_id)
-    )
+    wq_data = Water_Quality.objects.get(id=data_id)
+    wq_samples = WQ_Sample.objects.filter(water_quality=data_id)\
+        .order_by('sample')
 
     return render(
-        request, 'streamwebs/datasheets/water_quality.html',
+        request, 'streamwebs/datasheets/water_quality_view.html',
         {
-            'editable': False,
             'site': site,
-            'wq_form': wq_form,
-            'sample_formset': sample_formset,
-            'title': _('Water Quality Data')
+            'wq_data': wq_data,
+            'wq_samples': wq_samples,
         }
     )
 
@@ -1001,6 +1033,11 @@ def water_quality_edit(request, site_slug):
         wq_form = WQForm(data=request.POST)
         if (sample_formset.is_valid() and wq_form.is_valid()):
             water_quality = wq_form.save()   # save form to object
+            water_quality.date_time = toDateTime(
+                wq_form.data['date'],
+                wq_form.data['time'],
+                wq_form.data['ampm']
+            )
             water_quality.site = site
             water_quality.save()             # save object to db
             allSamples = sample_formset.save(commit=False)
@@ -1020,13 +1057,11 @@ def water_quality_edit(request, site_slug):
         wq_form = WQForm()
         sample_formset = WQInlineFormSet(instance=Water_Quality())
     return render(
-        request, 'streamwebs/datasheets/water_quality.html',
+        request, 'streamwebs/datasheets/water_quality_edit.html',
         {
-            'editable': True,
             'site': site,
             'wq_form': wq_form,
             'sample_formset': sample_formset,
-            'title': _('Add water quality sample')
         }
     )
 
@@ -1034,11 +1069,11 @@ def water_quality_edit(request, site_slug):
 def soil_survey(request, site_slug, data_id):
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     soil_data = Soil_Survey.objects.get(id=data_id)
-    soil_form = SoilSurveyFormReadOnly(instance=soil_data)
     school = soil_data.school
+
     return render(
         request, 'streamwebs/datasheets/soil_view.html', {
-            'soil_form': soil_form, 'site': site, 'school': school
+            'soil_data': soil_data, 'site': site, 'school': school
         }
     )
 
@@ -1056,6 +1091,11 @@ def soil_survey_edit(request, site_slug):
 
         if soil_form.is_valid():
             soil = soil_form.save(commit=False)
+            soil.date_time = toDateTime(
+                soil_form.data['date'],
+                soil_form.data['time'],
+                soil_form.data['ampm']
+            )
             soil.site = site
             soil.save()
             messages.success(
@@ -1113,7 +1153,8 @@ def admin_site_statistics(request):
     else:
         users = User.objects.filter(last_login__range=(user_start, end))
 
-    num_soil = Soil_Survey.objects.filter(date__range=(start, end)).count()
+    num_soil = Soil_Survey.objects.filter(
+        date_time__range=(start, end)).count()
     num_transect = RiparianTransect.objects.filter(
         date_time__range=(start, end)).count()
     num_camera = CameraPoint.objects.filter(
@@ -1122,12 +1163,13 @@ def admin_site_statistics(request):
         date_time__range=(start, end)).count()
     num_canopy = Canopy_Cover.objects.filter(
         date_time__range=(start, end)).count()
-    num_water = Water_Quality.objects.filter(date__range=(start, end)).count()
+    num_water = Water_Quality.objects.filter(
+        date_time__range=(start, end)).count()
     total = (num_soil + num_transect + num_camera + num_macro + num_canopy +
              num_water)
 
     soil_sites = set(Site.objects.filter(
-        soil_survey__date__range=(start, end)))
+        soil_survey__date_time__range=(start, end)))
     transect_sites = set(Site.objects.filter(
         ripariantransect__date_time__range=(start, end)))
     camera_sites = set(Site.objects.filter(
@@ -1137,12 +1179,12 @@ def admin_site_statistics(request):
     canopy_sites = set(Site.objects.filter(
         canopy_cover__date_time__range=(start, end)))
     water_sites = set(Site.objects.filter(
-        water_quality__date__range=(start, end)))
+        water_quality__date_time__range=(start, end)))
     all_sites = (soil_sites | transect_sites | camera_sites | macro_sites |
                  canopy_sites | water_sites)
 
     soil_sch = set(School.objects.filter(
-        soil_survey__date__range=(start, end)))
+        soil_survey__date_time__range=(start, end)))
     # transect_sch = set(School.objects.filter(
     #     ripariantransect__date_time__range=(start, end)))
     # camera_sch = set(School.objects.filter(
@@ -1152,7 +1194,7 @@ def admin_site_statistics(request):
     canopy_sch = set(School.objects.filter(
         canopy_cover__date_time__range=(start, end)))
     water_sch = set(School.objects.filter(
-        water_quality__date__range=(start, end)))
+        water_quality__date_time__range=(start, end)))
     # all_schools = (soil_sch | transect_sch | camera_sch | macro_sch |
     #                canopy_sch | water_sch)
     all_schools = soil_sch | canopy_sch | water_sch

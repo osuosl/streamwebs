@@ -8,7 +8,7 @@ class ViewSoilSurveyTestCase(TestCase):
         self.site = Site.test_objects.create_site('Another site')
         self.school = School.test_objects.create_school('rahrahrah')
         self.soil_survey = Soil_Survey.objects.create(
-            site=self.site, school=self.school, date='2016-10-20 14:28',
+            site=self.site, school=self.school, date_time='2016-10-20 14:28',
             weather='cloudy', landscape_pos='Stream Bank', cover_type='Shrubs',
             land_use='Other', distance=2,
             site_char='Lots of rocks around', soil_type='Silt Loam')
@@ -36,6 +36,6 @@ class ViewSoilSurveyTestCase(TestCase):
         self.assertContains(self.response, 'Landscape Position')
         self.assertContains(self.response, 'Cover Type')
         self.assertContains(self.response, 'Land Use')
-        self.assertContains(self.response, 'Soil type')
+        self.assertContains(self.response, 'Soil Type')
         self.assertContains(self.response, 'Distance')
         self.assertContains(self.response, 'Distinguishing site')

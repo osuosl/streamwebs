@@ -138,10 +138,61 @@ div#footer {
     top: 0;
     z-index: 1;
     color: white;
+    height: 100%;
 }
 
+div#footer-content {
+    height: 100%;
+    width: 900px;
+    margin: 0 auto;
+}
 
+div#footer-links {
+    height: 124px;
+    width: 150px;
+    float:left;
+    margin: 30px 0px 0px 150px;
+    padding: 10px 10px 10px 10px;
+    background: rgba(255, 255, 255, 0.3);
+}
 
+div#footer-links a.footer-link {
+    display: block;
+    font-size: 18px;
+    color: white;
+    height: 26px;
+    line-height: 26px;
+    padding-left: 10px;
+}
+
+div#footer-links a.footer-link:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+div#footer-branding {
+    height: 220px;
+    width: 280px;
+    float: right;
+    margin-right: 40px;
+    margin-top: 30px;
+}
+
+div#footer-branding img#b-wet {
+    width: 120px;
+    height: 96px;
+}
+
+div#footer-branding img#seagrant {
+    margin-left: 10px;
+    width: 139px;
+    height: 96px;
+}
+
+div#footer-branding img#osu {
+    margin-top: 10px;
+    width: 270px;
+    height: 86px;
+}
 
 /* CSS for D3 graphs; ALL FREE TO BE CHANGED */
 .graph {
@@ -267,12 +318,24 @@ div.center-content {
     color: #FF5722;
 }
 
-strong {
-    color: #FF5722;
+a#back {
+    margin-left: 30px;
+}
+
+a#back span {
+  text-decoration: underline;
+}
+
+span.optional {
+    color: #757575;
 }
 
 strong.normal {
     color: black;
+}
+
+strong {
+    color: #FF5722;
 }
 
 .material-icons {

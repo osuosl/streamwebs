@@ -13,12 +13,12 @@ class PhotoPointFormTestCase(TestCase):
 
         self.required_fields = (
             'compass_bearing',
-            'distance',
-            'camera_height',
         )
 
         self.optional_fields = (
-            'notes'
+            'notes',
+            'distance',
+            'camera_height',
         )
 
         self.pp_form = PhotoPointForm()

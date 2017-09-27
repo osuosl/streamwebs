@@ -200,13 +200,13 @@ class WaterQualityManager(models.Manager):
     """
     Manager for the Water_Quality model/datasheet.
     """
-    def create_water_quality(self, site, date, school, DEQ_dq_level,
+    def create_water_quality(self, site, date_time, school, DEQ_dq_level,
                              latitude, longitude, fish_present,
                              live_fish, dead_fish, air_temp_unit,
                              water_temp_unit, notes=''):
 
         wq_info = self.create(site=site,
-                              date=date,
+                              date_time=date_time,
                               school=school,
                               DEQ_dq_level=DEQ_dq_level,
                               latitude=latitude,
@@ -260,11 +260,11 @@ class Water_Quality(models.Model):
         Site, null=True, on_delete=models.CASCADE,
         verbose_name=_('Stream/Site name'), limit_choices_to={'active': True}
     )
-    date = models.DateField(
-        default=datetime.date.today, verbose_name=_('date')
+    date_time = models.DateTimeField(
+        default=timezone.now, verbose_name=_('date and time')
     )
     DEQ_dq_level = models.CharField(
-        max_length=10, choices=DEQ_DQ_CHOICES,
+        max_length=10, choices=DEQ_DQ_CHOICES, blank=True,
         default=None, null=True, verbose_name=_('DEQ data quality level')
     )
     school = models.ForeignKey(
@@ -317,7 +317,7 @@ class Water_Quality(models.Model):
         samples = WQ_Sample.objects.filter(water_quality=self)
         return {
             'DEQ_dq_level': self.DEQ_dq_level,
-            'date': _timestamp(self.date),
+            'date': _timestamp(self.date_time),
             'school': self.school,
             'location': {
                 'x': str(self.longitude),
@@ -425,42 +425,42 @@ class WQ_Sample(models.Model):
         verbose_name=_('water temperature')
     )
     water_temp_tool = models.CharField(
-        max_length=255, choices=TOOL_CHOICES, default=0, null=True,
+        max_length=255, choices=TOOL_CHOICES, default=NOT_ACCESSED, null=True,
     )
     air_temperature = models.DecimalField(
         default=0, null=True, max_digits=5, decimal_places=2,
         verbose_name=_('air temperature')
     )
     air_temp_tool = models.CharField(
-        max_length=255, choices=TOOL_CHOICES, default=0, null=True,
+        max_length=255, choices=TOOL_CHOICES, default=NOT_ACCESSED, null=True,
     )
     dissolved_oxygen = models.DecimalField(
         default=0, max_digits=5, decimal_places=2, null=True,
         verbose_name=_('dissolved oxygen (mg/L)')
     )
     oxygen_tool = models.CharField(
-        max_length=255, choices=TOOL_CHOICES, default=0, null=True,
+        max_length=255, choices=TOOL_CHOICES, default=NOT_ACCESSED, null=True,
     )
     pH = models.DecimalField(
         validators=[validate_pH], default=0, null=True,
         max_digits=5, decimal_places=2, verbose_name=_('pH')
     )
     pH_tool = models.CharField(
-        max_length=255, choices=TOOL_CHOICES, default=0, null=True
+        max_length=255, choices=TOOL_CHOICES, default=NOT_ACCESSED, null=True
     )
     turbidity = models.DecimalField(
         default=0, null=True, max_digits=5, decimal_places=2,
         verbose_name=_('turbidity (NTU)')
     )
     turbid_tool = models.CharField(
-        max_length=255, choices=TOOL_CHOICES, default=0, null=True,
+        max_length=255, choices=TOOL_CHOICES, default=NOT_ACCESSED, null=True,
     )
     salinity = models.DecimalField(
         default=0, null=True, max_digits=5, decimal_places=2,
         verbose_name=_('salinity (PSU) PPT')
     )
     salt_tool = models.CharField(
-        max_length=255, choices=TOOL_CHOICES, default=0, null=True
+        max_length=255, choices=TOOL_CHOICES, default=NOT_ACCESSED, null=True
     )
     # The following are optional fields
     conductivity = models.DecimalField(
@@ -551,6 +551,13 @@ class CameraPointManager(models.Manager):
 
 
 class CameraPoint(models.Model):
+    map_datum_choices = [
+        (None, 'Not Recorded'),
+        ('NAD27', _('NAD 27 CONUS')),
+        ('NAD83', _('NAD 83')),
+        ('WGS84', _('WGS84')),
+    ]
+
     site = models.ForeignKey(Site, on_delete=models.CASCADE, null=True)
     letter = models.CharField(null=True, max_length=5, editable=False)
     cp_date = models.DateField(default=datetime.date.today,
@@ -558,8 +565,9 @@ class CameraPoint(models.Model):
     school = models.ForeignKey(School, null=True, on_delete=models.CASCADE,
                                verbose_name=_('school'))
     location = models.PointField(null=True, verbose_name=_('location'))
-    map_datum = models.CharField(max_length=255, blank=True,
-                                 verbose_name=_('map datum'))
+    map_datum = models.CharField(
+        max_length=5, null=True, blank=True, verbose_name=_('map datum'),
+        choices=map_datum_choices, default=None)
     description = models.TextField(blank=True, verbose_name=_('description'))
     created = models.DateTimeField(default=timezone.now)
 
@@ -608,10 +616,11 @@ class PhotoPoint(models.Model):
     compass_bearing = models.PositiveSmallIntegerField(
         verbose_name=_('compass bearing'))
     distance = models.DecimalField(
-        max_digits=3, decimal_places=0,
+        max_digits=3, decimal_places=0, null=True, blank=True,
         verbose_name=_('distance from camera point'))
-    camera_height = models.DecimalField(max_digits=3, decimal_places=0,
-                                        verbose_name=_('camera height'))
+    camera_height = models.DecimalField(
+        max_digits=3, decimal_places=0, null=True, blank=True,
+        verbose_name=_('camera height'))
     notes = models.TextField(blank=True, verbose_name=_('notes'))
 
     test_objects = PhotoPointManager()
@@ -724,7 +733,8 @@ class Macroinvertebrates(models.Model):
         verbose_name=_('Number of people sorting/identifying')
         )
     water_type = models.CharField(max_length=4, verbose_name=_('water type'),
-                                  choices=WATER_TYPE_CHOICES, default=None)
+                                  choices=WATER_TYPE_CHOICES, default=None,
+                                  blank=True)
     notes = models.TextField(blank=True, verbose_name=_('field notes'))
 
     # Sensitive/intolerant to pollution
@@ -1051,8 +1061,8 @@ class Canopy_Cover(models.Model):
 class Soil_Survey(models.Model):
     school = models.ForeignKey(School, null=True, on_delete=models.CASCADE,
                                verbose_name=_('school'))
-    date = models.DateTimeField(default=timezone.now,
-                                verbose_name=_('date and time'))
+    date_time = models.DateTimeField(default=timezone.now,
+                                     verbose_name=_('date and time'))
     weather = models.CharField(max_length=250, verbose_name=_('weather'),
                                blank=True)
     site = models.ForeignKey(Site, null=True, on_delete=models.CASCADE,
@@ -1090,13 +1100,12 @@ class Soil_Survey(models.Model):
                                 choices=land_use_choices)
 
     distance = models.DecimalField(max_digits=5, decimal_places=2, null=True,
-                                   verbose_name=_('distance from stream (ft)'))
+                                   verbose_name=_('distance from stream'))
     site_char = models.TextField(blank=True,
                                  verbose_name=_('distinguishing site \
                                  characteristics'))
 
     soil_type_choices = [
-        (None, '-----'),
         ('sand', _('Sand')),
         ('loamy_sand', _('Loamy Sand')),
         ('silt_loam', _('Silt Loam')),
@@ -1108,7 +1117,7 @@ class Soil_Survey(models.Model):
         ('other', _('Other'))
     ]
 
-    soil_type = models.CharField(max_length=10, default=None,
+    soil_type = models.CharField(max_length=10, default=None, blank=False,
                                  choices=soil_type_choices)
 
     # Uid used to make relations between school and data sheet

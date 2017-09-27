@@ -48,7 +48,9 @@ class AddCanopyCoverTestCase(TestCase):
                 kwargs={'site_slug': site.site_slug}
             ), {
                 'school': school.id,
-                'date_time': '2016-08-31 12:30:00',
+                'date': '2016-08-31',
+                'time': '12:30',
+                'ampm': 'AM',
                 'site': site.id,
                 'weather': 'Gray',
 
