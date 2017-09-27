@@ -631,12 +631,8 @@ def macroinvertebrate_edit(request, site_slug):
 def riparian_aquatic_edit(request, site_slug):
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     rip_aqua_form = RipAquaForm()
-    print("tototottitititopeiweothji")
-    print(rip_aqua_form.errors)
 
     if request.method == 'POST':
-        print(rip_aqua_form.errors)
-        print('heyheyhey')
         rip_aqua_form = RipAquaForm(data=request.POST)
         if rip_aqua_form.is_valid():
             rip_aqua = rip_aqua_form.save(commit=False)

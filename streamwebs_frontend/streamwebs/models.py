@@ -1183,6 +1183,7 @@ class RipAquaticSurvey(models.Model):
             )
     school = models.ForeignKey(School, null=True, on_delete=models.CASCADE,
                                verbose_name=_('school'),
+                               blank=False, default='',
                                limit_choices_to={'active': True}
                                )
     site = models.ForeignKey(Site, null=True, on_delete=models.CASCADE,
