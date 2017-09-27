@@ -83,8 +83,8 @@ class UserProfileForm(forms.ModelForm):
     birthdate = forms.DateField(
         widget=forms.DateInput(attrs={'class': 'datepicker'}),
     )
-    school = forms.ModelChoiceField(queryset=School.objects.all(),
-                                    empty_label=None)
+    school = forms.ModelChoiceField(
+        queryset=School.objects.all().order_by('name'), empty_label=None)
 
     class Meta:
         model = UserProfile
@@ -93,7 +93,7 @@ class UserProfileForm(forms.ModelForm):
 
 class MacroinvertebratesForm(forms.ModelForm):
     school = forms.ModelChoiceField(
-        queryset=School.objects.all(), empty_label=None)
+        queryset=School.objects.all().order_by('name'), empty_label=None)
     weather = forms.CharField(required=False)
     time_spent = forms.IntegerField(required=False)
     num_people = forms.IntegerField(required=False)
@@ -120,8 +120,8 @@ class MacroinvertebratesForm(forms.ModelForm):
 
 
 class WQForm(forms.ModelForm):
-    school = forms.ModelChoiceField(queryset=School.objects.all(),
-                                    empty_label=None)
+    school = forms.ModelChoiceField(
+        queryset=School.objects.all().order_by('name'), empty_label=None)
     latitude = forms.DecimalField(required=False)
     longitude = forms.DecimalField(required=False)
     date = forms.DateField(
@@ -173,8 +173,8 @@ class WQSampleForm(forms.ModelForm):
 
 
 class Canopy_Cover_Form(forms.ModelForm):
-    school = forms.ModelChoiceField(queryset=School.objects.all(),
-                                    empty_label=None)
+    school = forms.ModelChoiceField(
+        queryset=School.objects.all().order_by('name'), empty_label=None)
     weather = forms.CharField(required=False)
     date = forms.DateField(
         input_formats=['%Y-%m-%d'],
@@ -230,8 +230,8 @@ class BaseZoneInlineFormSet(BaseInlineFormSet):
 
 
 class RiparianTransectForm(forms.ModelForm):
-    school = forms.ModelChoiceField(queryset=School.objects.all(),
-                                    empty_label=None)
+    school = forms.ModelChoiceField(
+        queryset=School.objects.all().order_by('name'), empty_label=None)
     date = forms.DateField(
         input_formats=['%Y-%m-%d'],
         widget=forms.DateInput(attrs={'class': 'datepicker'}),
@@ -268,9 +268,8 @@ class PhotoPointForm(forms.ModelForm):
         model = PhotoPoint
         fields = ('compass_bearing', 'distance', 'camera_height', 'notes')
 
-
 class CameraPointForm(forms.ModelForm):
-    school = forms.ModelChoiceField(queryset=School.objects.all(),
+    school = forms.ModelChoiceField(queryset=School.objects.all().order_by('name'),
                                     empty_label=None)
     cp_date = forms.DateField(
         widget=forms.DateInput(attrs={'class': 'datepicker'}),
@@ -384,12 +383,12 @@ class SchoolForm(forms.ModelForm):
 
 
 class RipAquaForm(forms.ModelForm):
+    school = forms.ModelChoiceField(
+        queryset=School.objects.all().order_by('name'), empty_label=None)
+    date = forms.DateField(
+        widget=forms.DateInput(attrs={'class': 'datepicker'}))
     class Meta:
         model = RipAquaticSurvey
-        school = forms.ModelChoiceField(
-            queryset=School.objects.all(), empty_label=None)
-        date = forms.DateField(
-            widget=forms.DateInput(attrs={'class': 'datepicker'}))
         widgets = {
             'weather': forms.TextInput(attrs={'required': False}),
             'silt': forms.RadioSelect(attrs={'required': False}),
