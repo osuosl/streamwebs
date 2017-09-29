@@ -452,75 +452,84 @@
 {% endblock %}
 
 {% block scripts %}
-  <script type="application/javascript"
-          src="{% static 'streamwebs/js/data.js' %}"></script>
-  <script>
-    var radioFields = [];
-    radioFields.push({name: 'if there are any fish present', val: $('div.fish-presence input')});
-    radioFields.push({name: 'water temperature unit', val: $('div.water-temp input')});
-    radioFields.push({name: 'an air temperature unit', val: $('div.air-temp input')});
+<script>
+$(document).ready(function() {
+  $("form").bind("keypress", function(e) {
+    if (e.keyCode == 13){
+      return false;
+    }
+  });
+});
+</script>
+<script type="application/javascript"
+src="{% static 'streamwebs/js/data.js' %}"></script>
+<script>
+var radioFields = [];
+radioFields.push({name: 'if there are any fish present', val: $('div.fish-presence input')});
+radioFields.push({name: 'water temperature unit', val: $('div.water-temp input')});
+radioFields.push({name: 'an air temperature unit', val: $('div.air-temp input')});
 
-    var checked = function checked(inputs) {
-      var checked;
-      checked = inputs.toArray().some(function(e) {
-        return e.checked;
-      });
-      return checked;
+var checked = function checked(inputs) {
+  var checked;
+  checked = inputs.toArray().some(function(e) {
+    return e.checked;
+  });
+  return checked;
+}
+
+// Upon submission, Change all associated field with radio field
+// "None" "No" to 0.
+var submitRadioCheck = function submitRadioCheck(){
+  $('input#submit').on('click', function() {
+    if ($('div.fish-presence input')[1].checked === true) {
+      $('div.live-fish input').val(0);
+      $('div.dead-fish input').val(0);
     }
 
-    // Upon submission, Change all associated field with radio field
-    // "None" "No" to 0.
-    var submitRadioCheck = function submitRadioCheck(){
-      $('input#submit').on('click', function() {
-        if ($('div.fish-presence input')[1].checked === true) {
-          $('div.live-fish input').val(0);
-          $('div.dead-fish input').val(0);
-        }
-
-        if ($('div.live-fish input').val() === '0' && $('div.dead-fish input').val() === '0') {
-          $('div.fish-presence input')[0].checked = false;
-          $('div.fish-presence input')[1].checked = true;
-        }
-
-        $('table#samples input').filter(function() {
-          return $(this).context.value === 'N/A' && $(this).context.checked === true;
-        }).parent().find('div.input-field').children().val(0);
-
-        for (var i = 0; i < radioFields.length; i++) {
-          if (!checked(radioFields[i].val)) {
-            Materialize.toast("Please select " + radioFields[i].name, 4000, 'red');
-            return;
-          }
-        }
-      });
+    if ($('div.live-fish input').val() === '0' && $('div.dead-fish input').val() === '0') {
+      $('div.fish-presence input')[0].checked = false;
+      $('div.fish-presence input')[1].checked = true;
     }
 
-    // Selecting "No" in radio field will change the
-    // associated fields' values to 0
-    var toggleFishFields = function toggleFishFields() {
-      $('div.fish-presence input').on('click', function(e) {
-        if ($(e.target).next().context.value === "False") {
-          $('div.live-fish input').val(0);
-          $('div.dead-fish input').val(0);
-        }
-      });
-    }
+    $('table#samples input').filter(function() {
+      return $(this).context.value === 'N/A' && $(this).context.checked === true;
+    }).parent().find('div.input-field').children().val(0);
 
-    // Selecting "None" in radio field will change the
-    // associated fields' values to 0
-    var toggleSampleFields = function toggleSampleFields() {
-      $('table#samples input[type=radio]').on('click', function(e) {
-        var inputField = $(e.target).parent().find('div.input-field').children();
-        if ($(e.target).context.value === "N/A") {
-          inputField.val(0);
-        }
-      });
+    for (var i = 0; i < radioFields.length; i++) {
+      if (!checked(radioFields[i].val)) {
+        Materialize.toast("Please select " + radioFields[i].name, 4000, 'red');
+        return;
+      }
     }
+  });
+}
 
-    $(function() {
-      toggleFishFields();
-      toggleSampleFields();
-      submitRadioCheck();
-    });
-  </script>
+// Selecting "No" in radio field will change the
+// associated fields' values to 0
+var toggleFishFields = function toggleFishFields() {
+  $('div.fish-presence input').on('click', function(e) {
+    if ($(e.target).next().context.value === "False") {
+      $('div.live-fish input').val(0);
+      $('div.dead-fish input').val(0);
+    }
+  });
+}
+
+// Selecting "None" in radio field will change the
+// associated fields' values to 0
+var toggleSampleFields = function toggleSampleFields() {
+  $('table#samples input[type=radio]').on('click', function(e) {
+    var inputField = $(e.target).parent().find('div.input-field').children();
+    if ($(e.target).context.value === "N/A") {
+      inputField.val(0);
+    }
+  });
+}
+
+$(function() {
+  toggleFishFields();
+  toggleSampleFields();
+  submitRadioCheck();
+});
+</script>
 {% endblock %}
