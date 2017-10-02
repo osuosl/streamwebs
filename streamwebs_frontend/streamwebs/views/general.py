@@ -1093,8 +1093,11 @@ def water_quality_edit(request, site_slug):
             water_quality.site = site
             water_quality.save()             # save object to db
             allSamples = sample_formset.save(commit=False)
+            counter = 0
             for sample in allSamples:
                 sample.water_quality = water_quality
+                counter = counter + 1
+                sample.sample = counter
                 sample.save()
             messages.success(
                 request,
