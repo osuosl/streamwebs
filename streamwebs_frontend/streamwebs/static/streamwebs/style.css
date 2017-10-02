@@ -148,7 +148,7 @@ div#footer-content {
 }
 
 div#footer-links {
-    height: 124px;
+    height: auto;
     width: 150px;
     float:left;
     margin: 30px 0px 0px 150px;
