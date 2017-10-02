@@ -60,6 +60,18 @@
             <a href="{% url 'streamwebs:about' %}"
                    class="footer-link">{% trans "About" %}</a>
           </div>
+          {% if perms.streamwebs.can_view_stats or perms.streamwebs.can_promote_users %}
+          <div id="admin-links">
+            {% if perms.streamwebs.can_view_stats %}
+            <a href="{% url 'streamwebs:stats' %}"
+                   class="footer-link">{% trans "View Site Statistics" %}</a>
+            {% endif %}
+            {% if perms.streamwebs.can_promote_users %}
+            <a href="{% url 'streamwebs:user_promo' %}"
+                   class="footer-link">{% trans "Manage Users" %}</a>
+            {% endif %}
+          </div>
+          {% endif %}
           <div id="footer-branding">
             <img src="{% static 'streamwebs/images/b-wet-logo.jpg' %}" id="b-wet"/>
             <img src="{% static 'streamwebs/images/seagrant-logo.jpg' %}" id="seagrant"/>
