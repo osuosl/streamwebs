@@ -14,7 +14,7 @@
   "model": "streamwebs.resource",
   "pk": 17,
   "fields": {
-    "name": "Streamflow",
+    "name": "Streamflow (paper version only)",
     "res_type": "data_sheet",
     "downloadable": "assets/Streamflow_OSU.pdf",
     "thumbnail": "assets/thumbnails/stream_flow.png",
@@ -69,7 +69,7 @@
   "model": "streamwebs.resource",
   "pk": 22,
   "fields": {
-    "name": "Pebble Count",
+    "name": "Pebble Count (paper version only)",
     "res_type": "data_sheet",
     "downloadable": "assets/PEBBLE_COUNT_OSU.pdf",
     "thumbnail": "assets/thumbnails/pebble_count.png",
@@ -91,7 +91,7 @@
   "model": "streamwebs.resource",
   "pk": 24,
   "fields": {
-    "name": "Invasive Species Mapping",
+    "name": "Invasive Species Mapping (paper version only)",
     "res_type": "data_sheet",
     "downloadable": "assets/Invasive_Mapping_OSU.pdf",
     "thumbnail": "assets/thumbnails/invasive_mapping.png",
