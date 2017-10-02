@@ -65,7 +65,7 @@ nav#navbar {
 
 nav#navbar div.nav-container {
     background: white;
-    height: 66px;
+    height: auto;
     width: 100%;
     border-bottom: 2px white solid;
     transition: border 300ms linear 0s;

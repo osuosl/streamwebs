@@ -231,15 +231,18 @@
     var imgRatio = imgHeight/imgWidth;
 
     $(document).ready(function(){
-
-      initialize();
-      window.mapTypeId = {{ map_type }};
       {% if messages %}
         {% for message in messages %}
         Materialize.toast('{{ message }}', 4000, 'green');
         {% endfor %}
       {% endif %}
     });
+
+    window.onload = function() {
+        updateDimension();
+        initialize();
+        window.mapTypeId = {{ map_type }};
+    }
 
     $(window).resize(function() {
         updateDimension();

@@ -21,23 +21,69 @@
       fill: black;
       font: 12px sans-serif;
     }
+    div.description div {
+      position: absolute;
+      width: 600px;
+      height: auto;
+      background: #00695C;
+      color: white;
+      padding: 10px;
+      display: none;
+      z-index: 10;
+    }
+    div.description:hover div {
+      display: block;
+    }
   </style>
   <a href="{% url 'streamwebs:graph_water' site.site_slug %}" id="back"
       class="wave-effects wave-light btn white-text teal darken-3">
     <i class="material-icons">chevron_left</i>
     Back to <span>{{ site.site_name }} Water Quality Graphs</span>
   </a>
-  <h3 align="center" class="teal-text">
-    {{ site.site_name }} {{ type_name }} {% trans "Data on" %} {{ date|date:'m/d/Y' }}
-  </h3>
-  <div class="row">
-    <div id="histogram" class="graph histogram col s12"></div>
+
+  <div class="container">
+    <h3 align="center" class="teal-text">
+      {{ site.site_name }} {{ type_name }} {% trans "Data on" %} {{ date|date:'m/d/Y' }}
+    </h3>
+    <br/>
+    <div class="container description">
+      <h5 class="center">histogram</h5>
+      <div>
+        <p>
+          A histogram is a visual way to display frequency data using bars. The
+          histogram bars represent the number of individual datapoints that have
+          been averaged to display the datapoint you see on the graph.
+        </p>
+      </div>
+    </div>
+    <div class="row">
+      <div id="histogram" class="graph histogram col s12"></div>
+    </div>
   </div>
 {% endblock %}
 
 {% block scripts %}
 <script type="application/javascript">
+  var unit = {
+      'Air Temperature': ' (°F)',
+      'Water Temperature': ' (°F)',
+      'Dissolved Oxygen': ' (mg/L)',
+      'pH': '',
+      'Turbidity': ' (NTU)',
+      'Salinity': ' (PSU or PPT)',
+      'Conductivity': ' (µS/cm)',
+      'Nitrate': ' (mg/L)',
+      'Nitrite': ' (mg/L)',
+      'Ammonia': ' (mg/L)',
+      'Total Solids': ' (mg/L)',
+      'Phosphates': ' (mg/L)',
+      'BOD': ' (mg/L)',
+      'Fecal Coliform': ' (CFU/100ml)',
+  }
   window.data = {{data|safe}};
+  window.type_name = '{{ type_name }}';
+  var type_unit = unit[window.type_name];
+  if (!type_unit) type_unit = '';
   var siteId = '{{ site.site_slug }}';
   var key = '{{ type_key }}';
 </script>
