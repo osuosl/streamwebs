@@ -12,9 +12,8 @@ import csv
 
 def export_rip_aqua(request, site_slug):
     site = Site.objects.get(site_slug=site_slug)
-    print(site)
     ripaq = RipAquaticSurvey.objects.filter(site_id=site.id).values(
-        'site__site_name', 'school', 'date', 'weather', 'riffle_count',
+        'site__site_name', 'school__name', 'date', 'weather', 'riffle_count',
         'pool_count', 'silt', 'sand', 'gravel', 'cobble', 'boulders',
         'bedrock', 'small_debris', 'medium_debris', 'large_debris',
         'comments', 'coniferous_trees', 'deciduous_trees',
@@ -25,7 +24,7 @@ def export_rip_aqua(request, site_slug):
         ripaq, field_header_map={
             'site__site_name': 'site',
             'date': 'date',
-            'school': 'school',
+            'school__name': 'school',
             'weather': 'weather',
             'riffle_count': '# of riffles', 'pool_count': '# of pools',
             'silt': 'silt count',
@@ -64,7 +63,7 @@ def export_wq(request, site_slug):
     # Query the first set of samples outside of the loop and pop nid from list
     samples = WQ_Sample.objects.prefetch_related('water_quality')
     samples = samples.filter(nid=sheets[0]).order_by('id').values(
-        'water_quality__school__name', 'water_quality__date',
+        'water_quality__school__name', 'water_quality__date_time',
         'water_quality__site__site_name', 'water_quality__DEQ_dq_level',
         'water_quality__latitude', 'water_quality__longitude',
         'water_quality__fish_present', 'water_quality__live_fish',
@@ -82,7 +81,7 @@ def export_wq(request, site_slug):
     for sheet in sheets:
         n_samples = WQ_Sample.objects.prefetch_related('water_quality')
         n_samples = n_samples.filter(nid=sheet).order_by('id').values(
-            'water_quality__school__name', 'water_quality__date',
+            'water_quality__school__name', 'water_quality__date_time',
             'water_quality__site__site_name', 'water_quality__DEQ_dq_level',
             'water_quality__latitude', 'water_quality__longitude',
             'water_quality__fish_present', 'water_quality__live_fish',
@@ -101,7 +100,7 @@ def export_wq(request, site_slug):
     return render_to_csv_response(
         samples, filename=filename, field_header_map={
             'water_quality__school__name': 'school',
-            'water_quality__date': 'date',
+            'water_quality__date_time': 'date_time',
             'water_quality__site__site_name': 'site',
             'water_quality__DEQ_dq_level': 'DEQ Data Quality level',
             'water_quality__latitude': 'latitude',
@@ -225,7 +224,7 @@ def export_cc(request, site_slug):
 def export_soil(request, site_slug):
     site = Site.objects.get(site_slug=site_slug)
     soil = Soil_Survey.objects.filter(site_id=site.id).values(
-        'school__name', 'date', 'site__site_name', 'weather', 'landscape_pos',
+        'school__name', 'date_time', 'site__site_name', 'weather', 'landscape_pos',
         'cover_type', 'land_use', 'soil_type', 'distance', 'site_char'
     )
     return render_to_csv_response(
