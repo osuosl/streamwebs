@@ -673,7 +673,8 @@ def riparian_aquatic_view(request, site_slug, data_id):
 def riparian_transect_view(request, site_slug, data_id):
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     transect = RiparianTransect.objects.get(id=data_id)
-    zones = TransectZone.objects.filter(transect_id=transect)
+    zones = TransectZone.objects.filter(transect_id=transect)\
+        .order_by('zone_num')
 
     # Invoking the database by evaluating the queryset before passing it to the
     # template is necessary in order to pass Travis tests.
