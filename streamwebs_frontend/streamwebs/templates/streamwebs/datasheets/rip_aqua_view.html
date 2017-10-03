@@ -6,6 +6,11 @@
 {% block title %}{% trans "Riparian Aquatic Survey Data" %}{% endblock %}
 
 {% block content %}
+<a href="{% url 'streamwebs:site' site.site_slug %}" id="back"
+    class="wave-effects wave-light btn white-text teal darken-3">
+  <i class="material-icons">chevron_left</i>
+  Back to <span>{{ site.site_name }}</span>
+</a>
 
 <div class="container">
   {% if messages %}
@@ -17,8 +22,7 @@
   {% endif %}
 
   <div class="container">
-    <h3 align="center">
-      <a href="{% url 'streamwebs:site' site.site_slug %}">
+    <h3 align="center" class='teal-text'>
         {{ site.site_name }}
       </a>
     </h3>

@@ -28,15 +28,13 @@
 </style>
 
 <a href="{% url 'streamwebs:site' site.site_slug %}" id="back"
-class="wave-effects wave-light btn white-text teal darken-3">
-<i class="material-icons">chevron_left</i>
-Back to <span>{{ site.site_name }}</span>
+  class="wave-effects wave-light btn white-text teal darken-3">
+  <i class="material-icons">chevron_left</i>
+   Back to <span>{{ site.site_name }}</span>
 </a>
 <div class="container">
-  <h3 align="center">
-    <a href="{% url 'streamwebs:site' site.site_slug %}">
+  <h3 align="center" class='teal-text'>
       {{ site.site_name }}
-    </a>
   </h3>
   <h4 align="center">{% trans 'New Riparian and Aquatic Survey' %}</h4>
   <form id="rip_aqua_form" method="post" action="{{ request.path }}">
@@ -291,5 +289,18 @@ Back to <span>{{ site.site_name }}</span>
 
               {% block scripts %}
 
-              <script type="application/javascript" src="{% static 'streamwebs/js/data.js' %}"></script>
-              {% endblock %}
+<script type="application/javascript" src="{% static 'streamwebs/js/data.js' %}"></script>
+
+<script type="text/javascript">
+window.addEventListener('keydown',function(e){
+  if(e.keyIdentifier=='U+000A'||e.keyIdentifier=='Enter'||e.keyCode==13){
+    if(e.target.nodeName=='INPUT'&&e.target.type!=='textarea'){
+      e.preventDefault();
+      return false;
+      }
+    }
+  }
+  ,true);
+</script>
+
+{% endblock %}
