@@ -26,11 +26,15 @@
   flex-grow:1;
 }
 </style>
+
+<a href="{% url 'streamwebs:site' site.site_slug %}" id="back"
+      class="wave-effects wave-light btn white-text teal darken-3">
+    <i class="material-icons">chevron_left</i>
+    Back to <span>{{ site.site_name }}</span>
+  </a>
 <div class="container">
-  <h3 align="center">
-    <a href="{% url 'streamwebs:site' site.site_slug %}">
+  <h3 align="center" class='teal-text'>
       {{ site.site_name }}
-    </a>
   </h3>
   <h4 align="center">{% trans 'New Riparian and Aquatic Survey' %}</h4>
   <form id="rip_aqua_form" method="post" action="{{ request.path }}">
@@ -47,8 +51,10 @@
         {{ rip_aqua_form.date.errors }}
         {{ rip_aqua_form.date }}
       </div>
+      <div class="col s12">
+        <a href="{% url 'streamwebs:create_school' %}" class="btn waves-effect waves-light teal darken-3">{% trans "Add A School/Organization" %}</a>
+      </div>
     </div>
-    <a href="{% url 'streamwebs:create_school' %}" class="btn waves-effect waves-light teal darken-3">{% trans "Add A School/Organization" %}</a>
     <div class="row">
       <div class="col s12">
         {{ rip_aqua_form.weather.label }}
