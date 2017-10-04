@@ -391,3 +391,10 @@ strong {
 .form-cell {
     min-width: 300px;
 }
+
+.navbar-logo{
+  margin-top: 10px;
+  margin-left: 10px;
+  align: baseline;
+  height: 50px;
+}

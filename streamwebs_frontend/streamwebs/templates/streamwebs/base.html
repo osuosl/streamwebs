@@ -14,6 +14,7 @@
         href="{% static 'streamwebs/style.css' %}"/>
   <link rel="shortcut icon"
         href="{% static 'streamwebs/images/favicon.ico' %}"/>
+
   {% block head %}{% endblock %}
 </head>
 
@@ -22,7 +23,8 @@
     <div class="header">
       <a href="/" class="logo">
         <img
-            src="{% static 'streamwebs/images/logo.png' %}"
+            height="80"
+            src="{% static 'streamwebs/images/whitelogo.png' %}"
             alt="Home">
       </a>
     </div>
@@ -30,8 +32,8 @@
     <nav id="navbar">
       <div class="nav-container">
         <div id="nav-logo">
-          <h3>STREAMWEBS</h3>
-          <!-- ADD IMAGE -->
+          <img class="navbar-logo"
+            src="{% static 'streamwebs/images/blacklogo.png' %}">
         </div>
         {% include "streamwebs/navigation.html" %}
       </div>
