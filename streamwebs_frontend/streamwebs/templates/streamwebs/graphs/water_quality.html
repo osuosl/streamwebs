@@ -20,9 +20,14 @@
   #site_select {
     margin-top: 10px;
   }
-
+  input#search {
+    margin: 0px !important;
+  }
   #remove_site {
-    margin-top: 10px;
+    height: 64px !important;
+  }
+  div.search-results {
+    display: none;
   }
   .error {
     color: red;
@@ -52,7 +57,7 @@
     padding: 20px;
     font-size: 16px;
     top: 50px;
-    text-align: center
+    text-align: center;
   }
   div#water-parameter-pdf a {
     color: white;
@@ -61,10 +66,7 @@
   div#header:hover div {
     display: block;
   }
-  h2.graph-header div{
-    display:none
-  }
-  h2.graph-header div:hover {
+  div.graph-header:hover div {
     display: block;
   }
   div.data-info {
@@ -73,11 +75,7 @@
     background: white;
     z-index: 10;
     border: 2px solid #00695C;
-    border-radius: 10px;
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
-    top: 60px;
-    left: 40px;
+    top: 40px;
     padding: 10px;
     font-size: 16px;
     line-height: 20px;
@@ -100,73 +98,93 @@
     <form action="">
       <div id="dates">
         <p>{% trans "Set Date Range:" %}</p>
-        <label for="date-start">{% trans "After" %}</label>
-        <input type="date" name="date" class="datepicker" id="date-start"
-               value=""/>
-        <label for="date-end">{% trans "Before" %}</label>
-        <input type="date" name="date" class="datepicker" id="date-end" value=""/>
-      </div>
-    </form>
 
-    <input type="checkbox" id="temperature-control" checked="checked"
-           onclick="toggleGraph('temperature')"/>
-    <label for="temperature-control">{% trans "Temperature" %}</label>
-    <input type="checkbox" id="oxygen-control" checked="checked"
-           onclick="toggleGraph('oxygen')"/>
-    <label for="oxygen-control">{% trans "Dissolved Oxygen" %}</label>
-    <input type="checkbox" id="ph-control" checked="checked"
-           onclick="toggleGraph('ph')"/>
-    <label for="ph-control">{% trans "pH" %}</label>
-    <input type="checkbox" id="turbidity-control" checked="checked"
-           onclick="toggleGraph('turbidity')"/>
-    <label for="turbidity-control">{% trans "Turbidity" %}</label>
-    <input type="checkbox" id="salinity-control" checked="checked"
-           onclick="toggleGraph('salinity')"/>
-    <label for="salinity-control">{% trans "Salinity" %}</label>
-    <input type="checkbox" id="conductivity-control" checked="checked"
-           onclick="toggleGraph('conductivity')"/>
-    <label for="conductivity-control">{% trans "Conductivity" %}</label>
-    <input type="checkbox" id="dissolved-control" checked="checked"
-           onclick="toggleGraph('dissolved')"/>
-    <label for="dissolved-control">{% trans "Dissolved Solids" %}</label>
-    <input type="checkbox" id="bod-control" checked="checked"
-           onclick="toggleGraph('bod')"/>
-    <label for="bod-control">{% trans "Biochemical Oxygen Demand" %}</label>
-    <input type="checkbox" id="coliform-control" checked="checked"
-           onclick="toggleGraph('coliform')"/>
-    <label for="coliform-control">{% trans "Fecal Coliform" %}</label>
-    <div class="row">
-      <div id="site_search">
         <div class="row">
-          <nav class="search-nav col s5 teal darken-3">
-            <div class="nav-wrapper">
-              <div class="input-field">
-                <input id="search" type="search" autocomplete="off"
-                    placeholder="{% trans 'Load a Site to Compare' %}"
-                    oninput="search()">
-                  <label for="search"><i class="material-icons">search</i></label>
-                  <div class="search-results collection">
-                    {% for site in sites %}
-                      <a onclick="loadSite2('{{ site.site_slug }}')"
-                        class="collection-item search-item {{ site.site_type }} tea-text text-darken-3 hide">{{ site.site_name }}</a>
-                    {% endfor %}
-              </div>
-            </div>
-            </div>
-          </nav>
-          <div class="col right">
-            <input id="remove_site" type="button" class="btn teal darken-3 disabled"
-                  value="Remove Site 2"/>
+          <div class="col s6">
+            <label for="date-start">{% trans "Begin" %}</label>
+            <input type="date" name="date" class="datepicker" id="date-start"
+                   value=""/>
+          </div>
+          <div class="col s6">
+            <label for="date-end">{% trans "End" %}</label>
+            <input type="date" name="date" class="datepicker" id="date-end" value=""/>
           </div>
         </div>
       </div>
+    </form>
+    <div class="row">
+      <nav class="search-nav col s5 teal darken-3">
+        <div class="nav-wrapper">
+          <div class="input-field">
+            <input id="search" type="search" autocomplete="off"
+                placeholder="{% trans 'Load a Site to Compare' %}"
+                oninput="search()">
+              <label for="search"><i class="material-icons">search</i></label>
+              <div class="search-results collection">
+                {% for site in sites %}
+                  <a onclick="loadSite2('{{ site.site_slug }}')"
+                    class="collection-item search-item {{ site.site_type }} tea-text text-darken-3 hide">{{ site.site_name }}</a>
+                {% endfor %}
+          </div>
+        </div>
+        </div>
+      </nav>
+      <div class="col">
+        <input id="remove_site" type="button" class="btn-large teal darken-3 disabled"
+              value="Remove Site 2"/>
+      </div>
     </div>
+    <div class="row">
+      <div class="col s4">
+        <input type="checkbox" id="temperature-control" checked="checked"
+               onclick="toggleGraph('temperature')"/>
+        <label for="temperature-control">{% trans "Temperature" %}</label>
+      </div>
+      <div class="col s5">
+        <input type="checkbox" id="oxygen-control" checked="checked"
+               onclick="toggleGraph('oxygen')"/>
+        <label for="oxygen-control">{% trans "Dissolved Oxygen" %}</label>
+      </div>
+      <div class="col s3">
+        <input type="checkbox" id="ph-control" checked="checked"
+               onclick="toggleGraph('ph')"/>
+        <label for="ph-control">{% trans "pH" %}</label>
+      </div>
+      <div class="col s4">
+        <input type="checkbox" id="turbidity-control" checked="checked"
+               onclick="toggleGraph('turbidity')"/>
+        <label for="turbidity-control">{% trans "Turbidity" %}</label>
+      </div>
+      <div class="col s5">
+        <input type="checkbox" id="salinity-control" checked="checked"
+               onclick="toggleGraph('salinity')"/>
+        <label for="salinity-control">{% trans "Salinity" %}</label>
+      </div>
+      <div class="col s3">
+        <input type="checkbox" id="conductivity-control" checked="checked"
+               onclick="toggleGraph('conductivity')"/>
+        <label for="conductivity-control">{% trans "Conductivity" %}</label>
+      </div>
+      <div class="col s4">
+        <input type="checkbox" id="dissolved-control" checked="checked"
+               onclick="toggleGraph('dissolved')"/>
+        <label for="dissolved-control">{% trans "Dissolved Solids" %}</label>
+      </div>
+      <div class="col s5">
+        <input type="checkbox" id="bod-control" checked="checked"
+               onclick="toggleGraph('bod')"/>
+        <label for="bod-control">{% trans "Biochemical Oxygen Demand" %}</label>
+      </div>
+      <div class="col s3">
+        <input type="checkbox" id="coliform-control" checked="checked"
+               onclick="toggleGraph('coliform')"/>
+        <label for="coliform-control">{% trans "Fecal Coliform" %}</label>
+      </div>
+    </div>
+    <br/>
     <div class="row" id="header">
       <h2>{% trans "Water Quality Over Time" %}</h2>
       <div class="data-info" id="water-parameter-pdf">
-        <p>
-          Here is the description of water quality, the water quality is very good
-        </p>
         <a href="{% static 'streamwebs/pdf/Parameters.sheets_full.color.pdf' %}"
             target="blank">Open Water Parameter pdf</a>
       </div>
@@ -189,141 +207,170 @@
       <div class="row">
         <div id="graph-site1-temperature"
              class="graph line temperature col s12 l10 offset-l1">
-          <h4 class="graph-header">{% trans "Temperature (°C)" %}</h4>
-          <div class="data-info teal darken-3 white-text">
-            <p>Here is a short description of temperature</p>
-            <p>Normal range of data:</p>
-            <p>Air Temperature: 0°C - 100°C</p>
-            <p>Water Temperature: 0°C - 100°C</p>
+          <div class="graph-header">
+            <h4 class="graph-header">{% trans "Temperature (°F)" %}</h4>
+            <div class="data-info teal darken-3 white-text">
+              <p>
+                Aquatic organisms breathe oxygen that is dissolved in the water.
+                Warmer water may mean less dissolved oxygen is available for
+                aquatic animals to breath.
+              </p>
+            </div>
           </div>
         </div>
         <div id="graph-site2-temperature"
              class="graph line temperature col s12 l10 offset-l1" style="display: none">
-          <h4 class="graph-header">{% trans "Temperature (°C)" %}</h4>
-          <div class="data-info teal darken-3 white-text">
-            <p>Here is a short description of temperature</p>
-            <p>Normal range of data:</p>
-            <p>Air Temperature: 0°C - 100°C</p>
-            <p>Water Temperature: 0°C - 100°C</p>
+          <div class="graph-header">
+            <h4 class="graph-header">{% trans "Temperature (°F)" %}</h4>
+            <div class="data-info teal darken-3 white-text">
+              <p>
+                Aquatic organisms breathe oxygen that is dissolved in the water.
+                Warmer water may mean less dissolved oxygen is available for
+                aquatic animals to breath.
+              </p>
+            </div>
           </div>
         </div>
         <div id="graph-site1-oxygen" class="graph line oxygen col s12 l10 offset-l1">
-          <h4 class="graph-header">{% trans "Dissolved Oxygen (mg/L)" %}</h4>
-          <div class="data-info teal darken-3 white-text">
-            <p>Dissolved Oxygen is the amount of oxygen in the water and is required by aquatic life to breathe.</p>
-            <p>A healthy range for salmon and their eggs is 7mg/L and above.</p>
+          <div class="graph-header">
+            <h4 class="graph-header">{% trans "Dissolved Oxygen (mg/L)" %}</h4>
+            <div class="data-info teal darken-3 white-text">
+              <p>
+                Dissolved Oxygen is the amount of oxygen in the water and is
+                required by aquatic life to breathe. A healthy range for salmon
+                and their eggs is 7mg/L and above.
+              </p>
+            </div>
           </div>
         </div>
         <div id="graph-site2-oxygen" class="graph line oxygen col s12 l10 offset-l1"
              style="display: none">
-          <h4 class="graph-header">{% trans "Dissolved Oxygen (mg/L)" %}</h4>
-          <div class="data-info teal darken-3 white-text">
-            <p>Normal range of data: 0ml/L - 100mg/L</p>
+          <div class="graph-header">
+            <h4 class="graph-header">{% trans "Dissolved Oxygen (mg/L)" %}</h4>
+            <div class="data-info teal darken-3 white-text">
+              <p>
+                Dissolved Oxygen is the amount of oxygen in the water and is
+                required by aquatic life to breathe. A healthy range for salmon
+                and their eggs is 7mg/L and above.
+              </p>
+            </div>
           </div>
         </div>
         <div id="graph-site1-ph" class="graph line ph col s12 l10 offset-l1">
-          <h4 class="graph-header">{% trans "pH" %}</h4>
-          <div class="data-info teal darken-3 white-text">
-            <p>Normal range of data: 0 - 14</p>
+          <div class="graph-header">
+            <h4 class="graph-header">{% trans "pH" %}</h4>
+            <div class="data-info teal darken-3 white-text">
+              <p>
+                pH is a measure of how acidic or basic (alkaline) the water is.
+                Pollution can change the pH of the water. If the water is too
+                acidic or too basic aquatic life can die. The best range for most
+                aquatic life is between 6.5 and 8.5.
+              </p>
+            </div>
           </div>
         </div>
         <div id="graph-site2-ph" class="graph line ph col s12 l10 offset-l1"
              style="display: none">
-          <h4 class="graph-header">{% trans "pH" %}</h4>
-          <div class="data-info teal darken-3 white-text">
-            <p>Normal range of data: 0 - 14</p>
+          <div class="graph-header">
+            <h4 class="graph-header">{% trans "pH" %}</h4>
+            <div class="data-info teal darken-3 white-text">
+              <p>
+                pH is a measure of how acidic or basic (alkaline) the water is.
+                Pollution can change the pH of the water. If the water is too
+                acidic or too basic aquatic life can die. The best range for most
+                aquatic life is between 6.5 and 8.5.
+              </p>
+            </div>
           </div>
         </div>
         <div id="graph-site1-turbidity" class="graph line turbidity col s12 l10 offset-l1">
-          <h4 class="graph-header">{% trans "Turbidity (NTU)" %}</h4>
-          <div class="data-info teal darken-3 white-text">
-            <p>Normal range of data: 0NTU - 100NTU</p>
+          <div class="graph-header">
+            <h4 class="graph-header">{% trans "Turbidity (NTU)" %}</h4>
+            <div class="data-info teal darken-3 white-text">
+              <p>
+                Turbidity is the cloudiness or haziness of a fluid caused by
+                large number of individual particles that are generally invisible
+                to the naked eye. The most common measurement for turbidity in
+                the United States are the Nephelometric Turbidity Units (NTU).
+                Drinking water should have a turbidity of 5 NTU/JTU or less.
+              </p>
+            </div>
           </div>
         </div>
         <div id="graph-site2-turbidity" class="graph line turbidity col s12 l10 offset-l1"
              style="display: none">
-          <h4 class="graph-header">{% trans "Turbidity (NTU)" %}</h4>
-          <div class="data-info teal darken-3 white-text">
-            <p>Normal range of data: 0NTU - 100NTU</p>
+          <div class="graph-header">
+            <h4 class="graph-header">{% trans "Turbidity (NTU)" %}</h4>
+            <div class="data-info teal darken-3 white-text">
+              <p>
+                Turbidity is the cloudiness or haziness of a fluid caused by
+                large number of individual particles that are generally invisible
+                to the naked eye. The most common measurement for turbidity in
+                the United States are the Nephelometric Turbidity Units (NTU).
+                Drinking water should have a turbidity of 5 NTU/JTU or less.
+              </p>
+            </div>
           </div>
         </div>
         <div id="graph-site1-salinity" class="graph line salinity col s12 l10 offset-l1">
-          <h4 class="graph-header">{% trans "Salinity (PSU or PPT)" %}</h4>
-          <!-- TODO: You need to ask Renee about this! -->
-          <div class="data-info teal darken-3 white-text">
-            <p>Normal range of data: 0PSU - 100PSU</p>
+          <div class="graph-header">
+            <h4 class="graph-header">{% trans "Salinity (PSU or PPT)" %}</h4>
+            <!-- TODO: You need to ask Renee about this! -->
+            <div class="data-info teal darken-3 white-text">
+              <p>
+                In fresh water the concentration of salts, or salinity, is nearly
+                zero. The salinity of water in the ocean averages about 35 parts
+                per thousand (ppt). The mixture of seawater and fresh water in
+                estuaries is called brackish water and its salinity can range 
+                from 0.5 to 35 ppt.
+              </p>
+            </div>
           </div>
         </div>
         <div id="graph-site2-salinity" class="graph line salinity col s12 l10 offset-l1"
              style="display: none">
-          <h4 class="graph-header">{% trans "Salinity (PSU or PPT)" %}</h4>
-          <!-- TODO: You need to ask Renee about this! -->
-          <div class="data-info teal darken-3 white-text">
-            <p>Normal range of data: 0PSU - 100PSU</p>
+          <div class="graph-header">
+            <h4 class="graph-header">{% trans "Salinity (PSU or PPT)" %}</h4>
+            <!-- TODO: You need to ask Renee about this! -->
+            <div class="data-info teal darken-3 white-text">
+              <p>
+                In fresh water the concentration of salts, or salinity, is nearly
+                zero. The salinity of water in the ocean averages about 35 parts
+                per thousand (ppt). The mixture of seawater and fresh water in
+                estuaries is called brackish water and its salinity can range 
+                from 0.5 to 35 ppt.
+              </p>
+            </div>
           </div>
         </div>
         <div id="graph-site1-conductivity"
              class="graph line conductivity col s12 l10 offset-l1">
           <h4 class="graph-header">{% trans "Conductivity (µS/cm)" %}</h4>
-          <div class="data-info teal darken-3 white-text">
-            <p>Normal range of data: 0µS/cm - 100µS/cm</p>
-          </div>
         </div>
         <div id="graph-site2-conductivity"
              class="graph line conductivity col s12 l10 offset-l1" style="display: none">
           <h4 class="graph-header">{% trans "Conductivity (µS/cm)" %}</h4>
-          <div class="data-info teal darken-3 white-text">
-            <p>Normal range of data: 0µS/cm - 100µS/cm</p>
-          </div>
         </div>
         <div id="graph-site1-dissolved" class="graph line dissolved col s12 l10 offset-l1">
           <h4 class="graph-header">{% trans "Dissolved Matter (mg/L)" %}</h4>
-          <div class="data-info teal darken-3 white-text">
-            <p>Normal range of data:</p>
-            <p>Total Solids: 0mg/L - 100mg/L</p>
-            <p>Ammonia: 0mg/L - 100mg/L</p>
-            <p>Nitrite: 0mg/L - 100mg/L</p>
-            <p>Nitrate: 0mg/L - 100mg/L</p>
-            <p>Phosphates: 0mg/L - 100mg/L</p>
-          </div>
         </div>
         <div id="graph-site2-dissolved" class="graph line dissolved col s12 l10 offset-l1"
              style="display: none">
           <h4 class="graph-header">{% trans "Dissolved Matter (mg/L)" %}</h4>
-          <div class="data-info teal darken-3 white-text">
-            <p>Normal range of data:</p>
-            <p>Total Solids: 0mg/L - 100mg/L</p>
-            <p>Ammonia: 0mg/L - 100mg/L</p>
-            <p>Nitrite: 0mg/L - 100mg/L</p>
-            <p>Nitrate: 0mg/L - 100mg/L</p>
-            <p>Phosphates: 0mg/L - 100mg/L</p>
-          </div>
         </div>
         <div id="graph-site1-bod" class="graph line bod col s12 l10 offset-l1">
           <h4 class="graph-header">{% trans "Biochemical Oxygen Demand (mg/L)" %}</h4>
-          <div class="data-info teal darken-3 white-text">
-            <p>Normal range of data: 0mg/L - 100mg/L</p>
-          </div>
         </div>
         <div id="graph-site2-bod" class="graph line bod col s12 l10 offset-l1"
              style="display: none">
           <h4 class="graph-header">{% trans "Biochemical Oxygen Demand (mg/L)" %}</h4>
-          <div class="data-info teal darken-3 white-text">
-            <p>Normal range of data: 0mg/L - 100mg/L</p>
-          </div>
         </div>
         <div id="graph-site1-coliform" class="graph line coliform col s12 l10 offset-l1">
           <h4 class="graph-header">{% trans "Fecal Coliform (CFU / 100 mL)" %}</h4>
-          <div class="data-info teal darken-3 white-text">
-            <p>Normal range of data: 0(CFU/100ml) - 100(CFU/100ml)</p>
-          </div>
         </div>
         <div id="graph-site2-coliform" class="graph line coliform col s12 l10 offset-l1"
              style="display: none">
           <h4 class="graph-header">{% trans "Fecal Coliform (CFU / 100 mL)" %}</h4>
-          <div class="data-info teal darken-3 white-text">
-            <p>Normal range of data: 0CFU/100ml - 100CFU/100ml</p>
-          </div>
         </div>
       </div>
     </div>

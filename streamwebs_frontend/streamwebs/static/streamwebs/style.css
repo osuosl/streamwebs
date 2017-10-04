@@ -65,7 +65,7 @@ nav#navbar {
 
 nav#navbar div.nav-container {
     background: white;
-    height: 66px;
+    height: auto;
     width: 100%;
     border-bottom: 2px white solid;
     transition: border 300ms linear 0s;
@@ -212,8 +212,8 @@ div#footer-branding img#seagrant {
 
 div#footer-branding img#osu {
     margin-top: 10px;
-    width: 270px;
-    height: 86px;
+    width: 280px;
+    height: 90px;
 }
 
 /* CSS for D3 graphs; ALL FREE TO BE CHANGED */

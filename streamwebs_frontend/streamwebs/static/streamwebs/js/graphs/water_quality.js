@@ -341,10 +341,38 @@ var createGraphTemplate = function createGraphTemplate(container, width, height,
     return g1;
 };
 
-var filterZeroData = function filterZeroData(filtered) {
-    filtered = filtered.filter(function(dataPoint) {
-      return dataPoint.value != 0;
-    });
+var filterZeroData = function filterZeroData(filtered, key) {
+    console.log(filtered);
+    if (key === "dissolved_oxygen") {
+        filtered = filtered.filter(function(dataPoint) {
+            return dataPoint.value >= 0 && dataPoint.value <= 13 ;
+        });
+    }
+    else if (key === "pH") {
+        filtered = filtered.filter(function(dataPoint) {
+            return dataPoint.value > 0 && dataPoint.value < 14 ;
+        });
+    }
+    else if (key === "water_temperature") {
+        filtered = filtered.filter(function(dataPoint) {
+            return dataPoint.value >= 32 && dataPoint.value <= 140 ;
+        });
+    }
+    else if (key === "air_temperature") {
+        filtered = filtered.filter(function(dataPoint) {
+            return dataPoint.value >= 0 && dataPoint.value <= 140 ;
+        });
+    }
+    else if (key === "turbidity") {
+        filtered = filtered.filter(function(dataPoint) {
+            return dataPoint.value > 0;
+        });
+    }
+    else {
+        filtered = filtered.filter(function(dataPoint) {
+            return dataPoint.value >= 0;
+        });
+    }
 
     return filtered;
 }
@@ -455,10 +483,10 @@ var createGraph = function createGraph() {
     'pH', 'turbidity', 'salinity', 'conductivity', 'fecal_coliform', 'bod',
     'total_solids', 'ammonia', 'nitrite', 'nitrate', 'phosphates']) {
         types1[key] = formatData(formatted1, key);
-        filtered1[key] = filterZeroData(types1[key]);
+        filtered1[key] = filterZeroData(types1[key], key);
         filtered1[key] = filterOutliers(filtered1[key]);
     }
-
+    console.log(types1);
     var formatted2 = [];
 
     if (window.hasSiteTwo) {
@@ -482,7 +510,7 @@ var createGraph = function createGraph() {
         'pH', 'turbidity', 'salinity', 'conductivity', 'fecal_coliform', 'bod',
         'total_solids', 'ammonia', 'nitrite', 'nitrate', 'phosphates']) {
             types2[key] = formatData(formatted2, key);
-            filtered2[key] = filterZeroData(types2[key]);
+            filtered2[key] = filterZeroData(types2[key], key);
             filtered2[key] = filterOutliers(filtered2[key]);
         }
     }
@@ -813,7 +841,7 @@ var graphOxygen = function graphOxygen(){
         .range([0, width])
         .domain(getXDomain(['dissolved_oxygen']));
     var y = d3.scaleLinear()
-        .domain(getYDomain(['dissolved_oxygen']))
+        .domain([0, 13])
         .range([height, 0]);
 
     var g1 = createGraphTemplate(containerName1, width, height, x, y);
@@ -1260,7 +1288,7 @@ var graphConductivity = function graphConductivity() {
                 .data(function (d) {
                     return d.values.map(function (e) {
                         e['name'] = d.name;
-                        e['key'] = 'conducitivity';
+                        e['key'] = 'conductivity';
                         e['site'] = siteId;
                         return e;
                     });
@@ -1864,12 +1892,6 @@ $(function () {
         $('div.graph').css("width", "");
         centerHover();
         createGraph();
-    });
-
-    $('div.graph h4').on('mouseenter', function() {
-        $(this).parent().find('div.data-info').show();
-    }).on('mouseleave', function() {
-        $(this).parent().find('div.data-info').hide();
     });
     centerHover();
     createGraph();

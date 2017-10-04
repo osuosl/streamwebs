@@ -28,9 +28,9 @@ def _temp_conv(temp, unit):
         raise ValueError(_('Invalid unit'))
 
     if unit == _('Celsius'):
-        return temp
+        return temp * 9 / 5 + 32
 
-    return 5/9 * (temp - 32)
+    return temp
 
 
 class SiteManager(models.Manager):
