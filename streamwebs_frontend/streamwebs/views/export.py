@@ -161,16 +161,17 @@ def export_ript(request, site_slug):
 
     zones = TransectZone.objects.filter(transect_id=sheets[0])
     zones = zones.values(
-        'transect__school', 'transect__date_time', 'transect__site__site_name',
-        'transect__weather', 'transect__slope', 'transect__notes', 'zone_num',
-        'conifers', 'hardwoods', 'shrubs', 'comments'
+        'transect__school__name', 'transect__date_time',
+        'transect__site__site_name', 'transect__weather', 'transect__slope',
+        'transect__notes', 'zone_num', 'conifers', 'hardwoods', 'shrubs',
+        'comments'
     )
     sheets.pop(0)
 
     for sheet in sheets:
         n_zones = TransectZone.objects.filter(transect_id=sheet)
         n_zones = n_zones.order_by('transect__id', 'zone_num').values(
-            'transect__school', 'transect__date_time',
+            'transect__school__name', 'transect__date_time',
             'transect__site__site_name', 'transect__weather',
             'transect__slope', 'transect__notes', 'zone_num', 'conifers',
             'hardwoods', 'shrubs', 'comments'
@@ -181,7 +182,8 @@ def export_ript(request, site_slug):
 
     return render_to_csv_response(
         zones, filename=filename, field_header_map={
-            'transect__school': 'school', 'transect__date_time': 'date/time',
+            'transect__school__name': 'school',
+            'transect__date_time': 'date/time',
             'transect__site__site_name': 'site',
             'transect__weather': 'weather', 'transect__slope': 'slope',
             'transect__notes': 'notes', 'zone_num': 'zone number'
