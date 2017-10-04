@@ -673,7 +673,8 @@ def riparian_aquatic_view(request, site_slug, data_id):
 def riparian_transect_view(request, site_slug, data_id):
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     transect = RiparianTransect.objects.get(id=data_id)
-    zones = TransectZone.objects.filter(transect_id=transect)
+    zones = TransectZone.objects.filter(transect_id=transect)\
+        .order_by('zone_num')
 
     # Invoking the database by evaluating the queryset before passing it to the
     # template is necessary in order to pass Travis tests.
@@ -1093,8 +1094,11 @@ def water_quality_edit(request, site_slug):
             water_quality.site = site
             water_quality.save()             # save object to db
             allSamples = sample_formset.save(commit=False)
+            counter = 0
             for sample in allSamples:
                 sample.water_quality = water_quality
+                counter = counter + 1
+                sample.sample = counter
                 sample.save()
             messages.success(
                 request,

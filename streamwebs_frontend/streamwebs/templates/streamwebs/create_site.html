@@ -65,71 +65,71 @@ function pan(){
 
 {% block content %}
 <div class="container">
-<form id='site_form' method='post' enctype="multipart/form-data">
-{% csrf_token %}
-{{ site_form.media }}
-<div class="row">
-  <div class="input-field col s12">
-    <i class="material-icons prefix">flag</i>
-    <label for="{{ site_form.site_name.id_for_label }}">Site Name:</label>
-    {{ site_form.site_name }}
-    <strong>{{ site_form.site_name.errors | striptags }}</strong>
+  <form id='site_form' method='post' enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ site_form.media }}
+    <div class="row">
+      <div class="input-field col s12">
+        <i class="material-icons prefix">flag</i>
+        <label for="{{ site_form.site_name.id_for_label }}">Site Name:</label>
+        {{ site_form.site_name }}
+        <strong>{{ site_form.site_name.errors | striptags }}</strong>
 
-  </div>
-</div>
-
-<div class="row">
-  <div class="input-field col s12">
-    <i class="material-icons prefix">sort</i>
-    <label for="{{ site_form.description.id_for_label }}">Description:</label>
-    {{ site_form.description }}
-    {{ site_form.description.errors | striptags }}
-  </div>
-</div>
-
-<p>
-  <label for="id_image">Image:</label>
-  <div class="file-field input-field">
-    <div class="btn teal darken-3">
-      <span>Upload</span>
-      <input type="file" id="id_image" name="image">
+      </div>
     </div>
-    <div class="file-path-wrapper">
-      <input class="file-path validate" type="text">
+
+    <div class="row">
+      <div class="input-field col s12">
+        <i class="material-icons prefix">sort</i>
+        <label for="{{ site_form.description.id_for_label }}">Description:</label>
+        {{ site_form.description }}
+        {{ site_form.description.errors | striptags }}
+      </div>
     </div>
-  </div>
-</p>
 
-<i class="material-icons prefix">my_location</i>
-<label for="{{ site_form.location.id_for_label }}">{% trans "Latitude" %}</label>
-<input type="text" id="input_lat" name="lat" required>
-<br/>
-<strong> {{ site_form.location.errors | striptags }}</strong>
-<br/>
-<br/>
-<i class="material-icons prefix">my_location</i>
-<label for="{{ site_form.location.id_for_label }}">{% trans "Longitude" %}</label>
-<input type ="text" id="input_lng" name="lng" required>
-<input type="button" class="btn waves-effect waves-light teal darken-3"
-value='{% trans 'Update Location' %}' onclick="pan()" />
-<i class="material-icons prefix"> error_outline</i>
-Select site location with latitude and longitude above, or find on map below.
-<br/>
-<br/>
-<br/>
+    <p>
+      <label for="id_image">Image:</label>
+      <div class="file-field input-field">
+        <div class="btn teal darken-3">
+          <span>Upload</span>
+          <input type="file" id="id_image" name="image">
+        </div>
+        <div class="file-path-wrapper">
+          <input class="file-path validate" type="text">
+        </div>
+      </div>
+    </p>
 
-<div class="row">
-  <div class="col s12 l12">
-  <div id="map"> </div>
-</div>
-</div>
+    <i class="material-icons prefix">my_location</i>
+    <label for="{{ site_form.location.id_for_label }}">{% trans "Latitude" %}</label>
+    <input type="text" id="input_lat" name="lat" required>
+    <br/>
+    <strong> {{ site_form.location.errors | striptags }}</strong>
+    <br/>
+    <br/>
+    <i class="material-icons prefix">my_location</i>
+    <label for="{{ site_form.location.id_for_label }}">{% trans "Longitude" %}</label>
+    <input type ="text" id="input_lng" name="lng" required>
+    <input type="button" class="btn waves-effect waves-light teal darken-3"
+    value='{% trans 'Update Location' %}' onclick="pan()" />
+    <i class="material-icons prefix"> error_outline</i>
+    Select site location with latitude and longitude above, or find on map below.
+    <br/>
+    <br/>
+    <br/>
 
-<br/>
-<br/>
-<input id="button" class="btn waves-effect waves-light teal darken-3"
-type='submit' name='submit' value='{% trans 'Add new site' %}'/>
+    <div class="row">
+      <div class="col s12 l12">
+        <div id="map">
+        </div>
+      </div>
+    </div>
 
-
-</form>
+    <br/>
+    <button class="btn wave-effect waves-light teal darken-3" type="submit"
+      name="submit" value="{% trans "Create Site" %}">
+      {% trans "Create Site" %}
+    </button>
+  </form>
 </div>
 {% endblock %}

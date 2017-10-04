@@ -154,8 +154,8 @@
     $(document).ready(function () {
       {% language "en-us" %}
       var loc = {
-        lat: {{ site.to_dict.location.y }},
-        lng: {{ site.to_dict.location.x }},
+        lat: {{ cp.location.x }},
+        lng: {{ cp.location.y }},
       };
       {% endlanguage %}
       var latlng = new google.maps.LatLng(loc.lat, loc.lng);
