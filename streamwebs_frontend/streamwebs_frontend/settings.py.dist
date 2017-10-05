@@ -25,6 +25,7 @@ LOCALE_PATHS = [
     '../locale/',
 ]
 MEDIA_ROOT = 'media'
+FILE_UPLOAD_PERMISSIONS = 0644
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
