@@ -835,15 +835,6 @@ class Macroinvertebrates(models.Model):
         # the water quality rating is just the sum of the three scores
         self.wq_rating = (self.sensitive_total +
                           self.somewhat_sensitive_total + self.tolerant_total)
-        for i in range(len(sensitive)):
-            sensitive[i] = int(sensitive[i])
-        for i in range(len(somewhat)):
-            somewhat[i] = int(somewhat[i])
-        for i in range(len(tolerant)):
-            tolerant[i] = int(tolerant[i])
-        self.sensitive_total = sum(sensitive)
-        self.somewhat_sensitive_total = sum(somewhat)
-        self.tolerant_total = sum(tolerant)
 
         super(Macroinvertebrates, self).save()
 
