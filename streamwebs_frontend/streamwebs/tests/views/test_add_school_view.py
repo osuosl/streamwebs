@@ -38,5 +38,3 @@ class CreateSchoolTestCase(TestCase):
             'city': 'Corvallis',
             'province': 'OR',
             'zipcode': '97330'})
-
-        self.assertTemplateUsed(response, 'streamwebs/index.html')
