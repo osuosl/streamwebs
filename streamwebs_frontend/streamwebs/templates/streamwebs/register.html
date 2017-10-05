@@ -58,7 +58,7 @@
             {{ profile_form.school }}
             {{ profile_form.school.errors }}
             <label for="{{ profile_form.school.id_for_label }}">{% trans "School" %}:</label>
-            <a href="{% url 'streamwebs:create_school' %}" class="btn waves-effect waves-light teal darken-3">{% trans "Add A School/Organization" %}</a>
+            <a href="{% url 'streamwebs:create_school' %}?next={{ request.path|urlencode }}" class="btn waves-effect waves-light teal darken-3">{% trans "Add A School/Organization" %}</a>
           </div>
 
           <div class="input-field col s12">
@@ -119,14 +119,19 @@
       src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
   <script>
       $(document).ready(function () {
-          $('select').material_select();
-          $('.datepicker').pickadate({
-              today: '',
-              selectMonths: true, // Creates a dropdown to control month
-              selectYears: 100, // Creates a dropdown of 15 years to control year
-              max: true, // set max to today
-              format: 'yyyy-mm-dd',
-          });
+        {% if messages %}
+          {% for message in messages %}
+            Materialize.toast('{{ message }}', 4000, 'green');
+          {% endfor %}
+        {% endif %}
+        $('select').material_select();
+        $('.datepicker').pickadate({
+            today: '',
+            selectMonths: true, // Creates a dropdown to control month
+            selectYears: 100, // Creates a dropdown of 15 years to control year
+            max: true, // set max to today
+            format: 'yyyy-mm-dd',
+        });
       });
   </script>
 {% endblock %}

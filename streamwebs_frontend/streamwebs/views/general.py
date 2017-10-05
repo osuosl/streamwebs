@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import User, Group, Permission
 from django.core.serializers.json import DjangoJSONEncoder
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, render_to_response
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from django.forms import inlineformset_factory, modelformset_factory
@@ -61,7 +61,8 @@ def create_school(request):
             school.save()
             messages.success(request,
                              _('You have successfully added a new school'))
-            return render(request, 'streamwebs/index.html')
+            next = request.POST.get('next', '/')
+            return HttpResponseRedirect(next)
     else:
         school_form = SchoolForm()
 
