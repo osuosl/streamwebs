@@ -28,7 +28,7 @@
             {{ camera_form.school }}
           </div>
           <div class="col s12">
-            <a href="{% url 'streamwebs:create_school' %}" class="btn waves-effect waves-light teal darken-3">{% trans "Add A School/Organization" %}</a>
+            <a href="{% url 'streamwebs:create_school' %}?next={{ request.path|urlencode }}" class="btn waves-effect waves-light teal darken-3">{% trans "Add A School/Organization" %}</a>
           </div>
         </div>
         <div class="loc-input">
@@ -160,6 +160,11 @@
 
     // onload
     $(document).ready(function() {
+      {% if messages %}
+        {% for message in messages %}
+          Materialize.toast('{{ message }}', 4000, 'green');
+        {% endfor %}
+      {% endif %}
       var latlng = new google.maps.LatLng("{{ site.to_dict.location.y }}", "{{ site.to_dict.location.x }}");
       var mapOptions = {
         zoom: 14,

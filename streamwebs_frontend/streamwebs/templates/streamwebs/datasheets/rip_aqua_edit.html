@@ -52,7 +52,7 @@
         {{ rip_aqua_form.date }}
       </div>
       <div class="col s12">
-        <a href="{% url 'streamwebs:create_school' %}" class="btn waves-effect waves-light teal darken-3">{% trans "Add A School/Organization" %}</a>
+        <a href="{% url 'streamwebs:create_school' %}?next={{ request.path|urlencode }}" class="btn waves-effect waves-light teal darken-3">{% trans "Add A School/Organization" %}</a>
       </div>
     </div>
     <div class="row">
@@ -309,6 +309,15 @@
         }
       }
     }
-    ,true);
+    ,return true);
+  </script>
+  <script>
+    $(document).ready(function(){
+      {% if messages %}
+        {% for message in messages %}
+          Materialize.toast('{{ message }}', 4000, 'green');
+        {% endfor %}
+      {% endif %}
+    });
   </script>
 {% endblock %}

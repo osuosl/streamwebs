@@ -76,7 +76,7 @@
             {{ canopy_cover_form.school.errors }}
             {{ canopy_cover_form.school }}
           </div>
-          <a href="{% url 'streamwebs:create_school' %}" class="btn waves-effect waves-light teal darken-3">{% trans "Add A School/Organization" %}</a>
+          <a href="{% url 'streamwebs:create_school' %}?next={{ request.path|urlencode }}" class="btn waves-effect waves-light teal darken-3">{% trans "Add A School/Organization" %}</a>
         </div>
       </div>
       <div class="row">
@@ -341,6 +341,11 @@
 {% block scripts %}
   <script>
     $(document).ready(function() {
+      {% if messages %}
+        {% for message in messages %}
+          Materialize.toast('{{ message }}', 4000, 'green');
+        {% endfor %}
+      {% endif %}
       $("form").bind("keypress", function(e) {
         if (e.keyCode == 13){
           return false;

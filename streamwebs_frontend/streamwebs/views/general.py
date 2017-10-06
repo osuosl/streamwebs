@@ -61,7 +61,8 @@ def create_school(request):
             school.save()
             messages.success(request,
                              _('You have successfully added a new school'))
-            return render(request, 'streamwebs/index.html')
+            next = request.POST.get('next', '/')
+            return HttpResponseRedirect(next)
     else:
         school_form = SchoolForm()
 
