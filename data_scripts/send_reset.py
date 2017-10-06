@@ -4,15 +4,14 @@ import os
 import sys
 
 from django.core.wsgi import get_wsgi_application
-
+from django.http import HttpRequest
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "streamwebs_frontend.settings")
 proj_path = "../streamwebs_frontend/"
 sys.path.append(proj_path)
 application = get_wsgi_application()
-
-from django.http import HttpRequest
-from django.contrib.auth.forms import PasswordResetForm
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import PasswordResetForm
+
 
 def find_users_and_send_email():
     users = User.objects.filter(is_active=True)
@@ -30,10 +29,11 @@ def find_users_and_send_email():
                 form.save(
                     request=request,
                     from_email="Test StreamWebs Team <noreply@osuosl.org>",
-                    email_template_name='registration/password_reset_email.html')
+                    email_template_name=(
+                        'registration/password_reset_email.html'))
 
         except Exception as e:
-            print(e)
+            print("Error: ", e)
             continue
 
     print('done')
