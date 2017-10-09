@@ -166,9 +166,9 @@ class MacroTestCase(TestCase):
         self.assertEqual(macros.midge, 7)
         self.assertEqual(macros.snail, 5)
         self.assertEqual(macros.mosquito_larva, 11)
-        self.assertEqual(macros.tolerant_total, 52)
+        self.assertEqual(macros.tolerant_total, 6)
 
         # Overall water quality rating
-        self.assertEqual(macros.wq_rating, 7)
+        self.assertEqual(macros.wq_rating, 36)
 
         self.assertEqual(macros.notes, '')
