@@ -16,6 +16,26 @@
     <h3 align="center" class="teal-text">
       {{ site.site_name }} {% trans "Macroinvertebrates" %}
     </h3>
+    <br/>
+    <p class="date-range"></p>
+    <br/>
+    <form action="">
+      <div id="dates">
+        <p>{% trans "Set Date Range:" %}</p>
+
+        <div class="row">
+          <div class="col s6">
+            <label for="date-start">{% trans "Begin" %}</label>
+            <input type="date" name="date" class="datepicker" id="date-start"
+                   value=""/>
+          </div>
+          <div class="col s6">
+            <label for="date-end">{% trans "End" %}</label>
+            <input type="date" name="date" class="datepicker" id="date-end" value=""/>
+          </div>
+        </div>
+      </div>
+    </form>
     <div class="row">
       <form action="">
         <div id="type">
@@ -69,21 +89,15 @@
 {% endblock %}
 
 {% block scripts %}
-  <script>
-    $('select').material_select();
-    /*$('.datepicker').pickadate({
-      today: '',
-      selectMonths: true, // Creates a dropdown to control month
-      selectYears: 100, // Creates a dropdown of 15 years to control year
-      max: true, // set max to today
-      format: 'yyyy-mm-dd',
-    });*/
-  </script>
-
   <script type="application/javascript">
     window.data_time = {{data.time|safe}};
     window.data_summ = {{data.summary|safe}};
     var siteId = '{{site.site_slug}}';
+
+    $('.datepicker').pickadate({
+      selectMonths: true,
+      selectYears: 20,
+    });
   </script>
 
   <script type="application/javascript"
