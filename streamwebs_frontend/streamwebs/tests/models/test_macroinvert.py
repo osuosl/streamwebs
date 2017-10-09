@@ -145,7 +145,7 @@ class MacroTestCase(TestCase):
         self.assertEqual(macros.stonefly, 1)
         self.assertEqual(macros.water_penny, 3)
         self.assertEqual(macros.dobsonfly, 0)
-        self.assertEqual(macros.sensitive_total, 7)
+        self.assertEqual(macros.sensitive_total, 12)
 
         # Somewhat tolerant
         self.assertEqual(macros.clam_or_mussel, 4)
@@ -157,7 +157,7 @@ class MacroTestCase(TestCase):
         self.assertEqual(macros.fishfly, 7)
         self.assertEqual(macros.alderfly, 8)
         self.assertEqual(macros.mite, 8)
-        self.assertEqual(macros.somewhat_sensitive_total, 49)
+        self.assertEqual(macros.somewhat_sensitive_total, 18)
 
         # Tolerant
         self.assertEqual(macros.aquatic_worm, 12)
@@ -169,6 +169,6 @@ class MacroTestCase(TestCase):
         self.assertEqual(macros.tolerant_total, 52)
 
         # Overall water quality rating
-        self.assertEqual(macros.wq_rating, 36)
+        self.assertEqual(macros.wq_rating, 7)
 
         self.assertEqual(macros.notes, '')
