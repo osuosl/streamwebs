@@ -1,5 +1,5 @@
 #!/bin/bash
-
+set -e
 # Run all migration scripts in appropriate order
 ./get_sites.py
 ./get_schools.py
