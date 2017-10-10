@@ -4,6 +4,7 @@ curl http://streamwebs.org/schools/csv > schools_info.csv
 # This requires being logged into the site to pull down all of the data
 # curl http://streamwebs.org/active_users/csv > users.csv
 curl http://streamwebs.org/macro_ds/csv > macros.csv
+mkdir -p wq_csvs
 curl http://streamwebs.org/water_quality/csv > wq_csvs/water_quality.csv
 curl http://streamwebs.org/wq_water_temp/csv > wq_csvs/WQ_water_temp.csv
 curl http://streamwebs.org/wq_air_temp/csv > wq_csvs/WQ_air_temp.csv
