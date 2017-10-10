@@ -61,7 +61,7 @@ CCs = {}
 directions = ['north', 'east', 'south', 'west']
 
 for dir in directions:
-    if os.path.isdir("../streamwebs_frontend/sw_data/"):
+    if os.path.isdir("../sw_data/"):
         datafile = '../sw_data/cc_' + dir + '.csv'
     else:
         datafile = '../csvs/cc_' + dir + '.csv'

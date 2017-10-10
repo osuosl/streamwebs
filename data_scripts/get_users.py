@@ -21,7 +21,7 @@ from streamwebs.models import UserProfile, School  # NOQA
 # "Uid","Name","E-mail","Active","Created date","Last login","Last access",
 # "Roles","# of Submissions","School","First name","Last name","Date of birth"
 
-if os.path.isdir("../streamwebs_frontend/sw_data/"):
+if os.path.isdir("../sw_data/"):
     users_list = '../sw_data/users.csv'
 else:
     users_list = '../csvs/users.csv'

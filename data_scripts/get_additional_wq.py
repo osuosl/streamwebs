@@ -14,7 +14,7 @@ application = get_wsgi_application()
 from streamwebs.models import WQ_Sample  # NOQA
 
 
-if os.path.isdir("../streamwebs_frontend/sw_data/"):
+if os.path.isdir("../sw_data/"):
     datapath = '../sw_data/wq_csvs/'
 else:
     datapath = '../csvs/wq_csvs/'

@@ -15,7 +15,7 @@ from streamwebs.models import Site  # NOQA
 from streamwebs.models import WQ_Sample  # NOQA
 
 
-if os.path.isdir("../streamwebs_frontend/sw_data/"):
+if os.path.isdir("../sw_data/"):
     datafile = '../sw_data/wq_csvs/WQ_sample_tools'
 else:
     datafile = '../csvs/wq_csvs/WQ_sample_tools'

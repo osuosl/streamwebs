@@ -26,7 +26,7 @@ def num(x):
         return x
 
 
-if os.path.isdir("../streamwebs_frontend/sw_data/"):
+if os.path.isdir("../sw_data/"):
     datafile = '../sw_data/sites.csv'
 else:
     datafile = '../csvs/sites.csv'
