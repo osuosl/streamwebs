@@ -124,7 +124,7 @@
   "model": "streamwebs.resource",
   "pk": 27,
   "fields": {
-    "name": "Macroinvertebrates (Español)",
+    "name": "Aquatic Macroinvertebrates (Español)",
     "res_type": "data_sheet",
     "downloadable": "assets/Macros_SW_Spanish.pdf",
     "thumbnail": "assets/thumbnails/Macroinvertebrates_Spanish.png",
