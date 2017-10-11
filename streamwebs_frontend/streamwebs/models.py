@@ -1177,7 +1177,7 @@ class Resource(models.Model):
 
 class RipAquaticSurveyManager(models.Manager):
 
-    def create_aqua(self, site, school, date='2016-04-03', riffle_count=3,
+    def create_aqua(self, site, school, date_time='2016-04-03 12:00', riffle_count=3,
                     pool_count=3, weather='RAAIIN'):
 
         info = self.create(school=school,
@@ -1203,9 +1203,8 @@ class RipAquaticSurvey(models.Model):
                              verbose_name=_('site'),
                              limit_choices_to={'active': True}
                              )
-    date = models.DateField(
-        default=datetime.date.today, verbose_name=_('date')
-    )
+    date_time = models.DateTimeField(default=timezone.now,
+                                     verbose_name=_('date and time'))
     weather = models.CharField(
         max_length=20, verbose_name=_('weather'), blank=True, null=True
     )

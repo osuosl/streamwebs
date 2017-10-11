@@ -203,11 +203,11 @@ def site(request, site_slug):
     soil_sheets = soil_sheets_new
 
     rip_aqua_sheets = RipAquaticSurvey.objects.filter(site_id=site.id)
-    rip_aqua_sheets = list(rip_aqua_sheets.order_by('-date').values())
+    rip_aqua_sheets = list(rip_aqua_sheets.order_by('-date_time').values())
     rip_aqua_sheets_new = []
     for x in rip_aqua_sheets:
         rip_data = {'id': x['id'], 'uri': 'rip_aqua',
-                    'type': 'Riparian Aquatic', 'date': x['date']}
+                    'type': 'Riparian Aquatic', 'date': x['date_time'].date()}
         if 'school_id' in x and x['school_id']:
             rip_data['school_id'] = x['school_id']
         else:
@@ -641,6 +641,11 @@ def riparian_aquatic_edit(request, site_slug):
         rip_aqua_form = RipAquaForm(data=request.POST)
         if rip_aqua_form.is_valid():
             rip_aqua = rip_aqua_form.save(commit=False)
+            rip_aqua.date_time = toDateTime(
+                rip_aqua_form.data['date'],
+                rip_aqua_form.data['time'],
+                rip_aqua_form.data['ampm']
+            )
             rip_aqua.site = site
             rip_aqua.save()
             messages.success(
