@@ -364,17 +364,6 @@ var useLineGraph = function useLineGraph() {
             .text(function (d) {
                 return d.name;
             });
-
-        var dateRange = 'Date Range: ' + formatted[0].date + ' ~ ' +
-            formatted[formatted.length - 1].date;
-
-        g.append('text')
-            .attr('x', 260)
-            .attr('y', height + margin.bottom+ 40)
-            .attr('dy', '.35em')
-            .style('font-size', '14px')
-            .text(dateRange);
-
     }
 };
 
@@ -698,11 +687,44 @@ $(window).resize(function () {
     }
 });
 
+var addDateRange = function addDateRange() {
+    console.log(window.data_time);
+    var count = 0;
+    for (key in window.data_time) {
+        count++;
+    }
+    if (count > 0) {
+        var first = 1;
+        var min, max;
+        for (key in window.data_time) {
+            if (first == 1) {
+                var min = key;
+                var max = key;
+                first--;
+            }
+            else {
+                if (key < min) min = key;
+                if (key > max) max = key;
+            }
+        }
+        var min_date = new Date(0);
+        var max_date = new Date(0);
+        min_date.setUTCSeconds(min);
+        max_date.setUTCSeconds(max);
+        var date_range = "";
+        var date_range = date_range + min_date.getFullYear().toString()
+            + "-" + min_date.getDate().toString() + "-" + (min_date.getMonth() + 1).toString()
+            + " ~ " + max_date.getFullYear().toString()
+            + "-" + max_date.getDate().toString() + "-" + (max_date.getMonth() + 1).toString()
+        $('p.date-range').text('Date range of data: ' + date_range);
+    }
+}
+
 $(function () {
     $('input[type=date]').val('');
     $('#date-start').change(changeRangeStart);
     $('#date-end').change(changeRangeEnd);
-
+    addDateRange();
     $('input[type=radio]').fix_radios();
     $('input[name=type]').change(function () {
         if ($('input[name=type]:checked').val() === 'line') {
