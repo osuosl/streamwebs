@@ -15,7 +15,7 @@ from streamwebs.models import Site  # NOQA
 from streamwebs.models import Macroinvertebrates  # NOQA
 
 
-if os.path.isdir("../streamwebs_frontend/sw_data/"):
+if os.path.isdir("../sw_data/"):
     datafile = '../sw_data/macros.csv'
 else:
     datafile = '../csvs/macros.csv'
