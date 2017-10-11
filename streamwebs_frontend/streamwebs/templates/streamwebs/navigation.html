@@ -10,7 +10,9 @@
     <li><a href="{% url 'streamwebs:resources' %}"
            class="teal-text text-darken-3">{% trans "Resources" %}</a></li>
     <li><a href="{% url 'streamwebs:about' %}"
-                   class="teal-text text-darken-3">{% trans "About" %}</a></li>
+           class="teal-text text-darken-3">{% trans "About" %}</a></li>
+    <li><a href="{% url 'streamwebs:faq' %}"
+           class="teal-text text-darken-3">{% trans "FAQ" %}</a></li>
 
   {% if user.is_authenticated %}
     <li><a href="{% url 'streamwebs:account' %}" class="teal-text text-darken-3">Account</a></li>
