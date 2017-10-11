@@ -1,0 +1,69 @@
+{% extends 'streamwebs/base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+
+{% block content %}
+<style>
+  ul.list li{
+    list-style-type: square; !important
+  }
+</style>
+<h4 class="teal-text center">{% trans "Frequently Asked Questions" %}</h4>
+<br/>
+</br/>
+
+<div class="container">
+<h5 class="teal-text">How do I access my old account?</h5>
+<p>
+    You will receieve an email to the account you signed up with on the original
+    site. From there you can reset your password and use the same account on
+    the new site!
+</p>
+<br/>
+
+</br/>
+<h5 class="teal-text">What's different about the site?</h5>
+<p>
+Not only has the site been given a modern face-lift, there are new features
+that we are excited aboutm such as:
+</p>
+  <ul class="list">
+    <li>
+      You now have the ability to extract the data that uo have entered into the
+      site, in the form of an excep spreadsheet for further manipulation in the
+      classroom.
+    </li>
+    <br/>
+
+    <li>
+      You can now compare sites and their information side-by-side! Be done with
+      switching tabs to compare water qualities between two sites!
+    </li>
+    <br/>
+    <li>
+      The water quality graphs have been simplified for a cleaner viewing
+      experience, with less clutter and verbose data. Individual data points
+      are averages of all the data entries submitted that day. You can now click
+      on these to view as histograms.
+    </li>
+    <br/>
+    <li>
+      Some of our less-used datasheets are no longer supported for entry into
+      the new site. These include the Invasive Species, StreamFlow, and Pebble
+      Count datasheets. These are still available in the resource section of the
+      site in PDF format.
+    </li>
+    <br/>
+    <li>
+      You will also notice that individual users no longer have a profile page,
+      but you can still find all of your data located on the sites that you have
+      participated in.
+    </li>
+  </ul>
+  <h5 class="teal-text">What if I run into an unexpected error?</h5>
+      As with any new website, there are still some bugs to work out (we like
+      to call these unexpected features!). If you do find any bugs, send us an
+      email at <b>info@streamwebs.org</b> and we will work to resolve them as quickly
+      as we can.
+</div>
+{% endblock %}
