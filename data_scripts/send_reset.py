@@ -28,9 +28,9 @@ def find_users_and_send_email():
                 request.META['SERVER_PORT'] = '8000'
                 form.save(
                     request=request,
-                    from_email="Test StreamWebs Team <noreply@osuosl.org>",
+                    from_email="StreamWebs <noreply@osuosl.org>",
                     email_template_name=(
-                        'registration/password_reset_email.html'))
+                        'registration/initial_password_reset_email.html'))
 
         except Exception as e:
             print("Error: ", e)
