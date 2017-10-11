@@ -633,6 +633,7 @@ def macroinvertebrate_edit(request, site_slug):
     )
 
 
+@login_required
 def riparian_aquatic_edit(request, site_slug):
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     rip_aqua_form = RipAquaForm()
@@ -1493,6 +1494,7 @@ def school_detail(request, school_id):
     can_data = Canopy_Cover.objects.filter(school=school_id)
     soil_data = Soil_Survey.objects.filter(school=school_id)
     rip_data = RiparianTransect.objects.filter(school=school_id)
+    rip_aqua_data = RipAquaticSurvey.objects.filter(school=school_id)
 
     return render(request, 'streamwebs/school_detail.html', {
         'school_data': school_data,
@@ -1502,4 +1504,5 @@ def school_detail(request, school_id):
         'can_data': can_data,
         'soil_data': soil_data,
         'rip_data': rip_data,
+        'rip_aqua_data': rip_aqua_data,
     })
