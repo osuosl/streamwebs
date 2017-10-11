@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from streamwebs.models import UserProfile, WQ_Sample, Water_Quality, \
     Macroinvertebrates, Canopy_Cover, TransectZone, \
     RiparianTransect, PhotoPointImage, PhotoPoint, CameraPoint, Site, School, \
-    Soil_Survey, Resource
+    Soil_Survey, Resource, RipAquaticSurvey
 from django.contrib.auth.models import User
 from django import forms
 from django.forms import BaseInlineFormSet
@@ -83,8 +83,8 @@ class UserProfileForm(forms.ModelForm):
     birthdate = forms.DateField(
         widget=forms.DateInput(attrs={'class': 'datepicker'}),
     )
-    school = forms.ModelChoiceField(queryset=School.objects.all(),
-                                    empty_label=None)
+    school = forms.ModelChoiceField(
+        queryset=School.objects.all().order_by('name'), empty_label=None)
 
     class Meta:
         model = UserProfile
@@ -93,7 +93,7 @@ class UserProfileForm(forms.ModelForm):
 
 class MacroinvertebratesForm(forms.ModelForm):
     school = forms.ModelChoiceField(
-        queryset=School.objects.all(), empty_label=None)
+        queryset=School.objects.all().order_by('name'), empty_label=None)
     weather = forms.CharField(required=False)
     time_spent = forms.IntegerField(required=False)
     num_people = forms.IntegerField(required=False)
@@ -120,8 +120,8 @@ class MacroinvertebratesForm(forms.ModelForm):
 
 
 class WQForm(forms.ModelForm):
-    school = forms.ModelChoiceField(queryset=School.objects.all(),
-                                    empty_label=None)
+    school = forms.ModelChoiceField(
+        queryset=School.objects.all().order_by('name'), empty_label=None)
     latitude = forms.DecimalField(required=False)
     longitude = forms.DecimalField(required=False)
     date = forms.DateField(
@@ -173,8 +173,8 @@ class WQSampleForm(forms.ModelForm):
 
 
 class Canopy_Cover_Form(forms.ModelForm):
-    school = forms.ModelChoiceField(queryset=School.objects.all(),
-                                    empty_label=None)
+    school = forms.ModelChoiceField(
+        queryset=School.objects.all().order_by('name'), empty_label=None)
     weather = forms.CharField(required=False)
     date = forms.DateField(
         input_formats=['%Y-%m-%d'],
@@ -230,8 +230,8 @@ class BaseZoneInlineFormSet(BaseInlineFormSet):
 
 
 class RiparianTransectForm(forms.ModelForm):
-    school = forms.ModelChoiceField(queryset=School.objects.all(),
-                                    empty_label=None)
+    school = forms.ModelChoiceField(
+        queryset=School.objects.all().order_by('name'), empty_label=None)
     date = forms.DateField(
         input_formats=['%Y-%m-%d'],
         widget=forms.DateInput(attrs={'class': 'datepicker'}),
@@ -270,8 +270,8 @@ class PhotoPointForm(forms.ModelForm):
 
 
 class CameraPointForm(forms.ModelForm):
-    school = forms.ModelChoiceField(queryset=School.objects.all(),
-                                    empty_label=None)
+    school = forms.ModelChoiceField(
+        queryset=School.objects.all().order_by('name'), empty_label=None)
     cp_date = forms.DateField(
         widget=forms.DateInput(attrs={'class': 'datepicker'}),
     )
@@ -299,8 +299,8 @@ class SiteForm(forms.ModelForm):
 
 
 class SoilSurveyForm(forms.ModelForm):
-    school = forms.ModelChoiceField(queryset=School.objects.all(),
-                                    empty_label=None)
+    school = forms.ModelChoiceField(
+        queryset=School.objects.all().order_by('name'), empty_label=None)
     weather = forms.CharField(required=False)
     date = forms.DateField(
         input_formats=['%Y-%m-%d'],
@@ -381,3 +381,44 @@ class SchoolForm(forms.ModelForm):
         fields = ('name', 'school_type',
                   'address', 'city',
                   'province', 'zipcode')
+
+
+class RipAquaForm(forms.ModelForm):
+    school = forms.ModelChoiceField(
+        queryset=School.objects.all().order_by('name'), empty_label=None)
+    date = forms.DateField(
+        widget=forms.DateInput(attrs={'class': 'datepicker'}))
+
+    class Meta:
+        model = RipAquaticSurvey
+        widgets = {
+            'weather': forms.TextInput(attrs={'required': False}),
+            'silt': forms.RadioSelect(attrs={'required': False}),
+            'sand': forms.RadioSelect(attrs={'required': False}),
+            'gravel': forms.RadioSelect(attrs={'required': False}),
+            'cobble': forms.RadioSelect(attrs={'required': False}),
+            'boulders': forms.RadioSelect(attrs={'required': False}),
+            'bedrock': forms.RadioSelect(attrs={'required': False}),
+            'small_debris': forms.RadioSelect(attrs={'required': False}),
+            'medium_debris': forms.RadioSelect(attrs={'required': False}),
+            'large_debris': forms.RadioSelect(attrs={'required': False}),
+            'coniferous_trees': forms.RadioSelect(attrs={'required': False}),
+            'deciduous_trees': forms.RadioSelect(attrs={'required': False}),
+            'shrubs': forms.RadioSelect(attrs={'required': False}),
+            'small_plants': forms.RadioSelect(attrs={'required': False}),
+            'ferns': forms.RadioSelect(attrs={'required': False}),
+            'grasses': forms.RadioSelect(attrs={'required': False}),
+            'comments': forms.Textarea(
+                attrs={'class': 'materialize-textarea', 'required': False}),
+            'species': forms.Textarea(
+                attrs={'class': 'materialize-textarea', 'required': False}),
+            'significance': forms.Textarea(
+                attrs={'class': 'materialize-textarea', 'required': False})
+        }
+        fields = (
+            'school', 'date', 'weather', 'riffle_count', 'pool_count', 'silt',
+            'sand', 'gravel', 'cobble', 'boulders', 'bedrock', 'small_debris',
+            'medium_debris', 'large_debris', 'comments', 'coniferous_trees',
+            'deciduous_trees', 'shrubs', 'small_plants', 'ferns', 'grasses',
+            'species', 'significance', 'wildlife_type', 'wildlife_comments'
+            )

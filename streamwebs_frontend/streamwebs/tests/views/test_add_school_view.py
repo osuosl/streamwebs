@@ -27,16 +27,3 @@ class CreateSchoolTestCase(TestCase):
                              'This field is required.')
         self.assertFormError(response, 'school_form', 'zipcode',
                              'This field is required.')
-
-    def test_view_with_good_data(self):
-        """When a good form is submitted, good things happen"""
-
-        response = self.client.post(reverse('streamwebs:create_school'), {
-            'name': 'Cool School',
-            'school_type': 'Organization',
-            'address': '1134 nw 23rd st.',
-            'city': 'Corvallis',
-            'province': 'OR',
-            'zipcode': '97330'})
-
-        self.assertTemplateUsed(response, 'streamwebs/index.html')

@@ -26,7 +26,7 @@ var createGraph = function createGraph() {
         }, 0);
     });
 
-    var margin = {top: 50, right: 20, bottom: 20, left: 50};
+    var margin = {top: 50, right: 0, bottom: 50, left: 50};
 
     var containerName = '#histogram';
     var container = $(containerName);
@@ -53,9 +53,8 @@ var createGraph = function createGraph() {
 
     var bins = d3.histogram()
         .domain(x.domain())
-        .thresholds(20)
+        .thresholds(10)
         (formatted);
-
     var y = d3.scaleLinear()
         .range([height, 0])
         .domain(d3.extent(bins, function (d) {
@@ -84,6 +83,7 @@ var createGraph = function createGraph() {
 
     svg.append('g')
         .attr('class', 'axis axis--y')
+        .attr('transform', 'translate(0, 0)')
         .call(yAxis);
 
     var histogram = svg.selectAll('.bar')
@@ -97,11 +97,12 @@ var createGraph = function createGraph() {
     histogram.append('rect')
         .attr('x', 1)
         .attr('width', function (d) {
-            return x(d.x1) - x(d.x0) - 1;
+            return x(d.x1) - x(d.x0);
         })
         .attr('height', function (d) {
             return height - y(d.length);
-        });
+        })
+        .style('fill', '#1976D2');
 
     histogram.append('text')
         .attr('class', 'label')
@@ -128,6 +129,18 @@ var createGraph = function createGraph() {
         .text(function (d) {
             return toFixed(Number.parseFloat(d.x0), 2);
         });
+
+    svg.append('text')
+        .attr('text-anchor', 'middle')
+        .attr('transform', 'translate(-10,' + height / 2 +')rotate(-90)')
+        .text('Number of Entries');
+
+
+    svg.append('text')
+        .attr('x', width / 2)
+        .attr('y', height + 40)
+        .attr('text-anchor', 'middle')
+        .text(window.type_name + type_unit);
 };
 
 $(function () {

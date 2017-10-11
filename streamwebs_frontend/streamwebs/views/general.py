@@ -19,12 +19,12 @@ from streamwebs.forms import (
     PhotoPointImageForm, PhotoPointForm, CameraPointForm, WQSampleForm,
     WQForm, SiteForm, Canopy_Cover_Form, SoilSurveyForm, StatisticsForm,
     TransectZoneForm, BaseZoneInlineFormSet, ResourceForm, AdminPromotionForm,
-    UserEmailForm, UserPasswordForm, SchoolForm)
+    UserEmailForm, UserPasswordForm, SchoolForm, RipAquaForm)
 
 from streamwebs.models import (
     Macroinvertebrates, Site, Water_Quality, WQ_Sample, RiparianTransect,
     TransectZone, Canopy_Cover, CameraPoint, PhotoPoint,
-    PhotoPointImage, Soil_Survey, Resource, School)
+    PhotoPointImage, Soil_Survey, Resource, School, RipAquaticSurvey)
 
 import json
 import copy
@@ -61,7 +61,8 @@ def create_school(request):
             school.save()
             messages.success(request,
                              _('You have successfully added a new school'))
-            return render(request, 'streamwebs/index.html')
+            next = request.POST.get('next', '/')
+            return HttpResponseRedirect(next)
     else:
         school_form = SchoolForm()
 
@@ -197,12 +198,25 @@ def site(request, site_slug):
         if 'school_id' in x and x['school_id']:
             soil_data['school_id'] = x['school_id']
         else:
-            canopy_data['school_id'] = -1
+            soil_data['school_id'] = -1
         soil_sheets_new.append(soil_data)
     soil_sheets = soil_sheets_new
 
+    rip_aqua_sheets = RipAquaticSurvey.objects.filter(site_id=site.id)
+    rip_aqua_sheets = list(rip_aqua_sheets.order_by('-date').values())
+    rip_aqua_sheets_new = []
+    for x in rip_aqua_sheets:
+        rip_data = {'id': x['id'], 'uri': 'rip_aqua',
+                    'type': 'Riparian Aquatic', 'date': x['date']}
+        if 'school_id' in x and x['school_id']:
+            rip_data['school_id'] = x['school_id']
+        else:
+            rip_data['school_id'] = -1
+        rip_aqua_sheets_new.append(rip_data)
+    rip_aqua_sheets = rip_aqua_sheets_new
+
     data = wq_sheets + macro_sheets + transect_sheets + canopy_sheets +\
-        ppm_sheets + soil_sheets
+        ppm_sheets + soil_sheets + rip_aqua_sheets
 
     def sort_date(x, y):
         return y.year - x.year or y.month - x.month or y.day - x.day
@@ -233,6 +247,7 @@ def site(request, site_slug):
         'has_cc': len(canopy_sheets) > 0,
         'has_soil': len(soil_sheets) > 0,
         'has_camera': len(ppm_sheets) > 0,
+        'has_aqua': len(rip_aqua_sheets) > 0
     })
 
 
@@ -618,10 +633,49 @@ def macroinvertebrate_edit(request, site_slug):
     )
 
 
+def riparian_aquatic_edit(request, site_slug):
+    site = Site.objects.filter(active=True).get(site_slug=site_slug)
+    rip_aqua_form = RipAquaForm()
+
+    if request.method == 'POST':
+        rip_aqua_form = RipAquaForm(data=request.POST)
+        if rip_aqua_form.is_valid():
+            rip_aqua = rip_aqua_form.save(commit=False)
+            rip_aqua.site = site
+            rip_aqua.save()
+            messages.success(
+                request,
+                _('You have successfully added a Riparian Aquatic Survey.'))
+            return redirect(reverse('streamwebs:rip_aqua_view',
+                            kwargs={'site_slug': site.site_slug,
+                                    'data_id': rip_aqua.id}))
+
+    return render(
+        request, 'streamwebs/datasheets/rip_aqua_edit.html', {
+            'rip_aqua_form': rip_aqua_form,
+            'site': site
+
+        }
+    )
+
+
+def riparian_aquatic_view(request, site_slug, data_id):
+    site = Site.objects.filter(active=True).get(site_slug=site_slug)
+    data = RipAquaticSurvey.objects.get(id=data_id)
+
+    return render(
+        request,
+        'streamwebs/datasheets/rip_aqua_view.html', {
+            'data': data, 'site': site
+            }
+        )
+
+
 def riparian_transect_view(request, site_slug, data_id):
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     transect = RiparianTransect.objects.get(id=data_id)
-    zones = TransectZone.objects.filter(transect_id=transect)
+    zones = TransectZone.objects.filter(transect_id=transect)\
+        .order_by('zone_num')
 
     # Invoking the database by evaluating the queryset before passing it to the
     # template is necessary in order to pass Travis tests.
@@ -1041,8 +1095,11 @@ def water_quality_edit(request, site_slug):
             water_quality.site = site
             water_quality.save()             # save object to db
             allSamples = sample_formset.save(commit=False)
+            counter = 0
             for sample in allSamples:
                 sample.water_quality = water_quality
+                counter = counter + 1
+                sample.sample = counter
                 sample.save()
             messages.success(
                 request,

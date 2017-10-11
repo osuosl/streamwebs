@@ -17,7 +17,7 @@ from streamwebs.models import (  # NOQA
     SchoolRelations, Macroinvertebrates, Soil_Survey, RiparianTransect,
     Water_Quality, Canopy_Cover)
 
-if os.path.isdir("../streamwebs_frontend/sw_data/"):
+if os.path.isdir("../sw_data/"):
     datafile = '../sw_data/active_schools.csv'
 else:
     datafile = '../csvs/active_schools.csv'

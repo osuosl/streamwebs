@@ -23,7 +23,7 @@
 
     <div class="row">
       <div class="col s12">
-        <label for="{{ school_form.school_type.id_for_label }}" id="type">{% trans "Type:" %}</label>
+        <label for="{{ school_form.school_type.id_for_label }}" id="type" name="school_type">{% trans "Type:" %}</label>
         <div class="input-field">
           {% for radio in school_form.school_type %}
           {{ radio.tag }}
@@ -61,8 +61,11 @@
         {{ school_form.zipcode.errors | striptags }}
       </div>
     </div>
-    <input class="btn waves-effect waves-light teal darken-3" type="submit"
-    value='{% trans "Submit" %}' id="submit">
+    <input type="hidden" name="next" value="{{ request.GET.next }}"/>
+    <button class="btn wave-effect waves-light teal darken-3" type="submit"
+      name="submit" value="{% trans "Create School" %}" id="submit">
+      {% trans "Create School" %}
+    </button>
   </form>
 </div>
 
@@ -79,14 +82,12 @@
 <script type="text/javascript">
 document.getElementById("submit").addEventListener("click",
 function(){
-  var a = document.getElementsByName("radio");
-  for(var i = 0, len = a.length; i < len; i++){
-    if (a[i].checked){
-      return true;
-    }
+  if($('input[name=school_type]:checked').length > 0){
+    return true;
+  }else{
+    Materialize.toast("Please Select a School type", 4000, 'red');
+    return false;
   }
-  Materialize.toast("Please Select a School type", 4000, 'red');
-  return false;
 });
 </script>
 

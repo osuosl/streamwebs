@@ -25,6 +25,7 @@ class SchoolTestCase(TestCase):
             'camerapoint': models.ManyToOneRel,
             'water_quality': models.ManyToOneRel,
             'macroinvertebrates': models.ManyToOneRel,
+            'ripaquaticsurvey': models.ManyToOneRel,
             'ripariantransect': models.ManyToOneRel,
             'canopy_cover': models.ManyToOneRel,
             'soil_survey': models.ManyToOneRel,

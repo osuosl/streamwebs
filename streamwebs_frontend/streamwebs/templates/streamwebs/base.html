@@ -14,6 +14,7 @@
         href="{% static 'streamwebs/style.css' %}"/>
   <link rel="shortcut icon"
         href="{% static 'streamwebs/images/favicon.ico' %}"/>
+
   {% block head %}{% endblock %}
 </head>
 
@@ -22,7 +23,8 @@
     <div class="header">
       <a href="/" class="logo">
         <img
-            src="{% static 'streamwebs/images/logo.png' %}"
+            height="80"
+            src="{% static 'streamwebs/images/whitelogo.png' %}"
             alt="Home">
       </a>
     </div>
@@ -30,8 +32,8 @@
     <nav id="navbar">
       <div class="nav-container">
         <div id="nav-logo">
-          <h3>STREAMWEBS</h3>
-          <!-- ADD IMAGE -->
+          <img class="navbar-logo"
+            src="{% static 'streamwebs/images/blacklogo.png' %}">
         </div>
         {% include "streamwebs/navigation.html" %}
       </div>
@@ -55,11 +57,25 @@
                    class="footer-link">{% trans "Create Sites" %}</a>
             <a href="{% url 'streamwebs:sites' %}"
                    class="footer-link">{% trans "Search Sites" %}</a>
+            <a href="{% url 'streamwebs:create_school' %}?next={{ request.path|urlencode }}"
+                   class="footer-link">{% trans "Add School/Org." %}</a>
             <a href="{% url 'streamwebs:schools' %}"
                    class="footer-link">{% trans "View Schools" %}</a>
             <a href="{% url 'streamwebs:about' %}"
                    class="footer-link">{% trans "About" %}</a>
           </div>
+          {% if perms.streamwebs.can_view_stats or perms.streamwebs.can_promote_users %}
+          <div id="admin-links">
+            {% if perms.streamwebs.can_view_stats %}
+            <a href="{% url 'streamwebs:stats' %}"
+                   class="footer-link">{% trans "View Site Statistics" %}</a>
+            {% endif %}
+            {% if perms.streamwebs.can_promote_users %}
+            <a href="{% url 'streamwebs:user_promo' %}"
+                   class="footer-link">{% trans "Manage Users" %}</a>
+            {% endif %}
+          </div>
+          {% endif %}
           <div id="footer-branding">
             <img src="{% static 'streamwebs/images/b-wet-logo.jpg' %}" id="b-wet"/>
             <img src="{% static 'streamwebs/images/seagrant-logo.jpg' %}" id="seagrant"/>

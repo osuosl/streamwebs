@@ -13,7 +13,7 @@ application = get_wsgi_application()
 
 from streamwebs.models import School, SchoolRelations # NOQA
 
-if os.path.isdir("../streamwebs_frontend/sw_data/"):
+if os.path.isdir("../sw_data/"):
     datafile = '../sw_data/active_schools.csv'
 else:
     datafile = '../csvs/active_schools.csv'

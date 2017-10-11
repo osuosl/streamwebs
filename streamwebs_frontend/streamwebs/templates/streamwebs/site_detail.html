@@ -167,6 +167,13 @@
                 </a>
               </li>
             {% endif %}
+            {% if has_aqua %}
+              <li>
+                <a href="{% url 'streamwebs:export_rip_aqua' site_slug=site.site_slug %}">
+                  {% trans "Riparian Aquatic Survey" %}
+                </a>
+              </li>
+            {% endif %}
           </ul>
           <a class="dropdown-button btn-large teal darken-3"
              href="#" data-activates="new-data-dropdown">
@@ -204,6 +211,11 @@
                 {% trans "Soil Survey" %}
               </a>
             </li>
+            <li>
+              <a href="{% url 'streamwebs:rip_aqua_edit' site_slug=site.site_slug %}">
+                {% trans "Riparian Aquatic Survey" %}
+              </a>
+            </li>
           </ul>
             <a href="{% url 'streamwebs:update_site' site_slug=site.site_slug %}"
               class="btn-large teal darken-3">
@@ -231,15 +243,18 @@
     var imgRatio = imgHeight/imgWidth;
 
     $(document).ready(function(){
-
-      initialize();
-      window.mapTypeId = {{ map_type }};
       {% if messages %}
         {% for message in messages %}
         Materialize.toast('{{ message }}', 4000, 'green');
         {% endfor %}
       {% endif %}
     });
+
+    window.onload = function() {
+        updateDimension();
+        initialize();
+        window.mapTypeId = {{ map_type }};
+    }
 
     $(window).resize(function() {
         updateDimension();

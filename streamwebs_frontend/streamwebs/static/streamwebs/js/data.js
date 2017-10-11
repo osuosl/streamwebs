@@ -8,7 +8,6 @@ $(document).ready(function () {
         max: true, // set max to today
         format: 'yyyy-mm-dd',
     });
-
     $('.collapse-btn').click(function () {
         $('.collapse').toggleClass('uncollapse');
     });

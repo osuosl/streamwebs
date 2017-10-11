@@ -28,8 +28,10 @@
         <br/>
         <a href="{% url 'password_reset' %}">Forgot your password?</a>
         <br/><br/>
-        <input class="btn waves-effect waves-light teal darken-3" type='submit'
-               name='submit' value='{% trans "Log in" %}'/>
+        <button class="btn wave-effect waves-light teal darken-3" type="submit"
+          name="submit" value="{% trans "Log in" %}">
+          {% trans "Log in" %}
+        </button>
 
       </form>
     </div>

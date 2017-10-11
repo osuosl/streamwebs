@@ -16,7 +16,7 @@ from streamwebs.models import RiparianTransect  # NOQA
 from streamwebs.models import TransectZone  # NOQA
 
 
-if os.path.isdir("../streamwebs_frontend/sw_data/"):
+if os.path.isdir("../sw_data/"):
     datapath = '../sw_data/'
 else:
     datapath = '../csvs/'

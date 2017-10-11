@@ -29,8 +29,6 @@ var initialize = function initialize() {
           strokeWeight: 2
         }
     });
-
-    updateDimension();
     $(window).on('hashchange',listUpdate);
     listUpdate();
 }

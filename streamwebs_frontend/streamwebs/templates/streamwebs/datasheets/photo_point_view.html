@@ -8,6 +8,8 @@
     <i class="material-icons">chevron_left</i>
     Back to <span>{{ site.site_name }} {% trans "Camera Point" %}</span>
   </a>
+  <br/>
+  <br/>
   <div class="container">
     {% if messages %}
       <div class="center-content">
@@ -65,10 +67,57 @@
           </p>
         </div>
       </div>
-      <br/>
-      <h4>{% trans "Photos for this photo point" %}</h4>
+      <hr/>
+      <!-- New photo upload -->
       <div class="row">
-        <div class="col s12 m7">
+        <div class="col s6 offset-s3">
+          {% if user.is_authenticated %}
+            {% if messages %}
+              {% for msg in messages %}
+                {{ msg }}
+              {% endfor %}
+            {% endif %}
+            <h4 class="teal-text">{% trans "Add New Photo" %}</h4>
+            <form id='ppi_form' , method='post' , enctype='multipart/form-data'>
+              {% csrf_token %}
+              {{ ppi_formset.management_form }}
+              {% for ppi_form in ppi_formset %}
+                <div class="row">
+                  <div class="col s12">
+                    <div class="input-field">
+                      <b>{{ ppi_form.image.label }}</b>
+                      <br/>
+                      <br/>
+                      {{ ppi_form.image }}
+                      {{ ppi_form.image.errors }}
+                    </div>
+                  </div>
+                  <div class="col s12">
+                    <div class="input-field">
+                      <b>{{ ppi_form.date.label }}</b>
+                      {{ ppi_form.date }}
+                      {{ ppi_form.date.errors }}
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+              <button class="btn waves-effect waves-light teal darken-3"
+                      type="submit" name="action" value='Submit'>
+                {% trans "Submit" %}
+                <i class="material-icons right">send</i>
+              </button>
+            </form>
+          {% else %}
+            <a href="{% url 'streamwebs:login' %}?next={{ request.path }}">
+              {% trans "Log in to add photos for this photo point." %}
+            </a>
+          {% endif %}
+        </div>
+      </div>
+      <hr/><br/>
+      <h4 class="center teal-text">{% trans "Photos for this photo point" %}</h4>
+      <div class="row">
+        <div class="col s12 m8 offset-m2">
           {% for img in pp_images %}
             <div class="card">
               <div class="card-image">
@@ -83,44 +132,6 @@
           {% endfor %}
         </div>
       </div>
-    </div>
-
-    <!-- New photo upload -->
-    <div>
-      {% if user.is_authenticated %}
-        {% if messages %}
-          {% for msg in messages %}
-            {{ msg }}
-          {% endfor %}
-        {% endif %}
-        <h5>{% trans "Add new photo" %}</h5>
-        <form id='ppi_form' , method='post' , enctype='multipart/form-data'>
-          {% csrf_token %}
-          {{ ppi_formset.management_form }}
-          {% for ppi_form in ppi_formset %}
-            <div class="input-field">
-              {{ ppi_form.image.label }}
-              {{ ppi_form.image }}
-              {{ ppi_form.image.errors }}
-            </div>
-            <div class="input-field">
-              {{ ppi_form.date.label }}
-              {{ ppi_form.date }}
-              {{ ppi_form.date.errors }}
-            </div>
-          {% endfor %}
-          <button class="btn-large waves-effect waves-light teal darken-3"
-                  type="submit" name="action" value='Submit'>
-            {% trans "Submit" %}
-            <i class="material-icons right">send</i>
-          </button>
-        </form>
-
-      {% else %}
-        <a href="{% url 'streamwebs:login' %}?next={{ request.path }}">
-          {% trans "Log in to add photos for this photo point." %}
-        </a>
-      {% endif %}
     </div>
   </div>
 {% endblock %}

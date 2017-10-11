@@ -15,7 +15,7 @@ from streamwebs.models import Soil_Survey, Site  # NOQA
 from streamwebs.util.ft_to_m import feet_to_meters  # NOQA
 
 
-if os.path.isdir("../streamwebs_frontend/sw_data"):
+if os.path.isdir("../sw_data"):
     datafile = '../sw_data/soil_survey.csv'
 else:
     datafile = '../csvs/soil_survey.csv'

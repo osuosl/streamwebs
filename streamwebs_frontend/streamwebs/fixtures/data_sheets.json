@@ -5,7 +5,7 @@
   "fields": {
     "name": "Water Quality",
     "res_type": "data_sheet",
-    "downloadable": "assets/Water_quality_OSU.pdf",
+    "downloadable": "assets/WaterQuality_salinity.pdf",
     "thumbnail": "assets/thumbnails/water_quality.png",
     "sort_order": 1000
   }
@@ -14,7 +14,7 @@
   "model": "streamwebs.resource",
   "pk": 17,
   "fields": {
-    "name": "Streamflow",
+    "name": "Streamflow (paper version only)",
     "res_type": "data_sheet",
     "downloadable": "assets/Streamflow_OSU.pdf",
     "thumbnail": "assets/thumbnails/stream_flow.png",
@@ -69,7 +69,7 @@
   "model": "streamwebs.resource",
   "pk": 22,
   "fields": {
-    "name": "Pebble Count",
+    "name": "Pebble Count (paper version only)",
     "res_type": "data_sheet",
     "downloadable": "assets/PEBBLE_COUNT_OSU.pdf",
     "thumbnail": "assets/thumbnails/pebble_count.png",
@@ -91,7 +91,7 @@
   "model": "streamwebs.resource",
   "pk": 24,
   "fields": {
-    "name": "Invasive Species Mapping",
+    "name": "Invasive Species Mapping (paper version only)",
     "res_type": "data_sheet",
     "downloadable": "assets/Invasive_Mapping_OSU.pdf",
     "thumbnail": "assets/thumbnails/invasive_mapping.png",
