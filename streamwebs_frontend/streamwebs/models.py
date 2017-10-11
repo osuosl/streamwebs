@@ -1177,8 +1177,8 @@ class Resource(models.Model):
 
 class RipAquaticSurveyManager(models.Manager):
 
-    def create_aqua(self, site, school, date_time='2016-04-03 12:00', riffle_count=3,
-                    pool_count=3, weather='RAAIIN'):
+    def create_aqua(self, site, school, date_time='2016-04-03 12:00',
+                    riffle_count=3, pool_count=3, weather='RAAIIN'):
 
         info = self.create(school=school,
                            site=site,

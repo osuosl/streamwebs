@@ -34,6 +34,8 @@ class CreateRiparianAquaticSurveyTestCase(TestCase):
                 kwargs={'site_slug': site.site_slug}), {
                 'school': test_school.id,
                 'date': '1996-12-16',
+                'time': '2:09',
+                'ampm': 'PM',
                 'riffle_count': 2,
                 'pool_count': 2
                 }
