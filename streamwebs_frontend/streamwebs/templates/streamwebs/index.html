@@ -35,6 +35,18 @@
       text-align: justify;
       margin: 30px 30px 50px 30px;
     }
+    div.alert{
+      background: #b2dfdb;
+      padding: 30px;
+    }
+    a.FAQ-title{
+      height: 50px;
+      width: 500px;
+      padding: 20px;
+      background: #00897B;
+      font-size: 24px;
+      color: white; !important
+    }
   </style>
 
   <div class="container">
@@ -54,6 +66,13 @@
         to upload their data and share their valuable contributions to watershed
         health with their community.
         </p>
+      </div>
+    </div>
+    <div class="row alert">
+      <div class="col s12 center">
+        <a class="FAQ-title" href="{% url 'streamwebs:faq' %}">
+          Noticed some changes to the site? Visit our FAQ page!
+        </a>
       </div>
     </div>
     <br/>
