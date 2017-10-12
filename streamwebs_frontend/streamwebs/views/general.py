@@ -49,6 +49,10 @@ def about(request):
     return render(request, 'streamwebs/about.html', {})
 
 
+def faq(request):
+    return render(request, 'streamwebs/faq.html', {})
+
+
 def create_school(request):
     if request.method == 'POST':
         if not request.POST._mutable:

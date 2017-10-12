@@ -108,5 +108,27 @@
     "thumbnail": "assets/thumbnails/canopy_osu.png",
     "sort_order": 1000
   }
+},
+{
+  "model": "streamwebs.resource",
+  "pk": 26,
+  "fields": {
+    "name": "Water Quality (Español)",
+    "res_type": "data_sheet",
+    "downloadable": "assets/WaterQuality_SW_Spanish.pdf",
+    "thumbnail": "assets/thumbnails/WQ_Spanish.png",
+    "sort_order": 1000
+  }
+},
+{
+  "model": "streamwebs.resource",
+  "pk": 27,
+  "fields": {
+    "name": "Aquatic Macroinvertebrates (Español)",
+    "res_type": "data_sheet",
+    "downloadable": "assets/Macros_SW_Spanish.pdf",
+    "thumbnail": "assets/thumbnails/Macroinvertebrates_Spanish.png",
+    "sort_order": 1000
+  }
 }
 ]

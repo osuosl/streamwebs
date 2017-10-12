@@ -10,9 +10,6 @@ RUN sed -i -e 's/^#baseurl=.*$releasever\/extras\/$basearch\//baseurl=http\:\/\/
 RUN sed -i -e 's/^#baseurl=.*$releasever\/centosplus\/$basearch\//baseurl=http\:\/\/centos.osuosl.org\/$releasever\/centosplus\/$basearch\//g' /etc/yum.repos.d/CentOS-Base.repo
 RUN sed -i -e 's/^#baseurl=.*$releasever\/contrib\/$basearch\//baseurl=http\:\/\/centos.osuosl.org\/$releasever\/contrib\/$basearch\//g' /etc/yum.repos.d/CentOS-Base.repo
 
-# Workaround for https://bugs.centos.org/view.php?id=13669&nbn=1
-RUN yum -y install https://kojipkgs.fedoraproject.org//packages/http-parser/2.7.1/3.el7/x86_64/http-parser-2.7.1-3.el7.x86_64.rpm https://kojipkgs.fedoraproject.org//packages/http-parser/2.7.1/3.el7/x86_64/http-parser-devel-2.7.1-3.el7.x86_64.rpm
-
 RUN yum -y install gdal-python\
                    geos-python\
                    proj\
@@ -24,6 +21,8 @@ RUN yum -y install gdal-python\
                    freetype-devel\
                    libjpeg-devel\
                    libpng-devel
+
+RUN yum -y upgrade openssl-libs
 
 RUN npm install -g bower
 

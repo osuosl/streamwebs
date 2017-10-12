@@ -35,6 +35,18 @@
       text-align: justify;
       margin: 30px 30px 50px 30px;
     }
+    div.alert{
+      background: #b2dfdb;
+      padding: 30px;
+    }
+    a.FAQ-title{
+      height: 50px;
+      width: 500px;
+      padding: 20px;
+      background: #00897B;
+      font-size: 24px;
+      color: white; !important
+    }
   </style>
 
   <div class="container">
@@ -56,6 +68,13 @@
         </p>
       </div>
     </div>
+    <div class="row alert">
+      <div class="col s12 center">
+        <a class="FAQ-title" href="{% url 'streamwebs:faq' %}">
+          Noticed some changes to the site? Visit our FAQ page!
+        </a>
+      </div>
+    </div>
     <br/>
     <div class="container">
       <img class="responsive-img"
@@ -70,11 +89,10 @@
             Create An Account
           </a>
           <p>
-            Once you fill out the form and submit you will quickly receive an
-            email that will allow you to continue with registration. Once you
-            click on the link in the email, you will be ready to set your
-            password and start exploring StreamWebs! It is recommended that you
-            make a single account that your class can login.
+            Click on Create Account and complete the registration form, choose
+            a username and password. Once you successfully complete the form,
+            you will be ready to start exploring StreamWebs! It is recommended
+            that you create a single account that your class can use to log in.
           </p>
         </section>
         <section>
@@ -82,10 +100,11 @@
             Search Sites
           </a>
           <p>
-            StreamWebs allows you to enter your data by location, you can go to
-            the sites page map to see if there is a project site for the
-            location you are interested in. Click on the site peg to navigate to
-            the site page and you are ready to begin entering your data!
+            StreamWebs allows you to enter your data by location. "Search
+            Sites" will allow you to see if there is a project site for the
+            location you are interested in. Click on the red site peg, then the
+            site name to navigate to an existing site, and you are ready to
+            begin entering your data!
           </p>
         </section>
         <section class="left">
@@ -94,9 +113,9 @@
           </a>
           <p>
             By selecting the “Create Site” button you can create your own
-            project site. Just enter the information about your project site
-            that is requested and personalize your site page with a photo. You
-            are now ready to enter your data!
+            project site. Just enter the requested information about your
+            project site, and personalize your site page with a photo. You are
+            now ready to enter your data!
           </p>
         </section>
         <br/>

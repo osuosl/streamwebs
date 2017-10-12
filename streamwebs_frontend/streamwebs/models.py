@@ -1175,6 +1175,19 @@ class Resource(models.Model):
             return self.thumbnail.url
 
 
+class RipAquaticSurveyManager(models.Manager):
+
+    def create_aqua(self, site, school, date='2016-04-03', riffle_count=3,
+                    pool_count=3, weather='RAAIIN'):
+
+        info = self.create(school=school,
+                           site=site,
+                           weather=weather,
+                           riffle_count=riffle_count,
+                           pool_count=pool_count)
+        return info
+
+
 class RipAquaticSurvey(models.Model):
     OPTIONS = (
             ('Very Little', _('Very Little')),
@@ -1281,3 +1294,5 @@ class RipAquaticSurvey(models.Model):
         max_length=500, null=True, blank=True,
         verbose_name=_('# or comments')
     )
+    objects = models.Manager()
+    test_objects = RipAquaticSurveyManager()

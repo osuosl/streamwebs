@@ -1,0 +1,72 @@
+{% extends 'streamwebs/base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+
+{% block content %}
+<style>
+  ul.list li{
+    list-style-type: square; !important
+  }
+</style>
+<h4 class="teal-text center">{% trans "Frequently Asked Questions" %}</h4>
+<br/>
+</br/>
+
+<div class="container">
+<h5 class="teal-text">How do I access my old account?</h5>
+<p>
+    You will receive an email to the address you used to sign up on the
+    original site. From there, you can reset your password and use the same
+    login on the new site! If you didn't receive an email, you can also reset
+    your password by clicking on "Login" and then "Forgot your password?" and
+    then input the original email you used.
+</p>
+<br/>
+
+</br/>
+<h5 class="teal-text">What's different about the site?</h5>
+<p>
+The site has been given a modernized look and feel. You’ll also have access to
+the following new features:
+</p>
+  <ul class="list">
+    <li>
+      You now have the ability to extract the data that you have entered into
+      the site, in the form of a spreadsheet (.csv) for further manipulation in
+      outside spreadsheet programs such as Excel.
+    </li>
+    <br/>
+
+    <li>
+      You can now compare water quality data for two sites side-by-side. No
+      more switching tabs to compare water qualities between two locations!
+    </li>
+    <br/>
+    <li>
+      The water quality graphs have been simplified for a cleaner and less
+      cluttered viewing experience. Individual data points are averages of all
+      the data entries submitted that day. You can now click on these to view
+      as histograms.
+    </li>
+    <br/>
+    <li>
+      Some of our less-used datasheets are no longer supported for entry into
+      the new site. These include the Invasive Species, StreamFlow, and Pebble
+      Count datasheets. These are still available on the resource section of
+      the site in PDF format.
+    </li>
+    <br/>
+    <li>
+      You will also notice that individual users no longer have a unique
+      profile page, but you can still find all of your data located on the
+      sites in which you have participated.
+    </li>
+  </ul>
+  <h5 class="teal-text">What if I run into an unexpected error?</h5>
+      As with any new website, there are bound to be some issues (we like to
+      call these "unexpected features"). If you do encounter any issues, please
+      send us an email at <a
+      href="mailto:info@streamwebs.org">info@streamwebs.org</a> and we will
+      work with you to resolve them as quickly as we can.
+</div>
+{% endblock %}

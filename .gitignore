@@ -17,5 +17,6 @@ docs/build
 *.swp
 
 bower_components
+csvs/test_users.csv
 
 streamwebs_frontend/streamwebs_frontend/settings.py
