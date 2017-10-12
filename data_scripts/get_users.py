@@ -23,6 +23,8 @@ from streamwebs.models import UserProfile, School  # NOQA
 
 if os.path.isdir("../sw_data/"):
     users_list = '../sw_data/users.csv'
+elif os.path.isfile("../csvs/test_users.csv"):
+    users_list = '../csvs/test_users.csv'
 else:
     users_list = '../csvs/users.csv'
 
