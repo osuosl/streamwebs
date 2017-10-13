@@ -47,14 +47,14 @@
 
         <div class="row">
           <div class="col s6">
-            <div class="input-field">
+            <div id="date" class="input-field">
               {{ transect_form.date.label }} (YYYY-MM-DD)
               {{ transect_form.date.errors }}
               {{ transect_form.date }}
             </div>
           </div>
           <div class="col s3">
-            <div class="input-field">
+            <div id="time" class="input-field">
               {{ transect_form.time.label }} (HH:MM)
               {{ transect_form.time.errors}}
               {{ transect_form.time }}
@@ -88,8 +88,10 @@
         <div class="divider"></div>
         <br>
 
+        <h6 class="red-text">Note:</h6>
+        <h6>At least one zone must have a value greater than zero</h6>
         {{ zone_formset.management_form }}
-        <table> <!-- zones subtable -->
+        <table id="table"> <!-- zones subtable -->
           <tr>{{ zone_formset.non_form_errors }}</tr>
           <tr>
             <th>{{ 'zone'|get_zone_labels }}</th>
@@ -131,7 +133,7 @@
         </div>
 
         <button class="btn wave-effect waves-light teal darken-3" type="submit"
-          name="submit" value="{% trans "Submit" %}">
+          name="submit" value="{% trans "Submit" %}" onclick="errors()">
           {% trans "Submit" %}
         </button>
       </form>
@@ -140,6 +142,15 @@
 {% endblock %}
 
 {% block scripts %}
+<script>
+function errors(){
+  var date = document.getElementById("date").value;
+  var time = document.getElementById("time").value;
+  if(date == undefined || time == undefined){
+    Materialize.toast('Please fill out the required fields: Date, Time, and a Zone must have a value greater than zero.', 6000, 'red');
+  }
+}
+</script>
   <script>
   $(document).ready(function() {
     {% if messages %}

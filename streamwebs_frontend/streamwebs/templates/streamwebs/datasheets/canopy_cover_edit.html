@@ -81,13 +81,13 @@
       </div>
       <div class="row">
         <div class="col s6">
-          <div class="input-field">
+          <div id="date" class="input-field">
             {{ canopy_cover_form.date.label }} (YYYY-MM-DD)
             {{ canopy_cover_form.date.errors }}
             {{ canopy_cover_form.date }}
           </div>
         </div>
-        <div class="col s3">
+        <div id="time" class="col s3">
           <div class="input-field">
             {{ canopy_cover_form.time.label }} (HH:MM)
             {{ canopy_cover_form.time.errors }}
@@ -330,7 +330,7 @@
       </table> <!-- end canopy cover -->
       <br/>
       <button class="btn wave-effect waves-light teal darken-3" type="submit"
-        name="submit" value="{% trans "Submit" %}">
+        name="submit" value="{% trans "Submit" %}" onclick="errors()">
         {% trans "Submit" %}
       </button>
     </form>
@@ -339,6 +339,18 @@
 {% endblock %}
 
 {% block scripts %}
+  <script>
+  function errors(){
+    var date = document.getElementById("date").value;
+    var time = document.getElementById("time").value;
+    console.log(date);
+    console.log(time);
+    if(date == undefined || time == undefined){
+          Materialize.toast('Please fill out the required fields: Date, Time.', 6000, 'red');
+    }
+
+  }
+  </script>
   <script>
     $(document).ready(function() {
       {% if messages %}

@@ -37,12 +37,12 @@
           </div>
         </div>
         <div class="row">
-          <div class="col s6">
+          <div id="date" class="col s6">
             {{ soil_form.date.label }} (YYYY-MM-DD)
             {{ soil_form.date.errors }}
             {{ soil_form.date }}
           </div>
-          <div class="col s3">
+          <div id="time" class="col s3">
             {{ soil_form.time.label }} (HH:MM)
             {{ soil_form.time.errors }}
             {{ soil_form.time }}
@@ -63,7 +63,7 @@
         <!-- Container so that radio buttons render vertically -->
         <div class="container">
           <div class="row">
-            <div class="col s4 pull-s2 landscape-pos">
+            <div id="landscape" class="col s4 pull-s2 landscape-pos">
               <p>{% trans "Landscape Position" %}</p>
               {{ soil_form.landscape_pos.errors }}
               <div class="input-field">
@@ -75,7 +75,7 @@
                 {% endfor %}
               </div>
             </div>
-            <div class="col s4 push-s1 cover-type">
+            <div id="cover" class="col s4 push-s1 cover-type">
               <p>{% trans "Cover Type" %}</p>
               {{ soil_form.cover_type.errors }}
               <div class="input-field">
@@ -87,7 +87,7 @@
                 {% endfor %}
               </div>
             </div>
-            <div class="col s4 push-s3 land-use">
+            <div id="land" class="col s4 push-s3 land-use">
               <p>{% trans "Land Use" %}</p>
               {{ soil_form.land_use.errors }}
               <div class="input-field">
@@ -113,7 +113,7 @@
           </div>
 
           <div class="col s6">
-            <div class="input-field">
+            <div id="distance" class="input-field">
               {{ soil_form.distance.label }} (ft)
               {{ soil_form.distance.errors }}
               {{ soil_form.distance }}
@@ -129,7 +129,7 @@
           </div>
         </div>
 
-        <button class="btn wave-effect waves-light teal darken-3" type="submit"
+        <button onclick="errors()"class="btn wave-effect waves-light teal darken-3" type="submit"
           name="submit" value="{% trans "Submit" %}">
           {% trans "Submit" %}
         </button>
@@ -139,6 +139,24 @@
 {% endblock %}
 
 {% block scripts %}
+  <script>
+  function errors(){
+    var date = document.getElementById("date").value;
+    var time = document.getElementById("time").value;
+    var landscape = document.getElementById("landscape").value;
+    var cover = document.getElementById("cover").value;
+    var distance = document.getElementById("distance").value;
+    console.log(date);
+    console.log(time);
+    console.log(landscape);
+    console.log(cover);
+    console.log(distance);
+    if(distance == undefined || time == undefined || date == undefined || cover == undefined || distance == undefined){
+      Materialize.toast('Please fill out the required fields: Date, Time, Landscape Position, Cover Type, and Land Use', 6000, 'red');
+    }
+  }
+  </script>
+
 
   <script>
   $(document).ready(function() {

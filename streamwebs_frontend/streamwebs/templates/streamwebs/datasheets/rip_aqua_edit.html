@@ -46,7 +46,7 @@
         {{ rip_aqua_form.school.errors }}
         {{ rip_aqua_form.school }}
       </div>
-      <div class="col s6">
+      <div id="date"class="col s6">
         {{ rip_aqua_form.date.label }} (YYYY-MM-DD)
         {{ rip_aqua_form.date.errors }}
         {{ rip_aqua_form.date }}
@@ -289,7 +289,7 @@
       {{ rip_aqua_form.wildlife_comments }}
       {{ rip_aqua_form.wildlife_comments.errors }}
     </div>
-    <button class="btn wave-effect waves-light teal darken-3" type="submit"
+    <button onclick="errors()" class="btn wave-effect waves-light teal darken-3" type="submit"
       name="submit" value="{% trans "Submit" %}">
       {% trans "Submit" %}
     </button>
@@ -300,6 +300,14 @@
 {% block scripts %}
   <script type="application/javascript" src="{% static 'streamwebs/js/data.js' %}"></script>
 
+  <script>
+  function errors(){
+    var date = document.getElementById('date').value;
+    if(date == undefined){
+      Materialize.toast('Please fill out the required field: Date', 6000, 'red');
+    }
+  }
+  </script>
   <script type="text/javascript">
   window.addEventListener('keydown',function(e){
     if(e.keyIdentifier=='U+000A'||e.keyIdentifier=='Enter'||e.keyCode==13){
