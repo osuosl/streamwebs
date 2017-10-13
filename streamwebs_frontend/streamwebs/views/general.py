@@ -460,10 +460,7 @@ def user_login(request):
         # url
         if user:
             login(request, user)
-            if redirect_to != '':
-                return HttpResponseRedirect(redirect_to)
-            else:
-                return redirect(reverse('streamwebs:index'))
+            return redirect(reverse('streamwebs:index'))
 
         # otherwise, if the user is invalid, flash a message and return them to
         # login while remembering which page to redirect them to if they login
