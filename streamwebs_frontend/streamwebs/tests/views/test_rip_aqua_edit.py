@@ -1,23 +1,24 @@
 from django.test import TestCase, Client
 from django.core.urlresolvers import reverse
-from streamwebs.models import Site, School, RipAquaticSurvey
+from streamwebs.models import User, Site, School, RipAquaticSurvey
 
 
 class CreateRiparianAquaticSurveyTestCase(TestCase):
 
     def setUp(self):
         self.client = Client()
+        self.user = User.objects.create_user('john', 'john@example.com',
+                                             'johnpassword')
         self.client.login(username='john', password='johnpassword')
         self.site = Site.test_objects.create_site('hey')
 
     def test_edit_with_bad_blank_data(self):
         """Blank form: Errors will be displayed and
             site will not be created """
+        site = Site.test_objects.create_site('sup')
         response = self.client.post(
             reverse('streamwebs:rip_aqua_edit', kwargs={
-                'site_slug': self.site.site_slug}))
-        self.assertFormError(response, 'rip_aqua_form', 'school',
-                             'This field is required.')
+                'site_slug': site.site_slug}))
         self.assertFormError(response, 'rip_aqua_form', 'school',
                              'This field is required.')
 
@@ -34,10 +35,31 @@ class CreateRiparianAquaticSurveyTestCase(TestCase):
                 kwargs={'site_slug': site.site_slug}), {
                 'school': test_school.id,
                 'date': '1996-12-16',
-                'time': '2:09',
+                'time': '02:09',
                 'ampm': 'PM',
                 'riffle_count': 2,
-                'pool_count': 2
+                'pool_count': 2,
+                'weather': 'good',
+                'silt': 'Some',
+                'sand': 'Some',
+                'gravel': 'Some',
+                'cobble': 'Some',
+                'boulders': 'Some',
+                'bedrock': 'Some',
+                'small_debris': 'Some',
+                'medium_debris': 'Some',
+                'large_debris': 'Some',
+                'comments': "HERRO",
+                'coniferous_trees': 'Some',
+                'deciduous_trees': 'Some',
+                'shrubs': 'Some',
+                'small_plants': 'Some',
+                'ferns': 'Some',
+                'grasses': 'Some',
+                'species': 'Some',
+                'significance': 'Some',
+                'wildlife_type': 'Some',
+                'wildlife_comments': 'Some',
                 }
         )
         rip = RipAquaticSurvey.test_objects.order_by('-id')[0]
