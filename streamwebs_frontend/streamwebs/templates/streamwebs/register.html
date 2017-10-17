@@ -133,5 +133,21 @@
             format: 'yyyy-mm-dd',
         });
       });
+      window.onload = function() {
+          $('input.datepicker').on('change', function() {
+              console.log("HERRO");
+              $(this).removeClass('picker__input--active');
+              $(this).attr('aria-expanded', false);
+              var picker = $('input.datepicker + div.picker');
+              console.log(picker);
+              picker.removeClass('picker--focused');
+              picker.removeClass('picker--opened');
+              picker.attr('aria-hidden', true);
+          });
+
+          $('input.datepicker').on('click', function() {
+              $('input.datepicker + div.picker').addClass('picker--opened');
+          });
+      }
   </script>
 {% endblock %}
