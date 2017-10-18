@@ -33,10 +33,11 @@ else:
     datafile = '../csvs/camera_points.csv'
 
 
-# Title, Post date, Updated date, Marker, Coordinates, Lat, Long
+# Title, Stream/Site name, Collected, Map Datum, Description, Latitude,
+# Longitude, Nid
 with open(datafile, 'r') as csvfile:
-    sitereader = csv.reader(csvfile)
-    for row in sitereader:
+    camerareader = csv.reader(csvfile)
+    for row in camerareader:
         if row[0] != 'Title':  # Skip the header
 
             letter = row[0]
