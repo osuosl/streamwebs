@@ -29,5 +29,6 @@ curl http://streamwebs.org/cc_south/csv > cc_south.csv
 curl http://streamwebs.org/cc_west/csv > cc_west.csv
 curl http://streamwebs.org/soil_survey/csv > soil_survey.csv
 curl http://streamwebs.org/active_schools_new/csv > active_schools.csv
+curl http://drupal.streamwebs.org/camera_points/csv > camera_points.csv
 
 sed -i '2s;^;"0","Unknown School","Elementary","2009-02-03 14:16","2009-02-03 14:16","1234 Unknown Street","Corvallis","Oregon","97330","United States"\n;' schools_info.csv
