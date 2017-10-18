@@ -13,6 +13,7 @@ set -e
 ./get_cc.py
 ./get_soil.py
 ./get_camera_points.py
+./get_photo_points.py
 # Run twice so that relations are created for renamed schools
 ./rename_schools.py
 ./rename_schools.py
