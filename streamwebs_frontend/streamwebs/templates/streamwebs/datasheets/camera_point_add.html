@@ -149,10 +149,6 @@
     var bearing = document.getElementById('bearing').value;
     var photo = document.getElementById('image').value;
     var photo_date = document.getElementById('photo_date').value;
-    console.log(date);
-    console.log(photo);
-    console.log(photo_date);
-    console.log(bearing);
     if(date == undefined || bearing == undefined || photo == undefined || photo_date == undefined){
       Materialize.toast('Please fill out the required fields: Date, Time, Photo Date, and Compass Bearing', 6000, 'red');
     }
