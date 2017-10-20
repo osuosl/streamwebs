@@ -36,6 +36,7 @@ with open(datafile, 'r') as csvfile:
             photo_point = PhotoPoint.objects.get(id=row[1])
             date = datetime.strptime(row[2], "%a, %Y-%m-%d")
             image_file = os.path.basename(row[3])
+            # These files were pulled in via pull-pp-images.sh
             image = open("../media/pp_photos/" + image_file, 'r')
 
             pp_image = PhotoPointImage.objects.update_or_create(
