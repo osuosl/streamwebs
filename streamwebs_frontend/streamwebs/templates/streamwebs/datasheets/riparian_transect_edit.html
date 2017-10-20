@@ -153,6 +153,43 @@
         }
       });
     });
+    window.onload = function() {
+      $('input.datepicker').on('change', function() {
+        $(this).removeClass('picker__input--active');
+        $(this).attr('aria-expanded', false);
+        var picker = $(this).parent().find('div.picker');
+        picker.removeClass('picker--focused');
+        picker.removeClass('picker--opened');
+        picker.attr('aria-hidden', true);
+        var dateDiv = $(this).find('div.pidkcer__day');
+        $(document.documentElement).css( 'overflow', '' ).
+            css( 'padding-right', '-=' + getScrollbarWidth());
+      });
+
+      $('input.datepicker').on('click', function() {
+        var picker = $(this).parent().find('div.picker');
+        picker.addClass('picker--opened');
+      });
+    }
+    // From the Materialize source code
+    function getScrollbarWidth() {
+      if ( $(document.documentElement).height() <= $(window).height() ) {
+          return 0;
+      }
+      var $outer = $( '<div style="visibility:hidden;width:100px" />' ).
+          appendTo( 'body' );
+      var widthWithoutScroll = $outer[0].offsetWidth;
+      // Force adding scrollbars.
+      $outer.css( 'overflow', 'scroll' );
+      // Add the inner div.
+      var $inner = $( '<div style="width:100%" />' ).appendTo( $outer );
+      // Get the width with scrollbars.
+      var widthWithScroll = $inner[0].offsetWidth;
+      // Remove the divs.
+      $outer.remove();
+      // Return the difference between the widths.
+      return widthWithoutScroll - widthWithScroll;
+    }
   </script>
   <script type="application/javascript"
           src="{% static 'streamwebs/js/data.js' %}"></script>
