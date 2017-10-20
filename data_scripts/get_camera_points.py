@@ -17,6 +17,7 @@ application = get_wsgi_application()
 
 from streamwebs.models import Site  # NOQA
 from streamwebs.models import CameraPoint # NOQA
+from streamwebs.models import School # NOQA
 
 
 # Function to convert the (string) coordinates to a float value
@@ -42,6 +43,10 @@ with open(datafile, 'r') as csvfile:
 
             letter = row[0]
             site = Site.objects.get(site_name=row[1])
+            if row[8] == '':
+                school = None
+            else:
+                school = School.objects.get(name=row[8])
             # Replace any "All day" entrys with 12:00
             dt = row[2].replace('(All day)', '12:00')
             cp_date = datetime.strptime(dt, "%a, %Y-%m-%d %H:%M")
@@ -71,7 +76,7 @@ with open(datafile, 'r') as csvfile:
 
             camera_point = CameraPoint.objects.update_or_create(
                 id=id, site=site, cp_date=cp_date, location=location,
-                map_datum=map_datum, description=description
+                map_datum=map_datum, description=description, school=school
             )
 
 print "Camera Points loaded."
