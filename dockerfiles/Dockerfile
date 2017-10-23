@@ -18,6 +18,7 @@ RUN yum -y install gdal-python\
                    nodejs\
                    npm\
                    vim\
+                   wget\
                    freetype-devel\
                    libjpeg-devel\
                    libpng-devel
