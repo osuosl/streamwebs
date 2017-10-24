@@ -36,8 +36,8 @@
     <div class="row">
       <div class="col s6">
         <b>{% trans "Location" %}:</b>
-        <br/><b>Latitude:</b> {{ cp.location.x }}
-        <br/><b>Longitude:</b> {{ cp.location.y }}
+        <br/><b>Latitude:</b> {{ cp.location.y }}
+        <br/><b>Longitude:</b> {{ cp.location.x }}
       </div>
       <div class="col s6">
         <b>{% trans "Map datum" %}:</b>
@@ -154,8 +154,8 @@
     $(document).ready(function () {
       {% language "en-us" %}
       var loc = {
-        lat: {{ cp.location.x }},
-        lng: {{ cp.location.y }},
+        lat: {{ cp.location.y }},
+        lng: {{ cp.location.x }},
       };
       {% endlanguage %}
       var latlng = new google.maps.LatLng(loc.lat, loc.lng);
