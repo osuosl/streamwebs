@@ -38,7 +38,7 @@
             {{ macro_form.date.errors }}
             {{ macro_form.date }}
           </div>
-          <div class="col s3">
+          <div id="time" class="col s3">
             {{ macro_form.time.label }} (HH:MM)
             {{ macro_form.time.errors }}
             {{ macro_form.time }}
@@ -146,7 +146,7 @@
         </div> <!-- end macros row -->
 
         <button class="btn wave-effect waves-light teal darken-3" type="submit"
-          name="submit" value="{% trans "Submit" %}">
+          name="submit" value="{% trans "Submit" %}" onclick="errors()">
           {% trans "Submit" %}
         </button>
       </form>
@@ -156,6 +156,14 @@
 {% endblock %}
 
 {% block scripts %}
+  <script>
+function errors(){
+  var required = document.getElementById('time').value;
+  if(required == undefined){
+    Materialize.toast('Please fill out the required field: Time', 5000, 'red');
+  }
+}
+  </script>
   <script>
     $(document).ready(function() {
       {% if messages %}

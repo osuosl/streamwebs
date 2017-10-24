@@ -449,7 +449,6 @@ def update_password(request):
 
 def user_login(request):
     redirect_to = request.POST.get('next', '')
-
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
@@ -457,13 +456,15 @@ def user_login(request):
 
         # if the user is valid, log them in and redirect to the page where they
         # clicked "Login", or to home if they accessed login directly from the
-        # url
+        # If they accessed the login page from register, redirect to index.html
         if user:
             login(request, user)
-            if redirect_to != '':
+            if redirect_to == '/register/':
+                return redirect(reverse('streamwebs:index'))
+            elif redirect_to != '':
                 return HttpResponseRedirect(redirect_to)
             else:
-                return redirect(reverse('streamwebs:index'))
+                return redirect('streamwebs:index')
 
         # otherwise, if the user is invalid, flash a message and return them to
         # login while remembering which page to redirect them to if they login

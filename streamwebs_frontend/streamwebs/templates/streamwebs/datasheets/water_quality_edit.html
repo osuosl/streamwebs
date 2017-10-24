@@ -40,14 +40,14 @@
         </div>
         <div class="row">
           <div class="col s6">
-            <div class="input-field">
+            <div id="date" class="input-field">
               {{ wq_form.date.label }} (YYYY-MM-DD)
               {{ wq_form.date.errors }}
               {{ wq_form.date }}
             </div>
           </div>
           <div class="col s3">
-            <div class="input-field">
+            <div id="time" class="input-field">
               {{ wq_form.time.label }} (HH:MM)
               {{ wq_form.time.errors }}
               {{ wq_form.time }}
@@ -98,7 +98,7 @@
         <div class="col s4 fish-presence">
           <p>{{ wq_form.fish_present.label }}</p>
           {{ wq_form.fish_present.errors }}
-          <div class="input-field">
+          <div id="fish" class="input-field">
             {% for radio in wq_form.fish_present %}
               {{ radio.tag }}
               <label
@@ -124,7 +124,7 @@
         <div class="col s6 water-temp">
           <p>{{ wq_form.water_temp_unit.label }}</p>
           {{ wq_form.water_temp_unit.errors }}
-          <div class="input-field">
+          <div id="water_temp" class="input-field">
             {% for radio in wq_form.water_temp_unit %}
               {{ radio.tag }}
               <label
@@ -136,7 +136,7 @@
         <div class="col s6 air-temp">
           <p>{{ wq_form.air_temp_unit.label }}</p>
           {{ wq_form.air_temp_unit.errors }}
-          <div class="input-field">
+          <div id="air_temp" class="input-field">
             {% for radio in wq_form.air_temp_unit %}
               {{ radio.tag }}
               <label
@@ -446,7 +446,7 @@
       </div>
 
       <button class="btn wave-effect waves-light teal darken-3" type="submit"
-        name="submit" value="{% trans "Submit" %}">
+        name="submit" value="{% trans "Submit" %}" onclick="errors()">
         {% trans "Submit" %}
       </button>
     </form>
@@ -467,6 +467,18 @@ $(document).ready(function() {
     }
   });
 });
+</script>
+<script>
+  function errors(){
+    var date = document.getElementById("date").value;
+    var time = document.getElementById("time").value;
+    var fish = document.getElementById("fish").value;
+    var water_temp = document.getElementById("water_temp").value;
+    var air_temp = document.getElementById("air_temp").value;
+    if(date == undefined || time == undefined || fish == undefined || water_temp == undefined || air_temp == undefined){
+      Materialize.toast('Please fill out the required fields: Date, Time, Fish Present, Water temp units, and Air temp units', 6000, 'red');
+    }
+  }
 </script>
 <script type="application/javascript"
 src="{% static 'streamwebs/js/data.js' %}"></script>
