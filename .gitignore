@@ -3,20 +3,20 @@
 db.sqlite3
 __pycache__/
 venv/
-
+bower_components
+node_modules/
 # Django stuff
 *.log
-
+# Media folders
+data_scripts/media/
+media/
+streamwebs_frontend/media/
+streamwebs_frontend/staticfiles/
 # NFS write temps
 .nfs*
-
 Dockerfile.env
-
 docs/build
-
 *.swp
-
-bower_components
 csvs/test_users.csv
-
+sw_data/
 streamwebs_frontend/streamwebs_frontend/settings.py
