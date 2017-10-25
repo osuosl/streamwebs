@@ -10,6 +10,7 @@ set -e
 ./get_additional_wq.py
 ./set_tools.py
 ./get_transects.py
+./get_rip_aquatic_survey.py
 ./get_cc.py
 ./get_soil.py
 ./get_camera_points.py
