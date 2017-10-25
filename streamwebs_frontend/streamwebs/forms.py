@@ -470,10 +470,10 @@ class RipAquaForm(forms.ModelForm):
             'deciduous_trees', 'shrubs', 'small_plants', 'ferns', 'grasses',
             'species1', 'species2', 'species3', 'species4', 'species5',
             'species6', 'significance1', 'significance2', 'significance3',
-            'significance4', 'significance5', 'significance6', 'wildlife_type1',
-            'wildlife_type2', 'wildlife_type3', 'wildlife_type4',
-            'wildlife_type5', 'wildlife_type6', 'wildlife_comments1',
-            'wildlife_comments2', 'wildlife_comments3', 'wildlife_comments4',
-            'wildlife_comments5', 'wildlife_comments6', 'time', 'ampm',
-            'stream_length'
+            'significance4', 'significance5', 'significance6',
+            'wildlife_type1', 'wildlife_type2', 'wildlife_type3',
+            'wildlife_type4', 'wildlife_type5', 'wildlife_type6',
+            'wildlife_comments1', 'wildlife_comments2', 'wildlife_comments3',
+            'wildlife_comments4', 'wildlife_comments5', 'wildlife_comments6',
+            'time', 'ampm', 'stream_length'
             )
