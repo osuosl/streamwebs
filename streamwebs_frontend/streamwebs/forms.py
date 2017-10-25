@@ -387,7 +387,11 @@ class RipAquaForm(forms.ModelForm):
     school = forms.ModelChoiceField(
         queryset=School.objects.all().order_by('name'), empty_label=None)
     date = forms.DateField(
-        widget=forms.DateInput(attrs={'class': 'datepicker'}))
+        input_formats=['%Y-%m-%d'],
+        widget=forms.DateInput(attrs={'class': 'datepicker'}),
+    )
+    time = forms.TimeField(input_formats=['%I:%M'])
+    ampm = forms.ChoiceField(choices=TIME_PERIOD_CHOICES, label="AM/PM")
 
     class Meta:
         model = RipAquaticSurvey
@@ -420,5 +424,6 @@ class RipAquaForm(forms.ModelForm):
             'sand', 'gravel', 'cobble', 'boulders', 'bedrock', 'small_debris',
             'medium_debris', 'large_debris', 'comments', 'coniferous_trees',
             'deciduous_trees', 'shrubs', 'small_plants', 'ferns', 'grasses',
-            'species', 'significance', 'wildlife_type', 'wildlife_comments'
+            'species', 'significance', 'wildlife_type', 'wildlife_comments',
+            'time', 'ampm',
             )

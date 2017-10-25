@@ -42,7 +42,7 @@
                 {{ w.site }}
                 </a>
               </td>
-              <td>{{ w.date }}</td>
+              <td>{{ w.date_time }}</td>
             </tr>
           {% endfor %}
         </tbody>
@@ -117,7 +117,7 @@
               <td>
                 <a href="/sites/{{s.site.site_slug}}/soil/{{s.id}}">
                 {{ s.site }}</a></td>
-              <td>{{ s.date }}</td>
+              <td>{{ s.date_time }}</td>
             </tr>
           {% endfor %}
         </tbody>
@@ -150,6 +150,31 @@
       <br/>
     {% endif %}
 
+    {% if rip_aqua_data %}
+    <center><h5>{% trans "Riparian Aquatic Survey" %}</h5></center>
+      <table id="rip_aqua_table" class="display">
+        <thead>
+          <tr>
+            <th>Site</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for w in rip_aqua_data %}
+            <tr>
+              <td>
+                <a href="/sites/{{w.site.site_slug}}/rip_aqua/{{w.id}}">
+                {{ w.site }}
+                </a>
+              </td>
+              <td>{{ w.date_time }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <br/>
+    {% endif %}
+
   </div>
 {% endblock %}
 
@@ -170,6 +195,9 @@
       "bLengthChange": false,
     });
     $('#rip_table').DataTable({
+      "bLengthChange": false,
+    });
+    $('#rip_aqua_table').DataTable({
       "bLengthChange": false,
     });
 
