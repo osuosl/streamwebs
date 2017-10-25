@@ -103,7 +103,15 @@
           </b>: {{ data.large_debris }}
         </p>
       </div>
-
+    </div>
+    <div class="row">
+      <div class = "col s12">
+        <p>
+          <b>
+            {% trans "Commments" %}
+          </b>: {{ data.comments }}
+        </p>
+      </div>
     </div>
 
     <h4 class='teal-text'>Vegetation Type</h4>
@@ -150,41 +158,117 @@
 
     <h4 class="teal-text">Plants Identified</h4>
     <div class="row">
-      <div class="col s12">
-        <p>
-          <b>
-            {% trans 'Species' %}
-          </b>: {{ data.species }}
-        </p>
+      <div class="col s6">
+        <b>Species</b>
+      </div>
+      <div class="col s6">
+        <b>Significance to Riparian Area</b>
       </div>
     </div>
     <div class="row">
-      <div class="col s12 ">
-        <p>
-          <b>
-            {% trans 'Significance' %}
-          </b>: {{ data.significance }}
-        </p>
+      <div class="col s6">
+        {{ data.species1 }}
+      </div>
+      <div class="col s6">
+        {{ data.significance1 }}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s6">
+        {{ data.species2 }}
+      </div>
+      <div class="col s6">
+        {{ data.significance2 }}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s6">
+        {{ data.species3 }}
+      </div>
+      <div class="col s6">
+        {{ data.significance3 }}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s6">
+        {{ data.species4 }}
+      </div>
+      <div class="col s6">
+        {{ data.significance4 }}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s6">
+        {{ data.species5 }}
+      </div>
+      <div class="col s6">
+        {{ data.significance5 }}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s6">
+        {{ data.species6 }}
+      </div>
+      <div class="col s6">
+        {{ data.significance6 }}
       </div>
     </div>
 
     <h4 class="teal-text">Wildlife and Birds Identified</h4>
     <div class="row">
-      <div class="col s12">
-        <p>
-          <b>
-            {% trans 'Type, Species, Track or Sign' %}
-          </b>: {{ data.wildlife_type }}
-        </p>
+      <div class="col s6">
+        <b>Type, Species, or Track/Sign</b>
+      </div>
+      <div class="col s6">
+        <b># or Comments</b>
       </div>
     </div>
     <div class="row">
-      <div class="col s12">
-        <p>
-          <b>
-            {% trans 'Number or Comments' %}
-          </b>: {{ data.wildlife_comments }}
-        </p>
+      <div class="col s6">
+        {{ data.wildlife_type1 }}
+      </div>
+      <div class="col s6">
+        {{ data.wildlife_comments1 }}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s6">
+        {{ data.wildlife_type2 }}
+      </div>
+      <div class="col s6">
+        {{ data.wildlife_comments2 }}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s6">
+        {{ data.wildlife_type3 }}
+      </div>
+      <div class="col s6">
+        {{ data.wildlife_comments3 }}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s6">
+        {{ data.wildlife_type4 }}
+      </div>
+      <div class="col s6">
+        {{ data.wildlife_comments4 }}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s6">
+        {{ data.wildlife_type5 }}
+      </div>
+      <div class="col s6">
+        {{ data.wildlife_comments5 }}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s6">
+        {{ data.wildlife_type6 }}
+      </div>
+      <div class="col s6">
+        {{ data.wildlife_comments6 }}
       </div>
     </div>
     <div class="row">
