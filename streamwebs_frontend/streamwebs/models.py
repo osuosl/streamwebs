@@ -1208,6 +1208,9 @@ class RipAquaticSurvey(models.Model):
     weather = models.CharField(
         max_length=20, verbose_name=_('weather'), blank=True, null=True
     )
+    stream_length = models.PositiveIntegerField(
+        blank=True, null=True, verbose_name=_('length of stream')
+    )
     riffle_count = models.PositiveIntegerField(
         blank=True, null=True, verbose_name=_('number of riffles')
     )

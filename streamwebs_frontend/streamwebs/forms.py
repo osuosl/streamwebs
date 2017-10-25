@@ -475,4 +475,5 @@ class RipAquaForm(forms.ModelForm):
             'wildlife_type5', 'wildlife_type6', 'wildlife_comments1',
             'wildlife_comments2', 'wildlife_comments3', 'wildlife_comments4',
             'wildlife_comments5', 'wildlife_comments6', 'time', 'ampm',
+            'stream_length'
             )

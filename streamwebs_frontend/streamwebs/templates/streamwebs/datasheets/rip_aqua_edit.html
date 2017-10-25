@@ -75,14 +75,21 @@
       </div>
     </div>
     <div class="row">
-      <div class="col s6">
+      <div class="col s4">
+        <div class="input-field">
+          {{ rip_aqua_form.stream_length.label }} (in feet)
+          {{ rip_aqua_form.stream_length.errors}}
+          {{ rip_aqua_form.stream_length }}
+        </div>
+      </div>
+      <div class="col s4">
         <div class="input-field">
           {{ rip_aqua_form.riffle_count.label }}
           {{ rip_aqua_form.riffle_count.errors }}
           {{ rip_aqua_form.riffle_count }}
         </div>
       </div>
-      <div class="col s6">
+      <div class="col s4">
         <div class="input-field">
           {{ rip_aqua_form.pool_count.label }}
           {{ rip_aqua_form.pool_count.errors }}
