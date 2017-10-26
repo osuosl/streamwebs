@@ -76,10 +76,10 @@ with open(rip_aquatic_survey, 'r') as csvfile:
             ferns = row[20]
             grasses = row[21]
             uid = row[22]
-            try:
-                school_relation = SchoolRelations.objects.get(uid=uid)
-                school = school_relation.school
-            except ObjectDoesNotExist:
+            if SchoolRelations.objects.filter(uid=uid).exists():
+                relation = SchoolRelations.objects.get(uid=uid)
+                school = relation.school
+            else:
                 school = None
 
             species = []
@@ -99,6 +99,7 @@ with open(rip_aquatic_survey, 'r') as csvfile:
                 if wlc_row['nid'] == id:
                     wildlife_comments.append(wlc_row['wildlife_comments'])
             try:
+                print "adding " + str(id)
                 RipAquaticSurvey.objects.filter(id=id).update(
                     site=site, school=school, stream_length=stream_length,
                     riffle_count=riffle_count, pool_count=pool_count,
@@ -132,6 +133,7 @@ with open(rip_aquatic_survey, 'r') as csvfile:
                     wildlife_comments6=wildlife_comments[5]
                 )
             except ObjectDoesNotExist:
+                print "creating " + str(id)
                 rip_aquatic_survey = RipAquaticSurvey.objects.update_or_create(
                     id=id, site=site, school=school,
                     stream_length=stream_length, riffle_count=riffle_count,
@@ -164,6 +166,7 @@ with open(rip_aquatic_survey, 'r') as csvfile:
                     wildlife_comments5=wildlife_comments[4],
                     wildlife_comments6=wildlife_comments[5]
                 )
+                print rip_aquatic_survey
 
 
 print "Riparian Aquatic Surveys loaded."
