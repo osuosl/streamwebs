@@ -5,7 +5,6 @@ import csv
 from datetime import datetime
 
 from django.core.wsgi import get_wsgi_application
-from django.core.exceptions import ObjectDoesNotExist
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "streamwebs_frontend.settings")
 # Set proj path to be relative to data_scripts directory
@@ -98,8 +97,7 @@ with open(rip_aquatic_survey, 'r') as csvfile:
             for wlc_row in wl_comments_reader:
                 if wlc_row['nid'] == id:
                     wildlife_comments.append(wlc_row['wildlife_comments'])
-            try:
-                print "adding " + str(id)
+            if RipAquaticSurvey.objects.filter(id=id).exists():
                 RipAquaticSurvey.objects.filter(id=id).update(
                     site=site, school=school, stream_length=stream_length,
                     riffle_count=riffle_count, pool_count=pool_count,
@@ -132,8 +130,7 @@ with open(rip_aquatic_survey, 'r') as csvfile:
                     wildlife_comments5=wildlife_comments[4],
                     wildlife_comments6=wildlife_comments[5]
                 )
-            except ObjectDoesNotExist:
-                print "creating " + str(id)
+            else:
                 rip_aquatic_survey = RipAquaticSurvey.objects.update_or_create(
                     id=id, site=site, school=school,
                     stream_length=stream_length, riffle_count=riffle_count,
@@ -166,7 +163,6 @@ with open(rip_aquatic_survey, 'r') as csvfile:
                     wildlife_comments5=wildlife_comments[4],
                     wildlife_comments6=wildlife_comments[5]
                 )
-                print rip_aquatic_survey
 
 
 print "Riparian Aquatic Surveys loaded."
