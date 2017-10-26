@@ -12,6 +12,8 @@ urlpatterns = [
 
     url(r'^sites/$', views.sites, name='sites'),
 
+    url(r'test/', views.test, name='test'),
+
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/$', views.site, name='site'),
 
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/edit/', views.update_site,

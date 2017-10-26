@@ -19,12 +19,12 @@ from streamwebs.forms import (
     PhotoPointImageForm, PhotoPointForm, CameraPointForm, WQSampleForm,
     WQForm, SiteForm, Canopy_Cover_Form, SoilSurveyForm, StatisticsForm,
     TransectZoneForm, BaseZoneInlineFormSet, ResourceForm, AdminPromotionForm,
-    UserEmailForm, UserPasswordForm, SchoolForm, RipAquaForm)
+    UserEmailForm, UserPasswordForm, SchoolForm, RipAquaForm, TestForm)
 
 from streamwebs.models import (
     Macroinvertebrates, Site, Water_Quality, WQ_Sample, RiparianTransect,
     TransectZone, Canopy_Cover, CameraPoint, PhotoPoint,
-    PhotoPointImage, Soil_Survey, Resource, School, RipAquaticSurvey)
+    PhotoPointImage, Soil_Survey, Resource, School, RipAquaticSurvey, Test)
 
 import json
 import copy
@@ -51,6 +51,12 @@ def about(request):
 
 def faq(request):
     return render(request, 'streamwebs/faq.html', {})
+
+
+def test(request):
+    test_form = TestForm()
+    return render(request, 'streamwebs/test.html', {
+    'test_form': test_form})
 
 
 def create_school(request):

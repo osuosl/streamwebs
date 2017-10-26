@@ -1,0 +1,14 @@
+{% extends 'streamwebs/base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+
+{% block content %}
+
+{% for field in test_form %}
+{{ field.label_tag }}: {{ field }}
+{{ field.errors }}
+{% endfor %}
+{{ test_form.non_field_errors }}
+
+
+{% endblock %}

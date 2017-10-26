@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from streamwebs.models import UserProfile, WQ_Sample, Water_Quality, \
     Macroinvertebrates, Canopy_Cover, TransectZone, \
     RiparianTransect, PhotoPointImage, PhotoPoint, CameraPoint, Site, School, \
-    Soil_Survey, Resource, RipAquaticSurvey
+    Soil_Survey, Resource, RipAquaticSurvey, Test
 from django.contrib.auth.models import User
 from django import forms
 from django.forms import BaseInlineFormSet
@@ -427,3 +427,31 @@ class RipAquaForm(forms.ModelForm):
             'species', 'significance', 'wildlife_type', 'wildlife_comments',
             'time', 'ampm',
             )
+
+class TestForm(forms.ModelForm):
+
+    name = forms.CharField(label = _("Your Name"),
+        max_length=255,
+        widget=forms.TextInput
+    )
+    email = forms.EmailField(label=_("Email Address")) #edit this if necessary
+    address = forms.CharField(label=_("Address"),
+        max_length=255,
+        widget=forms.TextInput
+    )
+    city = forms.CharField(label=_("City"),
+        max_length=255,
+        widget=forms.TextInput
+    )
+    state = forms.CharField(label=_("State"),
+        max_length=255,
+        widget=forms.TextInput
+    )
+    age = forms.IntegerField(label=_("Age"),
+        widget=forms.NumberInput
+    )
+    class Meta:
+        model = Test
+        fields = (
+        'name', 'email', 'address', 'state', 'city', 'age'
+        )

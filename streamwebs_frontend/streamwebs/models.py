@@ -1295,3 +1295,12 @@ class RipAquaticSurvey(models.Model):
     )
     objects = models.Manager()
     test_objects = RipAquaticSurveyManager()
+
+
+class Test(models.Model):
+    name    = models.CharField(max_length=255, blank=True)
+    email   = models.CharField(max_length=255, blank=True)
+    address = models.CharField(max_length=255, blank=True)
+    city    = models.CharField(max_length=255, blank=True)
+    state   = models.CharField(max_length=255, blank=True)
+    age     = models.PositiveIntegerField(blank=True)
