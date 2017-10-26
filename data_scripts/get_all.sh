@@ -10,7 +10,6 @@ set -e
 ./get_additional_wq.py
 ./set_tools.py
 ./get_transects.py
-./get_rip_aquatic_survey.py
 ./get_cc.py
 ./get_soil.py
 ./get_camera_points.py
@@ -21,6 +20,7 @@ set -e
 ./rename_schools.py
 ./reset_dup_relations.py
 ./set_schools.py
+./get_rip_aquatic_survey.py
 ./get_photo_point_images.py
 ./get_site_images.py
 rm -rf media/

@@ -15,6 +15,7 @@ application = get_wsgi_application()
 
 from streamwebs.models import Site  # NOQA
 from streamwebs.models import RipAquaticSurvey # NOQA
+from streamwebs.models import SchoolRelations # NOQA
 
 
 if os.path.isdir("../sw_data/"):
@@ -74,6 +75,12 @@ with open(rip_aquatic_survey, 'r') as csvfile:
             small_plants = row[19]
             ferns = row[20]
             grasses = row[21]
+            uid = row[22]
+            try:
+                school_relation = SchoolRelations.objects.get(uid=uid)
+                school = school_relation.school
+            except ObjectDoesNotExist:
+                school = None
 
             species = []
             significance = []
@@ -93,7 +100,7 @@ with open(rip_aquatic_survey, 'r') as csvfile:
                     wildlife_comments.append(wlc_row['wildlife_comments'])
             try:
                 RipAquaticSurvey.objects.filter(id=id).update(
-                    site=site, stream_length=stream_length,
+                    site=site, school=school, stream_length=stream_length,
                     riffle_count=riffle_count, pool_count=pool_count,
                     date_time=ripa_date, silt=silt, sand=sand, gravel=gravel,
                     cobble=cobble, boulders=boulders, bedrock=bedrock,
@@ -126,13 +133,13 @@ with open(rip_aquatic_survey, 'r') as csvfile:
                 )
             except ObjectDoesNotExist:
                 rip_aquatic_survey = RipAquaticSurvey.objects.update_or_create(
-                    id=id, site=site, stream_length=stream_length,
-                    riffle_count=riffle_count, pool_count=pool_count,
-                    date_time=ripa_date, silt=silt, sand=sand, gravel=gravel,
-                    cobble=cobble, boulders=boulders, bedrock=bedrock,
-                    small_debris=small_debris, medium_debris=medium_debris,
-                    large_debris=large_debris, comments=comments,
-                    coniferous_trees=coniferous_trees,
+                    id=id, site=site, school=school,
+                    stream_length=stream_length, riffle_count=riffle_count,
+                    pool_count=pool_count, date_time=ripa_date, silt=silt,
+                    sand=sand, gravel=gravel, cobble=cobble, boulders=boulders,
+                    bedrock=bedrock, small_debris=small_debris,
+                    medium_debris=medium_debris, large_debris=large_debris,
+                    comments=comments, coniferous_trees=coniferous_trees,
                     deciduous_trees=deciduous_trees, shrubs=shrubs,
                     small_plants=small_plants, ferns=ferns, grasses=grasses,
                     species1=species[0], species2=species[1],
