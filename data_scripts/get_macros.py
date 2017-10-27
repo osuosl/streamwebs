@@ -5,6 +5,7 @@ import sys
 import csv
 
 from django.core.wsgi import get_wsgi_application
+from django.core.exceptions import ObjectDoesNotExist
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "streamwebs_frontend.settings")
 proj_path = "../streamwebs_frontend/"
@@ -89,24 +90,44 @@ with open(datafile, 'r') as csvfile:
             mosquito_larva = row[27]
 
             uid = row[28]
+            notes = row[29]
 
             # Create the foreign key relation between datasheet and site
             site = Site.objects.get(site_name=row[0])
             site_id = site.id
 
-            # Create new macro entry if it DNE
-            macros = Macroinvertebrates.objects.update_or_create(
-                date_time=date_time, time_spent=time_spent,
-                num_people=num_people, water_type=water_type,
-                caddisfly=caddisfly, mayfly=mayfly,
-                riffle_beetle=riffle_beetle, stonefly=stonefly,
-                water_penny=water_penny, dobsonfly=dobsonfly,
-                clam_or_mussel=clam_or_mussel, crane_fly=crane_fly,
-                crayfish=crayfish, damselfly=damselfly, dragonfly=dragonfly,
-                scud=scud, fishfly=fishfly, alderfly=alderfly, mite=mite,
-                aquatic_worm=aquatic_worm, blackfly=blackfly, leech=leech,
-                midge=midge, snail=snail, mosquito_larva=mosquito_larva,
-                site_id=site_id, uid=uid
-            )
+            try:
+                macro_old = Macroinvertebrates.objects.get(
+                    date_time=date_time, time_spent=time_spent,
+                    num_people=num_people, water_type=water_type,
+                    caddisfly=caddisfly, mayfly=mayfly,
+                    riffle_beetle=riffle_beetle, stonefly=stonefly,
+                    water_penny=water_penny, dobsonfly=dobsonfly,
+                    clam_or_mussel=clam_or_mussel, crane_fly=crane_fly,
+                    crayfish=crayfish, damselfly=damselfly,
+                    dragonfly=dragonfly, scud=scud, fishfly=fishfly,
+                    alderfly=alderfly, mite=mite, aquatic_worm=aquatic_worm,
+                    blackfly=blackfly, leech=leech, midge=midge, snail=snail,
+                    mosquito_larva=mosquito_larva, site_id=site_id, uid=uid
+                )
+                Macroinvertebrates.objects.filter(
+                    id=macro_old.id
+                ).update(notes=notes)
+            except ObjectDoesNotExist:
+                # Create new macro entry if it DNE
+                macros = Macroinvertebrates.objects.update_or_create(
+                    date_time=date_time, time_spent=time_spent,
+                    num_people=num_people, water_type=water_type,
+                    caddisfly=caddisfly, mayfly=mayfly,
+                    riffle_beetle=riffle_beetle, stonefly=stonefly,
+                    water_penny=water_penny, dobsonfly=dobsonfly,
+                    clam_or_mussel=clam_or_mussel, crane_fly=crane_fly,
+                    crayfish=crayfish, damselfly=damselfly,
+                    dragonfly=dragonfly, scud=scud, fishfly=fishfly,
+                    alderfly=alderfly, mite=mite, aquatic_worm=aquatic_worm,
+                    blackfly=blackfly, leech=leech, midge=midge, snail=snail,
+                    mosquito_larva=mosquito_larva, site_id=site_id, uid=uid,
+                    notes=notes
+                )
 
 print 'Macroinvertebrates loaded.'
