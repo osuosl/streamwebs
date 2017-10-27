@@ -75,14 +75,21 @@
       </div>
     </div>
     <div class="row">
-      <div class="col s6">
+      <div class="col s4">
+        <div class="input-field">
+          {{ rip_aqua_form.stream_length.label }} (in feet)
+          {{ rip_aqua_form.stream_length.errors}}
+          {{ rip_aqua_form.stream_length }}
+        </div>
+      </div>
+      <div class="col s4">
         <div class="input-field">
           {{ rip_aqua_form.riffle_count.label }}
           {{ rip_aqua_form.riffle_count.errors }}
           {{ rip_aqua_form.riffle_count }}
         </div>
       </div>
-      <div class="col s6">
+      <div class="col s4">
         <div class="input-field">
           {{ rip_aqua_form.pool_count.label }}
           {{ rip_aqua_form.pool_count.errors }}
@@ -281,26 +288,133 @@
     </div>
     <h4 align="center">Plants Identified</h4>
     <div class="row">
-      Species
-      {{ rip_aqua_form.species }}
-      {{ rip_aqua_form.species.errors }}
+      <div class="col s6">
+        <h5><b>Species</b></h5>
+      </div>
+      <div class="col s6">
+        <h5><b>Significance to Riparian Area</b></h5>
+      </div>
     </div>
     <div class="row">
-      Significance
-      {{ rip_aqua_form.significance }}
-      {{ rip_aqua_form.significance.errors }}
+      <div class="col s6">
+        {{ rip_aqua_form.species1 }}
+        {{ rip_aqua_form.species1.errors }}
+      </div>
+      <div class="col s6">
+        {{ rip_aqua_form.significance1 }}
+        {{ rip_aqua_form.significance1.errors }}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s6">
+        {{ rip_aqua_form.species3 }}
+        {{ rip_aqua_form.species3.errors }}
+      </div>
+      <div class="col s6">
+        {{ rip_aqua_form.significance3 }}
+        {{ rip_aqua_form.significance3.errors }}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s6">
+        {{ rip_aqua_form.species4}}
+        {{ rip_aqua_form.species4.errors }}
+      </div>
+      <div class="col s6">
+        {{ rip_aqua_form.significance4 }}
+        {{ rip_aqua_form.significance4.errors }}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s6">
+        {{ rip_aqua_form.species5 }}
+        {{ rip_aqua_form.species5.errors }}
+      </div>
+      <div class="col s6">
+        {{ rip_aqua_form.significance5 }}
+        {{ rip_aqua_form.significance5.errors }}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s6">
+        {{ rip_aqua_form.species6 }}
+        {{ rip_aqua_form.species6.errors }}
+      </div>
+      <div class="col s6">
+        {{ rip_aqua_form.significance6 }}
+        {{ rip_aqua_form.significance6.errors }}
+      </div>
     </div>
     <h4 align="center">Wildlife and Birds Identified</h4>
     <div class="row">
-      Type, Species, or Track/Sign
-      {{ rip_aqua_form.wildlife_type }}
-      {{ rip_aqua_form.wildlife_type.errors }}
+      <div class="col s6">
+        <h5><b>Type, Species or Track/Sign</b></h5>
+      </div>
+      <div class="col s6">
+        <h5><b># or comments</b></h5>
+      </div>
     </div>
     <div class="row">
-      # or comments
-      {{ rip_aqua_form.wildlife_comments }}
-      {{ rip_aqua_form.wildlife_comments.errors }}
+      <div class="col s6">
+        {{ rip_aqua_form.wildlife_type1 }}
+        {{ rip_aqua_form.wildlife_type1.errors }}
+      </div>
+      <div class="col s6">
+        {{ rip_aqua_form.wildlife_comments1 }}
+        {{ rip_aqua_form.wildlife_comments1.errors }}
+      </div>
     </div>
+    <div class="row">
+      <div class="col s6">
+        {{ rip_aqua_form.wildlife_type2 }}
+        {{ rip_aqua_form.wildlife_type2.errors }}
+      </div>
+      <div class="col s6">
+        {{ rip_aqua_form.wildlife_comments2 }}
+        {{ rip_aqua_form.wildlife_comments2.errors }}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s6">
+        {{ rip_aqua_form.wildlife_type3 }}
+        {{ rip_aqua_form.wildlife_type3.errors }}
+      </div>
+      <div class="col s6">
+        {{ rip_aqua_form.wildlife_comments3 }}
+        {{ rip_aqua_form.wildlife_comments3.errors }}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s6">
+        {{ rip_aqua_form.wildlife_type4 }}
+        {{ rip_aqua_form.wildlife_type4.errors }}
+      </div>
+      <div class="col s6">
+        {{ rip_aqua_form.wildlife_comments4 }}
+        {{ rip_aqua_form.wildlife_comments4.errors }}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s6">
+        {{ rip_aqua_form.wildlife_type5 }}
+        {{ rip_aqua_form.wildlife_type5.errors }}
+      </div>
+      <div class="col s6">
+        {{ rip_aqua_form.wildlife_comments5 }}
+        {{ rip_aqua_form.wildlife_comments5.errors }}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s6">
+        {{ rip_aqua_form.wildlife_type6 }}
+        {{ rip_aqua_form.wildlife_type6.errors }}
+      </div>
+      <div class="col s6">
+        {{ rip_aqua_form.wildlife_comments6 }}
+        {{ rip_aqua_form.wildlife_comments6.errors }}
+      </div>
+    </div>
+
     <button class="btn wave-effect waves-light teal darken-3" type="submit"
       name="submit" value="{% trans "Submit" %}">
       {% trans "Submit" %}
