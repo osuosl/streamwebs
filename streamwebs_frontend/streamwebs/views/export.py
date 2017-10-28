@@ -13,17 +13,17 @@ import csv
 def export_rip_aqua(request, site_slug):
     site = Site.objects.get(site_slug=site_slug)
     ripaq = RipAquaticSurvey.objects.filter(site_id=site.id).values(
-        'site__site_name', 'school__name', 'date', 'weather', 'riffle_count',
-        'pool_count', 'silt', 'sand', 'gravel', 'cobble', 'boulders',
-        'bedrock', 'small_debris', 'medium_debris', 'large_debris',
-        'comments', 'coniferous_trees', 'deciduous_trees',
+        'site__site_name', 'school__name', 'date_time', 'weather',
+        'riffle_count', 'pool_count', 'silt', 'sand', 'gravel', 'cobble',
+        'boulders', 'bedrock', 'small_debris', 'medium_debris',
+        'large_debris', 'comments', 'coniferous_trees', 'deciduous_trees',
         'shrubs', 'small_plants', 'ferns', 'grasses', 'species',
         'significance', 'wildlife_type', 'wildlife_comments'
     )
     return render_to_csv_response(
         ripaq, field_header_map={
             'site__site_name': 'site',
-            'date': 'date',
+            'date_time': 'date_time',
             'school__name': 'school',
             'weather': 'weather',
             'riffle_count': '# of riffles', 'pool_count': '# of pools',
