@@ -80,7 +80,7 @@ sites.push({
   id: "{{site.id}}",
   slug: "{{site.site_slug}}",
   name: "{{site.site_name}}",
-  description: "{{site.description|escapejs}}",
+  description: "{{site.description|escapejs|truncatewords:50}}",
 
   {% language "en-us" %}
   lat: {{site.location.y}},
