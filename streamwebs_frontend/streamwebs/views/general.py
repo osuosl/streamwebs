@@ -797,6 +797,7 @@ def canopy_cover_edit(request, site_slug):
     """
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     canopy_cover = Canopy_Cover()
+    error = False
 
     if request.method == 'POST':
         canopy_cover_form = Canopy_Cover_Form(data=request.POST)
@@ -818,6 +819,8 @@ def canopy_cover_edit(request, site_slug):
             return redirect(reverse('streamwebs:canopy_cover',
                                     kwargs={'site_slug': site.site_slug,
                                             'data_id': canopy_cover.id}))
+        else:
+            error = True
 
     else:
         canopy_cover_form = Canopy_Cover_Form()
@@ -826,7 +829,8 @@ def canopy_cover_edit(request, site_slug):
         request,
         'streamwebs/datasheets/canopy_cover_edit.html', {
             'canopy_cover_form': canopy_cover_form,
-            'site': site
+            'site': site,
+            'error': error
         }
     )
 
