@@ -22,7 +22,6 @@ $(document).ready(function() {
   google.maps.event.addListener(map, 'click', function(e){
     placeMarker(e.latLng, map);
   });
-  console.log({{latitude}});
   var original_marker= new google.maps.LatLng({{ latitude }}, {{ longitude }});
   placeMarker(original_marker,map);
 });
