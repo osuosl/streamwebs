@@ -78,6 +78,15 @@
         {% endif %}
       </div>
     </div>
+
+    <div class="row">
+      <div class="col s12">
+        {% if soil_data.notes %}
+          <p><b>{% trans "Field notes" %}</b></p>
+          {{ soil_data.notes }}
+        {% endif %}
+      </div>
+    </div>
   </div>
 {% endblock %}
 

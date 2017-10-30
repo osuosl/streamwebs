@@ -25,6 +25,7 @@ class SoilSurveyTestCase(TestCase):
 
             'distance': models.DecimalField,
             'site_char': models.TextField,
+            'notes': models.TextField,
             'soil_type': models.CharField,
 
             'uid': models.PositiveIntegerField,
@@ -33,7 +34,8 @@ class SoilSurveyTestCase(TestCase):
         }
 
         self.optional_fields = {
-            'site_char'
+            'site_char',
+            'notes'
         }
 
         self.site = Site.test_objects.create_site('test site')

@@ -1067,6 +1067,7 @@ class Soil_Survey(models.Model):
                                blank=True)
     site = models.ForeignKey(Site, null=True, on_delete=models.CASCADE,
                              verbose_name=_('site'))
+    notes = models.TextField(blank=True, verbose_name=_("Field notes"))
 
     landscape_pos_choices = [
         ('summit', _('Summit')),

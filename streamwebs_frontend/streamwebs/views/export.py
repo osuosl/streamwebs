@@ -228,13 +228,14 @@ def export_soil(request, site_slug):
     soil = Soil_Survey.objects.filter(site_id=site.id).values(
         'school__name', 'date_time', 'site__site_name', 'weather',
         'landscape_pos', 'cover_type', 'land_use', 'soil_type', 'distance',
-        'site_char'
+        'site_char', 'notes'
     )
     return render_to_csv_response(
         soil, field_header_map={
             'school__name': 'school', 'site__site_name': 'site',
             'landscape_pos': 'landscape position', 'cover_type': 'cover type',
             'land_use': 'land use', 'distance': 'distance from stream',
-            'soil_type': 'soil type', 'site_char': 'site characteristics'
+            'soil_type': 'soil type', 'site_char': 'site characteristics',
+            'notes': 'field notes'
         }
     )

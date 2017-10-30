@@ -316,11 +316,14 @@ class SoilSurveyForm(forms.ModelForm):
             'cover_type': forms.RadioSelect(),
             'land_use': forms.RadioSelect(),
             'site_char':
+                forms.Textarea(attrs={'class': 'materialize-textarea'}),
+            'notes':
                 forms.Textarea(attrs={'class': 'materialize-textarea'})
         }
         fields = (
             'school', 'date', 'time', 'ampm', 'weather', 'landscape_pos',
-            'cover_type', 'land_use', 'soil_type', 'distance', 'site_char'
+            'cover_type', 'land_use', 'soil_type', 'distance', 'site_char',
+            'notes'
         )
 
 
