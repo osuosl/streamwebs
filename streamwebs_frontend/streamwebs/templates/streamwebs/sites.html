@@ -80,6 +80,11 @@ sites.push({
   id: "{{site.id}}",
   slug: "{{site.site_slug}}",
   name: "{{site.site_name}}",
+  {% if site.image %}
+  image: "/media/{{site.image}}",
+  {% else %}
+  image: "/static/streamwebs/images/img-default.jpg",
+  {% endif %}
 
   {% language "en-us" %}
   lat: {{site.location.y}},

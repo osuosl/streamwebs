@@ -49,7 +49,7 @@ function initialize() {
         markerList[i].index = i;
 
         infoWindows[i] = new google.maps.InfoWindow({
-            content: '<p><a href="' + site.slug + '">' + site.name + '</a></p>',
+            content: '<p><a href="' + site.slug + '">' + site.name + '</a></p><img src="' + site.image + '" width="55" height="55">',
         });
 
         markerList[i].addListener('click', function () {
