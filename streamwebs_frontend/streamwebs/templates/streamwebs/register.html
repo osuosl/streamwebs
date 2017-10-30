@@ -1,5 +1,6 @@
 {% extends 'streamwebs/base.html' %}
 {% load i18n %}
+{% load static %}
 
 {% block title %}{% trans "Register" %} -{% endblock %}
 
@@ -54,12 +55,45 @@
             {{ profile_form.birthdate.errors }}
           </div>
 
-          <div class="input-field col s12 ">
-            {{ profile_form.school }}
-            {{ profile_form.school.errors }}
-            <label for="{{ profile_form.school.id_for_label }}">{% trans "School" %}:</label>
-            <a href="{% url 'streamwebs:create_school' %}?next={{ request.path|urlencode }}" class="btn waves-effect waves-light teal darken-3">{% trans "Add A School/Organization" %}</a>
+          <div class="row">
+            <div class="col s12">
+              <p class="school-selected">
+                School Selection: <b class="teal-text text-darken-3"></b>
+              </p>
+            </div>
           </div>
+          <div class="row">
+            <nav class="search-nav col s12 teal darken-3">
+              <div class="nav-wrapper">
+                <div class="input-field">
+                  <input id="search" type="search" autocomplete="off"
+                      placeholder="{% trans 'Search School/Organization' %}">
+                  <label for="search"><i class="material-icons">search</i></label>
+                  <div class="search-results">
+                    <ul>
+                    {% for school in profile_form.school %}
+                      <li>
+                        <button>
+                          {{ school }}
+                        </button>
+                      </li>
+                    {% endfor %}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </nav>
+            <br/><br/><br/><br/>
+            <div class="col s12">
+              <a href="{% url 'streamwebs:create_school' %}?next={{ request.path|urlencode }}" class="btn-large waves-effect waves-light teal darken-3">{% trans "Add A School/Organization" %}</a>
+            </div>
+            <div class="input-field school" style="display:none;">
+              {{ profile_form.school.label }}
+              {{ profile_form.school.errors }}
+              {{ profile_form.school }}
+            </div>
+          </div>
+          <br/>
 
           <div class="input-field col s12">
             <label
@@ -117,6 +151,8 @@
       src="https://cdnjs.cloudflare.com/ajax/libs/pickadate.js/3.5.6/compressed/picker.date.js"></script>
   <script
       src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
+  <script type="application/javascript"
+      src="{% static 'streamwebs/js/search_school.js' %}"></script>
   <script>
       $(document).ready(function () {
         {% if messages %}
