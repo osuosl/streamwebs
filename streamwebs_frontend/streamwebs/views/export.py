@@ -46,7 +46,8 @@ def export_rip_aqua(request, site_slug):
             'species': '# of species',
             'significance': 'significance',
             'wildlife_type': 'wildlife type',
-            'wildlife_comments': 'wildlife comments'
+            'wildlife_comments': 'wildlife comments',
+            'notes': 'field notes'
             }
         )
 

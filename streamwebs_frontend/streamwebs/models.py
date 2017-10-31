@@ -1377,5 +1377,6 @@ class RipAquaticSurvey(models.Model):
         max_length=500, null=True, blank=True,
         verbose_name=_('# or comments')
     )
+    notes = models.TextField(blank=True, verbose_name=_("Field notes"))
     objects = models.Manager()
     test_objects = RipAquaticSurveyManager()

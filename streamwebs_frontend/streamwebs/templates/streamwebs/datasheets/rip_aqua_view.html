@@ -293,6 +293,14 @@
         {{ data.wildlife_comments6 |default:""}}
       </div>
     </div>
+    <div class="row">
+      <div class="col s12">
+        {% if data.notes %}
+					<h4 class="teal-text">Field notes</h4>
+          {{ data.notes }}
+        {% endif %}
+      </div>
+    </div>
     </div>
   </div>
 
