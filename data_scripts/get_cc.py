@@ -6,6 +6,7 @@ import csv
 from datetime import datetime
 
 from django.core.wsgi import get_wsgi_application
+from django.core.exceptions import ObjectDoesNotExist
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "streamwebs_frontend.settings")
 # Set proj path to be relative to data_scripts directory
@@ -18,6 +19,7 @@ from streamwebs.models import Canopy_Cover  # NOQA
 
 
 key_val_map = {
+    '0': None,
     '1': None,
     '2': None,
     '3': 0,  # A
@@ -110,10 +112,27 @@ for cc in CCs.values():
         bin(cc.south_cc).count('1') + \
         bin(cc.west_cc).count('1')
 
-    Canopy_Cover.objects.update_or_create(
-        site=cc.site, school=None, date_time=cc.date_time, weather='',
-        north_cc=cc.north_cc, east_cc=cc.east_cc, south_cc=cc.south_cc,
-        west_cc=cc.west_cc, est_canopy_cover=cc.est_canopy_cover, uid=cc.uid
-    )
+    # See if we already have this data object, if so update it otherwise create
+    # a new one.
+    try:
+        cc_old = Canopy_Cover.objects.get(
+            site=cc.site, date_time=cc.date_time, weather='',
+            north_cc=cc.north_cc, east_cc=cc.east_cc, south_cc=cc.south_cc,
+            west_cc=cc.west_cc, est_canopy_cover=cc.est_canopy_cover,
+            uid=cc.uid
+        )
+        Canopy_Cover.objects.filter(id=cc_old.id).update(
+            site=cc.site, date_time=cc.date_time, weather='',
+            north_cc=cc.north_cc, east_cc=cc.east_cc, south_cc=cc.south_cc,
+            west_cc=cc.west_cc, est_canopy_cover=cc.est_canopy_cover,
+            uid=cc.uid
+        )
+    except ObjectDoesNotExist:
+        Canopy_Cover.objects.update_or_create(
+            site=cc.site, school=None, date_time=cc.date_time, weather='',
+            north_cc=cc.north_cc, east_cc=cc.east_cc, south_cc=cc.south_cc,
+            west_cc=cc.west_cc, est_canopy_cover=cc.est_canopy_cover,
+            uid=cc.uid
+        )
 
 print('Canopy Covers loaded.')
