@@ -54,9 +54,19 @@ def faq(request):
 
 
 def test(request):
-    test_form = TestForm()
+    test_form = TestForm(use_required_attribute=False) #This stops django from not letting us submit blank forms
+    if request.method == 'POST':
+        test_form = TestForm(data=request.POST, use_required_attribute=False) #This stops django from not letting us submit blank forms
+        if test_form.is_valid():
+            test = test_form.save()
+            print("ITS VALID")
+            messages.success(request, _('you freaking did it'))
+            return render(request, 'streamwebs/index.html')
+        else:
+            test_form = TestForm(data=request.POST,use_required_attribute=False)
     return render(request, 'streamwebs/test.html', {
-    'test_form': test_form})
+        'test_form': test_form
+    })
 
 
 def create_school(request):
@@ -77,7 +87,8 @@ def create_school(request):
         school_form = SchoolForm()
 
     return render(request, 'streamwebs/add_school.html', {
-        'school_form': school_form
+        'school_form': school_form,
+        'errors': errors
     })
 
 

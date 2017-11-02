@@ -428,30 +428,24 @@ class RipAquaForm(forms.ModelForm):
             'time', 'ampm',
             )
 
-class TestForm(forms.ModelForm):
 
-    name = forms.CharField(label = _("Your Name"),
-        max_length=255,
-        widget=forms.TextInput
-    )
-    email = forms.EmailField(label=_("Email Address")) #edit this if necessary
-    address = forms.CharField(label=_("Address"),
-        max_length=255,
-        widget=forms.TextInput
-    )
-    city = forms.CharField(label=_("City"),
-        max_length=255,
-        widget=forms.TextInput
-    )
-    state = forms.CharField(label=_("State"),
-        max_length=255,
-        widget=forms.TextInput
-    )
-    age = forms.IntegerField(label=_("Age"),
-        widget=forms.NumberInput
-    )
+class TestForm(forms.ModelForm):
     class Meta:
         model = Test
-        fields = (
+        fields = [
         'name', 'email', 'address', 'state', 'city', 'age'
-        )
+        ]
+        widgets = {
+        'name': forms.Textarea(attrs={'class': 'materialize-textarea'}),
+        'email': forms.Textarea(attrs={'class': 'materialize-textarea'}),
+        'state': forms.Textarea(attrs={'class': 'materialize-textarea'}),
+        'address': forms.Textarea(attrs={'class': 'materialize-textarea'}),
+        'city': forms.Textarea(attrs={'class': 'materialize-textarea'}),
+        'age': forms.Textarea(attrs={'class': 'materialize-textarea'})
+        }
+    def clean(self): # Overriding clean method allows us to check for specific errors that are otherwise unchecked
+        cleaned_data = super(TestForm, self).clean() # Does normal cleaning function
+        name = cleaned_data.get("name") # gets cleaned name data, allowing us to further validate
+        if name and len(name) > 10:  # here we check for length
+            msg="Why is your name so long. I dont like it" # if its too long, we add an error message to that field
+            self.add_error('name', msg)

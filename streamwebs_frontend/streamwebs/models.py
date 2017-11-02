@@ -1297,10 +1297,10 @@ class RipAquaticSurvey(models.Model):
     test_objects = RipAquaticSurveyManager()
 
 
-class Test(models.Model):
-    name    = models.CharField(max_length=255, blank=True)
-    email   = models.CharField(max_length=255, blank=True)
-    address = models.CharField(max_length=255, blank=True)
-    city    = models.CharField(max_length=255, blank=True)
-    state   = models.CharField(max_length=255, blank=True)
-    age     = models.PositiveIntegerField(blank=True)
+class Test(models.Model): #simple model to test with,
+    name    = models.CharField(max_length=255)
+    email   = models.EmailField(max_length=255)
+    address = models.CharField(max_length=255)
+    city    = models.CharField(max_length=255)
+    state   = models.CharField(max_length=255)
+    age     = models.PositiveIntegerField(default=None)

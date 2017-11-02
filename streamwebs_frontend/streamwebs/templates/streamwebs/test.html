@@ -2,13 +2,91 @@
 {% load staticfiles %}
 {% load i18n %}
 
+
+
+
 {% block content %}
+<h4 align="center">Test Site for Server-Side Validation</h4>
+<style>
+ul.errorlist ~ textarea{ 
+  border-bottom-color: red;
+}
+</style>
+<div class="container">
 
-{% for field in test_form %}
-{{ field.label_tag }}: {{ field }}
-{{ field.errors }}
-{% endfor %}
-{{ test_form.non_field_errors }}
+<form id='test_form' method="post">
+  {% csrf_token %}
+
+  <div class="row">
+    <div class="col s12">
+      {{ test_form.name.label }}
+      {{ test_form.name.errors }} <!-- ERRORS must come BEFORE input -->
+      {{ test_form.name }}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col s12">
+      {{ test_form.email.label }}
+      {{ test_form.email.errors }}
+      {{ test_form.email }}
+    </div>
+  </div>
+  <div class = "row">
+    <div class="col s12">
+      {{ test_form.address.label }}
+      {{ test_form.address.errors }}
+      {{ test_form.address}}
+    </div>
+  </div>
+  <div class = "row">
+    <div class="col s12">
+      {{ test_form.state.label }}
+      {{ test_form.state.errors }}
+      {{ test_form.state }}
+    </div>
+  </div>
+  <div class = "row">
+    <div class="col s12">
+      {{ test_form.city.label }}
+      {{ test_form.city.errors }}
+      {{ test_form.city}}
+    </div>
+  </div>
+  <div class = "row">
+    <div class="col s12">
+      {{ test_form.age.label }}
+      {{ test_form.age.errors }}
+      {{ test_form.age}}
+    </div>
+  </div>
 
 
+  <button class="btn wave-effect waves-light teal darken-3" type="submit"
+  name="submit">
+  {% trans "SUBMIT" %}
+</form>
+</div>
+
+{% endblock %}
+{% block scripts %}
+<script>
+$(document).ready(function() {
+  var text = [];
+    {% for field, errors in test_form.errors.items %} // this takes all the form errors and combines them into a single toast message
+      {% for error in errors %}
+        text = text + "{{ field }}: {{ error }}";
+        text = text + "<br>";
+      {% endfor %}
+    {% endfor %}
+    if(text == ""){ // catches first page load.
+      return;
+    }else{
+    Materialize.toast(text, 10000, 'red', 'center');
+  }
+});
+
+$(function(){
+  $('ul.errorlist').hide(); // hides the error messaages, to not obstruct the template html.
+});
+</script>
 {% endblock %}
