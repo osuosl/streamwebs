@@ -94,7 +94,7 @@
     "pk": 6,
     "fields": {
         "password": "pbkdf2_sha256$24000$ZSuSdEB5HP2B$nvgypbaHwqk00ZrsB55HWlnuIRdithfNuFCHw2ZgsEU=",
-        "last_login": "2014-10-31T13:45:00",
+        "last_login": "2017-10-31T13:45:00",
         "is_superuser": false,
         "username": "aithai",
         "first_name": "aileeen",
