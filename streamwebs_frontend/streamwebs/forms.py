@@ -465,7 +465,7 @@ class RipAquaForm(forms.ModelForm):
                 attrs={'class': 'materialize-textarea', 'required': False}),
             'wildlife_comments6': forms.Textarea(
                 attrs={'class': 'materialize-textarea', 'required': False}),
-            'notes':forms.Textarea(attrs={'class': 'materialize-textarea'}),
+            'notes': forms.Textarea(attrs={'class': 'materialize-textarea'}),
 
         }
         fields = (
