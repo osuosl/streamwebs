@@ -13,8 +13,6 @@ install:
   - bower install
 
 script:
-  - flake8 data_scripts
-  - flake8 streamwebs_frontend/ --exclude streamwebs_frontend/streamwebs/migrations
   - ./runtests.sh
 
 addons:
