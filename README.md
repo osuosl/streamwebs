@@ -1,6 +1,5 @@
 # StreamWebs
-[![Build Status](https://travis-ci.org/osuosl/streamwebs.svg?branch=develop)]
-(https://travis-ci.org/osuosl/streamwebs)
+[![Build Status](https://travis-ci.org/osuosl/streamwebs.svg?branch=develop)](https://travis-ci.org/osuosl/streamwebs)
 
 This repository will be used to help track issues and share files for the 
 existing Streamwebs site during the transition to a possible re-write of the 
