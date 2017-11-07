@@ -8,6 +8,17 @@ until $(psql -h postgres_host -U $POSTGRES_USER streamwebs \
   -c 'SELECT PostGIS_full_version();' 2> /dev/null | grep -q POSTGIS) ; do
 	sleep 1
 done
-yes "yes" | python /home/centos/streamwebs/streamwebs_frontend/manage.py migrate
-echo "from django.contrib.auth.models import User; User.objects.filter(email='streamwebs@osuosl.org').delete(); User.objects.create_superuser('admin', 'streamwebs@osuosl.org', 'admin')" | python streamwebs_frontend/manage.py shell
-python /home/centos/streamwebs/streamwebs_frontend/manage.py runserver 0.0.0.0:8000
+if [ -n "$STREAMWEBS_DROP" ] ; then
+  echo "Dropping streamwebs database.."
+  psql -h postgres_host -U $POSTGRES_USER streamwebs \
+    -c "select pg_terminate_backend(pid) from pg_stat_activity where datname='streamwebs';"
+  dropdb -h postgres_host -U $POSTGRES_USER --if-exists streamwebs
+  createdb -h postgres_host -U $POSTGRES_USER streamwebs
+fi
+if [ -n "$STREAMWEBS_TEST" ] ; then
+  /home/centos/streamwebs/runtests.sh
+else
+  yes "yes" | python /home/centos/streamwebs/streamwebs_frontend/manage.py migrate
+  echo "from django.contrib.auth.models import User; User.objects.filter(email='streamwebs@osuosl.org').delete(); User.objects.create_superuser('admin', 'streamwebs@osuosl.org', 'admin')" | python streamwebs_frontend/manage.py shell
+  python /home/centos/streamwebs/streamwebs_frontend/manage.py runserver 0.0.0.0:8000
+fi
