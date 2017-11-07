@@ -45,5 +45,5 @@ your ``Dockerfile.env`` file.
 If you would like to only run tests, add ``STREAMWEBS_TEST=1`` to your ``Dockerfile.env`` file. Keep in mind this
 doesn't run the django web server and only runs the tests.
 
-If you want to automatically import the CSV data, you need to add both `STREAMWEBS_DROP=1`` and
+If you want to automatically import the CSV data, you need to add both ``STREAMWEBS_DROP=1`` and
 ``STREAMWEBS_IMPORT_DATA=1`` to your ``Dockerfile.env`` file.
