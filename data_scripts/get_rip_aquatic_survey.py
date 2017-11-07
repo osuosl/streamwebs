@@ -75,6 +75,7 @@ with open(rip_aquatic_survey, 'r') as csvfile:
             ferns = row[20]
             grasses = row[21]
             uid = row[22]
+            notes = row[23]
             if SchoolRelations.objects.filter(uid=uid).exists():
                 relation = SchoolRelations.objects.get(uid=uid)
                 school = relation.school
@@ -128,7 +129,7 @@ with open(rip_aquatic_survey, 'r') as csvfile:
                     wildlife_comments3=wildlife_comments[2],
                     wildlife_comments4=wildlife_comments[3],
                     wildlife_comments5=wildlife_comments[4],
-                    wildlife_comments6=wildlife_comments[5]
+                    wildlife_comments6=wildlife_comments[5], notes=notes
                 )
             else:
                 rip_aquatic_survey = RipAquaticSurvey.objects.update_or_create(
@@ -161,7 +162,7 @@ with open(rip_aquatic_survey, 'r') as csvfile:
                     wildlife_comments3=wildlife_comments[2],
                     wildlife_comments4=wildlife_comments[3],
                     wildlife_comments5=wildlife_comments[4],
-                    wildlife_comments6=wildlife_comments[5]
+                    wildlife_comments6=wildlife_comments[5], notes=notes
                 )
 
 
