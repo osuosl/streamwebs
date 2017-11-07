@@ -51,20 +51,51 @@
       </div>
     </div>
     <div class="row">
-      <div class="col s6">
+      <div class="input-field hidden-date" style="display:none">
         {{ rip_aqua_form.date.label }} (YYYY-MM-DD)
         {{ rip_aqua_form.date.errors }}
         {{ rip_aqua_form.date }}
       </div>
       <div class="col s3">
-        {{ rip_aqua_form.time.label }} (HH:MM)
-        {{ rip_aqua_form.time.errors }}
-        {{ rip_aqua_form.time }}
+        <div class="input-field year date">
+          Year
+          <p><strong class="errorlist"></strong></p>
+          <select class="year browser-default">
+            <option value="" disabled selected>Choose year</option>
+          </select>
+        </div>
       </div>
       <div class="col s3">
-        {{ rip_aqua_form.ampm.label }}
-        {{ rip_aqua_form.ampm.errors }}
-        {{ rip_aqua_form.ampm }}
+        <div class="input-field month date">
+          Month
+          <p><strong class="errorlist"></strong></p>
+          <select class="month browser-default">
+            <option value="" disabled selected>Choose month</option>
+          </select>
+        </div>
+      </div>
+      <div class="col s3">
+        <div class="input-field day date">
+          Day
+          <p><strong class="errorlist"></strong></p>
+          <select class="day browser-default">
+            <option value="" disabled selected>Choose day</option>
+          </select>
+        </div>
+      </div>
+      <div class="col s2">
+        <div class="input-field">
+          {{ rip_aqua_form.time.label }} (HH:MM)
+          {{ rip_aqua_form.time.errors }}
+          {{ rip_aqua_form.time }}
+        </div>
+      </div>
+      <div class="col s1">
+        <div class="input-field">
+          {{ rip_aqua_form.ampm.label }}
+          {{ rip_aqua_form.ampm.errors }}
+          {{ rip_aqua_form.ampm }}
+        </div>
       </div>
     </div>
     <div class="row">
@@ -433,7 +464,8 @@
 
 {% block scripts %}
   <script type="application/javascript" src="{% static 'streamwebs/js/data.js' %}"></script>
-
+  <script type="application/javascript"
+          src="{% static 'streamwebs/js/date.js' %}"></script>
   <script type="text/javascript">
   window.addEventListener('keydown',function(e){
     if(e.keyIdentifier=='U+000A'||e.keyIdentifier=='Enter'||e.keyCode==13){

@@ -81,7 +81,7 @@ class UserPasswordForm(forms.ModelForm):
 class UserProfileForm(forms.ModelForm):
     captcha = ReCaptchaField()
     birthdate = forms.DateField(
-        widget=forms.DateInput(attrs={'class': 'datepicker'}),
+        required=False,
     )
     school = forms.ModelChoiceField(
         queryset=School.objects.all().order_by('name'), empty_label=None)
@@ -99,7 +99,7 @@ class MacroinvertebratesForm(forms.ModelForm):
     num_people = forms.IntegerField(required=False)
     date = forms.DateField(
         input_formats=['%Y-%m-%d'],
-        widget=forms.DateInput(attrs={'class': 'datepicker'}),
+        required=False,
     )
     time = forms.TimeField(input_formats=['%I:%M'])
     ampm = forms.ChoiceField(choices=TIME_PERIOD_CHOICES, label="AM/PM")
@@ -126,7 +126,7 @@ class WQForm(forms.ModelForm):
     longitude = forms.DecimalField(required=False)
     date = forms.DateField(
         input_formats=['%Y-%m-%d'],
-        widget=forms.DateInput(attrs={'class': 'datepicker'}),
+        required=False,
     )
     time = forms.TimeField(input_formats=['%I:%M'])
     ampm = forms.ChoiceField(choices=TIME_PERIOD_CHOICES, label="AM/PM")
@@ -178,7 +178,7 @@ class Canopy_Cover_Form(forms.ModelForm):
     weather = forms.CharField(required=False)
     date = forms.DateField(
         input_formats=['%Y-%m-%d'],
-        widget=forms.DateInput(attrs={'class': 'datepicker'}),
+        required=False,
     )
     time = forms.TimeField(input_formats=['%I:%M'])
     ampm = forms.ChoiceField(choices=TIME_PERIOD_CHOICES, label="AM/PM")
@@ -234,7 +234,7 @@ class RiparianTransectForm(forms.ModelForm):
         queryset=School.objects.all().order_by('name'), empty_label=None)
     date = forms.DateField(
         input_formats=['%Y-%m-%d'],
-        widget=forms.DateInput(attrs={'class': 'datepicker'}),
+        required=False,
     )
     time = forms.TimeField(input_formats=['%I:%M'])
     ampm = forms.ChoiceField(choices=TIME_PERIOD_CHOICES, label="AM/PM")
@@ -250,7 +250,7 @@ class RiparianTransectForm(forms.ModelForm):
 
 class PhotoPointImageForm(forms.ModelForm):
     date = forms.DateField(
-        widget=forms.DateInput(attrs={'class': 'datepicker'}),
+        required=False,
     )
 
     class Meta:
@@ -273,7 +273,7 @@ class CameraPointForm(forms.ModelForm):
     school = forms.ModelChoiceField(
         queryset=School.objects.all().order_by('name'), empty_label=None)
     cp_date = forms.DateField(
-        widget=forms.DateInput(attrs={'class': 'datepicker'}),
+        required=False,
     )
     description = forms.CharField(
         widget=forms.Textarea(attrs={'class': 'materialize-textarea'}),
@@ -304,7 +304,7 @@ class SoilSurveyForm(forms.ModelForm):
     weather = forms.CharField(required=False)
     date = forms.DateField(
         input_formats=['%Y-%m-%d'],
-        widget=forms.DateInput(attrs={'class': 'datepicker'}),
+        required=False,
     )
     time = forms.TimeField(input_formats=['%I:%M'])
     ampm = forms.ChoiceField(choices=TIME_PERIOD_CHOICES, label="AM/PM")
@@ -391,7 +391,7 @@ class RipAquaForm(forms.ModelForm):
         queryset=School.objects.all().order_by('name'), empty_label=None)
     date = forms.DateField(
         input_formats=['%Y-%m-%d'],
-        widget=forms.DateInput(attrs={'class': 'datepicker'}),
+        required=False,
     )
     time = forms.TimeField(input_formats=['%I:%M'])
     ampm = forms.ChoiceField(choices=TIME_PERIOD_CHOICES, label="AM/PM")
