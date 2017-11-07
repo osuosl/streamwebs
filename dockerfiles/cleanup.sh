@@ -1,1 +1,1 @@
-chown --reference=/opt/streamwebs -R .
+[ -d /opt/streamwebs ] && chown --reference=/opt/streamwebs -R .
