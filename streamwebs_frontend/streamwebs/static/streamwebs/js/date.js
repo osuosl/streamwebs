@@ -1,4 +1,7 @@
 $(function() {
+    if (window.birthdate) {
+        checkBirthdayError();
+    }
     setupDatePick();
 
     var dates = $('div.hidden-date input').toArray();
@@ -26,6 +29,15 @@ $(function() {
 
     });
 });
+
+var checkBirthdayError = function checkBirthdayError() {
+    var birthdayError = $('div.hidden-date ul.errorlist li');
+    var error;
+    if (birthdayError.length > 0) {
+        error = birthdayError.text();
+    }
+    $('strong.birthdate-error').text(error);
+}
 
 var prefillDate = function prefillDate(date) {
     dateVal = date.value;
