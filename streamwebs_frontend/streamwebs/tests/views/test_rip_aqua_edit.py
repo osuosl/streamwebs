@@ -60,6 +60,7 @@ class CreateRiparianAquaticSurveyTestCase(TestCase):
                 'significance': 'Some',
                 'wildlife_type': 'Some',
                 'wildlife_comments': 'Some',
+                'Notes': 'Some notes'
                 }
         )
         rip = RipAquaticSurvey.test_objects.order_by('-id')[0]

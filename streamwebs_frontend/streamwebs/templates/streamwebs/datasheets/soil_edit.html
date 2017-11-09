@@ -129,6 +129,14 @@
           </div>
         </div>
 
+        <div class="row">
+          <div class="input-field">
+            {{ soil_form.notes.label }}
+            {{ soil_form.notes.errors }}
+            {{ soil_form.notes }}
+          </div>
+        </div>
+
         <button class="btn wave-effect waves-light teal darken-3" type="submit"
           name="submit" value="{% trans "Submit" %}">
           {% trans "Submit" %}

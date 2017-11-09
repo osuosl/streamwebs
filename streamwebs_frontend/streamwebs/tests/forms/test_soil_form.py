@@ -16,6 +16,7 @@ class SoilSurveyFormTestCase(TestCase):
             'land_use',
             'distance',
             'site_char',
+            'notes',
             'soil_type'
         )
 

@@ -421,6 +421,14 @@ ul.errorlist ~ #id_time{
       </div>
     </div>
 
+    <div class="row">
+      <div class="input-field">
+        {{ rip_aqua_form.notes.label }}
+        {{ rip_aqua_form.notes.errors }}
+        {{ rip_aqua_form.notes }}
+      </div>
+    </div>
+
     <button class="btn wave-effect waves-light teal darken-3" type="submit"
       name="submit" value="{% trans "Submit" %}">
       {% trans "Submit" %}

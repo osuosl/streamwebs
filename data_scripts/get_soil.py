@@ -5,6 +5,7 @@ import sys
 import csv
 
 from django.core.wsgi import get_wsgi_application
+from django.core.exceptions import ObjectDoesNotExist
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "streamwebs_frontend.settings")
 proj_path = "../streamwebs_frontend/"
@@ -84,16 +85,29 @@ with open(datafile, 'r') as csvfile:  # 'r' is for read
         weather = ''
 
         uid = row['Uid']
+        notes = row['Notes']
 
         # TODO: Find actual school from outside the CSV
         school = None
 
-        soil = Soil_Survey.objects.update_or_create(
-            date_time=date_time, site_id=site_id, landscape_pos=landscape_pos,
-            cover_type=cover_type, land_use=land_use, distance=dist,
-            site_char=site_char, soil_type=soil_type, weather=weather,
-            uid=uid, school=school
-        )
+        # See if we already have this data object, if so update it otherwise
+        # create a new one.
+        try:
+            soil_old = Soil_Survey.objects.get(
+                date_time=date_time, site_id=site_id,
+                landscape_pos=landscape_pos, cover_type=cover_type,
+                land_use=land_use, distance=dist, site_char=site_char,
+                soil_type=soil_type, weather=weather, uid=uid
+            )
+            Soil_Survey.objects.filter(id=soil_old.id).update(notes=notes)
+        except ObjectDoesNotExist:
+            soil = Soil_Survey.objects.update_or_create(
+                date_time=date_time, site_id=site_id,
+                landscape_pos=landscape_pos, cover_type=cover_type,
+                land_use=land_use, distance=dist, site_char=site_char,
+                soil_type=soil_type, weather=weather, uid=uid, school=school,
+                notes=notes
+            )
 
 csvfile.close()
 print('Soil survey data loaded.')
