@@ -7,13 +7,13 @@ $(function() {
     var dates = $('div.hidden-date input').toArray();
     dates.forEach(function(date) {
         prefillDate(date);
-        disableDay("month", $(date).parent().parent());
+        disableDay($(date).parent().parent());
     });
     $('div.date select').change(function() {
         showDatePick($(this).parent().parent().parent());
         var option = $(this).attr('class').split(' ')[0];
         if (option === "year" || option === "month") {
-            disableDay(option, $(this).parent().parent().parent());
+            disableDay($(this).parent().parent().parent());
         }
     });
     $('form').submit(function(e) {
@@ -101,38 +101,67 @@ var showDatePick = function showDatePick(parent) {
     parent.find('div.date select option').show();
 }
 
-var disableDay = function disableDay(option, parent) {
+var disableDay = function disableDay(parent) {
     var year = getYear(parent);
     var month = getMonth(parent);
     var day = getDay(parent);
     var yearInt = parseInt(year);
     var monthInt = parseInt(month);
     var dayInt = parseInt(day);
+
+    var date = new Date();
+    var thisYear = date.getFullYear();
+    var thisMonth = date.getMonth() + 1;
+    var today = date.getDate()
     var max = 0;
-    if (month !== "") {
-        if (monthInt === 1 || monthInt === 3 || monthInt === 5 || monthInt === 7
-          || monthInt === 8 || monthInt === 10 || monthInt === 12) {
-            max = 31;
-        }
-        else if (monthInt === 4 || monthInt === 6 || monthInt === 9 || monthInt === 11) {
-            max = 30;
-        }
-        else {
-            max = 29;
-            if (!isNaN(yearInt) && yearInt % 4 !== 0) {
-                max--;
-            }
-        }
-        if (dayInt > max) {
-            parent.find('select.day option').toArray()[0].selected = true;
-        }
-        parent.find('select.day option').each(function(i) {
+    if (year !== "" && yearInt === thisYear) {
+        parent.find('select.month option').each(function(i) {
             var val = this.value;
-            if (val > max) {
+            if (val > thisMonth) {
                 $(this).hide();
             }
         });
+        if (monthInt > thisMonth) {
+            parent.find('select.month option').toArray()[0].selected = true;
+            parent.find('select.day option').toArray()[0].selected = true;
+        }
+        if (monthInt == thisMonth) {
+            max = today;
+        }
+        if (monthInt < thisMonth) {
+            max = getMaxDate(monthInt, yearInt);
+        }
     }
+    else if (month !== "" && yearInt !== thisYear) {
+        max = getMaxDate(monthInt, yearInt);
+    }
+    if (dayInt > max) {
+        parent.find('select.day option').toArray()[0].selected = true;
+    }
+    parent.find('select.day option').each(function(i) {
+        var val = this.value;
+        if (val > max) {
+            $(this).hide();
+        }
+    });
+}
+
+var getMaxDate = function getMaxDate(monthInt, yearInt) {
+    var max;
+    if (monthInt === 1 || monthInt === 3 || monthInt === 5 || monthInt === 7
+      || monthInt === 8 || monthInt === 10 || monthInt === 12) {
+        max = 31;
+    }
+    else if (monthInt === 4 || monthInt === 6 || monthInt === 9 || monthInt === 11) {
+        max = 30;
+    }
+    else {
+        max = 29;
+        if (!isNaN(yearInt) && yearInt % 4 !== 0) {
+            max--;
+        }
+    }
+    return max;
 }
 
 var getYear = function getYear(parent) {
