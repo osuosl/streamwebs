@@ -1067,6 +1067,7 @@ class Soil_Survey(models.Model):
                                blank=True)
     site = models.ForeignKey(Site, null=True, on_delete=models.CASCADE,
                              verbose_name=_('site'))
+    notes = models.TextField(blank=True, verbose_name=_("Field notes"))
 
     landscape_pos_choices = [
         ('summit', _('Summit')),
@@ -1376,5 +1377,6 @@ class RipAquaticSurvey(models.Model):
         max_length=500, null=True, blank=True,
         verbose_name=_('# or comments')
     )
+    notes = models.TextField(blank=True, verbose_name=_("Field notes"))
     objects = models.Manager()
     test_objects = RipAquaticSurveyManager()

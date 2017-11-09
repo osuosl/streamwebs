@@ -316,11 +316,14 @@ class SoilSurveyForm(forms.ModelForm):
             'cover_type': forms.RadioSelect(),
             'land_use': forms.RadioSelect(),
             'site_char':
+                forms.Textarea(attrs={'class': 'materialize-textarea'}),
+            'notes':
                 forms.Textarea(attrs={'class': 'materialize-textarea'})
         }
         fields = (
             'school', 'date', 'time', 'ampm', 'weather', 'landscape_pos',
-            'cover_type', 'land_use', 'soil_type', 'distance', 'site_char'
+            'cover_type', 'land_use', 'soil_type', 'distance', 'site_char',
+            'notes'
         )
 
 
@@ -462,6 +465,8 @@ class RipAquaForm(forms.ModelForm):
                 attrs={'class': 'materialize-textarea', 'required': False}),
             'wildlife_comments6': forms.Textarea(
                 attrs={'class': 'materialize-textarea', 'required': False}),
+            'notes': forms.Textarea(attrs={'class': 'materialize-textarea'}),
+
         }
         fields = (
             'school', 'date', 'weather', 'riffle_count', 'pool_count', 'silt',
@@ -475,5 +480,5 @@ class RipAquaForm(forms.ModelForm):
             'wildlife_type4', 'wildlife_type5', 'wildlife_type6',
             'wildlife_comments1', 'wildlife_comments2', 'wildlife_comments3',
             'wildlife_comments4', 'wildlife_comments5', 'wildlife_comments6',
-            'time', 'ampm', 'stream_length'
+            'time', 'ampm', 'stream_length', 'notes'
             )

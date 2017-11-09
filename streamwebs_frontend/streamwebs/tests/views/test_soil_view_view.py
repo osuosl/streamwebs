@@ -11,7 +11,8 @@ class ViewSoilSurveyTestCase(TestCase):
             site=self.site, school=self.school, date_time='2016-10-20 14:28',
             weather='cloudy', landscape_pos='Stream Bank', cover_type='Shrubs',
             land_use='Other', distance=2,
-            site_char='Lots of rocks around', soil_type='Silt Loam')
+            site_char='Lots of rocks around', soil_type='Silt Loam',
+            notes='Some notes')
 
         self.response = self.client.get(
             reverse(
@@ -39,3 +40,4 @@ class ViewSoilSurveyTestCase(TestCase):
         self.assertContains(self.response, 'Soil Type')
         self.assertContains(self.response, 'Distance')
         self.assertContains(self.response, 'Distinguishing site')
+        self.assertContains(self.response, 'Field notes')

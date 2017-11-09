@@ -54,6 +54,7 @@ class AddSoilSurveyTestCase(TestCase):
                   'land_use': 'wilderness',
                   'distance': '30',
                   'site_char': 'Pretty distinguishable',
+                  'notes': 'some notes',
                   'soil_type': 'clay_loam',
                 }
         )
