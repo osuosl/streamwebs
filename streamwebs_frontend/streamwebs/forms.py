@@ -462,6 +462,7 @@ class RipAquaForm(forms.ModelForm):
                 attrs={'class': 'materialize-textarea'}),
             'wildlife_comments6': forms.Textarea(
                 attrs={'class': 'materialize-textarea'}),
+            'notes': forms.Textarea(attrs={'class': 'materialize-textarea'}),
         }
         fields = (
             'school', 'date', 'weather', 'riffle_count', 'pool_count', 'silt',
@@ -475,5 +476,5 @@ class RipAquaForm(forms.ModelForm):
             'wildlife_type4', 'wildlife_type5', 'wildlife_type6',
             'wildlife_comments1', 'wildlife_comments2', 'wildlife_comments3',
             'wildlife_comments4', 'wildlife_comments5', 'wildlife_comments6',
-            'time', 'ampm', 'stream_length',
+            'time', 'ampm', 'stream_length', 'notes'
             )
