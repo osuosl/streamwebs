@@ -100,7 +100,7 @@ with open(datafile, 'r') as csvfile:  # 'r' is for read
                 date_time=date_time, site_id=site_id,
                 landscape_pos=landscape_pos, cover_type=cover_type,
                 land_use=land_use, distance=dist, site_char=site_char,
-                soil_type=soil_type, weather=weather, uid=uid, notes=notes
+                soil_type=soil_type, weather=weather, uid=uid
             )
             Soil_Survey.objects.filter(id=soil_old.id).update(notes=notes)
         except ObjectDoesNotExist:
