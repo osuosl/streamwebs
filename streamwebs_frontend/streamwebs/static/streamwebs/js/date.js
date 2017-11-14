@@ -11,10 +11,7 @@ $(function() {
     });
     $('div.date select').change(function() {
         showDatePick($(this).parent().parent().parent());
-        var option = $(this).attr('class').split(' ')[0];
-        if (option === "year" || option === "month") {
-            disableDay($(this).parent().parent().parent());
-        }
+        disableDay($(this).parent().parent().parent());
     });
     $('form').submit(function(e) {
         var dates = $('div.hidden-date input').toArray();
