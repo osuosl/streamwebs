@@ -41,6 +41,10 @@ def _timestamp(dt):
     return (dt - datetime.datetime(1970, 1, 1)).total_seconds()
 
 
+def mockup_account(request):
+    return render(request, 'streamwebs/mockup_account.html', {})
+
+
 def index(request):
     return render(request, 'streamwebs/index.html', {})
 

@@ -1,0 +1,193 @@
+{% extends 'streamwebs/base.html' %}
+
+{% load staticfiles %}
+{% load filters %}
+{% load i18n %}
+
+{% block title %}{{ site.site_name  }} Camera Points- {% trans "Streamwebs" %}{% endblock %}
+
+{% block body_title %}{% endblock %}
+
+{% block content %}
+<style>
+  label {
+    color: black; !important
+  }
+</style>
+  <div class="container">
+    <h3 align="center" class="teal-text">
+      Org Admin Account Mockup
+    </h3>
+    <br/><br/>
+    <div class="row">
+      <div class="col s8">
+        <h5>Approve new user for this organization</h5>
+      </div>
+      <div class="col s4">
+        </a>
+        <a href="#" id="back"
+            class="wave-effects wave-light btn white-text teal darken-3 right">
+            Apply
+        </a>
+      </div>
+    </div>
+    <table class="bordered striped">
+      <thead>
+        <tr>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Admin</th>
+          <th>Student</th>
+          <th>Deny</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Jane</td>
+          <td>Doe</td>
+          <td>
+            <input type="checkbox"/ id="c1">
+            <label for="c1"></label>
+          </td>
+          <td>
+            <input type="checkbox"/ id="c2">
+            <label for="c2"></label>
+          </td>
+          <td>
+            <input type="checkbox"/ id="c3">
+            <label for="c3"></label>
+          </td>
+        </tr>
+        <tr>
+          <td>John</td>
+          <td>Smith</td>
+          <td>
+            <input type="checkbox"/ id="c4">
+            <label for="c4"></label>
+          </td>
+          <td>
+            <input type="checkbox"/ id="c5">
+            <label for="c5"></label>
+          </td>
+          <td>
+            <input type="checkbox"/ id="c6">
+            <label for="c6"></label>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <br/><br/>
+    <div class="row">
+      <div class="col s4">
+        <h5>Student Accounts</h5>
+      </div>
+      <div class="col s8 right">
+        <a href="#" id="back"
+            class="wave-effects wave-light btn white-text red darken-3 right">
+            Delete Selected
+        </a>
+        <a href="#" id="back"
+            class="wave-effects wave-light btn white-text teal darken-3 right">
+            Promote
+        </a>
+      </div>
+    </div>
+    <table class="bordered striped">
+      <thead>
+        <tr>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Email</th>
+          <th>Birthday</th>
+          <th>Edit</th>
+          <td>
+            <input type="checkbox"/ id="c7">
+            <label for="c7">All</label>
+          </td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Jane</td>
+          <td>Doe</td>
+          <td>jane-doe@gmail.com</td>
+          <td>1000-10-10</td>
+          <td>Pencil Icon</td>
+          <td>
+            <input type="checkbox"/ id="c8">
+            <label for="c8"></label>
+          </td>
+        </tr>
+        <tr>
+          <td>John</td>
+          <td>Smith</td>
+          <td>john-smith@gmail.com</td>
+          <td>1000-10-10</td>
+          <td>Pencil Icon</td>
+          <td>
+            <input type="checkbox"/ id="c9">
+            <label for="c9"></label>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <br/><br/>
+    <div class="row">
+      <div class="col s4">
+        <h5>Admin Accounts</h5>
+      </div>
+      <div class="col s8 right">
+        <a href="#" id="back"
+            class="wave-effects wave-light btn white-text red darken-3 right">
+            Delete Selected
+        </a>
+        <a href="#" id="back"
+            class="wave-effects wave-light btn white-text orange darken-3 right">
+            Demote
+        </a>
+      </div>
+    </div>
+    <table class="bordered striped">
+      <thead>
+        <tr>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Email</th>
+          <th>Birthday</th>
+          <th>Edit</th>
+          <th>
+            <input type="checkbox"/ id="c10">
+            <label for="c10">All</label>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Jane</td>
+          <td>Doe</td>
+          <td>jane-doe@gmail.com</td>
+          <td>1000-10-10</td>
+          <td>Pencil Icon</td>
+          <td>
+            <input type="checkbox"/ id="c11">
+            <label for="c11"></label>
+          </td>
+        </tr>
+        <tr>
+          <td>John</td>
+          <td>Smith</td>
+          <td>john-smith@gmail.com</td>
+          <td>1000-10-10</td>
+          <td>Pencil Icon</td>
+          <td>
+            <input type="checkbox"/ id="c12">
+            <label for="c12"></label>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}
