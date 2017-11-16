@@ -340,6 +340,7 @@
 
 {% block scripts %}
   <script>
+    var error = '{{ error }}';
     $(document).ready(function() {
       {% if messages %}
         {% for message in messages %}

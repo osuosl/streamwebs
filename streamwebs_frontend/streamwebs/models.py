@@ -1067,6 +1067,7 @@ class Soil_Survey(models.Model):
                                blank=True)
     site = models.ForeignKey(Site, null=True, on_delete=models.CASCADE,
                              verbose_name=_('site'))
+    notes = models.TextField(blank=True, verbose_name=_("Field notes"))
 
     landscape_pos_choices = [
         ('summit', _('Summit')),
@@ -1177,8 +1178,8 @@ class Resource(models.Model):
 
 class RipAquaticSurveyManager(models.Manager):
 
-    def create_aqua(self, site, school, date='2016-04-03', riffle_count=3,
-                    pool_count=3, weather='RAAIIN'):
+    def create_aqua(self, site, school, date_time='2016-04-03 12:00',
+                    riffle_count=3, pool_count=3, weather='RAAIIN'):
 
         info = self.create(school=school,
                            site=site,
@@ -1203,11 +1204,13 @@ class RipAquaticSurvey(models.Model):
                              verbose_name=_('site'),
                              limit_choices_to={'active': True}
                              )
-    date = models.DateField(
-        default=datetime.date.today, verbose_name=_('date')
-    )
+    date_time = models.DateTimeField(default=timezone.now,
+                                     verbose_name=_('date and time'))
     weather = models.CharField(
         max_length=20, verbose_name=_('weather'), blank=True, null=True
+    )
+    stream_length = models.PositiveIntegerField(
+        blank=True, null=True, verbose_name=_('length of stream')
     )
     riffle_count = models.PositiveIntegerField(
         blank=True, null=True, verbose_name=_('number of riffles')
@@ -1216,83 +1219,164 @@ class RipAquaticSurvey(models.Model):
         blank=True, null=True, verbose_name=_('number of pools')
     )
     silt = models.CharField(
-        max_length=250, choices=OPTIONS, null=True, blank=True,
+        max_length=250, choices=OPTIONS, null=True, default=OPTIONS[0][0],
         verbose_name=_('silt')
     )
     sand = models.CharField(
-        max_length=250, choices=OPTIONS, null=True, blank=True,
+        max_length=250, choices=OPTIONS, null=True, default=OPTIONS[0][0],
         verbose_name=_('sand')
     )
     gravel = models.CharField(
-        max_length=250, choices=OPTIONS, null=True, blank=True,
+        max_length=250, choices=OPTIONS, null=True, default=OPTIONS[0][0],
         verbose_name=_('gravel')
     )
     cobble = models.CharField(
-        max_length=250, choices=OPTIONS, null=True, blank=True,
+        max_length=250, choices=OPTIONS, null=True, default=OPTIONS[0][0],
         verbose_name=_('cobble')
     )
     boulders = models.CharField(
-        max_length=250, choices=OPTIONS, null=True, blank=True,
+        max_length=250, choices=OPTIONS, null=True, default=OPTIONS[0][0],
         verbose_name=_('boulders')
     )
     bedrock = models.CharField(
-        max_length=250, choices=OPTIONS, null=True, blank=True,
+        max_length=250, choices=OPTIONS, null=True, default=OPTIONS[0][0],
         verbose_name=_('bedrock')
     )
     small_debris = models.CharField(
-        max_length=250, choices=OPTIONS, null=True, blank=True,
+        max_length=250, choices=OPTIONS, null=True, default=OPTIONS[0][0],
         verbose_name=_('small_debris')
     )
     medium_debris = models.CharField(
-        max_length=250, choices=OPTIONS, null=True, blank=True,
+        max_length=250, choices=OPTIONS, null=True, default=OPTIONS[0][0],
         verbose_name=_('medium_debris')
     )
     large_debris = models.CharField(
-        max_length=250, choices=OPTIONS, null=True, blank=True,
+        max_length=250, choices=OPTIONS, null=True, default=OPTIONS[0][0],
         verbose_name=_('large_debris')
     )
     comments = models.CharField(
         max_length=250, null=True, verbose_name=_('comments'), blank=True
     )
     coniferous_trees = models.CharField(
-        max_length=250, choices=OPTIONS, null=True, blank=True,
+        max_length=250, choices=OPTIONS, null=True, default=OPTIONS[0][0],
         verbose_name=_('coniferous_trees')
     )
     deciduous_trees = models.CharField(
-        max_length=250, choices=OPTIONS, null=True, blank=True,
+        max_length=250, choices=OPTIONS, null=True, default=OPTIONS[0][0],
         verbose_name=_('deciduous_trees')
     )
     shrubs = models.CharField(
-        max_length=250, choices=OPTIONS, null=True, blank=True,
+        max_length=250, choices=OPTIONS, null=True, default=OPTIONS[0][0],
         verbose_name=_('shrubs')
     )
     small_plants = models.CharField(
-        max_length=250, choices=OPTIONS, null=True, blank=True,
+        max_length=250, choices=OPTIONS, null=True, default=OPTIONS[0][0],
         verbose_name=_('small_plants')
     )
     ferns = models.CharField(
-        max_length=250, choices=OPTIONS, null=True, blank=True,
+        max_length=250, choices=OPTIONS, null=True, default=OPTIONS[0][0],
         verbose_name=_('ferns')
     )
     grasses = models.CharField(
-        max_length=250, choices=OPTIONS, null=True, blank=True,
+        max_length=250, choices=OPTIONS, null=True, default=OPTIONS[0][0],
         verbose_name=_('grasses')
     )
-    species = models.CharField(
+    species1 = models.CharField(
         max_length=250, null=True, blank=True,
         verbose_name=_('species')
     )
-    significance = models.CharField(
+    species2 = models.CharField(
+        max_length=250, null=True, blank=True,
+        verbose_name=_('species')
+    )
+    species3 = models.CharField(
+        max_length=250, null=True, blank=True,
+        verbose_name=_('species')
+    )
+    species4 = models.CharField(
+        max_length=250, null=True, blank=True,
+        verbose_name=_('species')
+    )
+    species5 = models.CharField(
+        max_length=250, null=True, blank=True,
+        verbose_name=_('species')
+    )
+    species6 = models.CharField(
+        max_length=250, null=True, blank=True,
+        verbose_name=_('species')
+    )
+    significance1 = models.CharField(
         max_length=250, null=True, blank=True,
         verbose_name=_('significance to riparian area')
     )
-    wildlife_type = models.CharField(
+    significance2 = models.CharField(
+        max_length=250, null=True, blank=True,
+        verbose_name=_('significance to riparian area')
+    )
+    significance3 = models.CharField(
+        max_length=250, null=True, blank=True,
+        verbose_name=_('significance to riparian area')
+    )
+    significance4 = models.CharField(
+        max_length=250, null=True, blank=True,
+        verbose_name=_('significance to riparian area')
+    )
+    significance5 = models.CharField(
+        max_length=250, null=True, blank=True,
+        verbose_name=_('significance to riparian area')
+    )
+    significance6 = models.CharField(
+        max_length=250, null=True, blank=True,
+        verbose_name=_('significance to riparian area')
+    )
+    wildlife_type1 = models.CharField(
         max_length=500, null=True, blank=True,
         verbose_name=_('type, species, or track/sign')
     )
-    wildlife_comments = models.CharField(
+    wildlife_type2 = models.CharField(
+        max_length=500, null=True, blank=True,
+        verbose_name=_('type, species, or track/sign')
+    )
+    wildlife_type3 = models.CharField(
+        max_length=500, null=True, blank=True,
+        verbose_name=_('type, species, or track/sign')
+    )
+    wildlife_type4 = models.CharField(
+        max_length=500, null=True, blank=True,
+        verbose_name=_('type, species, or track/sign')
+    )
+    wildlife_type5 = models.CharField(
+        max_length=500, null=True, blank=True,
+        verbose_name=_('type, species, or track/sign')
+    )
+    wildlife_type6 = models.CharField(
+        max_length=500, null=True, blank=True,
+        verbose_name=_('type, species, or track/sign')
+    )
+    wildlife_comments1 = models.CharField(
         max_length=500, null=True, blank=True,
         verbose_name=_('# or comments')
     )
+    wildlife_comments2 = models.CharField(
+        max_length=500, null=True, blank=True,
+        verbose_name=_('# or comments')
+    )
+    wildlife_comments3 = models.CharField(
+        max_length=500, null=True, blank=True,
+        verbose_name=_('# or comments')
+    )
+    wildlife_comments4 = models.CharField(
+        max_length=500, null=True, blank=True,
+        verbose_name=_('# or comments')
+    )
+    wildlife_comments5 = models.CharField(
+        max_length=500, null=True, blank=True,
+        verbose_name=_('# or comments')
+    )
+    wildlife_comments6 = models.CharField(
+        max_length=500, null=True, blank=True,
+        verbose_name=_('# or comments')
+    )
+    notes = models.TextField(blank=True, verbose_name=_("Field notes"))
     objects = models.Manager()
     test_objects = RipAquaticSurveyManager()

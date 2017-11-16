@@ -13,17 +13,17 @@ import csv
 def export_rip_aqua(request, site_slug):
     site = Site.objects.get(site_slug=site_slug)
     ripaq = RipAquaticSurvey.objects.filter(site_id=site.id).values(
-        'site__site_name', 'school__name', 'date', 'weather', 'riffle_count',
-        'pool_count', 'silt', 'sand', 'gravel', 'cobble', 'boulders',
-        'bedrock', 'small_debris', 'medium_debris', 'large_debris',
-        'comments', 'coniferous_trees', 'deciduous_trees',
+        'site__site_name', 'school__name', 'date_time', 'weather',
+        'riffle_count', 'pool_count', 'silt', 'sand', 'gravel', 'cobble',
+        'boulders', 'bedrock', 'small_debris', 'medium_debris',
+        'large_debris', 'comments', 'coniferous_trees', 'deciduous_trees',
         'shrubs', 'small_plants', 'ferns', 'grasses', 'species',
         'significance', 'wildlife_type', 'wildlife_comments'
     )
     return render_to_csv_response(
         ripaq, field_header_map={
             'site__site_name': 'site',
-            'date': 'date',
+            'date_time': 'date_time',
             'school__name': 'school',
             'weather': 'weather',
             'riffle_count': '# of riffles', 'pool_count': '# of pools',
@@ -46,7 +46,8 @@ def export_rip_aqua(request, site_slug):
             'species': '# of species',
             'significance': 'significance',
             'wildlife_type': 'wildlife type',
-            'wildlife_comments': 'wildlife comments'
+            'wildlife_comments': 'wildlife comments',
+            'notes': 'field notes'
             }
         )
 
@@ -228,13 +229,14 @@ def export_soil(request, site_slug):
     soil = Soil_Survey.objects.filter(site_id=site.id).values(
         'school__name', 'date_time', 'site__site_name', 'weather',
         'landscape_pos', 'cover_type', 'land_use', 'soil_type', 'distance',
-        'site_char'
+        'site_char', 'notes'
     )
     return render_to_csv_response(
         soil, field_header_map={
             'school__name': 'school', 'site__site_name': 'site',
             'landscape_pos': 'landscape position', 'cover_type': 'cover type',
             'land_use': 'land use', 'distance': 'distance from stream',
-            'soil_type': 'soil type', 'site_char': 'site characteristics'
+            'soil_type': 'soil type', 'site_char': 'site characteristics',
+            'notes': 'field notes'
         }
     )

@@ -6,6 +6,7 @@ import csv
 import datetime
 
 from django.core.wsgi import get_wsgi_application
+from django.core.exceptions import ObjectDoesNotExist
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "streamwebs_frontend.settings")
 proj_path = "../streamwebs_frontend/"
@@ -73,6 +74,7 @@ with open(datafile, 'r') as csvfile:
                 row[12] = None
 
             uid = row[12]
+            notes = row[13]
 
             if row[0] is not None:
                 try:
@@ -90,13 +92,19 @@ with open(datafile, 'r') as csvfile:
             else:
                 site_id = None
 
-            waterq = Water_Quality.objects.update_or_create(
-                date_time=collected, DEQ_dq_level=DEQ_dq_level, school=school,
-                fish_present=fish_present, live_fish=live_fish,
-                dead_fish=dead_fish, air_temp_unit=air_temp_unit,
-                water_temp_unit=water_temp_unit, latitude=latitude,
-                longitude=longitude, nid=nid, site_id=site_id, uid=uid
-            )
+            try:
+                wq_old = Water_Quality.objects.get(nid=nid)
+                Water_Quality.objects.filter(id=wq_old.id).update(notes=notes)
+            except ObjectDoesNotExist:
+                waterq = Water_Quality.objects.update_or_create(
+                    date_time=collected, DEQ_dq_level=DEQ_dq_level,
+                    school=school, fish_present=fish_present,
+                    live_fish=live_fish, dead_fish=dead_fish,
+                    air_temp_unit=air_temp_unit,
+                    water_temp_unit=water_temp_unit, latitude=latitude,
+                    longitude=longitude, nid=nid, site_id=site_id, uid=uid,
+                    notes=notes
+                )
 
 
 csvfile.close()

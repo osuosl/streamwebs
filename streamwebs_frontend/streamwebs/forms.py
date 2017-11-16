@@ -316,11 +316,14 @@ class SoilSurveyForm(forms.ModelForm):
             'cover_type': forms.RadioSelect(),
             'land_use': forms.RadioSelect(),
             'site_char':
+                forms.Textarea(attrs={'class': 'materialize-textarea'}),
+            'notes':
                 forms.Textarea(attrs={'class': 'materialize-textarea'})
         }
         fields = (
             'school', 'date', 'time', 'ampm', 'weather', 'landscape_pos',
-            'cover_type', 'land_use', 'soil_type', 'distance', 'site_char'
+            'cover_type', 'land_use', 'soil_type', 'distance', 'site_char',
+            'notes'
         )
 
 
@@ -387,7 +390,11 @@ class RipAquaForm(forms.ModelForm):
     school = forms.ModelChoiceField(
         queryset=School.objects.all().order_by('name'), empty_label=None)
     date = forms.DateField(
-        widget=forms.DateInput(attrs={'class': 'datepicker'}))
+        input_formats=['%Y-%m-%d'],
+        widget=forms.DateInput(attrs={'class': 'datepicker'}),
+    )
+    time = forms.TimeField(input_formats=['%I:%M'])
+    ampm = forms.ChoiceField(choices=TIME_PERIOD_CHOICES, label="AM/PM")
 
     class Meta:
         model = RipAquaticSurvey
@@ -410,15 +417,68 @@ class RipAquaForm(forms.ModelForm):
             'grasses': forms.RadioSelect(attrs={'required': False}),
             'comments': forms.Textarea(
                 attrs={'class': 'materialize-textarea', 'required': False}),
-            'species': forms.Textarea(
+            'species1': forms.Textarea(
                 attrs={'class': 'materialize-textarea', 'required': False}),
-            'significance': forms.Textarea(
-                attrs={'class': 'materialize-textarea', 'required': False})
+            'species2': forms.Textarea(
+                attrs={'class': 'materialize-textarea', 'required': False}),
+            'species3': forms.Textarea(
+                attrs={'class': 'materialize-textarea', 'required': False}),
+            'species4': forms.Textarea(
+                attrs={'class': 'materialize-textarea', 'required': False}),
+            'species5': forms.Textarea(
+                attrs={'class': 'materialize-textarea', 'required': False}),
+            'species6': forms.Textarea(
+                attrs={'class': 'materialize-textarea', 'required': False}),
+            'significance1': forms.Textarea(
+                attrs={'class': 'materialize-textarea', 'required': False}),
+            'significance2': forms.Textarea(
+                attrs={'class': 'materialize-textarea', 'required': False}),
+            'significance3': forms.Textarea(
+                attrs={'class': 'materialize-textarea', 'required': False}),
+            'significance4': forms.Textarea(
+                attrs={'class': 'materialize-textarea', 'required': False}),
+            'significance5': forms.Textarea(
+                attrs={'class': 'materialize-textarea', 'required': False}),
+            'significance6': forms.Textarea(
+                attrs={'class': 'materialize-textarea', 'required': False}),
+            'wildlife_type1': forms.Textarea(
+                attrs={'class': 'materialize-textarea', 'required': False}),
+            'wildlife_type2': forms.Textarea(
+                attrs={'class': 'materialize-textarea', 'required': False}),
+            'wildlife_type3': forms.Textarea(
+                attrs={'class': 'materialize-textarea', 'required': False}),
+            'wildlife_type4': forms.Textarea(
+                attrs={'class': 'materialize-textarea', 'required': False}),
+            'wildlife_type5': forms.Textarea(
+                attrs={'class': 'materialize-textarea', 'required': False}),
+            'wildlife_type6': forms.Textarea(
+                attrs={'class': 'materialize-textarea', 'required': False}),
+            'wildlife_comments1': forms.Textarea(
+                attrs={'class': 'materialize-textarea', 'required': False}),
+            'wildlife_comments2': forms.Textarea(
+                attrs={'class': 'materialize-textarea', 'required': False}),
+            'wildlife_comments3': forms.Textarea(
+                attrs={'class': 'materialize-textarea', 'required': False}),
+            'wildlife_comments4': forms.Textarea(
+                attrs={'class': 'materialize-textarea', 'required': False}),
+            'wildlife_comments5': forms.Textarea(
+                attrs={'class': 'materialize-textarea', 'required': False}),
+            'wildlife_comments6': forms.Textarea(
+                attrs={'class': 'materialize-textarea', 'required': False}),
+            'notes': forms.Textarea(attrs={'class': 'materialize-textarea'}),
+
         }
         fields = (
             'school', 'date', 'weather', 'riffle_count', 'pool_count', 'silt',
             'sand', 'gravel', 'cobble', 'boulders', 'bedrock', 'small_debris',
             'medium_debris', 'large_debris', 'comments', 'coniferous_trees',
             'deciduous_trees', 'shrubs', 'small_plants', 'ferns', 'grasses',
-            'species', 'significance', 'wildlife_type', 'wildlife_comments'
+            'species1', 'species2', 'species3', 'species4', 'species5',
+            'species6', 'significance1', 'significance2', 'significance3',
+            'significance4', 'significance5', 'significance6',
+            'wildlife_type1', 'wildlife_type2', 'wildlife_type3',
+            'wildlife_type4', 'wildlife_type5', 'wildlife_type6',
+            'wildlife_comments1', 'wildlife_comments2', 'wildlife_comments3',
+            'wildlife_comments4', 'wildlife_comments5', 'wildlife_comments6',
+            'time', 'ampm', 'stream_length', 'notes'
             )
