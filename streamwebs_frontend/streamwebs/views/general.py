@@ -1158,10 +1158,11 @@ def soil_survey_edit(request, site_slug):
     The view for the submistion of a new Soil Survey (data sheet)
     """
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
-    soil_form = SoilSurveyForm()
+    soil_form = SoilSurveyForm(use_required_attribute=False)
 
     if request.method == 'POST':
-        soil_form = SoilSurveyForm(data=request.POST)
+        soil_form = SoilSurveyForm(data=request.POST,
+            use_required_attribute=False)
 
         if soil_form.is_valid():
             soil = soil_form.save(commit=False)
@@ -1179,6 +1180,8 @@ def soil_survey_edit(request, site_slug):
             return redirect(reverse('streamwebs:soil',
                             kwargs={'site_slug': site.site_slug,
                                     'data_id': soil.id}))
+    else:
+        soil_form = SoilSurveyForm(use_required_attribute=False)
 
     return render(
         request, 'streamwebs/datasheets/soil_edit.html', {
