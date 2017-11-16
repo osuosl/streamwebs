@@ -1191,6 +1191,7 @@ class RipAquaticSurveyManager(models.Manager):
 
 class RipAquaticSurvey(models.Model):
     OPTIONS = (
+            ('None', _('None')),
             ('Very Little', _('Very Little')),
             ('Some', _('Some')),
             ('A Lot', _('A Lot'))
@@ -1278,7 +1279,7 @@ class RipAquaticSurvey(models.Model):
         verbose_name=_('ferns')
     )
     grasses = models.CharField(
-        max_length=250, choices=OPTIONS, null=True, default=OPTIONS[0][0],
+        max_length=250, choices=OPTIONS, null=True, default=OPTIONS[0][0]   ,
         verbose_name=_('grasses')
     )
     species1 = models.CharField(
