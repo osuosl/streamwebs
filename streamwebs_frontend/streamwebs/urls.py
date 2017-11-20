@@ -4,6 +4,7 @@ from . import views
 app_name = 'streamwebs'
 urlpatterns = [
     url(r'^mockup_account/$', views.mockup_account, name='mockup_account'),
+    url(r'^register_confirmation/$', views.register_confirmation, name='register_confirmation'),
     url(r'^i18n/', include('django.conf.urls.i18n')),
     url(r'^$', views.index, name='index'),
     url(r'^faq/$', views.faq, name='faq'),

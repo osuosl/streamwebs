@@ -44,6 +44,8 @@ def _timestamp(dt):
 def mockup_account(request):
     return render(request, 'streamwebs/mockup_account.html', {})
 
+def register_confirmation(request):
+    return render(request, 'streamwebs/register_confirmation.html', {})
 
 def index(request):
     return render(request, 'streamwebs/index.html', {})
