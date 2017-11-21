@@ -30,8 +30,6 @@ class AddCameraPointTestCase(TestCase):
                 'form-MIN_NUM_FORMS': '3',
                 }
         )
-        self.assertFormError(response, 'camera_form', 'cp_date',
-                             'This field is required.')
         self.assertTemplateUsed(
             response,
             'streamwebs/datasheets/camera_point_add.html'

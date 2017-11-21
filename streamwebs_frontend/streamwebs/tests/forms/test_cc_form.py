@@ -19,7 +19,6 @@ class Canopy_Cover_Form_TestCase(TestCase):
         )
         self.required_fields = (
             'school',
-            'date',
             'time',
             'ampm',
             'est_canopy_cover',

@@ -16,7 +16,6 @@ class CameraPointFormTestCase(TestCase):
 
         self.required_fields = (
             'site',
-            'cp_date',
             'location',
         )
 

@@ -8,7 +8,6 @@ from django.contrib.auth.models import User
 from django import forms
 from django.forms import BaseInlineFormSet
 from django.utils.translation import ugettext_lazy as _
-from django.utils import timezone
 import datetime
 from captcha.fields import ReCaptchaField
 
@@ -122,7 +121,7 @@ class MacroinvertebratesForm(forms.ModelForm):
 
     def clean_date(self):
         date = self.cleaned_data['date']
-        if date > datetime.date.today():
+        if date and date > datetime.date.today():
             raise forms.ValidationError("Please enter a valid date")
         return date
 
@@ -156,7 +155,7 @@ class WQForm(forms.ModelForm):
 
     def clean_date(self):
         date = self.cleaned_data['date']
-        if date > datetime.date.today():
+        if date and date > datetime.date.today():
             raise forms.ValidationError("Please enter a valid date")
         return date
 
@@ -205,7 +204,7 @@ class Canopy_Cover_Form(forms.ModelForm):
 
     def clean_date(self):
         date = self.cleaned_data['date']
-        if date > datetime.date.today():
+        if date and date > datetime.date.today():
             raise forms.ValidationError("Please enter a valid date")
         return date
 
@@ -269,7 +268,7 @@ class RiparianTransectForm(forms.ModelForm):
 
     def clean_date(self):
         date = self.cleaned_data['date']
-        if date > datetime.date.today():
+        if date and date > datetime.date.today():
             raise forms.ValidationError("Please enter a valid date")
         return date
 
@@ -285,7 +284,7 @@ class PhotoPointImageForm(forms.ModelForm):
 
     def clean_date(self):
         date = self.cleaned_data['date']
-        if date > datetime.date.today():
+        if date and date > datetime.date.today():
             raise forms.ValidationError("Please enter a valid date")
         return date
 
@@ -319,7 +318,7 @@ class CameraPointForm(forms.ModelForm):
 
     def clean_cp_date(self):
         date = self.cleaned_data['cp_date']
-        if date > datetime.date.today():
+        if date and date > datetime.date.today():
             raise forms.ValidationError("Please enter a valid date")
         return date
 
@@ -366,7 +365,7 @@ class SoilSurveyForm(forms.ModelForm):
 
     def clean_date(self):
         date = self.cleaned_data['date']
-        if date > datetime.date.today():
+        if date and date > datetime.date.today():
             raise forms.ValidationError("Please enter a valid date")
         return date
 
