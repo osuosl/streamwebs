@@ -110,7 +110,7 @@ var disableDay = function disableDay(parent) {
     var thisYear = date.getFullYear();
     var thisMonth = date.getMonth() + 1;
     var today = date.getDate()
-    var max = 0;
+    var max = 31;
     if (year !== "" && yearInt === thisYear) {
         parent.find('select.month option').each(function(i) {
             var val = this.value;

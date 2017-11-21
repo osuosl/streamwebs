@@ -35,10 +35,10 @@ function search() {
 }
 
 var changeRangeStart = function changeRangeStart() {
-    if (!$(this).val()) { // If the field is empty, clear the range
+    if (!$('#date-start').val()) { // If the field is empty, clear the range
         date_range[0] = num_min;
     } else {
-        var date = Date.parse($(this).val());
+        var date = Date.parse($('#date-start').val());
         if (!date || Number.isNaN(date)) {
             return;
         }
@@ -50,10 +50,10 @@ var changeRangeStart = function changeRangeStart() {
 };
 
 var changeRangeEnd = function changeRangeEnd() {
-    if (!$(this).val()) { // If the field is empty, clear the range
+    if (!$('#date-end').val()) { // If the field is empty, clear the range
         date_range[1] = num_max;
     } else {
-        var date = Date.parse($(this).val());
+        var date = Date.parse($('#date-end').val());
         if (!date || Number.isNaN(date)) {
             return;
         }
@@ -342,7 +342,6 @@ var createGraphTemplate = function createGraphTemplate(container, width, height,
 };
 
 var filterZeroData = function filterZeroData(filtered, key) {
-    console.log(filtered);
     if (key === "dissolved_oxygen") {
         filtered = filtered.filter(function(dataPoint) {
             return dataPoint.value >= 0 && dataPoint.value <= 13 ;
@@ -486,7 +485,6 @@ var createGraph = function createGraph() {
         filtered1[key] = filterZeroData(types1[key], key);
         filtered1[key] = filterOutliers(filtered1[key]);
     }
-    console.log(types1);
     var formatted2 = [];
 
     if (window.hasSiteTwo) {
@@ -1875,8 +1873,6 @@ var graphColiform = function graphColiform() {
 
 $(function () {
     $('input[type=date]').val('');
-    $('#date-start').change(changeRangeStart);
-    $('#date-end').change(changeRangeEnd);
 
     $('div.graph').on('click mouseleave', function() {
         $(this).find('.popup').remove();
@@ -1892,6 +1888,25 @@ $(function () {
         $('div.graph').css("width", "");
         centerHover();
         createGraph();
+    });
+    $('div.date select').change(function() {
+        var parent = $(this).parent().parent().parent();
+        var input = parent.find('input.date');
+        var year = parent.find('select.year').toArray()[0].value;
+        var month = parent.find('select.month').toArray()[0].value;
+        var day = parent.find('select.day').toArray()[0].value;
+        if (month && parseInt(month) < 10) {
+            month = "0" + month;
+        }
+        if (day && parseInt(day) < 10) {
+            day = "0" + day;
+        }
+        if (year && month && day) {
+            var str = year + "-" + month + "-" + day;
+            input.val(str);
+            changeRangeStart();
+            changeRangeEnd();
+        }
     });
     centerHover();
     createGraph();

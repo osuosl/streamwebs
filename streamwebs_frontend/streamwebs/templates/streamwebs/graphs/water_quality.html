@@ -101,20 +101,12 @@
         <p><b>{% trans "Set Date Range:" %}</b></p>
 
         <div class="row">
-          <div class="date_picker" style="display:none;">
-            <div class="col s6">
-              <label for="date-start">{% trans "Begin" %}</label>
-              <input type="date" name="date" class="datepicker" id="date-start"
-                     value=""/>
-            </div>
-            <div class="col s6">
-              <label for="date-end">{% trans "End" %}</label>
-              <input type="date" name="date" class="datepicker" id="date-end" value=""/>
-            </div>
-          </div>
           <div class="col s12">
             <p><b>Begin:</b></p>
           </div>
+          <label for="date-start">{% trans "Begin" %}</label>
+          <input type="date" name="date" class="date" id="date-start"
+                 value=""/>
           <div class="col s4">
             <div class="input-field year date">
               Year
@@ -147,6 +139,8 @@
           <div class="col s12">
             <p><b>End:</b></p>
           </div>
+          <label for="date-end">{% trans "End" %}</label>
+          <input type="date" name="date" class="date" id="date-end" value=""/>
           <div class="col s4">
             <div class="input-field year date">
               Year
