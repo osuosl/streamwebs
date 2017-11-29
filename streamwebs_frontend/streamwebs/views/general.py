@@ -1186,7 +1186,7 @@ def soil_survey_edit(request, site_slug):
 
 
 @login_required
-@permission_required('streamwebs.can_view_stats', raise_exception=True)
+@permission_required('streamwebs.is_super_admin', raise_exception=True)
 def admin_site_statistics(request):
     """
     The view for viewing site statistics (admin only)
