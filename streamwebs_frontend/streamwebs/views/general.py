@@ -47,6 +47,9 @@ def mockup_account(request):
 def register_confirmation(request):
     return render(request, 'streamwebs/register_confirmation.html', {})
 
+def new_org_request(request):
+    return render(request, 'streamwebs/new_org_request.html', {})
+
 def index(request):
     return render(request, 'streamwebs/index.html', {})
 
