@@ -169,8 +169,6 @@ class WQSampleForm(forms.ModelForm):
 
 
 class Canopy_Cover_Form(forms.ModelForm):
-    school = forms.ModelChoiceField(
-        queryset=School.objects.all().order_by('name'), empty_label=None)
     weather = forms.CharField(required=False)
     date = forms.DateField(
         input_formats=['%Y-%m-%d'],
@@ -264,8 +262,6 @@ class PhotoPointForm(forms.ModelForm):
 
 
 class CameraPointForm(forms.ModelForm):
-    school = forms.ModelChoiceField(
-        queryset=School.objects.all().order_by('name'), empty_label=None)
     cp_date = forms.DateField(
         widget=forms.DateInput(attrs={'class': 'datepicker'}),
     )
@@ -293,8 +289,6 @@ class SiteForm(forms.ModelForm):
 
 
 class SoilSurveyForm(forms.ModelForm):
-    school = forms.ModelChoiceField(
-        queryset=School.objects.all().order_by('name'), empty_label=None)
     weather = forms.CharField(required=False)
     date = forms.DateField(
         input_formats=['%Y-%m-%d'],

@@ -22,15 +22,12 @@
 
         <p>{{ camera_form.site }}</p>
         <div class="row">
-          <div class="input-field col s12">
-            {{ camera_form.school.label }}
-            {{ camera_form.school.errors }}
-            {{ camera_form.school }}
-          </div>
           <div class="col s12">
-            <a href="{% url 'streamwebs:create_school' %}?next={{ request.path|urlencode }}" class="btn waves-effect waves-light teal darken-3">{% trans "Add A School/Organization" %}</a>
+              <div>{% trans "School" %}</div>
+              <p id="school-name">{{ school }}</p>
           </div>
         </div>
+        <br/>
         <div class="loc-input">
           <!-- CAMERA FORM: -->
           {{ camera_form.media }}
