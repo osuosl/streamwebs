@@ -77,6 +77,7 @@ def create_school(request):
 
 
 @login_required
+@permission_required('streamwebs.is_org_admin', raise_exception=True)
 def create_site(request):
     created = False
     site_list = Site.objects.filter(active=True)
