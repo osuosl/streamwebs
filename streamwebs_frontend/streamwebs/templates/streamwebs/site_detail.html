@@ -217,10 +217,12 @@
               </a>
             </li>
           </ul>
+          {% if user.is_authenticated and perms.streamwebs.is_org_admin %}
             <a href="{% url 'streamwebs:update_site' site_slug=site.site_slug %}"
               class="btn-large teal darken-3">
               <i class="material-icons right">mode_edit</i>
               {% trans "Edit Site" %}</a>
+          {% endif %}
         </div>
       </div>
     </div>
