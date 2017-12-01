@@ -290,6 +290,7 @@ def add_school_name(data):
 
 
 @login_required
+@permission_required('streamwebs.is_org_admin', raise_exception=True)
 def update_site(request, site_slug):
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     temp = copy.copy(site)
