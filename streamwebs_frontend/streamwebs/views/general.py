@@ -53,6 +53,7 @@ def faq(request):
     return render(request, 'streamwebs/faq.html', {})
 
 
+@login_required
 def create_school(request):
     if request.method == 'POST':
         if not request.POST._mutable:
@@ -1329,7 +1330,7 @@ def resources_tutorial_videos(request):
 
 
 @login_required
-@permission_required('streamwebs.can_upload_resources', raise_exception=True)
+@permission_required('streamwebs.is_super_admin', raise_exception=True)
 def resources_upload(request):
     """ View for uploading a new resource """
     res_form = ResourceForm()
@@ -1384,7 +1385,7 @@ def resources_upload(request):
 
 
 @login_required
-@permission_required('streamwebs.can_promote_users', raise_exception=True)
+@permission_required('streamwebs.is_super_admin', raise_exception=True)
 def admin_user_promotion(request):
     admins = Group.objects.get(name='admin')
     admin_perms = Permission.objects.filter(group=admins)

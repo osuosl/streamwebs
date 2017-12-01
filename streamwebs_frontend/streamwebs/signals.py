@@ -45,19 +45,19 @@ def init_groups_and_perms(sender, **kwargs):
 
     # These are the old security groups
 
-    can_upload, created = Permission.objects.get_or_create(
-        codename='can_upload_resources', name='can upload resources',
-        content_type=content_type)
+    # can_upload, created = Permission.objects.get_or_create(
+    #     codename='can_upload_resources', name='can upload resources',
+    #     content_type=content_type)
 
-    can_promote, created = Permission.objects.get_or_create(
-        codename='can_promote_users', name='can promote other users',
-        content_type=content_type)
+    # can_promote, created = Permission.objects.get_or_create(
+    #     codename='can_promote_users', name='can promote other users',
+    #     content_type=content_type)
 
-    can_view_stats, created = Permission.objects.get_or_create(
-        codename='can_view_stats', name='can view site statistics',
-        content_type=content_type)
+    # can_view_stats, created = Permission.objects.get_or_create(
+    #     codename='can_view_stats', name='can view site statistics',
+    #     content_type=content_type)
 
-    admin, created = Group.objects.get_or_create(name='admin')
-    if created:
-        admin.permissions.add(can_upload, can_view_stats)
-        print("admin group created; permissions added")
+    # admin, created = Group.objects.get_or_create(name='admin')
+    # if created:
+    #     admin.permissions.add(can_upload, can_view_stats)
+    #     print("admin group created; permissions added")
