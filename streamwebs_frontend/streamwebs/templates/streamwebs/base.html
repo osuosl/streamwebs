@@ -53,8 +53,10 @@
       <div id="footer">
         <div id="footer-content">
           <div id="footer-links">
+            {% if user.is_authenticated and perms.streamwebs.is_org_admin %}
             <a href="{% url 'streamwebs:create_site' %}"
                    class="footer-link">{% trans "Create Sites" %}</a>
+            {% endif %}
             <a href="{% url 'streamwebs:sites' %}"
                    class="footer-link">{% trans "Search Sites" %}</a>
             <a href="{% url 'streamwebs:create_school' %}?next={{ request.path|urlencode }}"

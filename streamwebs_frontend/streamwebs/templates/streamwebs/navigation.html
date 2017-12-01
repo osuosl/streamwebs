@@ -5,8 +5,10 @@
   <ul>
     <li><a href="{% url 'streamwebs:sites' %}"
            class="teal-text text-darken-3">{% trans "Search Sites" %}</a></li>
+    {% if user.is_authenticated and perms.streamwebs.is_org_admin %}
     <li><a href="{% url 'streamwebs:create_site' %}"
           class="teal-text text-darken-3">{% trans "Create Site" %}</a></li>
+    {% endif %}
     <li><a href="{% url 'streamwebs:resources' %}"
            class="teal-text text-darken-3">{% trans "Resources" %}</a></li>
     <li><a href="{% url 'streamwebs:about' %}"
