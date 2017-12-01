@@ -175,53 +175,59 @@
               </li>
             {% endif %}
           </ul>
-          <a class="dropdown-button btn-large teal darken-3"
-             href="#" data-activates="new-data-dropdown">
-             <i class="material-icons right">arrow_drop_down</i>
-            {% trans "Add data to this site" %}
-          </a>
-          <ul id="new-data-dropdown" class="dropdown-content">
-            <li>
-              <a href="{% url 'streamwebs:water_quality_edit' site_slug=site.site_slug %}">
-                {% trans "Water quality" %}
-              </a>
-            </li>
-            <li>
-              <a href="{% url 'streamwebs:macroinvertebrate_edit' site.site_slug %}">
-                {% trans "Macroinvertebrates" %}
-              </a>
-            </li>
-            <li>
-              <a href="{% url 'streamwebs:riparian_transect_edit' site.site_slug %}">
-                {% trans "Riparian transect" %}
-              </a>
-            </li>
-            <li>
-              <a href="{% url 'streamwebs:canopy_cover_edit' site.site_slug %}">
-                {% trans "Canopy Cover Survey" %}
-              </a>
-            </li>
-            <li>
-              <a href="{% url 'streamwebs:camera_point_add' site_slug=site.site_slug %}">
-                {% trans "New Camera Point" %}
-              </a>
-            </li>
-            <li>
-              <a href="{% url 'streamwebs:soil_edit' site_slug=site.site_slug %}">
-                {% trans "Soil Survey" %}
-              </a>
-            </li>
-            <li>
-              <a href="{% url 'streamwebs:rip_aqua_edit' site_slug=site.site_slug %}">
-                {% trans "Riparian Aquatic Survey" %}
-              </a>
-            </li>
-          </ul>
-          {% if user.is_authenticated and perms.streamwebs.is_org_admin %}
-            <a href="{% url 'streamwebs:update_site' site_slug=site.site_slug %}"
-              class="btn-large teal darken-3">
-              <i class="material-icons right">mode_edit</i>
-              {% trans "Edit Site" %}</a>
+          {% if user.is_authenticated %}
+            {% if perms.streamwebs.is_org_author %}
+            <a class="dropdown-button btn-large teal darken-3"
+              href="#" data-activates="new-data-dropdown">
+              <i class="material-icons right">arrow_drop_down</i>
+              {% trans "Add data to this site" %}
+            </a>
+            <ul id="new-data-dropdown" class="dropdown-content">
+              <li>
+                <a href="{% url 'streamwebs:water_quality_edit' site_slug=site.site_slug %}">
+                  {% trans "Water quality" %}
+                </a>
+              </li>
+              <li>
+                <a href="{% url 'streamwebs:macroinvertebrate_edit' site.site_slug %}">
+                  {% trans "Macroinvertebrates" %}
+                </a>
+              </li>
+              <li>
+                <a href="{% url 'streamwebs:riparian_transect_edit' site.site_slug %}">
+                  {% trans "Riparian transect" %}
+                </a>
+              </li>
+              <li>
+                <a href="{% url 'streamwebs:canopy_cover_edit' site.site_slug %}">
+                  {% trans "Canopy Cover Survey" %}
+                </a>
+              </li>
+              {% if perms.streamwebs.is_org_admin %}
+              <li>
+                <a href="{% url 'streamwebs:camera_point_add' site_slug=site.site_slug %}">
+                  {% trans "New Camera Point" %}
+                </a>
+              </li>
+              {% endif %}
+              <li>
+                <a href="{% url 'streamwebs:soil_edit' site_slug=site.site_slug %}">
+                  {% trans "Soil Survey" %}
+                </a>
+              </li>
+              <li>
+                <a href="{% url 'streamwebs:rip_aqua_edit' site_slug=site.site_slug %}">
+                  {% trans "Riparian Aquatic Survey" %}
+                </a>
+              </li>
+            </ul>
+            {% endif %}
+            {% if perms.streamwebs.is_org_admin %}
+              <a href="{% url 'streamwebs:update_site' site_slug=site.site_slug %}"
+                class="btn-large teal darken-3">
+                <i class="material-icons right">mode_edit</i>
+                {% trans "Edit Site" %}</a>
+            {% endif %}
           {% endif %}
         </div>
       </div>
