@@ -62,6 +62,7 @@
     <div>
       <div class="row center">
         <h2>{% trans "Photo points" %}</h2>
+        {% if user.is_authenticated and perms.streamwebs.is_org_author %}
         <div class="row">
           <a class="btn waves-effect waves-light teal" href="{% url 'streamwebs:photo_point_add' site.site_slug cp.id %}">
             Add New Photo Point
@@ -71,6 +72,11 @@
           <div class="col s8 offset-s2">
             <p><strong><b>Note: </b></strong>
             If you'd like to add more photo points, click the button <b>above</b>.</p>
+          </div>
+        </div>
+        {% endif %}
+        <div class="row">
+           <div class="col s8 offset-s2">
             <p>If you'd like to add more photos to existing photopoints, click on the
             "View / Add Photo" buttons <b>in each photopoint summary</b>.</p>
           </div>

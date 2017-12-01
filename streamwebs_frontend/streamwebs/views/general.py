@@ -1034,9 +1034,11 @@ def view_pp_and_add_img(request, site_slug, cp_id, pp_id):
 
 
 @login_required
+@permission_required('streamwebs.is_org_author', raise_exception=True)
 def add_photo_point(request, site_slug, cp_id):
     """Add new PP to existing CP + respective photo(s)"""
     site = Site.objects.get(site_slug=site_slug)
+    #school = UserProfile.objects.filter(user=request.user).first().school
     cp = CameraPoint.objects.get(id=cp_id)
     photo_point = PhotoPoint()
     photo_point.camera_point = cp

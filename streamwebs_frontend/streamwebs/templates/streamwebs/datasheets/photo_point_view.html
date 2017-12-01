@@ -71,7 +71,7 @@
       <!-- New photo upload -->
       <div class="row">
         <div class="col s6 offset-s3">
-          {% if user.is_authenticated %}
+          {% if user.is_authenticated and perms.streamwebs.is_org_author %}
             {% if messages %}
               {% for msg in messages %}
                 {{ msg }}
