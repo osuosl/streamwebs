@@ -931,7 +931,7 @@ def add_camera_point(request, site_slug):
             request.POST, request.FILES,
             queryset=PhotoPointImage.objects.none()
         )
-
+        
         if (camera_form.is_valid() and pp_formset.is_valid() and
                 ppi_formset.is_valid()):
             camera = camera_form.save()
