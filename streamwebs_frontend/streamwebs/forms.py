@@ -179,7 +179,7 @@ class Canopy_Cover_Form(forms.ModelForm):
 
     class Meta:
         model = Canopy_Cover
-        fields = ('school', 'date', 'time', 'ampm', 'weather',
+        fields = ('date', 'time', 'ampm', 'weather',
                   'est_canopy_cover', 'north_cc', 'west_cc', 'east_cc',
                   'south_cc')
 
@@ -236,7 +236,7 @@ class RiparianTransectForm(forms.ModelForm):
         widgets = {
             'notes': forms.Textarea(attrs={'class': 'materialize-textarea'})
         }
-        fields = ('school', 'date', 'time', 'ampm',
+        fields = ('date', 'time', 'ampm',
                   'weather', 'slope', 'notes')
 
 
@@ -309,7 +309,7 @@ class SoilSurveyForm(forms.ModelForm):
                 forms.Textarea(attrs={'class': 'materialize-textarea'})
         }
         fields = (
-            'school', 'date', 'time', 'ampm', 'weather', 'landscape_pos',
+            'date', 'time', 'ampm', 'weather', 'landscape_pos',
             'cover_type', 'land_use', 'soil_type', 'distance', 'site_char',
             'notes'
         )
