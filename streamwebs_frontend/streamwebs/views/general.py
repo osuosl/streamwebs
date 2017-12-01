@@ -812,6 +812,7 @@ def canopy_cover_edit(request, site_slug):
     The view for the submission of a new canopy cover data sheet.
     """
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
+    school = UserProfile.objects.filter(user=request.user).first().school
     canopy_cover = Canopy_Cover()
     error = False
 
@@ -826,6 +827,7 @@ def canopy_cover_edit(request, site_slug):
                 canopy_cover_form.data['ampm']
             )
             canopy_cover.site = site
+            canopy_cover.school = school
             canopy_cover.save()
             messages.success(
                 request,
@@ -846,6 +848,7 @@ def canopy_cover_edit(request, site_slug):
         'streamwebs/datasheets/canopy_cover_edit.html', {
             'canopy_cover_form': canopy_cover_form,
             'site': site,
+            'school': school,
             'error': error
         }
     )
@@ -890,6 +893,7 @@ def camera_point_view(request, site_slug, cp_id):
 def add_camera_point(request, site_slug):
     """Add new CP to site + 3 PPs and respective photos"""
     site = Site.objects.get(site_slug=site_slug)
+    school = UserProfile.objects.filter(user=request.user).first().school
     camera = CameraPoint()
 
     PhotoPointInlineFormset = inlineformset_factory(  # photo point formset (3)
@@ -931,6 +935,7 @@ def add_camera_point(request, site_slug):
         if (camera_form.is_valid() and pp_formset.is_valid() and
                 ppi_formset.is_valid()):
             camera = camera_form.save()
+            camera.school = school
             camera.save()
 
             photo_points = pp_formset.save(commit=False)
@@ -967,7 +972,8 @@ def add_camera_point(request, site_slug):
             'camera_form': camera_form,
             'pp_formset': pp_formset,
             'ppi_formset': ppi_formset,
-            'site': site
+            'site': site,
+            'school': school
         }
     )
 
@@ -1104,6 +1110,7 @@ def water_quality(request, site_slug, data_id):
 def water_quality_edit(request, site_slug):
     """ Add a new water quality sample """
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
+    school = UserProfile.objects.filter(user=request.user).first().school
     WQInlineFormSet = inlineformset_factory(
         Water_Quality, WQ_Sample,
         form=WQSampleForm,
@@ -1111,7 +1118,6 @@ def water_quality_edit(request, site_slug):
         max_num=4, min_num=4,
         extra=4      # always return exactly 4 samples
     )
-    school = UserProfile.objects.filter(user=request.user).first().school
 
     if request.method == 'POST':
         sample_formset = WQInlineFormSet(
@@ -1177,6 +1183,7 @@ def soil_survey_edit(request, site_slug):
     The view for the submistion of a new Soil Survey (data sheet)
     """
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
+    school = UserProfile.objects.filter(user=request.user).first().school
     soil_form = SoilSurveyForm()
 
     if request.method == 'POST':
@@ -1190,6 +1197,7 @@ def soil_survey_edit(request, site_slug):
                 soil_form.data['ampm']
             )
             soil.site = site
+            soil.school = school
             soil.save()
             messages.success(
                 request,
@@ -1202,7 +1210,8 @@ def soil_survey_edit(request, site_slug):
     return render(
         request, 'streamwebs/datasheets/soil_edit.html', {
             'soil_form': soil_form,
-            'site': site
+            'site': site,
+            'school': school
         }
     )
 
