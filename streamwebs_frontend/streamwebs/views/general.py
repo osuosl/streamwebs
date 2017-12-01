@@ -24,7 +24,8 @@ from streamwebs.forms import (
 from streamwebs.models import (
     Macroinvertebrates, Site, Water_Quality, WQ_Sample, RiparianTransect,
     TransectZone, Canopy_Cover, CameraPoint, PhotoPoint,
-    PhotoPointImage, Soil_Survey, Resource, School, RipAquaticSurvey)
+    PhotoPointImage, Soil_Survey, Resource, School, RipAquaticSurvey,
+    UserProfile, School )
 
 import json
 import copy
@@ -600,6 +601,7 @@ def macroinvertebrate_edit(request, site_slug):
     The view for the submission of a new macroinvertebrate data sheet.
     """
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
+    school = UserProfile.objects.filter(user=request.user).first().school
     added = False
     macro_form = MacroinvertebratesForm()
 
@@ -619,6 +621,7 @@ def macroinvertebrate_edit(request, site_slug):
                 macro_form.data['ampm']
             )
             macro.site = site
+            macro.school = school
             macro.save()
             added = True
             messages.success(
@@ -636,7 +639,8 @@ def macroinvertebrate_edit(request, site_slug):
             'somewhat': somewhat,
             'tolerant': tolerant,
             'added': added,
-            'site': site
+            'site': site,
+            'school': school
         }
     )
 
@@ -645,6 +649,7 @@ def macroinvertebrate_edit(request, site_slug):
 @permission_required('streamwebs.is_org_author', raise_exception=True)
 def riparian_aquatic_edit(request, site_slug):
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
+    school = UserProfile.objects.filter(user=request.user).first().school
     rip_aqua_form = RipAquaForm()
 
     if request.method == 'POST':
@@ -657,6 +662,7 @@ def riparian_aquatic_edit(request, site_slug):
                 rip_aqua_form.data['ampm']
             )
             rip_aqua.site = site
+            rip_aqua.school = school
             rip_aqua.save()
             messages.success(
                 request,
@@ -668,8 +674,8 @@ def riparian_aquatic_edit(request, site_slug):
     return render(
         request, 'streamwebs/datasheets/rip_aqua_edit.html', {
             'rip_aqua_form': rip_aqua_form,
-            'site': site
-
+            'site': site,
+            'school': school
         }
     )
 
@@ -730,6 +736,7 @@ def riparian_transect_edit(request, site_slug):
     The view for the submission of a new riparian transect data sheet.
     """
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
+    school = UserProfile.objects.filter(user=request.user).first().school
     transect = RiparianTransect()
     TransectZoneInlineFormSet = inlineformset_factory(
         RiparianTransect, TransectZone, form=TransectZoneForm,
@@ -755,6 +762,7 @@ def riparian_transect_edit(request, site_slug):
                 transect_form.data['ampm']
             )
             transect.site = site
+            transect.school = school
             transect.save()                             # save object
 
             for index, zone in enumerate(zones):        # for each zone,
@@ -779,7 +787,8 @@ def riparian_transect_edit(request, site_slug):
         request,
         'streamwebs/datasheets/riparian_transect_edit.html', {
             'transect_form': transect_form, 'zone_formset': zone_formset,
-            'site': site
+            'site': site,
+            'school': school
         }
     )
 
@@ -1102,6 +1111,7 @@ def water_quality_edit(request, site_slug):
         max_num=4, min_num=4,
         extra=4      # always return exactly 4 samples
     )
+    school = UserProfile.objects.filter(user=request.user).first().school
 
     if request.method == 'POST':
         sample_formset = WQInlineFormSet(
@@ -1116,6 +1126,7 @@ def water_quality_edit(request, site_slug):
                 wq_form.data['ampm']
             )
             water_quality.site = site
+            water_quality.school = school
             water_quality.save()             # save object to db
             allSamples = sample_formset.save(commit=False)
             counter = 0
@@ -1142,6 +1153,7 @@ def water_quality_edit(request, site_slug):
             'site': site,
             'wq_form': wq_form,
             'sample_formset': sample_formset,
+            'school': school
         }
     )
 
