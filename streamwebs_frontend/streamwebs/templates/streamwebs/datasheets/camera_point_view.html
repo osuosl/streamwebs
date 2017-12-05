@@ -74,6 +74,12 @@
             If you'd like to add more photo points, click the button <b>above</b>.</p>
           </div>
         </div>
+        {% else %}
+        <a href="{% url 'streamwebs:login' %}?next={{ request.path }}">
+          {% trans "Log in to add photo points." %}
+        </a>
+        <br/>
+        <br/>
         {% endif %}
         <div class="row">
            <div class="col s8 offset-s2">
