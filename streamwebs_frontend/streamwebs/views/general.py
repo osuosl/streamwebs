@@ -1549,6 +1549,8 @@ def school_detail(request, school_id):
     })
 
 
+# Decorator function that requires the user to be a part of the
+# same school as the page they are attempting to access.
 def organization_required(func):
     def wrapper(request, school_id):
         school_data = School.objects.get(id=school_id)
@@ -1556,7 +1558,7 @@ def organization_required(func):
         if not request.user.has_perm('streamwebs.is_super_admin'):
             user_profile = UserProfile.objects.get(user=request.user)
             if user_profile.school != school_data:
-                return HttpResponseForbidden()
+                return HttpResponseForbidden('Your account is not associated with this school.')
 
         return func(request, school_id)
     return wrapper
@@ -1572,7 +1574,7 @@ def manage_accounts(request, school_id):
     current_users = UserProfile.objects.filter(school=school_data, approved=True).all()
 
     author_users = [up for up in current_users if up.user.groups.filter(name='org_author').exists()]
-    admin_users = [up for up in current_users if up.user.groups.filter(name='org_admin').exists()]
+    admin_users  = [up for up in current_users if up.user.groups.filter(name='org_admin').exists()]
 
 
 
@@ -1587,5 +1589,6 @@ def manage_accounts(request, school_id):
 
 @login_required
 @permission_required('streamwebs.is_org_admin', raise_exception=True)
+@organization_required
 def manage_accounts_apply_new_users(request, school_id):
     pass
