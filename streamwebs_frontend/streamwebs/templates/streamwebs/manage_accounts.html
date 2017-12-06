@@ -1,0 +1,164 @@
+{% extends 'streamwebs/base.html' %}
+
+{% load staticfiles %}
+{% load filters %}
+{% load i18n %}
+
+{% block title %}{{ site.site_name  }} Manage Accounts- {% trans "Streamwebs" %}{% endblock %}
+
+{% block body_title %}{% endblock %}
+
+{% block content %}
+<style>
+  label {
+    color: black; !important
+  }
+</style>
+  <div class="container">
+    <h3 align="center" class="teal-text">
+      {{school_data.name}} Accounts
+    </h3>
+    <br/><br/>
+    <div class="row">
+      <div class="col s6">
+        <h5>Approve New Users</h5>
+      </div>
+      <div class="col s6 right">
+        <a href="#" id="back"
+            class="wave-effects wave-light btn white-text teal darken-3 right">
+            Apply
+        </a>
+        <a href="#" id="back"
+            class="wave-effects wave-light btn white-text teal darken-3 right">
+            Add Account
+        </a>
+      </div>
+    </div>
+    <table class="bordered striped">
+      <thead>
+        <tr>
+          <th>Username</th>
+          <th>Name</th>
+          <th>Admin</th>
+          <th>Student</th>
+          <th>Deny</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for user_profile in new_users %}
+          <tr>
+            <td>{{ user_profile.user.username }}</td>
+            <td>{{ user_profile.user.first_name }} {{ user_profile.user.last_name }}</td>
+            <td>
+              <input type="checkbox" name="nu_admin" id="nu_admin_c_{{user_profile.user.id}}"/>
+              <label for="nu_admin_c_{{user_profile.user.id}}"></label>
+            </td>
+            <td>
+              <input type="checkbox" name="nu_user" id="nu_user_c_{{user_profile.user.id}}"/>
+              <label for="nu_user_c_{{user_profile.user.id}}"></label>
+            </td>
+            <td>
+              <input type="checkbox" name="nu_deny" id="nu_deny_c_{{user_profile.user.id}}"/>
+              <label for="nu_deny_c_{{user_profile.user.id}}"></label>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <br/><br/>
+    <div class="row">
+      <div class="col s4">
+        <h5>Author Accounts</h5>
+      </div>
+      <div class="col s8 right">
+        <a href="#" id="back"
+            class="wave-effects wave-light btn white-text red darken-3 right">
+            Delete Selected
+        </a>
+        <a href="#" id="back"
+            class="wave-effects wave-light btn white-text teal darken-3 right">
+            Promote
+        </a>
+      </div>
+    </div>
+    <table class="bordered striped">
+      <thead>
+        <tr>
+          <th>Username</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Birthday</th>
+          <th>Edit</th>
+          <td>
+            <input type="checkbox" id="su_delete_all"/>
+            <label for="su_delete_all">All</label>
+          </td>
+        </tr>
+      </thead>
+      <tbody>
+        {% for user_profile in author_users %}
+          <tr>
+            <td>{{ user_profile.user.username }}</td>
+            <td>{{ user_profile.user.first_name }} {{ user_profile.user.last_name }}</td>
+            <td>{{ user_profile.user.email }}</td>
+            <td>{{ user_profile.birthdate }}</td>
+            <td><a href="#"><i class="material-icons">mode_edit</i></a></td>
+            <td>
+              <input type="checkbox" name="su_delete" id="su_delete_{{user_profile.user.id}}"/>
+              <label for="su_delete_{{user_profile.user.id}}"></label>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <br/><br/>
+    <div class="row">
+      <div class="col s4">
+        <h5>Admin Accounts</h5>
+      </div>
+      <div class="col s8 right">
+        <a href="#" id="back"
+            class="wave-effects wave-light btn white-text red darken-3 right">
+            Delete Selected
+        </a>
+        <a href="#" id="back"
+            class="wave-effects wave-light btn white-text orange darken-3 right">
+            Demote
+        </a>
+      </div>
+    </div>
+    <table class="bordered striped">
+      <thead>
+        <tr>
+          <th>Username</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Birthday</th>
+          <th>Edit</th>
+          <th>
+            <input type="checkbox" id="tu_delete_all"/>
+            <label for="tu_delete_all">All</label>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for user_profile in admin_users %}
+          <tr>
+            <td>{{ user_profile.user.username }}</td>
+            <td>{{ user_profile.user.first_name }} {{ user_profile.user.last_name }}</td>
+            <td>{{ user_profile.user.email }}</td>
+            <td>{{ user_profile.birthdate }}</td>
+            <td><a href="#"><i class="material-icons">mode_edit</i></a></td>
+            <td>
+              <input type="checkbox" name="tu_delete" id="tu_delete_{{user_profile.user.id}}"/>
+              <label for="tu_delete_{{user_profile.user.id}}"></label>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

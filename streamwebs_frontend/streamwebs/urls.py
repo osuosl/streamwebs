@@ -125,6 +125,7 @@ urlpatterns = [
     url(r'^schools/$', views.schools, name='schools'),
     url(r'^schools/(?P<school_id>[0-9]+)/$',
         views.school_detail, name='school_detail'),
-    url(r'^schools/add', views.create_school, name='create_school')
-
+    url(r'^schools/add', views.create_school, name='create_school'),
+    url(r'^schools/(?P<school_id>[0-9]+)/manage_accounts/$',
+        views.manage_accounts, name='manage_accounts')
 ]

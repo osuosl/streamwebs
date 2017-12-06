@@ -1,6 +1,6 @@
 # coding=UTF-8
 from __future__ import print_function
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, HttpResponseForbidden
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, permission_required
@@ -1547,3 +1547,45 @@ def school_detail(request, school_id):
         'rip_data': rip_data,
         'rip_aqua_data': rip_aqua_data,
     })
+
+
+def organization_required(func):
+    def wrapper(request, school_id):
+        school_data = School.objects.get(id=school_id)
+
+        if not request.user.has_perm('streamwebs.is_super_admin'):
+            user_profile = UserProfile.objects.get(user=request.user)
+            if user_profile.school != school_data:
+                return HttpResponseForbidden()
+
+        return func(request, school_id)
+    return wrapper
+
+
+@login_required
+@permission_required('streamwebs.is_org_admin', raise_exception=True)
+@organization_required
+def manage_accounts(request, school_id):
+    school_data = School.objects.get(id=school_id)
+
+    new_users = UserProfile.objects.filter(school=school_data, approved=False).all()
+    current_users = UserProfile.objects.filter(school=school_data, approved=True).all()
+
+    author_users = [up for up in current_users if up.user.groups.filter(name='org_author').exists()]
+    admin_users = [up for up in current_users if up.user.groups.filter(name='org_admin').exists()]
+
+
+
+    return render(request, 'streamwebs/manage_accounts.html', {
+        'school_data': school_data,
+        'school_id': school_id,
+        'new_users': new_users,
+        'author_users': author_users,
+        'admin_users': admin_users
+    })
+
+
+@login_required
+@permission_required('streamwebs.is_org_admin', raise_exception=True)
+def manage_accounts_apply_new_users(request, school_id):
+    pass
