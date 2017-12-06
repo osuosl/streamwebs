@@ -14,7 +14,7 @@ proj_path = "../streamwebs_frontend/"
 sys.path.append(proj_path)
 application = get_wsgi_application()
 
-from django.contrib.auth.models import User  # NOQA
+from django.contrib.auth.models import User, Group  # NOQA
 from streamwebs.models import UserProfile, School  # NOQA
 
 # users file columns:
@@ -29,6 +29,11 @@ else:
     users_list = '../csvs/users.csv'
 
 with open(users_list, 'r') as csvfile:
+    
+    # Get permission groups
+    org_admin, created = Group.objects.get_or_create(name='org_admin')
+    org_author, created = Group.objects.get_or_create(name='org_author')
+
     reader = csv.DictReader(csvfile)
     for row in reader:
         # skip if no last login
@@ -88,6 +93,15 @@ with open(users_list, 'r') as csvfile:
                 else:
                     school = School.objects.get(name='Unknown School')
                 userprofile = UserProfile.objects.update_or_create(
-                    user=user, school=school, birthdate=dob)
+                    user=user, school=school, birthdate=dob, approved=True)
+                
+                teacher = 'teacher' in roles
+                
+                if teacher:
+                    user.groups.add(org_admin)
+                    user.save()
+                else:
+                    user.groups.add(org_author)
+                    user.save()
 
 print "Users loaded."

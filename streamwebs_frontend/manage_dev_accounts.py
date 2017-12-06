@@ -92,7 +92,8 @@ if action == 'create':
                 oadmin_profile = UserProfile.objects.create(
                     user=oadmin_account,
                     school=school,
-                    birthdate=birthdate
+                    birthdate=birthdate,
+                    approved=True
                 )
                 oadmin_account.save()
                 print('\'' + org_admin_name + '\' user created, linked to school \'' + school.name + '\'')
@@ -130,7 +131,8 @@ if action == 'create':
                 author_profile = UserProfile.objects.create(
                     user=author_account,
                     school=school,
-                    birthdate=birthdate
+                    birthdate=birthdate,
+                    approved=True
                 )
                 author_profile.save()
                 print('\'' + org_author_name + '\' user created, linked to school \'' + school.name + '\'')

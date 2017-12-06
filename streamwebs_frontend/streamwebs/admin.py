@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import User
 
-from models import UserProfile
+from .models import UserProfile
 
 from .models import Site
 from .models import Water_Quality
@@ -16,6 +16,7 @@ from .models import CameraPoint
 from .models import PhotoPoint, PhotoPointImage
 from .models import Soil_Survey
 from .models import Resource
+from .models import UserProfile
 
 admin.site.register(Site)
 admin.site.register(Water_Quality)
