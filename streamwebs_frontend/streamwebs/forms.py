@@ -45,6 +45,13 @@ class UserForm(forms.ModelForm):
             raise forms.ValidationError(_('Passwords did not match'))
         return self.data['password']
 
+class UserFormOptionalFields(UserForm):
+    first_name = forms.CharField(
+        required=False,
+        widget=forms.TextInput()
+    )
+    #last_name should be required=False in model already
+    email = forms.CharField(required=False)
 
 class UserEmailForm(forms.ModelForm):
     email = forms.CharField(required=True)
