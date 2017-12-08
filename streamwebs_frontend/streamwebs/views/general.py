@@ -1570,41 +1570,80 @@ def organization_required(func):
 def manage_accounts(request, school_id):
     school_data = School.objects.get(id=school_id)
 
+    org_contributor = Group.objects.get(name='org_author')
+    org_editor = Group.objects.get(name='org_admin')
+
     if request.method == 'POST':
         # Check which submit button was clicked
         #if request.POST.get('apply'): # Apply button
-        
-        editors = request.POST.getlist('nu_editor')
-        contributors = request.POST.getlist('nu_contributor')
-        denyUsers = request.POST.getlist('nu_deny')
+        if False: # Delete Selected Editors
+            editors = request.POST.getlist('editors')
 
-        org_contributor = Group.objects.get(name='org_author')
-        org_editor = Group.objects.get(name='org_admin')
+            for i in editors:
+                user = User.objects.get(id=i)
+                profile = UserProfile.objects.get(user=user)
+                if (profile != None):
+                    profile.delete()
         
-        for i in editors:
-            user = User.objects.get(id=i)
-            profile = UserProfile.objects.get(user=user)
+        elif False: # Demote Editor
+            editors = request.POST.getlist('editors')
+
+            for i in editors:
+                user = User.objects.get(id=i)
+                profile = UserProfile.objects.get(user=user)
+                if (profile != None):
+                    user.groups.remove(org_editor)
+                    user.groups.add(org_contributor)
+                    user.save()
+
+        elif True: # Delete Selected Contributors
+            contributors = request.POST.getlist('contributors')
+
+            for i in contributors:
+                profile = UserProfile.objects.get(user=User.objects.get(id=i))
+                if (profile != None):
+                    profile.delete()
+
+        elif False: # Promote Contributor
+            contributors = request.POST.getlist('contributors')
+
+            for i in contributors:
+                user = User.objects.get(id=i)
+                profile = UserProfile.objects.get(user=user)
+                if (profile != None):
+                    user.groups.remove(org_contributor)
+                    user.groups.add(org_editor)
+                    user.save()
+
+        elif False: # Apply new user settings
+            editors = request.POST.getlist('nu_editor')
+            contributors = request.POST.getlist('nu_contributor')
+            denyUsers = request.POST.getlist('nu_deny')
             
-            user.groups.add(org_editor)
-            user.save()
+            for i in editors:
+                user = User.objects.get(id=i)
+                profile = UserProfile.objects.get(user=user)
+                
+                user.groups.add(org_editor)
+                user.save()
 
-            profile.approved = True
-            profile.save()
-        
-        for i in contributors:
-            user = User.objects.get(id=i)
-            profile = UserProfile.objects.get(user=user)
+                profile.approved = True
+                profile.save()
+            
+            for i in contributors:
+                user = User.objects.get(id=i)
+                profile = UserProfile.objects.get(user=user)
 
-            user.groups.add(org_contributor)
-            user.save()
+                user.groups.add(org_contributor)
+                user.save()
 
-            profile.approved = True
-            profile.save()
+                profile.approved = True
+                profile.save()
 
-        for i in denyUsers:
-            user = User.objects.get(id=i)
-            profile = UserProfile.objects.get(user=user)
-            profile.delete()
+            for i in denyUsers:
+                profile = UserProfile.objects.get(user=User.objects.get(id=i))
+                if (profile != None):
+                    profile.delete()
 
 
     # GET method

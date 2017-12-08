@@ -35,11 +35,11 @@
           <h5>Approve New Users</h5>
         </div>
         <div class="col s6 right">
-          <button href="{% url 'streamwebs:manage_accounts' school_data.id %}" id="back" type="submit"
+          <button href="{% url 'streamwebs:manage_accounts' school_data.id %}" id="btn_apply" type="submit"
               class="wave-effects wave-light btn white-text teal darken-3 right" style="margin-left:20px">
               Apply
           </button>
-          <a href="{% url 'streamwebs:add_account' school_data.id %}" id="back"
+          <a href="{% url 'streamwebs:add_account' school_data.id %}" id="btn_add_account"
               class="wave-effects wave-light btn white-text teal darken-3 right" style="margin-left:20px">
               Add Account
           </a>
@@ -88,11 +88,11 @@
           <h5>Editors</h5>
         </div>
         <div class="col s8 right">
-          <button href="#" id="back" type="submit"
+          <button href="#" id="btn_delete_editors" type="submit"
               class="wave-effects wave-light btn white-text red darken-3 right" style="margin-left:20px">
               Delete Selected
           </button>
-          <button href="#" id="back" type="submit"
+          <button href="#" id="btn_demote" type="submit"
               class="wave-effects wave-light btn white-text orange darken-3 right" style="margin-left:20px">
               Demote Selected
           </button>
@@ -106,8 +106,8 @@
             <th>Email</th>
             <th>Edit</th>
             <th>
-              <input type="checkbox" id="tu_delete_all"/>
-              <label for="tu_delete_all">All</label>
+              <input type="checkbox" id="editors_all"/>
+              <label for="editors_all">All</label>
             </th>
           </tr>
         </thead>
@@ -119,8 +119,8 @@
               <td>{{ user_profile.user.email }}</td>
               <td><a href="#"><i class="material-icons">mode_edit</i></a></td>
               <td>
-                <input type="checkbox" name="tu_delete" id="tu_delete_{{user_profile.user.id}}"/>
-                <label for="tu_delete_{{user_profile.user.id}}"></label>
+                <input type="checkbox" name="editors" id="editors_{{user_profile.user.id}}" value="{{user_profile.user.id}}"/>
+                <label for="editors_{{user_profile.user.id}}"></label>
               </td>
             </tr>
           {% endfor %}
@@ -138,11 +138,11 @@
           <h5>Contributors</h5>
         </div>
         <div class="col s8 right">
-          <button href="#" id="back" type="submit"
+          <button href="#" id="btn_delete_contributors" type="submit"
               class="wave-effects wave-light btn white-text red darken-3 right" style="margin-left:20px">
               Delete Selected
           </button>
-          <button href="#" id="back" type="submit"
+          <button href="#" id="btn_promote" type="submit"
               class="wave-effects wave-light btn white-text teal darken-3 right" style="margin-left:20px">
               Promote Selected
           </button>
@@ -156,8 +156,8 @@
             <th>Email</th>
             <th>Edit</th>
             <td>
-              <input type="checkbox" id="su_delete_all"/>
-              <label for="su_delete_all">All</label>
+              <input type="checkbox" id="contributors_all"/>
+              <label for="contributors_all">All</label>
             </td>
           </tr>
         </thead>
@@ -169,8 +169,8 @@
               <td>{{ user_profile.user.email }}</td>
               <td><a href="#"><i class="material-icons">mode_edit</i></a></td>
               <td>
-                <input type="checkbox" name="su_delete" id="su_delete_{{user_profile.user.id}}"/>
-                <label for="su_delete_{{user_profile.user.id}}"></label>
+                <input type="checkbox" name="contributors" id="contributors_{{user_profile.user.id}}" value="{{user_profile.user.id}}"/>
+                <label for="contributors_{{user_profile.user.id}}"></label>
               </td>
             </tr>
           {% endfor %}
