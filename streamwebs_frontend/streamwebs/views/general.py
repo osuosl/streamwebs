@@ -15,7 +15,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.conf import settings
 
 from streamwebs.forms import (
-    UserForm, UserProfileForm, RiparianTransectForm, MacroinvertebratesForm,
+    UserForm, UserFormOptionalFields, UserProfileForm, RiparianTransectForm, MacroinvertebratesForm,
     PhotoPointImageForm, PhotoPointForm, CameraPointForm, WQSampleForm,
     WQForm, SiteForm, Canopy_Cover_Form, SoilSurveyForm, StatisticsForm,
     TransectZoneForm, BaseZoneInlineFormSet, ResourceForm, AdminPromotionForm,
@@ -1576,8 +1576,6 @@ def manage_accounts(request, school_id):
     author_users = [up for up in current_users if up.user.groups.filter(name='org_author').exists()]
     admin_users  = [up for up in current_users if up.user.groups.filter(name='org_admin').exists()]
 
-
-
     return render(request, 'streamwebs/manage_accounts.html', {
         'school_data': school_data,
         'school_id': school_id,
@@ -1590,5 +1588,32 @@ def manage_accounts(request, school_id):
 @login_required
 @permission_required('streamwebs.is_org_admin', raise_exception=True)
 @organization_required
-def manage_accounts_apply_new_users(request, school_id):
-    pass
+def add_account(request, school_id):
+    school_data = School.objects.get(id=school_id)
+
+    if request.method == 'POST':
+        user_form = UserFormOptionalFields(data=request.POST)
+
+        if user_form.is_valid():
+            user = user_form.save()
+            user.set_password(user.password)
+            org_author, created = Group.objects.get_or_create(name='org_author')
+            user.groups.add(org_author)
+            user.save()
+
+            profile = UserProfile()
+            profile.birthdate = '1970-01-01' #TODO: Remove when birthday is removed from DB
+            profile.school_id = school_id
+            profile.user = user
+            profile.approved = True # User accounts are made by editors at this level, and are always approved
+            profile.save()
+
+            #messages.success(request, _('You have successfully added a new account'))
+            return HttpResponseRedirect('/schools/%i/manage_accounts/' % school_data.id)
+    else:
+        user_form = UserFormOptionalFields()
+
+    return render(request, 'streamwebs/add_account.html', {
+        'school_data': school_data,
+        'user_form': user_form
+    })
