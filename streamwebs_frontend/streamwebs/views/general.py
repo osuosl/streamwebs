@@ -1570,18 +1570,56 @@ def organization_required(func):
 def manage_accounts(request, school_id):
     school_data = School.objects.get(id=school_id)
 
+    if request.method == 'POST':
+        # Check which submit button was clicked
+        #if request.POST.get('apply'): # Apply button
+        
+        editors = request.POST.getlist('nu_editor')
+        contributors = request.POST.getlist('nu_contributor')
+        denyUsers = request.POST.getlist('nu_deny')
+
+        org_contributor = Group.objects.get(name='org_author')
+        org_editor = Group.objects.get(name='org_admin')
+        
+        for i in editors:
+            user = User.objects.get(id=i)
+            profile = UserProfile.objects.get(user=user)
+            
+            user.groups.add(org_editor)
+            user.save()
+
+            profile.approved = True
+            profile.save()
+        
+        for i in contributors:
+            user = User.objects.get(id=i)
+            profile = UserProfile.objects.get(user=user)
+
+            user.groups.add(org_contributor)
+            user.save()
+
+            profile.approved = True
+            profile.save()
+
+        for i in denyUsers:
+            user = User.objects.get(id=i)
+            profile = UserProfile.objects.get(user=user)
+            profile.delete()
+
+
+    # GET method
     new_users = UserProfile.objects.filter(school=school_data, approved=False).all()
     current_users = UserProfile.objects.filter(school=school_data, approved=True).all()
 
-    author_users = [up for up in current_users if up.user.groups.filter(name='org_author').exists()]
-    admin_users  = [up for up in current_users if up.user.groups.filter(name='org_admin').exists()]
-
+    contributor_users = [up for up in current_users if up.user.groups.filter(name='org_author').exists()]
+    editor_users  = [up for up in current_users if up.user.groups.filter(name='org_admin').exists()]
+    
     return render(request, 'streamwebs/manage_accounts.html', {
         'school_data': school_data,
         'school_id': school_id,
         'new_users': new_users,
-        'author_users': author_users,
-        'admin_users': admin_users
+        'contributor_users': contributor_users,
+        'editor_users': editor_users
     })
 
 
@@ -1597,8 +1635,9 @@ def add_account(request, school_id):
         if user_form.is_valid():
             user = user_form.save()
             user.set_password(user.password)
-            org_author, created = Group.objects.get_or_create(name='org_author')
-            user.groups.add(org_author)
+            org_contributor, created = Group.objects.get_or_create(name='org_author')
+            user.groups.add(org_contributor)
+            #user.is_active = True
             user.save()
 
             profile = UserProfile()
