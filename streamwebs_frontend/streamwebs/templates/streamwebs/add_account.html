@@ -20,7 +20,7 @@
     </h3>
 
     <br/><br/>
-    <form class="col s8 offset-s2" id='user_form' method='post' action="{% url 'streamwebs:add_account' school_data.id %}?next={{ request.path }}">
+    <form class="col s8 offset-s2" id='user_form' method='post' action="{% url 'streamwebs:add_account' school_data.id %}">
       {% csrf_token %}
 
       <div class="row">
