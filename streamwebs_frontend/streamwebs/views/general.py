@@ -1563,6 +1563,15 @@ def organization_required(func):
         return func(request, school_id)
     return wrapper
 
+@login_required
+@permission_required('streamwebs.is_org_admin', raise_exception=True)
+# Redirect to the manage accounts page, but gets the school id based on the user id
+def get_manage_accounts(request, user_id):
+    if not request.user.has_perm('streamwebs.is_super_admin'):
+        profile = UserProfile.objects.get(user=request.user)  
+        return HttpResponseRedirect('/schools/%i/manage_accounts/' % int(profile.school.id))
+    return HttpResponseForbidden('Your account is not associated with any school.' )
+    
 
 @login_required
 @permission_required('streamwebs.is_org_admin', raise_exception=True)
