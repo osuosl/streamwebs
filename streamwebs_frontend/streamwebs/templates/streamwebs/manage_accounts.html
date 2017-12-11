@@ -17,6 +17,36 @@
     text-align: center;
   }
 </style>
+
+<script>
+  function uncheck_newusers(checkbox) {
+    var checkboxes = document.getElementById("mutually_exclusive_checkboxes").getElementsByTagName('input')
+    for (i = 0; i < checkboxes.length; i++) { 
+      if (checkboxes[i].type == "checkbox" && checkboxes[i] != checkbox) {
+        checkboxes[i].checked = false;
+      }
+    }
+  }
+
+  function check_all_editors(checkbox_all) {
+    var checkboxes = document.getElementById("editor_rows").getElementsByTagName("input")
+    for (i = 0; i < checkboxes.length; i++) {
+      if (checkboxes[i].name == "editors") {
+        checkboxes[i].checked = checkbox_all.checked;
+      }
+    }
+  }
+
+  function check_all_contributors(checkbox_all) {
+    var checkboxes = document.getElementById("contributor_rows").getElementsByTagName("input")
+    for (i = 0; i < checkboxes.length; i++) {
+      if (checkboxes[i].name == "contributors") {
+        checkboxes[i].checked = checkbox_all.checked;
+      }
+    }
+  }
+</script>
+
   <div class="container">
     <h3 align="center" class="teal-text">
       {{school_data.name}} Accounts
@@ -35,11 +65,11 @@
           <h5>Approve New Users</h5>
         </div>
         <div class="col s6 right">
-          <button href="{% url 'streamwebs:manage_accounts' school_data.id %}" id="btn_apply" type="submit"
+          <button name="btn_apply" type="submit"
               class="wave-effects wave-light btn white-text teal darken-3 right" style="margin-left:20px">
               Apply
           </button>
-          <a href="{% url 'streamwebs:add_account' school_data.id %}" id="btn_add_account"
+          <a href="{% url 'streamwebs:add_account' school_data.id %}" name="btn_add_account"
               class="wave-effects wave-light btn white-text teal darken-3 right" style="margin-left:20px">
               Add Account
           </a>
@@ -57,19 +87,22 @@
         </thead>
         <tbody>
           {% for user_profile in new_users %}
-            <tr>
+            <tr id="mutually_exclusive_checkboxes">
               <td>{{ user_profile.user.username }}</td>
               <td>{{ user_profile.user.first_name }} {{ user_profile.user.last_name }}</td>
               <td class="center-content-horizontal">
-                <input type="checkbox" name="nu_editor" id="nu_editor_c_{{user_profile.user.id}}" value="{{user_profile.user.id}}"/>
+                <input type="checkbox" name="nu_editor" id="nu_editor_c_{{user_profile.user.id}}"
+                       value="{{user_profile.user.id}}" onchange="uncheck_newusers(this)"/>
                 <label for="nu_editor_c_{{user_profile.user.id}}"></label>
               </td>
               <td class="center-content-horizontal">
-                <input type="checkbox" name="nu_contributor" id="nu_contributor_c_{{user_profile.user.id}}" value="{{user_profile.user.id}}"/>
+                <input type="checkbox" name="nu_contributor" id="nu_contributor_c_{{user_profile.user.id}}"
+                       value="{{user_profile.user.id}}" onchange="uncheck_newusers(this)"/>
                 <label for="nu_contributor_c_{{user_profile.user.id}}"></label>
               </td>
               <td class="center-content-horizontal">
-                <input type="checkbox" name="nu_deny" id="nu_deny_c_{{user_profile.user.id}}" value="{{user_profile.user.id}}"/>
+                <input type="checkbox" name="nu_deny" id="nu_deny_c_{{user_profile.user.id}}"
+                       value="{{user_profile.user.id}}" onchange="uncheck_newusers(this)"/>
                 <label for="nu_deny_c_{{user_profile.user.id}}"></label>
               </td>
             </tr>
@@ -88,11 +121,11 @@
           <h5>Editors</h5>
         </div>
         <div class="col s8 right">
-          <button href="#" id="btn_delete_editors" type="submit"
+          <button name="btn_delete_editors" type="submit"
               class="wave-effects wave-light btn white-text red darken-3 right" style="margin-left:20px">
               Delete Selected
           </button>
-          <button href="#" id="btn_demote" type="submit"
+          <button name="btn_demote" type="submit"
               class="wave-effects wave-light btn white-text orange darken-3 right" style="margin-left:20px">
               Demote Selected
           </button>
@@ -106,12 +139,12 @@
             <th>Email</th>
             <th>Edit</th>
             <th>
-              <input type="checkbox" id="editors_all"/>
+              <input type="checkbox" id="editors_all" onchange="check_all_editors(this)"/>
               <label for="editors_all">All</label>
             </th>
           </tr>
         </thead>
-        <tbody>
+        <tbody id="editor_rows">
           {% for user_profile in editor_users %}
             <tr>
               <td>{{ user_profile.user.username }}</td>
@@ -138,11 +171,11 @@
           <h5>Contributors</h5>
         </div>
         <div class="col s8 right">
-          <button href="#" id="btn_delete_contributors" type="submit"
+          <button name="btn_delete_contributors" type="submit"
               class="wave-effects wave-light btn white-text red darken-3 right" style="margin-left:20px">
               Delete Selected
           </button>
-          <button href="#" id="btn_promote" type="submit"
+          <button name="btn_promote" type="submit"
               class="wave-effects wave-light btn white-text teal darken-3 right" style="margin-left:20px">
               Promote Selected
           </button>
@@ -156,12 +189,12 @@
             <th>Email</th>
             <th>Edit</th>
             <td>
-              <input type="checkbox" id="contributors_all"/>
+              <input type="checkbox" id="contributors_all" onchange="check_all_contributors(this)"/>
               <label for="contributors_all">All</label>
             </td>
           </tr>
         </thead>
-        <tbody>
+        <tbody id="contributor_rows">
           {% for user_profile in contributor_users %}
             <tr>
               <td>{{ user_profile.user.username }}</td>
