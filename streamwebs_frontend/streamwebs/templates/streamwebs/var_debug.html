@@ -1,0 +1,23 @@
+{% extends 'streamwebs/base.html' %}
+
+{% load staticfiles %}
+{% load filters %}
+{% load i18n %}
+
+{% block title %}{{ site.site_name  }} Variable Inspection (debug) - {% trans "Streamwebs" %}{% endblock %}
+
+{% block body_title %}{% endblock %}
+
+{% block content %}
+<style>
+  label {
+    color: black; !important
+  }
+</style>
+  <div class="container">
+    <h1 align="center" class="red-text">{{value}}</h1>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}
