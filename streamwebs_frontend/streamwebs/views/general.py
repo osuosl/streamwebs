@@ -1695,3 +1695,11 @@ def add_account(request, school_id):
         'school_data': school_data,
         'user_form': user_form
     })
+
+
+@login_required
+@permission_required('streamwebs.is_org_admin', raise_exception=True)
+def var_debug(request, value):
+    return render(request, 'streamwebs/var_debug.html', {
+        'value': value
+    })
