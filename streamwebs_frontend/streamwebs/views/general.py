@@ -24,8 +24,8 @@ from streamwebs.forms import (
 from streamwebs.models import (
     Macroinvertebrates, Site, Water_Quality, WQ_Sample, RiparianTransect,
     TransectZone, Canopy_Cover, CameraPoint, PhotoPoint,
-    PhotoPointImage, Soil_Survey, Resource, School, RipAquaticSurvey,
-    UserProfile, School )
+    PhotoPointImage, Soil_Survey, Resource, RipAquaticSurvey,
+    UserProfile, School)
 
 import json
 import copy
@@ -931,7 +931,7 @@ def add_camera_point(request, site_slug):
             request.POST, request.FILES,
             queryset=PhotoPointImage.objects.none()
         )
-        
+
         if (camera_form.is_valid() and pp_formset.is_valid() and
                 ppi_formset.is_valid()):
             camera = camera_form.save()
@@ -1038,7 +1038,7 @@ def view_pp_and_add_img(request, site_slug, cp_id, pp_id):
 def add_photo_point(request, site_slug, cp_id):
     """Add new PP to existing CP + respective photo(s)"""
     site = Site.objects.get(site_slug=site_slug)
-    #school = UserProfile.objects.filter(user=request.user).first().school
+    # school = UserProfile.objects.filter(user=request.user).first().school
     cp = CameraPoint.objects.get(id=cp_id)
     photo_point = PhotoPoint()
     photo_point.camera_point = cp
