@@ -15,10 +15,13 @@
 
   <div class="container">
     <!-- School details: -->
+    {% if is_in_org %}
     <a href="{% url 'streamwebs:manage_accounts' school_data.id %}" id="back"
     class="wave-effects wave-light btn white-text teal darken-3 right">
     Manage Accounts
     </a>
+    {% endif %}
+    
     <h5>{% trans "Address" %}:</h5>
     <p>
       {{ school_data.address }}
