@@ -1,5 +1,10 @@
 import os
 import sys
+# Load the django instance
+from django.core.wsgi import get_wsgi_application
+# Import models for editing
+from django.contrib.auth.models import User, Group
+from streamwebs.models import School, UserProfile
 
 # Load the django instance
 from django.core.wsgi import get_wsgi_application
@@ -42,8 +47,8 @@ org_author_name = 'student'
 if School.objects.all().exists():
     default_school = School.objects.order_by('name').first()
 else:
-    print('ERROR: There must be at least one school in the database, \
-            run the get_all.sh script')
+    print('ERROR: There must be at least one school in the database' +
+          'run the get_all.sh script')
     sys.exit(1)
 
 # Create action
@@ -77,7 +82,6 @@ if action == 'create':
     else:
         print('\'' + super_admin_name + '\' user exists')
 
-
     # Create Org Admin dev account
 
     org_admin, created = Group.objects.get_or_create(name='org_admin')
@@ -99,13 +103,12 @@ if action == 'create':
                     approved=True
                 )
                 oadmin_account.save()
-                print('\'' + org_admin_name +
-                      '\' user created, linked to school \'' +
-                      school.name + '\'')
+                print('\'' + org_admin_name + '\' user created' +
+                      'linked to school \'' + school.name + '\'')
             except:
                 oadmin_account.delete()
-                print('\'' + org_admin_name +
-                      '\' user not created, failed to create profile')
+                print('\'' + org_admin_name + '\' user not created,' +
+                      'failed to create profile')
 
     else:
         user = User.objects.filter(username=org_admin_name).first()
@@ -115,13 +118,12 @@ if action == 'create':
         else:
             tmp_school = profile.school
             if tmp_school is None:
-                print('\'' + org_admin_name +
-                      '\' user exists, no linked school')
+                print('\'' + org_admin_name + '\'' +
+                      'user exists, no linked school')
             else:
-                print('\'' + org_admin_name +
-                      '\' user exists, linked to school \'' +
-                      tmp_school.name + '\'')
-
+                print('\'' + org_admin_name + '\'' +
+                      'user exists, linked to school \'' + tmp_school.name +
+                      '\'')
 
     # Create Org Author dev account
 
@@ -144,12 +146,12 @@ if action == 'create':
                     approved=True
                 )
                 author_profile.save()
-                print('\'' + org_author_name +
-                '\' user created, linked to school \'' + school.name + '\'')
+                print('\'' + org_author_name + '\' user created,' +
+                      'linked to school \'' + school.name + '\'')
             except:
                 author_account.delete()
-                print('\'' + org_author_name +
-                '\' user not created, failed to create profile')
+                print('\'' + org_author_name + '\' user not created,' +
+                      'failed to create profile')
     else:
         user = User.objects.filter(username=org_author_name).first()
         profile = UserProfile.objects.filter(user=user).first()
@@ -162,8 +164,8 @@ if action == 'create':
                       '\' user exists, no linked school')
             else:
                 print('\'' + org_author_name +
-                      '\' user exists, linked to school \'' +
-                      tmp_school.name + '\'')
+                      '\' user exists, linked to school \'' + tmp_school.name +
+                      '\'')
 
 # School action
 # Description: will change the org_admin's and org_author's school link
@@ -180,28 +182,29 @@ elif action == 'school':
             sys.exit(2)
 
     # Change Org Admin School
-    org_admin_acc = User.objects.filter(username=org_admin_name).first()
-    org_admin_prof = UserProfile.objects.filter(user=org_admin_acc).first()
-    org_admin_prof.school = school
-    org_admin_prof.save()
-    print('\'' + org_admin_name +
-          '\' user linked to school \'' + school.name + '\'')
+    org_admin_account = User.objects.filter(username=org_admin_name).first()
+    org_admin_profile = UserProfile.objects.filter(
+                                                user=org_admin_account).first()
+    org_admin_profile.school = school
+    org_admin_profile.save()
+    print('\'' + org_admin_name + '\' user linked to school \'' +
+          school.name + '\'')
 
     # Change Org Author School
-    org_auth_acc = User.objects.filter(username=org_author_name).first()
-    org_auth_prof = UserProfile.objects.filter(user=org_auth_acc).first()
-    org_auth_prof.school = school
-    org_auth_prof.save()
-    print('\'' + org_author_name +
-          '\' user linked to school \'' + school.name + '\'')
+    org_author_account = User.objects.filter(username=org_author_name).first()
+    org_author_profile = UserProfile.objects.filter(
+                                               user=org_author_account).first()
+    org_author_profile.school = school
+    org_author_profile.save()
+    print('\'' + org_author_name + '\' user linked to school \'' +
+          school.name + '\'')
 
 # Delete action
 # Description: will delete all the dev accounts
 elif action == 'delete':
 
     # Delete the super admin
-    super_admin_account = User.objects.filter(
-                                        username=super_admin_name).first()
+    super_admin_account = User.objects.filter(username=super_admin_name).first()
     if super_admin_account:
         super_admin_account.delete()
         print('\'' + super_admin_name + '\' user deleted')
@@ -209,23 +212,25 @@ elif action == 'delete':
         print('\'' + super_admin_name + '\' user didn\'t exist')
 
     # Delete the org admin
-    org_admin_acc = User.objects.filter(username=org_admin_name).first()
-    if org_admin_acc:
-        org_admin_prof = UserProfile.objects.filter(user=org_admin_acc).first()
-        org_admin_acc.delete()
-        if org_admin_prof:
-            org_admin_prof.delete()
+    org_admin_account = User.objects.filter(username=org_admin_name).first()
+    if org_admin_account:
+        org_admin_profile = UserProfile.objects.filter(
+                                                user=org_admin_account).first()
+        org_admin_account.delete()
+        if org_admin_profile:
+            org_admin_profile.delete()
         print('\'' + org_admin_name + '\' user deleted')
     else:
         print('\'' + org_admin_name + '\' user didn\'t exist')
 
     # Delete the org author
-    org_auth_acc = User.objects.filter(username=org_author_name).first()
-    if org_auth_acc:
-        org_auth_prof = UserProfile.objects.filter(user=org_auth_acc).first()
-        org_auth_acc.delete()
-        if org_auth_prof:
-            org_auth_prof.delete()
+    org_author_account = User.objects.filter(username=org_author_name).first()
+    if org_author_account:
+        org_author_profile = UserProfile.objects.filter(
+                                               user=org_author_account).first()
+        org_author_account.delete()
+        if org_author_profile:
+            org_author_profile.delete()
         print('\'' + org_author_name + '\' user deleted')
     else:
         print('\'' + org_author_name + '\' user didn\'t exist')
