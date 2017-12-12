@@ -1,6 +1,7 @@
 # coding=UTF-8
 from __future__ import print_function
-from django.http import HttpResponseRedirect, HttpResponse, HttpResponseForbidden
+from django.http import (
+    HttpResponseRedirect, HttpResponse, HttpResponseForbidden)
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, permission_required
@@ -15,7 +16,8 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.conf import settings
 
 from streamwebs.forms import (
-    UserForm, UserFormOptionalNameEmail, UserEditForm, UserProfileForm, RiparianTransectForm, MacroinvertebratesForm,
+    UserForm, UserFormOptionalNameEmail, UserEditForm, UserProfileForm,
+    RiparianTransectForm, MacroinvertebratesForm,
     PhotoPointImageForm, PhotoPointForm, CameraPointForm, WQSampleForm,
     WQForm, SiteForm, Canopy_Cover_Form, SoilSurveyForm, StatisticsForm,
     TransectZoneForm, BaseZoneInlineFormSet, ResourceForm, AdminPromotionForm,
@@ -25,7 +27,7 @@ from streamwebs.models import (
     Macroinvertebrates, Site, Water_Quality, WQ_Sample, RiparianTransect,
     TransectZone, Canopy_Cover, CameraPoint, PhotoPoint,
     PhotoPointImage, Soil_Survey, Resource, School, RipAquaticSurvey,
-    UserProfile, School )
+    UserProfile)
 
 import json
 import copy
@@ -1010,8 +1012,8 @@ def view_pp_and_add_img(request, site_slug, cp_id, pp_id):
                 else:
                     messages.add_message(
                         request, messages.INFO,
-                        _('A photo from that date already exists for this photo \
-                        point.'),
+                        _('A photo from that date already exists for this photo\
+                         point.'),
                     )
     else:
         ppi_formset = PPImageModelFormset(
@@ -1536,7 +1538,10 @@ def school_detail(request, school_id):
             is_in_org = True
         else:
             user_profile = UserProfile.objects.filter(user=request.user).first()
-            is_in_org = user_profile != None and (user_profile.school.id == school_data.id)
+            if user_profile != None:
+                is_in_org = (user_profile.school.id == school_data.id)
+            else: 
+                is_in_org = False
     else:
         is_in_org = False
 
@@ -1569,18 +1574,21 @@ def organization_required(func):
         if not request.user.has_perm('streamwebs.is_super_admin'):
             user_profile = UserProfile.objects.get(user=request.user)
             if user_profile.school != school_data:
-                return HttpResponseForbidden('Your account is not associated with this school.')
+                return HttpResponseForbidden(
+                    'Your account is not associated with this school.')
         return func(request, *args, **kwargs)
     return wrapper
 
 @login_required
 @permission_required('streamwebs.is_org_admin', raise_exception=True)
-# Redirect to the manage accounts page, but gets the school id based on the user id
+# Redirect to the manage accounts page, based on user's school
 def get_manage_accounts(request, user_id):
     if not request.user.has_perm('streamwebs.is_super_admin'):
         profile = UserProfile.objects.get(user=request.user)  
-        return HttpResponseRedirect('/schools/%i/manage_accounts/' % int(profile.school.id))
-    return HttpResponseForbidden('Your account is not associated with any school.' )
+        return HttpResponseRedirect('/schools/%i/manage_accounts/' 
+        % int(profile.school.id))
+    return HttpResponseForbidden(
+        'Your account is not associated with any school.')
     
 
 @login_required
@@ -1682,11 +1690,15 @@ def manage_accounts(request, school_id):
                     user.save()
 
     # GET method
-    new_users = UserProfile.objects.filter(school=school_data, approved=False).all()
-    current_users = UserProfile.objects.filter(school=school_data, approved=True).all()
+    new_users = UserProfile.objects.filter(school=school_data, 
+                                            approved=False).all()
+    current_users = UserProfile.objects.filter(school=school_data, 
+                                            approved=True).all()
 
-    contributor_users = [up for up in current_users if up.user.groups.filter(name='org_author').exists()]
-    editor_users  = [up for up in current_users if up.user.groups.filter(name='org_admin').exists()]
+    contributor_users = [up for up in current_users 
+                        if up.user.groups.filter(name='org_author').exists()]
+    editor_users = [up for up in current_users
+                   if up.user.groups.filter(name='org_admin').exists()]
     
     return render(request, 'streamwebs/manage_accounts.html', {
         'school_data': school_data,
@@ -1707,22 +1719,25 @@ def add_account(request, school_id):
         user_form = UserFormOptionalNameEmail(data=request.POST)
 
         if user_form.is_valid():
-            user = user_form.save()
+            user = user_form.save(commit=False)
             user.set_password(user.password)
-            org_contributor, created = Group.objects.get_or_create(name='org_author')
+
+            org_contributor = Group.objects.get(name='org_author')
             user.groups.add(org_contributor)
+
             #user.is_active = True
             user.save()
 
             profile = UserProfile()
-            profile.birthdate = '1970-01-01' #TODO: Remove when birthday is removed from DB
+            #TODO: Remove when birthday is removed from DB
+            profile.birthdate = '1970-01-01'
             profile.school_id = school_id
             profile.user = user
-            profile.approved = True # User accounts are made by editors at this level, and are always approved
+            profile.approved = True
             profile.save()
 
-            #messages.success(request, _('You have successfully added a new account'))
-            return HttpResponseRedirect('/schools/%i/manage_accounts/' % school_data.id)
+            return HttpResponseRedirect('/schools/%i/manage_accounts/'
+                                                    % school_data.id)
     else:
         user_form = UserFormOptionalNameEmail()
 
@@ -1745,8 +1760,8 @@ def edit_account(request, school_id, user_id):
         if user_form.is_valid():
             user = user_form.save()
 
-            #messages.success(request, _('You have successfully edited an account'))
-            return HttpResponseRedirect('/schools/%i/manage_accounts/' % school_data.id)
+            return HttpResponseRedirect('/schools/%i/manage_accounts/'
+                                        % school_data.id)
     else:
         user_form = UserEditForm(instance=user)
 

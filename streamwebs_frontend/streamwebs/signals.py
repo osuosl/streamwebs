@@ -1,5 +1,4 @@
-from django.contrib.auth.models import Group, Permission, User
-from django.contrib.auth import authenticate, login
+from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
 from django.dispatch import receiver
 from django.db.models.signals import post_migrate
