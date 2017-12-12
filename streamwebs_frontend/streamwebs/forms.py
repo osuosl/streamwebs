@@ -45,6 +45,7 @@ class UserForm(forms.ModelForm):
             raise forms.ValidationError(_('Passwords did not match'))
         return self.data['password']
 
+
 class UserFormOptionalNameEmail(UserForm):
     first_name = forms.CharField(
         required=False,
@@ -55,6 +56,7 @@ class UserFormOptionalNameEmail(UserForm):
         widget=forms.TextInput()
     )
     email = forms.CharField(required=False)
+
 
 class UserEditForm(forms.ModelForm):
     first_name = forms.CharField(
@@ -70,8 +72,7 @@ class UserEditForm(forms.ModelForm):
     class Meta:
         model = User
         # Add all the fields you want a user to change
-        fields = ('first_name', 'last_name', 'username', 'email') 
-
+        fields = ('first_name', 'last_name', 'username', 'email')
 
 
 class UserEmailForm(forms.ModelForm):

@@ -933,7 +933,7 @@ def add_camera_point(request, site_slug):
             request.POST, request.FILES,
             queryset=PhotoPointImage.objects.none()
         )
-        
+
         if (camera_form.is_valid() and pp_formset.is_valid() and
                 ppi_formset.is_valid()):
             camera = camera_form.save()
@@ -1501,7 +1501,8 @@ def admin_user_promotion(request):
             'can upload resources': u.has_perm(
                 'streamwebs.can_upload_resources'),
             'can manage other users': u.has_perm(
-                'streamwebs.can_promote_users')}
+                'streamwebs.can_promote_users')
+        }
 
     paginator = Paginator(list(all_users), 10)  # Show 10 users per page
     page = request.GET.get('page')
@@ -1540,7 +1541,7 @@ def school_detail(request, school_id):
             user_profile = UserProfile.objects.filter(user=request.user).first()
             if user_profile != None:
                 is_in_org = (user_profile.school.id == school_data.id)
-            else: 
+            else:
                 is_in_org = False
     else:
         is_in_org = False
@@ -1584,12 +1585,12 @@ def organization_required(func):
 # Redirect to the manage accounts page, based on user's school
 def get_manage_accounts(request, user_id):
     if not request.user.has_perm('streamwebs.is_super_admin'):
-        profile = UserProfile.objects.get(user=request.user)  
-        return HttpResponseRedirect('/schools/%i/manage_accounts/' 
-        % int(profile.school.id))
+        profile = UserProfile.objects.get(user=request.user)
+        return HttpResponseRedirect(
+            '/schools/%i/manage_accounts/' % int(profile.school.id))
     return HttpResponseForbidden(
         'Your account is not associated with any school.')
-    
+
 
 @login_required
 @permission_required('streamwebs.is_org_admin', raise_exception=True)
@@ -1608,7 +1609,7 @@ def manage_accounts(request, school_id):
             editors = request.POST.getlist('nu_editor')
             contributors = request.POST.getlist('nu_contributor')
             denyUsers = request.POST.getlist('nu_deny')
-            
+
             for i in editors:
                 user = User.objects.get(id=i)
                 profile = UserProfile.objects.get(user=user)
@@ -1618,7 +1619,7 @@ def manage_accounts(request, school_id):
 
                     profile.approved = True
                     profile.save()
-            
+
             for i in contributors:
                 user = User.objects.get(id=i)
                 profile = UserProfile.objects.get(user=user)
@@ -1642,7 +1643,7 @@ def manage_accounts(request, school_id):
             for i in editors:
                 user = User.objects.get(id=i)
                 profile = UserProfile.objects.get(user=user)
-                
+
                 if user.id != request.user.id:
                     if profile != None:
                         profile.delete()
@@ -1664,13 +1665,13 @@ def manage_accounts(request, school_id):
                     user.save()
 
         # Delete Selected Contributors
-        elif 'btn_delete_contributors' in request.POST: 
+        elif 'btn_delete_contributors' in request.POST:
             contributors = request.POST.getlist('contributors')
 
             for i in contributors:
                 user = User.objects.get(id=i)
                 profile = UserProfile.objects.get(user=user)
-                
+
                 if user.id != request.user.id:
                     if profile != None:
                         profile.delete()
@@ -1690,16 +1691,16 @@ def manage_accounts(request, school_id):
                     user.save()
 
     # GET method
-    new_users = UserProfile.objects.filter(school=school_data, 
+    new_users = UserProfile.objects.filter(school=school_data,
                                             approved=False).all()
-    current_users = UserProfile.objects.filter(school=school_data, 
+    current_users = UserProfile.objects.filter(school=school_data,
                                             approved=True).all()
 
-    contributor_users = [up for up in current_users 
+    contributor_users = [up for up in current_users
                         if up.user.groups.filter(name='org_author').exists()]
     editor_users = [up for up in current_users
                    if up.user.groups.filter(name='org_admin').exists()]
-    
+
     return render(request, 'streamwebs/manage_accounts.html', {
         'school_data': school_data,
         'school_id': school_id,
@@ -1737,7 +1738,7 @@ def add_account(request, school_id):
             profile.save()
 
             return HttpResponseRedirect('/schools/%i/manage_accounts/'
-                                                    % school_data.id)
+                                        % school_data.id)
     else:
         user_form = UserFormOptionalNameEmail()
 

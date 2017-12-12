@@ -40,7 +40,7 @@ def init_groups_and_perms(sender, **kwargs):
     super_admin, created = Group.objects.get_or_create(name='super_admin')
     if created:
         super_admin.permissions.add(is_super_admin, is_org_admin, is_org_author)
-    
+
 
     # These are the old security groups
 
