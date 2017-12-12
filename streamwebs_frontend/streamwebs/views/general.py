@@ -15,7 +15,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.conf import settings
 
 from streamwebs.forms import (
-    UserForm, UserFormOptionalFields, UserProfileForm, RiparianTransectForm, MacroinvertebratesForm,
+    UserForm, UserFormOptionalNameEmail, UserEditForm, UserProfileForm, RiparianTransectForm, MacroinvertebratesForm,
     PhotoPointImageForm, PhotoPointForm, CameraPointForm, WQSampleForm,
     WQForm, SiteForm, Canopy_Cover_Form, SoilSurveyForm, StatisticsForm,
     TransectZoneForm, BaseZoneInlineFormSet, ResourceForm, AdminPromotionForm,
@@ -1552,15 +1552,14 @@ def school_detail(request, school_id):
 # Decorator function that requires the user to be a part of the
 # same school as the page they are attempting to access.
 def organization_required(func):
-    def wrapper(request, school_id):
-        school_data = School.objects.get(id=school_id)
+    def wrapper(request, *args, **kwargs):
+        school_data = School.objects.get(id=kwargs['school_id'])
 
         if not request.user.has_perm('streamwebs.is_super_admin'):
             user_profile = UserProfile.objects.get(user=request.user)
             if user_profile.school != school_data:
                 return HttpResponseForbidden('Your account is not associated with this school.')
-
-        return func(request, school_id)
+        return func(request, *args, **kwargs)
     return wrapper
 
 @login_required
@@ -1612,9 +1611,11 @@ def manage_accounts(request, school_id):
                     profile.save()
 
             for i in denyUsers:
-                profile = UserProfile.objects.get(user=User.objects.get(id=i))
+                user = User.objects.get(id=i)
+                profile = UserProfile.objects.get(user=user)
                 if profile != None:
                     profile.delete()
+                    user.delete()
         # Delete Selected Editors
         elif 'btn_delete_editors' in request.POST:
             editors = request.POST.getlist('editors')
@@ -1622,27 +1623,41 @@ def manage_accounts(request, school_id):
             for i in editors:
                 user = User.objects.get(id=i)
                 profile = UserProfile.objects.get(user=user)
-                if profile != None:
-                    profile.delete()
+                
+                if user.id != request.user.id:
+                    if profile != None:
+                        profile.delete()
+                    if user != None:
+                        user.delete()
+
         # Demote Editor
         elif 'btn_demote' in request.POST:
             editors = request.POST.getlist('editors')
 
+            stop_deleting_yourself = False
+
             for i in editors:
                 user = User.objects.get(id=i)
-                profile = UserProfile.objects.get(user=user)
-                if profile != None:
+
+                if user.id != request.user.id:
                     user.groups.remove(org_editor)
                     user.groups.add(org_contributor)
                     user.save()
+
         # Delete Selected Contributors
         elif 'btn_delete_contributors' in request.POST: 
             contributors = request.POST.getlist('contributors')
 
             for i in contributors:
-                profile = UserProfile.objects.get(user=User.objects.get(id=i))
-                if profile != None:
-                    profile.delete()
+                user = User.objects.get(id=i)
+                profile = UserProfile.objects.get(user=user)
+                
+                if user.id != request.user.id:
+                    if profile != None:
+                        profile.delete()
+                    if user != None:
+                        user.delete()
+
         # Promote Contributor
         elif 'btn_promote' in request.POST:
             contributors = request.POST.getlist('contributors')
@@ -1678,7 +1693,7 @@ def add_account(request, school_id):
     school_data = School.objects.get(id=school_id)
 
     if request.method == 'POST':
-        user_form = UserFormOptionalFields(data=request.POST)
+        user_form = UserFormOptionalNameEmail(data=request.POST)
 
         if user_form.is_valid():
             user = user_form.save()
@@ -1698,10 +1713,35 @@ def add_account(request, school_id):
             #messages.success(request, _('You have successfully added a new account'))
             return HttpResponseRedirect('/schools/%i/manage_accounts/' % school_data.id)
     else:
-        user_form = UserFormOptionalFields()
+        user_form = UserFormOptionalNameEmail()
 
     return render(request, 'streamwebs/add_account.html', {
         'school_data': school_data,
+        'user_form': user_form
+    })
+
+
+@login_required
+@permission_required('streamwebs.is_org_admin', raise_exception=True)
+@organization_required
+def edit_account(request, school_id, user_id):
+    school_data = School.objects.get(id=school_id)
+    user = User.objects.get(id=user_id)
+
+    if request.method == 'POST':
+        user_form = UserEditForm(data=request.POST, instance=user)
+
+        if user_form.is_valid():
+            user = user_form.save()
+
+            #messages.success(request, _('You have successfully edited an account'))
+            return HttpResponseRedirect('/schools/%i/manage_accounts/' % school_data.id)
+    else:
+        user_form = UserEditForm(instance=user)
+
+    return render(request, 'streamwebs/edit_account.html', {
+        'school_data': school_data,
+        'user': user,
         'user_form': user_form
     })
 
