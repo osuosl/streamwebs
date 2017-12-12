@@ -1,6 +1,7 @@
 # coding=UTF-8
 from __future__ import print_function
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import (
+    HttpResponseRedirect, HttpResponse, HttpResponseForbidden)
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, permission_required
@@ -15,7 +16,8 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.conf import settings
 
 from streamwebs.forms import (
-    UserForm, UserProfileForm, RiparianTransectForm, MacroinvertebratesForm,
+    UserForm, UserFormOptionalNameEmail, UserEditForm, UserProfileForm,
+    RiparianTransectForm, MacroinvertebratesForm,
     PhotoPointImageForm, PhotoPointForm, CameraPointForm, WQSampleForm,
     WQForm, SiteForm, Canopy_Cover_Form, SoilSurveyForm, StatisticsForm,
     TransectZoneForm, BaseZoneInlineFormSet, ResourceForm, AdminPromotionForm,
@@ -25,7 +27,7 @@ from streamwebs.models import (
     Macroinvertebrates, Site, Water_Quality, WQ_Sample, RiparianTransect,
     TransectZone, Canopy_Cover, CameraPoint, PhotoPoint,
     PhotoPointImage, Soil_Survey, Resource, School, RipAquaticSurvey,
-    UserProfile, School )
+    UserProfile)
 
 import json
 import copy
@@ -931,7 +933,7 @@ def add_camera_point(request, site_slug):
             request.POST, request.FILES,
             queryset=PhotoPointImage.objects.none()
         )
-        
+
         if (camera_form.is_valid() and pp_formset.is_valid() and
                 ppi_formset.is_valid()):
             camera = camera_form.save()
@@ -1010,8 +1012,8 @@ def view_pp_and_add_img(request, site_slug, cp_id, pp_id):
                 else:
                     messages.add_message(
                         request, messages.INFO,
-                        _('A photo from that date already exists for this photo \
-                        point.'),
+                        _('A photo from that date already exists for this photo\
+                         point.'),
                     )
     else:
         ppi_formset = PPImageModelFormset(
@@ -1499,7 +1501,8 @@ def admin_user_promotion(request):
             'can upload resources': u.has_perm(
                 'streamwebs.can_upload_resources'),
             'can manage other users': u.has_perm(
-                'streamwebs.can_promote_users')}
+                'streamwebs.can_promote_users')
+        }
 
     paginator = Paginator(list(all_users), 10)  # Show 10 users per page
     page = request.GET.get('page')
@@ -1530,6 +1533,20 @@ def schools(request):
 
 def school_detail(request, school_id):
     school_data = School.objects.get(id=school_id)
+
+    if request.user.is_authenticated():
+        if request.user.has_perm('streamwebs.is_super_admin'):
+            is_in_org = True
+        else:
+            user_profile = UserProfile.objects.filter(user=request.user).first()
+            if user_profile != None:
+                is_in_org = (user_profile.school.id == school_data.id)
+            else:
+                is_in_org = False
+    else:
+        is_in_org = False
+
+
     wq_data = Water_Quality.objects.filter(school=school_id)
     mac_data = Macroinvertebrates.objects.filter(school=school_id)
     can_data = Canopy_Cover.objects.filter(school=school_id)
@@ -1539,11 +1556,226 @@ def school_detail(request, school_id):
 
     return render(request, 'streamwebs/school_detail.html', {
         'school_data': school_data,
-        'school_id': school_id,
+        'is_in_org': is_in_org,
         'wq_data': wq_data,
         'mac_data': mac_data,
         'can_data': can_data,
         'soil_data': soil_data,
         'rip_data': rip_data,
         'rip_aqua_data': rip_aqua_data,
+    })
+
+
+# Decorator function that requires the user to be a part of the
+# same school as the page they are attempting to access.
+def organization_required(func):
+    def wrapper(request, *args, **kwargs):
+        school_data = School.objects.get(id=kwargs['school_id'])
+
+        if not request.user.has_perm('streamwebs.is_super_admin'):
+            user_profile = UserProfile.objects.get(user=request.user)
+            if user_profile.school != school_data:
+                return HttpResponseForbidden(
+                    'Your account is not associated with this school.')
+        return func(request, *args, **kwargs)
+    return wrapper
+
+@login_required
+@permission_required('streamwebs.is_org_admin', raise_exception=True)
+# Redirect to the manage accounts page, based on user's school
+def get_manage_accounts(request, user_id):
+    if not request.user.has_perm('streamwebs.is_super_admin'):
+        profile = UserProfile.objects.get(user=request.user)
+        return HttpResponseRedirect(
+            '/schools/%i/manage_accounts/' % int(profile.school.id))
+    return HttpResponseForbidden(
+        'Your account is not associated with any school.')
+
+
+@login_required
+@permission_required('streamwebs.is_org_admin', raise_exception=True)
+@organization_required
+def manage_accounts(request, school_id):
+    school_data = School.objects.get(id=school_id)
+
+    org_contributor = Group.objects.get(name='org_author')
+    org_editor = Group.objects.get(name='org_admin')
+
+    if request.method == 'POST':
+        # Check which submit button was clicked
+
+        # Apply new user settings
+        if 'btn_apply' in request.POST:
+            editors = request.POST.getlist('nu_editor')
+            contributors = request.POST.getlist('nu_contributor')
+            denyUsers = request.POST.getlist('nu_deny')
+
+            for i in editors:
+                user = User.objects.get(id=i)
+                profile = UserProfile.objects.get(user=user)
+                if profile != None:
+                    user.groups.add(org_editor)
+                    user.save()
+
+                    profile.approved = True
+                    profile.save()
+
+            for i in contributors:
+                user = User.objects.get(id=i)
+                profile = UserProfile.objects.get(user=user)
+                if profile != None:
+                    user.groups.add(org_contributor)
+                    user.save()
+
+                    profile.approved = True
+                    profile.save()
+
+            for i in denyUsers:
+                user = User.objects.get(id=i)
+                profile = UserProfile.objects.get(user=user)
+                if profile != None:
+                    profile.delete()
+                    user.delete()
+        # Delete Selected Editors
+        elif 'btn_delete_editors' in request.POST:
+            editors = request.POST.getlist('editors')
+
+            for i in editors:
+                user = User.objects.get(id=i)
+                profile = UserProfile.objects.get(user=user)
+
+                if user.id != request.user.id:
+                    if profile != None:
+                        profile.delete()
+                    if user != None:
+                        user.delete()
+
+        # Demote Editor
+        elif 'btn_demote' in request.POST:
+            editors = request.POST.getlist('editors')
+
+            stop_deleting_yourself = False
+
+            for i in editors:
+                user = User.objects.get(id=i)
+
+                if user.id != request.user.id:
+                    user.groups.remove(org_editor)
+                    user.groups.add(org_contributor)
+                    user.save()
+
+        # Delete Selected Contributors
+        elif 'btn_delete_contributors' in request.POST:
+            contributors = request.POST.getlist('contributors')
+
+            for i in contributors:
+                user = User.objects.get(id=i)
+                profile = UserProfile.objects.get(user=user)
+
+                if user.id != request.user.id:
+                    if profile != None:
+                        profile.delete()
+                    if user != None:
+                        user.delete()
+
+        # Promote Contributor
+        elif 'btn_promote' in request.POST:
+            contributors = request.POST.getlist('contributors')
+
+            for i in contributors:
+                user = User.objects.get(id=i)
+                profile = UserProfile.objects.get(user=user)
+                if profile != None:
+                    user.groups.remove(org_contributor)
+                    user.groups.add(org_editor)
+                    user.save()
+
+    # GET method
+    new_users = UserProfile.objects.filter(school=school_data,
+                                            approved=False).all()
+    current_users = UserProfile.objects.filter(school=school_data,
+                                            approved=True).all()
+
+    contributor_users = [up for up in current_users
+                        if up.user.groups.filter(name='org_author').exists()]
+    editor_users = [up for up in current_users
+                   if up.user.groups.filter(name='org_admin').exists()]
+
+    return render(request, 'streamwebs/manage_accounts.html', {
+        'school_data': school_data,
+        'school_id': school_id,
+        'new_users': new_users,
+        'contributor_users': contributor_users,
+        'editor_users': editor_users
+    })
+
+
+@login_required
+@permission_required('streamwebs.is_org_admin', raise_exception=True)
+@organization_required
+def add_account(request, school_id):
+    school_data = School.objects.get(id=school_id)
+
+    if request.method == 'POST':
+        user_form = UserFormOptionalNameEmail(data=request.POST)
+
+        if user_form.is_valid():
+            user = user_form.save(commit=False)
+            user.set_password(user.password)
+
+            org_contributor = Group.objects.get(name='org_author')
+            user.groups.add(org_contributor)
+
+            #user.is_active = True
+            user.save()
+
+            profile = UserProfile()
+            #TODO: Remove when birthday is removed from DB
+            profile.birthdate = '1970-01-01'
+            profile.school_id = school_id
+            profile.user = user
+            profile.approved = True
+            profile.save()
+
+            return HttpResponseRedirect('/schools/%i/manage_accounts/'
+                                        % school_data.id)
+    else:
+        user_form = UserFormOptionalNameEmail()
+
+    return render(request, 'streamwebs/add_account.html', {
+        'school_data': school_data,
+        'user_form': user_form
+    })
+
+
+@login_required
+@permission_required('streamwebs.is_org_admin', raise_exception=True)
+@organization_required
+def edit_account(request, school_id, user_id):
+    school_data = School.objects.get(id=school_id)
+    user = User.objects.get(id=user_id)
+
+    if request.method == 'POST':
+        user_form = UserEditForm(data=request.POST, instance=user)
+
+        if user_form.is_valid():
+            user = user_form.save()
+
+            return HttpResponseRedirect('/schools/%i/manage_accounts/'
+                                        % school_data.id)
+    else:
+        user_form = UserEditForm(instance=user)
+
+    return render(request, 'streamwebs/edit_account.html', {
+        'school_data': school_data,
+        'user': user,
+        'user_form': user_form
+    })
+
+
+@login_required
+@permission_required('streamwebs.is_org_admin', raise_exception=True)
+def var_debug(request, value):
+    return render(request, 'streamwebs/var_debug.html', {
+        'value': value
     })
