@@ -99,13 +99,14 @@ if action == 'create':
                     approved=True
                 )
                 oadmin_account.save()
-                print('\'' + org_admin_name + 
-                '\' user created, linked to school \'' + school.name + '\'')
+                print('\'' + org_admin_name +
+                      '\' user created, linked to school \'' +
+                      school.name + '\'')
             except:
                 oadmin_account.delete()
-                print('\'' + org_admin_name + 
-                '\' user not created, failed to create profile')
-            
+                print('\'' + org_admin_name +
+                      '\' user not created, failed to create profile')
+
     else:
         user = User.objects.filter(username=org_admin_name).first()
         profile = UserProfile.objects.filter(user=user).first()
@@ -114,11 +115,12 @@ if action == 'create':
         else:
             tmp_school = profile.school
             if tmp_school is None:
-                print('\'' + org_admin_name + 
-                '\' user exists, no linked school')
+                print('\'' + org_admin_name +
+                      '\' user exists, no linked school')
             else:
-                print('\'' + org_admin_name + 
-                '\' user exists, linked to school \'' + tmp_school.name + '\'')
+                print('\'' + org_admin_name +
+                      '\' user exists, linked to school \'' +
+                      tmp_school.name + '\'')
 
 
     # Create Org Author dev account
@@ -142,11 +144,11 @@ if action == 'create':
                     approved=True
                 )
                 author_profile.save()
-                print('\'' + org_author_name + 
+                print('\'' + org_author_name +
                 '\' user created, linked to school \'' + school.name + '\'')
             except:
                 author_account.delete()
-                print('\'' + org_author_name + 
+                print('\'' + org_author_name +
                 '\' user not created, failed to create profile')
     else:
         user = User.objects.filter(username=org_author_name).first()
@@ -156,11 +158,12 @@ if action == 'create':
         else:
             tmp_school = profile.school
             if tmp_school is None:
-                print('\'' + org_author_name + 
-                '\' user exists, no linked school')
+                print('\'' + org_author_name +
+                      '\' user exists, no linked school')
             else:
-                print('\'' + org_author_name + 
-                '\' user exists, linked to school \'' + tmp_school.name + '\'')
+                print('\'' + org_author_name +
+                      '\' user exists, linked to school \'' +
+                      tmp_school.name + '\'')
 
 # School action
 # Description: will change the org_admin's and org_author's school link
@@ -181,23 +184,24 @@ elif action == 'school':
     org_admin_prof = UserProfile.objects.filter(user=org_admin_acc).first()
     org_admin_prof.school = school
     org_admin_prof.save()
-    print('\'' + org_admin_name + 
-    '\' user linked to school \'' + school.name + '\'')
+    print('\'' + org_admin_name +
+          '\' user linked to school \'' + school.name + '\'')
 
     # Change Org Author School
     org_auth_acc = User.objects.filter(username=org_author_name).first()
     org_auth_prof = UserProfile.objects.filter(user=org_auth_acc).first()
     org_auth_prof.school = school
     org_auth_prof.save()
-    print('\'' + org_author_name + 
-    '\' user linked to school \'' + school.name + '\'')
+    print('\'' + org_author_name +
+          '\' user linked to school \'' + school.name + '\'')
 
 # Delete action
 # Description: will delete all the dev accounts
 elif action == 'delete':
 
     # Delete the super admin
-    super_admin_account = User.objects.filter(username=super_admin_name).first()
+    super_admin_account = User.objects.filter(
+                                        username=super_admin_name).first()
     if super_admin_account:
         super_admin_account.delete()
         print('\'' + super_admin_name + '\' user deleted')
