@@ -126,6 +126,8 @@ urlpatterns = [
     url(r'^schools/(?P<school_id>[0-9]+)/$',
         views.school_detail, name='school_detail'),
     url(r'^schools/add', views.create_school, name='create_school'),
+    url(r'^get_manage_accounts/(?P<user_id>[0-9]+)$',
+        views.get_manage_accounts, name='get_manage_accounts'),
     url(r'^schools/(?P<school_id>[0-9]+)/manage_accounts/$',
         views.manage_accounts, name='manage_accounts'),
     url(r'^schools/(?P<school_id>[0-9]+)/add_account/$',
