@@ -130,6 +130,8 @@ urlpatterns = [
         views.manage_accounts, name='manage_accounts'),
     url(r'^schools/(?P<school_id>[0-9]+)/add_account/$',
         views.add_account, name='add_account'),
+    url(r'^schools/(?P<school_id>[0-9]+)/edit_account/(?P<user_id>[0-9]+)/$',
+        views.edit_account, name='edit_account'),
 
     # This is used to view a backend variable
     url(r'^var_debug/(?P<value>.*)/$',

@@ -150,10 +150,16 @@
               <td>{{ user_profile.user.username }}</td>
               <td>{{ user_profile.user.first_name }} {{ user_profile.user.last_name }}</td>
               <td>{{ user_profile.user.email }}</td>
-              <td><a href="#"><i class="material-icons">mode_edit</i></a></td>
               <td>
+                <a href="{% url 'streamwebs:edit_account' school_id=school_data.id user_id=user_profile.user.id %}" name="btn_edit_account">
+                  <i class="material-icons">mode_edit</i>
+                </a>
+              </td>
+              <td>
+                {% if user_profile.user.id != user.id %}
                 <input type="checkbox" name="editors" id="editors_{{user_profile.user.id}}" value="{{user_profile.user.id}}"/>
                 <label for="editors_{{user_profile.user.id}}"></label>
+                {% endif %}
               </td>
             </tr>
           {% endfor %}
@@ -200,10 +206,16 @@
               <td>{{ user_profile.user.username }}</td>
               <td>{{ user_profile.user.first_name }} {{ user_profile.user.last_name }}</td>
               <td>{{ user_profile.user.email }}</td>
-              <td><a href="#"><i class="material-icons">mode_edit</i></a></td>
               <td>
+                <a href="{% url 'streamwebs:edit_account' school_id=school_data.id user_id=user_profile.user.id %}" name="btn_edit_account">
+                  <i class="material-icons">mode_edit</i>
+                </a>
+              </td>
+              <td>
+                {% if user_profile.user.id != user.id %}
                 <input type="checkbox" name="contributors" id="contributors_{{user_profile.user.id}}" value="{{user_profile.user.id}}"/>
                 <label for="contributors_{{user_profile.user.id}}"></label>
+                {% endif %}
               </td>
             </tr>
           {% endfor %}
