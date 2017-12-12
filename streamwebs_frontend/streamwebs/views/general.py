@@ -1528,8 +1528,13 @@ def schools(request):
     })
 
 
+@login_required
 def school_detail(request, school_id):
+    user_profile = UserProfile.objects.filter(user=request.user).first()
     school_data = School.objects.get(id=school_id)
+
+    is_in_org = request.user.has_perm('streamwebs.is_super_admin') or (user_profile != None and user_profile.school.id == school_data.id)
+
     wq_data = Water_Quality.objects.filter(school=school_id)
     mac_data = Macroinvertebrates.objects.filter(school=school_id)
     can_data = Canopy_Cover.objects.filter(school=school_id)
@@ -1539,7 +1544,7 @@ def school_detail(request, school_id):
 
     return render(request, 'streamwebs/school_detail.html', {
         'school_data': school_data,
-        'school_id': school_id,
+        'is_in_org': is_in_org,
         'wq_data': wq_data,
         'mac_data': mac_data,
         'can_data': can_data,
