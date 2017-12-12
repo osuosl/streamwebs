@@ -1528,12 +1528,18 @@ def schools(request):
     })
 
 
-@login_required
 def school_detail(request, school_id):
-    user_profile = UserProfile.objects.filter(user=request.user).first()
     school_data = School.objects.get(id=school_id)
 
-    is_in_org = request.user.has_perm('streamwebs.is_super_admin') or (user_profile != None and user_profile.school.id == school_data.id)
+    if request.user.is_authenticated():
+        if request.user.has_perm('streamwebs.is_super_admin'):
+            is_in_org = True
+        else:
+            user_profile = UserProfile.objects.filter(user=request.user).first()
+            is_in_org = user_profile != None and (user_profile.school.id == school_data.id)
+    else:
+        is_in_org = False
+
 
     wq_data = Water_Quality.objects.filter(school=school_id)
     mac_data = Macroinvertebrates.objects.filter(school=school_id)
