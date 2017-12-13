@@ -11,7 +11,6 @@ class WQFormTestCase(TestCase):
             'time',
             'ampm',
             'DEQ_dq_level',
-            'school',
             'latitude',
             'longitude',
             'fish_present',

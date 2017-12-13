@@ -3,8 +3,6 @@ from django.contrib.contenttypes.models import ContentType
 from django.dispatch import receiver
 from django.db.models.signals import post_migrate
 
-from django.contrib.auth import get_user_model
-
 
 @receiver(post_migrate)
 def init_groups_and_perms(sender, **kwargs):
@@ -43,7 +41,6 @@ def init_groups_and_perms(sender, **kwargs):
 
 
     # These are the old security groups
-
     # can_upload, created = Permission.objects.get_or_create(
     #     codename='can_upload_resources', name='can upload resources',
     #     content_type=content_type)
