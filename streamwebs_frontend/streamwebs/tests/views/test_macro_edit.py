@@ -1,16 +1,28 @@
 from django.test import Client, TestCase
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.core.urlresolvers import reverse
-from streamwebs.models import Site, School, Macroinvertebrates
+from streamwebs.models import Site, School, Macroinvertebrates, UserProfile
 
 
 class MacroFormTestCase(TestCase):
 
     def setUp(self):
         self.client = Client()
-        self.user = User.objects.create_user('john', 'john@example.com',
-                                             'johnpassword')
+
+        self.school = School.test_objects.create_school('Test School')
+
+        self.user = User.objects.create_user(
+            'john', 'john@example.com', 'johnpassword'
+        )
+        self.user.groups.add(Group.objects.get(name='org_admin'))
         self.client.login(username='john', password='johnpassword')
+
+        self.profile = UserProfile()
+        self.profile.user = self.user
+        self.profile.school = self.school
+        self.profile.birthdate = '1123-11-30'
+        self.profile.save()
+
         self.site = Site.test_objects.create_site('Site Name!')
 
     def test_correct_categories_rendered(self):
@@ -37,8 +49,7 @@ class MacroFormTestCase(TestCase):
                 'site_slug': self.site.site_slug
                 }), {}
         )
-        self.assertFormError(response, 'macro_form', 'school',
-                             'This field is required.')
+
         self.assertFalse(response.context['added'])
 
     def test_edit_view_with_good_data(self):
@@ -46,12 +57,10 @@ class MacroFormTestCase(TestCase):
         When the user submits a form with all required fields filled
         appropriately, the user should see a success message
         """
-        test_school = School.test_objects.create_school('test school')
 
         response = self.client.post(
             reverse('streamwebs:macroinvertebrate_edit', kwargs={
                 'site_slug': self.site.site_slug}), {
-                'school': test_school.id,
                 'date': '2016-07-11',
                 'time': '02:09',
                 'ampm': 'PM',

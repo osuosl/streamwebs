@@ -1,7 +1,7 @@
 from django.test import Client, TestCase
 from django.core.urlresolvers import reverse
-from django.contrib.auth.models import User
-from streamwebs.models import Site
+from django.contrib.auth.models import User, Group
+from streamwebs.models import Site, School, UserProfile
 
 
 class UpdateSiteTestCase(TestCase):
@@ -9,9 +9,20 @@ class UpdateSiteTestCase(TestCase):
         self.site = Site.test_objects.create_site('Creaky Creek')
 
         self.client = Client()
-        self.user = User.objects.create_user('john', 'john@example.com',
-                                             'johnpassword')
+
+        self.school = School.test_objects.create_school('Test School')
+
+        self.user = User.objects.create_user(
+            'john', 'john@example.com', 'johnpassword'
+        )
+        self.user.groups.add(Group.objects.get(name='org_admin'))
         self.client.login(username='john', password='johnpassword')
+
+        self.profile = UserProfile()
+        self.profile.user = self.user
+        self.profile.school = self.school
+        self.profile.birthdate = '1123-11-30'
+        self.profile.save()
 
     def test_prepopulate_siteform(self):
         """View should first contain form prepopulated w requested site info"""
