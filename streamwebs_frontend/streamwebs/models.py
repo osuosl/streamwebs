@@ -191,6 +191,7 @@ class UserProfile(models.Model):
     school = models.ForeignKey(School, on_delete=models.CASCADE)
     birthdate = models.DateField(validators=[validate_UserProfile_birthdate],
                                  verbose_name=_('birthdate'))
+    approved = models.BooleanField(default=False)
 
     def __unicode__(self):
         return self.user.username

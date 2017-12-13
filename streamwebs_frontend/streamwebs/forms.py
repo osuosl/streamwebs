@@ -46,6 +46,35 @@ class UserForm(forms.ModelForm):
         return self.data['password']
 
 
+class UserFormOptionalNameEmail(UserForm):
+    first_name = forms.CharField(
+        required=False,
+        widget=forms.TextInput()
+    )
+    last_name = forms.CharField(
+        required=False,
+        widget=forms.TextInput()
+    )
+    email = forms.CharField(required=False)
+
+
+class UserEditForm(forms.ModelForm):
+    first_name = forms.CharField(
+        required=False,
+        widget=forms.TextInput()
+    )
+    last_name = forms.CharField(
+        required=False,
+        widget=forms.TextInput()
+    )
+    email = forms.CharField(required=False)
+
+    class Meta:
+        model = User
+        # Add all the fields you want a user to change
+        fields = ('first_name', 'last_name', 'username', 'email')
+
+
 class UserEmailForm(forms.ModelForm):
     email = forms.CharField(required=True)
 

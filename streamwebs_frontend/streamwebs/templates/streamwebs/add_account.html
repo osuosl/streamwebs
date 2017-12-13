@@ -1,0 +1,87 @@
+{% extends 'streamwebs/base.html' %}
+
+{% load staticfiles %}
+{% load filters %}
+{% load i18n %}
+
+{% block title %}{{ site.site_name  }} Add Account- {% trans "Streamwebs" %}{% endblock %}
+
+{% block body_title %}{% endblock %}
+
+{% block content %}
+<style>
+  label {
+    color: black !important;
+  }
+</style>
+  <div class="container">
+    <h3 align="center" class="teal-text">
+        Add Account at {{school_data.name}}
+    </h3>
+
+    <br/><br/>
+    <form class="col s8 offset-s2" id='user_form' method='post' action="{% url 'streamwebs:add_account' school_data.id %}">
+      {% csrf_token %}
+
+      <div class="row">
+        <div class="input-field col s6">
+          <label for="{{ user_form.first_name.id_for_label }}">{% trans "First Name (Optional)" %}:</label>
+          {{ user_form.first_name }}
+          {{ user_form.first_name.errors }}
+        </div>
+
+
+        <div class="input-field col s6">
+          <label for="{{ user_form.last_name.id_for_label }}">{% trans "Last Name (Optional)" %}:</label>
+          {{ user_form.last_name }}
+          {{ user_form.last_name.errors }}
+        </div>
+      </div>
+  
+      <div class="input-field col s12">
+        <label
+            for="{{ user_form.username.id_for_label }}">{% trans "Username" %}:</label>
+        {{ user_form.username }}
+        {{ user_form.username.errors }}
+      </div>
+  
+      <div class="input-field col s12">
+        <label
+            for="{{ user_form.email.id_for_label }}">{% trans "Email (Optional)" %}:</label>
+        {{ user_form.email }}
+        {{ user_form.email.errors }}
+      </div>
+  
+      <div class="input-field col s12">
+        <label
+            for="{{ user_form.password.id_for_label }}">{% trans "Password" %}:</label>
+        {{ user_form.password }}
+        {{ user_form.password.errors }}
+      </div>
+  
+      <div class="input-field col s12">
+        <label
+            for="{{ user_form.password_check.id_for_label }}">{% trans "Verify Password" %}:</label>
+        {{ user_form.password_check }}
+        {{ user_form.password_check.errors }}
+      </div>
+     
+  
+      <div class="col s12">
+        <a href="{% url 'streamwebs:manage_accounts' school_data.id %}" class="btn wave-effect waves-light teal darken-3"
+          name="cancel" value="{% trans "Cancel" %}">
+          {% trans "Cancel" %}
+        </a>
+        <button class="btn wave-effect waves-light teal darken-3 right" type="submit"
+          name="submit" value="{% trans "Create Account" %}">
+          {% trans "Create Account" %}
+        </button>
+      </div>
+      
+  </form>
+
+  </div>
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}
