@@ -6,6 +6,15 @@ from django.core.wsgi import get_wsgi_application
 from django.contrib.auth.models import User, Group
 from streamwebs.models import School, UserProfile
 
+# Load the django instance
+from django.core.wsgi import get_wsgi_application
+from django.core.exceptions import ObjectDoesNotExist
+
+# Import models for editing
+from django.contrib.auth.models import User, Group
+from streamwebs.models import School, UserProfile
+
+
 # Check the input arguments to decided action.
 # DEFAULT: create
 action = ''
@@ -28,7 +37,6 @@ application = get_wsgi_application()
 
 
 # Define account details
-
 email = 'streamwebs@osuosl.org'
 birthdate = '1980-01-01'
 super_admin_name = 'superadmin'
@@ -91,7 +99,8 @@ if action == 'create':
                 oadmin_profile = UserProfile.objects.create(
                     user=oadmin_account,
                     school=school,
-                    birthdate=birthdate
+                    birthdate=birthdate,
+                    approved=True
                 )
                 oadmin_account.save()
                 print('\'' + org_admin_name + '\' user created' +
@@ -133,7 +142,8 @@ if action == 'create':
                 author_profile = UserProfile.objects.create(
                     user=author_account,
                     school=school,
-                    birthdate=birthdate
+                    birthdate=birthdate,
+                    approved=True
                 )
                 author_profile.save()
                 print('\'' + org_author_name + '\' user created,' +
@@ -194,8 +204,7 @@ elif action == 'school':
 elif action == 'delete':
 
     # Delete the super admin
-    super_admin_account = User.objects.filter(
-                                             username=super_admin_name).first()
+    super_admin_account = User.objects.filter(username=super_admin_name).first()
     if super_admin_account:
         super_admin_account.delete()
         print('\'' + super_admin_name + '\' user deleted')
