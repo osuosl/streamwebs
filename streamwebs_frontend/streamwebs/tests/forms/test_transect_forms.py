@@ -33,7 +33,6 @@ class RiparianTransectFormTestCase(TestCase):
 
     def setUp(self):
         self.expected_fields = (
-            'school',
             'date',
             'time',
             'ampm',
@@ -43,7 +42,6 @@ class RiparianTransectFormTestCase(TestCase):
         )
 
         self.required_fields = (
-            'school',
         )
 
     def test_form_fields_exist(self):
