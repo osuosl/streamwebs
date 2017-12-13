@@ -603,7 +603,12 @@ def macroinvertebrate_edit(request, site_slug):
     The view for the submission of a new macroinvertebrate data sheet.
     """
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
-    school = UserProfile.objects.filter(user=request.user).first().school
+    profile = UserProfile.objects.filter(user=request.user).first()
+    if profile == None:
+        return HttpResponseForbidden(
+            "Your account is not associated with a school")
+
+    school = profile.school
     added = False
     macro_form = MacroinvertebratesForm()
 
@@ -651,7 +656,12 @@ def macroinvertebrate_edit(request, site_slug):
 @permission_required('streamwebs.is_org_author', raise_exception=True)
 def riparian_aquatic_edit(request, site_slug):
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
-    school = UserProfile.objects.filter(user=request.user).first().school
+    profile = UserProfile.objects.filter(user=request.user).first()
+    if profile == None:
+        return HttpResponseForbidden(
+            "Your account is not associated with a school")
+
+    school = profile.school
     rip_aqua_form = RipAquaForm()
 
     if request.method == 'POST':
@@ -738,7 +748,12 @@ def riparian_transect_edit(request, site_slug):
     The view for the submission of a new riparian transect data sheet.
     """
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
-    school = UserProfile.objects.filter(user=request.user).first().school
+    profile = UserProfile.objects.filter(user=request.user).first()
+    if profile == None:
+        return HttpResponseForbidden(
+            "Your account is not associated with a school")
+
+    school = profile.school
     transect = RiparianTransect()
     TransectZoneInlineFormSet = inlineformset_factory(
         RiparianTransect, TransectZone, form=TransectZoneForm,
@@ -814,7 +829,12 @@ def canopy_cover_edit(request, site_slug):
     The view for the submission of a new canopy cover data sheet.
     """
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
-    school = UserProfile.objects.filter(user=request.user).first().school
+    profile = UserProfile.objects.filter(user=request.user).first()
+    if profile == None:
+        return HttpResponseForbidden(
+            "Your account is not associated with a school")
+
+    school = profile.school
     canopy_cover = Canopy_Cover()
     error = False
 
@@ -895,7 +915,12 @@ def camera_point_view(request, site_slug, cp_id):
 def add_camera_point(request, site_slug):
     """Add new CP to site + 3 PPs and respective photos"""
     site = Site.objects.get(site_slug=site_slug)
-    school = UserProfile.objects.filter(user=request.user).first().school
+    profile = UserProfile.objects.filter(user=request.user).first()
+    if profile == None:
+        return HttpResponseForbidden(
+            "Your account is not associated with a school")
+
+    school = profile.school
     camera = CameraPoint()
 
     PhotoPointInlineFormset = inlineformset_factory(  # photo point formset (3)
@@ -1040,7 +1065,6 @@ def view_pp_and_add_img(request, site_slug, cp_id, pp_id):
 def add_photo_point(request, site_slug, cp_id):
     """Add new PP to existing CP + respective photo(s)"""
     site = Site.objects.get(site_slug=site_slug)
-    #school = UserProfile.objects.filter(user=request.user).first().school
     cp = CameraPoint.objects.get(id=cp_id)
     photo_point = PhotoPoint()
     photo_point.camera_point = cp
@@ -1114,7 +1138,12 @@ def water_quality(request, site_slug, data_id):
 def water_quality_edit(request, site_slug):
     """ Add a new water quality sample """
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
-    school = UserProfile.objects.filter(user=request.user).first().school
+    profile = UserProfile.objects.filter(user=request.user).first()
+    if profile == None:
+        return HttpResponseForbidden(
+            "Your account is not associated with a school")
+
+    school = profile.school
     WQInlineFormSet = inlineformset_factory(
         Water_Quality, WQ_Sample,
         form=WQSampleForm,
@@ -1187,7 +1216,12 @@ def soil_survey_edit(request, site_slug):
     The view for the submistion of a new Soil Survey (data sheet)
     """
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
-    school = UserProfile.objects.filter(user=request.user).first().school
+    profile = UserProfile.objects.filter(user=request.user).first()
+    if profile == None:
+        return HttpResponseForbidden(
+            "Your account is not associated with a school")
+
+    school = profile.school
     soil_form = SoilSurveyForm()
 
     if request.method == 'POST':
