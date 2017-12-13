@@ -22,7 +22,7 @@ class IndexViewTest(TestCase):
             'super@example.com',
             'superpassword'
         )
-        admins = Group.objects.get(name='admin')
+        admins = Group.objects.get(name='org_admin')
         self.admin.groups.add(admins)
 
     def test_index(self):
@@ -58,7 +58,7 @@ class IndexViewTest(TestCase):
         self.assertNotContains(response, 'Create Account')
         # can see stats, can't see users
         self.assertNotContains(response, 'Manage Users')
-        self.assertContains(response, 'View Site Statistics')
+        self.assertNotContains(response, 'View Site Statistics')
 
         self.client.logout()
 
