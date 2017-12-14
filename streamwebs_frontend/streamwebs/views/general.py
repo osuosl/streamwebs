@@ -54,7 +54,8 @@ def about(request):
 
 def faq(request):
     return render(request, 'streamwebs/faq.html', {})
-
+def confirm_registration(request):
+    return render(request, 'streamwebs/confirm_register.html', {})
 
 @login_required
 def create_school(request):
