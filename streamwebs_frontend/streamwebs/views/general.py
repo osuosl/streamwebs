@@ -1812,34 +1812,71 @@ def var_debug(request, value):
         'value': value
     })
 
+@login_required
+@permission_required('streamwebs.is_super_admin', raise_exception=True)
 def new_org_request(request, school_id):
     school_data = School.objects.get(id=school_id)
     profiles = UserProfile.objects.filter(school=school_data)
     profile = profiles.first()
 
-    requested_permission_level = "Editor~"
+    if school_data == None:
+        return HttpResponseForbidden('Bad stuff')
 
-    # return HttpResponseForbidden(str(profile))
-    
+    user = profile.user
+
+    requested_permission_level = ""
+
+    if len(user.groups.filter(name = "org_admin").all()) > 0:
+        requested_permission_level = "Editor"
+    else:
+        requested_permission_level = "Contributor"       
+
     if request.method == 'POST':
         checked_box_editor = request.POST.getlist('editor_permission')
         checked_box_contributor = request.POST.getlist('contributor_permission')
 
+        org_contributor = Group.objects.get(name='org_author')
+        org_editor = Group.objects.get(name='org_admin')
 
-        # Approve or Deny user for editor permission
-        if len(checked_box_editor) > 0:
-            return HttpResponseForbidden(str(checked_box_editor))
+        # Deny user
+        if 'btn_deny' in request.POST:            
+            user.delete()
+            profile.delete()
+            school_data.delete()
+            # Redirect to home
+            return HttpResponseRedirect('/')
+            
+        elif 'btn_approve' in request.POST:
+            # Approved for editor permission                               
+            if len(checked_box_editor) > 0:
+                school_data.active = True   
+                user.groups.clear()
+                user.groups.add(org_editor)
+                profile.approved = True
+                school_data.save()
+                profile.save()
+                return HttpResponseRedirect('/schools/%i/'
+                                    % school_data.id)
+                               
+                
+            # Approved for contributor permission
+            elif len(checked_box_contributor) > 0:  
+                school_data.active = True      
+                user.groups.clear()                                               
+                user.groups.add(org_contributor)
+                profile.approved = True      
+                school_data.save()
+                profile.save()    
+                                
+                return HttpResponseRedirect('/schools/%i/'
+                                    % school_data.id)
 
-        # Approve or Deny user for contributor_permission        
-        elif len(checked_box_contributor) > 0:
-            return HttpResponseForbidden(str(checked_box_contributor))
 
 
-    requested_permission_level = "Editor~"
     
 
     return render(request, 'streamwebs/new_org_request.html', {
         'school_data': school_data,
-        'user': profile.user,
+        'user': user,
         'requested_permission_level': str(requested_permission_level)
-    })
+            })
