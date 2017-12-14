@@ -1814,3 +1814,35 @@ def var_debug(request, value):
     return render(request, 'streamwebs/var_debug.html', {
         'value': value
     })
+
+def new_org_request(request, school_id):
+    school_data = School.objects.get(id=school_id)
+    profiles = UserProfile.objects.filter(school=school_data)
+    profile = profiles.first()
+
+    requested_permission_level = "Editor~"
+
+    # return HttpResponseForbidden(str(profile))
+    
+    if request.method == 'POST':
+        checked_box_editor = request.POST.getlist('editor_permission')
+        checked_box_contributor = request.POST.getlist('contributor_permission')
+
+
+        # Approve or Deny user for editor permission
+        if len(checked_box_editor) > 0:
+            return HttpResponseForbidden(str(checked_box_editor))
+
+        # Approve or Deny user for contributor_permission        
+        elif len(checked_box_contributor) > 0:
+            return HttpResponseForbidden(str(checked_box_contributor))
+
+
+    requested_permission_level = "Editor~"
+    
+
+    return render(request, 'streamwebs/new_org_request.html', {
+        'school_data': school_data,
+        'user': profile.user,
+        'requested_permission_level': str(requested_permission_level)
+    })

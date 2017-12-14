@@ -1,0 +1,120 @@
+{% extends 'streamwebs/base.html' %}
+
+{% load staticfiles %}
+{% load filters %}
+{% load i18n %}
+
+{% block title %}{{ site.site_name  }} New Organization Request - {% trans "Streamwebs" %}{% endblock %}
+
+{% block body_title %}{% endblock %}
+
+{% block content %}
+<script>
+function uncheck_permission_level_box(checkbox) {
+    var checkboxes = document.getElementById("mutually_exclusive_checkboxes")
+                             .getElementsByTagName('input')
+                     console.log("DOING IT")        
+    for (i = 0; i < checkboxes.length; i++) { 
+      if (checkboxes[i].type == "checkbox" && checkboxes[i] != checkbox) {
+        checkboxes[i].checked = false;
+      }
+    }
+}
+
+</script>
+
+<style>
+  label {
+    color: black !important;
+  }
+</style>
+  <div class="container">
+    <div class="row center-align">
+        <h3 class="teal-text">
+          New User + Organization Approval
+        </h3>
+    </div>
+    
+    <div class="row">
+      <div class="col s6">
+        <h4>Organization</h4>
+        <h5>{% trans "Name" %}:</h5>
+        <p>
+          {{school_data.name}}
+        </p>
+        <!-- School details: -->
+        <h5>{% trans "Address" %}:</h5>
+        <p>
+          {{ school_data.address }}
+          <br/>
+          {{ school_data.city }},  {{ school_data.province }}
+          <br/>
+          {{ school_data.zipcode }}
+        </p>
+      </div>
+      <div class="col s6">
+        <h4>Account</h4>
+        <div class="row">
+          <div class="col s6">
+              <h5>Name:</h5>
+              <p>{{ user.get_full_name }}</p>
+              <h5>Username:</h5>
+              <p>{{ user.get_username }}</p>
+          </div>
+          <div class="col s6">
+              <h5>Email:</h5>
+              <p>{{ user.email}}</p>         
+          </div>
+        </div>
+        <h5>Requested Permission Level:</h5>
+        <p>{{ requested_permission_level }}</p>
+      </div>
+    </div>
+    <br/>
+
+    <form class="col s8 offset-s2" id='new_org_request_form' method='post'
+          action="{% url 'streamwebs:new_org_request' school_data.id %}"> 
+        {% csrf_token %}
+  
+        <div class="row valign-wrapper">
+            <div class="col s6 valign-wrapper">
+                <h4>Approved Permission:</h4>
+            </div>
+            <div id="mutually_exclusive_checkboxes" class="col s6">
+                <br/>
+                <div class="row center valign-wrapper">
+                <div class="col s6">
+                    <input type="checkbox"/ name="editor_permission"
+                           id="checkbox_editor_perm"
+                           onchange="uncheck_permission_level_box(this)">
+                    <label for="checkbox_editor_perm">Editor</label>
+                </div>
+                <div class="col s6">
+                    <input type="checkbox"/ name="contributor_permission"
+                           id="checkbox_contributor_perm"
+                           onchange="uncheck_permission_level_box(this)">
+                    <label for="checkbox_contributor_perm">Contributor</label>
+                </div>
+                </div>
+            </div>
+            </div>
+            
+            <br/>
+            <br/>
+
+            <div class="row center-align">
+            <div class="col s12">
+                <button href="/" id="back" type="submit"
+                   class="btn wave-effects wave-light teal darken-3"
+                   style="margin-right: 30px;">
+                   {% trans "Deny" %}
+                </button>
+                <button href="/" id="back" type="submit"
+                   class="btn wave-effects wave-light teal darken-3">
+                   {% trans "Approve" %}
+                </button>
+            </div>
+        </div>
+    </form>
+  </div>
+{% endblock %}
