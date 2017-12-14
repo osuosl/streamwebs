@@ -19,12 +19,12 @@ from streamwebs.forms import (
     PhotoPointImageForm, PhotoPointForm, CameraPointForm, WQSampleForm,
     WQForm, SiteForm, Canopy_Cover_Form, SoilSurveyForm, StatisticsForm,
     TransectZoneForm, BaseZoneInlineFormSet, ResourceForm, AdminPromotionForm,
-    UserEmailForm, UserPasswordForm, SchoolForm, RipAquaForm)
+    UserEmailForm, UserPasswordForm, SchoolForm, RipAquaForm, TestForm)
 
 from streamwebs.models import (
     Macroinvertebrates, Site, Water_Quality, WQ_Sample, RiparianTransect,
     TransectZone, Canopy_Cover, CameraPoint, PhotoPoint,
-    PhotoPointImage, Soil_Survey, Resource, School, RipAquaticSurvey)
+    PhotoPointImage, Soil_Survey, Resource, School, RipAquaticSurvey, Test)
 
 import json
 import copy
@@ -53,6 +53,22 @@ def faq(request):
     return render(request, 'streamwebs/faq.html', {})
 
 
+def test(request):
+    test_form = TestForm(use_required_attribute=False) #This stops django from not letting us submit blank forms
+    if request.method == 'POST':
+        test_form = TestForm(data=request.POST, use_required_attribute=False) #This stops django from not letting us submit blank forms
+        if test_form.is_valid():
+            test = test_form.save()
+            print("ITS VALID")
+            messages.success(request, _('you freaking did it'))
+            return render(request, 'streamwebs/index.html')
+        else:
+            test_form = TestForm(data=request.POST,use_required_attribute=False)
+    return render(request, 'streamwebs/test.html', {
+        'test_form': test_form
+    })
+
+
 def create_school(request):
     if request.method == 'POST':
         if not request.POST._mutable:
@@ -71,7 +87,8 @@ def create_school(request):
         school_form = SchoolForm()
 
     return render(request, 'streamwebs/add_school.html', {
-        'school_form': school_form
+        'school_form': school_form,
+        'errors': errors
     })
 
 

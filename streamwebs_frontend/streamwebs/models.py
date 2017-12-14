@@ -1380,3 +1380,12 @@ class RipAquaticSurvey(models.Model):
     notes = models.TextField(blank=True, verbose_name=_("Field notes"))
     objects = models.Manager()
     test_objects = RipAquaticSurveyManager()
+
+
+class Test(models.Model): #simple model to test with,
+    name    = models.CharField(max_length=255)
+    email   = models.EmailField(max_length=255)
+    address = models.CharField(max_length=255)
+    city    = models.CharField(max_length=255)
+    state   = models.CharField(max_length=255)
+    age     = models.PositiveIntegerField(default=None)

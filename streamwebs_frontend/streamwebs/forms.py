@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from streamwebs.models import UserProfile, WQ_Sample, Water_Quality, \
     Macroinvertebrates, Canopy_Cover, TransectZone, \
     RiparianTransect, PhotoPointImage, PhotoPoint, CameraPoint, Site, School, \
-    Soil_Survey, Resource, RipAquaticSurvey
+    Soil_Survey, Resource, RipAquaticSurvey, Test
 from django.contrib.auth.models import User
 from django import forms
 from django.forms import BaseInlineFormSet
@@ -482,3 +482,25 @@ class RipAquaForm(forms.ModelForm):
             'wildlife_comments4', 'wildlife_comments5', 'wildlife_comments6',
             'time', 'ampm', 'stream_length', 'notes'
             )
+
+
+class TestForm(forms.ModelForm):
+    class Meta:
+        model = Test
+        fields = [
+        'name', 'email', 'address', 'state', 'city', 'age'
+        ]
+        widgets = {
+        'name': forms.Textarea(attrs={'class': 'materialize-textarea'}),
+        'email': forms.Textarea(attrs={'class': 'materialize-textarea'}),
+        'state': forms.Textarea(attrs={'class': 'materialize-textarea'}),
+        'address': forms.Textarea(attrs={'class': 'materialize-textarea'}),
+        'city': forms.Textarea(attrs={'class': 'materialize-textarea'}),
+        'age': forms.Textarea(attrs={'class': 'materialize-textarea'})
+        }
+    def clean(self): # Overriding clean method allows us to check for specific errors that are otherwise unchecked
+        cleaned_data = super(TestForm, self).clean() # Does normal cleaning function
+        name = cleaned_data.get("name") # gets cleaned name data, allowing us to further validate
+        if name and len(name) > 10:  # here we check for length
+            msg="Why is your name so long. I dont like it" # if its too long, we add an error message to that field
+            self.add_error('name', msg)
