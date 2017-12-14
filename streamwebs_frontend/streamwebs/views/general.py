@@ -1580,11 +1580,11 @@ def schools(request):
 
 def school_detail(request, school_id):
     school_data = School.objects.get(id=school_id)
-
+    is_in_org = False
     if request.user.is_authenticated():
         if request.user.has_perm('streamwebs.is_super_admin'):
             is_in_org = True
-        else:
+        elif request.user.has_perm('streamwebs.is_org_admin'):
             user_profile = UserProfile.objects.filter(user=request.user).first()
             if user_profile != None:
                 is_in_org = (user_profile.school.id == school_data.id)
