@@ -8,6 +8,7 @@ urlpatterns = [
     url(r'^faq/$', views.faq, name='faq'),
     url(r'^about/$', views.about, name='about'),
 
+
     url(r'^sites/new/$', views.create_site, name='create_site'),
 
     url(r'^sites/$', views.sites, name='sites'),
@@ -107,8 +108,11 @@ urlpatterns = [
 
     url(r'^register/$', views.register, name='register'),
 
-    url(r'^new_org_request/(?P<school_id>[0-9]+)/$', views.new_org_request, name='new_org_request'),
+    url(r'^new_org_request/(?P<school_id>[0-9]+)/$', views.new_org_request,
+         name='new_org_request'),
 
+    url(r'^register/confirm', views.confirm_registration,
+        name='confirm_registration'),
     url(r'^account/$', views.account, name='account'),
     url(r'^account/update_email/$', views.update_email, name='update_email'),
     url(r'^account/update_password/$', views.update_password,
