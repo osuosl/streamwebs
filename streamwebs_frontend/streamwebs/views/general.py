@@ -1574,11 +1574,7 @@ def school_detail(request, school_id):
         if request.user.has_perm('streamwebs.is_super_admin'):
             is_in_org = True
         else:
-            user_profile = UserProfile.objects.filter(user=request.user).first()
-            if user_profile != None:
-                is_in_org = (user_profile.school.id == school_data.id)
-            else:
-                is_in_org = False
+            is_in_org = False
     else:
         is_in_org = False
 
