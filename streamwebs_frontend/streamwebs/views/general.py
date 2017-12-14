@@ -1846,11 +1846,6 @@ def new_org_request(request, school_id):
     else:
         requested_permission_level = "Contributor"
 
-<<<<<<< HEAD
-    # return HttpResponseForbidden(str(profile))
-
-=======
->>>>>>> refs/remotes/origin/feat/notifications_and_login
     if request.method == 'POST':
         checked_box_editor = request.POST.getlist('editor_permission')
         checked_box_contributor = request.POST.getlist('contributor_permission')
