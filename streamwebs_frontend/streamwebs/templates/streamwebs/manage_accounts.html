@@ -11,7 +11,7 @@
 {% block content %}
 <style>
   label {
-    color: black; !important
+    color: black !important;
   }
   .center-content-horizontal{
     text-align: center;
@@ -202,6 +202,7 @@
         </thead>
         <tbody id="contributor_rows">
           {% for user_profile in contributor_users %}
+          text-align: center;
             <tr>
               <td>{{ user_profile.user.username }}</td>
               <td>{{ user_profile.user.first_name }} {{ user_profile.user.last_name }}</td>

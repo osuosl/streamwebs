@@ -12,8 +12,7 @@
 <script>
 function uncheck_permission_level_box(checkbox) {
     var checkboxes = document.getElementById("mutually_exclusive_checkboxes")
-                             .getElementsByTagName('input')
-                     console.log("DOING IT")        
+                             .getElementsByTagName('input')  
     for (i = 0; i < checkboxes.length; i++) { 
       if (checkboxes[i].type == "checkbox" && checkboxes[i] != checkbox) {
         checkboxes[i].checked = false;
@@ -104,12 +103,12 @@ function uncheck_permission_level_box(checkbox) {
 
             <div class="row center-align">
             <div class="col s12">
-                <button href="/" id="back" type="submit"
+                <button href="/" id="back" name="btn_deny" type="submit"
                    class="btn wave-effects wave-light teal darken-3"
                    style="margin-right: 30px;">
                    {% trans "Deny" %}
                 </button>
-                <button href="/" id="back" type="submit"
+                <button href="/" id="back" name="btn_approve" type="submit"
                    class="btn wave-effects wave-light teal darken-3">
                    {% trans "Approve" %}
                 </button>
