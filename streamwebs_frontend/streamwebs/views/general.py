@@ -466,7 +466,18 @@ def user_login(request):
         # clicked "Login", or to home if they accessed login directly from the
         # url
         if user:
-            login(request, user)
+            if user.has_perm('streamwebs.is_super_admin'):
+                login(request, user)
+            else:
+                user_profile = UserProfile.objects.filter(user=user).first()
+                if not user_profile.approved:
+                    messages.error(request, _('Sorry, you have not' +
+                        " been approved by an administrator"))
+                    return redirect(reverse(
+                                'streamwebs:login') + '?next=' + redirect_to)
+                else:
+                    login(request, user)
+
             if redirect_to != '':
                 return HttpResponseRedirect(redirect_to)
             else:
@@ -1824,7 +1835,7 @@ def new_org_request(request, school_id):
     requested_permission_level = "Editor~"
 
     # return HttpResponseForbidden(str(profile))
-    
+
     if request.method == 'POST':
         checked_box_editor = request.POST.getlist('editor_permission')
         checked_box_contributor = request.POST.getlist('contributor_permission')
@@ -1834,13 +1845,13 @@ def new_org_request(request, school_id):
         if len(checked_box_editor) > 0:
             return HttpResponseForbidden(str(checked_box_editor))
 
-        # Approve or Deny user for contributor_permission        
+        # Approve or Deny user for contributor_permission
         elif len(checked_box_contributor) > 0:
             return HttpResponseForbidden(str(checked_box_contributor))
 
 
     requested_permission_level = "Editor~"
-    
+
 
     return render(request, 'streamwebs/new_org_request.html', {
         'school_data': school_data,
