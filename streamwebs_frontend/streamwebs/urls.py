@@ -107,6 +107,10 @@ urlpatterns = [
     url(r'^user-promotion/$', views.admin_user_promotion, name='user_promo'),
 
     url(r'^register/$', views.register, name='register'),
+
+    url(r'^new_org_request/(?P<school_id>[0-9]+)/$', views.new_org_request,
+         name='new_org_request'),
+
     url(r'^register/confirm', views.confirm_registration,
         name='confirm_registration'),
     url(r'^account/$', views.account, name='account'),
