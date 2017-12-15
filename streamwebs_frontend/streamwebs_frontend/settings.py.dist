@@ -57,8 +57,8 @@ EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
 EMAIL_HOST_USER = ''
 EMAIL_HOST_PASSWORD = ''
-DEFAULT_FROM_EMAIL = 'info@streamwebs.org'
-DEFAULT_SUPER_ADMIN_EMAILS = ['streamwebs@osuosl.com']
+DEFAULT_FROM_EMAIL = 'testing@streamwebs.org'
+DEFAULT_SUPER_ADMIN_EMAILS = ['testing@streamwebs.org']
 
 # Application definition
 INSTALLED_APPS = [

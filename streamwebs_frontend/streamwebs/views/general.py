@@ -1745,7 +1745,7 @@ def add_account(request, school_id):
         user_form = UserFormOptionalNameEmail(data=request.POST)
 
         if user_form.is_valid():
-            user = user_form.save(commit=False)
+            user = user_form.save()
             user.set_password(user.password)
 
             org_contributor = Group.objects.get(name='org_author')
