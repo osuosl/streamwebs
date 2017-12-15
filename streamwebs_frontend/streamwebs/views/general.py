@@ -1529,6 +1529,18 @@ def organization_required(func):
         return func(request, *args, **kwargs)
     return wrapper
 
+
+# Decorator function that requires the school to be active
+def organization_approved(func):
+    def wrapper(request, *args, **kwargs):
+        school_data = School.objects.get(id=kwargs['school_id'])
+
+        if not school_data.active:
+            return HttpResponseRedirect('/schools/%i/' % school_data.id)
+        return func(request, *args, **kwargs)
+    return wrapper
+
+
 @login_required
 @permission_required('streamwebs.is_org_admin', raise_exception=True)
 # Redirect to the manage accounts page, based on user's school
@@ -1544,6 +1556,7 @@ def get_manage_accounts(request, user_id):
 @login_required
 @permission_required('streamwebs.is_org_admin', raise_exception=True)
 @organization_required
+@organization_approved
 def manage_accounts(request, school_id):
     school_data = School.objects.get(id=school_id)
 
