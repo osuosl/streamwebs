@@ -104,7 +104,6 @@ urlpatterns = [
         views.export_soil, name='export_soil'),
 
     url(r'^statistics/$', views.admin_site_statistics, name='stats'),
-    url(r'^user-promotion/$', views.admin_user_promotion, name='user_promo'),
 
     url(r'^register/$', views.register, name='register'),
 
@@ -132,7 +131,6 @@ urlpatterns = [
     url(r'^schools/$', views.schools, name='schools'),
     url(r'^schools/(?P<school_id>[0-9]+)/$',
         views.school_detail, name='school_detail'),
-    url(r'^schools/add', views.create_school, name='create_school'),
     url(r'^get_manage_accounts/(?P<user_id>[0-9]+)$',
         views.get_manage_accounts, name='get_manage_accounts'),
     url(r'^schools/(?P<school_id>[0-9]+)/manage_accounts/$',

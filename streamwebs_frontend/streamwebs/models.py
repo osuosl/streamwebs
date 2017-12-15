@@ -143,7 +143,7 @@ class School(models.Model):
     city = models.CharField(max_length=250)
     province = models.CharField(max_length=250)
     zipcode = models.CharField(max_length=250)
-    active = models.BooleanField(default=True)
+    active = models.BooleanField(default=False)
 
     created = models.DateTimeField(default=timezone.now)
     modified = models.DateTimeField(default=timezone.now)

@@ -46,7 +46,7 @@ class UserForm(forms.ModelForm):
         return self.data['password']
 
 
-class UserFormOptionalNameEmail(UserForm):
+class UserFormOptionalNameEmail(forms.ModelForm):
     first_name = forms.CharField(
         required=False,
         widget=forms.TextInput()
@@ -56,6 +56,24 @@ class UserFormOptionalNameEmail(UserForm):
         widget=forms.TextInput()
     )
     email = forms.CharField(required=False)
+
+    password = forms.CharField(
+        widget=forms.PasswordInput(),
+        label=_('Password'))
+
+    password_check = forms.CharField(
+        widget=forms.PasswordInput(),
+        label='Repeat your password')
+
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'password', 'first_name', 'last_name')
+        labels = {
+            'username': _('Username'),
+            'email': _('Email'),
+            'password': _('Password:'),
+            'first_name': _('First Name'),
+        }
 
 
 class UserEditForm(forms.ModelForm):
@@ -109,15 +127,12 @@ class UserPasswordForm(forms.ModelForm):
 
 class UserProfileForm(forms.ModelForm):
     captcha = ReCaptchaField()
-    birthdate = forms.DateField(
-        widget=forms.DateInput(attrs={'class': 'datepicker'}),
-    )
     school = forms.ModelChoiceField(
         queryset=School.objects.all().order_by('name'), empty_label=None)
 
     class Meta:
         model = UserProfile
-        fields = ('school', 'birthdate')
+        fields = ['school']
 
 
 class MacroinvertebratesForm(forms.ModelForm):

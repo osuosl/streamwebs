@@ -57,28 +57,6 @@ def faq(request):
 def confirm_registration(request):
     return render(request, 'streamwebs/confirm_register.html', {})
 
-@login_required
-def create_school(request):
-    if request.method == 'POST':
-        if not request.POST._mutable:
-            request.POST._mutable = True
-        school_form = SchoolForm(data=request.POST)
-
-        if school_form.is_valid():
-            school = school_form.save()
-            school.province = (school.province + ', United States')
-            school.save()
-            messages.success(request,
-                             _('You have successfully added a new school'))
-            next = request.POST.get('next', '/')
-            return HttpResponseRedirect(next)
-    else:
-        school_form = SchoolForm()
-
-    return render(request, 'streamwebs/add_school.html', {
-        'school_form': school_form
-    })
-
 
 @login_required
 @permission_required('streamwebs.is_org_admin', raise_exception=True)
@@ -366,28 +344,61 @@ def deactivate_site(request, site_slug):
 
 
 def register(request):
-    registered = False
-
     if request.method == 'POST':
         user_form = UserForm(data=request.POST)
         profile_form = UserProfileForm(data=request.POST)
+        school_form = SchoolForm(data=request.POST)
 
-        if user_form.is_valid() and profile_form.is_valid():
-            user = user_form.save()
-            user.set_password(user.password)
-            user.save()
-            profile = profile_form.save(commit=False)
-            profile.user = user
-            profile.save()
-            registered = True
+        # Permissions
+        perm_editor = request.POST.getlist('perm_editor')
+        perm_contributor = request.POST.getlist('perm_contributor')
+
+        # Permissions must be selected
+        if len(perm_editor) or len(perm_contributor):
+            # User form must always be valid
+            if user_form.is_valid() and profile_form.is_valid():            
+                user = user_form.save()
+                user.set_password(user.password)
+                user.save()
+
+                profile = profile_form.save(commit=False)
+                profile.user = user
+                # TODO: Remove when birthdate is removed from DB
+                profile.birthdate = "1970-01-01"
+
+                org_contributor = Group.objects.get(name='org_author')
+                org_editor = Group.objects.get(name='org_admin')
+                
+                if len(perm_editor):
+                    user.groups.add(org_editor)
+                elif len(perm_contributor):
+                    user.groups.add(org_contributor)
+
+                # If school form is valid, then the user is creating a new school
+                if school_form.is_valid():
+                    school = school_form.save()
+                    school.province = (school.province + ', United States')
+                    profile.school_id = school.id
+                
+                profile.save()
+                
+                return HttpResponseRedirect('/register/confirm')
+            else:
+                return HttpResponseForbidden('user_form:' + str(user_form.errors) + 
+            ", profile_form:" + str(profile_form.errors) + ", school_form:" + str(school_form.errors))
+
+        else:
+            return HttpResponseForbidden('No CheckBox Checked')
     else:
         user_form = UserForm()
         profile_form = UserProfileForm()
-
+        school_form = SchoolForm()
+    
     return render(request, 'streamwebs/register.html', {
         'user_form': user_form,
         'profile_form': profile_form,
-        'registered': registered})
+        'school_form': school_form
+    })
 
 
 @login_required
@@ -1465,116 +1476,9 @@ def resources_upload(request):
     )
 
 
-@login_required
-@permission_required('streamwebs.is_super_admin', raise_exception=True)
-def admin_user_promotion(request):
-    admins = Group.objects.get(name='admin')
-    admin_perms = Permission.objects.filter(group=admins)
-    can_view_stats = Permission.objects.get(codename='can_view_stats')
-    can_upload_resources = Permission.objects.get(
-        codename='can_upload_resources')
-    msgs = []    # list to hold custom flash messages
-
-    promo_form = AdminPromotionForm()
-
-    if request.method == 'POST':
-        promo_form = AdminPromotionForm(request.POST)
-
-        if promo_form.is_valid():
-            action = promo_form.cleaned_data['perms']
-            selected_users = promo_form.cleaned_data['users']
-
-            for user in selected_users:
-                if action == 'add_admin':
-                    user.groups.add(admins)
-                    msgs.append(
-                        _('%s added to the Admin group.' % user.username))
-
-                elif action == 'del_admin':
-                    user.groups.remove(admins)
-                    msgs.append(
-                        _('%s removed from the Admin group.' % user.username))
-
-                elif action == 'add_stats':
-                    user.user_permissions.add(can_view_stats)
-                    msgs.append(
-                        _('%s granted permission to view Statistics.'
-                          % user.username))
-
-                elif action == 'del_stats':
-                    # if they're an admin,
-                    if user.groups.filter(name='admin').exists():
-                        # remove them from the admins group
-                        user.groups.remove(admins)
-                        # add back all perms admins enjoy, EXCLUDING stats
-                        admin_perms = Permission.objects.filter(group=admins)
-                        for perm in admin_perms:
-                            if perm.codename != 'can_view_stats':
-                                user.user_permissions.add(perm)
-                    # otherwise if they're a regular user,
-                    else:
-                        user.user_permissions.remove(can_view_stats)
-
-                    msgs.append(
-                        _('%s was revoked the permission to view Statistics.'
-                          % user.username))
-
-                elif action == 'add_upload':
-                    user.user_permissions.add(can_upload_resources)
-                    msgs.append(
-                        _('%s was granted permission to upload resources.'
-                          % user.username))
-
-                elif action == 'del_upload':
-                    if user.groups.filter(name='admin').exists():
-                        user.groups.remove(admins)
-                        for perm in admin_perms:
-                            if perm.codename != 'can_upload_resources':
-                                user.user_permissions.add(perm)
-                    else:
-                        user.user_permissions.remove(can_upload_resources)
-
-                    msgs.append(
-                        _('%s was revoked the permission to upload resources.'
-                          % user.username))
-
-    all_users = User.objects.all()
-    user_info = dict()
-    for u in all_users:
-        user_info[u] = {
-            'is staff': u.is_staff,
-            'is an admin': u.groups.filter(name='admin').exists(),
-            'can view stats': u.has_perm('streamwebs.can_view_stats'),
-            'can upload resources': u.has_perm(
-                'streamwebs.can_upload_resources'),
-            'can manage other users': u.has_perm(
-                'streamwebs.can_promote_users')
-        }
-
-    paginator = Paginator(list(all_users), 10)  # Show 10 users per page
-    page = request.GET.get('page')
-
-    try:
-        page_of_users = paginator.page(page)
-    except PageNotAnInteger:
-        page_of_users = paginator.page(1)
-    except EmptyPage:
-        page_of_users = paginator.page(paginator.num_pages)
-
-    return render(
-        request, 'streamwebs/admin/user_promo.html', {
-            'promo_form': promo_form,
-            'page_of_users': page_of_users,
-            'msgs': msgs,
-            'all_users': all_users,
-            'user_info': user_info,
-        }
-    )
-
-
 def schools(request):
     return render(request, 'streamwebs/schools.html', {
-        'schools': School.objects.all().order_by('name')
+        'schools': School.objects.filter(active=True).all().order_by('name')
     })
 
 
@@ -1708,7 +1612,7 @@ def manage_accounts(request, school_id):
                 user = User.objects.get(id=i)
 
                 if user.id != request.user.id:
-                    user.groups.remove(org_editor)
+                    user.groups.clear()
                     user.groups.add(org_contributor)
                     user.save()
 
@@ -1734,7 +1638,7 @@ def manage_accounts(request, school_id):
                 user = User.objects.get(id=i)
                 profile = UserProfile.objects.get(user=user)
                 if profile != None:
-                    user.groups.remove(org_contributor)
+                    user.groups.clear()
                     user.groups.add(org_editor)
                     user.save()
 
