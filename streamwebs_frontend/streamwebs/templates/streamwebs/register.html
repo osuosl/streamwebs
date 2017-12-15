@@ -120,34 +120,8 @@
         </div>
       </div>
 
-
-      <!-- Permissions -->
-      <br>
-      <br>
-      <div class="row">
-          <div class="col s8 offset-s2 center" id="mutually_exclusive_checkboxes">
-            <div class="row">
-              <div class="col s6">
-                <input type="checkbox" id="perm_editor" name="perm_editor"
-                        onchange="uncheck_perms(this)"/>
-                <label for="perm_editor">Editor</label>
-              </div>
-              <div class="col s6">
-                <input type="checkbox" id="perm_contributor" name="perm_contributor"
-                        onchange="uncheck_perms(this)"/>
-                <label for="perm_contributor">Contributor</label>
-              </div>
-            </div>
-          </div>
-        </div>
-      
       <!-- Username, email, password -->
       <div class="row">
-        <br/>
-        <div class="col s8 offset-s2">
-          <strong class="normal">{% trans "Create an account." %}</strong>
-        </div>
-
         <!-- First name -->
         <div class="input-field col s4 offset-s2">
           <label for="{{ user_form.first_name.id_for_label }}">

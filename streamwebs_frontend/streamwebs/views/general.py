@@ -349,43 +349,30 @@ def register(request):
         profile_form = UserProfileForm(data=request.POST)
         school_form = SchoolForm(data=request.POST)
 
-        # Permissions
-        perm_editor = request.POST.getlist('perm_editor')
-        perm_contributor = request.POST.getlist('perm_contributor')
+        # User form must always be valid
+        if user_form.is_valid() and profile_form.is_valid():            
+            user = user_form.save()
+            user.set_password(user.password)
 
-        # Permissions must be selected
-        if len(perm_editor) or len(perm_contributor):
-            # User form must always be valid
-            if user_form.is_valid() and profile_form.is_valid():            
-                user = user_form.save()
-                user.set_password(user.password)
-                user.save()
-
-                profile = profile_form.save(commit=False)
-                profile.user = user
-                # TODO: Remove when birthdate is removed from DB
-                profile.birthdate = "1970-01-01"
-
-                org_contributor = Group.objects.get(name='org_author')
+            profile = profile_form.save(commit=False)
+            profile.user = user
+            # TODO: Remove when birthdate is removed from DB
+            profile.birthdate = "1970-01-01"
+            
+            # If school form is valid, then the user is creating a new school
+            if school_form.is_valid():
+                school = school_form.save()
+                school.province = (school.province + ', United States')
+                profile.school_id = school.id
+                # Permissions
                 org_editor = Group.objects.get(name='org_admin')
-                
-                if len(perm_editor):
-                    user.groups.add(org_editor)
-                elif len(perm_contributor):
-                    user.groups.add(org_contributor)
+                user.groups.add(org_editor)
 
-                # If school form is valid, then the user is creating a new school
-                if school_form.is_valid():
-                    school = school_form.save()
-                    school.province = (school.province + ', United States')
-                    profile.school_id = school.id
-                
-                profile.save()
-                
-                return HttpResponseRedirect('/register/confirm')
+            user.save()
+            profile.save()
+            
+            return HttpResponseRedirect('/register/confirm')
 
-        else:
-            return HttpResponseForbidden('You must select a permission level')
     else:
         user_form = UserForm()
         profile_form = UserProfileForm()
@@ -1749,60 +1736,44 @@ def new_org_request(request, school_id):
     profiles = UserProfile.objects.filter(school=school_data)
     profile = profiles.first()
 
-    if school_data == None:
-        return HttpResponseForbidden('Bad stuff')
+    if profile == None:
+        return HttpResponseForbidden('There is no user associated with this organization request.')
 
     user = profile.user
 
-    requested_permission_level = ""
-
-    if len(user.groups.filter(name = "org_admin").all()) > 0:
-        requested_permission_level = "Editor"
-    else:
-        requested_permission_level = "Contributor"       
-
     if request.method == 'POST':
-        checked_box_editor = request.POST.getlist('editor_permission')
-        checked_box_contributor = request.POST.getlist('contributor_permission')
+        checkbox_editor = request.POST.getlist('editor_permission')
+        checkbox_contributor = request.POST.getlist('contributor_permission')
 
         org_contributor = Group.objects.get(name='org_author')
         org_editor = Group.objects.get(name='org_admin')
 
-        # Deny user
-        if 'btn_deny' in request.POST:            
+        # Deny org and user
+        if 'btn_deny' in request.POST:
             user.delete()
             profile.delete()
             school_data.delete()
             # Redirect to home
             return HttpResponseRedirect('/')
-            
+        # Approve org
         elif 'btn_approve' in request.POST:
-            # Approved for editor permission                               
-            if len(checked_box_editor) > 0:
-                school_data.active = True   
+            school_data.active = True
+            profile.approved = True
+
+            # Approved for editor permission
+            if len(checkbox_editor) > 0:
                 user.groups.clear()
                 user.groups.add(org_editor)
-                profile.approved = True
-                school_data.save()
-                profile.save()
-                return HttpResponseRedirect('/schools/%i/'
-                                    % school_data.id)
-                               
-                
             # Approved for contributor permission
-            elif len(checked_box_contributor) > 0:  
-                school_data.active = True      
-                user.groups.clear()                                               
+            elif len(checkbox_contributor) > 0:
+                user.groups.clear()
                 user.groups.add(org_contributor)
-                profile.approved = True      
-                school_data.save()
-                profile.save()    
-                                
-                return HttpResponseRedirect('/schools/%i/'
-                                    % school_data.id)
+
+            school_data.save()
+            profile.save()
+            return HttpResponseRedirect('/schools/%i/' % school_data.id)
 
     return render(request, 'streamwebs/new_org_request.html', {
         'school_data': school_data,
-        'user': user,
-        'requested_permission_level': str(requested_permission_level)
-    })
+        'user': user
+        })
