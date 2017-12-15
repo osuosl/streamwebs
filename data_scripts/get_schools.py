@@ -20,7 +20,6 @@ else:
 
 
 with open(datafile, 'r') as csvfile:
-    School.objects.all().delete()
     sitereader = csv.DictReader(csvfile)
     for row in sitereader:
         name = row['School name']

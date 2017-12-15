@@ -383,12 +383,9 @@ def register(request):
                 profile.save()
                 
                 return HttpResponseRedirect('/register/confirm')
-            else:
-                return HttpResponseForbidden('user_form:' + str(user_form.errors) + 
-            ", profile_form:" + str(profile_form.errors) + ", school_form:" + str(school_form.errors))
 
         else:
-            return HttpResponseForbidden('No CheckBox Checked')
+            return HttpResponseForbidden('You must select a permission level')
     else:
         user_form = UserForm()
         profile_form = UserProfileForm()

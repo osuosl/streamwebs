@@ -15,11 +15,19 @@
 
   <div class="container">
     <!-- School details: -->
-    {% if is_in_org %}
+    {% if is_in_org and school_data.active %}
     <a href="{% url 'streamwebs:manage_accounts' school_data.id %}" id="back"
     class="wave-effects wave-light btn white-text teal darken-3 right">
-    Manage Accounts
+    {% trans 'Manage Accounts' %}
     </a>
+    {% endif %}
+
+    <!-- Not approved -->
+    {% if school_data.active != True %}
+    <div class="card-panel red center">
+      <h4 class="white-text">{% trans 'This school has not yet been approved' %}</h4>        
+      <a href="{% url 'streamwebs:new_org_request' school_data.id %}" class="btn teal darken-2 white-text">{% trans 'Click here to review the request' %}</a>        
+    </div>
     {% endif %}
 
     <h5>{% trans "Address" %}:</h5>
