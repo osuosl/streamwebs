@@ -376,29 +376,37 @@ def register(request):
                 # Permissions
                 org_editor = Group.objects.get(name='org_admin')
                 user.groups.add(org_editor)
+
+                # Super admins
+                super_admins = [usr.email for usr in User.objects.all()
+                    if usr.has_perm('streamwebs.is_super_admin')]
+
                 # Email to super admin for new organization + account
                 send_email(
+                    request=request,
                     subject='New organization request: ' + str(school.name),
                     template='registration/new_org_request_email.html', 
                     user=user,
                     school=school,
                     from_email=settings.DEFAULT_FROM_EMAIL,
-                    recipients=settings.DEFAULT_SUPER_ADMIN_EMAILS
+                    recipients=['testing@streamwebs.org'] #super_admins
                 )
             else:
                 # Save user
                 user.save()
                 profile.save()
 
-                # Get editors for new user's school
+                # Get current system users
                 current_users = UserProfile.objects.filter(
                     school=profile.school, approved=True).all()
 
+                # Get editors for new user's school
                 editor_users = [up.user.email for up in current_users
                    if up.user.groups.filter(name='org_admin').exists()]
 
                 # Email to org admins for new user joining org
                 send_email(
+                    request=request,
                     subject='New User requested to join your organization',
                     template='registration/new_user_request_email.html',
                     user=user,
@@ -1563,15 +1571,15 @@ def organization_approved(func):
     return wrapper
 
 # Send an email
-def send_email(subject, template, user, school, from_email, recipients):
+def send_email(request, subject, template, user, school, from_email, recipients):
     send_mail(
         subject=subject,
         message='',
         html_message=render_to_string(
             template, 
             {
-                'protocol': settings.STREAMWEBS_PROTOCOL,
-                'domain': settings.STREAMWEBS_DOMAIN,
+                'protocol': request.scheme,
+                'domain': request.get_host(),
                 'user': user,
                 'school': school
             }),
@@ -1624,6 +1632,7 @@ def manage_accounts(request, school_id):
 
                     # Email editors that they were approved
                     send_email(
+                        request=request,
                         subject='Your editor account was approved at ' +
                                 str(school.name),
                         template='registration/approve_user_request_email.html',
@@ -1645,6 +1654,7 @@ def manage_accounts(request, school_id):
 
                     # Email contributors that they were approved
                     send_email(
+                        request=request,
                         subject='Your contributor account was approved at ' +
                                 str(school.name),
                         template='registration/approve_user_request_email.html',
@@ -1836,7 +1846,6 @@ def new_org_request(request, school_id):
             school.active = True
             profile.approved = True
 
-
             # Approved for editor permission
             if len(editor_permission) > 0:
                 user.groups.clear()
@@ -1851,6 +1860,7 @@ def new_org_request(request, school_id):
 
             # Email
             send_email(
+                request=request,
                 subject='Your organization was approved: ' + str(school.name),
                 template='registration/approve_org_request_email.html', 
                 user=user,
