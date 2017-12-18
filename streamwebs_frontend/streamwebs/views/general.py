@@ -667,10 +667,11 @@ def macroinvertebrate_edit(request, site_slug):
     # facilitate CSS manipulation in the template
     intolerant = list(macro_form)[8:14]
     somewhat = list(macro_form)[14:23]
-    tolerant = list(macro_form)[23:29]
+    tolerant = list(macro_form)[23:28]
 
     if request.method == 'POST':
         macro_form = MacroinvertebratesForm(data=request.POST)
+        return HttpResponseForbidden("We POSTin")
         if macro_form.is_valid():
             macro = macro_form.save(commit=False)
             macro.date_time = toDateTime(
@@ -690,6 +691,7 @@ def macroinvertebrate_edit(request, site_slug):
                             kwargs={'site_slug': site.site_slug,
                                     'data_id': macro.id}))
 
+    # return HttpResponseForbidden(str(tolerant[5]))
     return render(
         request, 'streamwebs/datasheets/macroinvertebrate_edit.html', {
             'macro_form': macro_form,
