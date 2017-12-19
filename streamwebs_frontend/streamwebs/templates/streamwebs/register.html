@@ -28,97 +28,12 @@
     }
   </style>
 
-  <div class="container">
+<div class="container">
     <form id='user_form' method='post'
       action="{% url 'streamwebs:register' %}" novalidate>
       {% csrf_token %}
       
-      <br/><br/>
-
-      <div class="row" id="select_school">
-        <!-- School -->
-        <div class="input-field col s6 offset-s2">
-            {{ profile_form.school }}
-          <label for="{{ profile_form.school.id_for_label }}">
-            {% trans "School" %}
-          </label>
-        </div>
-        <div class="input-field col s2">
-          <a class="btn waves-effect teal darken-3" id="org_create"
-            style="display: block; width: 100%;">
-            {% trans "New" %}
-          </a>
-        </div>
-      </div>
-
-      <!-- New organization -->
-      <div class="card-panel" id="org_section" style="display:none;">
-        <a class="btn waves-effect teal darken-3" id="org_cancel">
-          {% trans "Cancel New Organization" %}
-        </a>
-        <div class="row">
-          <div class="col s8 offset-s2">
-            <!-- Title -->
-            <h3 class="teal-text col s12 center">New Organization</h3>
-
-            <!-- Name -->
-            <div class="input-field col s12">
-              <label for="{{ school_form.name.id_for_label }}">
-                {% trans "Name" %}
-              </label>
-              {{ school_form.name }}
-              {{ school_form.name.errors | striptags }}
-            </div>
-           
-            <!-- Type -->
-            <div class="input-field col s12">
-              <label for="{{ school_form.school_type.id_for_label }}" id="school_type" 
-                      name="school_type">
-                      {% trans "Type:" %}
-              </label>
-              <br/>
-              <ul>
-                {% for radio in school_form.school_type %}
-                  {{ radio.tag }}
-                  <label for="{{ radio.id_for_label }}">
-                    {{ radio.choice_label }}
-                  </label>
-                  {{ radio.tag.errors | striptags }}
-                {% endfor %}
-              </ul>
-            </div>
-            
-            <!-- Address -->
-            <div class="input-field col s12">
-              <label for="{{ school_form.address.id_for_label }}">{% trans "Address" %}</label>
-              {{ school_form.address }}
-              {{ school_form.address.errors | striptags }}
-            </div>
-
-            <!-- City -->
-            <div class="input-field col s12">
-              <label for="{{ school_form.city.id_for_label }}">{% trans "City" %}</label>
-              {{ school_form.city }}
-              {{ school_form.city.errors | striptags }}
-            </div>
-
-            <!-- Province -->
-            <div class="input-field col s12">
-              <label for="{{ school_form.province.id_for_label }}">{% trans "State" %}</label>
-              {{ school_form.province }}
-              {{ school_form.province.errors | striptags }}
-            </div>
-
-            <!-- Zip code -->
-            <div class="input-field col s12">
-              <label for="{{ school_form.zipcode.id_for_label }}">{% trans "Zipcode" %}</label>
-              {{ school_form.zipcode }}
-              {{ school_form.zipcode.errors | striptags }}
-            </div>
-
-          </div>
-        </div>
-      </div>
+      <br/>
 
       <!-- Username, email, password -->
       <div class="row">
@@ -171,6 +86,97 @@
           {{ user_form.password_check }}
           {{ user_form.password_check.errors }}
         </div>
+      </div>
+      
+      <!-- Select school -->
+      <div class="row" id="select_school">
+        <br/>
+        <!-- Schools -->
+        <div class="input-field col s6 offset-s2">
+          {{ profile_form.school }}
+          <label for="{{ profile_form.school.id_for_label }}">
+            {% trans "School" %}
+          </label>
+        </div>
+        <div class="input-field col s2">
+          <a class="btn waves-effect teal darken-3" id="org_create"
+            style="display: block; width: 100%;">
+            {% trans "New" %}
+          </a>
+        </div>
+      </div>
+  
+      <!-- New organization -->
+      <div class="row" id="org_section" style="display:none;">
+        <br/>
+        <hr/>
+        <div class="col s2">
+          <a class="btn waves-effect teal darken-3" id="org_cancel">
+            {% trans "Cancel" %}
+          </a>
+        </div>
+        <div class="col s8">
+          <!-- Title -->
+          <h3 class="teal-text col s12 center">New Organization</h3>
+
+          <!-- Name -->
+          <div class="input-field col s12">
+            <label for="{{ school_form.name.id_for_label }}">
+              {% trans "Name" %}
+            </label>
+            {{ school_form.name }}
+            {{ school_form.name.errors | striptags }}
+          </div>
+          
+          <!-- Type -->
+          <div class="input-field col s12">
+            <label for="{{ school_form.school_type.id_for_label }}" id="school_type" 
+                    name="school_type">
+                    {% trans "Type:" %}
+            </label>
+            <br/>
+            <ul>
+              {% for radio in school_form.school_type %}
+                {{ radio.tag }}
+                <label for="{{ radio.id_for_label }}">
+                  {{ radio.choice_label }}
+                </label>
+                {{ radio.tag.errors | striptags }}
+              {% endfor %}
+            </ul>
+          </div>
+          
+          <!-- Address -->
+          <div class="input-field col s12">
+            <label for="{{ school_form.address.id_for_label }}">{% trans "Address" %}</label>
+            {{ school_form.address }}
+            {{ school_form.address.errors | striptags }}
+          </div>
+
+          <!-- City -->
+          <div class="input-field col s12">
+            <label for="{{ school_form.city.id_for_label }}">{% trans "City" %}</label>
+            {{ school_form.city }}
+            {{ school_form.city.errors | striptags }}
+          </div>
+
+          <!-- Province -->
+          <div class="input-field col s12">
+            <label for="{{ school_form.province.id_for_label }}">{% trans "State" %}</label>
+            {{ school_form.province }}
+            {{ school_form.province.errors | striptags }}
+          </div>
+
+          <!-- Zip code -->
+          <div class="input-field col s12">
+            <label for="{{ school_form.zipcode.id_for_label }}">{% trans "Zipcode" %}</label>
+            {{ school_form.zipcode }}
+            {{ school_form.zipcode.errors | striptags }}
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
         <!-- Captcha -->
         <div class="input-field col s8 offset-s2">
           <label for="{{ profile_form.captcha.id_for_label }}"></label>
@@ -186,7 +192,8 @@
             </button>
           </div>
         </div>
-      </div> 
+      </div>
+
     </form>
   </div>
 {% endblock %}
