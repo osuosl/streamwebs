@@ -29,7 +29,7 @@ else:
     users_list = '../csvs/users.csv'
 
 with open(users_list, 'r') as csvfile:
-    
+
     # Get permission groups
     org_admin, created = Group.objects.get_or_create(name='org_admin')
     org_author, created = Group.objects.get_or_create(name='org_author')
@@ -93,10 +93,10 @@ with open(users_list, 'r') as csvfile:
                 else:
                     school = School.objects.get(name='Unknown School')
                 userprofile = UserProfile.objects.update_or_create(
-                    user=user, school=school, birthdate=dob, approved=True)
-                
+                    user=user, school=school, approved=True)
+
                 teacher = 'teacher' in roles
-                
+
                 if teacher:
                     user.groups.add(org_admin)
                     user.save()
