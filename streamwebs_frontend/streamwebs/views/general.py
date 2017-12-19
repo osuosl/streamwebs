@@ -14,6 +14,8 @@ from django.forms import inlineformset_factory, modelformset_factory
 from django.core.urlresolvers import reverse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.conf import settings
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
 
 from streamwebs.forms import (
     UserForm, UserFormOptionalNameEmail, UserEditForm, UserProfileForm,
@@ -363,14 +365,56 @@ def register(request):
             if school_form.is_valid():
                 school = school_form.save()
                 school.province = (school.province + ', United States')
+                school.save()
+
                 profile.school_id = school.id
+
+                # Save user
+                user.save()
+                profile.save()
+
                 # Permissions
                 org_editor = Group.objects.get(name='org_admin')
                 user.groups.add(org_editor)
 
-            user.save()
-            profile.save()
-            
+                # Super admins
+                super_admins = [usr.email for usr in User.objects.all()
+                    if usr.has_perm('streamwebs.is_super_admin')]
+
+                # Email to super admin for new organization + account
+                send_email(
+                    request=request,
+                    subject='New organization request: ' + str(school.name),
+                    template='registration/new_org_request_email.html', 
+                    user=user,
+                    school=school,
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    recipients=['testing@streamwebs.org'] #super_admins
+                )
+            else:
+                # Save user
+                user.save()
+                profile.save()
+
+                # Get current system users
+                current_users = UserProfile.objects.filter(
+                    school=profile.school, approved=True).all()
+
+                # Get editors for new user's school
+                editor_users = [up.user.email for up in current_users
+                   if up.user.groups.filter(name='org_admin').exists()]
+
+                # Email to org admins for new user joining org
+                send_email(
+                    request=request,
+                    subject='New User requested to join your organization',
+                    template='registration/new_user_request_email.html',
+                    user=user,
+                    school=profile.school,
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    recipients=editor_users
+                )
+
             return HttpResponseRedirect('/register/confirm')
 
     else:
@@ -621,9 +665,9 @@ def macroinvertebrate_edit(request, site_slug):
 
     # the following are the form's fields broken up into chunks to
     # facilitate CSS manipulation in the template
-    intolerant = list(macro_form)[8:14]
+    intolerant = list(macro_form)[7:14]
     somewhat = list(macro_form)[14:23]
-    tolerant = list(macro_form)[23:29]
+    tolerant = list(macro_form)[23:28]
 
     if request.method == 'POST':
         macro_form = MacroinvertebratesForm(data=request.POST)
@@ -1526,6 +1570,24 @@ def organization_approved(func):
         return func(request, *args, **kwargs)
     return wrapper
 
+# Send an email
+def send_email(request, subject, template, user, school, from_email, recipients):
+    send_mail(
+        subject=subject,
+        message='',
+        html_message=render_to_string(
+            template, 
+            {
+                'protocol': request.scheme,
+                'domain': request.get_host(),
+                'user': user,
+                'school': school
+            }),
+        from_email= from_email,
+        recipient_list=recipients,
+        fail_silently=False,
+    )
+
 
 @login_required
 @permission_required('streamwebs.is_org_admin', raise_exception=True)
@@ -1544,7 +1606,7 @@ def get_manage_accounts(request, user_id):
 @organization_required
 @organization_approved
 def manage_accounts(request, school_id):
-    school_data = School.objects.get(id=school_id)
+    school = School.objects.get(id=school_id)
 
     org_contributor = Group.objects.get(name='org_author')
     org_editor = Group.objects.get(name='org_admin')
@@ -1568,6 +1630,18 @@ def manage_accounts(request, school_id):
                     profile.approved = True
                     profile.save()
 
+                    # Email editors that they were approved
+                    send_email(
+                        request=request,
+                        subject='Your editor account was approved at ' +
+                                str(school.name),
+                        template='registration/approve_user_request_email.html',
+                        user=user,
+                        school=school,
+                        from_email=settings.DEFAULT_FROM_EMAIL,
+                        recipients=[user.email]
+                    )
+
             for i in contributors:
                 user = User.objects.get(id=i)
                 profile = UserProfile.objects.get(user=user)
@@ -1578,12 +1652,25 @@ def manage_accounts(request, school_id):
                     profile.approved = True
                     profile.save()
 
+                    # Email contributors that they were approved
+                    send_email(
+                        request=request,
+                        subject='Your contributor account was approved at ' +
+                                str(school.name),
+                        template='registration/approve_user_request_email.html',
+                        user=user,
+                        school=school,
+                        from_email=settings.DEFAULT_FROM_EMAIL,
+                        recipients=[user.email]
+                    )
+
             for i in denyUsers:
                 user = User.objects.get(id=i)
                 profile = UserProfile.objects.get(user=user)
                 if profile != None:
                     profile.delete()
                     user.delete()
+
         # Delete Selected Editors
         elif 'btn_delete_editors' in request.POST:
             editors = request.POST.getlist('editors')
@@ -1639,9 +1726,9 @@ def manage_accounts(request, school_id):
                     user.save()
 
     # GET method
-    new_users = UserProfile.objects.filter(school=school_data,
+    new_users = UserProfile.objects.filter(school=school,
                                             approved=False).all()
-    current_users = UserProfile.objects.filter(school=school_data,
+    current_users = UserProfile.objects.filter(school=school,
                                             approved=True).all()
 
     contributor_users = [up for up in current_users
@@ -1650,7 +1737,7 @@ def manage_accounts(request, school_id):
                    if up.user.groups.filter(name='org_admin').exists()]
 
     return render(request, 'streamwebs/manage_accounts.html', {
-        'school_data': school_data,
+        'school_data': school,
         'school_id': school_id,
         'new_users': new_users,
         'contributor_users': contributor_users,
@@ -1668,7 +1755,7 @@ def add_account(request, school_id):
         user_form = UserFormOptionalNameEmail(data=request.POST)
 
         if user_form.is_valid():
-            user = user_form.save(commit=False)
+            user = user_form.save()
             user.set_password(user.password)
 
             org_contributor = Group.objects.get(name='org_author')
@@ -1731,8 +1818,8 @@ def var_debug(request, value):
 @login_required
 @permission_required('streamwebs.is_super_admin', raise_exception=True)
 def new_org_request(request, school_id):
-    school_data = School.objects.get(id=school_id)
-    profiles = UserProfile.objects.filter(school=school_data)
+    school = School.objects.get(id=school_id)
+    profiles = UserProfile.objects.filter(school=school)
     profile = profiles.first()
 
     if profile == None:
@@ -1741,8 +1828,8 @@ def new_org_request(request, school_id):
     user = profile.user
 
     if request.method == 'POST':
-        checkbox_editor = request.POST.getlist('editor_permission')
-        checkbox_contributor = request.POST.getlist('contributor_permission')
+        editor_permission = request.POST.getlist('editor_permission')
+        contributor_permission = request.POST.getlist('contributor_permission')
 
         org_contributor = Group.objects.get(name='org_author')
         org_editor = Group.objects.get(name='org_admin')
@@ -1751,28 +1838,40 @@ def new_org_request(request, school_id):
         if 'btn_deny' in request.POST:
             user.delete()
             profile.delete()
-            school_data.delete()
+            school.delete()
             # Redirect to home
             return HttpResponseRedirect('/')
         # Approve org
         elif 'btn_approve' in request.POST:
-            school_data.active = True
+            school.active = True
             profile.approved = True
 
             # Approved for editor permission
-            if len(checkbox_editor) > 0:
+            if len(editor_permission) > 0:
                 user.groups.clear()
                 user.groups.add(org_editor)
             # Approved for contributor permission
-            elif len(checkbox_contributor) > 0:
+            elif len(contributor_permission) > 0:
                 user.groups.clear()
                 user.groups.add(org_contributor)
 
-            school_data.save()
+            school.save()
             profile.save()
-            return HttpResponseRedirect('/schools/%i/' % school_data.id)
+
+            # Email
+            send_email(
+                request=request,
+                subject='Your organization was approved: ' + str(school.name),
+                template='registration/approve_org_request_email.html', 
+                user=user,
+                school=school,
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipients=[user.email]
+            )
+
+            return HttpResponseRedirect('/schools/%i/' % school.id)
 
     return render(request, 'streamwebs/new_org_request.html', {
-        'school_data': school_data,
+        'school_data': school,
         'user': user
         })

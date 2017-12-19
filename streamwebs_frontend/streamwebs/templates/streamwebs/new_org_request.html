@@ -14,7 +14,7 @@ function uncheck_permission_level_box(checkbox) {
     var checkboxes = document.getElementById("mutually_exclusive_checkboxes")
                              .getElementsByTagName('input')  
     for (i = 0; i < checkboxes.length; i++) { 
-      if (checkboxes[i].type == "checkbox" && checkboxes[i] != checkbox) {
+      if (checkboxes[i].type == "radio" && checkboxes[i] != checkbox) {
         checkboxes[i].checked = false;
       }
     }
@@ -76,13 +76,13 @@ function uncheck_permission_level_box(checkbox) {
           <h5>Approved Permission:</h5>
           <div class="row" id="mutually_exclusive_checkboxes">
             <div class="col s6">
-              <input type="radio" name="permission" checked
+              <input type="radio" name="editor_permission" checked
                 id="editor_perm"
                 onchange="uncheck_permission_level_box(this)">
               <label for="editor_perm">Editor</label>
             </div>
             <div class="col s6"></div>
-              <input type="radio" name="permission"
+              <input type="radio" name="contributor_permission"
                 id="contributor_perm"
                 onchange="uncheck_permission_level_box(this)">
               <label for="contributor_perm">Contributor</label>
