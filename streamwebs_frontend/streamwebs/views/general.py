@@ -613,10 +613,10 @@ def graph_macros(request, site_slug):
     })
 
 
-def macroinvertebrate(request, site_slug, data_id):
+def macroinvertebrate_view(request, site_slug, data_id):
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     data = Macroinvertebrates.objects.get(id=data_id)
-
+    
     if data.wq_rating > 22:
         rating = "Excellent"
     elif data.wq_rating >= 17 and data.wq_rating <= 22:
