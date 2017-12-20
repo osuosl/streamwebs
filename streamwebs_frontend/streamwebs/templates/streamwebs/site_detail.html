@@ -62,7 +62,8 @@
           {% endif %}
         </div>
         <div class="col s12 l6">
-          <div id="detail_map" class="resp_box"></div>
+          <!-- Gmaps -->
+          <div class="map" style="height:280px;"></div>
         </div>
       </div>
       <div class="row">
@@ -251,6 +252,36 @@
     var imgRatio = imgHeight/imgWidth;
 
     $(document).ready(function(){
+      {% language "en-us" %}
+      var loc = {
+        lat: {{ site.location.y }},
+        lng: {{ site.location.x }},
+      };
+      {% endlanguage %}
+      var latlng = new google.maps.LatLng(loc.lat, loc.lng);
+      var mapOptions = {
+        zoom: 14,
+        center: latlng,
+        mapTypeControl: false,
+        navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL},
+        mapTypeId: 'roadmap'
+      };
+      map = new google.maps.Map($('.map')[0], mapOptions);
+
+      marker = new google.maps.Marker({
+        position: loc,
+        map: map,
+        title: "Site Location"
+      });
+
+      // responsive function
+      google.maps.event.addDomListener(window, "resize", function () {
+        var center = map.getCenter();
+        google.maps.event.trigger(map, "resize");
+        map.setCenter(center);
+      });
+
+
       {% if messages %}
         {% for message in messages %}
         Materialize.toast('{{ message }}', 4000, 'green');
