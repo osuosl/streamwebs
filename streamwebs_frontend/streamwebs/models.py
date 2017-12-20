@@ -803,7 +803,7 @@ class Macroinvertebrates(models.Model):
     def __str__(self):
         return self.site.site_name + ' sheet ' + str(self.id)
 
-    def save(self, **kwargs):
+    def calculate_scores(self):
         self.sensitive_total = 0
         self.somewhat_sensitive_total = 0
         self.tolerant_total = 0
@@ -831,6 +831,9 @@ class Macroinvertebrates(models.Model):
         for count in tolerant:
             if count > 0:
                 self.tolerant_total += 1
+
+    def save(self, **kwargs):
+        self.calculate_scores()
 
         # the water quality rating is just the sum of the three scores
         self.wq_rating = (self.sensitive_total +
