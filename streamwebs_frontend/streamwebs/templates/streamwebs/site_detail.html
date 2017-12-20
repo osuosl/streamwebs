@@ -63,7 +63,7 @@
         </div>
         <div class="col s12 l6">
           <!-- Gmaps -->
-          <div class="map" style="height:280px;"></div>
+          <div id="detail_map" class="resp_box"></div>
         </div>
       </div>
       <div class="row">
@@ -266,7 +266,7 @@
         navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL},
         mapTypeId: 'roadmap'
       };
-      map = new google.maps.Map($('.map')[0], mapOptions);
+      map = new google.maps.Map($('#detail_map')[0], mapOptions);
 
       marker = new google.maps.Marker({
         position: loc,
