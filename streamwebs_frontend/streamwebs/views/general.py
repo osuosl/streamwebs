@@ -998,7 +998,7 @@ def add_camera_point(request, site_slug):
 
         # convert lat and longs into a pointfield object
         point = ("SRID=4326;POINT(%s %s)" %
-                 (request.POST['lat'], request.POST['lng']))
+                 (request.POST['lng'], request.POST['lat']))
         # spoof the location and  request param with the point object
         # and proceed like normal.
         request.POST['location'] = point
