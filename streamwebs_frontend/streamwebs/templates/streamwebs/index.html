@@ -130,7 +130,7 @@
         </p>
       </section>
 
-      {% else %}
+    {% else %}
 
       <div class="row">
         <div class="col s12">
@@ -156,20 +156,21 @@
             </p>
           </section>
         </div>
-        {% if perms.streamwebs.is_org_admin %}
-        <section class="left">
-          <a class="section-title" href="{% url 'streamwebs:create_site' %}">
-            Create Site
-          </a>
-          <p>
-            By selecting the “Create Site” button you can create your own
-            project site. Just enter the information about your project site
-            that is requested and personalize your site page with a photo. You
-            are now ready to enter your data!
-          </p>
-        </section>
-        {% endif %}
+      </div>
+      {% if perms.streamwebs.is_org_admin %}
+      <section class="left">
+        <a class="section-title" href="{% url 'streamwebs:create_site' %}">
+          Create Site
+        </a>
+        <p>
+          By selecting the “Create Site” button you can create your own
+          project site. Just enter the information about your project site
+          that is requested and personalize your site page with a photo. You
+          are now ready to enter your data!
+        </p>
+      </section>
       {% endif %}
+    {% endif %}
 
     </div>
   </div>
