@@ -944,6 +944,7 @@ def camera_point_view(request, site_slug, cp_id):
     """View a site's CP: includes all of its PPs/PPIs"""
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     cp = CameraPoint.objects.get(id=cp_id)
+
     pps = PhotoPoint.objects.filter(camera_point_id=cp)
     all_images = dict()
 
@@ -953,6 +954,8 @@ def camera_point_view(request, site_slug, cp_id):
 
     return render(
         request, 'streamwebs/datasheets/camera_point_view.html', {
+            'maps_api': settings.GOOGLE_MAPS_API,
+            'map_type': settings.GOOGLE_MAPS_TYPE,
             'site': site,
             'cp': cp,
             'pps': pps,
