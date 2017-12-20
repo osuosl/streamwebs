@@ -806,6 +806,7 @@ class Macroinvertebrates(models.Model):
     def save(self, **kwargs):
         self.sensitive_total = 0
         self.somewhat_sensitive_total = 0
+        self.tolerant_total = 0
 
         # divvy up indiv count values into three arrays
         sensitive = [self.caddisfly, self.mayfly, self.riffle_beetle,

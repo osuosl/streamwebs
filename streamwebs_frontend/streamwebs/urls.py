@@ -44,7 +44,7 @@ urlpatterns = [
         views.export_wq, name='export_wq'),
 
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/macro/(?P<data_id>\d+)/$',
-        views.macroinvertebrate, name='macroinvertebrate_view'),
+        views.macroinvertebrate_view, name='macroinvertebrate_view'),
 
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/macro/edit/$',
         views.macroinvertebrate_edit, name='macroinvertebrate_edit'),
