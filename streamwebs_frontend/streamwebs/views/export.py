@@ -17,8 +17,13 @@ def export_rip_aqua(request, site_slug):
         'riffle_count', 'pool_count', 'silt', 'sand', 'gravel', 'cobble',
         'boulders', 'bedrock', 'small_debris', 'medium_debris',
         'large_debris', 'comments', 'coniferous_trees', 'deciduous_trees',
-        'shrubs', 'small_plants', 'ferns', 'grasses', 'species',
-        'significance', 'wildlife_type', 'wildlife_comments'
+        'shrubs', 'small_plants', 'ferns', 'grasses', 'notes',
+        'species1', 'significance1', 'wildlife_type1', 'wildlife_comments1',
+        'species2', 'significance2', 'wildlife_type2', 'wildlife_comments2',
+        'species3', 'significance3', 'wildlife_type3', 'wildlife_comments3',
+        'species4', 'significance4', 'wildlife_type4', 'wildlife_comments4',
+        'species5', 'significance5', 'wildlife_type5', 'wildlife_comments5',
+        'species6', 'significance6', 'wildlife_type6', 'wildlife_comments6'
     )
     return render_to_csv_response(
         ripaq, field_header_map={
@@ -43,11 +48,31 @@ def export_rip_aqua(request, site_slug):
             'small_plants': '# of small plants',
             'ferns': '# of ferns',
             'grasses': '# of grasses',
-            'species': '# of species',
-            'significance': 'significance',
-            'wildlife_type': 'wildlife type',
-            'wildlife_comments': 'wildlife comments',
-            'notes': 'field notes'
+            'notes': 'field notes',
+            'species1': '# of species 1',
+            'significance1': 'significance 1',
+            'wildlife_type1': 'wildlife type 1',
+            'wildlife_comments1': 'wildlife comments 1',
+            'species2': '# of species 2',
+            'significance2': 'significance 2',
+            'wildlife_type2': 'wildlife type 2',
+            'wildlife_comments2': 'wildlife comments 2',
+            'species3': '# of species 3',
+            'significance3': 'significance 3',
+            'wildlife_type3': 'wildlife type 3',
+            'wildlife_comments3': 'wildlife comments 3',
+            'species4': '# of species 4',
+            'significance4': 'significance 4',
+            'wildlife_type4': 'wildlife type 4',
+            'wildlife_comments4': 'wildlife comments 4',
+            'species5': '# of species 5',
+            'significance5': 'significance 5',
+            'wildlife_type5': 'wildlife type 5',
+            'wildlife_comments5': 'wildlife comments 5',
+            'species6': '# of species 6',
+            'significance6': 'significance 6',
+            'wildlife_type6': 'wildlife type 6',
+            'wildlife_comments6': 'wildlife comments 6',
             }
         )
 
