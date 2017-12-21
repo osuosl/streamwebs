@@ -403,15 +403,16 @@ def register(request):
                    if up.user.groups.filter(name='org_admin').exists()]
 
                 # Email to org admins for new user joining org
-                send_email(
-                    request=request,
-                    subject='New User requested to join your organization',
-                    template='registration/new_user_request_email.html',
-                    user=user,
-                    school=profile.school,
-                    from_email=settings.DEFAULT_FROM_EMAIL,
-                    recipients=editor_users
-                )
+                if (len(editor_users) > 0):
+                    send_email(
+                        request=request,
+                        subject='New User requested to join your organization',
+                        template='registration/new_user_request_email.html',
+                        user=user,
+                        school=profile.school,
+                        from_email=settings.DEFAULT_FROM_EMAIL,
+                        recipients=editor_users
+                    )
 
             return HttpResponseRedirect('/register/confirm')
 
