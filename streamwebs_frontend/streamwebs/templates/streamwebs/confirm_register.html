@@ -1,0 +1,43 @@
+{% extends 'streamwebs/base.html' %}
+
+{% load staticfiles %}
+{% load filters %}
+{% load i18n %}
+
+{% block title %}{{ site.site_name  }} Registration Confirmation - {% trans "Streamwebs" %}{% endblock %}
+
+{% block body_title %}{% endblock %}
+
+{% block content %}
+<style>
+label {
+  color: black; !important
+}
+p {
+  font-size: 20px;
+}
+
+</style>
+<div class="container">
+  <div class="row center-align">
+    <h2 class="teal-text">
+      Account Request Sent
+    </h2>
+  </div>
+  <div class="row">
+    <div align="center" class="col s12">
+      <p>
+        Your registration details have been successfully recorded and a notification as been
+        sent to the responsible admins. They should respond shortly with their approval or denial.
+      </p>
+    </div>
+  </div>
+  <br/>
+  <div class="row center-align">
+    <a href="{% url 'streamwebs:index' %}" class="btn waves-effect waves-light teal darken-3">{% trans "Return" %}</a>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

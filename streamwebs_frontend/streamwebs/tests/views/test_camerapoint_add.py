@@ -20,7 +20,6 @@ class AddCameraPointTestCase(TestCase):
         self.profile = UserProfile()
         self.profile.user = self.user
         self.profile.school = self.school
-        self.profile.birthdate = '1123-11-30'
         self.profile.save()
 
     def test_view_with_bad_blank_data(self):

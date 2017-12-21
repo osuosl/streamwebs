@@ -21,7 +21,6 @@ class ViewPhotoPointTestCase(TestCase):
         self.profile = UserProfile()
         self.profile.user = self.user
         self.profile.school = self.school
-        self.profile.birthdate = '1123-11-30'
         self.profile.save()
 
         site = Site.test_objects.create_site('Paradise')
