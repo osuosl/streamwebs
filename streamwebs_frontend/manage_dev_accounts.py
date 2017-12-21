@@ -38,7 +38,6 @@ application = get_wsgi_application()
 
 # Define account details
 email = 'streamwebs@osuosl.org'
-birthdate = '1980-01-01'
 super_admin_name = 'superadmin'
 org_admin_name = 'teacher'
 org_author_name = 'student'
@@ -99,7 +98,6 @@ if action == 'create':
                 oadmin_profile = UserProfile.objects.create(
                     user=oadmin_account,
                     school=school,
-                    birthdate=birthdate,
                     approved=True
                 )
                 oadmin_account.save()
@@ -142,7 +140,6 @@ if action == 'create':
                 author_profile = UserProfile.objects.create(
                     user=author_account,
                     school=school,
-                    birthdate=birthdate,
                     approved=True
                 )
                 author_profile.save()

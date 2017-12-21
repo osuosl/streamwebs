@@ -358,8 +358,6 @@ def register(request):
 
             profile = profile_form.save(commit=False)
             profile.user = user
-            # TODO: Remove when birthdate is removed from DB
-            profile.birthdate = "1970-01-01"
             
             # If school form is valid, then the user is creating a new school
             if school_form.is_valid():
@@ -1768,8 +1766,6 @@ def add_account(request, school_id):
             user.save()
 
             profile = UserProfile()
-            #TODO: Remove when birthday is removed from DB
-            profile.birthdate = '1970-01-01'
             profile.school_id = school_id
             profile.user = user
             profile.approved = True
