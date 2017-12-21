@@ -37,20 +37,51 @@
           </div>
         </div>
         <div class="row">
-          <div class="col s6">
+          <div class="input-field hidden-date" style="display:none">
             {{ soil_form.date.label }} (YYYY-MM-DD)
             {{ soil_form.date.errors }}
             {{ soil_form.date }}
           </div>
           <div class="col s3">
-            {{ soil_form.time.label }} (HH:MM)
-            {{ soil_form.time.errors }}
-            {{ soil_form.time }}
+            <div class="input-field year date">
+              Year
+              <p><strong class="errorlist"></strong></p>
+              <select class="year browser-default">
+                <option value="" disabled selected>Choose year</option>
+              </select>
+            </div>
           </div>
           <div class="col s3">
-            {{ soil_form.ampm.label }}
-            {{ soil_form.ampm.errors }}
-            {{ soil_form.ampm }}
+            <div class="input-field month date">
+              Month
+              <p><strong class="errorlist"></strong></p>
+              <select class="month browser-default">
+                <option value="" disabled selected>Choose month</option>
+              </select>
+            </div>
+          </div>
+          <div class="col s3">
+            <div class="input-field day date">
+              Day
+              <p><strong class="errorlist"></strong></p>
+              <select class="day browser-default">
+                <option value="" disabled selected>Choose day</option>
+              </select>
+            </div>
+          </div>
+          <div class="col s2">
+            <div class="input-field">
+              {{ soil_form.time.label }} (HH:MM)
+              {{ soil_form.time.errors }}
+              {{ soil_form.time }}
+            </div>
+          </div>
+          <div class="col s1">
+            <div class="input-field">
+              {{ soil_form.ampm.label }}
+              {{ soil_form.ampm.errors }}
+              {{ soil_form.ampm }}
+            </div>
           </div>
           <div class="col s6">
             {{ soil_form.weather.label }}
@@ -149,22 +180,23 @@
 {% block scripts %}
 
   <script>
-  $(document).ready(function() {
-    {% if messages %}
-        {% for message in messages %}
-          Materialize.toast('{{ message }}', 4000, 'green');
-        {% endfor %}
-    {% endif %}
-    $("form").bind("keypress", function(e) {
-      if (e.keyCode == 13){
-        return false;
-      }
+    $(document).ready(function() {
+      {% if messages %}
+          {% for message in messages %}
+            Materialize.toast('{{ message }}', 4000, 'green');
+          {% endfor %}
+      {% endif %}
+      $("form").bind("keypress", function(e) {
+        if (e.keyCode == 13){
+          return false;
+        }
+      });
     });
-  });
-</script>
-
+  </script>
   <script type="application/javascript"
           src="{% static 'streamwebs/js/data.js' %}"></script>
+  <script type="application/javascript"
+          src="{% static 'streamwebs/js/date.js' %}"></script>
   <script type="text/javascript">
     var radioFields = [];
     radioFields.push({name: 'landscape position', val: $('div.landscape-pos input')});

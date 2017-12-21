@@ -80,27 +80,54 @@
         </div>
       </div>
       <div class="row">
-        <div class="col s6">
-          <div class="input-field">
-            {{ canopy_cover_form.date.label }} (YYYY-MM-DD)
-            {{ canopy_cover_form.date.errors }}
-            {{ canopy_cover_form.date }}
+        <div class="input-field hidden-date" style="display:none;">
+          {{ canopy_cover_form.date.label }} (YYYY-MM-DD)
+          {{ canopy_cover_form.date.errors }}
+          {{ canopy_cover_form.date }}
+        </div>
+        <div class="col s3">
+          <div class="input-field year date">
+            Year
+            <p><strong class="errorlist"></strong></p>
+            <select class="year browser-default">
+              <option value="" disabled selected>Choose year</option>
+            </select>
           </div>
         </div>
         <div class="col s3">
+          <div class="input-field month date">
+            Month
+            <p><strong class="errorlist"></strong></p>
+            <select class="month browser-default">
+              <option value="" disabled selected>Choose month</option>
+            </select>
+          </div>
+        </div>
+        <div class="col s3">
+          <div class="input-field day date">
+            Day
+            <p><strong class="errorlist"></strong></p>
+            <select class="day browser-default">
+              <option value="" disabled selected>Choose day</option>
+            </select>
+          </div>
+        </div>
+        <div class="col s2">
           <div class="input-field">
             {{ canopy_cover_form.time.label }} (HH:MM)
             {{ canopy_cover_form.time.errors }}
             {{ canopy_cover_form.time }}
           </div>
         </div>
-        <div class="col s3">
+        <div class="col s1">
           <div class="input-field">
             {{ canopy_cover_form.ampm.label }}
             {{ canopy_cover_form.ampm.errors }}
             {{ canopy_cover_form.ampm }}
           </div>
         </div>
+      </div>
+      <div class="row">
         <div class="col s6">
           <div class="input-field">
             {{ canopy_cover_form.weather.label }}
@@ -339,6 +366,12 @@
 {% endblock %}
 
 {% block scripts %}
+  <script type="application/javascript"
+          src="{% static 'streamwebs/js/date.js' %}"></script>
+  <script type="application/javascript"
+          src="{% static 'streamwebs/js/data.js' %}"></script>
+  <script type="application/javascript"
+          src="{% static 'streamwebs/js/data/edit/canopy_cover.js' %}"></script>
   <script>
     var error = '{{ error }}';
     $(document).ready(function() {
@@ -353,10 +386,5 @@
           }
         });
       });
-  </script>
-  <script type="application/javascript"
-          src="{% static 'streamwebs/js/data.js' %}"></script>
-  <script type="application/javascript"
-          src="{% static 'streamwebs/js/data/edit/canopy_cover.js' %}">
   </script>
 {% endblock %}

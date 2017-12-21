@@ -27,10 +27,10 @@ function toFixed(value, precision) {
 }
 
 var changeRangeStart = function changeRangeStart() {
-    if (!$(this).val()) { // If the field is empty, clear the range
+    if (!$('#date-start').val()) { // If the field is empty, clear the range
         date_range[0] = 0;
     } else {
-        var date = Date.parse($(this).val());
+        var date = Date.parse($('#date-start').val());
         if (!date || Number.isNaN(date)) {
             return;
         }
@@ -47,10 +47,10 @@ var changeRangeStart = function changeRangeStart() {
 };
 
 var changeRangeEnd = function changeRangeEnd() {
-    if (!$(this).val()) { // If the field is empty, clear the range
+    if (!$('#date-end').val()) { // If the field is empty, clear the range
         date_range[1] = num_max;
     } else {
-        var date = Date.parse($(this).val());
+        var date = Date.parse($('#date-end').val());
         if (!date || Number.isNaN(date)) {
             return;
         }
@@ -688,7 +688,6 @@ $(window).resize(function () {
 });
 
 var addDateRange = function addDateRange() {
-    console.log(window.data_time);
     var count = 0;
     for (key in window.data_time) {
         count++;
@@ -716,15 +715,32 @@ var addDateRange = function addDateRange() {
             + "-" + min_date.getDate().toString() + "-" + (min_date.getMonth() + 1).toString()
             + " ~ " + max_date.getFullYear().toString()
             + "-" + max_date.getDate().toString() + "-" + (max_date.getMonth() + 1).toString()
-        $('p.date-range').text('Date range of data: ' + date_range);
+        $('b.date-range').text('Date range of data: ' + date_range);
     }
 }
 
 $(function () {
     $('input[type=date]').val('');
-    $('#date-start').change(changeRangeStart);
-    $('#date-end').change(changeRangeEnd);
     addDateRange();
+    $('div.date select').change(function() {
+        var parent = $(this).parent().parent().parent();
+        var input = parent.find('input.date');
+        var year = parent.find('select.year').toArray()[0].value;
+        var month = parent.find('select.month').toArray()[0].value;
+        var day = parent.find('select.day').toArray()[0].value;
+        if (month && parseInt(month) < 10) {
+            month = "0" + month;
+        }
+        if (day && parseInt(day) < 10) {
+            day = "0" + day;
+        }
+        if (year && month && day) {
+            var str = year + "-" + month + "-" + day;
+            input.val(str);
+            changeRangeStart();
+            changeRangeEnd();
+        }
+    });
     $('input[type=radio]').fix_radios();
     $('input[name=type]').change(function () {
         if ($('input[name=type]:checked').val() === 'line') {

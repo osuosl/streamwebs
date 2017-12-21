@@ -17,21 +17,80 @@
       {{ site.site_name }} {% trans "Macroinvertebrates" %}
     </h3>
     <br/>
-    <p class="date-range"></p>
+    <p><b class="date-range"></b></p>
     <br/>
     <form action="">
       <div id="dates">
-        <p>{% trans "Set Date Range:" %}</p>
-
+        <p><b>{% trans "Set Date Range:" %}</b></p>
         <div class="row">
-          <div class="col s6">
-            <label for="date-start">{% trans "Begin" %}</label>
-            <input type="date" name="date" class="datepicker" id="date-start"
+          <div class="col s12">
+            <p><b>Begin:</b></p>
+          </div>
+          <div class="row" style="display:none;">
+            <input type="date" name="date" class="date" id="date-start"
                    value=""/>
           </div>
-          <div class="col s6">
-            <label for="date-end">{% trans "End" %}</label>
-            <input type="date" name="date" class="datepicker" id="date-end" value=""/>
+          <div class="col s4">
+            <div class="input-field year date">
+              Year
+              <p><strong class="errorlist"></strong></p>
+              <select class="year browser-default">
+                <option value="" disabled selected>Choose year</option>
+              </select>
+            </div>
+          </div>
+          <div class="col s4">
+            <div class="input-field month date">
+              Month
+              <p><strong class="errorlist"></strong></p>
+              <select class="month browser-default">
+                <option value="" disabled selected>Choose month</option>
+              </select>
+            </div>
+          </div>
+          <div class="col s4">
+            <div class="input-field day date">
+              Day
+              <p><strong class="errorlist"></strong></p>
+              <select class="day browser-default">
+                <option value="" disabled selected>Choose day</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col s12">
+            <p><b>End:</b></p>
+          </div>
+          <div class="row" style="display:none;">
+            <input type="date" name="date" class="date" id="date-end" value=""/>
+          </div>
+          <div class="col s4">
+            <div class="input-field year date">
+              Year
+              <p><strong class="errorlist"></strong></p>
+              <select class="year browser-default">
+                <option value="" disabled selected>Choose year</option>
+              </select>
+            </div>
+          </div>
+          <div class="col s4">
+            <div class="input-field month date">
+              Month
+              <p><strong class="errorlist"></strong></p>
+              <select class="month browser-default">
+                <option value="" disabled selected>Choose month</option>
+              </select>
+            </div>
+          </div>
+          <div class="col s4">
+            <div class="input-field day date">
+              Day
+              <p><strong class="errorlist"></strong></p>
+              <select class="day browser-default">
+                <option value="" disabled selected>Choose day</option>
+              </select>
+            </div>
           </div>
         </div>
       </div>
@@ -94,12 +153,9 @@
     window.data_summ = {{data.summary|safe}};
     var siteId = '{{site.site_slug}}';
 
-    $('.datepicker').pickadate({
-      selectMonths: true,
-      selectYears: 20,
-    });
   </script>
-
+  <script type="application/javascript"
+          src="{% static 'streamwebs/js/date.js' %}"></script>
   <script type="application/javascript"
           src="{% static 'streamwebs/js/graphs/macros.js' %}"></script>
 {% endblock %}

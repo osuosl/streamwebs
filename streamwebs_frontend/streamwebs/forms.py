@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 from django import forms
 from django.forms import BaseInlineFormSet
 from django.utils.translation import ugettext_lazy as _
+import datetime
 from captcha.fields import ReCaptchaField
 
 TIME_PERIOD_CHOICES = (
@@ -81,7 +82,7 @@ class UserPasswordForm(forms.ModelForm):
 class UserProfileForm(forms.ModelForm):
     captcha = ReCaptchaField()
     birthdate = forms.DateField(
-        widget=forms.DateInput(attrs={'class': 'datepicker'}),
+        required=False,
     )
     school = forms.ModelChoiceField(
         queryset=School.objects.all().order_by('name'), empty_label=None)
@@ -99,7 +100,7 @@ class MacroinvertebratesForm(forms.ModelForm):
     num_people = forms.IntegerField(required=False)
     date = forms.DateField(
         input_formats=['%Y-%m-%d'],
-        widget=forms.DateInput(attrs={'class': 'datepicker'}),
+        required=False,
     )
     time = forms.TimeField(input_formats=['%I:%M'])
     ampm = forms.ChoiceField(choices=TIME_PERIOD_CHOICES, label="AM/PM")
@@ -118,6 +119,12 @@ class MacroinvertebratesForm(forms.ModelForm):
                   'mite', 'aquatic_worm', 'blackfly', 'leech', 'midge',
                   'snail', 'mosquito_larva', 'notes')
 
+    def clean_date(self):
+        date = self.cleaned_data['date']
+        if date and date > datetime.date.today():
+            raise forms.ValidationError("Please enter a valid date")
+        return date
+
 
 class WQForm(forms.ModelForm):
     school = forms.ModelChoiceField(
@@ -126,7 +133,7 @@ class WQForm(forms.ModelForm):
     longitude = forms.DecimalField(required=False)
     date = forms.DateField(
         input_formats=['%Y-%m-%d'],
-        widget=forms.DateInput(attrs={'class': 'datepicker'}),
+        required=False,
     )
     time = forms.TimeField(input_formats=['%I:%M'])
     ampm = forms.ChoiceField(choices=TIME_PERIOD_CHOICES, label="AM/PM")
@@ -145,6 +152,12 @@ class WQForm(forms.ModelForm):
             'latitude', 'longitude', 'fish_present', 'live_fish',
             'dead_fish', 'water_temp_unit', 'air_temp_unit', 'notes'
         )
+
+    def clean_date(self):
+        date = self.cleaned_data['date']
+        if date and date > datetime.date.today():
+            raise forms.ValidationError("Please enter a valid date")
+        return date
 
 
 class WQSampleForm(forms.ModelForm):
@@ -178,7 +191,7 @@ class Canopy_Cover_Form(forms.ModelForm):
     weather = forms.CharField(required=False)
     date = forms.DateField(
         input_formats=['%Y-%m-%d'],
-        widget=forms.DateInput(attrs={'class': 'datepicker'}),
+        required=False,
     )
     time = forms.TimeField(input_formats=['%I:%M'])
     ampm = forms.ChoiceField(choices=TIME_PERIOD_CHOICES, label="AM/PM")
@@ -188,6 +201,12 @@ class Canopy_Cover_Form(forms.ModelForm):
         fields = ('school', 'date', 'time', 'ampm', 'weather',
                   'est_canopy_cover', 'north_cc', 'west_cc', 'east_cc',
                   'south_cc')
+
+    def clean_date(self):
+        date = self.cleaned_data['date']
+        if date and date > datetime.date.today():
+            raise forms.ValidationError("Please enter a valid date")
+        return date
 
 
 class TransectZoneForm(forms.ModelForm):
@@ -234,7 +253,7 @@ class RiparianTransectForm(forms.ModelForm):
         queryset=School.objects.all().order_by('name'), empty_label=None)
     date = forms.DateField(
         input_formats=['%Y-%m-%d'],
-        widget=forms.DateInput(attrs={'class': 'datepicker'}),
+        required=False,
     )
     time = forms.TimeField(input_formats=['%I:%M'])
     ampm = forms.ChoiceField(choices=TIME_PERIOD_CHOICES, label="AM/PM")
@@ -247,15 +266,27 @@ class RiparianTransectForm(forms.ModelForm):
         fields = ('school', 'date', 'time', 'ampm',
                   'weather', 'slope', 'notes')
 
+    def clean_date(self):
+        date = self.cleaned_data['date']
+        if date and date > datetime.date.today():
+            raise forms.ValidationError("Please enter a valid date")
+        return date
+
 
 class PhotoPointImageForm(forms.ModelForm):
     date = forms.DateField(
-        widget=forms.DateInput(attrs={'class': 'datepicker'}),
+        required=False,
     )
 
     class Meta:
         model = PhotoPointImage
         fields = ('image', 'date')
+
+    def clean_date(self):
+        date = self.cleaned_data['date']
+        if date and date > datetime.date.today():
+            raise forms.ValidationError("Please enter a valid date")
+        return date
 
 
 class PhotoPointForm(forms.ModelForm):
@@ -273,7 +304,7 @@ class CameraPointForm(forms.ModelForm):
     school = forms.ModelChoiceField(
         queryset=School.objects.all().order_by('name'), empty_label=None)
     cp_date = forms.DateField(
-        widget=forms.DateInput(attrs={'class': 'datepicker'}),
+        required=False,
     )
     description = forms.CharField(
         widget=forms.Textarea(attrs={'class': 'materialize-textarea'}),
@@ -284,6 +315,12 @@ class CameraPointForm(forms.ModelForm):
         model = CameraPoint
         fields = ('school', 'site', 'cp_date', 'location', 'map_datum',
                   'description')
+
+    def clean_cp_date(self):
+        date = self.cleaned_data['cp_date']
+        if date and date > datetime.date.today():
+            raise forms.ValidationError("Please enter a valid date")
+        return date
 
 
 class SiteForm(forms.ModelForm):
@@ -304,7 +341,7 @@ class SoilSurveyForm(forms.ModelForm):
     weather = forms.CharField(required=False)
     date = forms.DateField(
         input_formats=['%Y-%m-%d'],
-        widget=forms.DateInput(attrs={'class': 'datepicker'}),
+        required=False,
     )
     time = forms.TimeField(input_formats=['%I:%M'])
     ampm = forms.ChoiceField(choices=TIME_PERIOD_CHOICES, label="AM/PM")
@@ -325,6 +362,12 @@ class SoilSurveyForm(forms.ModelForm):
             'cover_type', 'land_use', 'soil_type', 'distance', 'site_char',
             'notes'
         )
+
+    def clean_date(self):
+        date = self.cleaned_data['date']
+        if date and date > datetime.date.today():
+            raise forms.ValidationError("Please enter a valid date")
+        return date
 
 
 class ResourceForm(forms.ModelForm):
@@ -391,7 +434,7 @@ class RipAquaForm(forms.ModelForm):
         queryset=School.objects.all().order_by('name'), empty_label=None)
     date = forms.DateField(
         input_formats=['%Y-%m-%d'],
-        widget=forms.DateInput(attrs={'class': 'datepicker'}),
+        required=False,
     )
     time = forms.TimeField(input_formats=['%I:%M'])
     ampm = forms.ChoiceField(choices=TIME_PERIOD_CHOICES, label="AM/PM")
@@ -482,3 +525,9 @@ class RipAquaForm(forms.ModelForm):
             'wildlife_comments4', 'wildlife_comments5', 'wildlife_comments6',
             'time', 'ampm', 'stream_length', 'notes'
             )
+
+        def clean_date(self):
+            date = self.cleaned_data['date']
+            if date > datetime.date.today():
+                raise forms.ValidationError("Please enter a valid date")
+            return date

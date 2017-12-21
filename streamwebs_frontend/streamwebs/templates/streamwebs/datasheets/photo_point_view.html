@@ -92,11 +92,38 @@
                       {{ ppi_form.image.errors }}
                     </div>
                   </div>
-                  <div class="col s12">
-                    <div class="input-field">
-                      <b>{{ ppi_form.date.label }}</b>
-                      {{ ppi_form.date }}
+                  <div class="row">
+                    <div class="input-field hidden-date" style="display:none;">
+                      {{ ppi_form.date.label }} (YYYY-MM-DD)
                       {{ ppi_form.date.errors }}
+                      {{ ppi_form.date }}
+                    </div>
+                    <div class="col s10">
+                      <div class="input-field year date">
+                        Year
+                        <p><strong class="errorlist"></strong></p>
+                        <select class="year browser-default">
+                          <option value="" disabled selected>Choose year</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col s10">
+                      <div class="input-field month date">
+                        Month
+                        <p><strong class="errorlist"></strong></p>
+                        <select class="month browser-default">
+                          <option value="" disabled selected>Choose month</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col s10">
+                      <div class="input-field day date">
+                        Day
+                        <p><strong class="errorlist"></strong></p>
+                        <select class="day browser-default">
+                          <option value="" disabled selected>Choose day</option>
+                        </select>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -137,15 +164,6 @@
 {% endblock %}
 
 {% block scripts %}
-  <script>
-    $(document).ready(function () {
-      $('.datepicker').pickadate({
-        today: '',
-        selectMonths: true, // Creates a dropdown to control month
-        selectYears: 100, // Creates a dropdown of 15 years to control year
-        max: true, // set max to today
-        format: 'yyyy-mm-dd',
-      });
-    });
-  </script>
+  <script type="application/javascript"
+          src="{% static 'streamwebs/js/date.js' %}"></script>
 {% endblock %}

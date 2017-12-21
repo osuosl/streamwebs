@@ -1,5 +1,6 @@
 {% extends 'streamwebs/base.html' %}
 {% load i18n %}
+{% load static %}
 
 {% block title %}{% trans "Register" %} -{% endblock %}
 
@@ -30,75 +31,107 @@
       {% else %}
         <form class="col s8 offset-s2" id='user_form' method='post'
               action="{% url 'streamwebs:register' %}">
-          <strong class="normal">{% trans "Create an account." %}</strong>
-          <br/>
-          {% csrf_token %}
-          <div class="input-field col s6">
-            <label
-                for="{{ user_form.first_name.id_for_label }}">{% trans "First Name" %}:</label>
-            {{ user_form.first_name }}
-            {{ user_form.first_name.errors }}
+          <div class="row">
+            <strong class="normal">{% trans "Create an account." %}</strong>
+            <br/>
+            {% csrf_token %}
+            <div class="input-field col s6">
+              <label
+                  for="{{ user_form.first_name.id_for_label }}">{% trans "First Name" %}:</label>
+              {{ user_form.first_name }}
+              {{ user_form.first_name.errors }}
 
+            </div>
+            <div class="input-field col s6">
+              <label
+                  for="{{ user_form.last_name.id_for_label }}">{% trans "Last Name" %}:</label>
+              {{ user_form.last_name }}
+              {{ user_form.last_name.errors }}
+            </div>
           </div>
-          <div class="input-field col s6">
-            <label
-                for="{{ user_form.last_name.id_for_label }}">{% trans "Last Name" %}:</label>
-            {{ user_form.last_name }}
-            {{ user_form.last_name.errors }}
+          <strong class="birthdate-error"></strong>
+          <div class="row">
+            <div class="input-field hidden-date" style="display:none;">
+              {{ profile_form.birthdate.label }} (YYYY-MM-DD)
+              {{ profile_form.birthdate }}
+              {{ profile_form.birthdate.errors }}
+            </div>
+            <div class="col s4">
+              <div class="input-field year date">
+                Year
+                <p><strong class="errorlist"></strong></p>
+                <select class="year browser-default">
+                  <option value="" disabled selected>Choose year</option>
+                </select>
+              </div>
+            </div>
+            <div class="col s4">
+              <div class="input-field month date">
+                Month
+                <p><strong class="errorlist"></strong></p>
+                <select class="month browser-default">
+                  <option value="" disabled selected>Choose month</option>
+                </select>
+              </div>
+            </div>
+            <div class="col s4">
+              <div class="input-field day date">
+                Day
+                <p><strong class="errorlist"></strong></p>
+                <select class="day browser-default">
+                  <option value="" disabled selected>Choose day</option>
+                </select>
+              </div>
+            </div>
           </div>
+          <div class="row">
+          </div>
+            <div class="input-field col s12 ">
+              {{ profile_form.school }}
+              {{ profile_form.school.errors }}
+              <label for="{{ profile_form.school.id_for_label }}">{% trans "School" %}:</label>
+              <a href="{% url 'streamwebs:create_school' %}?next={{ request.path|urlencode }}" class="btn waves-effect waves-light teal darken-3">{% trans "Add A School/Organization" %}</a>
+            </div>
 
-          <div class="input-field col s12">
-            <label
-                for="{{ profile_form.birthdate.id_for_label }}">{% trans "Birthdate" %}</label>
-            {{ profile_form.birthdate }}
-            {{ profile_form.birthdate.errors }}
-          </div>
+            <div class="input-field col s12">
+              <label
+                  for="{{ user_form.username.id_for_label }}">{% trans "Username" %}:</label>
+              {{ user_form.username }}
+              {{ user_form.username.errors }}
+            </div>
 
-          <div class="input-field col s12 ">
-            {{ profile_form.school }}
-            {{ profile_form.school.errors }}
-            <label for="{{ profile_form.school.id_for_label }}">{% trans "School" %}:</label>
-            <a href="{% url 'streamwebs:create_school' %}?next={{ request.path|urlencode }}" class="btn waves-effect waves-light teal darken-3">{% trans "Add A School/Organization" %}</a>
-          </div>
+            <div class="input-field col s12">
+              <label
+                  for="{{ user_form.email.id_for_label }}">{% trans "Email" %}:</label>
+              {{ user_form.email }}
+              {{ user_form.email.errors }}
+            </div>
 
-          <div class="input-field col s12">
-            <label
-                for="{{ user_form.username.id_for_label }}">{% trans "Username" %}:</label>
-            {{ user_form.username }}
-            {{ user_form.username.errors }}
-          </div>
+            <div class="input-field col s12">
+              <label
+                  for="{{ user_form.password.id_for_label }}">{% trans "Password" %}:</label>
+              {{ user_form.password }}
+              {{ user_form.password.errors }}
+            </div>
 
-          <div class="input-field col s12">
-            <label
-                for="{{ user_form.email.id_for_label }}">{% trans "Email" %}:</label>
-            {{ user_form.email }}
-            {{ user_form.email.errors }}
-          </div>
-
-          <div class="input-field col s12">
-            <label
-                for="{{ user_form.password.id_for_label }}">{% trans "Password" %}:</label>
-            {{ user_form.password }}
-            {{ user_form.password.errors }}
-          </div>
-
-          <div class="input-field col s12">
-            <label
-                for="{{ user_form.password_check.id_for_label }}">{% trans "Verify Password" %}:</label>
-            {{ user_form.password_check }}
-            {{ user_form.password_check.errors }}
-          </div>
-          <div class="input-field col s12">
-            <label for="{{ profile_form.captcha.id_for_label }}"></label>
-            {{ profile_form.captcha }}
-            {{ profile_form.captcha.errors }}
-          </div>
-          <div class="col s12">
-            <div class="center-content">
-              <button class="btn wave-effect waves-light teal darken-3" type="submit"
-                name="submit" value="{% trans "Create Account" %}">
-                {% trans "Create Account" %}
-              </button>
+            <div class="input-field col s12">
+              <label
+                  for="{{ user_form.password_check.id_for_label }}">{% trans "Verify Password" %}:</label>
+              {{ user_form.password_check }}
+              {{ user_form.password_check.errors }}
+            </div>
+            <div class="input-field col s12">
+              <label for="{{ profile_form.captcha.id_for_label }}"></label>
+              {{ profile_form.captcha }}
+              {{ profile_form.captcha.errors }}
+            </div>
+            <div class="col s12">
+              <div class="center-content">
+                <button class="btn wave-effect waves-light teal darken-3" type="submit"
+                  name="submit" value="{% trans "Create Account" %}">
+                  {% trans "Create Account" %}
+                </button>
+              </div>
             </div>
           </div>
         </form>
@@ -109,6 +142,8 @@
 
 {% block scripts %}
   <!--Import jQuery before materialize.js-->
+  <script type="application/javascript"
+          src="{% static 'streamwebs/js/date.js' %}"></script>
   <script type="text/javascript"
           src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
   <script
@@ -118,6 +153,7 @@
   <script
       src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
   <script>
+      window.birthdate = true;
       $(document).ready(function () {
         {% if messages %}
           {% for message in messages %}
