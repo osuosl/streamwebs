@@ -48,14 +48,11 @@ ul.errorlist ~ #id_time{
 
     <div class="row">
       <div class="col s12">
-        {{ rip_aqua_form.school.label }}
-        {{ rip_aqua_form.school.errors }}
-        {{ rip_aqua_form.school }}
-      </div>
-      <div class="col s12">
-        <a href="{% url 'streamwebs:create_school' %}?next={{ request.path|urlencode }}" class="btn waves-effect waves-light teal darken-3">{% trans "Add A School/Organization" %}</a>
+          <div>{% trans "School" %}</div>
+          <p id="school-name">{{ school }}</p>
       </div>
     </div>
+    <br/>
     <div class="row">
       <div class="col s6">
         {{ rip_aqua_form.date.label }} (YYYY-MM-DD)

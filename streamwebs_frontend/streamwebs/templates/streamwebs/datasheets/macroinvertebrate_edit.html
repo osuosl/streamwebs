@@ -24,14 +24,11 @@
 
         <div class="row">
           <div class="col s12">
-            {{ macro_form.school.label }}
-            {{ macro_form.school.errors }}
-            {{ macro_form.school }}
-          </div>
-          <div class="col s12">
-            <a href="{% url 'streamwebs:create_school' %}?next={{ request.path|urlencode }}" class="btn waves-effect waves-light teal darken-3">{% trans "Add A School/Organization" %}</a>
+              <div>{% trans "School" %}</div>
+              <p id="school-name">{{ school }}</p>
           </div>
         </div>
+        <br/>
         <div class="row">
           <div class="col s6">
             {{ macro_form.date.label }} (YYYY-MM-DD)

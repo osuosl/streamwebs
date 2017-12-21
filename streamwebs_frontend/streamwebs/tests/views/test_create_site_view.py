@@ -1,7 +1,7 @@
 import tempfile
 from django.test import Client, TestCase
 from django.core.urlresolvers import reverse
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 
 
 class CreateSiteTestCase(TestCase):
@@ -9,6 +9,7 @@ class CreateSiteTestCase(TestCase):
         self.client = Client()
         self.user = User.objects.create_user('john', 'john@example.com',
                                              'johnpassword')
+        self.user.groups.add(Group.objects.get(name='org_admin'))
         self.client.login(username='john', password='johnpassword')
 
     def test_view_with_bad_blank_data(self):

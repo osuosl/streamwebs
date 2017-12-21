@@ -35,15 +35,12 @@
         <tr>{{ transect_form.non_field_errors }}</tr>
 
         <div class="row">
-          <div class="input-field">
-            {{ transect_form.school.label }}
-            {{ transect_form.school.errors }}
-            {{ transect_form.school }}
+          <div class="col s12">
+              <div>{% trans "School" %}</div>
+              <p id="school-name">{{ school }}</p>
           </div>
         </div>
-        <div class="row">
-          <a href="{% url 'streamwebs:create_school' %}?next={{ request.path|urlencode }}" class="btn waves-effect waves-light teal darken-3">{% trans "Add A School/Organization" %}</a>
-        </div>
+        <br/>
 
         <div class="row">
           <div class="col s6">

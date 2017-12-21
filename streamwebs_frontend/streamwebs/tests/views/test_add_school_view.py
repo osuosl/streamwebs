@@ -1,12 +1,25 @@
 from django.test import TestCase, Client
 from django.core.urlresolvers import reverse
-
+from django.contrib.auth.models import User, Group
+from streamwebs.models import School, UserProfile
 
 class CreateSchoolTestCase(TestCase):
 
     def setUp(self):
         self.client = Client()
+
+        self.school = School.test_objects.create_school('Test School')
+
+        self.user = User.objects.create_user(
+            'john', 'john@example.com', 'johnpassword'
+        )
+        self.user.groups.add(Group.objects.get(name='org_admin'))
         self.client.login(username='john', password='johnpassword')
+
+        self.profile = UserProfile()
+        self.profile.user = self.user
+        self.profile.school = self.school
+        self.profile.save()
 
     def test_view_with_bad_blank_data(self):
         """Blank form: Errors will be displayed and site will not be created"""

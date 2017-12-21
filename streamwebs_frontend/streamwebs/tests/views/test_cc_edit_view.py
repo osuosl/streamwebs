@@ -1,15 +1,25 @@
 from django.test import Client, TestCase
 from django.core.urlresolvers import reverse
-from django.contrib.auth.models import User
-from streamwebs.models import Site, School, Canopy_Cover
+from django.contrib.auth.models import User, Group
+from streamwebs.models import Site, School, Canopy_Cover, UserProfile
 
 
 class AddCanopyCoverTestCase(TestCase):
     def setUp(self):
         self.client = Client()
-        self.user = User.objects.create_user('joe', 'joe@example.com',
-                                             'notsoaveragejoe')
-        self.client.login(username='joe', password='notsoaveragejoe')
+
+        self.school = School.test_objects.create_school('Test School')
+
+        self.user = User.objects.create_user(
+            'john', 'john@example.com', 'johnpassword'
+        )
+        self.user.groups.add(Group.objects.get(name='org_admin'))
+        self.client.login(username='john', password='johnpassword')
+
+        self.profile = UserProfile()
+        self.profile.user = self.user
+        self.profile.school = self.school
+        self.profile.save()
 
     def test_view_with_bad_blank_data(self):
         """
@@ -26,10 +36,6 @@ class AddCanopyCoverTestCase(TestCase):
                 'canopy_cover-MAX_NUM_FORMS': '4'
                }
         )
-        # At least one field should raise an error
-        self.assertFormError(
-            response, 'canopy_cover_form', 'school', 'This field is required.'
-        )
         self.assertTemplateUsed(
             response,
             'streamwebs/datasheets/canopy_cover_edit.html'
@@ -41,13 +47,11 @@ class AddCanopyCoverTestCase(TestCase):
         appropriately, return a success message
         """
         site = Site.test_objects.create_site('Testoo')
-        school = School.test_objects.create_school('School of Cool')
         response = self.client.post(
             reverse(
                 'streamwebs:canopy_cover_edit',
                 kwargs={'site_slug': site.site_slug}
             ), {
-                'school': school.id,
                 'date': '2016-08-31',
                 'time': '12:30',
                 'ampm': 'AM',

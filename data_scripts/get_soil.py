@@ -66,6 +66,9 @@ with open(datafile, 'r') as csvfile:  # 'r' is for read
         else:
             dist = feet_to_meters(float(dist))
 
+        if dist is not None:
+            dist = str(float("{0:2f}".format(dist)))
+
         site_char = row['Distinguishing Site Characteristics']
 
         soil_type = row['My Soil Type Is'].lower().replace(' ', '_')

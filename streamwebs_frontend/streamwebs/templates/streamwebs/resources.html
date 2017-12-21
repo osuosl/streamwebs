@@ -232,7 +232,7 @@
         </div>
       </div>
     </a>
-    {% if perms.streamwebs.can_upload_resources %}
+    {% if perms.streamwebs.is_super_admin %}
       <a class="resource-link"href="{% url 'streamwebs:resources-upload' %}">
         <div class="resource-block">
           <div class="center resource">

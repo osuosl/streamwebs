@@ -31,7 +31,7 @@ with open(datafile, 'r') as csvfile:
 
         school = School.objects.update_or_create(
             name=name, school_type=school_type, address=address, city=city,
-            province=province, zipcode=zipcode
+            province=province, zipcode=zipcode, active=True
         )
 
 print "Schools loaded."

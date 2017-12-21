@@ -8,7 +8,7 @@
   <link href="https://fonts.googleapis.com/css?family=Lato:400,700|Montserrat" rel="stylesheet">
   <link rel="stylesheet" type="text/css"
         href="{% static 'streamwebs/bower_components/materialize/dist/css/materialize.css' %}"/>
-  <link href="http://fonts.googleapis.com/icon?family=Material+Icons"
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
         rel="stylesheet">
   <link rel="stylesheet" type="text/css"
         href="{% static 'streamwebs/style.css' %}"/>
@@ -53,27 +53,21 @@
       <div id="footer">
         <div id="footer-content">
           <div id="footer-links">
+            {% if user.is_authenticated and perms.streamwebs.is_org_admin %}
             <a href="{% url 'streamwebs:create_site' %}"
                    class="footer-link">{% trans "Create Sites" %}</a>
+            {% endif %}
             <a href="{% url 'streamwebs:sites' %}"
                    class="footer-link">{% trans "Search Sites" %}</a>
-            <a href="{% url 'streamwebs:create_school' %}?next={{ request.path|urlencode }}"
-                   class="footer-link">{% trans "Add School/Org." %}</a>
             <a href="{% url 'streamwebs:schools' %}"
                    class="footer-link">{% trans "View Schools" %}</a>
             <a href="{% url 'streamwebs:about' %}"
                    class="footer-link">{% trans "About" %}</a>
           </div>
-          {% if perms.streamwebs.can_view_stats or perms.streamwebs.can_promote_users %}
+          {% if perms.streamwebs.is_super_admin %}
           <div id="admin-links">
-            {% if perms.streamwebs.can_view_stats %}
             <a href="{% url 'streamwebs:stats' %}"
                    class="footer-link">{% trans "View Site Statistics" %}</a>
-            {% endif %}
-            {% if perms.streamwebs.can_promote_users %}
-            <a href="{% url 'streamwebs:user_promo' %}"
-                   class="footer-link">{% trans "Manage Users" %}</a>
-            {% endif %}
           </div>
           {% endif %}
           <div id="footer-branding">

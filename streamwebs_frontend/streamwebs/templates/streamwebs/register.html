@@ -6,6 +6,18 @@
 {% block body_title %}{% trans "Register" %}{% endblock %}
 
 {% block content %}
+
+<script>
+  function uncheck_perms(checkbox) {
+    var checkboxes = document.getElementById("mutually_exclusive_checkboxes").getElementsByTagName('input')
+    for (i = 0; i < checkboxes.length; i++) { 
+      if (checkboxes[i].type == "checkbox" && checkboxes[i] != checkbox) {
+        checkboxes[i].checked = false;
+      }
+    }
+  }
+  </script>
+
   <style>
     /* center captcha */
     div.g-recaptcha > div {
@@ -16,94 +28,173 @@
     }
   </style>
 
-  <div class="container">
-    <div class="row">
-      {% if registered %}
-        <div class="center-content">
-          <br/><br/>
-          <strong class="normal">{% trans "You have successfully created a StreamWebs account." %}</strong>
-          <br/>
-          <a href="{% url 'streamwebs:index' %}">{% trans "Return to home" %}</a>
-          <br/>
+<div class="container">
+    <form id='user_form' method='post'
+      action="{% url 'streamwebs:register' %}" novalidate>
+      {% csrf_token %}
+      
+      <br/>
+
+      <!-- Username, email, password -->
+      <div class="row">
+        <!-- First name -->
+        <div class="input-field col s4 offset-s2">
+          <label for="{{ user_form.first_name.id_for_label }}">
+            {% trans "First Name" %}
+          </label>
+          {{ user_form.first_name }}
+          {{ user_form.first_name.errors }}
+        </div>
+        <!-- Last name -->
+        <div class="input-field col s4">
+          <label for="{{ user_form.last_name.id_for_label }}">
+            {% trans "Last Name" %}
+          </label>
+          {{ user_form.last_name }}
+          {{ user_form.last_name.errors }}
         </div>
 
-      {% else %}
-        <form class="col s8 offset-s2" id='user_form' method='post'
-              action="{% url 'streamwebs:register' %}">
-          <strong class="normal">{% trans "Create an account." %}</strong>
-          <br/>
-          {% csrf_token %}
-          <div class="input-field col s6">
-            <label
-                for="{{ user_form.first_name.id_for_label }}">{% trans "First Name" %}:</label>
-            {{ user_form.first_name }}
-            {{ user_form.first_name.errors }}
+        <!-- Email -->
+        <div class="input-field col s8 offset-s2">
+          <label for="{{ user_form.email.id_for_label }}">
+              {% trans "Email" %}
+            </label>
+          {{ user_form.email }}
+          {{ user_form.email.errors }}
+        </div>
+        <!-- Username -->
+        <div class="input-field col s8 offset-s2">
+          <label for="{{ user_form.username.id_for_label }}">
+            {% trans "Username" %}
+          </label>
+          {{ user_form.username }}
+          {{ user_form.username.errors }}
+        </div>
+        <!-- Password -->
+        <div class="input-field col s8 offset-s2">
+          <label for="{{ user_form.password.id_for_label }}">
+              {% trans "Password" %}
+            </label>
+          {{ user_form.password }}
+          {{ user_form.password.errors }}
+        </div>
+        <!-- Password verify -->
+        <div class="input-field col s8 offset-s2">
+          <label for="{{ user_form.password_check.id_for_label }}">
+              {% trans "Verify Password" %}
+            </label>
+          {{ user_form.password_check }}
+          {{ user_form.password_check.errors }}
+        </div>
+      </div>
+      
+      <!-- Select school -->
+      <div class="row" id="select_school">
+        <br/>
+        <!-- Schools -->
+        <div class="input-field col s6 offset-s2">
+          {{ profile_form.school }}
+          <label for="{{ profile_form.school.id_for_label }}">
+            {% trans "School" %}
+          </label>
+        </div>
+        <div class="input-field col s2">
+          <a class="btn waves-effect teal darken-3" id="org_create"
+            style="display: block; width: 100%;">
+            {% trans "New" %}
+          </a>
+        </div>
+      </div>
+  
+      <!-- New organization -->
+      <div class="row" id="org_section" style="display:none;">
+        <br/>
+        <hr/>
+        <div class="col s2">
+          <a class="btn waves-effect teal darken-3" id="org_cancel">
+            {% trans "Cancel" %}
+          </a>
+        </div>
+        <div class="col s8">
+          <!-- Title -->
+          <h3 class="teal-text col s12 center">New Organization</h3>
 
-          </div>
-          <div class="input-field col s6">
-            <label
-                for="{{ user_form.last_name.id_for_label }}">{% trans "Last Name" %}:</label>
-            {{ user_form.last_name }}
-            {{ user_form.last_name.errors }}
-          </div>
-
+          <!-- Name -->
           <div class="input-field col s12">
-            <label
-                for="{{ profile_form.birthdate.id_for_label }}">{% trans "Birthdate" %}</label>
-            {{ profile_form.birthdate }}
-            {{ profile_form.birthdate.errors }}
+            <label for="{{ school_form.name.id_for_label }}">
+              {% trans "Name" %}
+            </label>
+            {{ school_form.name }}
+            {{ school_form.name.errors | striptags }}
+          </div>
+          
+          <!-- Type -->
+          <div class="input-field col s12">
+            <label for="{{ school_form.school_type.id_for_label }}" id="school_type" 
+                    name="school_type">
+                    {% trans "Type:" %}
+            </label>
+            <br/>
+            <ul>
+              {% for radio in school_form.school_type %}
+                {{ radio.tag }}
+                <label for="{{ radio.id_for_label }}">
+                  {{ radio.choice_label }}
+                </label>
+                {{ radio.tag.errors | striptags }}
+              {% endfor %}
+            </ul>
+          </div>
+          
+          <!-- Address -->
+          <div class="input-field col s12">
+            <label for="{{ school_form.address.id_for_label }}">{% trans "Address" %}</label>
+            {{ school_form.address }}
+            {{ school_form.address.errors | striptags }}
           </div>
 
-          <div class="input-field col s12 ">
-            {{ profile_form.school }}
-            {{ profile_form.school.errors }}
-            <label for="{{ profile_form.school.id_for_label }}">{% trans "School" %}:</label>
-            <a href="{% url 'streamwebs:create_school' %}?next={{ request.path|urlencode }}" class="btn waves-effect waves-light teal darken-3">{% trans "Add A School/Organization" %}</a>
+          <!-- City -->
+          <div class="input-field col s12">
+            <label for="{{ school_form.city.id_for_label }}">{% trans "City" %}</label>
+            {{ school_form.city }}
+            {{ school_form.city.errors | striptags }}
           </div>
 
+          <!-- Province -->
           <div class="input-field col s12">
-            <label
-                for="{{ user_form.username.id_for_label }}">{% trans "Username" %}:</label>
-            {{ user_form.username }}
-            {{ user_form.username.errors }}
+            <label for="{{ school_form.province.id_for_label }}">{% trans "State" %}</label>
+            {{ school_form.province }}
+            {{ school_form.province.errors | striptags }}
           </div>
 
+          <!-- Zip code -->
           <div class="input-field col s12">
-            <label
-                for="{{ user_form.email.id_for_label }}">{% trans "Email" %}:</label>
-            {{ user_form.email }}
-            {{ user_form.email.errors }}
+            <label for="{{ school_form.zipcode.id_for_label }}">{% trans "Zipcode" %}</label>
+            {{ school_form.zipcode }}
+            {{ school_form.zipcode.errors | striptags }}
           </div>
+        </div>
+      </div>
 
-          <div class="input-field col s12">
-            <label
-                for="{{ user_form.password.id_for_label }}">{% trans "Password" %}:</label>
-            {{ user_form.password }}
-            {{ user_form.password.errors }}
+      <div class="row">
+        <!-- Captcha -->
+        <div class="input-field col s8 offset-s2">
+          <label for="{{ profile_form.captcha.id_for_label }}"></label>
+          {{ profile_form.captcha }}
+          {{ profile_form.captcha.errors }}
+        </div>
+        <!-- Submit button -->
+        <div class="col s8 offset-s2">
+          <div class="center-content">
+            <button class="btn wave-effect waves teal darken-3"
+              type="submit" name="submit" value="{% trans "Create Account" %}">
+              {% trans "Create Account" %}
+            </button>
           </div>
+        </div>
+      </div>
 
-          <div class="input-field col s12">
-            <label
-                for="{{ user_form.password_check.id_for_label }}">{% trans "Verify Password" %}:</label>
-            {{ user_form.password_check }}
-            {{ user_form.password_check.errors }}
-          </div>
-          <div class="input-field col s12">
-            <label for="{{ profile_form.captcha.id_for_label }}"></label>
-            {{ profile_form.captcha }}
-            {{ profile_form.captcha.errors }}
-          </div>
-          <div class="col s12">
-            <div class="center-content">
-              <button class="btn wave-effect waves-light teal darken-3" type="submit"
-                name="submit" value="{% trans "Create Account" %}">
-                {% trans "Create Account" %}
-              </button>
-            </div>
-          </div>
-        </form>
-      {% endif %}
-    </div>
+    </form>
   </div>
 {% endblock %}
 
@@ -118,20 +209,23 @@
   <script
       src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
   <script>
-      $(document).ready(function () {
-        {% if messages %}
-          {% for message in messages %}
-            Materialize.toast('{{ message }}', 4000, 'green');
-          {% endfor %}
-        {% endif %}
-        $('select').material_select();
-        $('.datepicker').pickadate({
-            today: '',
-            selectMonths: true, // Creates a dropdown to control month
-            selectYears: 100, // Creates a dropdown of 15 years to control year
-            max: true, // set max to today
-            format: 'yyyy-mm-dd',
-        });
+    $(document).ready(function() {
+      // Initial stuff
+      $('select').material_select();
+
+      $('#org_create').click(function(){
+        $('#select_school').slideUp(500);
+        $('#org_section').slideDown(500);
+        //$('#org_section').find('input').validate({ignore: ".ignore"})
+        $('#org_section').find('input').prop('disabled', false);
       });
+      $('#org_cancel').click(function(){
+        $('#select_school').slideDown(500);
+        $('#org_section').slideUp(500);
+        //$('#org_section').find('input').validate({ignore: ".hidden"})
+        $('#org_section').find('input').prop('disabled', true);
+      });
+
+    });
   </script>
 {% endblock %}
