@@ -1219,66 +1219,66 @@ class RipAquaticSurvey(models.Model):
         blank=True, null=True, verbose_name=_('number of pools')
     )
     silt = models.CharField(
-        max_length=250, choices=OPTIONS, null=True, default=OPTIONS[0][0],
+        max_length=250, choices=OPTIONS, null=True, blank=True,
         verbose_name=_('silt')
     )
     sand = models.CharField(
-        max_length=250, choices=OPTIONS, null=True, default=OPTIONS[0][0],
+        max_length=250, choices=OPTIONS, null=True, blank=True,
         verbose_name=_('sand')
     )
     gravel = models.CharField(
-        max_length=250, choices=OPTIONS, null=True, default=OPTIONS[0][0],
+        max_length=250, choices=OPTIONS, null=True, blank=True,
         verbose_name=_('gravel')
     )
     cobble = models.CharField(
-        max_length=250, choices=OPTIONS, null=True, default=OPTIONS[0][0],
+        max_length=250, choices=OPTIONS, null=True, blank=True,
         verbose_name=_('cobble')
     )
     boulders = models.CharField(
-        max_length=250, choices=OPTIONS, null=True, default=OPTIONS[0][0],
+        max_length=250, choices=OPTIONS, null=True, blank=True,
         verbose_name=_('boulders')
     )
     bedrock = models.CharField(
-        max_length=250, choices=OPTIONS, null=True, default=OPTIONS[0][0],
+        max_length=250, choices=OPTIONS, null=True, blank=True,
         verbose_name=_('bedrock')
     )
     small_debris = models.CharField(
-        max_length=250, choices=OPTIONS, null=True, default=OPTIONS[0][0],
+        max_length=250, choices=OPTIONS, null=True, blank=True,
         verbose_name=_('small_debris')
     )
     medium_debris = models.CharField(
-        max_length=250, choices=OPTIONS, null=True, default=OPTIONS[0][0],
+        max_length=250, choices=OPTIONS, null=True, blank=True,
         verbose_name=_('medium_debris')
     )
     large_debris = models.CharField(
-        max_length=250, choices=OPTIONS, null=True, default=OPTIONS[0][0],
+        max_length=250, choices=OPTIONS, null=True, blank=True,
         verbose_name=_('large_debris')
     )
     comments = models.CharField(
         max_length=250, null=True, verbose_name=_('comments'), blank=True
     )
     coniferous_trees = models.CharField(
-        max_length=250, choices=OPTIONS, null=True, default=OPTIONS[0][0],
+        max_length=250, choices=OPTIONS, null=True, blank=True,
         verbose_name=_('coniferous_trees')
     )
     deciduous_trees = models.CharField(
-        max_length=250, choices=OPTIONS, null=True, default=OPTIONS[0][0],
+        max_length=250, choices=OPTIONS, null=True, blank=True,
         verbose_name=_('deciduous_trees')
     )
     shrubs = models.CharField(
-        max_length=250, choices=OPTIONS, null=True, default=OPTIONS[0][0],
+        max_length=250, choices=OPTIONS, null=True, blank=True,
         verbose_name=_('shrubs')
     )
     small_plants = models.CharField(
-        max_length=250, choices=OPTIONS, null=True, default=OPTIONS[0][0],
+        max_length=250, choices=OPTIONS, null=True, blank=True,
         verbose_name=_('small_plants')
     )
     ferns = models.CharField(
-        max_length=250, choices=OPTIONS, null=True, default=OPTIONS[0][0],
+        max_length=250, choices=OPTIONS, null=True, blank=True,
         verbose_name=_('ferns')
     )
     grasses = models.CharField(
-        max_length=250, choices=OPTIONS, null=True, default=OPTIONS[0][0],
+        max_length=250, choices=OPTIONS, null=True, blank=True,
         verbose_name=_('grasses')
     )
     species1 = models.CharField(

@@ -36,14 +36,14 @@
         <p>
           <b>
             {% trans "Length of Stream" %} (ft)
-          </b>: {{ data.stream_length }}
+          </b>: {{ data.stream_length}}
         </p>
       </div>
       <div class="col s4">
         <p>
           <b>
             {% trans 'Number of Riffles' %}
-          </b>: {{ data.riffle_count }}
+          </b>: {{ data.riffle_count}}
         </p>
       </div>
       <div class="col s4">
@@ -60,42 +60,42 @@
         <p>
           <b>
             {% trans "Silt" %}
-          </b>: {{ data.silt }}
+          </b>: {{ data.silt| default:"" }}
         </p>
       </div>
       <div class="col s4">
         <p>
           <b>
             {% trans "Sand" %}
-          </b>: {{ data.sand }}
+          </b>: {{ data.sand| default:"" }}
         </p>
       </div>
       <div class="col s4">
         <p>
           <b>
             {% trans "Gravel" %}
-          </b>: {{ data.gravel }}
+          </b>: {{ data.gravel| default:"" }}
         </p>
       </div>
       <div class="col s4">
         <p>
           <b>
             {% trans "Cobble" %}
-          </b>: {{ data.cobble }}
+          </b>: {{ data.cobble| default:"" }}
         </p>
       </div>
       <div class="col s4">
         <p>
           <b>
             {% trans "Boulders" %}
-          </b>: {{ data.boulders }}
+          </b>: {{ data.boulders| default:"" }}
         </p>
       </div>
       <div class="col s4">
         <p>
           <b>
             {% trans "Bedrock" %}
-          </b>: {{ data.bedrock }}
+          </b>: {{ data.bedrock| default:""}}
         </p>
       </div>
     </div>
@@ -106,7 +106,7 @@
         <p>
           <b>
             {% trans 'Small Debris' %}
-          </b>: {{ data.small_debris }}
+          </b>: {{ data.small_debris| default:""}}
         </p>
       </div>
 
@@ -114,7 +114,7 @@
         <p>
           <b>
             {% trans 'Medium Debris' %}
-          </b>: {{ data.medium_debris }}
+          </b>: {{ data.medium_debris| default:"" }}
         </p>
       </div>
 
@@ -122,7 +122,7 @@
         <p>
           <b>
             {% trans 'Large Debris' %}
-          </b>: {{ data.large_debris }}
+          </b>: {{ data.large_debris| default:"" }}
         </p>
       </div>
     </div>
@@ -131,7 +131,7 @@
         <p>
           <b>
             {% trans "Commments" %}
-          </b>: {{ data.comments }}
+          </b>: {{ data.comments| default:"" }}
         </p>
       </div>
     </div>
@@ -142,38 +142,38 @@
         <p>
           <b>
             {% trans "Coniferous Trees" %}
-          </b>: {{ data.coniferous_trees}}
+          </b>: {{ data.coniferous_trees| default:""}}
         </p>
       </div>
       <div class="col s4">
         <p>
           <b>
             {% trans "Deciduous Trees" %}
-          </b>: {{ data.deciduous_trees }}
+          </b>: {{ data.deciduous_trees| default:"" }}
         </p>
       </div>
       <div class="col s4">
         <p>
           <b>
             {% trans "Shrubs" %}
-          </b>: {{ data.shrubs }}
+          </b>: {{ data.shrubs| default:"" }}
         </p>
       </div>
       <div class="col s4">
         <p>
-          <b>{% trans "Small Plants" %}</b>: {{ data.small_plants }}
+          <b>{% trans "Small Plants" %}</b>: {{ data.small_plants| default:"" }}
         </p>
       </div>
       <div class="col s4">
         <p>
           <b>
             {% trans "Ferns" %}
-          </b>: {{ data.ferns }}
+          </b>: {{ data.ferns| default:"" }}
         </p>
       </div>
       <div class="col s4">
         <p>
-          <b>{% trans "Grasses" %}</b>: {{ data.grasses }}
+          <b>{% trans "Grasses" %}</b>: {{ data.grasses| default:"" }}
         </p>
       </div>
     </div>
