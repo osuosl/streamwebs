@@ -48,50 +48,43 @@
     </div>
     <br/>
     <div class="row">
-      <div class="col s6">
-        {{ rip_aqua_form.date.label }} (YYYY-MM-DD)
+      <div class="input-field col s6">
+        <label for="{{ rip_aqua_form.date.id_for_label }}">{{ rip_aqua_form.date.label }} (YYYY-MM-DD)</label>
         {{ rip_aqua_form.date.errors }}
         {{ rip_aqua_form.date }}
       </div>
-      <div class="col s3">
-        {{ rip_aqua_form.time.label }} (HH:MM)
+      <div class="input-field col s3">
+        <label for="{{ rip_aqua_form.time.id_for_label }}">{{ rip_aqua_form.time.label }} (HH:MM)</label>
         {{ rip_aqua_form.time.errors }}
         {{ rip_aqua_form.time }}
       </div>
-      <div class="col s3">
-        {{ rip_aqua_form.ampm.label }}
+      <div class="input-field col s3">
         {{ rip_aqua_form.ampm.errors }}
         {{ rip_aqua_form.ampm }}
       </div>
     </div>
     <div class="row">
-      <div class="col s12">
-        {{ rip_aqua_form.weather.label }}
+      <div class="input-field col s12">
+        <label for="{{ rip_aqua_form.weather.id_for_label }}">{{ rip_aqua_form.weather.label }}</label>
         {{ rip_aqua_form.weather.errors }}
         {{ rip_aqua_form.weather }}
       </div>
     </div>
     <div class="row">
-      <div class="col s4">
-        <div class="input-field">
-          {{ rip_aqua_form.stream_length.label }} (in feet)
-          {{ rip_aqua_form.stream_length.errors}}
-          {{ rip_aqua_form.stream_length }}
-        </div>
+      <div class="input-field col s4">
+        <label for="{{ rip_aqua_form.stream_length.id_for_label }}">{{ rip_aqua_form.stream_length.label }} (in feet)</label>
+        {{ rip_aqua_form.stream_length.errors}}
+        {{ rip_aqua_form.stream_length }}
       </div>
-      <div class="col s4">
-        <div class="input-field">
-          {{ rip_aqua_form.riffle_count.label }}
-          {{ rip_aqua_form.riffle_count.errors }}
-          {{ rip_aqua_form.riffle_count }}
-        </div>
+      <div class="input-field col s4">
+        <label for="{{ rip_aqua_form.riffle_count.id_for_label }}">{{ rip_aqua_form.riffle_count.label }}</label>
+        {{ rip_aqua_form.riffle_count.errors }}
+        {{ rip_aqua_form.riffle_count }}
       </div>
-      <div class="col s4">
-        <div class="input-field">
-          {{ rip_aqua_form.pool_count.label }}
-          {{ rip_aqua_form.pool_count.errors }}
-          {{ rip_aqua_form.pool_count }}
-        </div>
+      <div class="input-field col s4">
+        <label for="{{ rip_aqua_form.pool_count.id_for_label }}">{{ rip_aqua_form.pool_count.label }}</label>
+        {{ rip_aqua_form.pool_count.errors }}
+        {{ rip_aqua_form.pool_count }}
       </div>
     </div>
     <h4 align="center">Substrates</h4>
@@ -414,7 +407,7 @@
 
     <div class="row">
       <div class="input-field">
-        {{ rip_aqua_form.notes.label }}
+        <h4 align="center">{{ rip_aqua_form.notes.label }}</h4>
         {{ rip_aqua_form.notes.errors }}
         {{ rip_aqua_form.notes }}
       </div>
