@@ -2,10 +2,26 @@
 {% load staticfiles %}
 {% load i18n %}
 {% load filters %}
+{% load verbose_names %}
 
 {% block title %}{% trans "Add/Edit Soil Survey" %}{% endblock %}
 
 {% block content %}
+<style>
+ul.errorlist ~ div.input-field{
+  border-top: 1px solid red;
+}
+ul.errorlist ~ #id_distance{
+  border-bottom-color: red;
+}
+ul.errorlist ~ #id_time{
+  border-bottom-color: red;
+}
+ul.errorlist ~ #id_date{
+  border-bottom-color: red;
+}
+
+</style>
   <a href="{% url 'streamwebs:site' site.site_slug %}" id="back"
       class="wave-effects wave-light btn white-text teal darken-3">
     <i class="material-icons">chevron_left</i>
@@ -148,19 +164,25 @@
 
 {% block scripts %}
 
-  <script>
-  $(document).ready(function() {
-    {% if messages %}
-        {% for message in messages %}
-          Materialize.toast('{{ message }}', 4000, 'green');
-        {% endfor %}
-    {% endif %}
-    $("form").bind("keypress", function(e) {
-      if (e.keyCode == 13){
-        return false;
-      }
-    });
-  });
+<script>
+$(document).ready(function() {
+  var text = [];
+    {% for field, errors in soil_form.errors.items %} // this takes all the form errors and combines them into a single toast message
+      {% for error in errors %}
+        text = text + "{{ }}: {{ error }}"; //need to figure out how to load verbose names or some other names into this. Otherwise we wil have ugly variable names.
+        text = text + "<br>";
+      {% endfor %}
+    {% endfor %}
+    if(text == ""){ // catches first page load.
+      return;
+    }else{
+    Materialize.toast(text, 10000, 'red', 'center');
+  }
+});
+
+$(function(){
+  $('ul.errorlist').hide(); // hides the error messaages, to not obstruct the template html.
+});
 </script>
 
   <script type="application/javascript"

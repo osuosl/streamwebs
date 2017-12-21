@@ -25,6 +25,12 @@
   margin:10px;
   flex-grow:1;
 }
+ul.errorlist ~ #id_date{
+  border-bottom-color: red;
+}
+ul.errorlist ~ #id_time{
+  border-bottom-color: red;
+}
 </style>
 
 <a href="{% url 'streamwebs:site' site.site_slug %}" id="back"
@@ -446,12 +452,23 @@
   });
   </script>
   <script>
-    $(document).ready(function(){
-      {% if messages %}
-        {% for message in messages %}
-          Materialize.toast('{{ message }}', 4000, 'green');
-        {% endfor %}
-      {% endif %}
-    });
+  $(document).ready(function() {
+  var text = [];
+    {% for field, errors in rip_aqua_form.errors.items %} // this takes all the form errors and combines them into a single toast message
+      {% for error in errors %}
+        text = text + "{{ field }}: {{ error }}";
+        text = text + "<br>";
+      {% endfor %}
+    {% endfor %}
+    if(text == ""){ // catches first page load.
+      return;
+    }else{
+    Materialize.toast(text, 10000, 'red', 'center');
+  }
+});
+
+$(function(){
+  $('ul.errorlist').hide(); // hides the error messaages, to not obstruct the template html.
+});
   </script>
 {% endblock %}

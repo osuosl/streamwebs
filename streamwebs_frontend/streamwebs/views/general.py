@@ -640,10 +640,11 @@ def macroinvertebrate_edit(request, site_slug):
 @login_required
 def riparian_aquatic_edit(request, site_slug):
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
-    rip_aqua_form = RipAquaForm()
+    rip_aqua_form = RipAquaForm(use_required_attribute=False)
 
     if request.method == 'POST':
-        rip_aqua_form = RipAquaForm(data=request.POST)
+        rip_aqua_form = RipAquaForm(data=request.POST,
+            use_required_attribute=False)
         if rip_aqua_form.is_valid():
             rip_aqua = rip_aqua_form.save(commit=False)
             rip_aqua.date_time = toDateTime(
@@ -659,6 +660,8 @@ def riparian_aquatic_edit(request, site_slug):
             return redirect(reverse('streamwebs:rip_aqua_view',
                             kwargs={'site_slug': site.site_slug,
                                     'data_id': rip_aqua.id}))
+    else:
+        rip_aqua_form = RipAquaForm(use_required_attribute=False)
 
     return render(
         request, 'streamwebs/datasheets/rip_aqua_edit.html', {
@@ -1155,10 +1158,11 @@ def soil_survey_edit(request, site_slug):
     The view for the submistion of a new Soil Survey (data sheet)
     """
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
-    soil_form = SoilSurveyForm()
+    soil_form = SoilSurveyForm(use_required_attribute=False)
 
     if request.method == 'POST':
-        soil_form = SoilSurveyForm(data=request.POST)
+        soil_form = SoilSurveyForm(data=request.POST,
+            use_required_attribute=False)
 
         if soil_form.is_valid():
             soil = soil_form.save(commit=False)
@@ -1176,6 +1180,8 @@ def soil_survey_edit(request, site_slug):
             return redirect(reverse('streamwebs:soil',
                             kwargs={'site_slug': site.site_slug,
                                     'data_id': soil.id}))
+    else:
+        soil_form = SoilSurveyForm(use_required_attribute=False)
 
     return render(
         request, 'streamwebs/datasheets/soil_edit.html', {
