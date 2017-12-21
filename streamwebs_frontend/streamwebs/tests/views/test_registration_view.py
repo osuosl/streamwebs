@@ -36,8 +36,6 @@ class RegistrateTestCase(TestCase):
                              'This field is required.')
         self.assertFormError(response1, 'user_form', 'email',
                              'This field is required.')
-        self.assertFormError(response1, 'profile_form', 'birthdate',
-                             'This field is required.')
         self.assertFormError(response1, 'profile_form', 'captcha',
                              'This field is required.')
 
@@ -57,7 +55,6 @@ class RegistrateTestCase(TestCase):
                 'last_name': 'Johnson',
                 'password_check': 'johniscool',
                 'school': 'a',
-                'birthdate': '1995-11-10',
                 'g-recaptcha-response': 'NOPE'
             }
         )
@@ -81,7 +78,6 @@ class RegistrateTestCase(TestCase):
                 'last_name': 'Johnson',
                 'password_check': 'johniscool',
                 'school': school.id,
-                'birthdate': '1995-11-10',
                 'g-recaptcha-response': 'PASSED'
             }
         )
@@ -98,7 +94,6 @@ class RegistrateTestCase(TestCase):
                 'last_name': 'Johnson',
                 'password_check': 'johnisnotcool',
                 'school': 'a',
-                'birthdate': '1995-11-10',
                 'g-recaptcha-response': 'PASSED'
             }
         )
@@ -127,7 +122,6 @@ class RegistrateTestCase(TestCase):
                 'last_name': 'Johnson',
                 'password_check': 'johniscool',
                 'school': 'a',
-                'birthdate': '1995-11-10',
                 'g-recaptcha-response': 'PASSED'
             }
         )
