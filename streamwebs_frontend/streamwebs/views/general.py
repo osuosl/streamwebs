@@ -885,6 +885,8 @@ def add_camera_point(request, site_slug):
         form=PhotoPointImageForm,
         extra=1, max_num=1, min_num=1                 # one PPI for each PP
     )
+    lat = site.location.y
+    lng = site.location.x
 
     if request.method == 'POST':
         if not request.POST._mutable:
@@ -896,9 +898,11 @@ def add_camera_point(request, site_slug):
 
         # convert lat and longs into a pointfield object
         point = ("SRID=4326;POINT(%s %s)" %
-                 (request.POST['lat'], request.POST['lng']))
+                 (request.POST['lng'], request.POST['lat']))
         # spoof the location and  request param with the point object
         # and proceed like normal.
+        lat = request.POST['lat']
+        lng = request.POST['lng']
         request.POST['location'] = point
         request.POST['site'] = site.id
 
@@ -947,6 +951,8 @@ def add_camera_point(request, site_slug):
     return render(
         request,
         'streamwebs/datasheets/camera_point_add.html', {
+            'lat': lat,
+            'lng': lng,
             'camera_form': camera_form,
             'pp_formset': pp_formset,
             'ppi_formset': ppi_formset,

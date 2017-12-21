@@ -28,16 +28,46 @@
       {% csrf_token %}
       <div class="infogroup">
         <p>{{ wq_form.site.errors }}</p>
+        <br/><br/>
         <div class="row">
           <div class="col s12">
-            <div class="input-field">
-              {{ wq_form.school.label }}
-              {{ wq_form.school.errors }}
-              {{ wq_form.school }}
-            </div>
-            <a href="{% url 'streamwebs:create_school' %}?next={{ request.path|urlencode }}" class="btn waves-effect waves-light teal darken-3">{% trans "Add A School/Organization" %}</a>
+            <p class="school-selected">
+              School Selection: <b class="teal-text text-darken-3"></b>
+            </p>
           </div>
         </div>
+        <br/><br/>
+        <div class="row">
+          <nav class="search-nav col s6 teal darken-3">
+            <div class="nav-wrapper">
+              <div class="input-field">
+                <input id="search" type="search" autocomplete="off"
+                    placeholder="{% trans 'Search School/Organization' %}">
+                <label for="search"><i class="material-icons">search</i></label>
+                <div class="search-results">
+                  <ul>
+                  {% for school in wq_form.school %}
+                    <li>
+                      <button>
+                        {{ school }}
+                      </button>
+                    </li>
+                  {% endfor %}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </nav>
+          <div class="col s6">
+            <a href="{% url 'streamwebs:create_school' %}?next={{ request.path|urlencode }}" class="btn-large waves-effect waves-light teal darken-3">{% trans "Add A School/Organization" %}</a>
+          </div>
+          <div class="input-field school" style="display:none;">
+            {{ wq_form.school.label }}
+            {{ wq_form.school.errors }}
+            {{ wq_form.school }}
+          </div>
+        </div>
+        <br/>
         <div class="row">
           <div class="col s6">
             <div class="input-field">
@@ -470,6 +500,8 @@ $(document).ready(function() {
 </script>
 <script type="application/javascript"
 src="{% static 'streamwebs/js/data.js' %}"></script>
+<script type="application/javascript"
+src="{% static 'streamwebs/js/search_school.js' %}"></script>
 <script>
 var radioFields = [];
 radioFields.push({name: 'if there are any fish present', val: $('div.fish-presence input')});

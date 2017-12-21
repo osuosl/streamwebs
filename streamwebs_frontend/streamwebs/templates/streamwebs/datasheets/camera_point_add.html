@@ -22,18 +22,46 @@
 
         <p>{{ camera_form.site }}</p>
         <div class="row">
-          <div class="input-field col s12">
+          <div class="col s12">
+            <p class="school-selected">
+              School Selection: <b class="teal-text text-darken-3"></b>
+            </p>
+          </div>
+        </div>
+        <br/><br/>
+        <div class="row">
+          <nav class="search-nav col s6 teal darken-3">
+            <div class="nav-wrapper">
+              <div class="input-field">
+                <input id="search" type="search" autocomplete="off"
+                    placeholder="{% trans 'Search School/Organization' %}">
+                <label for="search"><i class="material-icons">search</i></label>
+                <div class="search-results">
+                  <ul>
+                  {% for school in camera_form.school %}
+                    <li>
+                      <button>
+                        {{ school }}
+                      </button>
+                    </li>
+                  {% endfor %}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </nav>
+          <div class="col s6">
+            <a href="{% url 'streamwebs:create_school' %}?next={{ request.path|urlencode }}" class="btn-large waves-effect waves-light teal darken-3">{% trans "Add A School/Organization" %}</a>
+          </div>
+          <div class="input-field school" style="display:none;">
             {{ camera_form.school.label }}
             {{ camera_form.school.errors }}
             {{ camera_form.school }}
           </div>
-          <div class="col s12">
-            <a href="{% url 'streamwebs:create_school' %}?next={{ request.path|urlencode }}" class="btn waves-effect waves-light teal darken-3">{% trans "Add A School/Organization" %}</a>
-          </div>
         </div>
+        <br/>
         <div class="loc-input">
           <!-- CAMERA FORM: -->
-          {{ camera_form.media }}
           <h5>{% trans "Location Input" %}</h5>
           <div class="input-field col s12">
             {% trans "Camera Point Date (YYYY-MM-DD)" %}
@@ -64,9 +92,9 @@
             </div>
             <div class="map" style="height:400px;"></div>
             <input type="hidden" id="input_lat" name="lat"
-                   value="{{ site.to_dict.location.y }}">
+              value="{{ lat }}">
             <input type="hidden" id="input_lng" name="lng"
-                   value="{{ site.to_dict.location.x }}">
+              value="{{ lng }}">
           </div>
           <!-- END CAMERA FORM -->
         </div>
@@ -153,6 +181,8 @@
       src="https://cdnjs.cloudflare.com/ajax/libs/pickadate.js/3.5.6/compressed/picker.date.js"></script>
   <script
       src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
+  <script type="application/javascript"
+      src="{% static 'streamwebs/js/search_school.js' %}"></script>
   <script type="application/javascript">
     // initialize curr_marker
     var curr_marker = null;
@@ -165,7 +195,7 @@
           Materialize.toast('{{ message }}', 4000, 'green');
         {% endfor %}
       {% endif %}
-      var latlng = new google.maps.LatLng("{{ site.to_dict.location.y }}", "{{ site.to_dict.location.x }}");
+      var latlng = new google.maps.LatLng("{{ lat }}", "{{ lng }}");
       var mapOptions = {
         zoom: 14,
         center: latlng,
@@ -176,18 +206,17 @@
       map = new google.maps.Map($('.map')[0], mapOptions);
 
       marker = new google.maps.Marker({
-        position: {lat:{{ site.to_dict.location.y }}, lng:{{ site.to_dict.location.x }}},
+        position: {lat:{{ lat }}, lng:{{ lng }}},
         map: map,
         title: "Site Location"
       });
 
-      $('span#lat').text({{ site.to_dict.location.y }});
-      $('span#lng').text({{ site.to_dict.location.x }});
+      $('span#lat').text({{ lat }});
+      $('span#lng').text({{ lng }});
 
       // pass event to function
       map.addListener('click', function(e) {
         placeMarker(e.latLng, map);
-        console.log(e.latLng.lat());
         var lat = e.latLng.lat();
         var lng = e.latLng.lng();
         $('span#lat').text(lat);

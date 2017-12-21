@@ -68,17 +68,46 @@
     <form id='canopy_cover_form' method='post'>
       {% csrf_token %}
       {{ canopy_cover_form.non_field_errors }}
-
+      <br/><br/>
       <div class="row">
         <div class="col s12">
-          <div class="input-field">
-            {{ canopy_cover_form.school.label }}
-            {{ canopy_cover_form.school.errors }}
-            {{ canopy_cover_form.school }}
-          </div>
-          <a href="{% url 'streamwebs:create_school' %}?next={{ request.path|urlencode }}" class="btn waves-effect waves-light teal darken-3">{% trans "Add A School/Organization" %}</a>
+          <p class="school-selected">
+            School Selection: <b class="teal-text text-darken-3"></b>
+          </p>
         </div>
       </div>
+      <br/>
+      <div class="row">
+        <nav class="search-nav col s6 teal darken-3">
+          <div class="nav-wrapper">
+            <div class="input-field">
+              <input id="search" type="search" autocomplete="off"
+                  placeholder="{% trans 'Search School/Organization' %}">
+              <label for="search"><i class="material-icons">search</i></label>
+              <div class="search-results">
+                <ul>
+                {% for school in canopy_cover_form.school %}
+                  <li>
+                    <button>
+                      {{ school }}
+                    </button>
+                  </li>
+                {% endfor %}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </nav>
+        <div class="col s6">
+          <a href="{% url 'streamwebs:create_school' %}?next={{ request.path|urlencode }}" class="btn-large waves-effect waves-light teal darken-3">{% trans "Add A School/Organization" %}</a>
+        </div>
+        <div class="input-field school" style="display:none;">
+          {{ canopy_cover_form.school.label }}
+          {{ canopy_cover_form.school.errors }}
+          {{ canopy_cover_form.school }}
+        </div>
+      </div>
+      <br/>
       <div class="row">
         <div class="col s6">
           <div class="input-field">
@@ -339,6 +368,13 @@
 {% endblock %}
 
 {% block scripts %}
+  <script type="application/javascript"
+  src="{% static 'streamwebs/js/search_school.js' %}"></script>
+  <script type="application/javascript"
+          src="{% static 'streamwebs/js/data.js' %}"></script>
+  <script type="application/javascript"
+          src="{% static 'streamwebs/js/data/edit/canopy_cover.js' %}">
+  </script>
   <script>
     var error = '{{ error }}';
     $(document).ready(function() {
@@ -353,10 +389,5 @@
           }
         });
       });
-  </script>
-  <script type="application/javascript"
-          src="{% static 'streamwebs/js/data.js' %}"></script>
-  <script type="application/javascript"
-          src="{% static 'streamwebs/js/data/edit/canopy_cover.js' %}">
   </script>
 {% endblock %}
