@@ -1517,6 +1517,7 @@ def school_detail(request, school_id):
     if request.user.is_authenticated():
         if request.user.has_perm('streamwebs.is_super_admin'):
             is_in_org = True
+
         elif request.user.has_perm('streamwebs.is_org_admin'):
             user_profile = UserProfile.objects.filter(user=request.user).first()
             if user_profile != None:
