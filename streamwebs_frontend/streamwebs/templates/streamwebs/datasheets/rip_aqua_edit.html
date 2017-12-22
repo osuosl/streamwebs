@@ -436,12 +436,20 @@
   });
   </script>
   <script>
-    $(document).ready(function(){
-      {% if messages %}
-        {% for message in messages %}
-          Materialize.toast('{{ message }}', 4000, 'green');
-        {% endfor %}
-      {% endif %}
-    });
+
+$(document).ready(function() {
+  var text = '';
+  {% for field, errors in rip_aqua_form.errors.items %} // this takes all the form errors and combines them into a single toast message
+    {% for error in errors %}
+      text += "{{ field }}: {{ error }}<br>";
+    {% endfor %}
+  {% endfor %}
+  if (text) Materialize.toast(text, 10000, 'red', 'center');
+});
+
+$(function(){
+  $('ul.errorlist').hide(); // hides the error messaages, to not obstruct the template html.
+});
+
   </script>
 {% endblock %}
