@@ -18,7 +18,7 @@
 
   {% if user.is_authenticated %}
     {% if perms.streamwebs.is_org_admin and not perms.streamwebs.is_super_admin %}
-    <li><a href="{% url 'streamwebs:get_manage_accounts' user.id %}" class="teal-text text-darken-3">Manage Account</a></li>
+    <li><a href="{% url 'streamwebs:get_manage_accounts' user.id %}" class="teal-text text-darken-3">{% trans "Manage Accounts" %}</a></li>
     {% endif %}
     <li><a href="{% url 'streamwebs:account' %}" class="teal-text text-darken-3">Account</a></li>
     <li><a href="{% url 'streamwebs:logout' %}" class="teal-text text-darken-3">{% trans "Logout" %}</a></li>

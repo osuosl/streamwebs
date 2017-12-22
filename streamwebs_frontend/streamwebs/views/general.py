@@ -424,7 +424,8 @@ def register(request):
     return render(request, 'streamwebs/register.html', {
         'user_form': user_form,
         'profile_form': profile_form,
-        'school_form': school_form
+        'school_form': school_form,
+        'schools': School.objects.filter(active=True).all().order_by('name')
     })
 
 

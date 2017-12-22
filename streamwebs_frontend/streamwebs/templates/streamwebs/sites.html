@@ -27,72 +27,70 @@
 </style>
 
 <div class="container">
-  <br/><br/>
-  <div id="site_search">
-    <div class="row">
-      <nav class="search-nav col s8 teal darken-3">
-        <div class="nav-wrapper">
-          <div class="input-field">
-            <input id="search" type="search" autocomplete="off"
-            placeholder="{% trans 'Search sites' %}"
-            onkeydown="search()">
-            <label for="search"><i class="material-icons">search</i></label>
-            <i class="material-icons">close</i>
 
-            <div class="search-results collection">
-              {% for site in sites %}
-              <a href="{{ site.site_slug }}"
-              class="collection-item search-item {{ site.site_type }} teal-text text-darken-3 hide">{{ site.site_name }}</a>
-              {% endfor %}
-            </div>
-          </div>
-        </div>
-      </nav>
+  <div id="site_map" class="row">
+    <div class="col s12">
+      <div id="map"></div>
     </div>
   </div>
 
-  <div id="site_map">
-    <div id="map"></div>
+  <div id="site_search" class="row">
+    <nav class="col s12 teal darken-3">
+      <div class="input-field nav-wrapper">
+        <input id="search" type="search" autocomplete="off"
+          placeholder="{% trans 'Search sites' %}"
+          onkeyup="search()">
+        <label for="search"><i class="material-icons">search</i></label>
+      </div>
+    </nav>
   </div>
 
-  <div id="site_select">
-    <a href="#!" class="dropdown-button btn select-button teal darken-3" data-activates='dropdown'>{% trans "Select Site" %}<i class="material-icons right">arrow_drop_down</i></a>
-    <ul id="dropdown" class="dropdown-content">
-      {% for site in sites %}
-      <li><a href="{{site.site_slug}}" class="teal-text text-darken-3">{{site.site_name}}</a></li>
-      {% endfor %}
-    </ul>
-  </div>
-  <br>
+  <br/>
 </div>
 </div>
 {% endblock %}
 
 {% block scripts %}
-<script src="https://maps.googleapis.com/maps/api/js?key={{ maps_api }}"></script>
 <script type="text/javascript" src="https://maps.google.com/maps/api/js?key={{ maps_api }}"></script>
 
 <script type="application/javascript">
-window.mapTypeId = {{ map_type }};
-var sites = [];
-{% for site in sites %}
-sites.push({
-  id: "{{site.id}}",
-  slug: "{{site.site_slug}}",
-  name: "{{site.site_name}}",
-  {% if site.image %}
-  image: "/media/{{site.image}}",
-  {% else %}
-  image: "/static/streamwebs/images/img-default.jpg",
-  {% endif %}
+  window.mapTypeId = {{ map_type }};
+  var sites = [];
+  {% for site in sites %}
+  sites.push({
+    id: "{{site.id}}",
+    slug: "{{site.site_slug}}",
+    name: "{{site.site_name}}",
+    {% if site.image %}
+    image: "/media/{{site.image}}",
+    {% else %}
+    image: "/static/streamwebs/images/img-default.jpg",
+    {% endif %}
 
-  {% language "en-us" %}
-  lat: {{site.location.y}},
-  lng: {{site.location.x}},
-  {% endlanguage %}
-});
-{% endfor %}
+    {% language "en-us" %}
+    lat: {{site.location.y}},
+    lng: {{site.location.x}},
+    {% endlanguage %}
+  });
+  {% endfor %}
+</script>
+
+<script type="application/javascript" src="{% static 'streamwebs/js/autocomplete.js' %}"></script>
+<script>
+  $(document).ready(function() {
+    $("#search").autocomplete_noimg({
+      data: {
+        {% for site in sites %}
+          "{{ site.site_name }}": "{{ site.site_slug }}",
+        {% endfor %}
+      },
+      minLength: 1,
+      onSelect: function(label, value) {
+        window.location.href = value;
+      },
+    });
+  });
 </script>
 <script type="application/javascript"
-src="{% static 'streamwebs/js/sites.js' %}"></script>
+  src="{% static 'streamwebs/js/sites.js' %}"></script>
 {% endblock %}

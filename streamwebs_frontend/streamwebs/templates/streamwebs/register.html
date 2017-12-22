@@ -1,5 +1,6 @@
 {% extends 'streamwebs/base.html' %}
 {% load i18n %}
+{% load staticfiles %}
 
 {% block title %}{% trans "Register" %} -{% endblock %}
 
@@ -7,26 +8,15 @@
 
 {% block content %}
 
-<script>
-  function uncheck_perms(checkbox) {
-    var checkboxes = document.getElementById("mutually_exclusive_checkboxes").getElementsByTagName('input')
-    for (i = 0; i < checkboxes.length; i++) { 
-      if (checkboxes[i].type == "checkbox" && checkboxes[i] != checkbox) {
-        checkboxes[i].checked = false;
-      }
-    }
+<style>
+  /* center captcha */
+  div.g-recaptcha > div {
+    margin: 0 auto;
   }
-  </script>
-
-  <style>
-    /* center captcha */
-    div.g-recaptcha > div {
-      margin: 0 auto;
-    }
-    div.center-content{
-      margin-top: 10px;
-    }
-  </style>
+  div.center-content{
+    margin-top: 10px;
+  }
+</style>
 
 <div class="container">
     <form id='user_form' method='post'
@@ -89,20 +79,30 @@
       </div>
       
       <!-- Select school -->
-      <div class="row" id="select_school">
+      <div class="input-field col s6 offset-s2" id="school_select" hidden>
+        {{ profile_form.school }}
+      </div>
+      <!-- Hacky implementation where profile form drop down is still used, 
+        but client side filtering sets drop down value so django form
+        still gets value on view side -->
+      <div class="row" id="select_school_section">
         <br/>
         <!-- Schools -->
         <div class="input-field col s6 offset-s2">
-          {{ profile_form.school }}
-          <label for="{{ profile_form.school.id_for_label }}">
-            {% trans "School" %}
-          </label>
+          <input type="text" id="autocomplete_schools" class="autocomplete">
+          <label for="autocomplete_schools">{% trans "School Search" %}</label>
         </div>
         <div class="input-field col s2">
           <a class="btn waves-effect teal darken-3" id="org_create"
             style="display: block; width: 100%;">
             {% trans "New" %}
           </a>
+        </div>
+        <div class="col s8 offset-s2">
+          <h6 class="teal-text">
+              Selected School:
+              <span id="selected_school">None</span>
+          </h6>
         </div>
       </div>
   
@@ -201,26 +201,46 @@
 {% block scripts %}
   <!--Import jQuery before materialize.js-->
   <script type="text/javascript"
-          src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+      src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript"
+      src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
   <script
       src="https://cdnjs.cloudflare.com/ajax/libs/pickadate.js/3.5.6/compressed/picker.js"></script>
   <script
       src="https://cdnjs.cloudflare.com/ajax/libs/pickadate.js/3.5.6/compressed/picker.date.js"></script>
+  
   <script
       src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
+
+  <script type="application/javascript" src="{% static 'streamwebs/js/autocomplete.js' %}"></script>
+
   <script>
     $(document).ready(function() {
-      // Initial stuff
       $('select').material_select();
 
+      $("#autocomplete_schools").autocomplete_noimg({
+        data: {
+          {% for school in schools %}
+            "{{ school.name }}": {{ school.pk }},
+          {% endfor %}
+        },
+        minLength: 1,
+        onSelect: function(label, value) {
+          $('#id_school').attr('value',value);
+          $('#selected_school').html(label);
+        },
+      });
+      
+
+      // New Org expander
       $('#org_create').click(function(){
-        $('#select_school').slideUp(500);
+        $('#select_school_section').slideUp(500);
         $('#org_section').slideDown(500);
         //$('#org_section').find('input').validate({ignore: ".ignore"})
         $('#org_section').find('input').prop('disabled', false);
       });
       $('#org_cancel').click(function(){
-        $('#select_school').slideDown(500);
+        $('#select_school_section').slideDown(500);
         $('#org_section').slideUp(500);
         //$('#org_section').find('input').validate({ignore: ".hidden"})
         $('#org_section').find('input').prop('disabled', true);
