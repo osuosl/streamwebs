@@ -17,7 +17,8 @@ from django.core.mail import send_mail
 from django.template.loader import render_to_string
 
 from streamwebs.forms import (
-    UserForm, UserFormOptionalNameEmail, UserEditForm, UserProfileForm,
+    UserForm, UserFormOptionalNameEmail, UserFormEmailAsUsername,
+    UserEditForm, UserProfileForm,
     RiparianTransectForm, MacroinvertebratesForm,
     PhotoPointImageForm, PhotoPointForm, CameraPointForm, WQSampleForm,
     WQForm, SiteForm, Canopy_Cover_Form, SoilSurveyForm, StatisticsForm,
@@ -348,18 +349,19 @@ def deactivate_site(request, site_slug):
 
 def register(request):
     if request.method == 'POST':
-        user_form = UserForm(data=request.POST)
+        user_form = UserFormEmailAsUsername(data=request.POST)
         profile_form = UserProfileForm(data=request.POST)
         school_form = SchoolForm(data=request.POST)
 
         # User form must always be valid
-        if user_form.is_valid() and profile_form.is_valid():
+        if user_form.is_valid() and profile_form.is_valid():            
             user = user_form.save()
+            user.username = user.email
             user.set_password(user.password)
 
             profile = profile_form.save(commit=False)
             profile.user = user
-
+            
             # If school form is valid, then the user is creating a new school
             if school_form.is_valid():
                 school = school_form.save()
@@ -378,13 +380,13 @@ def register(request):
 
                 # Super admins
                 super_admins = [usr.email for usr in User.objects.all()
-                                if usr.has_perm('streamwebs.is_super_admin')]
+                    if usr.has_perm('streamwebs.is_super_admin')]
 
                 # Email to super admin for new organization + account
                 send_email(
                     request=request,
                     subject='New organization request: ' + str(school.name),
-                    template='registration/new_org_request_email.html',
+                    template='registration/new_org_request_email.html', 
                     user=user,
                     school=school,
                     from_email=settings.DEFAULT_FROM_EMAIL,
@@ -419,10 +421,10 @@ def register(request):
             return HttpResponseRedirect('/register/confirm')
 
     else:
-        user_form = UserForm()
+        user_form = UserFormEmailAsUsername()
         profile_form = UserProfileForm()
         school_form = SchoolForm()
-
+    
     return render(request, 'streamwebs/register.html', {
         'user_form': user_form,
         'profile_form': profile_form,
@@ -499,9 +501,9 @@ def user_login(request):
     redirect_to = request.POST.get('next', '')
 
     if request.method == 'POST':
-        username = request.POST['username']
+        email = ''.join(request.POST['email'].split()).lower()
         password = request.POST['password']
-        user = authenticate(username=username, password=password)
+        user = authenticate(username=email, password=password)
 
         # if the user is valid, log them in and redirect to the page where they
         # clicked "Login", or to home if they accessed login directly from the

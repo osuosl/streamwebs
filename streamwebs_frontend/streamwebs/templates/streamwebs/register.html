@@ -44,21 +44,13 @@
           {{ user_form.last_name.errors }}
         </div>
 
-        <!-- Email -->
+        <!-- Email, which replaces username in the view -->
         <div class="input-field col s8 offset-s2">
           <label for="{{ user_form.email.id_for_label }}">
-              {% trans "Email" %}
-            </label>
+            {{ user_form.email.label }}
+          </label>
           {{ user_form.email }}
           {{ user_form.email.errors }}
-        </div>
-        <!-- Username -->
-        <div class="input-field col s8 offset-s2">
-          <label for="{{ user_form.username.id_for_label }}">
-            {% trans "Username" %}
-          </label>
-          {{ user_form.username }}
-          {{ user_form.username.errors }}
         </div>
         <!-- Password -->
         <div class="input-field col s8 offset-s2">
@@ -221,7 +213,7 @@
       $("#autocomplete_schools").autocomplete_noimg({
         data: {
           {% for school in schools %}
-            "{{ school.name }}, {{ school.city }}": {{ school.pk }},
+            "{{ school.name }}": {{ school.pk }},
           {% endfor %}
         },
         minLength: 1,

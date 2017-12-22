@@ -9,6 +9,7 @@ from django import forms
 from django.forms import BaseInlineFormSet
 from django.utils.translation import ugettext_lazy as _
 from captcha.fields import ReCaptchaField
+from django.core.validators import validate_email
 
 TIME_PERIOD_CHOICES = (
     ('AM', _('AM')),
@@ -74,6 +75,45 @@ class UserFormOptionalNameEmail(forms.ModelForm):
             'password': _('Password:'),
             'first_name': _('First Name'),
         }
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if email and User.objects.filter(email=email).exists():
+            raise forms.ValidationError(u'Email addresses must be unique.')
+        return email
+
+class UserFormEmailAsUsername(forms.ModelForm):
+    password = forms.CharField(
+        widget=forms.PasswordInput(),
+        label=_('Password'))
+
+    password_check = forms.CharField(
+        widget=forms.PasswordInput(),
+        label='Repeat your password')
+
+    email = forms.CharField(
+        required=True, widget=forms.TextInput(),
+        label='Email Address', validators=[validate_email])
+
+    first_name = forms.CharField(
+        widget=forms.TextInput()
+    )
+
+    class Meta:
+        model = User
+        fields = ('email', 'password', 'first_name', 'last_name')
+        labels = {
+            'email': _('Email Address'),
+            'password': _('Password:'),
+            'first_name': _('First Name'),
+        }
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        lower_email_nospace = ''.join(email.split()).lower()
+        if email and User.objects.filter(email=lower_email_nospace).exists():
+            raise forms.ValidationError(u'A user with that email address already exists.')
+        return lower_email_nospace
 
 
 class UserEditForm(forms.ModelForm):

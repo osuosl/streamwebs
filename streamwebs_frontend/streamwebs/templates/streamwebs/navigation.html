@@ -24,7 +24,7 @@
     <li><a href="{% url 'streamwebs:logout' %}" class="teal-text text-darken-3">{% trans "Logout" %}</a></li>
   {% else %}
     <li><a href="{% url 'streamwebs:register' %}" class="teal-text text-darken-3">{% trans "Create Account" %}</a></li>
-    <li><a href="{% url 'streamwebs:login' %}?next={{ request.path }}" class="teal-text text-darken-3">{% trans "Login" %}</a></li>
+    <li><a href="{% url 'streamwebs:login' %}?next=/" class="teal-text text-darken-3">{% trans "Login" %}</a></li>
   {% endif %}
   </ul>
 </div>
