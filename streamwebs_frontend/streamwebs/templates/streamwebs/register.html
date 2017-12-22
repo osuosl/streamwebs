@@ -221,7 +221,7 @@
       $("#autocomplete_schools").autocomplete_noimg({
         data: {
           {% for school in schools %}
-            "{{ school.name }}": {{ school.pk }},
+            "{{ school.name }}, {{ school.city }}": {{ school.pk }},
           {% endfor %}
         },
         minLength: 1,
