@@ -1097,14 +1097,18 @@ class Soil_Survey(models.Model):
     ]
 
     landscape_pos = models.CharField(max_length=11, default=None,
-                                     choices=landscape_pos_choices)
+                                     choices=landscape_pos_choices,
+                                     verbose_name='landscape position')
+
     cover_type = models.CharField(max_length=9, default=None,
                                   choices=cover_type_choices)
+
     land_use = models.CharField(max_length=12, default=None,
                                 choices=land_use_choices)
 
     distance = models.DecimalField(max_digits=5, decimal_places=2, null=True,
                                    verbose_name=_('distance from stream'))
+
     site_char = models.TextField(blank=True,
                                  verbose_name=_('distinguishing site \
                                  characteristics'))

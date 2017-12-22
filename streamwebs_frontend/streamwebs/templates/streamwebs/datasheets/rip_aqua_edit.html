@@ -25,6 +25,9 @@
   margin:10px;
   flex-grow:1;
 }
+ul.errorlist ~ input {
+  border-bottom-color: red;
+}
 </style>
 
 <a href="{% url 'streamwebs:site' site.site_slug %}" id="back"

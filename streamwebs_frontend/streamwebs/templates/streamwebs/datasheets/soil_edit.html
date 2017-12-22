@@ -32,23 +32,31 @@
         </div>
         <br/>
         <div class="row">
-          <div class="col s6">
-            {{ soil_form.date.label }} (YYYY-MM-DD)
+          <div class="input-field col s6">
+            <label for="{{ soil_form.date.id_for_label }}">
+              {{ soil_form.date.label }} (YYYY-MM-DD)
+            </label>
             {{ soil_form.date.errors }}
             {{ soil_form.date }}
           </div>
-          <div class="col s3">
-            {{ soil_form.time.label }} (HH:MM)
+          <div class="input-field col s3">
+            <label for="{{ soil_form.time.id_for_label }}">
+              {{ soil_form.time.label }} (HH:MM)
+            </label>
             {{ soil_form.time.errors }}
             {{ soil_form.time }}
           </div>
-          <div class="col s3">
-            {{ soil_form.ampm.label }}
+          <div class="input-field col s3">
             {{ soil_form.ampm.errors }}
             {{ soil_form.ampm }}
+            <label for="{{ soil_form.ampm.id_for_label }}">
+              {{ soil_form.ampm.label }}
+            </label>
           </div>
-          <div class="col s6">
-            {{ soil_form.weather.label }}
+          <div class="input-field col s6">
+            <label for="{{ soil_form.weather.id_for_label }}">
+              {{ soil_form.weather.label }}
+            </label>
             {{ soil_form.weather.errors }}
             {{ soil_form.weather }}
           </div>
@@ -59,7 +67,9 @@
         <div class="container">
           <div class="row">
             <div class="col s4 pull-s2 landscape-pos">
-              <p>{% trans "Landscape Position" %}</p>
+              <label for="{{ soil_form.landscape_pos.id_for_label }}">
+                {{ soil_form.landscape_pos.label }}
+              </label>
               {{ soil_form.landscape_pos.errors }}
               <div class="input-field">
                 {% for radio in soil_form.landscape_pos %}
@@ -71,7 +81,9 @@
               </div>
             </div>
             <div class="col s4 push-s1 cover-type">
-              <p>{% trans "Cover Type" %}</p>
+              <label for="{{ soil_form.cover_type.id_for_label }}">
+                {{ soil_form.cover_type.label }}
+              </label>
               {{ soil_form.cover_type.errors }}
               <div class="input-field">
                 {% for radio in soil_form.cover_type %}
@@ -83,7 +95,9 @@
               </div>
             </div>
             <div class="col s4 push-s3 land-use">
-              <p>{% trans "Land Use" %}</p>
+              <label for="{{ soil_form.land_use.id_for_label }}">
+                {{ soil_form.land_use.label }}
+              </label>
               {{ soil_form.land_use.errors }}
               <div class="input-field">
                 {% for radio in soil_form.land_use %}
@@ -99,36 +113,40 @@
 
         <br/>
         <div class="row">
-          <div class="col s6">
-            <div class="input-field">
-              {{ soil_form.soil_type.label }}
+          <div class="input-field col s6">
               {{ soil_form.soil_type.errors }}
               {{ soil_form.soil_type }}
-            </div>
+              <label for="{{ soil_form.soil_type.id_for_label }}">
+                {{ soil_form.soil_type.label }}
+              </label>
           </div>
 
-          <div class="col s6">
-            <div class="input-field">
-              {{ soil_form.distance.label }} (m)
-              {{ soil_form.distance.errors }}
-              {{ soil_form.distance }}
-            </div>
+          <div class="input-field col s6">
+            <label for="{{ soil_form.distance.id_for_label }}">
+              {{ soil_form.distance.label }} (ft)
+            </label>
+            {{ soil_form.distance.errors }}
+            {{ soil_form.distance }}
           </div>
         </div>
 
         <div class="row">
-          <div class="input-field">
-            {{ soil_form.site_char.label }}
+          <div class="input-field col s12">
             {{ soil_form.site_char.errors }}
             {{ soil_form.site_char }}
+            <label for="{{ soil_form.site_char.id_for_label }}">
+              {{ soil_form.site_char.label }}
+            </label>
           </div>
         </div>
 
         <div class="row">
-          <div class="input-field">
-            {{ soil_form.notes.label }}
+          <div class="input-field col s12">
             {{ soil_form.notes.errors }}
             {{ soil_form.notes }}
+            <label for="{{ soil_form.notes.id_for_label }}">
+              {{ soil_form.notes.label }}
+            </label>
           </div>
         </div>
 
@@ -144,19 +162,21 @@
 {% block scripts %}
 
   <script>
-  $(document).ready(function() {
-    {% if messages %}
-        {% for message in messages %}
-          Materialize.toast('{{ message }}', 4000, 'green');
+    // Print Errors
+    $(document).ready(function() {
+      var text = '';
+      {% for field, errors in soil_form.errors.items %}
+        {% for error in errors %}
+          text += "{% get_field_label soil_form field %}: {{ error }}<br>";
         {% endfor %}
-    {% endif %}
-    $("form").bind("keypress", function(e) {
-      if (e.keyCode == 13){
-        return false;
-      }
+      {% endfor %}
+      if (text) Materialize.toast(text, 10000, 'red', 'center');
     });
-  });
-</script>
+
+    $(function(){
+      $('ul.errorlist').hide();
+    });
+  </script>
 
   <script type="application/javascript"
           src="{% static 'streamwebs/js/data.js' %}"></script>
