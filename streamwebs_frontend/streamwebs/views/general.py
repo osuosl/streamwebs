@@ -1183,6 +1183,60 @@ def water_quality(request, site_slug, data_id):
     wq_samples = WQ_Sample.objects.filter(water_quality=data_id)\
         .order_by('sample')
 
+    # initalize variables for calculating averages
+    water_temp_sample_count = 0
+    water_temp_avg = 0
+
+    air_temp_sample_count = 0
+    air_temp_avg = 0
+
+    dissolved_oxygen_sample_count = 0
+    dissolved_oxygen_avg = 0
+
+    pH_sample_count = 0
+    pH_avg = 0
+
+    turbidity_sample_count = 0
+    turbidity_avg = 0
+
+    salinity_sample_count = 0
+    salinity_avg = 0
+
+    # Addition for each sample type
+    for sample in wq_samples:
+        if sample.water_temperature:
+            water_temp_sample_count += 1
+            water_temp_avg += sample.water_temperature
+        if sample.air_temperature:
+            air_temp_sample_count += 1
+            air_temp_avg += sample.air_temp_sample_count
+        if sample.dissolved_oxygen:
+            dissolved_oxygen_sample_count += 1
+            dissolved_oxygen_avg += sample.dissolved_oxygen
+        if sample.pH:
+            pH_sample_count += 1
+            pH_avg += sample.pH
+        if sample.turbidity:
+            turbidity_sample_count += 1
+            turbidity_avg += sample.turbidity
+        if sample.salinity:
+            salinity_sample_count += 1
+            salinity_avg += sample.salinity
+
+    # Now divide by the count if there are any
+    if water_temp_sample_count > 0:
+        water_temp_avg /= water_temp_sample_count
+    if air_temp_sample_count > 0:
+        air_temp_avg /= air_temp_sample_count
+    if dissolved_oxygen_sample_count > 0:
+        dissolved_oxygen_avg /= dissolved_oxygen_sample_count
+    if pH_sample_count > 0:
+        pH_avg /= pH_sample_count
+    if turbidity_sample_count > 0:
+        turbidity_avg /= turbidity_sample_count
+    if salinity_sample_count > 0:
+        salinity_avg /= salinity_sample_count
+
     return render(
         request, 'streamwebs/datasheets/water_quality_view.html',
         {
