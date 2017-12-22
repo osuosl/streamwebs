@@ -3,8 +3,8 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User, Group
 from streamwebs.models import School, UserProfile
 
-class CreateSchoolTestCase(TestCase):
 
+class CreateSchoolTestCase(TestCase):
     def setUp(self):
         self.client = Client()
 

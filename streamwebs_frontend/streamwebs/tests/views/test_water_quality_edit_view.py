@@ -21,7 +21,6 @@ class AddWaterQualityTestCase(TestCase):
         self.profile.school = self.school
         self.profile.save()
 
-
     def test_view_with_bad_blank_data(self):
         """
         When the user tries to submit a bad (blank) form, the form errors

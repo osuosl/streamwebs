@@ -5,14 +5,13 @@ from django.http import (
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, permission_required
-from django.contrib.auth.models import User, Group, Permission
+from django.contrib.auth.models import User, Group
 from django.core.serializers.json import DjangoJSONEncoder
 from django.shortcuts import render, redirect
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from django.forms import inlineformset_factory, modelformset_factory
 from django.core.urlresolvers import reverse
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.conf import settings
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
@@ -22,8 +21,8 @@ from streamwebs.forms import (
     RiparianTransectForm, MacroinvertebratesForm,
     PhotoPointImageForm, PhotoPointForm, CameraPointForm, WQSampleForm,
     WQForm, SiteForm, Canopy_Cover_Form, SoilSurveyForm, StatisticsForm,
-    TransectZoneForm, BaseZoneInlineFormSet, ResourceForm, AdminPromotionForm,
-    UserEmailForm, UserPasswordForm, SchoolForm, RipAquaForm)
+    TransectZoneForm, BaseZoneInlineFormSet, ResourceForm, UserEmailForm,
+    UserPasswordForm, SchoolForm, RipAquaForm)
 
 from streamwebs.models import (
     Macroinvertebrates, Site, Water_Quality, WQ_Sample, RiparianTransect,
@@ -56,6 +55,8 @@ def about(request):
 
 def faq(request):
     return render(request, 'streamwebs/faq.html', {})
+
+
 def confirm_registration(request):
     return render(request, 'streamwebs/confirm_register.html', {})
 
@@ -352,13 +353,13 @@ def register(request):
         school_form = SchoolForm(data=request.POST)
 
         # User form must always be valid
-        if user_form.is_valid() and profile_form.is_valid():            
+        if user_form.is_valid() and profile_form.is_valid():
             user = user_form.save()
             user.set_password(user.password)
 
             profile = profile_form.save(commit=False)
             profile.user = user
-            
+
             # If school form is valid, then the user is creating a new school
             if school_form.is_valid():
                 school = school_form.save()
@@ -377,17 +378,17 @@ def register(request):
 
                 # Super admins
                 super_admins = [usr.email for usr in User.objects.all()
-                    if usr.has_perm('streamwebs.is_super_admin')]
+                                if usr.has_perm('streamwebs.is_super_admin')]
 
                 # Email to super admin for new organization + account
                 send_email(
                     request=request,
                     subject='New organization request: ' + str(school.name),
-                    template='registration/new_org_request_email.html', 
+                    template='registration/new_org_request_email.html',
                     user=user,
                     school=school,
                     from_email=settings.DEFAULT_FROM_EMAIL,
-                    recipients=['testing@streamwebs.org'] #super_admins
+                    recipients=['testing@streamwebs.org']  # super_admins
                 )
             else:
                 # Save user
@@ -400,7 +401,8 @@ def register(request):
 
                 # Get editors for new user's school
                 editor_users = [up.user.email for up in current_users
-                   if up.user.groups.filter(name='org_admin').exists()]
+                                if up.user.groups.filter(
+                                    name='org_admin').exists()]
 
                 # Email to org admins for new user joining org
                 if (len(editor_users) > 0):
@@ -420,7 +422,7 @@ def register(request):
         user_form = UserForm()
         profile_form = UserProfileForm()
         school_form = SchoolForm()
-    
+
     return render(request, 'streamwebs/register.html', {
         'user_form': user_form,
         'profile_form': profile_form,
@@ -510,8 +512,9 @@ def user_login(request):
             else:
                 user_profile = UserProfile.objects.filter(user=user).first()
                 if not user_profile.approved:
-                    messages.error(request, _('Sorry, you have not' +
-                        " been approved by an administrator"))
+                    messages.error(request,
+                                   _('Sorry, you have not' +
+                                     " been approved by an administrator"))
                     return redirect(reverse(
                                 'streamwebs:login') + '?next=' + redirect_to)
                 else:
@@ -616,7 +619,7 @@ def graph_macros(request, site_slug):
 def macroinvertebrate_view(request, site_slug, data_id):
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     data = Macroinvertebrates.objects.get(id=data_id)
-    
+
     if data.wq_rating > 22:
         rating = "Excellent"
     elif data.wq_rating >= 17 and data.wq_rating <= 22:
@@ -655,7 +658,7 @@ def macroinvertebrate_edit(request, site_slug):
     """
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     profile = UserProfile.objects.filter(user=request.user).first()
-    if profile == None:
+    if profile is None:
         return HttpResponseForbidden(
             "Your account is not associated with a school")
 
@@ -708,7 +711,7 @@ def macroinvertebrate_edit(request, site_slug):
 def riparian_aquatic_edit(request, site_slug):
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     profile = UserProfile.objects.filter(user=request.user).first()
-    if profile == None:
+    if profile is None:
         return HttpResponseForbidden(
             "Your account is not associated with a school")
 
@@ -800,7 +803,7 @@ def riparian_transect_edit(request, site_slug):
     """
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     profile = UserProfile.objects.filter(user=request.user).first()
-    if profile == None:
+    if profile is None:
         return HttpResponseForbidden(
             "Your account is not associated with a school")
 
@@ -881,7 +884,7 @@ def canopy_cover_edit(request, site_slug):
     """
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     profile = UserProfile.objects.filter(user=request.user).first()
-    if profile == None:
+    if profile is None:
         return HttpResponseForbidden(
             "Your account is not associated with a school")
 
@@ -970,7 +973,7 @@ def add_camera_point(request, site_slug):
     """Add new CP to site + 3 PPs and respective photos"""
     site = Site.objects.get(site_slug=site_slug)
     profile = UserProfile.objects.filter(user=request.user).first()
-    if profile == None:
+    if profile is None:
         return HttpResponseForbidden(
             "Your account is not associated with a school")
 
@@ -1194,7 +1197,7 @@ def water_quality_edit(request, site_slug):
     """ Add a new water quality sample """
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     profile = UserProfile.objects.filter(user=request.user).first()
-    if profile == None:
+    if profile is None:
         return HttpResponseForbidden(
             "Your account is not associated with a school")
 
@@ -1272,7 +1275,7 @@ def soil_survey_edit(request, site_slug):
     """
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     profile = UserProfile.objects.filter(user=request.user).first()
-    if profile == None:
+    if profile is None:
         return HttpResponseForbidden(
             "Your account is not associated with a school")
 
@@ -1521,14 +1524,14 @@ def school_detail(request, school_id):
             is_in_org = True
 
         elif request.user.has_perm('streamwebs.is_org_admin'):
-            user_profile = UserProfile.objects.filter(user=request.user).first()
-            if user_profile != None:
+            user_profile = UserProfile.objects.filter(
+                user=request.user).first()
+            if user_profile is not None:
                 is_in_org = (user_profile.school.id == school_data.id)
             else:
                 is_in_org = False
     else:
         is_in_org = False
-
 
     wq_data = Water_Quality.objects.filter(school=school_id)
     mac_data = Macroinvertebrates.objects.filter(school=school_id)
@@ -1574,20 +1577,22 @@ def organization_approved(func):
         return func(request, *args, **kwargs)
     return wrapper
 
+
 # Send an email
-def send_email(request, subject, template, user, school, from_email, recipients):
+def send_email(request, subject, template, user, school, from_email,
+               recipients):
     send_mail(
         subject=subject,
         message='',
         html_message=render_to_string(
-            template, 
+            template,
             {
                 'protocol': request.scheme,
                 'domain': request.get_host(),
                 'user': user,
                 'school': school
             }),
-        from_email= from_email,
+        from_email=from_email,
         recipient_list=recipients,
         fail_silently=False,
     )
@@ -1627,7 +1632,7 @@ def manage_accounts(request, school_id):
             for i in editors:
                 user = User.objects.get(id=i)
                 profile = UserProfile.objects.get(user=user)
-                if profile != None:
+                if profile is not None:
                     user.groups.add(org_editor)
                     user.save()
 
@@ -1639,7 +1644,8 @@ def manage_accounts(request, school_id):
                         request=request,
                         subject='Your editor account was approved at ' +
                                 str(school.name),
-                        template='registration/approve_user_request_email.html',
+                        template='registration/' +
+                                 'approve_user_request_email.html',
                         user=user,
                         school=school,
                         from_email=settings.DEFAULT_FROM_EMAIL,
@@ -1649,7 +1655,7 @@ def manage_accounts(request, school_id):
             for i in contributors:
                 user = User.objects.get(id=i)
                 profile = UserProfile.objects.get(user=user)
-                if profile != None:
+                if profile is not None:
                     user.groups.add(org_contributor)
                     user.save()
 
@@ -1661,7 +1667,8 @@ def manage_accounts(request, school_id):
                         request=request,
                         subject='Your contributor account was approved at ' +
                                 str(school.name),
-                        template='registration/approve_user_request_email.html',
+                        template='registration/' +
+                                 'approve_user_request_email.html',
                         user=user,
                         school=school,
                         from_email=settings.DEFAULT_FROM_EMAIL,
@@ -1671,7 +1678,7 @@ def manage_accounts(request, school_id):
             for i in denyUsers:
                 user = User.objects.get(id=i)
                 profile = UserProfile.objects.get(user=user)
-                if profile != None:
+                if profile is not None:
                     profile.delete()
                     user.delete()
 
@@ -1684,9 +1691,9 @@ def manage_accounts(request, school_id):
                 profile = UserProfile.objects.get(user=user)
 
                 if user.id != request.user.id:
-                    if profile != None:
+                    if profile is not None:
                         profile.delete()
-                    if user != None:
+                    if user is not None:
                         user.delete()
 
         # Demote Editor
@@ -1712,9 +1719,9 @@ def manage_accounts(request, school_id):
                 profile = UserProfile.objects.get(user=user)
 
                 if user.id != request.user.id:
-                    if profile != None:
+                    if profile is not None:
                         profile.delete()
-                    if user != None:
+                    if user is not None:
                         user.delete()
 
         # Promote Contributor
@@ -1724,21 +1731,21 @@ def manage_accounts(request, school_id):
             for i in contributors:
                 user = User.objects.get(id=i)
                 profile = UserProfile.objects.get(user=user)
-                if profile != None:
+                if profile is not None:
                     user.groups.clear()
                     user.groups.add(org_editor)
                     user.save()
 
     # GET method
     new_users = UserProfile.objects.filter(school=school,
-                                            approved=False).all()
+                                           approved=False).all()
     current_users = UserProfile.objects.filter(school=school,
-                                            approved=True).all()
+                                               approved=True).all()
 
     contributor_users = [up for up in current_users
-                        if up.user.groups.filter(name='org_author').exists()]
+                         if up.user.groups.filter(name='org_author').exists()]
     editor_users = [up for up in current_users
-                   if up.user.groups.filter(name='org_admin').exists()]
+                    if up.user.groups.filter(name='org_admin').exists()]
 
     return render(request, 'streamwebs/manage_accounts.html', {
         'school_data': school,
@@ -1765,7 +1772,7 @@ def add_account(request, school_id):
             org_contributor = Group.objects.get(name='org_author')
             user.groups.add(org_contributor)
 
-            #user.is_active = True
+            # user.is_active = True
             user.save()
 
             profile = UserProfile()
@@ -1817,6 +1824,7 @@ def var_debug(request, value):
         'value': value
     })
 
+
 @login_required
 @permission_required('streamwebs.is_super_admin', raise_exception=True)
 def new_org_request(request, school_id):
@@ -1824,8 +1832,9 @@ def new_org_request(request, school_id):
     profiles = UserProfile.objects.filter(school=school)
     profile = profiles.first()
 
-    if profile == None:
-        return HttpResponseForbidden('There is no user associated with this organization request.')
+    if profile is None:
+        return HttpResponseForbidden(
+            'There is no user associated with this organization request.')
 
     user = profile.user
 
@@ -1864,7 +1873,7 @@ def new_org_request(request, school_id):
             send_email(
                 request=request,
                 subject='Your organization was approved: ' + str(school.name),
-                template='registration/approve_org_request_email.html', 
+                template='registration/approve_org_request_email.html',
                 user=user,
                 school=school,
                 from_email=settings.DEFAULT_FROM_EMAIL,

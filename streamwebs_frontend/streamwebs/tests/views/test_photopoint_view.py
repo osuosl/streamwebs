@@ -1,8 +1,8 @@
 from django.test import Client, TestCase
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User, Group
-from streamwebs.models import (Site, PhotoPointImage, PhotoPoint, CameraPoint,
-    UserProfile, School)
+from streamwebs.models import (
+    Site, PhotoPointImage, PhotoPoint, CameraPoint, UserProfile, School)
 from streamwebs.util.create_dummy_files import get_temporary_image
 
 

@@ -1,7 +1,8 @@
 from django.test import Client, TestCase
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User, Group
-from streamwebs.models import Site, School, RiparianTransect, TransectZone, UserProfile
+from streamwebs.models import Site, School, RiparianTransect, TransectZone
+from streamwebs.models import UserProfile
 
 
 class AddTransectTestCase(TestCase):

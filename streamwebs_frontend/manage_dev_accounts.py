@@ -1,18 +1,10 @@
 import os
 import sys
-# Load the django instance
-from django.core.wsgi import get_wsgi_application
 # Import models for editing
 from django.contrib.auth.models import User, Group
 from streamwebs.models import School, UserProfile
-
 # Load the django instance
 from django.core.wsgi import get_wsgi_application
-from django.core.exceptions import ObjectDoesNotExist
-
-# Import models for editing
-from django.contrib.auth.models import User, Group
-from streamwebs.models import School, UserProfile
 
 
 # Check the input arguments to decided action.
@@ -201,7 +193,8 @@ elif action == 'school':
 elif action == 'delete':
 
     # Delete the super admin
-    super_admin_account = User.objects.filter(username=super_admin_name).first()
+    super_admin_account = User.objects.filter(
+        username=super_admin_name).first()
     if super_admin_account:
         super_admin_account.delete()
         print('\'' + super_admin_name + '\' user deleted')

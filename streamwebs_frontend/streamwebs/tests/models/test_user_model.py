@@ -1,9 +1,6 @@
 from __future__ import unicode_literals
 from django.test import TestCase
-import datetime
-import calendar
 from django.contrib.auth.models import User
-from django.core.exceptions import ValidationError
 
 from streamwebs.models import (
     UserProfile,
@@ -50,4 +47,3 @@ class UserTestCase(TestCase):
         self.assertEqual(profile1.user.username, 'user1')
         self.assertEqual(profile1.user.email, 'user@example.com')
         self.assertEqual(profile1.user.password, user1.password)
-

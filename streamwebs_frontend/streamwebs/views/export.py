@@ -152,9 +152,9 @@ def export_wq(request, site_slug):
 def export_macros(request, site_slug):
     site = Site.objects.get(site_slug=site_slug)
     macros = Macroinvertebrates.objects.filter(site_id=site.id).values(
-        'school__name', 'date_time', 'site__site_name', 'weather', 'time_spent',
-        'num_people', 'water_type', 'notes', 'caddisfly', 'mayfly',
-        'riffle_beetle', 'stonefly', 'water_penny', 'dobsonfly',
+        'school__name', 'date_time', 'site__site_name', 'weather',
+        'time_spent', 'num_people', 'water_type', 'notes', 'caddisfly',
+        'mayfly', 'riffle_beetle', 'stonefly', 'water_penny', 'dobsonfly',
         'sensitive_total', 'clam_or_mussel', 'crane_fly', 'crayfish',
         'damselfly', 'dragonfly', 'scud', 'fishfly', 'alderfly', 'mite',
         'somewhat_sensitive_total', 'aquatic_worm', 'blackfly', 'leech',

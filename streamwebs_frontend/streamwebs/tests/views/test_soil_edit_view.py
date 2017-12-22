@@ -44,7 +44,6 @@ class AddSoilSurveyTestCase(TestCase):
         When the user submits a form with all required fields filled
         appropriately, the user should see a success message
         """
-        school = School.test_objects.create_school('rahrahrah')
         response = self.client.post(
             reverse(
                 'streamwebs:soil_edit',
