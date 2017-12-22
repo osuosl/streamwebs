@@ -19,8 +19,14 @@
 </style>
 
 <script>
+  function findAncestor (el, cls) {
+    while ((el = el.parentElement) && !el.classList.contains(cls));
+    return el;
+  }
+
+
   function uncheck_newusers(checkbox) {
-    var checkboxes = document.getElementById("mutually_exclusive_checkboxes").getElementsByTagName('input')
+    var checkboxes = findAncestor(checkbox, "mutually_exclusive_checkboxes").getElementsByTagName('input')
     for (i = 0; i < checkboxes.length; i++) { 
       if (checkboxes[i].type == "checkbox" && checkboxes[i] != checkbox) {
         checkboxes[i].checked = false;
@@ -87,7 +93,7 @@
         </thead>
         <tbody>
           {% for user_profile in new_users %}
-            <tr id="mutually_exclusive_checkboxes">
+            <tr class="mutually_exclusive_checkboxes">
               <td>{{ user_profile.user.username }}</td>
               <td>{{ user_profile.user.first_name }} {{ user_profile.user.last_name }}</td>
               <td class="center-content-horizontal">
