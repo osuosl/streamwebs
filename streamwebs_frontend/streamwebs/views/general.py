@@ -1209,7 +1209,7 @@ def water_quality(request, site_slug, data_id):
             water_temp_avg += sample.water_temperature
         if sample.air_temperature:
             air_temp_sample_count += 1
-            air_temp_avg += sample.air_temp_sample_count
+            air_temp_avg += sample.air_temperature
         if sample.dissolved_oxygen:
             dissolved_oxygen_sample_count += 1
             dissolved_oxygen_avg += sample.dissolved_oxygen
