@@ -173,7 +173,7 @@ class UserProfileForm(forms.ModelForm):
 
     class Meta:
         model = UserProfile
-        fields = ['school']
+        fields = ('school',)
 
 
 class MacroinvertebratesForm(forms.ModelForm):

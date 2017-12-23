@@ -86,5 +86,5 @@ class IndexViewTest(TestCase):
         self.assertNotContains(response, 'Login')
         self.assertNotContains(response, 'Create Account')
         self.assertContains(response, 'View Site Statistics')
-        self.assertContains(response, 'Manage Users')
+        self.assertContains(response, 'Manage Accounts')
         self.client.logout()
