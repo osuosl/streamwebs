@@ -79,12 +79,5 @@ class IndexViewTest(TestCase):
         """When user logged in with user promo perm, can see that tab"""
         self.client.login(username='admin', password='admin')
         response = self.client.get(reverse('streamwebs:index'))
-        self.assertNotContains(response, 'Login')
-        self.assertContains(response, 'Sites')
-        self.assertContains(response, 'Resources')
-        self.assertContains(response, 'Logout')
-        self.assertNotContains(response, 'Login')
-        self.assertNotContains(response, 'Create Account')
-        self.assertContains(response, 'View Site Statistics')
         self.assertContains(response, 'Manage Accounts')
         self.client.logout()
