@@ -58,14 +58,22 @@
       {{school_data.name}} Accounts
     </h3>
 
+    <br/>
+    <div class="center">
+      <a href="{% url 'streamwebs:add_account' school_data.id %}" name="btn_add_account"
+        class="wave-effects wave-light btn white-text teal darken-3">
+        Add New Account
+      </a>
+    </div>
+
+
     <form class="col s8 offset-s2" id='manage_accounts_form' method='post' action="{% url 'streamwebs:manage_accounts' school_data.id %}"> 
       {% csrf_token %}
 
+      <br/><br/>
+      <br/><br/>
+
       <!-- Approve new users -->
-      <br/><br/>
-      <br/><br/>
-
-
       <div class="row">
         <div class="col s6">
           <h5>Approve New Users</h5>
@@ -75,10 +83,6 @@
               class="wave-effects wave-light btn white-text teal darken-3 right" style="margin-left:20px">
               Apply
           </button>
-          <a href="{% url 'streamwebs:add_account' school_data.id %}" name="btn_add_account"
-              class="wave-effects wave-light btn white-text teal darken-3 right" style="margin-left:20px">
-              Add Account
-          </a>
         </div>
       </div>
       <table class="bordered striped">
