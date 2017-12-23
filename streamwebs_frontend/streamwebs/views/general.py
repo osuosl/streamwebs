@@ -1773,8 +1773,6 @@ def add_account(request, school_id):
 
             org_contributor = Group.objects.get(name='org_author')
             user.groups.add(org_contributor)
-
-            # user.is_active = True
             user.save()
 
             profile = UserProfile()

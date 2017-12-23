@@ -75,6 +75,11 @@ class UserFormOptionalNameEmail(forms.ModelForm):
             'password': _('Password:'),
             'first_name': _('First Name'),
         }
+    
+    def clean_password(self):
+        if self.data['password'] != self.data['password_check']:
+            raise forms.ValidationError(_('Passwords did not match'))
+        return self.data['password']
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
@@ -108,6 +113,11 @@ class UserFormEmailAsUsername(forms.ModelForm):
             'first_name': _('First Name'),
         }
 
+    def clean_password(self):
+        if self.data['password'] != self.data['password_check']:
+            raise forms.ValidationError(_('Passwords did not match'))
+        return self.data['password']
+    
     def clean_email(self):
         email = self.cleaned_data.get('email')
         lower_email_nospace = ''.join(email.split()).lower()

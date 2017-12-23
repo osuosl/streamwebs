@@ -29,7 +29,7 @@ class UserFormTestCase(TestCase):
 class UserProfileFormTestCase(TestCase):
 
     def setUp(self):
-        self.expected_fields = ('school')
+        self.expected_fields = ('school',)
 
     def test_UserProfileForm_fields_exist(self):
         user_prof_form = UserProfileForm()

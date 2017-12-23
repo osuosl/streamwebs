@@ -77,7 +77,7 @@ class IndexViewTest(TestCase):
 
     def test_can_manage_users(self):
         """When user logged in with user promo perm, can see that tab"""
-        self.client.login(username='superadmin', password='superpassword')
+        self.client.login(username='admin', password='admin')
         response = self.client.get(reverse('streamwebs:index'))
         self.assertNotContains(response, 'Login')
         self.assertContains(response, 'Sites')

@@ -91,6 +91,8 @@ class RegistrateTestCase(TestCase):
         )
         self.assertFormError(
             bad_pw_response,
+            'user_form',
+            'password',
             'Passwords did not match'
         )
 
