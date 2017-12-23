@@ -75,7 +75,7 @@ class UserFormOptionalNameEmail(forms.ModelForm):
             'password': _('Password:'),
             'first_name': _('First Name'),
         }
-    
+
     def clean_password(self):
         if self.data['password'] != self.data['password_check']:
             raise forms.ValidationError(_('Passwords did not match'))
@@ -86,6 +86,7 @@ class UserFormOptionalNameEmail(forms.ModelForm):
         if email and User.objects.filter(email=email).exists():
             raise forms.ValidationError(u'Email addresses must be unique.')
         return email
+
 
 class UserFormEmailAsUsername(forms.ModelForm):
     password = forms.CharField(
@@ -117,12 +118,13 @@ class UserFormEmailAsUsername(forms.ModelForm):
         if self.data['password'] != self.data['password_check']:
             raise forms.ValidationError(_('Passwords did not match'))
         return self.data['password']
-    
+
     def clean_email(self):
         email = self.cleaned_data.get('email')
         lower_email_nospace = ''.join(email.split()).lower()
         if email and User.objects.filter(email=lower_email_nospace).exists():
-            raise forms.ValidationError(u'A user with that email address already exists.')
+            raise forms.ValidationError(
+                u'A user with that email address already exists.')
         return lower_email_nospace
 
 

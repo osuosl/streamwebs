@@ -24,20 +24,11 @@ class CreateRiparianAquaticSurveyTestCase(TestCase):
 
         self.site = Site.test_objects.create_site('hey')
 
-    def test_edit_with_bad_blank_data(self):
-        """Blank form: Errors will be displayed and
-            site will not be created """
-        site = Site.test_objects.create_site('sup')
-        response = self.client.post(
-            reverse('streamwebs:rip_aqua_edit', kwargs={
-                'site_slug': site.site_slug}))
-
     def test_edit_view_with_good_data(self):
         """
         When the user submits a form with all required fields filled
         appropriately, the user should see a success message
         """
-        test_school = School.test_objects.create_school('test school')
         site = Site.test_objects.create_site('sup')
 
         response = self.client.post(reverse(

@@ -17,7 +17,7 @@ from django.core.mail import send_mail
 from django.template.loader import render_to_string
 
 from streamwebs.forms import (
-    UserForm, UserFormOptionalNameEmail, UserFormEmailAsUsername,
+    UserFormOptionalNameEmail, UserFormEmailAsUsername,
     UserEditForm, UserProfileForm,
     RiparianTransectForm, MacroinvertebratesForm,
     PhotoPointImageForm, PhotoPointForm, CameraPointForm, WQSampleForm,
@@ -354,14 +354,14 @@ def register(request):
         school_form = SchoolForm(data=request.POST)
 
         # User form must always be valid
-        if user_form.is_valid() and profile_form.is_valid():            
+        if user_form.is_valid() and profile_form.is_valid():
             user = user_form.save()
             user.username = user.email
             user.set_password(user.password)
 
             profile = profile_form.save(commit=False)
             profile.user = user
-            
+
             # If school form is valid, then the user is creating a new school
             if school_form.is_valid():
                 school = school_form.save()
@@ -380,13 +380,13 @@ def register(request):
 
                 # Super admins
                 super_admins = [usr.email for usr in User.objects.all()
-                    if usr.has_perm('streamwebs.is_super_admin')]
+                                if usr.has_perm('streamwebs.is_super_admin')]
 
                 # Email to super admin for new organization + account
                 send_email(
                     request=request,
                     subject='New organization request: ' + str(school.name),
-                    template='registration/new_org_request_email.html', 
+                    template='registration/new_org_request_email.html',
                     user=user,
                     school=school,
                     from_email=settings.DEFAULT_FROM_EMAIL,
@@ -424,7 +424,7 @@ def register(request):
         user_form = UserFormEmailAsUsername()
         profile_form = UserProfileForm()
         school_form = SchoolForm()
-    
+
     return render(request, 'streamwebs/register.html', {
         'user_form': user_form,
         'profile_form': profile_form,
@@ -1755,8 +1755,6 @@ def manage_accounts(request, school_id):
         # Demote Editor
         elif 'btn_demote' in request.POST:
             editors = request.POST.getlist('editors')
-
-            stop_deleting_yourself = False
 
             for i in editors:
                 user = User.objects.get(id=i)
