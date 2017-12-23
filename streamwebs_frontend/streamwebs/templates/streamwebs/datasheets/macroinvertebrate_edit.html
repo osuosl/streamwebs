@@ -2,171 +2,188 @@
 {% load staticfiles %}
 {% load i18n %}
 {% load filters %}
+{% load verbose_names %}
 
 {% block title %}{% trans "Macroinvertebrates Data Edit" %}{% endblock %}
 
 {% block content %}
+  <style>
+    ul.errorlist ~ input {
+      border-bottom-color: red;
+    }
+  </style>
+
   <a href="{% url 'streamwebs:site' site.site_slug %}" id="back"
       class="wave-effects wave-light btn white-text teal darken-3">
     <i class="material-icons">chevron_left</i>
     Back to <span>{{ site.site_name }}</span>
   </a>
   <div class="container">
-    {% if added %}
-      <strong>{% trans "You have successfully submitted your Macroinvertebrate data sheet." %}.</strong>
-    {% else %}
-      <h3 align="center" class="teal-text">
-        {{ site.site_name }}
-      </h3>
-      <h4 align="center">{% trans 'New Macroinvertebrate Sampling' %}</h4>
-      <form id='macro_form' method='post' action='{{ request.path }}'>
-        {% csrf_token %}
+    <h3 align="center" class="teal-text">
+      {{ site.site_name }}
+    </h3>
+    <h4 align="center">{% trans 'New Macroinvertebrate Sampling' %}</h4>
+    <form id='macro_form' method='post' action='{{ request.path }}' novalidate>
+      {% csrf_token %}
 
-        <div class="row">
-          <div class="col s12">
-              <div>{% trans "School" %}</div>
-              <p id="school-name">{{ school }}</p>
-          </div>
+      <div class="row">
+        <div class="col s12">
+            <div>{% trans "School" %}</div>
+            <p id="school-name">{{ school }}</p>
         </div>
-        <br/>
-        <div class="row">
-          <div class="col s6">
+      </div>
+      <br/>
+      <div class="row">
+        <div class="input-field col s6">
+          <label for="{{ macro_form.date.id_for_label }}">
             {{ macro_form.date.label }} (YYYY-MM-DD)
-            {{ macro_form.date.errors }}
-            {{ macro_form.date }}
-          </div>
-          <div class="col s3">
-            {{ macro_form.time.label }} (HH:MM)
-            {{ macro_form.time.errors }}
-            {{ macro_form.time }}
-          </div>
-          <div class="col s3">
-            {{ macro_form.ampm.label }}
-            {{ macro_form.ampm.errors }}
-            {{ macro_form.ampm }}
-          </div>
-          <div class="col s6">
-            {{ macro_form.time_spent.label }} ({% trans 'minutes' %})
-            {{ macro_form.time_spent.errors }}
-            {{ macro_form.time_spent }}
-          </div>
-          <div class="col s6">
-            {{ macro_form.num_people.label }}
-            {{ macro_form.num_people.errors }}
-            {{ macro_form.num_people }}
-          </div>
-          <div class="col s6">
-            {{ macro_form.weather.label }}
-            {{ macro_form.weather.errors }}
-            {{ macro_form.weather }}
-          </div>
-          <div class="col s6">
-            {{ macro_form.water_type.label }}
-            {{ macro_form.water_type.errors }}
-            {{ macro_form.water_type }}
-          </div>
-          <div class="col s12">
-            {{ macro_form.notes.label }}
-            {{ macro_form.notes.errors }}
-            {{ macro_form.notes }}
-          </div>
+          </label>
+          {{ macro_form.date.errors }}
+          {{ macro_form.date }}
         </div>
+        <div class="input-field col s3">
+          <label for="{{ macro_form.time.id_for_label }}">
+            {{ macro_form.time.label }} (HH:MM)
+          </label>
+          {{ macro_form.time.errors }}
+          {{ macro_form.time }}
+        </div>
+        <div class="input-field col s3">
+          {{ macro_form.ampm.errors }}
+          {{ macro_form.ampm }}
+          <label for="{{ macro_form.ampm.id_for_label }}">
+            {{ macro_form.ampm.label }}
+          </label>
+        </div>
+        <div class="input-field col s6">
+          {{ macro_form.time_spent.errors }}
+          {{ macro_form.time_spent }}
+          <label for="{{ macro_form.time_spent.id_for_label }}">
+            {{ macro_form.time_spent.label }} ({% trans 'minutes' %})
+          </label>
+        </div>
+        <div class="input-field col s6">
+          {{ macro_form.num_people.errors }}
+          {{ macro_form.num_people }}
+          <label for="{{ macro_form.num_people.id_for_label }}">
+            {{ macro_form.num_people.label }}
+          </label>
+        </div>
+        <div class="input-field col s6">
+          {{ macro_form.weather.errors }}
+          {{ macro_form.weather }}
+          <label for="{{ macro_form.weather.id_for_label }}">
+            {{ macro_form.weather.label }}
+          </label>
+        </div>
+        <div class="input-field col s6">
+          {{ macro_form.water_type.errors }}
+          {{ macro_form.water_type }}
+          <label for="{{ macro_form.water_type.id_for_label }}">
+            {{ macro_form.water_type.label }}
+          </label>
+        </div>
+        <div class="input-field col s12">
+          {{ macro_form.notes.errors }}
+          {{ macro_form.notes }}
+          <label for="{{ macro_form.notes.id_for_label }}">
+            {{ macro_form.notes.label }}
+          </label>
+        </div>
+      </div>
 
-        <div class="row">
-          <h5 align=center>{% trans "Sensitivity to pollution" %}</h5>
-          <div class="col s4">
-            <h6 align=center>{% trans "Sensitive" %}</h6>
-            <table>
-              {% for bug in intolerant %}
-                <tr>
-                  <td>
-                    {{ bug.label }}<br>
-                    {% with bug.label|lower|strtoul|slashtoul as buggy %}
-                      {% with 'streamwebs/images/macroinvertebrates/macro_'|add:buggy|add:'.png' as bug_img %}
-                        <img src="{% static bug_img %}">
-                      {% endwith %}
+      <div class="row">
+        <h5 align=center>{% trans "Sensitivity to pollution" %}</h5>
+        <div class="col s4">
+          <h6 align=center>{% trans "Sensitive" %}</h6>
+          <table>
+            {% for bug in intolerant %}
+              <tr>
+                <td>
+                  {{ bug.label }}<br>
+                  {% with bug.label|lower|strtoul|slashtoul as buggy %}
+                    {% with 'streamwebs/images/macroinvertebrates/macro_'|add:buggy|add:'.png' as bug_img %}
+                      <img src="{% static bug_img %}">
                     {% endwith %}
-                  </td>
-                  <td>
-                    {{ bug }}
-                    {{ bug.errors }}
-                  </td>
-                </tr>
-              {% endfor %}
+                  {% endwith %}
+                </td>
+                <td>
+                  {{ bug }}
+                  {{ bug.errors }}
+                </td>
+              </tr>
+            {% endfor %}
 
-            </table>
-          </div>  <!-- end sensitive/intolerant -->
+          </table>
+        </div>  <!-- end sensitive/intolerant -->
 
-          <div class="col s4">
-            <h6 align=center>{% trans "Somewhat sensitive" %}</h6>
-            <table>
-              {% for bug in somewhat %}
-                <tr>
-                  <td>
-                    {{ bug.label }}<br>
-                    {% with bug.label|lower|strtoul|slashtoul as buggy %}
-                      {% with 'streamwebs/images/macroinvertebrates/macro_'|add:buggy|add:'.png' as bug_img %}
-                        <img src="{% static bug_img %}">
-                      {% endwith %}
+        <div class="col s4">
+          <h6 align=center>{% trans "Somewhat sensitive" %}</h6>
+          <table>
+            {% for bug in somewhat %}
+              <tr>
+                <td>
+                  {{ bug.label }}<br>
+                  {% with bug.label|lower|strtoul|slashtoul as buggy %}
+                    {% with 'streamwebs/images/macroinvertebrates/macro_'|add:buggy|add:'.png' as bug_img %}
+                      <img src="{% static bug_img %}">
                     {% endwith %}
-                  </td>
-                  <td>
-                    {{ bug }}
-                    {{ bug.errors }}
-                  </td>
-                </tr>
-              {% endfor %}
-            </table>
-          </div>  <!-- end somewhat sensitive -->
+                  {% endwith %}
+                </td>
+                <td>
+                  {{ bug }}
+                  {{ bug.errors }}
+                </td>
+              </tr>
+            {% endfor %}
+          </table>
+        </div>  <!-- end somewhat sensitive -->
 
-          <div class="col s4">
-            <h6 align=center>{% trans "Tolerant" %}</h6>
-            <table>
-              {% for bug in tolerant %}
-                <tr>
-                  <td>
-                    {{ bug.label }}</br>
-                    {% with bug.label|lower|strtoul|slashtoul as buggy %}
-                      {% with 'streamwebs/images/macroinvertebrates/macro_'|add:buggy|add:'.png' as bug_img %}
-                        <img src="{% static bug_img %}">
-                      {% endwith %}
+        <div class="col s4">
+          <h6 align=center>{% trans "Tolerant" %}</h6>
+          <table>
+            {% for bug in tolerant %}
+              <tr>
+                <td>
+                  {{ bug.label }}</br>
+                  {% with bug.label|lower|strtoul|slashtoul as buggy %}
+                    {% with 'streamwebs/images/macroinvertebrates/macro_'|add:buggy|add:'.png' as bug_img %}
+                      <img src="{% static bug_img %}">
                     {% endwith %}
-                  </td>
-                  <td>
-                    {{ bug }}
-                    {{ bug.errors }}
-                  </td>
-                </tr>
-              {% endfor %}
-            </table>
-          </div>  <!-- end tolerant -->
-        </div> <!-- end macros row -->
+                  {% endwith %}
+                </td>
+                <td>
+                  {{ bug }}
+                  {{ bug.errors }}
+                </td>
+              </tr>
+            {% endfor %}
+          </table>
+        </div>  <!-- end tolerant -->
+      </div> <!-- end macros row -->
 
-        <button class="btn wave-effect waves-light teal darken-3" type="submit"
-          name="submit" value="{% trans "Submit" %}">
-          {% trans "Submit" %}
-        </button>
-      </form>
-    {% endif %}
+      <button class="btn wave-effect waves-light teal darken-3" type="submit"
+        name="submit" value="{% trans "Submit" %}">
+        {% trans "Submit" %}
+      </button>
+    </form>
 
   </div>  <!-- end container -->
 {% endblock %}
 
 {% block scripts %}
-  <script>
-    $(document).ready(function() {
-      {% if messages %}
-        {% for message in messages %}
-          Materialize.toast('{{ message }}', 4000, 'green');
-        {% endfor %}
-      {% endif %}
-      $("form").bind("keypress", function(e) {
-        if (e.keyCode == 13){
-          return false;
-          }
-        });
-      });
-  </script>
-  <script type="application/javascript"
-          src="{% static 'streamwebs/js/data.js' %}"></script>
+
+<script>
+  var ERROR_TOAST = ''; // printed by data-toasts.js
+  {% for field, errors in macro_form.errors.items %}
+    {% for error in errors %}
+      // get_field_label is from verbose_names.py
+      ERROR_TOAST += "{% get_field_label macro_form field %}: {{ error }}<br>";
+    {% endfor %}
+  {% endfor %}
+</script>
+
+<script src="{% static 'streamwebs/js/data.js' %}"></script>
+<script src="{% static 'streamwebs/js/data-toasts.js' %}"></script>
+
 {% endblock %}

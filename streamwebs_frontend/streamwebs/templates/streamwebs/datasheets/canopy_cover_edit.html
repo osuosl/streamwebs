@@ -336,21 +336,6 @@
 {% endblock %}
 
 {% block scripts %}
-  <script>
-    var error = '{{ error }}';
-    $(document).ready(function() {
-      {% if messages %}
-        {% for message in messages %}
-          Materialize.toast('{{ message }}', 4000, 'green');
-        {% endfor %}
-      {% endif %}
-      $("form").bind("keypress", function(e) {
-        if (e.keyCode == 13){
-          return false;
-          }
-        });
-      });
-  </script>
   <script type="application/javascript"
           src="{% static 'streamwebs/js/data.js' %}"></script>
   <script type="application/javascript"

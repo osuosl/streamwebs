@@ -2,33 +2,34 @@
 {% load staticfiles %}
 {% load i18n %}
 {% load filters %}
+{% load verbose_names %}
 
 {% block title %}{% trans "Riparian Aquatic Survey" %}{% endblock %}
 
 {% block content %}
 
-<style>
-.flex-container{
-  display: flex;
-  flex-wrap: wrap;
-  flex:auto;
-}
+  <style>
+    .flex-container{
+      display: flex;
+      flex-wrap: wrap;
+      flex:auto;
+    }
 
-.input-field{
-  margin-bottom: 10px;
-}
+    .input-field{
+      margin-bottom: 10px;
+    }
 
-.box{
-  border-bottom: #bdbdbd 2px solid;
-  border-radius: 2px;
-  padding: 5px;
-  margin:10px;
-  flex-grow:1;
-}
-ul.errorlist ~ input {
-  border-bottom-color: red;
-}
-</style>
+    .box{
+      border-bottom: #bdbdbd 2px solid;
+      border-radius: 2px;
+      padding: 5px;
+      margin:10px;
+      flex-grow:1;
+    }
+    ul.errorlist ~ input {
+      border-bottom-color: red;
+    }
+  </style>
 
 <a href="{% url 'streamwebs:site' site.site_slug %}" id="back"
   class="wave-effects wave-light btn white-text teal darken-3">
@@ -425,34 +426,18 @@ ul.errorlist ~ input {
 {% endblock %}
 
 {% block scripts %}
-  <script type="application/javascript" src="{% static 'streamwebs/js/data.js' %}"></script>
 
-  <script type="text/javascript">
-  window.addEventListener('keydown',function(e){
-    if(e.keyIdentifier=='U+000A'||e.keyIdentifier=='Enter'||e.keyCode==13){
-      if(e.target.nodeName=='INPUT'&&e.target.type!=='textarea'){
-        e.preventDefault();
-        return false;
-      }
-    }
-    return true
-  });
-  </script>
-  <script>
-
-$(document).ready(function() {
-  var text = '';
-  {% for field, errors in rip_aqua_form.errors.items %} // this takes all the form errors and combines them into a single toast message
+<script>
+  var ERROR_TOAST = ''; // printed by data-toasts.js
+  {% for field, errors in rip_aqua_form.errors.items %}
     {% for error in errors %}
-      text += "{{ field }}: {{ error }}<br>";
+      // get_field_label is from verbose_names.py
+      ERROR_TOAST += "{% get_field_label rip_aqua_form field %}: {{ error }}<br>";
     {% endfor %}
   {% endfor %}
-  if (text) Materialize.toast(text, 10000, 'red', 'center');
-});
+</script>
 
-$(function(){
-  $('ul.errorlist').hide(); // hides the error messaages, to not obstruct the template html.
-});
+<script src="{% static 'streamwebs/js/data.js' %}"></script>
+<script src="{% static 'streamwebs/js/data-toasts.js' %}"></script>
 
-  </script>
 {% endblock %}

@@ -2,29 +2,27 @@
 {% load staticfiles %}
 {% load i18n %}
 {% load filters %}
+{% load verbose_names %}
 
 {% block title %}{% trans "Add water quality sample" %}{% endblock %}
 
 {% block content %}
+  <style>
+    ul.errorlist ~ input {
+      border-bottom-color: red;
+    }
+  </style>
   <a href="{% url 'streamwebs:site' site.site_slug %}" id="back"
       class="wave-effects wave-light btn white-text teal darken-3">
     <i class="material-icons">chevron_left</i>
     Back to <span>{{ site.site_name }}</span>
   </a>
   <div class="container">
-    {% if messages %}
-      <div class="center-content">
-        {% for message in messages %}
-          <strong>{{ message }}</strong>
-        {% endfor %}
-      </div>
-    {% endif %}
-
     <h3 align="center" class="teal-text">
       {{ site.site_name }}
     </h3>
     <h4 align="center">{% trans 'New Water Quality Sampling' %}</h4>
-    <form id="water_quality_form" action="" method="POST">
+    <form id="water_quality_form" action="" method="POST" novalidate>
       {% csrf_token %}
       <div class="infogroup">
         <p>{{ wq_form.site.errors }}</p>
@@ -437,7 +435,9 @@
       </div>
       <br/><br/>
       <div class="input-field">
-        {{ wq_form.notes.label }}
+        <label for="wq_form.notes.id_for_label">
+          {{ wq_form.notes.label }}
+        </label>
         {{ wq_form.notes.errors }}
         {{ wq_form.notes }}
       </div>
@@ -451,22 +451,20 @@
 {% endblock %}
 
 {% block scripts %}
+
 <script>
-$(document).ready(function() {
-  {% if messages %}
-      {% for message in messages %}
-        Materialize.toast('{{ message }}', 4000, 'green');
-      {% endfor %}
-  {% endif %}
-  $("form").bind("keypress", function(e) {
-    if (e.keyCode == 13){
-      return false;
-    }
-  });
-});
+  var ERROR_TOAST = ''; // printed by data-toasts.js
+  {% for field, errors in wq_form.errors.items %}
+    {% for error in errors %}
+      // get_field_label is from verbose_names.py
+      ERROR_TOAST += "{% get_field_label wq_form field %}: {{ error }}<br>";
+    {% endfor %}
+  {% endfor %}
 </script>
-<script type="application/javascript"
-src="{% static 'streamwebs/js/data.js' %}"></script>
+
+<script src="{% static 'streamwebs/js/data.js' %}"></script>
+<script src="{% static 'streamwebs/js/data-toasts.js' %}"></script>
+
 <script>
 var radioFields = [];
 radioFields.push({name: 'if there are any fish present', val: $('div.fish-presence input')});

@@ -185,13 +185,6 @@
         google.maps.event.trigger(map, "resize");
         map.setCenter(center);
       });
-
-      // Messages
-      {% if messages %}
-        {% for message in messages %}
-        Materialize.toast('{{ message }}', 4000, 'green');
-        {% endfor %}
-      {% endif %}
     });
   </script>
 {% endblock %}

@@ -6,6 +6,15 @@
 {% block title %}{% trans "Add/Edit Soil Survey" %}{% endblock %}
 
 {% block content %}
+  <style>
+    ul.errorlist ~ div.input-field{
+      border-top: 1px solid red;
+    }
+    ul.errorlist ~ input {
+      border-bottom-color: red;
+    }
+  </style>
+  
   <a href="{% url 'streamwebs:site' site.site_slug %}" id="back"
       class="wave-effects wave-light btn white-text teal darken-3">
     <i class="material-icons">chevron_left</i>
@@ -162,24 +171,18 @@
 {% block scripts %}
 
   <script>
-    // Print Errors
-    $(document).ready(function() {
-      var text = '';
-      {% for field, errors in soil_form.errors.items %}
-        {% for error in errors %}
-          text += "{% get_field_label soil_form field %}: {{ error }}<br>";
-        {% endfor %}
+    var ERROR_TOAST = ''; // printed by data-toasts.js
+    {% for field, errors in soil_form.errors.items %}
+      {% for error in errors %}
+        // get_field_label is from verbose_names.py
+        ERROR_TOAST += "{% get_field_label soil_form field %}: {{ error }}<br>";
       {% endfor %}
-      if (text) Materialize.toast(text, 10000, 'red', 'center');
-    });
-
-    $(function(){
-      $('ul.errorlist').hide();
-    });
+    {% endfor %}
   </script>
 
-  <script type="application/javascript"
-          src="{% static 'streamwebs/js/data.js' %}"></script>
+  <script src="{% static 'streamwebs/js/data.js' %}"></script>
+  <script src="{% static 'streamwebs/js/data-toasts.js' %}"></script>
+
   <script type="text/javascript">
     var radioFields = [];
     radioFields.push({name: 'landscape position', val: $('div.landscape-pos input')});

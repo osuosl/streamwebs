@@ -818,6 +818,7 @@ def riparian_transect_edit(request, site_slug):
     )
 
     if request.method == 'POST':
+
         # process the zone formset
         zone_formset = TransectZoneInlineFormSet(
             data=request.POST, instance=transect

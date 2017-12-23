@@ -107,11 +107,9 @@
     </footer>
   </div>
 
-<script
-    src="{% static 'streamwebs/bower_components/jquery/dist/jquery.js' %}"></script>
+<script src="{% static 'streamwebs/bower_components/jquery/dist/jquery.js' %}"></script>
 <script src="{% static 'streamwebs/bower_components/d3/d3.js' %}"></script>
-<script
-    src="{% static 'streamwebs/bower_components/materialize/dist/js/materialize.js' %}"></script>
+<script src="{% static 'streamwebs/bower_components/materialize/dist/js/materialize.js' %}"></script>
 
 {% block scripts %}{% endblock %}
 
@@ -124,6 +122,13 @@
 
   $(function() {
     floatNav();
+
+    // All pages shalt toast thy messages
+    {% if messages %}
+        {% for message in messages %}
+          Materialize.toast('{{ message }}', 4000, 'green');
+        {% endfor %}
+    {% endif %}
   })
 
   var floatNav = function floatNav() {

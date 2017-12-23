@@ -1,4 +1,5 @@
 $(document).ready(function () {
+
     $('select').material_select();
 
     $('.datepicker').pickadate({
@@ -8,7 +9,14 @@ $(document).ready(function () {
         max: true, // set max to today
         format: 'yyyy-mm-dd',
     });
+
     $('.collapse-btn').click(function () {
         $('.collapse').toggleClass('uncollapse');
     });
+
+    // Accidentally pressing enter will not submit the form
+    $("input").bind("keypress", function(e) {
+      if (e.keyCode == 13) return false;
+    });
+
 });

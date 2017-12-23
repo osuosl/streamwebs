@@ -2,6 +2,7 @@
 {% load staticfiles %}
 {% load i18n %}
 {% load filters %}
+{% load verbose_names %}
 
 {% block title %}{% trans "Add a new camera point" %}{% endblock %}
 
@@ -220,16 +221,26 @@
       $('p:has(#id_site)').css('display', 'none');
       $('#id_site').val('{{ site.id }}');
     });
-    $(document).ready(function () {
-      $('select').material_select();
-
-      $('.datepicker').pickadate({
-        today: '',
-        selectMonths: true, // Creates a dropdown to control month
-        selectYears: 15, // Creates a dropdown of 15 years to control year
-        max: true, // set max to today
-        format: 'yyyy-mm-dd',
-      });
-    });
   </script>
+
+  <script>
+    var ERROR_TOAST = ''; // printed by data-toasts.js
+    // get_field_label is from verbose_names.py
+    {% for field, errors in camera_form.errors.items %}
+      {% for error in errors %}
+        ERROR_TOAST += "{% get_field_label camera_form field %}: {{ error }}<br>";
+      {% endfor %}
+    {% endfor %}
+  </script>
+
+  <script src="{% static 'streamwebs/js/data.js' %}"></script>
+  <script src="{% static 'streamwebs/js/data-toasts.js' %}"></script>
+
+  <script>
+    // TODO remove this and replace with toasts
+    console.log(`{{ pp_formset.non_form_errors.as_json }}`)
+    $(function () { $('ul.errorlist').show(); });
+  </script>
+
+
 {% endblock %}
