@@ -1,7 +1,8 @@
 from django.test import Client, TestCase
 from django.core.urlresolvers import reverse
-from django.contrib.auth.models import User
-from streamwebs.models import Site, PhotoPointImage, PhotoPoint, CameraPoint
+from django.contrib.auth.models import User, Group
+from streamwebs.models import (
+    Site, PhotoPointImage, PhotoPoint, CameraPoint, UserProfile, School)
 from streamwebs.util.create_dummy_files import get_temporary_image
 
 
@@ -9,9 +10,18 @@ class ViewPhotoPointTestCase(TestCase):
     def setUp(self):
         self.client = Client()
 
-        self.user = User.objects.create_user('john', 'john@example.com',
-                                             'johnpassword')
+        self.school = School.test_objects.create_school('Test School')
+
+        self.user = User.objects.create_user(
+            'john', 'john@example.com', 'johnpassword'
+        )
+        self.user.groups.add(Group.objects.get(name='org_admin'))
         self.client.login(username='john', password='johnpassword')
+
+        self.profile = UserProfile()
+        self.profile.user = self.user
+        self.profile.school = self.school
+        self.profile.save()
 
         site = Site.test_objects.create_site('Paradise')
 

@@ -9,6 +9,7 @@ from django import forms
 from django.forms import BaseInlineFormSet
 from django.utils.translation import ugettext_lazy as _
 from captcha.fields import ReCaptchaField
+from django.core.validators import validate_email
 
 TIME_PERIOD_CHOICES = (
     ('AM', _('AM')),
@@ -46,6 +47,104 @@ class UserForm(forms.ModelForm):
         return self.data['password']
 
 
+class UserFormOptionalNameEmail(forms.ModelForm):
+    first_name = forms.CharField(
+        required=False,
+        widget=forms.TextInput()
+    )
+    last_name = forms.CharField(
+        required=False,
+        widget=forms.TextInput()
+    )
+    email = forms.CharField(required=False)
+
+    password = forms.CharField(
+        widget=forms.PasswordInput(),
+        label=_('Password'))
+
+    password_check = forms.CharField(
+        widget=forms.PasswordInput(),
+        label='Repeat your password')
+
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'password', 'first_name', 'last_name')
+        labels = {
+            'username': _('Username'),
+            'email': _('Email'),
+            'password': _('Password:'),
+            'first_name': _('First Name'),
+        }
+
+    def clean_password(self):
+        if self.data['password'] != self.data['password_check']:
+            raise forms.ValidationError(_('Passwords did not match'))
+        return self.data['password']
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if email and User.objects.filter(email=email).exists():
+            raise forms.ValidationError(u'Email addresses must be unique.')
+        return email
+
+
+class UserFormEmailAsUsername(forms.ModelForm):
+    password = forms.CharField(
+        widget=forms.PasswordInput(),
+        label=_('Password'))
+
+    password_check = forms.CharField(
+        widget=forms.PasswordInput(),
+        label='Repeat your password')
+
+    email = forms.CharField(
+        required=True, widget=forms.TextInput(),
+        label='Email Address', validators=[validate_email])
+
+    first_name = forms.CharField(
+        widget=forms.TextInput()
+    )
+
+    class Meta:
+        model = User
+        fields = ('email', 'password', 'first_name', 'last_name')
+        labels = {
+            'email': _('Email Address'),
+            'password': _('Password:'),
+            'first_name': _('First Name'),
+        }
+
+    def clean_password(self):
+        if self.data['password'] != self.data['password_check']:
+            raise forms.ValidationError(_('Passwords did not match'))
+        return self.data['password']
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        lower_email_nospace = ''.join(email.split()).lower()
+        if email and User.objects.filter(email=lower_email_nospace).exists():
+            raise forms.ValidationError(
+                u'A user with that email address already exists.')
+        return lower_email_nospace
+
+
+class UserEditForm(forms.ModelForm):
+    first_name = forms.CharField(
+        required=False,
+        widget=forms.TextInput()
+    )
+    last_name = forms.CharField(
+        required=False,
+        widget=forms.TextInput()
+    )
+    email = forms.CharField(required=False)
+
+    class Meta:
+        model = User
+        # Add all the fields you want a user to change
+        fields = ('first_name', 'last_name', 'username', 'email')
+
+
 class UserEmailForm(forms.ModelForm):
     email = forms.CharField(required=True)
 
@@ -80,20 +179,16 @@ class UserPasswordForm(forms.ModelForm):
 
 class UserProfileForm(forms.ModelForm):
     captcha = ReCaptchaField()
-    birthdate = forms.DateField(
-        widget=forms.DateInput(attrs={'class': 'datepicker'}),
-    )
     school = forms.ModelChoiceField(
+        widget=forms.TextInput(),
         queryset=School.objects.all().order_by('name'), empty_label=None)
 
     class Meta:
         model = UserProfile
-        fields = ('school', 'birthdate')
+        fields = ('school',)
 
 
 class MacroinvertebratesForm(forms.ModelForm):
-    school = forms.ModelChoiceField(
-        queryset=School.objects.all().order_by('name'), empty_label=None)
     weather = forms.CharField(required=False)
     time_spent = forms.IntegerField(required=False)
     num_people = forms.IntegerField(required=False)
@@ -110,7 +205,7 @@ class MacroinvertebratesForm(forms.ModelForm):
             'notes': forms.Textarea(
                 attrs={'class': 'materialize-textarea'})
         }
-        fields = ('school', 'date', 'time', 'ampm', 'weather', 'time_spent',
+        fields = ('date', 'time', 'ampm', 'weather', 'time_spent',
                   'num_people', 'water_type', 'caddisfly', 'mayfly',
                   'riffle_beetle', 'stonefly', 'water_penny', 'dobsonfly',
                   'clam_or_mussel', 'crane_fly', 'crayfish',
@@ -120,8 +215,6 @@ class MacroinvertebratesForm(forms.ModelForm):
 
 
 class WQForm(forms.ModelForm):
-    school = forms.ModelChoiceField(
-        queryset=School.objects.all().order_by('name'), empty_label=None)
     latitude = forms.DecimalField(required=False)
     longitude = forms.DecimalField(required=False)
     date = forms.DateField(
@@ -141,7 +234,7 @@ class WQForm(forms.ModelForm):
                 forms.Textarea(attrs={'class': 'materialize-textarea'})
         }
         fields = (
-            'date', 'time', 'ampm', 'DEQ_dq_level', 'school',
+            'date', 'time', 'ampm', 'DEQ_dq_level',
             'latitude', 'longitude', 'fish_present', 'live_fish',
             'dead_fish', 'water_temp_unit', 'air_temp_unit', 'notes'
         )
@@ -173,8 +266,6 @@ class WQSampleForm(forms.ModelForm):
 
 
 class Canopy_Cover_Form(forms.ModelForm):
-    school = forms.ModelChoiceField(
-        queryset=School.objects.all().order_by('name'), empty_label=None)
     weather = forms.CharField(required=False)
     date = forms.DateField(
         input_formats=['%Y-%m-%d'],
@@ -185,7 +276,7 @@ class Canopy_Cover_Form(forms.ModelForm):
 
     class Meta:
         model = Canopy_Cover
-        fields = ('school', 'date', 'time', 'ampm', 'weather',
+        fields = ('date', 'time', 'ampm', 'weather',
                   'est_canopy_cover', 'north_cc', 'west_cc', 'east_cc',
                   'south_cc')
 
@@ -230,8 +321,6 @@ class BaseZoneInlineFormSet(BaseInlineFormSet):
 
 
 class RiparianTransectForm(forms.ModelForm):
-    school = forms.ModelChoiceField(
-        queryset=School.objects.all().order_by('name'), empty_label=None)
     date = forms.DateField(
         input_formats=['%Y-%m-%d'],
         widget=forms.DateInput(attrs={'class': 'datepicker'}),
@@ -244,7 +333,7 @@ class RiparianTransectForm(forms.ModelForm):
         widgets = {
             'notes': forms.Textarea(attrs={'class': 'materialize-textarea'})
         }
-        fields = ('school', 'date', 'time', 'ampm',
+        fields = ('date', 'time', 'ampm',
                   'weather', 'slope', 'notes')
 
 
@@ -270,8 +359,6 @@ class PhotoPointForm(forms.ModelForm):
 
 
 class CameraPointForm(forms.ModelForm):
-    school = forms.ModelChoiceField(
-        queryset=School.objects.all().order_by('name'), empty_label=None)
     cp_date = forms.DateField(
         widget=forms.DateInput(attrs={'class': 'datepicker'}),
     )
@@ -282,7 +369,7 @@ class CameraPointForm(forms.ModelForm):
 
     class Meta:
         model = CameraPoint
-        fields = ('school', 'site', 'cp_date', 'location', 'map_datum',
+        fields = ('site', 'cp_date', 'location', 'map_datum',
                   'description')
 
 
@@ -299,8 +386,6 @@ class SiteForm(forms.ModelForm):
 
 
 class SoilSurveyForm(forms.ModelForm):
-    school = forms.ModelChoiceField(
-        queryset=School.objects.all().order_by('name'), empty_label=None)
     weather = forms.CharField(required=False)
     date = forms.DateField(
         input_formats=['%Y-%m-%d'],
@@ -321,7 +406,7 @@ class SoilSurveyForm(forms.ModelForm):
                 forms.Textarea(attrs={'class': 'materialize-textarea'})
         }
         fields = (
-            'school', 'date', 'time', 'ampm', 'weather', 'landscape_pos',
+            'date', 'time', 'ampm', 'weather', 'landscape_pos',
             'cover_type', 'land_use', 'soil_type', 'distance', 'site_char',
             'notes'
         )
@@ -387,8 +472,6 @@ class SchoolForm(forms.ModelForm):
 
 
 class RipAquaForm(forms.ModelForm):
-    school = forms.ModelChoiceField(
-        queryset=School.objects.all().order_by('name'), empty_label=None)
     date = forms.DateField(
         input_formats=['%Y-%m-%d'],
         widget=forms.DateInput(attrs={'class': 'datepicker'}),
@@ -469,7 +552,7 @@ class RipAquaForm(forms.ModelForm):
 
         }
         fields = (
-            'school', 'date', 'weather', 'riffle_count', 'pool_count', 'silt',
+            'date', 'weather', 'riffle_count', 'pool_count', 'silt',
             'sand', 'gravel', 'cobble', 'boulders', 'bedrock', 'small_debris',
             'medium_debris', 'large_debris', 'comments', 'coniferous_trees',
             'deciduous_trees', 'shrubs', 'small_plants', 'ferns', 'grasses',

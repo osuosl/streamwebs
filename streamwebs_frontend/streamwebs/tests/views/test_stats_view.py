@@ -1,3 +1,4 @@
+''' TODO
 from django.test import Client, TestCase
 from django.core.urlresolvers import reverse
 from django.core.exceptions import PermissionDenied
@@ -18,17 +19,12 @@ class AdminStatsTestCase(TestCase):
         # regular user with no special permissions
         self.reg_user = User.objects.create_user('reg_user', 'reg@example.com',
                                                  'regpassword')
-        # regular user with the "view stats" permission
-        self.special_user = User.objects.create_user('special_user',
-                                                     'special@example.com',
-                                                     'specialpassword')
-        admins = Group.objects.get(name='admin')
+
+        admins = Group.objects.get(name='org_admin')
         # admin user with admin permissions (stats and resources)
         self.admin = User.objects.create_user('admin', 'admin@example.com',
                                               'adminpassword')
         self.admin.groups.add(admins)    # add test admin user to group
-        can_view_stats = Permission.objects.get(codename='can_view_stats')
-        self.special_user.user_permissions.add(can_view_stats)
 
         self.expected_user_stats = {
             'default': ('aithai', 'KANYE_WEST', 'root'),
@@ -102,22 +98,14 @@ class AdminStatsTestCase(TestCase):
 
         # default admin
         admin = User.objects.get(username="admin")
-        self.assertTrue(admin.has_perms(['streamwebs.can_view_stats',
-                                         'streamwebs.can_upload_resources']))
-        self.assertFalse(admin.has_perm('streamwebs.can_promote_users'))
+        self.assertTrue(admin.has_perms(['streamwebs.is_org_author',
+                                         'streamwebs.is_org_admin']))
+        self.assertFalse(admin.has_perm('streamwebs.is_super_admin'))
 
         # regular user
         reg_user = User.objects.get(username='reg_user')
         self.assertFalse(reg_user.has_perms(
-            ['streamwebs.can_view_stats', 'streamwebs.can_promote_users',
-             'streamwebs.can_upload_resources']))
-
-        # non-admin user with stats perm
-        special_user = User.objects.get(username="special_user")
-        self.assertFalse(special_user.has_perms(
-            ['streamwebs.can_upload_resources', 'streamwebs.can_promote_users']
-        ))
-        self.assertTrue(special_user.has_perm('streamwebs.can_view_stats'))
+            ['streamwebs.is_org_admin', 'streamwebs.is_super_admin']))
 
     def test_not_logged_in_user(self):
         """If user is not logged in, can't view the stats page, period"""
@@ -133,21 +121,7 @@ class AdminStatsTestCase(TestCase):
         """User in admin group with stats perm should be able to view stats"""
         self.client.login(username='admin', password='adminpassword')
         response = self.client.get(reverse('streamwebs:stats'))
-        self.assertTrue(response.status_code, 200)
-        self.assertContains(response, 'StreamWebs Statistics')
-        self.client.logout()
-
-    def test_reg_user_has_stats_perm(self):
-        """Reg user that has stats perm can still view the stats page"""
-        special_user = User.objects.get(username="special_user")
-        self.assertFalse(special_user.has_perms(
-            ['streamwebs.can_upload_resources', 'streamwebs.can_promote_users']
-        ))
-        self.assertTrue(special_user.has_perm('streamwebs.can_view_stats'))
-
-        self.client.login(username='special_user', password='specialpassword')
-        response = self.client.get(reverse('streamwebs:stats'))
-        self.assertTrue(response.status_code, 200)
+        self.assertEquals(response.status_code, 200)
         self.assertContains(response, 'StreamWebs Statistics')
         self.client.logout()
 
@@ -163,33 +137,6 @@ class AdminStatsTestCase(TestCase):
         """No start/end provided: Currently active users (3 yrs) returned"""
         self.client.login(username='admin', password='adminpassword')
         response = self.client.post(reverse('streamwebs:stats'), {})
-        self.assertEquals(str(response.context['user_start']),
-                          str(datetime.date(self.today.year - 3,
-                                            self.today.month, self.today.day)))
-        self.assertEquals(str(response.context['start']),
-                          str(datetime.date(1970, 1, 1)))
-        self.assertEquals(str(response.context['end']), str(self.today))
-        self.assertTrue(response.context['all_time'])
-        self.assertEquals(response.context['users']['count'],
-                          len(self.expected_user_stats['default']))
-        for user in response.context['users']['users']:
-            self.assertIn(user.username, self.expected_user_stats['default'])
-            self.assertTrue(user.last_login.date() <= self.today and
-                            user.last_login.date() >= datetime.date(
-                                self.today.year-3, self.today.month,
-                                self.today.day))
-        self.assertEquals(response.context['sheets'],
-                          self.expected_sheet_stats['default'])
-        self.assertEquals(response.context['sites'],
-                          self.expected_site_stats['default'])
-        self.assertEquals(response.context['schools'],
-                          self.expected_school_stats['default'])
-        self.client.logout()
-
-    def test_default_stats_get(self):
-        """No start/end provided: Currently active users (3 yrs) returned"""
-        self.client.login(username='special_user', password='specialpassword')
-        response = self.client.get(reverse('streamwebs:stats'))
         self.assertEquals(str(response.context['user_start']),
                           str(datetime.date(self.today.year - 3,
                                             self.today.month, self.today.day)))
@@ -292,3 +239,4 @@ class AdminStatsTestCase(TestCase):
         self.assertEquals(response.context['schools'],
                           self.expected_school_stats['range'])
         self.client.logout()
+'''

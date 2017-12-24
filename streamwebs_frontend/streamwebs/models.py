@@ -143,7 +143,7 @@ class School(models.Model):
     city = models.CharField(max_length=250)
     province = models.CharField(max_length=250)
     zipcode = models.CharField(max_length=250)
-    active = models.BooleanField(default=True)
+    active = models.BooleanField(default=False)
 
     created = models.DateTimeField(default=timezone.now)
     modified = models.DateTimeField(default=timezone.now)
@@ -189,8 +189,7 @@ def validate_UserProfile_birthdate(birthdate):
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     school = models.ForeignKey(School, on_delete=models.CASCADE)
-    birthdate = models.DateField(validators=[validate_UserProfile_birthdate],
-                                 verbose_name=_('birthdate'))
+    approved = models.BooleanField(default=False)
 
     def __unicode__(self):
         return self.user.username
@@ -804,9 +803,10 @@ class Macroinvertebrates(models.Model):
     def __str__(self):
         return self.site.site_name + ' sheet ' + str(self.id)
 
-    def save(self, **kwargs):
+    def calculate_scores(self):
         self.sensitive_total = 0
         self.somewhat_sensitive_total = 0
+        self.tolerant_total = 0
 
         # divvy up indiv count values into three arrays
         sensitive = [self.caddisfly, self.mayfly, self.riffle_beetle,
@@ -831,6 +831,9 @@ class Macroinvertebrates(models.Model):
         for count in tolerant:
             if count > 0:
                 self.tolerant_total += 1
+
+    def save(self, **kwargs):
+        self.calculate_scores()
 
         # the water quality rating is just the sum of the three scores
         self.wq_rating = (self.sensitive_total +

@@ -26,16 +26,11 @@
         <br/>
         <div class="row">
           <div class="col s12">
-            {{ soil_form.school.label }}
-            {{ soil_form.school.errors }}
-            {{ soil_form.school }}
+              <div>{% trans "School" %}</div>
+              <p id="school-name">{{ school }}</p>
           </div>
         </div>
-        <div class="row">
-          <div class="col s12">
-            <a href="{% url 'streamwebs:create_school' %}?next={{ request.path|urlencode }}" class="btn waves-effect waves-light teal darken-3">{% trans "Add A School/Organization" %}</a>
-          </div>
-        </div>
+        <br/>
         <div class="row">
           <div class="col s6">
             {{ soil_form.date.label }} (YYYY-MM-DD)

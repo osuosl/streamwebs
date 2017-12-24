@@ -1,39 +1,39 @@
 from django.test import TestCase, Client
 from django.core.urlresolvers import reverse
-from streamwebs.models import User, Site, School, RipAquaticSurvey
+from django.contrib.auth.models import User, Group
+from streamwebs.models import Site, School, RipAquaticSurvey, UserProfile
 
 
 class CreateRiparianAquaticSurveyTestCase(TestCase):
 
     def setUp(self):
         self.client = Client()
-        self.user = User.objects.create_user('john', 'john@example.com',
-                                             'johnpassword')
-        self.client.login(username='john', password='johnpassword')
-        self.site = Site.test_objects.create_site('hey')
 
-    def test_edit_with_bad_blank_data(self):
-        """Blank form: Errors will be displayed and
-            site will not be created """
-        site = Site.test_objects.create_site('sup')
-        response = self.client.post(
-            reverse('streamwebs:rip_aqua_edit', kwargs={
-                'site_slug': site.site_slug}))
-        self.assertFormError(response, 'rip_aqua_form', 'school',
-                             'This field is required.')
+        self.school = School.test_objects.create_school('Test School')
+
+        self.user = User.objects.create_user(
+            'john', 'john@example.com', 'johnpassword'
+        )
+        self.user.groups.add(Group.objects.get(name='org_admin'))
+        self.client.login(username='john', password='johnpassword')
+
+        self.profile = UserProfile()
+        self.profile.user = self.user
+        self.profile.school = self.school
+        self.profile.save()
+
+        self.site = Site.test_objects.create_site('hey')
 
     def test_edit_view_with_good_data(self):
         """
         When the user submits a form with all required fields filled
         appropriately, the user should see a success message
         """
-        test_school = School.test_objects.create_school('test school')
         site = Site.test_objects.create_site('sup')
 
         response = self.client.post(reverse(
                 'streamwebs:rip_aqua_edit',
                 kwargs={'site_slug': site.site_slug}), {
-                'school': test_school.id,
                 'date': '1996-12-16',
                 'time': '02:09',
                 'ampm': 'PM',

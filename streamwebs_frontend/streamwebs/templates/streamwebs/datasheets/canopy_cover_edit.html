@@ -71,14 +71,11 @@
 
       <div class="row">
         <div class="col s12">
-          <div class="input-field">
-            {{ canopy_cover_form.school.label }}
-            {{ canopy_cover_form.school.errors }}
-            {{ canopy_cover_form.school }}
-          </div>
-          <a href="{% url 'streamwebs:create_school' %}?next={{ request.path|urlencode }}" class="btn waves-effect waves-light teal darken-3">{% trans "Add A School/Organization" %}</a>
+            <div>{% trans "School" %}</div>
+            <p id="school-name">{{ school }}</p>
         </div>
       </div>
+      <br/>
       <div class="row">
         <div class="col s6">
           <div class="input-field">

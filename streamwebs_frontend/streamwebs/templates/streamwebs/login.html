@@ -2,7 +2,7 @@
 {% load staticfiles %}
 {% load i18n %}
 
-{% block title %}Log In -{% endblock %}
+{% block title %}Log In - {% endblock %}
 
 {% block body_title %}{% trans "Log In" %}{% endblock %}
 
@@ -15,25 +15,47 @@
         {% endfor %}
       </div>
     {% endif %}
+    
     <div class="row">
-      <form class="col s4 offset-s4" id='login_form' method='post'
+
+      <!-- Login form -->
+      <form class="col s6 offset-s3" id='login_form' method='post'
             action="{% url 'streamwebs:login' %}?next={{ redirect_to }}">
         {% csrf_token %}
+
+        <br/>
+        <!-- next field -->
         <input type="hidden" name="next" value="{{ request.GET.next }}"/>
-        {% trans "Username:" %}<input type='text' name='username' value=''
-                                      size='50'/>
+        <!-- Email -->
+        <div class="input-field">
+            <input type='text' name='email' value='' size='50'/>
+            <label for="email">{% trans "Email address or Username" %}</label>
+        </div>
+
+        <!-- Username case sensitive notice -->
+        <div class="valign-wrapper">
+          <i class="material-icons left">error_outline</i>                
+          <p class="red-text">Usernames are case and space sensitive!</p>    
+        </div>
         <br/>
-        {% trans "Password:" %}<input type='password' name='password' value=''
-                                      size='50'/>
-        <br/>
-        <a href="{% url 'password_reset' %}">Forgot your password?</a>
+
+        <!-- Password -->
+        <div class="input-field">
+            <input type='password' name='password' value='' size='50'/>
+            <label for="password">{% trans "Password:" %}</label>
+        </div>
+        <!-- Password reset -->
+        <a href="{% url 'password_reset' %}">Forgot your username or password?</a>
         <br/><br/>
+        
         <button class="btn wave-effect waves-light teal darken-3" type="submit"
           name="submit" value="{% trans "Log in" %}">
           {% trans "Log in" %}
         </button>
-
+        
       </form>
+
     </div>
+    
   </div>
 {% endblock %}

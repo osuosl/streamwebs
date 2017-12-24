@@ -6,6 +6,13 @@
 {% block title %}{% trans "Water Quality Data" %}{% endblock %}
 
 {% block content %}
+<style>
+  .average{
+    font-weight: bold; 
+  }
+</style>
+
+
   <a href="{% url 'streamwebs:site' site.site_slug %}" id="back"
       class="wave-effects wave-light btn white-text teal darken-3">
     <i class="material-icons">chevron_left</i>
@@ -118,6 +125,19 @@
               </td>
             {% endfor %}
           </tr>
+          {% if water_temp_avg > 0 %}
+          <tr>
+            <td>
+              <b>Water Temperature Average:
+              {{ water_temp_avg }}</b>
+              {% if wq_data.water_temp_unit == "Fahrenheit" %}
+              <span>(°F)</span>
+              {% else %}
+              <span>(°C)</span>
+              {% endif %}
+            </td>
+          </tr>
+          {% endif %}
           <tr>
             <td>Air Temperature</td>
             {% for sample in wq_samples %}
@@ -131,6 +151,19 @@
               </td>
             {% endfor %}
           </tr>
+          {% if air_temp_avg > 0 %}
+          <tr>
+            <td>
+              <b>Air Temperature Average: 
+              {{ air_temp_avg }}</b>
+              {% if wq_data.air_temp_unit == "Fahrenheit" %}
+              <span>(°F)</span>
+              {% else %}
+              <span>(°C)</span>
+              {% endif %}
+            </td>
+          </tr>
+          {% endif %}
           <tr>
             <td>Dissolved Oxygen (mg/L)</td>
             {% for sample in wq_samples %}
@@ -144,6 +177,15 @@
               </td>
             {% endfor %}
           </tr>
+          {% if dissolved_oxygen_avg > 0 %}
+          <tr>
+            <td>
+              <b>Dissolved Oxygen Average: 
+              {{ dissolved_oxygen_avg }}</b>
+              <span>(mg/L)</span>
+            </td>
+          </tr>
+          {% endif %}
           <tr>
             <td>pH</td>
             {% for sample in wq_samples %}
@@ -157,6 +199,14 @@
               </td>
             {% endfor %}
           </tr>
+          {% if pH_avg > 0 %}
+          <tr>
+            <td>
+              <b>pH Average: 
+              {{ pH_avg }}</b>
+            </td>
+          </tr>
+          {% endif %}
           <tr>
             <td>Turbidity (NTU)</td>
             {% for sample in wq_samples %}
@@ -170,6 +220,15 @@
               </td>
             {% endfor %}
           </tr>
+          {% if turbidity_avg > 0 %}
+          <tr>
+            <td>
+              <b>Turbidity Average:
+              {{ turbidity_avg }}</b>
+              <span>(NTU)</span>
+            </td>
+          </tr>
+          {% endif %}
           <tr>
             <td>Salinity (PSU or PPT)</td>
             {% for sample in wq_samples %}
@@ -183,6 +242,16 @@
               </td>
             {% endfor %}
           </tr>
+          {% if salinity_avg > 0 %}
+          <tr>
+            <td>
+              <b>Salinity Average:
+              {{ salinity_avg }}</b>
+              <span>(PSU or PPT)</span>
+            </td>
+          </tr>
+          {% endif %}
+          <tr>
           <tr class="collapse-btn">
             <th>{% trans "Additional parameters" %}
               <i class="material-icons">arrow_drop_down</i>
