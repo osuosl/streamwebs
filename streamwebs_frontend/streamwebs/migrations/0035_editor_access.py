@@ -8,8 +8,8 @@ def give_editor_access(apps, schema_editor):
     Users = apps.get_model("auth", "User")
     Group = apps.get_model('auth', 'Group')
 
-    org_contributor = Group.objects.get(name='org_author')
-    org_editor = Group.objects.get(name='org_admin')
+    org_contributor, created = Group.objects.get_or_create(name='org_author')
+    org_editor, created = Group.objects.get_or_create(name='org_admin')
 
     for user in Users.objects.all():
         # Strip away contributor permission if they had it
