@@ -2,11 +2,16 @@
 {% load staticfiles %}
 {% load i18n %}
 {% load filters %}
+{% load verbose_names %}
 
 {% block title %}{% trans "Add Canopy Cover Survey" %}{% endblock %}
 
 {% block content %}
   <style>
+    ul.errorlist ~ input{
+      border-bottom-color: red;
+    }
+
     p.header {
       text-align: center;
       font-weight: bold;
@@ -65,7 +70,7 @@
       {{ site.site_name }}
     </h3>
     <h4 align="center">{% trans 'New Canopy Cover Sampling' %}</h4>
-    <form id='canopy_cover_form' method='post'>
+    <form id='canopy_cover_form' method='post' novalidate>
       {% csrf_token %}
       {{ canopy_cover_form.non_field_errors }}
 
@@ -79,28 +84,36 @@
       <div class="row">
         <div class="col s6">
           <div class="input-field">
-            {{ canopy_cover_form.date.label }} (YYYY-MM-DD)
+            <label for="{{ canopy_cover_form.date.id_for_label }}">
+              {{ canopy_cover_form.date.label }} (YYYY-MM-DD)
+            </label>
             {{ canopy_cover_form.date.errors }}
             {{ canopy_cover_form.date }}
           </div>
         </div>
         <div class="col s3">
           <div class="input-field">
-            {{ canopy_cover_form.time.label }} (HH:MM)
+            <label for="{{ canopy_cover_form.time.id_for_label }}">
+              {{ canopy_cover_form.time.label }} (HH:MM)
+            </label>
             {{ canopy_cover_form.time.errors }}
             {{ canopy_cover_form.time }}
           </div>
         </div>
         <div class="col s3">
           <div class="input-field">
-            {{ canopy_cover_form.ampm.label }}
             {{ canopy_cover_form.ampm.errors }}
             {{ canopy_cover_form.ampm }}
+            <label for="{{ canopy_cover_form.ampm.id_for_label }}">
+              {{ canopy_cover_form.ampm.label }}
+            </label>
           </div>
         </div>
         <div class="col s6">
           <div class="input-field">
-            {{ canopy_cover_form.weather.label }}
+            <label for="{{ canopy_cover_form.weather.id_for_label }}">
+              {{ canopy_cover_form.weather.label }}
+            </label>
             {{ canopy_cover_form.weather.errors }}
             {{ canopy_cover_form.weather }}
           </div>
@@ -336,9 +349,21 @@
 {% endblock %}
 
 {% block scripts %}
+
+  <script>
+    var ERROR_TOAST = ''; // printed by data-toasts.js
+    {% for field, errors in canopy_cover_form.errors.items %}
+      {% for error in errors %}
+        // get_field_label is from verbose_names.py
+        ERROR_TOAST += "{% get_field_label canopy_cover_form field %}: {{ error }}<br>";
+      {% endfor %}
+    {% endfor %}
+  </script>
+
   <script type="application/javascript"
           src="{% static 'streamwebs/js/data.js' %}"></script>
   <script type="application/javascript"
           src="{% static 'streamwebs/js/data/edit/canopy_cover.js' %}">
   </script>
+  <script src="{% static 'streamwebs/js/data-toasts.js' %}"></script>
 {% endblock %}
