@@ -3,52 +3,60 @@
 {% load staticfiles %}
 {% load filters %}
 {% load i18n %}
+{% load verbose_names %}
+
 
 {% block title %}{{ site.site_name  }} Edit Account- {% trans "Streamwebs" %}{% endblock %}
 
 {% block body_title %}{% endblock %}
 
 {% block content %}
-<style>
-  label {
-    color: black; !important
-  }
-</style>
+  <style>
+    label {
+      color: black; !important
+    }
+    ul.errorlist ~ input {
+      border-bottom-color: red;
+    }
+  </style>
+
   <div class="container">
     <h3 align="center" class="teal-text">
         Edit Account at {{school_data.name}}
     </h3>
 
     <br/><br/>
-    <form class="col s8 offset-s2" id='user_form' method='post' action="{% url 'streamwebs:edit_account' school_data.id user.id %}">
+    <form class="col s8 offset-s2" id='user_form' method='post' 
+      action="{% url 'streamwebs:edit_account' school_data.id user.id %}"
+      novalidate>
       {% csrf_token %}
 
       <div class="row">
         <div class="input-field col s6">
           <label for="{{ user_form.first_name.id_for_label }}">{% trans "First Name (Optional)" %}:</label>
-          {{ user_form.first_name }}
           {{ user_form.first_name.errors }}
+          {{ user_form.first_name }}
         </div>
 
         <div class="input-field col s6">
           <label for="{{ user_form.last_name.id_for_label }}">{% trans "Last Name (Optional)" %}:</label>
-          {{ user_form.last_name }}
           {{ user_form.last_name.errors }}
+          {{ user_form.last_name }}
         </div>
       </div>
   
       <div class="input-field col s12">
         <label
             for="{{ user_form.username.id_for_label }}">{% trans "Username" %}:</label>
-        {{ user_form.username }}
         {{ user_form.username.errors }}
+        {{ user_form.username }}
       </div>
   
       <div class="input-field col s12">
         <label
             for="{{ user_form.email.id_for_label }}">{% trans "Email (Optional)" %}:</label>
-        {{ user_form.email }}
         {{ user_form.email.errors }}
+        {{ user_form.email }}
       </div>
       
       <div class="col s12">
@@ -68,4 +76,18 @@
 {% endblock %}
 
 {% block scripts %}
+
+<script>
+  var ERROR_TOAST = ''; // printed by data-toasts.js
+  {% for field, errors in user_form.errors.items %}
+    {% for error in errors %}
+      // get_field_label is from verbose_names.py
+      ERROR_TOAST += "{% get_field_label user_form field %}: {{ error }}<br>";
+    {% endfor %}
+  {% endfor %}
+</script>
+
+<script src="{% static 'streamwebs/js/data.js' %}"></script>
+<script src="{% static 'streamwebs/js/data-toasts.js' %}"></script>
+
 {% endblock %}
