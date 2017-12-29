@@ -1,4 +1,3 @@
-'''TODO
 #from django.test import Client, TestCase
 #from django.contrib.auth.models import User, Group
 #from django.core.urlresolvers import reverse
