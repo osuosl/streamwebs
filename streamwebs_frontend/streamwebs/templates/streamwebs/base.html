@@ -126,7 +126,13 @@
     // All pages shalt toast thy messages
     {% if messages %}
         {% for message in messages %}
-          Materialize.toast('{{ message }}', 4000, 'green');
+          {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+            Materialize.toast('{{ message }}', 4000, 'red');
+          {% elif message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+            Materialize.toast('{{ message }}', 4000, 'orange');
+          {% else %}
+            Materialize.toast('{{ message }}', 4000, 'green');
+          {% endif %}
         {% endfor %}
     {% endif %}
   })
