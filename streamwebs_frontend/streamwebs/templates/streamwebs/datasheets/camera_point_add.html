@@ -11,6 +11,9 @@
   ul.errorlist ~ input {
     border-bottom-color: red;
   }
+  ul.errorlist ~ div {
+    border: 0.5px solid red;
+  }
   </style>
 
   <a href="{% url 'streamwebs:site' site.site_slug %}" id="back"
@@ -123,11 +126,13 @@
           {{ ppi_formset.management_form }}
           {% for ppi_form in ppi_formset %}
             <div class="col s6 offset-s3">
-              <div class="input-field">
-                {{ ppi_form.image.label }}
-                <br/>
+              <div>
                 {{ ppi_form.image.errors }}
-                {{ ppi_form.image }}
+                <div class="input-field">
+                  {{ ppi_form.image.label }}
+                  <br/>
+                  {{ ppi_form.image }}
+                </div>
               </div>
               <div class="input-field">
                 <label for="{{ ppi_form.date.id_for_label }}">{{ ppi_form.date.label }} (YYYY-MM-DD)</label>
