@@ -122,9 +122,12 @@ class UserFormEmailAsUsername(forms.ModelForm):
     def clean_email(self):
         email = self.cleaned_data.get('email')
         lower_email_nospace = ''.join(email.split()).lower()
-        if email and User.objects.filter(email=lower_email_nospace).exists():
-            raise forms.ValidationError(
-                u'A user with that email address already exists.')
+
+        if email:
+            if (User.objects.filter(email=lower_email_nospace).exists() or
+                User.objects.filter(username=lower_email_nospace).exists()):
+                raise forms.ValidationError(
+                    u'A user with that email address already exists.')
         return lower_email_nospace
 
 
