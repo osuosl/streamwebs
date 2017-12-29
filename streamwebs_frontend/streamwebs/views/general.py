@@ -1096,7 +1096,7 @@ def view_pp_and_add_img(request, site_slug, cp_id, pp_id):
 
                 else:
                     messages.add_message(
-                        request, messages.INFO,
+                        request, messages.ERROR,
                         _('A photo from that date already exists for this photo\
                          point.'),
                     )

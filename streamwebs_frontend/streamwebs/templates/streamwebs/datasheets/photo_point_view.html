@@ -9,12 +9,17 @@
     ul.errorlist ~ input {
       border-bottom-color: red;
     }
+    ul.errorlist ~ div {
+    border: 0.5px solid red;
+  }
   </style>
+
   <a href="{% url 'streamwebs:camera_point' site.site_slug cp.id %}" id="back"
       class="wave-effects wave-light btn white-text teal darken-3">
     <i class="material-icons">chevron_left</i>
     Back to <span>{{ site.site_name }} {% trans "Camera Point" %}</span>
   </a>
+
   <br/>
   <br/>
   <div class="container">
@@ -35,7 +40,7 @@
         <div class="col s6">
           <p>
             <b>{% trans "Compass bearing" %}:</b>
-            {{ pp.compass_bearing }} °
+            {{ pp.compass_bearing }} degree(s)
           </p>
         </div>
       </div>
@@ -79,19 +84,16 @@
               {% for ppi_form in ppi_formset %}
                 <div class="row">
                   <div class="col s12">
+                    {{ ppi_form.image.errors }}
                     <div class="input-field">
-                      <b>{{ ppi_form.image.label }}</b>
-                      <br/>
-                      <br/>
                       {{ ppi_form.image }}
-                      {{ ppi_form.image.errors }}
                     </div>
                   </div>
                   <div class="col s12">
                     <div class="input-field">
-                      <b>{{ ppi_form.date.label }}</b>
-                      {{ ppi_form.date }}
+                      <label for="{{ ppi_form.date.id_for_label }}">{{ ppi_form.date.label }}</label>
                       {{ ppi_form.date.errors }}
+                      {{ ppi_form.date }}
                     </div>
                   </div>
                 </div>
@@ -145,11 +147,5 @@
 
 <script src="{% static 'streamwebs/js/data.js' %}"></script>
 <script src="{% static 'streamwebs/js/data-toasts.js' %}"></script>
-
-<script>
-  // TODO remove this and replace with toasts
-  console.log(`{{ ppi_formset.errors }}`)
-  $(function () { $('ul.errorlist').show(); });
-</script>
 
 {% endblock %}
