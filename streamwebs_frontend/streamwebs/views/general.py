@@ -1186,10 +1186,12 @@ def water_quality(request, site_slug, data_id):
 
     # initalize variables for calculating averages
     water_temp_sample_count = 0
-    water_temp_avg = 0
+    water_temp_avg = 0 # in Fahrenheit 
+    water_temp_avg_cel = 0
 
     air_temp_sample_count = 0
-    air_temp_avg = 0
+    air_temp_avg = 0 # in Fahrenheit 
+    air_temp_avg_cel = 0
 
     dissolved_oxygen_sample_count = 0
     dissolved_oxygen_avg = 0
@@ -1227,16 +1229,48 @@ def water_quality(request, site_slug, data_id):
     # Now divide by the count if there are any
     if water_temp_sample_count > 0:
         water_temp_avg /= water_temp_sample_count
+        water_temp_avg = round(water_temp_avg, 2)
+        # Calculate Celsius         
+        water_temp_avg_cel = round((water_temp_avg - 32) * float(5) / 9, 2)
+   
     if air_temp_sample_count > 0:
         air_temp_avg /= air_temp_sample_count
+        air_temp_avg = round(air_temp_avg, 2)
+        # Calculate Celsius 
+        air_temp_avg_cel = round((air_temp_avg - 32) * float(5) / 9, 2)
+          
     if dissolved_oxygen_sample_count > 0:
         dissolved_oxygen_avg /= dissolved_oxygen_sample_count
+        dissolved_oxygen_avg = round(dissolved_oxygen_avg, 2)
+        
     if pH_sample_count > 0:
         pH_avg /= pH_sample_count
+        pH_avg = round(pH_avg, 2)
+        
     if turbidity_sample_count > 0:
         turbidity_avg /= turbidity_sample_count
+        turbidity_avg = round(turbidity_avg, 2)
+        
     if salinity_sample_count > 0:
         salinity_avg /= salinity_sample_count
+        salinity_avg = round(salinity_avg, 2)
+
+    # Package up averages into a dictionary
+    data_averages = {}
+    data_averages["water_temp_sample_count"] = water_temp_sample_count
+    data_averages["water_temp_avg"] = water_temp_avg
+    data_averages["water_temp_avg_cel"] = water_temp_avg_cel
+    data_averages["air_temp_sample_count"] = air_temp_sample_count
+    data_averages["air_temp_avg"] = air_temp_avg
+    data_averages["air_temp_avg_cel"] = air_temp_avg_cel
+    data_averages["dissolved_oxygen_sample_count"] = dissolved_oxygen_sample_count
+    data_averages["dissolved_oxygen_avg"] = dissolved_oxygen_avg
+    data_averages["pH_sample_count"] = pH_sample_count
+    data_averages["pH_avg"] = pH_avg
+    data_averages["turbidity_sample_count"] = turbidity_sample_count
+    data_averages["turbidity_avg"] = turbidity_avg
+    data_averages["salinity_sample_count"] = salinity_sample_count
+    data_averages["salinity_avg"] = salinity_avg
 
     return render(
         request, 'streamwebs/datasheets/water_quality_view.html',
@@ -1244,6 +1278,7 @@ def water_quality(request, site_slug, data_id):
             'site': site,
             'wq_data': wq_data,
             'wq_samples': wq_samples,
+            'data_averages': data_averages
         }
     )
 

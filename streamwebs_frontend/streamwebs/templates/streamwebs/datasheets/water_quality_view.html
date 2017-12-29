@@ -10,6 +10,18 @@
   .average{
     font-weight: bold; 
   }
+
+  /* For water temperature in celsius */  
+  .water-temp-cel {
+    position: relative; 
+    left: 198px;
+  }
+
+  /* For air temperature in celsius */
+  .air-temp-cel {
+    position: relative; 
+    left: 176px;
+  }
 </style>
 
 
@@ -117,16 +129,16 @@
               </td>
             {% endfor %}
           </tr>
-          {% if water_temp_avg > 0 %}
+          {% if data_averages.water_temp_avg > 0 %}
           <tr>
             <td>
               <b>Water Temperature Average:
-              {{ water_temp_avg }}</b>
-              {% if wq_data.water_temp_unit == "Fahrenheit" %}
+              {{ data_averages.water_temp_avg }}</b>
               <span>(°F)</span>
-              {% else %}
-              <span>(°C)</span>
-              {% endif %}
+              <div class="water-temp-cel">
+                  <b>{{data_averages.water_temp_avg_cel }}</b>
+                  <span>(°C)</span>
+                </div>
             </td>
           </tr>
           {% endif %}
@@ -143,16 +155,16 @@
               </td>
             {% endfor %}
           </tr>
-          {% if air_temp_avg > 0 %}
+          {% if data_averages.air_temp_avg > 0 %}
           <tr>
             <td>
               <b>Air Temperature Average: 
-              {{ air_temp_avg }}</b>
-              {% if wq_data.air_temp_unit == "Fahrenheit" %}
+              {{ data_averages.air_temp_avg }}</b>
               <span>(°F)</span>
-              {% else %}
-              <span>(°C)</span>
-              {% endif %}
+              <div class="air-temp-cel">
+                <b>{{data_averages.air_temp_avg_cel }}</b>
+                <span>(°C)</span>
+              </div>
             </td>
           </tr>
           {% endif %}
@@ -169,11 +181,11 @@
               </td>
             {% endfor %}
           </tr>
-          {% if dissolved_oxygen_avg > 0 %}
+          {% if data_averages.dissolved_oxygen_avg > 0 %}
           <tr>
             <td>
               <b>Dissolved Oxygen Average: 
-              {{ dissolved_oxygen_avg }}</b>
+              {{ data_averages.dissolved_oxygen_avg }}</b>
               <span>(mg/L)</span>
             </td>
           </tr>
@@ -191,11 +203,11 @@
               </td>
             {% endfor %}
           </tr>
-          {% if pH_avg > 0 %}
+          {% if data_averages.pH_avg > 0 %}
           <tr>
             <td>
               <b>pH Average: 
-              {{ pH_avg }}</b>
+              {{ data_averages.pH_avg }}</b>
             </td>
           </tr>
           {% endif %}
@@ -212,11 +224,11 @@
               </td>
             {% endfor %}
           </tr>
-          {% if turbidity_avg > 0 %}
+          {% if data_averages.turbidity_avg > 0 %}
           <tr>
             <td>
               <b>Turbidity Average:
-              {{ turbidity_avg }}</b>
+              {{ data_averages.turbidity_avg }}</b>
               <span>(NTU)</span>
             </td>
           </tr>
@@ -234,11 +246,11 @@
               </td>
             {% endfor %}
           </tr>
-          {% if salinity_avg > 0 %}
+          {% if data_averages.salinity_avg > 0 %}
           <tr>
             <td>
               <b>Salinity Average:
-              {{ salinity_avg }}</b>
+              {{ data_averages.salinity_avg }}</b>
               <span>(PSU or PPT)</span>
             </td>
           </tr>
