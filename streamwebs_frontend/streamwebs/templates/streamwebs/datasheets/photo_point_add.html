@@ -7,11 +7,18 @@
 {% block title %}{% trans "New photo point" %}{% endblock %}
 
 {% block content %}
+  <style>
+  ul.errorlist ~ input {
+    border-bottom-color: red;
+  }
+  </style>
+
   <a href="{% url 'streamwebs:camera_point' site.site_slug cp.id %}" id="back"
       class="wave-effects wave-light btn white-text teal darken-3">
     <i class="material-icons">chevron_left</i>
     Back to <span>{{ site.site_name }} {% trans "Camera Point" %}</span>
   </a>
+
   <div class="container">
     <h4 class="teal-text">
       {% trans "New photo point for camera point" %}
@@ -26,37 +33,38 @@
     <form id='pp_form' method='post' enctype='multipart/form-data' novalidate>
       {% csrf_token %}
       <div class="input-field">
-        {{ pp_form.compass_bearing.label }} (degrees)
-        {{ pp_form.compass_bearing }}
+        <label for="{{ pp_form.compass_bearing.id_for_label }}">{{ pp_form.compass_bearing.label }} (degrees)</label>
         {{ pp_form.compass_bearing.errors }}
+        {{ pp_form.compass_bearing }}
       </div>
       <div class="input-field">
-        {{ pp_form.distance.label }} (ft)
-        {{ pp_form.distance }}
+        <label for="{{ pp_form.distance.id_for_label }}">{{ pp_form.distance.label }} (ft)</label>
         {{ pp_form.distance.errors }}
+        {{ pp_form.distance }}
       </div>
       <div class="input-field">
-        {{ pp_form.camera_height.label }} (ft)
-        {{ pp_form.camera_height }}
+        <label for="{{ pp_form.camera_height.id_for_label }}">{{ pp_form.camera_height.label }} (ft)</label>
         {{ pp_form.camera_height.errors }}
+        {{ pp_form.camera_height }}
       </div>
       <div class="input-field">
-        {{ pp_form.notes.label }}
-        {{ pp_form.notes }}
+        <label for="{{ pp_form.notes.id_for_label }}">{{ pp_form.notes.label }}</label>
         {{ pp_form.notes.errors }}
+        {{ pp_form.notes }}
       </div>
       {{ ppi_formset.management_form }}
       {% for ppi_form in ppi_formset %}
         <div class="input-field">
-          {{ ppi_form.image }}
           {{ ppi_form.image.errors}}
+          {{ ppi_form.image }}
         </div>
         <div class="input-field">
-          {{ ppi_form.date.label }} (YYYY-MM-DD)
-          {{ ppi_form.date }}
+          <label for="{{ ppi_form.date.id_for_label }}">{{ ppi_form.date.label }} (YYYY-MM-DD)</label>
           {{ ppi_form.date.errors}}
+          {{ ppi_form.date }}
         </div>
       {% endfor %}
+
       <button class="btn wave-effect waves-light teal darken-3" type="submit"
         name="submit" value="{% trans "Submit" %}">
         {% trans "Submit" %}<i class="material-icons right">send</i>
@@ -69,10 +77,20 @@
 
 <script>
   var ERROR_TOAST = ''; // printed by data-toasts.js
+
   {% for field, errors in pp_form.errors.items %}
     {% for error in errors %}
       // get_field_label is from verbose_names.py
       ERROR_TOAST += "{% get_field_label pp_form field %}: {{ error }}<br>";
+    {% endfor %}
+  {% endfor %}
+
+  // PHOTOPOINT ... I FORM
+  {% for ppi_form in ppi_formset %}
+    {% for field, errors in ppi_form.errors.items %}
+      {% for error in errors %}
+        ERROR_TOAST += "{% get_field_label ppi_form field %}: {{ error }}<br>";
+      {% endfor %}
     {% endfor %}
   {% endfor %}
 </script>
