@@ -30,7 +30,7 @@
         {{ site.site_name }}
       </h3>
       <h4 align="center">{% trans "New Riparian Soil Survey" %}</h4>
-      <form id='soil_form' method='post' action='{{ request.path }}'>
+      <form id='soil_form' method='post' action='{{ request.path }}' novalidate>
         {% csrf_token %}
         <br/>
         <div class="row">
