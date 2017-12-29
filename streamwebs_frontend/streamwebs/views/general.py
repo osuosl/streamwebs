@@ -1694,7 +1694,7 @@ def send_email(request, subject, template, user, school, from_email,
 @permission_required('streamwebs.is_org_admin', raise_exception=True)
 # Redirect to the manage accounts page, based on user's school
 def get_manage_accounts(request, user_id):
-    if request.user.has_perm('streamwebs.is_org_admin'):
+    if not request.user.has_perm('streamwebs.is_org_admin'):
         profile = UserProfile.objects.get(user=request.user)
         return HttpResponseRedirect(
             '/schools/%i/manage_accounts/' % int(profile.school.id))
