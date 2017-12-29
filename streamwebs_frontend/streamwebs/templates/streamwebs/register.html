@@ -20,8 +20,10 @@
   ul.errorlist ~ input {
     border-bottom-color: red;
   }
-  ul.errorlist ~ hr {
-    border: 0.5px solid red;
+  ul.errorlist ~ label {
+    color: red;
+    text-decoration: underline;
+    text-decoration-color: red;
   }
 </style>
 
@@ -78,9 +80,9 @@
         <br/>
         <!-- Schools -->
         <div class="input-field col s6 offset-s2">
+          <label for="autocomplete_schools">{% trans "School Search" %}</label>
           {{ profile_form.school.errors }}
           <input type="text" id="autocomplete_schools" class="autocomplete">
-          <label for="autocomplete_schools">{% trans "School Search" %}</label>
         </div>
         <div class="input-field col s2">
           <a class="btn waves-effect teal darken-3" id="org_create"
@@ -118,6 +120,7 @@
           
           <!-- Type -->
           <div class="input-field col s12">
+            {{ school_form.school_type.errors }}
             <label for="{{ school_form.school_type.id_for_label }}" id="school_type" 
                     name="school_type">
                     {% trans "Type:" %}
@@ -131,10 +134,6 @@
                 </label>
               {% endfor %}
             </div>
-
-            <br/>
-            {{ school_form.school_type.errors }}
-            <hr>
           </div>
           
           <!-- Address -->

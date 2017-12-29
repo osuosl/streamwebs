@@ -11,12 +11,19 @@
     ul.errorlist ~ input {
       border-bottom-color: red;
     }
+    ul.errorlist ~ p {
+      color: red;
+      text-decoration: underline;
+      text-decoration-color: red;
+    }
   </style>
+
   <a href="{% url 'streamwebs:site' site.site_slug %}" id="back"
       class="wave-effects wave-light btn white-text teal darken-3">
     <i class="material-icons">chevron_left</i>
     Back to <span>{{ site.site_name }}</span>
   </a>
+  
   <div class="container">
     <h3 align="center" class="teal-text">
       {{ site.site_name }}
@@ -36,30 +43,30 @@
         <div class="row">
           <div class="col s6">
             <div class="input-field">
-              {{ wq_form.date.label }} (YYYY-MM-DD)
+              <label for="{{ wq_form.date.id_for_label }}">{{ wq_form.date.label }} (YYYY-MM-DD)</label>
               {{ wq_form.date.errors }}
               {{ wq_form.date }}
             </div>
           </div>
           <div class="col s3">
             <div class="input-field">
-              {{ wq_form.time.label }} (HH:MM)
+              <label for="{{ wq_form.time.id_for_label }}">{{ wq_form.time.label }} (HH:MM)</label>
               {{ wq_form.time.errors }}
               {{ wq_form.time }}
             </div>
           </div>
           <div class="col s3">
             <div class="input-field">
-              {{ wq_form.ampm.label }}
               {{ wq_form.ampm.errors }}
               {{ wq_form.ampm }}
+              <label for="{{ wq_form.ampm.id_for_label }}">{{ wq_form.ampm.label }}</label>
             </div>
           </div>
           <div class="col s6">
             <div class="input-field">
-              {{ wq_form.DEQ_dq_level.label }}
               {{ wq_form.DEQ_dq_level.errors }}
               {{ wq_form.DEQ_dq_level }}
+              <label for="{{ wq_form.DEQ_dq_level.id_for_label }}">{{ wq_form.DEQ_dq_level.label }}</label>
             </div>
           </div>
         </div>
@@ -67,7 +74,9 @@
         <div class="row">
           <div class="col s6">
             <div class="input-field">
-              {{ wq_form.latitude.label }} <span class="optional">(Optional)<span>
+              <label for="{{ wq_form.latitude.id_for_label }}">
+                {{ wq_form.latitude.label }} <span class="optional">(Optional)<span>
+              </label>
               {{ wq_form.latitude.errors }}
               {{ wq_form.latitude }}
             </div>
@@ -75,7 +84,9 @@
 
           <div class="col s6">
             <div class="input-field">
-              {{ wq_form.longitude.label }} <span class="optional">(Optional)<span>
+              <label for="{{ wq_form.longitude.id_for_label }}">
+                {{ wq_form.longitude.label }} <span class="optional">(Optional)<span>
+              </label>
               {{ wq_form.longitude.errors }}
               {{ wq_form.longitude }}
             </div>
@@ -91,8 +102,8 @@
         </div>
         <br/><br/>
         <div class="col s4 fish-presence">
-          <p>{{ wq_form.fish_present.label }}</p>
           {{ wq_form.fish_present.errors }}
+          <p>{{ wq_form.fish_present.label }}</p>
           <div class="input-field">
             {% for radio in wq_form.fish_present %}
               {{ radio.tag }}
@@ -117,8 +128,8 @@
       <br/><br/><br/>
       <div class="row">
         <div class="col s6 water-temp">
-          <p>{{ wq_form.water_temp_unit.label }}</p>
           {{ wq_form.water_temp_unit.errors }}
+          <p>{{ wq_form.water_temp_unit.label }}</p>
           <div class="input-field">
             {% for radio in wq_form.water_temp_unit %}
               {{ radio.tag }}
@@ -129,8 +140,8 @@
         </div>
 
         <div class="col s6 air-temp">
-          <p>{{ wq_form.air_temp_unit.label }}</p>
           {{ wq_form.air_temp_unit.errors }}
+          <p>{{ wq_form.air_temp_unit.label }}</p>
           <div class="input-field">
             {% for radio in wq_form.air_temp_unit %}
               {{ radio.tag }}
