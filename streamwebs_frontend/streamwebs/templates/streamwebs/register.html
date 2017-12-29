@@ -1,6 +1,7 @@
 {% extends 'streamwebs/base.html' %}
 {% load i18n %}
 {% load staticfiles %}
+{% load verbose_names %}
 
 {% block title %}{% trans "Register" %} -{% endblock %}
 
@@ -16,6 +17,13 @@
   div.center-content{
     margin-top: 10px;
   }
+  ul.errorlist ~ input {
+    border-bottom-color: red;
+  }
+  ul.errorlist ~ hr {
+    border: 0.5px solid red;
+    display:block;
+  }
 </style>
 
 <div class="container">
@@ -29,44 +37,34 @@
       <div class="row">
         <!-- First name -->
         <div class="input-field col s4 offset-s2">
-          <label for="{{ user_form.first_name.id_for_label }}">
-            {% trans "First Name" %}
-          </label>
-          {{ user_form.first_name }}
+          <label for="{{ user_form.first_name.id_for_label }}">{% trans "First Name" %}</label>
           {{ user_form.first_name.errors }}
+          {{ user_form.first_name }}
         </div>
         <!-- Last name -->
         <div class="input-field col s4">
-          <label for="{{ user_form.last_name.id_for_label }}">
-            {% trans "Last Name" %}
-          </label>
-          {{ user_form.last_name }}
+          <label for="{{ user_form.last_name.id_for_label }}">{% trans "Last Name" %}</label>
           {{ user_form.last_name.errors }}
+          {{ user_form.last_name }}
         </div>
 
         <!-- Email, which replaces username in the view -->
         <div class="input-field col s8 offset-s2">
-          <label for="{{ user_form.email.id_for_label }}">
-            {{ user_form.email.label }}
-          </label>
-          {{ user_form.email }}
+          <label for="{{ user_form.email.id_for_label }}">{% trans "Email" %}</label>
           {{ user_form.email.errors }}
+          {{ user_form.email }}
         </div>
         <!-- Password -->
         <div class="input-field col s8 offset-s2">
-          <label for="{{ user_form.password.id_for_label }}">
-              {% trans "Password" %}
-            </label>
-          {{ user_form.password }}
+          <label for="{{ user_form.password.id_for_label }}">{% trans "Password" %}</label>
           {{ user_form.password.errors }}
+          {{ user_form.password }}
         </div>
         <!-- Password verify -->
         <div class="input-field col s8 offset-s2">
-          <label for="{{ user_form.password_check.id_for_label }}">
-              {% trans "Verify Password" %}
-            </label>
-          {{ user_form.password_check }}
+          <label for="{{ user_form.password_check.id_for_label }}">{% trans "Verify Password" %}</label>
           {{ user_form.password_check.errors }}
+          {{ user_form.password_check }}
         </div>
       </div>
       
@@ -81,6 +79,7 @@
         <br/>
         <!-- Schools -->
         <div class="input-field col s6 offset-s2">
+          {{ profile_form.school.errors }}
           <input type="text" id="autocomplete_schools" class="autocomplete">
           <label for="autocomplete_schools">{% trans "School Search" %}</label>
         </div>
@@ -92,8 +91,8 @@
         </div>
         <div class="col s8 offset-s2">
           <h6 class="teal-text">
-              Selected School:
-              <span id="selected_school">None</span>
+            Selected School:
+            <span id="selected_school">None</span>
           </h6>
         </div>
       </div>
@@ -113,11 +112,9 @@
 
           <!-- Name -->
           <div class="input-field col s12">
-            <label for="{{ school_form.name.id_for_label }}">
-              {% trans "Name" %}
-            </label>
+            <label for="{{ school_form.name.id_for_label }}">{% trans "Name" %}</label>
+            {{ school_form.name.errors }}
             {{ school_form.name }}
-            {{ school_form.name.errors | striptags }}
           </div>
           
           <!-- Type -->
@@ -127,43 +124,46 @@
                     {% trans "Type:" %}
             </label>
             <br/>
-            <ul>
+            <div>
               {% for radio in school_form.school_type %}
                 {{ radio.tag }}
                 <label for="{{ radio.id_for_label }}">
                   {{ radio.choice_label }}
                 </label>
-                {{ radio.tag.errors | striptags }}
               {% endfor %}
-            </ul>
+            </div>
+
+            <br/>
+            {{ school_form.school_type.errors }}
+            <hr>
           </div>
           
           <!-- Address -->
           <div class="input-field col s12">
             <label for="{{ school_form.address.id_for_label }}">{% trans "Address" %}</label>
+            {{ school_form.address.errors }}
             {{ school_form.address }}
-            {{ school_form.address.errors | striptags }}
           </div>
 
           <!-- City -->
           <div class="input-field col s12">
             <label for="{{ school_form.city.id_for_label }}">{% trans "City" %}</label>
+            {{ school_form.city.errors }}
             {{ school_form.city }}
-            {{ school_form.city.errors | striptags }}
           </div>
 
           <!-- Province -->
           <div class="input-field col s12">
             <label for="{{ school_form.province.id_for_label }}">{% trans "State" %}</label>
+            {{ school_form.province.errors }}
             {{ school_form.province }}
-            {{ school_form.province.errors | striptags }}
           </div>
 
           <!-- Zip code -->
           <div class="input-field col s12">
             <label for="{{ school_form.zipcode.id_for_label }}">{% trans "Zipcode" %}</label>
+            {{ school_form.zipcode.errors }}
             {{ school_form.zipcode }}
-            {{ school_form.zipcode.errors | striptags }}
           </div>
         </div>
       </div>
@@ -172,8 +172,8 @@
         <!-- Captcha -->
         <div class="input-field col s8 offset-s2">
           <label for="{{ profile_form.captcha.id_for_label }}"></label>
-          {{ profile_form.captcha }}
           {{ profile_form.captcha.errors }}
+          {{ profile_form.captcha }}
         </div>
         <!-- Submit button -->
         <div class="col s8 offset-s2">
@@ -240,4 +240,38 @@
 
     });
   </script>
+
+  <script>
+    var ERROR_TOAST = ''; // printed by data-toasts.js
+    {% for field, errors in user_form.errors.items %}
+      {% for error in errors %}
+        // get_field_label is from verbose_names.py
+        ERROR_TOAST += "{% get_field_label user_form field %}: {{ error }}<br>";
+      {% endfor %}
+    {% endfor %}
+
+    {% if new_org_flag %}
+
+      {% for field, errors in school_form.errors.items %}
+        {% for error in errors %}
+          // get_field_label is from verbose_names.py
+          ERROR_TOAST += "{% get_field_label school_form field %}: {{ error }}<br>";
+        {% endfor %}
+      {% endfor %}
+
+    {% else %}
+
+      {% for field, errors in profile_form.errors.items %}
+        {% for error in errors %}
+          // get_field_label is from verbose_names.py
+          ERROR_TOAST += "{% get_field_label profile_form field %}: {{ error }}<br>";
+        {% endfor %}
+      {% endfor %}
+    
+    {% endif %}
+  </script>
+  
+  <script src="{% static 'streamwebs/js/data.js' %}"></script>
+  <script src="{% static 'streamwebs/js/data-toasts.js' %}"></script>
+  
 {% endblock %}
