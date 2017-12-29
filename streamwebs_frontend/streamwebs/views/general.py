@@ -416,83 +416,95 @@ def register(request):
         profile_form = UserProfileForm(data=request.POST)
         school_form = SchoolForm(data=request.POST)
 
+        new_org_flag = len(request.POST.getlist('new_org_flag')) > 0
+
         # User form must always be valid
-        if user_form.is_valid() and profile_form.is_valid():
-            user = user_form.save()
-            user.username = user.email
-            user.set_password(user.password)
+        if user_form.is_valid():
+            # Select a school
+            if not new_org_flag:
+                if profile_form.is_valid():
+                    user = user_form.save()
+                    user.username = user.email
+                    user.set_password(user.password)
+                    user.save()
 
-            profile = profile_form.save(commit=False)
-            profile.user = user
+                    profile = profile_form.save(commit=False)
+                    profile.user = user
+                    profile.save()
 
-            # If school form is valid, then the user is creating a new school
-            if school_form.is_valid():
-                school = school_form.save()
-                school.province = (school.province + ', United States')
-                school.save()
+                    # Get current system users
+                    current_users = UserProfile.objects.filter(
+                        school=profile.school, approved=True).all()
 
-                profile.school_id = school.id
+                    # Get editors for new user's school
+                    editor_users = [up.user.email for up in current_users
+                                    if up.user.groups.filter(
+                                        name='org_admin').exists()]
 
-                # Save user
-                user.save()
-                profile.save()
+                    # Email to org admins for new user joining org
+                    if (len(editor_users) > 0):
+                        send_email(
+                            request=request,
+                            subject='New User requested to join your organization',
+                            template='registration/new_user_request_email.html',
+                            user=user,
+                            school=profile.school,
+                            from_email=settings.DEFAULT_FROM_EMAIL,
+                            recipients=editor_users
+                        )
+                    
+                    return HttpResponseRedirect('/register/confirm')
 
-                # Permissions
-                org_editor = Group.objects.get(name='org_admin')
-                user.groups.add(org_editor)
-
-                # Super admins
-                super_admins = [usr.email for usr in User.objects.all()
-                                if usr.has_perm('streamwebs.is_super_admin')]
-
-                # Email to super admin for new organization + account
-                send_email(
-                    request=request,
-                    subject='New organization request: ' + str(school.name),
-                    template='registration/new_org_request_email.html',
-                    user=user,
-                    school=school,
-                    from_email=settings.DEFAULT_FROM_EMAIL,
-                    recipients=['testing@streamwebs.org']  # super_admins
-                )
+            # Create a school
             else:
-                # Save user
-                user.save()
-                profile.save()
+                if school_form.is_valid():
+                    school = school_form.save()
+                    school.province = (school.province + ', United States')
+                    school.save()
 
-                # Get current system users
-                current_users = UserProfile.objects.filter(
-                    school=profile.school, approved=True).all()
+                    user = user_form.save()
+                    user.username = user.email
+                    user.set_password(user.password)
+                    user.save()
 
-                # Get editors for new user's school
-                editor_users = [up.user.email for up in current_users
-                                if up.user.groups.filter(
-                                    name='org_admin').exists()]
+                    profile = UserProfile()
+                    profile.user = user
+                    profile.school_id = school.id
+                    profile.save()
 
-                # Email to org admins for new user joining org
-                if (len(editor_users) > 0):
+                    # Permissions
+                    org_editor = Group.objects.get(name='org_admin')
+                    user.groups.add(org_editor)
+                    user.save()
+
+                    # Super admins
+                    super_admins = [usr.email for usr in User.objects.all()
+                                    if usr.has_perm('streamwebs.is_super_admin')]
+
+                    # Email to super admin for new organization + account
                     send_email(
                         request=request,
-                        subject='New User requested to join your organization',
-                        template='registration/new_user_request_email.html',
+                        subject='New organization request: ' + str(school.name),
+                        template='registration/new_org_request_email.html',
                         user=user,
-                        school=profile.school,
+                        school=school,
                         from_email=settings.DEFAULT_FROM_EMAIL,
-                        recipients=editor_users
+                        recipients=['testing@streamwebs.org']  # super_admins
                     )
 
-            return HttpResponseRedirect('/register/confirm')
-
+                    return HttpResponseRedirect('/register/confirm')
     else:
         user_form = UserFormEmailAsUsername()
         profile_form = UserProfileForm()
         school_form = SchoolForm()
+        new_org_flag = False
 
     return render(request, 'streamwebs/register.html', {
         'user_form': user_form,
         'profile_form': profile_form,
         'school_form': school_form,
-        'schools': School.objects.filter(active=True).all().order_by('name')
+        'schools': School.objects.filter(active=True).all().order_by('name'),
+        'new_org_flag': new_org_flag
     })
 
 
