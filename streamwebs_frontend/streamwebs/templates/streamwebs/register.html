@@ -20,10 +20,8 @@
   ul.errorlist ~ input {
     border-bottom-color: red;
   }
-  ul.errorlist ~ label {
-    color: red;
-    text-decoration: underline;
-    text-decoration-color: red;
+  ul.errorlist ~ div.input-field{
+    border-top: 1px solid red;
   }
 </style>
 
@@ -120,13 +118,14 @@
           
           <!-- Type -->
           <div class="input-field col s12">
-            {{ school_form.school_type.errors }}
             <label for="{{ school_form.school_type.id_for_label }}" id="school_type" 
-                    name="school_type">
-                    {% trans "Type:" %}
+              name="school_type">
+              {% trans "Type:" %}
             </label>
             <br/>
-            <div>
+
+            {{ school_form.school_type.errors }}
+            <div class="input-field">
               {% for radio in school_form.school_type %}
                 {{ radio.tag }}
                 <label for="{{ radio.id_for_label }}">

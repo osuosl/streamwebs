@@ -11,10 +11,8 @@
     ul.errorlist ~ input {
       border-bottom-color: red;
     }
-    ul.errorlist ~ p {
-      color: red;
-      text-decoration: underline;
-      text-decoration-color: red;
+    ul.errorlist ~ div.input-field{
+      border-top: 1px solid red;
     }
   </style>
 
@@ -102,8 +100,8 @@
         </div>
         <br/><br/>
         <div class="col s4 fish-presence">
-          {{ wq_form.fish_present.errors }}
           <p>{{ wq_form.fish_present.label }}</p>
+          {{ wq_form.fish_present.errors }}
           <div class="input-field">
             {% for radio in wq_form.fish_present %}
               {{ radio.tag }}
@@ -128,8 +126,8 @@
       <br/><br/><br/>
       <div class="row">
         <div class="col s6 water-temp">
-          {{ wq_form.water_temp_unit.errors }}
           <p>{{ wq_form.water_temp_unit.label }}</p>
+          {{ wq_form.water_temp_unit.errors }}
           <div class="input-field">
             {% for radio in wq_form.water_temp_unit %}
               {{ radio.tag }}
@@ -140,8 +138,8 @@
         </div>
 
         <div class="col s6 air-temp">
-          {{ wq_form.air_temp_unit.errors }}
           <p>{{ wq_form.air_temp_unit.label }}</p>
+          {{ wq_form.air_temp_unit.errors }}
           <div class="input-field">
             {% for radio in wq_form.air_temp_unit %}
               {{ radio.tag }}
