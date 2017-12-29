@@ -41,7 +41,7 @@
       {{ site.site_name }}
   </h3>
   <h4 align="center">{% trans 'New Riparian and Aquatic Survey' %}</h4>
-  <form id="rip_aqua_form" method="post" action="{{ request.path }}">
+  <form id="rip_aqua_form" method="post" action="{{ request.path }}" novalidate>
     {% csrf_token %}
 
     <div class="row">

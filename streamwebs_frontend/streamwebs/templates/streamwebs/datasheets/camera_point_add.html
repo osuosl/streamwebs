@@ -7,43 +7,56 @@
 {% block title %}{% trans "Add a new camera point" %}{% endblock %}
 
 {% block content %}
+  <style>
+  ul.errorlist ~ input {
+    border-bottom-color: red;
+  }
+  </style>
+
   <a href="{% url 'streamwebs:site' site.site_slug %}" id="back"
       class="wave-effects wave-light btn white-text teal darken-3">
     <i class="material-icons">chevron_left</i>
     Back to <span>{{ site.site_name }}</span>
   </a>
   <div class="container">
-    {% if user.is_authenticated %}
-      <h3 align="center" class="teal-text">
-        {{ site.site_name }}
-      </h3>
-      <h4 align="center">{% trans 'New Camera Point' %}</h4>
-      <form id='pp_monitoring_form' method='post' enctype='multipart/form-data'>
-        {% csrf_token %}
+    <h3 align="center" class="teal-text">
+      {{ site.site_name }}
+    </h3>
+    <h4 align="center">{% trans 'New Camera Point' %}</h4>
+    <form id='pp_monitoring_form' method='post' enctype='multipart/form-data'
+      novalidate>
+      {% csrf_token %}
 
-        <p>{{ camera_form.site }}</p>
-        <div class="row">
-          <div class="col s12">
-              <div>{% trans "School" %}</div>
-              <p id="school-name">{{ school }}</p>
-          </div>
+      <p>{{ camera_form.site }}</p>
+      <div class="row">
+        <div class="col s12">
+            <div>{% trans "School" %}</div>
+            <p id="school-name">{{ school }}</p>
         </div>
+      </div>
+      <br/>
+      <div class="loc-input">
+        <!-- CAMERA FORM: -->
+        {{ camera_form.media }}
+        <h5>{% trans "Location Input" %}</h5>
         <br/>
-        <div class="loc-input">
-          <!-- CAMERA FORM: -->
-          {{ camera_form.media }}
-          <h5>{% trans "Location Input" %}</h5>
+        <div class="row">
           <div class="input-field col s12">
-            {% trans "Camera Point Date (YYYY-MM-DD)" %}
+            <label for="{{ camera_form.cp_date.id_for_label }}">{{ camera_form.cp_date.label }} (YYYY-MM-DD)</label>
             {{ camera_form.cp_date.errors }}
             {{ camera_form.cp_date }}
           </div>
+        </div>
+        <div class="row">
           <div class="input-field col s12">
-            {{ camera_form.description.label }}
+            <label for="{{ camera_form.description.id_for_label }}">{{ camera_form.description.label }}</label>
             {{ camera_form.description.errors }}
             {{ camera_form.description }}
           </div>
-          <br/>
+        </div>
+        <br/>
+
+        <div class="row">
           <div class="col s12">
             <div class="row">
               <div class="input-field col s6">
@@ -55,88 +68,85 @@
                 Longitude: <span id="lng"></span>
               </div>
               <div class="input-field col s6">
-                {{ camera_form.map_datum.label }}
                 {{ camera_form.map_datum.errors }}
                 {{ camera_form.map_datum }}
+                <label for="{{ camera_form.map_datum.id_for_label }}">{{ camera_form.map_datum.label }}</label>
               </div>
             </div>
             <div class="map" style="height:400px;"></div>
             <input type="hidden" id="input_lat" name="lat"
-                   value="{{ site.to_dict.location.y }}">
+                    value="{{ site.to_dict.location.y }}">
             <input type="hidden" id="input_lng" name="lng"
-                   value="{{ site.to_dict.location.x }}">
-          </div>
-          <!-- END CAMERA FORM -->
-        </div>
-        <br>
-        <div class="photo-input row">
-          <div class="col s8 offset-s2">
-            <p class="center"><strong><b>Note: </b></strong>
-            You can add more photos / create more photopoints after submitting this form.
-            </p>
-          </div>
-          <br/><br/><br/>
-          <div class="col s6 offset-s3">
-            <h5 class="center">{% trans "Photo Point #1" %}</h5>
-          </div>
-          <br/>
-          <div class="row">
-            {{ pp_formset.management_form }}
-            {% for p_form in pp_formset %}
-              <div class="col s6 offset-s3">
-                <div class="input-field">
-                  {{ p_form.compass_bearing.label }} (degrees)
-                  {{ p_form.compass_bearing.errors }}
-                  {{ p_form.compass_bearing }}
-                </div>
-                <div class="input-field">
-                  {{ p_form.distance.label }} (ft)
-                  {{ p_form.distance.errors }}
-                  {{ p_form.distance }}
-                </div>
-                <div class="input-field">
-                  {{ p_form.camera_height.label }} (ft)
-                  {{ p_form.camera_height.errors }}
-                  {{ p_form.camera_height }}
-                </div>
-                <div class="input-field">
-                  {{ p_form.notes.label }}
-                  {{ p_form.notes.errors }}
-                  {{ p_form.notes }}
-                </div>
-              </div>
-            {% endfor %}
-            {{ ppi_formset.management_form }}
-            {% for ppi_form in ppi_formset %}
-              <div class="col s6 offset-s3">
-                <div class="input-field">
-                  {{ ppi_form.image.label }}
-                  <br/>
-                  {{ ppi_form.image.errors }}
-                  {{ ppi_form.image }}
-                </div>
-                <div class="input-field">
-                  {{ ppi_form.date.label }} (YYYY-MM-DD)
-                  {{ ppi_form.date.errors }}
-                  {{ ppi_form.date }}
-                </div>
-              </div>
-            {% endfor %}
+                    value="{{ site.to_dict.location.x }}">
           </div>
         </div>
+        <!-- END CAMERA FORM -->
+      </div>
+      <br>
+      <div class="photo-input row">
+        <div class="col s8 offset-s2">
+          <p class="center"><strong><b>Note: </b></strong>
+          You can add more photos / create more photopoints after submitting this form.
+          </p>
+        </div>
+        <br/><br/><br/>
+        <div class="col s6 offset-s3">
+          <h5 class="center">{% trans "Photo Point #1" %}</h5>
+        </div>
+        <br/>
         <div class="row">
-          <div class="col s6 offset-s3">
-            <button class="center btn-large waves-effect waves-light teal darken-3"
-                    type="submit" name="action" value='{% trans "Submit" %}'>
-              {% trans "Submit" %}<i class="material-icons right">send</i>
-            </button>
-          </div>
+          {{ pp_formset.management_form }}
+          {% for p_form in pp_formset %}
+            <div class="col s6 offset-s3">
+              <div class="input-field">
+                <label for="{{ p_form.compass_bearing.id_for_label }}">{{ p_form.compass_bearing.label }} (degrees)</label>
+                {{ p_form.compass_bearing.errors }}
+                {{ p_form.compass_bearing }}
+              </div>
+              <div class="input-field">
+                <label for="{{ p_form.distance.id_for_label }}">{{ p_form.distance.label }} (ft)</label>
+                {{ p_form.distance.errors }}
+                {{ p_form.distance }}
+              </div>
+              <div class="input-field">
+                <label for="{{ p_form.camera_height.id_for_label }}">{{ p_form.camera_height.label }} (ft)</label>
+                {{ p_form.camera_height.errors }}
+                {{ p_form.camera_height }}
+              </div>
+              <div class="input-field">
+                <label for="{{ p_form.notes.id_for_label }}">{{ p_form.notes.label }}</label>
+                {{ p_form.notes.errors }}
+                {{ p_form.notes }}
+              </div>
+            </div>
+          {% endfor %}
+          {{ ppi_formset.management_form }}
+          {% for ppi_form in ppi_formset %}
+            <div class="col s6 offset-s3">
+              <div class="input-field">
+                {{ ppi_form.image.label }}
+                <br/>
+                {{ ppi_form.image.errors }}
+                {{ ppi_form.image }}
+              </div>
+              <div class="input-field">
+                <label for="{{ ppi_form.date.id_for_label }}">{{ ppi_form.date.label }} (YYYY-MM-DD)</label>
+                {{ ppi_form.date.errors }}
+                {{ ppi_form.date }}
+              </div>
+            </div>
+          {% endfor %}
         </div>
-      </form>
-    {% else %}
-      <p>{% trans "You must be logged in to submit data." %}</p>
-      <a href="{% url 'streamwebs:login' %}">{% trans "Log in here." %}</a>
-    {% endif %}
+      </div>
+      <div class="row">
+        <div class="col s6 offset-s3">
+          <button class="center btn-large waves-effect waves-light teal darken-3"
+                  type="submit" name="action" value='{% trans "Submit" %}'>
+            {% trans "Submit" %}<i class="material-icons right">send</i>
+          </button>
+        </div>
+      </div>
+    </form>
   </div>
 {% endblock %}
 
@@ -158,11 +168,6 @@
 
     // onload
     $(document).ready(function() {
-      {% if messages %}
-        {% for message in messages %}
-          Materialize.toast('{{ message }}', 4000, 'green');
-        {% endfor %}
-      {% endif %}
       var latlng = new google.maps.LatLng("{{ site.to_dict.location.y }}", "{{ site.to_dict.location.x }}");
       var mapOptions = {
         zoom: 14,
@@ -226,21 +231,33 @@
   <script>
     var ERROR_TOAST = ''; // printed by data-toasts.js
     // get_field_label is from verbose_names.py
+    // CAMERA FORM
     {% for field, errors in camera_form.errors.items %}
       {% for error in errors %}
         ERROR_TOAST += "{% get_field_label camera_form field %}: {{ error }}<br>";
+      {% endfor %}
+    {% endfor %}
+
+    // PHOTOPOINT FORM
+    {% for p_form in pp_formset %}
+      {% for field, errors in p_form.errors.items %}
+        {% for error in errors %}
+          ERROR_TOAST += "{% get_field_label p_form field %}: {{ error }}<br>";
+        {% endfor %}
+      {% endfor %}
+    {% endfor %}
+
+    // PHOTOPOINT ... I FORM
+    {% for ppi_form in ppi_formset %}
+      {% for field, errors in ppi_form.errors.items %}
+        {% for error in errors %}
+          ERROR_TOAST += "{% get_field_label ppi_form field %}: {{ error }}<br>";
+        {% endfor %}
       {% endfor %}
     {% endfor %}
   </script>
 
   <script src="{% static 'streamwebs/js/data.js' %}"></script>
   <script src="{% static 'streamwebs/js/data-toasts.js' %}"></script>
-
-  <script>
-    // TODO remove this and replace with toasts
-    console.log(`{{ pp_formset.non_form_errors.as_json }}`)
-    $(function () { $('ul.errorlist').show(); });
-  </script>
-
 
 {% endblock %}
