@@ -1797,7 +1797,8 @@ def manage_accounts(request, school_id):
                 user = User.objects.get(id=i)
 
                 if user.id != request.user.id:
-                    user.groups.clear()
+                    if user.groups.filter(name=org_editor).exists():
+                        user.groups.remove(org_editor)
                     user.groups.add(org_contributor)
                     user.save()
 
@@ -1823,7 +1824,8 @@ def manage_accounts(request, school_id):
                 user = User.objects.get(id=i)
                 profile = UserProfile.objects.get(user=user)
                 if profile is not None:
-                    user.groups.clear()
+                    if user.groups.filter(name=org_contributor).exists():
+                        user.groups.remove(org_contributor)
                     user.groups.add(org_editor)
                     user.save()
 
