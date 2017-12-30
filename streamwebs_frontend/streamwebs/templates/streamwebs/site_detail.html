@@ -204,13 +204,11 @@
                   {% trans "Canopy Cover Survey" %}
                 </a>
               </li>
-              {% if perms.streamwebs.is_org_admin %}
               <li>
                 <a href="{% url 'streamwebs:camera_point_add' site_slug=site.site_slug %}">
                   {% trans "New Camera Point" %}
                 </a>
               </li>
-              {% endif %}
               <li>
                 <a href="{% url 'streamwebs:soil_edit' site_slug=site.site_slug %}">
                   {% trans "Soil Survey" %}

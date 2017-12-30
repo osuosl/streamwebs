@@ -971,7 +971,7 @@ def camera_point_view(request, site_slug, cp_id):
 
 
 @login_required
-@permission_required('streamwebs.is_org_admin', raise_exception=True)
+@permission_required('streamwebs.is_org_author', raise_exception=True)
 def add_camera_point(request, site_slug):
     """Add new CP to site + 3 PPs and respective photos"""
     site = Site.objects.get(site_slug=site_slug)
