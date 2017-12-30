@@ -70,167 +70,193 @@
     <form class="col s8 offset-s2" id='manage_accounts_form' method='post' action="{% url 'streamwebs:manage_accounts' school_data.id %}"> 
       {% csrf_token %}
 
-      <br/><br/>
-      <br/><br/>
-
       <!-- Approve new users -->
+      <br/><br/>
       <div class="row">
-        <div class="col s6">
-          <h5>Approve New Users</h5>
-        </div>
-        <div class="col s6 right">
-          <button name="btn_apply" type="submit"
-              class="wave-effects wave-light btn white-text teal darken-3 right" style="margin-left:20px">
-              Apply
-          </button>
+        <div class="col s12">
+          <div class="card">
+            <div class="card-content">
+              <h5 class="card-title">Approve New Users</h5>
+              <button name="btn_apply" type="submit"
+                class="wave-effects wave-light btn white-text teal darken-3 right" style="margin-left:20px">
+                Apply
+              </button>
+
+              <table class="bordered striped">
+                <thead>
+                  <tr>
+                    <th>Username</th>
+                    <th>Name</th>
+                    <th class="center-content-horizontal">Editor</th>
+                    <th class="center-content-horizontal">Contributor</th>
+                    <th class="center-content-horizontal">Deny</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for user_profile in new_users %}
+                    <tr class="mutually_exclusive_checkboxes">
+                      <td>{{ user_profile.user.username }}</td>
+                      <td>{{ user_profile.user.first_name }} {{ user_profile.user.last_name }}</td>
+                      <td class="center-content-horizontal">
+                        <input type="checkbox" name="nu_editor" id="nu_editor_c_{{user_profile.user.id}}"
+                                value="{{user_profile.user.id}}" onchange="uncheck_newusers(this)"/>
+                        <label for="nu_editor_c_{{user_profile.user.id}}"></label>
+                      </td>
+                      <td class="center-content-horizontal">
+                        <input type="checkbox" name="nu_contributor" id="nu_contributor_c_{{user_profile.user.id}}"
+                                value="{{user_profile.user.id}}" onchange="uncheck_newusers(this)"/>
+                        <label for="nu_contributor_c_{{user_profile.user.id}}"></label>
+                      </td>
+                      <td class="center-content-horizontal">
+                        <input type="checkbox" name="nu_deny" id="nu_deny_c_{{user_profile.user.id}}"
+                                value="{{user_profile.user.id}}" onchange="uncheck_newusers(this)"/>
+                        <label for="nu_deny_c_{{user_profile.user.id}}"></label>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+
+            </div>
+          </div>
         </div>
       </div>
-      <table class="bordered striped">
-        <thead>
-          <tr>
-            <th>Username</th>
-            <th>Name</th>
-            <th class="center-content-horizontal">Editor</th>
-            <th class="center-content-horizontal">Contributor</th>
-            <th class="center-content-horizontal">Deny</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for user_profile in new_users %}
-            <tr class="mutually_exclusive_checkboxes">
-              <td>{{ user_profile.user.username }}</td>
-              <td>{{ user_profile.user.first_name }} {{ user_profile.user.last_name }}</td>
-              <td class="center-content-horizontal">
-                <input type="checkbox" name="nu_editor" id="nu_editor_c_{{user_profile.user.id}}"
-                       value="{{user_profile.user.id}}" onchange="uncheck_newusers(this)"/>
-                <label for="nu_editor_c_{{user_profile.user.id}}"></label>
-              </td>
-              <td class="center-content-horizontal">
-                <input type="checkbox" name="nu_contributor" id="nu_contributor_c_{{user_profile.user.id}}"
-                       value="{{user_profile.user.id}}" onchange="uncheck_newusers(this)"/>
-                <label for="nu_contributor_c_{{user_profile.user.id}}"></label>
-              </td>
-              <td class="center-content-horizontal">
-                <input type="checkbox" name="nu_deny" id="nu_deny_c_{{user_profile.user.id}}"
-                       value="{{user_profile.user.id}}" onchange="uncheck_newusers(this)"/>
-                <label for="nu_deny_c_{{user_profile.user.id}}"></label>
-              </td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-
-
+    
       <!-- Editors -->
-      <br/><br/>
-      <br/><br/>
-
-
       <div class="row">
-        <div class="col s4">
-          <h5>Editors</h5>
-        </div>
-        <div class="col s8 right">
-          <button name="btn_delete_editors" type="submit"
-              class="wave-effects wave-light btn white-text red darken-3 right" style="margin-left:20px">
-              Delete Selected
-          </button>
-          <button name="btn_demote" type="submit"
-              class="wave-effects wave-light btn white-text orange darken-3 right" style="margin-left:20px">
-              Demote Selected
-          </button>
+        <div class="col s12">
+          <div class="card">
+            <div class="card-content">
+              <h5 class="card-title">{% trans "Editors" %}</h5>
+    
+              <div class="row">
+                <div class="valign-wrapper col s12">
+                    <i class="left small material-icons">info_outline</i>
+                    <p class="right">Teachers or faculty at an organization who have the ability to
+                      manage the contributors in that organization, and create or edit sites.</p>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col s8 right">
+                  <button name="btn_delete_editors" type="submit"
+                      class="wave-effects wave-light btn white-text red darken-3 right" style="margin-left:20px">
+                      Delete Selected
+                  </button>
+                  <button name="btn_demote" type="submit"
+                      class="wave-effects wave-light btn white-text orange darken-3 right" style="margin-left:20px">
+                      Demote Selected
+                  </button>
+                </div>
+              </div>
+
+              <table class="bordered striped">
+                <thead>
+                  <tr>
+                    <th>Username</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Edit</th>
+                    <th>
+                      <input type="checkbox" id="editors_all" onchange="check_all_editors(this)"/>
+                      <label for="editors_all">All</label>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody id="editor_rows">
+                  {% for user_profile in editor_users %}
+                    <tr>
+                      <td>{{ user_profile.user.username }}</td>
+                      <td>{{ user_profile.user.first_name }} {{ user_profile.user.last_name }}</td>
+                      <td>{{ user_profile.user.email }}</td>
+                      <td>
+                        <a href="{% url 'streamwebs:edit_account' school_id=school_data.id user_id=user_profile.user.id %}" name="btn_edit_account">
+                          <i class="material-icons">mode_edit</i>
+                        </a>
+                      </td>
+                      <td>
+                        {% if user_profile.user.id != user.id %}
+                        <input type="checkbox" name="editors" id="editors_{{user_profile.user.id}}" value="{{user_profile.user.id}}"/>
+                        <label for="editors_{{user_profile.user.id}}"></label>
+                        {% endif %}
+                      </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+
+            </div>
+          </div>
         </div>
       </div>
-      <table class="bordered striped">
-        <thead>
-          <tr>
-            <th>Username</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Edit</th>
-            <th>
-              <input type="checkbox" id="editors_all" onchange="check_all_editors(this)"/>
-              <label for="editors_all">All</label>
-            </th>
-          </tr>
-        </thead>
-        <tbody id="editor_rows">
-          {% for user_profile in editor_users %}
-            <tr>
-              <td>{{ user_profile.user.username }}</td>
-              <td>{{ user_profile.user.first_name }} {{ user_profile.user.last_name }}</td>
-              <td>{{ user_profile.user.email }}</td>
-              <td>
-                <a href="{% url 'streamwebs:edit_account' school_id=school_data.id user_id=user_profile.user.id %}" name="btn_edit_account">
-                  <i class="material-icons">mode_edit</i>
-                </a>
-              </td>
-              <td>
-                {% if user_profile.user.id != user.id %}
-                <input type="checkbox" name="editors" id="editors_{{user_profile.user.id}}" value="{{user_profile.user.id}}"/>
-                <label for="editors_{{user_profile.user.id}}"></label>
-                {% endif %}
-              </td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-
 
       <!-- Contributors -->
-      <br/><br/>
-      <br/><br/>
-
-
       <div class="row">
-        <div class="col s4">
-          <h5>Contributors</h5>
-        </div>
-        <div class="col s8 right">
-          <button name="btn_delete_contributors" type="submit"
-              class="wave-effects wave-light btn white-text red darken-3 right" style="margin-left:20px">
-              Delete Selected
-          </button>
-          <button name="btn_promote" type="submit"
-              class="wave-effects wave-light btn white-text teal darken-3 right" style="margin-left:20px">
-              Promote Selected
-          </button>
+        <div class="col s12">
+          <div class="card">
+            <div class="card-content">
+              <h5 class="card-title">{% trans "Contributors" %}</h5>
+
+              <div class="row">
+                <div class="valign-wrapper col s12">
+                    <i class="left small material-icons">info_outline</i>
+                    <p class="right">Students in an organization who participate
+                      in activities such as collecting data samples as various sites around Oregon.</p>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col s8 right">
+                  <button name="btn_delete_contributors" type="submit"
+                      class="wave-effects wave-light btn white-text red darken-3 right" style="margin-left:20px">
+                      Delete Selected
+                  </button>
+                  <button name="btn_promote" type="submit"
+                      class="wave-effects wave-light btn white-text teal darken-3 right" style="margin-left:20px">
+                      Promote Selected
+                  </button>
+                </div>
+              </div>
+
+              <table class="bordered striped">
+                <thead>
+                  <tr>
+                    <th>Username</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Edit</th>
+                    <td>
+                      <input type="checkbox" id="contributors_all" onchange="check_all_contributors(this)"/>
+                      <label for="contributors_all">All</label>
+                    </td>
+                  </tr>
+                </thead>
+                <tbody id="contributor_rows">
+                  {% for user_profile in contributor_users %}
+                    <tr>
+                      <td>{{ user_profile.user.username }}</td>
+                      <td>{{ user_profile.user.first_name }} {{ user_profile.user.last_name }}</td>
+                      <td>{{ user_profile.user.email }}</td>
+                      <td>
+                        <a href="{% url 'streamwebs:edit_account' school_id=school_data.id user_id=user_profile.user.id %}" name="btn_edit_account">
+                          <i class="material-icons">mode_edit</i>
+                        </a>
+                      </td>
+                      <td>
+                        {% if user_profile.user.id != user.id %}
+                        <input type="checkbox" name="contributors" id="contributors_{{user_profile.user.id}}" value="{{user_profile.user.id}}"/>
+                        <label for="contributors_{{user_profile.user.id}}"></label>
+                        {% endif %}
+                      </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+
+            </div>
+          </div>
         </div>
       </div>
-      <table class="bordered striped">
-        <thead>
-          <tr>
-            <th>Username</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Edit</th>
-            <td>
-              <input type="checkbox" id="contributors_all" onchange="check_all_contributors(this)"/>
-              <label for="contributors_all">All</label>
-            </td>
-          </tr>
-        </thead>
-        <tbody id="contributor_rows">
-          {% for user_profile in contributor_users %}
-            <tr>
-              <td>{{ user_profile.user.username }}</td>
-              <td>{{ user_profile.user.first_name }} {{ user_profile.user.last_name }}</td>
-              <td>{{ user_profile.user.email }}</td>
-              <td>
-                <a href="{% url 'streamwebs:edit_account' school_id=school_data.id user_id=user_profile.user.id %}" name="btn_edit_account">
-                  <i class="material-icons">mode_edit</i>
-                </a>
-              </td>
-              <td>
-                {% if user_profile.user.id != user.id %}
-                <input type="checkbox" name="contributors" id="contributors_{{user_profile.user.id}}" value="{{user_profile.user.id}}"/>
-                <label for="contributors_{{user_profile.user.id}}"></label>
-                {% endif %}
-              </td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
 
     </form>
   </div>
