@@ -36,6 +36,69 @@ import copy
 import datetime
 
 
+# Decorator function that requires the user to be part of ANY school
+def any_organization_required(func):
+    def wrapper(request, *args, **kwargs):
+        if UserProfile.objects.filter(user=request.user).exists():
+            user_profile = UserProfile.objects.get(user=request.user)
+            if user_profile is None or user_profile.school is None:
+                return HttpResponseForbidden(
+                    'Your account is not associated with any school.')
+            return func(request, *args, **kwargs)
+        else:
+            return HttpResponseForbidden(
+                'Your account is not associated with any school.')
+    return wrapper
+
+# Decorator function that requires the user to be a part of the
+# same school as the page they are attempting to access.
+def organization_required(func):
+    def wrapper(request, *args, **kwargs):
+        school_data = School.objects.get(id=kwargs['school_id'])
+
+        if not request.user.has_perm('streamwebs.is_super_admin'):
+            user_profile = UserProfile.objects.get(user=request.user)
+            if user_profile is None:
+                return HttpResponseForbidden(
+                    'Your account is not associated with any school.')
+            if user_profile.school != school_data:
+                return HttpResponseForbidden(
+                    'Your account is not associated with this school.')
+        return func(request, *args, **kwargs)
+    return wrapper
+
+
+# Decorator function that requires the school to be active
+def organization_approved(func):
+    def wrapper(request, *args, **kwargs):
+        school_data = School.objects.get(id=kwargs['school_id'])
+
+        if not school_data.active:
+            return HttpResponseRedirect('/schools/%i/' % school_data.id)
+        return func(request, *args, **kwargs)
+    return wrapper
+
+
+# Send an email
+def send_email(request, subject, template, user, school, from_email,
+               recipients):
+    send_mail(
+        subject=subject,
+        message='',
+        html_message=render_to_string(
+            template,
+            {
+                'protocol': request.scheme,
+                'domain': request.get_host(),
+                'user': user,
+                'school': school
+            }),
+        from_email=from_email,
+        recipient_list=recipients,
+        fail_silently=False,
+    )
+
+
 def toDateTime(date, time, period):
     date_time = datetime.datetime.strptime((date + " " + time + " " + period),
                                            '%Y-%m-%d %I:%M %p')
@@ -654,15 +717,13 @@ def macroinvertebrate_view(request, site_slug, data_id):
 
 @login_required
 @permission_required('streamwebs.is_org_author', raise_exception=True)
+@any_organization_required
 def macroinvertebrate_edit(request, site_slug):
     """
     The view for the submission of a new macroinvertebrate data sheet.
     """
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     profile = UserProfile.objects.filter(user=request.user).first()
-    if profile is None:
-        return HttpResponseForbidden(
-            "Your account is not associated with a school")
 
     school = profile.school
     added = False
@@ -710,12 +771,10 @@ def macroinvertebrate_edit(request, site_slug):
 
 @login_required
 @permission_required('streamwebs.is_org_author', raise_exception=True)
+@any_organization_required
 def riparian_aquatic_edit(request, site_slug):
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     profile = UserProfile.objects.filter(user=request.user).first()
-    if profile is None:
-        return HttpResponseForbidden(
-            "Your account is not associated with a school")
 
     school = profile.school
     rip_aqua_form = RipAquaForm()
@@ -799,15 +858,13 @@ def riparian_transect_view(request, site_slug, data_id):
 
 @login_required
 @permission_required('streamwebs.is_org_author', raise_exception=True)
+@any_organization_required
 def riparian_transect_edit(request, site_slug):
     """
     The view for the submission of a new riparian transect data sheet.
     """
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     profile = UserProfile.objects.filter(user=request.user).first()
-    if profile is None:
-        return HttpResponseForbidden(
-            "Your account is not associated with a school")
 
     school = profile.school
     transect = RiparianTransect()
@@ -881,15 +938,13 @@ def canopy_cover_view(request, site_slug, data_id):
 
 @login_required
 @permission_required('streamwebs.is_org_author', raise_exception=True)
+@any_organization_required
 def canopy_cover_edit(request, site_slug):
     """
     The view for the submission of a new canopy cover data sheet.
     """
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     profile = UserProfile.objects.filter(user=request.user).first()
-    if profile is None:
-        return HttpResponseForbidden(
-            "Your account is not associated with a school")
 
     school = profile.school
     canopy_cover = Canopy_Cover()
@@ -972,13 +1027,11 @@ def camera_point_view(request, site_slug, cp_id):
 
 @login_required
 @permission_required('streamwebs.is_org_author', raise_exception=True)
+@any_organization_required
 def add_camera_point(request, site_slug):
     """Add new CP to site + 3 PPs and respective photos"""
     site = Site.objects.get(site_slug=site_slug)
     profile = UserProfile.objects.filter(user=request.user).first()
-    if profile is None:
-        return HttpResponseForbidden(
-            "Your account is not associated with a school")
 
     school = profile.school
     camera = CameraPoint()
@@ -1285,13 +1338,11 @@ def water_quality(request, site_slug, data_id):
 
 @login_required
 @permission_required('streamwebs.is_org_author', raise_exception=True)
+@any_organization_required
 def water_quality_edit(request, site_slug):
     """ Add a new water quality sample """
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     profile = UserProfile.objects.filter(user=request.user).first()
-    if profile is None:
-        return HttpResponseForbidden(
-            "Your account is not associated with a school")
 
     school = profile.school
     WQInlineFormSet = inlineformset_factory(
@@ -1361,15 +1412,13 @@ def soil_survey(request, site_slug, data_id):
 
 @login_required
 @permission_required('streamwebs.is_org_author', raise_exception=True)
+@any_organization_required
 def soil_survey_edit(request, site_slug):
     """
     The view for the submistion of a new Soil Survey (data sheet)
     """
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     profile = UserProfile.objects.filter(user=request.user).first()
-    if profile is None:
-        return HttpResponseForbidden(
-            "Your account is not associated with a school")
 
     school = profile.school
     soil_form = SoilSurveyForm()
@@ -1644,69 +1693,14 @@ def school_detail(request, school_id):
     })
 
 
-# Decorator function that requires the user to be a part of the
-# same school as the page they are attempting to access.
-def organization_required(func):
-    def wrapper(request, *args, **kwargs):
-        school_data = School.objects.get(id=kwargs['school_id'])
-
-        if not request.user.has_perm('streamwebs.is_super_admin'):
-            user_profile = UserProfile.objects.get(user=request.user)
-            if user_profile.school != school_data:
-                return HttpResponseForbidden(
-                    'Your account is not associated with this school.')
-        return func(request, *args, **kwargs)
-    return wrapper
-
-
-# Decorator function that requires the school to be active
-def organization_approved(func):
-    def wrapper(request, *args, **kwargs):
-        school_data = School.objects.get(id=kwargs['school_id'])
-
-        if not school_data.active:
-            return HttpResponseRedirect('/schools/%i/' % school_data.id)
-        return func(request, *args, **kwargs)
-    return wrapper
-
-
-# Send an email
-def send_email(request, subject, template, user, school, from_email,
-               recipients):
-    send_mail(
-        subject=subject,
-        message='',
-        html_message=render_to_string(
-            template,
-            {
-                'protocol': request.scheme,
-                'domain': request.get_host(),
-                'user': user,
-                'school': school
-            }),
-        from_email=from_email,
-        recipient_list=recipients,
-        fail_silently=False,
-    )
-
-
 @login_required
 @permission_required('streamwebs.is_org_admin', raise_exception=True)
 # Redirect to the manage accounts page, based on user's school
+@any_organization_required
 def get_manage_accounts(request, user_id):
-    if not request.user.has_perm('streamwebs.is_org_admin'):
-        profile = UserProfile.objects.get(user=request.user)
-        return HttpResponseRedirect(
-            '/schools/%i/manage_accounts/' % int(profile.school.id))
-    elif request.user.has_perm('streamwebs.is_super_admin'):
-        associated_profiles = UserProfile.objects.filter(user=request.user)
-        if(not associated_profiles):
-            return HttpResponseForbidden('Your account is not associated with any school')
-        profile = UserProfile.objects.get(user=request.user)
-        return HttpResponseRedirect(
-            '/schools/%i/manage_accounts/' % int(profile.school.id))
-    return HttpResponseForbidden(
-        'Your account is not associated with any school')
+    profile = UserProfile.objects.get(user=request.user)
+    return HttpResponseRedirect(
+        '/schools/%i/manage_accounts/' % int(profile.school.id))
 
 
 @login_required
