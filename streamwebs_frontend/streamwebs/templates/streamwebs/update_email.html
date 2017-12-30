@@ -1,22 +1,31 @@
 {% extends 'streamwebs/base.html' %}
+
+{% load staticfiles %}
 {% load i18n %}
+{% load verbose_names %}
+
 {% block title %}Change Email{% endblock %}
 
 {% block body_title %}{% trans "Change Email" %}{% endblock %}
 
 {% block content %}
+  <style>
+    ul.errorlist ~ input {
+      border-bottom-color: red;
+    }
+  </style>
+
   <div class="container">
     <div class="row">
-      <form class="col s8 offset-s2" id="user_form" method="post" action="{% url 'streamwebs:update_email' %}">
+      <form class="col s8 offset-s2" id="user_form" method="post" 
+        action="{% url 'streamwebs:update_email' %}" novalidate>
         {% csrf_token %}
         <br/><br/>
-        <strong class="normal">{% trans "Change your email:" %}</strong><br/>
-        <br/>
 
         <div class="input-field col s12">
           <label for="{{ user_form.email.id_for_label }}">Email:</label>
-            {{ user_form.email }}
-            <b>{{ user_form.email.errors }}</b>
+          {{ user_form.email.errors }}
+          {{ user_form.email }}
         </div>
 
         <div class="center-content">
@@ -29,3 +38,21 @@
     </div>
   </div>
 {% endblock %}
+
+{% block scripts %}
+
+<script>
+  var ERROR_TOAST = ''; // printed by data-toasts.js
+  {% for field, errors in user_form.errors.items %}
+    {% for error in errors %}
+      // get_field_label is from verbose_names.py
+      ERROR_TOAST += "{% get_field_label user_form field %}: {{ error }}<br>";
+    {% endfor %}
+  {% endfor %}
+</script>
+
+<script src="{% static 'streamwebs/js/data.js' %}"></script>
+<script src="{% static 'streamwebs/js/data-toasts.js' %}"></script>
+
+{% endblock %}
+

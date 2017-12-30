@@ -818,6 +818,7 @@ def riparian_transect_edit(request, site_slug):
     )
 
     if request.method == 'POST':
+
         # process the zone formset
         zone_formset = TransectZoneInlineFormSet(
             data=request.POST, instance=transect
@@ -1095,7 +1096,7 @@ def view_pp_and_add_img(request, site_slug, cp_id, pp_id):
 
                 else:
                     messages.add_message(
-                        request, messages.INFO,
+                        request, messages.ERROR,
                         _('A photo from that date already exists for this photo\
                          point.'),
                     )

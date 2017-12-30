@@ -177,13 +177,4 @@
 {% endblock %}
 
 {% block scripts %}
-  <script>
-    $(document).ready(function(){
-      {% if messages %}
-        {% for message in messages %}
-          Materialize.toast('{{ message }}', 4000, 'green');
-        {% endfor %}
-      {% endif %}
-    });
-  </script>
 {% endblock %}

@@ -281,12 +281,6 @@
         map.setCenter(center);
       });
 
-
-      {% if messages %}
-        {% for message in messages %}
-        Materialize.toast('{{ message }}', 4000, 'green');
-        {% endfor %}
-      {% endif %}
     });
 
     window.onload = function() {
