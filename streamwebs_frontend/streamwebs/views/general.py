@@ -50,6 +50,7 @@ def any_organization_required(func):
                 'Your account is not associated with any school.')
     return wrapper
 
+
 # Decorator function that requires the user to be a part of the
 # same school as the page they are attempting to access.
 def organization_required(func):
@@ -442,8 +443,8 @@ def register(request):
                 user.groups.add(org_editor)
 
                 # Super admins
-                super_admins = [usr.email for usr in User.objects.all()
-                                if usr.has_perm('streamwebs.is_super_admin')]
+                # super_admins = [usr.email for usr in User.objects.all()
+                #                if usr.has_perm('streamwebs.is_super_admin')]
 
                 # Email to super admin for new organization + account
                 send_email(
@@ -1239,14 +1240,14 @@ def water_quality(request, site_slug, data_id):
 
     # initalize variables for calculating averages
     water_temp_sample_count = 0
-    water_temp_avg = 0 # worker temp value
-    water_temp_avg_fah = None # in Fahrenheit
-    water_temp_avg_cel = None # in celcius
+    water_temp_avg = 0  # worker temp value
+    water_temp_avg_fah = None  # in Fahrenheit
+    water_temp_avg_cel = None  # in celcius
 
     air_temp_sample_count = 0
-    air_temp_avg = 0 # worker temp value
-    air_temp_avg_fah = None # in Fahrenheit
-    air_temp_avg_cel = None # in celcius
+    air_temp_avg = 0  # worker temp value
+    air_temp_avg_fah = None  # in Fahrenheit
+    air_temp_avg_cel = None  # in celcius
 
     dissolved_oxygen_sample_count = 0
     dissolved_oxygen_avg = 0
@@ -1262,7 +1263,7 @@ def water_quality(request, site_slug, data_id):
 
     # Addition for each sample type
     for sample in wq_samples:
-        if sample.water_temperature != None:
+        if sample.water_temperature is not None:
             water_temp_sample_count += 1
             water_temp_avg += sample.water_temperature
         if sample.air_temperature:
@@ -1290,7 +1291,7 @@ def water_quality(request, site_slug, data_id):
             water_temp_avg_fah = water_temp_avg
             water_temp_avg_cel = round((water_temp_avg - 32) * float(5) / 9, 2)
         else:
-            water_temp_avg_fah = round((water_temp_avg * (float(9) / 5)) + 32, 2)
+            water_temp_avg_fah = round((water_temp_avg * (float(9)/5)) + 32, 2)
             water_temp_avg_cel = water_temp_avg
 
     if air_temp_sample_count > 0:
@@ -1307,15 +1308,15 @@ def water_quality(request, site_slug, data_id):
     if dissolved_oxygen_sample_count > 0:
         dissolved_oxygen_avg /= dissolved_oxygen_sample_count
         dissolved_oxygen_avg = round(dissolved_oxygen_avg, 2)
-        
+
     if pH_sample_count > 0:
         pH_avg /= pH_sample_count
         pH_avg = round(pH_avg, 2)
-        
+
     if turbidity_sample_count > 0:
         turbidity_avg /= turbidity_sample_count
         turbidity_avg = round(turbidity_avg, 2)
-        
+
     if salinity_sample_count > 0:
         salinity_avg /= salinity_sample_count
         salinity_avg = round(salinity_avg, 2)
@@ -1328,7 +1329,8 @@ def water_quality(request, site_slug, data_id):
     data_averages["air_temp_sample_count"] = air_temp_sample_count
     data_averages["air_temp_avg_fah"] = air_temp_avg_fah
     data_averages["air_temp_avg_cel"] = air_temp_avg_cel
-    data_averages["dissolved_oxygen_sample_count"] = dissolved_oxygen_sample_count
+    data_averages[
+        "dissolved_oxygen_sample_count"] = dissolved_oxygen_sample_count
     data_averages["dissolved_oxygen_avg"] = dissolved_oxygen_avg
     data_averages["pH_sample_count"] = pH_sample_count
     data_averages["pH_avg"] = pH_avg

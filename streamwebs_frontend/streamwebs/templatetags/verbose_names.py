@@ -1,6 +1,7 @@
 from django import template
 register = template.Library()
 
+
 @register.simple_tag
 def get_field_label(instance, field_name):
     """
