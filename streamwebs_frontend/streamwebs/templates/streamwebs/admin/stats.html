@@ -9,7 +9,21 @@
   <div class="container">
     <form id='stats_form' method='post'>
         {% csrf_token %}
-        {{ stats_form.as_p }}
+        <div class="input-field col s6">
+          <label for="{{ soil_form.date.id_for_label }}">
+            {{ stats_form.start.label }}
+          </label>
+          {{ stats_form.start.errors }}
+          {{ stats_form.start }}
+        </div>
+        <div class="input-field col s6">
+        <label for="{{ soil_form.date.id_for_label }}">
+          {{ stats_form.end.label }}
+        </label>
+        {{ stats_form.end.errors }}
+        {{ stats_form.end }}
+        </div>
+
         <button class="btn wave-effect waves-light teal darken-3" type="submit"
           name="submit" value="{% trans "Submit" %}">
           {% trans "Submit" %}
@@ -20,7 +34,7 @@
         {% trans "Users who have logged in within the last 3 years" %}:
         {{ users.count }}
     {% else %}
-        {% trans "Users who joined between" %} {{ start }} {% trans "and" %} {{ end }}":
+        {% trans "Users who joined between" %} {{ start }} {% trans "and" %} {{ end }}:
         {{ users.count }}
     {% endif %}
 
@@ -48,4 +62,10 @@
         <li>{{ site.site_name }}</li>
     {% endfor %}
   </div>
+{% endblock %}
+
+{% block scripts %}
+
+  <script src="{% static 'streamwebs/js/data.js' %}"></script>
+
 {% endblock %}

@@ -53,8 +53,8 @@ class UserForm(forms.ModelForm):
         if email:
             if (User.objects.filter(email=lower_email_nospace).exists() or
                 User.objects.filter(username=lower_email_nospace).exists()):
-                raise forms.ValidationError(
-                    u'A user with that email address already exists.')
+                    raise forms.ValidationError(
+                        u'A user with that email address already exists.')
         return lower_email_nospace
 
 
@@ -99,8 +99,8 @@ class UserFormOptionalNameEmail(forms.ModelForm):
         if email:
             if (User.objects.filter(email=lower_email_nospace).exists() or
                 User.objects.filter(username=lower_email_nospace).exists()):
-                raise forms.ValidationError(
-                    u'A user with that email address already exists.')
+                    raise forms.ValidationError(
+                        u'A user with that email address already exists.')
         return lower_email_nospace
 
 
@@ -142,8 +142,8 @@ class UserFormEmailAsUsername(forms.ModelForm):
         if email:
             if (User.objects.filter(email=lower_email_nospace).exists() or
                 User.objects.filter(username=lower_email_nospace).exists()):
-                raise forms.ValidationError(
-                    u'A user with that email address already exists.')
+                    raise forms.ValidationError(
+                        u'A user with that email address already exists.')
         return lower_email_nospace
 
 
@@ -170,8 +170,8 @@ class UserEditForm(forms.ModelForm):
         if email:
             if (User.objects.filter(email=lower_email_nospace).exists() or
                 User.objects.filter(username=lower_email_nospace).exists()):
-                raise forms.ValidationError(
-                    u'A user with that email address already exists.')
+                    raise forms.ValidationError(
+                        u'A user with that email address already exists.')
         return lower_email_nospace
 
 class UserEmailForm(forms.ModelForm):
@@ -188,8 +188,8 @@ class UserEmailForm(forms.ModelForm):
         if email:
             if (User.objects.filter(email=lower_email_nospace).exists() or
                 User.objects.filter(username=lower_email_nospace).exists()):
-                raise forms.ValidationError(
-                    u'A user with that email address already exists.')
+                    raise forms.ValidationError(
+                        u'A user with that email address already exists.')
         return lower_email_nospace
 
 class UserPasswordForm(forms.ModelForm):
@@ -469,10 +469,12 @@ class ResourceForm(forms.ModelForm):
 
 class StatisticsForm(forms.Form):
     start = forms.DateField(
+        input_formats=['%Y-%m-%d'],
         widget=forms.DateInput(attrs={'class': 'datepicker'}),
         label=_('starting from'), required=False
     )
     end = forms.DateField(
+        input_formats=['%Y-%m-%d'],
         widget=forms.DateInput(attrs={'class': 'datepicker'}),
         label=_('ending on'), required=False
     )
