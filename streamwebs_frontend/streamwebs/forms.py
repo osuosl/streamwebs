@@ -280,6 +280,13 @@ class WQForm(forms.ModelForm):
 
 
 class WQSampleForm(forms.ModelForm):
+    water_temperature = forms.DecimalField(required=False)
+    air_temperature = forms.DecimalField(required=False)
+    dissolved_oxygen = forms.DecimalField(required=False)
+    pH = forms.DecimalField(required=False)
+    turbidity = forms.DecimalField(required=False)
+    salinity = forms.DecimalField(required=False)
+
     class Meta:
         model = WQ_Sample
         widgets = {

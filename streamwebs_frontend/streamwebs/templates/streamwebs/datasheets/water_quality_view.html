@@ -121,15 +121,12 @@
             {% for sample in wq_samples %}
               <td>
                 {% if sample.water_temp_tool %}
-                  {% if sample.water_temperature %}
-                    <p> {{ sample.water_temperature }}</p>
-                    <p> {{ sample.water_temp_tool }}</p>
-                  {% endif %}
+                  <p> {{ sample.water_temperature }}</p>
+                  <p> {{ sample.water_temp_tool }}</p>
                 {% endif %}
               </td>
             {% endfor %}
           </tr>
-          {% if data_averages.water_temp_avg > 0 %}
           <tr>
             <td>
               <b>Water Temperature Average:
@@ -141,21 +138,18 @@
                 </div>
             </td>
           </tr>
-          {% endif %}
+
           <tr>
             <td>Air Temperature</td>
             {% for sample in wq_samples %}
               <td>
                 {% if sample.air_temp_tool %}
-                  {% if sample.air_temperature %}
-                    <p> {{ sample.air_temperature }}</p>
-                    <p> {{ sample.air_temp_tool }}</p>
-                  {% endif %}
+                  <p> {{ sample.air_temperature }}</p>
+                  <p> {{ sample.air_temp_tool }}</p>
                 {% endif %}
               </td>
             {% endfor %}
           </tr>
-          {% if data_averages.air_temp_avg > 0 %}
           <tr>
             <td>
               <b>Air Temperature Average: 
@@ -167,21 +161,18 @@
               </div>
             </td>
           </tr>
-          {% endif %}
+
           <tr>
             <td>Dissolved Oxygen (mg/L)</td>
             {% for sample in wq_samples %}
               <td>
-                {% if sample.oxygen_tool %}
-                  {% if sample.dissolved_oxygen %}
-                    <p> {{ sample.dissolved_oxygen }}</p>
-                    <p> {{ sample.oxygen_tool }}</p>
-                  {% endif %}
+                {% if sample.oxygen_tool != None %}
+                  <p> {{ sample.dissolved_oxygen }}</p>
+                  <p> {{ sample.oxygen_tool }}</p>
                 {% endif %}
               </td>
             {% endfor %}
           </tr>
-          {% if data_averages.dissolved_oxygen_avg > 0 %}
           <tr>
             <td>
               <b>Dissolved Oxygen Average: 
@@ -189,42 +180,36 @@
               <span>(mg/L)</span>
             </td>
           </tr>
-          {% endif %}
+
           <tr>
             <td>pH</td>
             {% for sample in wq_samples %}
               <td>
                 {% if sample.pH_tool %}
-                  {% if sample.pH %}
-                    <p> {{ sample.pH }}</p>
-                    <p> {{ sample.pH_tool }}</p>
-                  {% endif %}
+                  <p> {{ sample.pH }}</p>
+                  <p> {{ sample.pH_tool }}</p>
                 {% endif %}
               </td>
             {% endfor %}
           </tr>
-          {% if data_averages.pH_avg > 0 %}
           <tr>
             <td>
               <b>pH Average: 
               {{ data_averages.pH_avg }}</b>
             </td>
           </tr>
-          {% endif %}
+
           <tr>
             <td>Turbidity (NTU)</td>
             {% for sample in wq_samples %}
               <td>
                 {% if sample.turbid_tool %}
-                  {% if sample.turbidity %}
-                    <p> {{ sample.turbidity }}</p>
-                    <p> {{ sample.turbid_tool }}</p>
-                  {% endif %}
+                  <p> {{ sample.turbidity }}</p>
+                  <p> {{ sample.turbid_tool }}</p>
                 {% endif %}
               </td>
             {% endfor %}
           </tr>
-          {% if data_averages.turbidity_avg > 0 %}
           <tr>
             <td>
               <b>Turbidity Average:
@@ -232,21 +217,18 @@
               <span>(NTU)</span>
             </td>
           </tr>
-          {% endif %}
+
           <tr>
             <td>Salinity (PSU or PPT)</td>
             {% for sample in wq_samples %}
               <td>
                 {% if sample.salt_tool %}
-                  {% if sample.salinity %}
-                    <p> {{ sample.salinity }}</p>
-                    <p> {{ sample.salt_tool }}</p>
-                  {% endif %}
+                  <p> {{ sample.salinity }}</p>
+                  <p> {{ sample.salt_tool }}</p>
                 {% endif %}
               </td>
             {% endfor %}
           </tr>
-          {% if data_averages.salinity_avg > 0 %}
           <tr>
             <td>
               <b>Salinity Average:
@@ -254,7 +236,7 @@
               <span>(PSU or PPT)</span>
             </td>
           </tr>
-          {% endif %}
+
           <tr>
           <tr class="collapse-btn">
             <th>{% trans "Additional parameters" %}

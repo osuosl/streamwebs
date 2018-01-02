@@ -151,13 +151,7 @@
       </div>
 
       <table id="samples">
-        {{ sample_formset.management_form }}
-        <br/>
-        <div class="container">
-          <p><strong>Note: </strong>
-            Choosing the "None" options below will reset its related data field to 0 upon submission.
-          </p>
-        </div>
+        {{ sample_formset.management_form }}      
         <br/>
         <thead>
           <tr>
@@ -526,20 +520,8 @@ var toggleFishFields = function toggleFishFields() {
   });
 }
 
-// Selecting "None" in radio field will change the
-// associated fields' values to 0
-var toggleSampleFields = function toggleSampleFields() {
-  $('table#samples input[type=radio]').on('click', function(e) {
-    var inputField = $(e.target).parent().find('div.input-field').children();
-    if ($(e.target).context.value === "N/A") {
-      inputField.val(0);
-    }
-  });
-}
-
 $(function() {
   toggleFishFields();
-  toggleSampleFields();
   submitRadioCheck();
 });
 </script>

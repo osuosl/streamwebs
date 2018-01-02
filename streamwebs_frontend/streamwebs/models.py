@@ -420,42 +420,42 @@ class WQ_Sample(models.Model):
     sample = models.CharField(max_length=255, choices=SAMPLE_CHOICES,
                               null=True, default=SAMPLE_CHOICES[0])
     water_temperature = models.DecimalField(
-        default=0, max_digits=5, decimal_places=2, null=True,
+        default=None, max_digits=5, decimal_places=2, null=True,
         verbose_name=_('water temperature')
     )
     water_temp_tool = models.CharField(
         max_length=255, choices=TOOL_CHOICES, default=NOT_ACCESSED, null=True,
     )
     air_temperature = models.DecimalField(
-        default=0, null=True, max_digits=5, decimal_places=2,
+        default=None, null=True, max_digits=5, decimal_places=2,
         verbose_name=_('air temperature')
     )
     air_temp_tool = models.CharField(
         max_length=255, choices=TOOL_CHOICES, default=NOT_ACCESSED, null=True,
     )
     dissolved_oxygen = models.DecimalField(
-        default=0, max_digits=5, decimal_places=2, null=True,
+        default=None, max_digits=5, decimal_places=2, null=True,
         verbose_name=_('dissolved oxygen (mg/L)')
     )
     oxygen_tool = models.CharField(
         max_length=255, choices=TOOL_CHOICES, default=NOT_ACCESSED, null=True,
     )
     pH = models.DecimalField(
-        validators=[validate_pH], default=0, null=True,
+        validators=[validate_pH], default=None, null=True,
         max_digits=5, decimal_places=2, verbose_name=_('pH')
     )
     pH_tool = models.CharField(
         max_length=255, choices=TOOL_CHOICES, default=NOT_ACCESSED, null=True
     )
     turbidity = models.DecimalField(
-        default=0, null=True, max_digits=5, decimal_places=2,
+        default=None, null=True, max_digits=5, decimal_places=2,
         verbose_name=_('turbidity (NTU)')
     )
     turbid_tool = models.CharField(
         max_length=255, choices=TOOL_CHOICES, default=NOT_ACCESSED, null=True,
     )
     salinity = models.DecimalField(
-        default=0, null=True, max_digits=5, decimal_places=2,
+        default=None, null=True, max_digits=5, decimal_places=2,
         verbose_name=_('salinity (PSU) PPT')
     )
     salt_tool = models.CharField(
