@@ -32,6 +32,9 @@
       
       <br/>
 
+      <!-- New Organization flag -->
+      <input type="checkbox" id="new_org_flag" name="new_org_flag" hidden>
+
       <!-- Username, email, password -->
       <div class="row">
         <!-- First name -->
@@ -204,13 +207,29 @@
   <script type="application/javascript" src="{% static 'streamwebs/js/autocomplete.js' %}"></script>
 
   <script>
+    var add_school = function(){
+      $('#select_school_section').slideUp(500);
+      $('#org_section').slideDown(500);
+      //$('#org_section').find('input').validate({ignore: ".ignore"})
+      $('#org_section').find('input').prop('disabled', false);
+      $('#new_org_flag').prop('checked', true);
+    }
+
+    var select_school = function(){
+      $('#select_school_section').slideDown(500);
+      $('#org_section').slideUp(500);
+      //$('#org_section').find('input').validate({ignore: ".hidden"})
+      $('#org_section').find('input').prop('disabled', true);
+      $('#new_org_flag').prop('checked', false);
+    }
+
     $(document).ready(function() {
       $('select').material_select();
 
       $("#autocomplete_schools").autocomplete_noimg({
         data: {
           {% for school in schools %}
-            "{{ school.name }}": {{ school.pk }},
+            "{{ school.name }}, {{ school.city }}": {{ school.pk }},
           {% endfor %}
         },
         minLength: 1,
@@ -219,20 +238,19 @@
           $('#selected_school').html(label);
         },
       });
+
+      // Initially expand new school form
+      {% if new_org_flag %}
+        add_school();
+      {% endif %}
       
 
       // New Org expander
       $('#org_create').click(function(){
-        $('#select_school_section').slideUp(500);
-        $('#org_section').slideDown(500);
-        //$('#org_section').find('input').validate({ignore: ".ignore"})
-        $('#org_section').find('input').prop('disabled', false);
+        add_school();
       });
       $('#org_cancel').click(function(){
-        $('#select_school_section').slideDown(500);
-        $('#org_section').slideUp(500);
-        //$('#org_section').find('input').validate({ignore: ".hidden"})
-        $('#org_section').find('input').prop('disabled', true);
+        select_school();
       });
 
     });

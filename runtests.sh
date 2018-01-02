@@ -1,5 +1,5 @@
 #!/bin/bash
-set -x
+set -xe
 # lint tests
 flake8 data_scripts
 flake8 streamwebs_frontend/ --exclude streamwebs_frontend/streamwebs/migrations

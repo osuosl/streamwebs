@@ -46,6 +46,17 @@ class UserForm(forms.ModelForm):
             raise forms.ValidationError(_('Passwords did not match'))
         return self.data['password']
 
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        lower_mail_nospace = ''.join(email.split()).lower()
+
+        if email:
+            if (User.objects.filter(email=lower_mail_nospace).exists() or
+                    User.objects.filter(username=lower_mail_nospace).exists()):
+                raise forms.ValidationError(
+                    u'A user with that email address already exists.')
+        return lower_mail_nospace
+
 
 class UserFormOptionalNameEmail(forms.ModelForm):
     first_name = forms.CharField(
@@ -83,9 +94,14 @@ class UserFormOptionalNameEmail(forms.ModelForm):
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
-        if email and User.objects.filter(email=email).exists():
-            raise forms.ValidationError(u'Email addresses must be unique.')
-        return email
+        lower_mail_nospace = ''.join(email.split()).lower()
+
+        if email:
+            if (User.objects.filter(email=lower_mail_nospace).exists() or
+                    User.objects.filter(username=lower_mail_nospace).exists()):
+                raise forms.ValidationError(
+                    u'A user with that email address already exists.')
+        return lower_mail_nospace
 
 
 class UserFormEmailAsUsername(forms.ModelForm):
@@ -121,11 +137,14 @@ class UserFormEmailAsUsername(forms.ModelForm):
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
-        lower_email_nospace = ''.join(email.split()).lower()
-        if email and User.objects.filter(email=lower_email_nospace).exists():
-            raise forms.ValidationError(
-                u'A user with that email address already exists.')
-        return lower_email_nospace
+        lower_mail_nospace = ''.join(email.split()).lower()
+
+        if email:
+            if (User.objects.filter(email=lower_mail_nospace).exists() or
+                    User.objects.filter(username=lower_mail_nospace).exists()):
+                raise forms.ValidationError(
+                    u'A user with that email address already exists.')
+        return lower_mail_nospace
 
 
 class UserEditForm(forms.ModelForm):
@@ -144,6 +163,17 @@ class UserEditForm(forms.ModelForm):
         # Add all the fields you want a user to change
         fields = ('first_name', 'last_name', 'username', 'email')
 
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        lower_mail_nospace = ''.join(email.split()).lower()
+
+        if email:
+            if (User.objects.filter(email=lower_mail_nospace).exists() or
+                    User.objects.filter(username=lower_mail_nospace).exists()):
+                raise forms.ValidationError(
+                    u'A user with that email address already exists.')
+        return lower_mail_nospace
+
 
 class UserEmailForm(forms.ModelForm):
     email = forms.CharField(required=True)
@@ -151,6 +181,17 @@ class UserEmailForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ('email',)
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        lower_mail_nospace = ''.join(email.split()).lower()
+
+        if email:
+            if (User.objects.filter(email=lower_mail_nospace).exists() or
+                    User.objects.filter(username=lower_mail_nospace).exists()):
+                raise forms.ValidationError(
+                    u'A user with that email address already exists.')
+        return lower_mail_nospace
 
 
 class UserPasswordForm(forms.ModelForm):
@@ -241,6 +282,13 @@ class WQForm(forms.ModelForm):
 
 
 class WQSampleForm(forms.ModelForm):
+    water_temperature = forms.DecimalField(required=False)
+    air_temperature = forms.DecimalField(required=False)
+    dissolved_oxygen = forms.DecimalField(required=False)
+    pH = forms.DecimalField(required=False)
+    turbidity = forms.DecimalField(required=False)
+    salinity = forms.DecimalField(required=False)
+
     class Meta:
         model = WQ_Sample
         widgets = {
@@ -423,10 +471,12 @@ class ResourceForm(forms.ModelForm):
 
 class StatisticsForm(forms.Form):
     start = forms.DateField(
+        input_formats=['%Y-%m-%d'],
         widget=forms.DateInput(attrs={'class': 'datepicker'}),
         label=_('starting from'), required=False
     )
     end = forms.DateField(
+        input_formats=['%Y-%m-%d'],
         widget=forms.DateInput(attrs={'class': 'datepicker'}),
         label=_('ending on'), required=False
     )

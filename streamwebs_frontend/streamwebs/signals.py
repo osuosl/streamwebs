@@ -18,7 +18,7 @@ def init_groups_and_perms(sender, **kwargs):
         content_type=content_type
     )
     org_author, created = Group.objects.get_or_create(name='org_author')
-    if created:
+    if not org_author.permissions.filter(name='is_org_author').exists():
         org_author.permissions.add(is_org_author)
 
     # Create the OrgAdmin permission and group
@@ -27,7 +27,7 @@ def init_groups_and_perms(sender, **kwargs):
         content_type=content_type
     )
     org_admin, created = Group.objects.get_or_create(name='org_admin')
-    if created:
+    if not org_admin.permissions.filter(name='is_org_admin').exists():
         org_admin.permissions.add(is_org_admin, is_org_author)
 
     # Create the SuperAdmin permission and group
@@ -36,7 +36,7 @@ def init_groups_and_perms(sender, **kwargs):
         content_type=content_type
     )
     super_admin, created = Group.objects.get_or_create(name='super_admin')
-    if created:
+    if not super_admin.permissions.filter(name='is_super_admin').exists():
         super_admin.permissions.add(
             is_super_admin, is_org_admin, is_org_author)
 

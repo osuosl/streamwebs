@@ -1,10 +1,10 @@
-#from django.test import Client, TestCase
-#from django.contrib.auth.models import User, Group
-#from django.core.urlresolvers import reverse
-#from streamwebs.models import Site, School, Soil_Survey, UserProfile
+# from django.test import Client, TestCase
+# from django.contrib.auth.models import User, Group
+# from django.core.urlresolvers import reverse
+# from streamwebs.models import Site, School, Soil_Survey, UserProfile
 #
 #
-#class AddSoilSurveyTestCase(TestCase):
+# class AddSoilSurveyTestCase(TestCase):
 #    def setUp(self):
 #
 #        self.client = Client()
