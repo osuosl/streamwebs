@@ -1266,7 +1266,7 @@ def water_quality(request, site_slug, data_id):
         if sample.water_temperature is not None:
             water_temp_sample_count += 1
             water_temp_avg += sample.water_temperature
-        if sample.air_temperature:
+        if sample.air_temperature is not None:
             air_temp_sample_count += 1
             air_temp_avg += sample.air_temperature
         if sample.dissolved_oxygen:
@@ -1287,7 +1287,7 @@ def water_quality(request, site_slug, data_id):
         water_temp_avg /= water_temp_sample_count
         water_temp_avg = round(water_temp_avg, 2)
         # Calculate Other temperature unit (celcius or fahrenheit)
-        if wq_data.water_temp_unit is Water_Quality.FAHRENHEIT:
+        if wq_data.water_temp_unit == Water_Quality.FAHRENHEIT:
             water_temp_avg_fah = water_temp_avg
             water_temp_avg_cel = round((water_temp_avg - 32) * float(5) / 9, 2)
         else:
@@ -1298,7 +1298,7 @@ def water_quality(request, site_slug, data_id):
         air_temp_avg /= air_temp_sample_count
         air_temp_avg = round(air_temp_avg, 2)
         # Calculate Other temperature unit (celcius or fahrenheit)
-        if wq_data.air_temp_unit is Water_Quality.FAHRENHEIT:
+        if wq_data.air_temp_unit == Water_Quality.FAHRENHEIT:
             air_temp_avg_fah = air_temp_avg
             air_temp_avg_cel = round((air_temp_avg - 32) * float(5) / 9, 2)
         else:
