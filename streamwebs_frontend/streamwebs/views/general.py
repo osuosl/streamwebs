@@ -1239,12 +1239,14 @@ def water_quality(request, site_slug, data_id):
 
     # initalize variables for calculating averages
     water_temp_sample_count = 0
-    water_temp_avg = 0 # in Fahrenheit 
-    water_temp_avg_cel = 0
+    water_temp_avg = 0 # worker temp value
+    water_temp_avg_fah = None # in Fahrenheit
+    water_temp_avg_cel = None # in celcius
 
     air_temp_sample_count = 0
-    air_temp_avg = 0 # in Fahrenheit 
-    air_temp_avg_cel = 0
+    air_temp_avg = 0 # worker temp value
+    air_temp_avg_fah = None # in Fahrenheit
+    air_temp_avg_cel = None # in celcius
 
     dissolved_oxygen_sample_count = 0
     dissolved_oxygen_avg = 0
@@ -1260,7 +1262,7 @@ def water_quality(request, site_slug, data_id):
 
     # Addition for each sample type
     for sample in wq_samples:
-        if sample.water_temperature:
+        if sample.water_temperature != None:
             water_temp_sample_count += 1
             water_temp_avg += sample.water_temperature
         if sample.air_temperature:
@@ -1283,15 +1285,25 @@ def water_quality(request, site_slug, data_id):
     if water_temp_sample_count > 0:
         water_temp_avg /= water_temp_sample_count
         water_temp_avg = round(water_temp_avg, 2)
-        # Calculate Celsius         
-        water_temp_avg_cel = round((water_temp_avg - 32) * float(5) / 9, 2)
-   
+        # Calculate Other temperature unit (celcius or fahrenheit)
+        if wq_data.water_temp_unit is Water_Quality.FAHRENHEIT:
+            water_temp_avg_fah = water_temp_avg
+            water_temp_avg_cel = round((water_temp_avg - 32) * float(5) / 9, 2)
+        else:
+            water_temp_avg_fah = round((water_temp_avg * (float(9) / 5)) + 32, 2)
+            water_temp_avg_cel = water_temp_avg
+
     if air_temp_sample_count > 0:
         air_temp_avg /= air_temp_sample_count
         air_temp_avg = round(air_temp_avg, 2)
-        # Calculate Celsius 
-        air_temp_avg_cel = round((air_temp_avg - 32) * float(5) / 9, 2)
-          
+        # Calculate Other temperature unit (celcius or fahrenheit)
+        if wq_data.air_temp_unit is Water_Quality.FAHRENHEIT:
+            air_temp_avg_fah = air_temp_avg
+            air_temp_avg_cel = round((air_temp_avg - 32) * float(5) / 9, 2)
+        else:
+            air_temp_avg_fah = round((air_temp_avg * (float(9) / 5)) + 32, 2)
+            air_temp_avg_cel = air_temp_avg
+
     if dissolved_oxygen_sample_count > 0:
         dissolved_oxygen_avg /= dissolved_oxygen_sample_count
         dissolved_oxygen_avg = round(dissolved_oxygen_avg, 2)
@@ -1311,10 +1323,10 @@ def water_quality(request, site_slug, data_id):
     # Package up averages into a dictionary
     data_averages = {}
     data_averages["water_temp_sample_count"] = water_temp_sample_count
-    data_averages["water_temp_avg"] = water_temp_avg
+    data_averages["water_temp_avg_fah"] = water_temp_avg_fah
     data_averages["water_temp_avg_cel"] = water_temp_avg_cel
     data_averages["air_temp_sample_count"] = air_temp_sample_count
-    data_averages["air_temp_avg"] = air_temp_avg
+    data_averages["air_temp_avg_fah"] = air_temp_avg_fah
     data_averages["air_temp_avg_cel"] = air_temp_avg_cel
     data_averages["dissolved_oxygen_sample_count"] = dissolved_oxygen_sample_count
     data_averages["dissolved_oxygen_avg"] = dissolved_oxygen_avg
