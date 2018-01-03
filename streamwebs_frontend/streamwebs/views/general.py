@@ -490,7 +490,7 @@ def register(request):
                 )
 
                 return HttpResponseRedirect('/register/confirm')
-              
+
     else:
         user_form = UserFormEmailAsUsername()
         profile_form = UserProfileForm()
