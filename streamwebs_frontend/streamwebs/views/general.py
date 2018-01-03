@@ -476,8 +476,8 @@ def register(request):
                 user.save()
 
                 # Super admins
-                # super_admins = [usr.email for usr in User.objects.all()
-                #                if usr.has_perm('streamwebs.is_super_admin')]
+                super_admins = [usr.email for usr in User.objects.all()
+                                if usr.has_perm('streamwebs.is_super_admin')]
 
                 # Email to super admin for new organization + account
                 send_email(
@@ -487,7 +487,7 @@ def register(request):
                     user=user,
                     school=school,
                     from_email=settings.DEFAULT_FROM_EMAIL,
-                    recipients=['testing@streamwebs.org']  # super_admins
+                    recipients=super_admins
                 )
 
                 return HttpResponseRedirect('/register/confirm')
