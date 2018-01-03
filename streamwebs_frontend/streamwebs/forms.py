@@ -24,13 +24,13 @@ def clean_unique_lower(form, field, exclude_initial=True,
     lower_value = ''.join(value.split()).lower()
 
     if lower_value:
-        qset = form._meta.model._default_manager.filter(**{field:lower_value})
+        qset = form._meta.model._default_manager.filter(**{field: lower_value})
         if exclude_initial and form.initial:
             initial_value = form.initial.get(field)
-            qset = qset.exclude(**{field:initial_value})
+            qset = qset.exclude(**{field: initial_value})
         if qset.count() > 0:
             raise forms.ValidationError(
-                error_message % {'field':field, 'value':lower_value})
+                error_message % {'field': field, 'value': lower_value})
     return lower_value
 
 
