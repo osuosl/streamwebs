@@ -22,7 +22,7 @@ class IndexViewTest(TestCase):
             'super@example.com',
             'superpassword'
         )
-        admins = Group.objects.get(name='admin')
+        admins = Group.objects.get(name='org_admin')
         self.admin.groups.add(admins)
 
     def test_index(self):
@@ -58,7 +58,7 @@ class IndexViewTest(TestCase):
         self.assertNotContains(response, 'Create Account')
         # can see stats, can't see users
         self.assertNotContains(response, 'Manage Users')
-        self.assertContains(response, 'View Site Statistics')
+        self.assertNotContains(response, 'View Site Statistics')
 
         self.client.logout()
 
@@ -73,18 +73,4 @@ class IndexViewTest(TestCase):
         # can't see stats, can't see users
         self.assertNotContains(response, 'Manage Users')
         self.assertNotContains(response, 'View Site Statistics')
-        self.client.logout()
-
-    def test_can_manage_users(self):
-        """When user logged in with user promo perm, can see that tab"""
-        self.client.login(username='superadmin', password='superpassword')
-        response = self.client.get(reverse('streamwebs:index'))
-        self.assertNotContains(response, 'Login')
-        self.assertContains(response, 'Sites')
-        self.assertContains(response, 'Resources')
-        self.assertContains(response, 'Logout')
-        self.assertNotContains(response, 'Login')
-        self.assertNotContains(response, 'Create Account')
-        self.assertContains(response, 'View Site Statistics')
-        self.assertContains(response, 'Manage Users')
         self.client.logout()

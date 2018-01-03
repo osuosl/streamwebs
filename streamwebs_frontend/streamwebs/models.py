@@ -143,7 +143,7 @@ class School(models.Model):
     city = models.CharField(max_length=250)
     province = models.CharField(max_length=250)
     zipcode = models.CharField(max_length=250)
-    active = models.BooleanField(default=True)
+    active = models.BooleanField(default=False)
 
     created = models.DateTimeField(default=timezone.now)
     modified = models.DateTimeField(default=timezone.now)
@@ -189,8 +189,7 @@ def validate_UserProfile_birthdate(birthdate):
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     school = models.ForeignKey(School, on_delete=models.CASCADE)
-    birthdate = models.DateField(validators=[validate_UserProfile_birthdate],
-                                 verbose_name=_('birthdate'))
+    approved = models.BooleanField(default=False)
 
     def __unicode__(self):
         return self.user.username
@@ -421,42 +420,42 @@ class WQ_Sample(models.Model):
     sample = models.CharField(max_length=255, choices=SAMPLE_CHOICES,
                               null=True, default=SAMPLE_CHOICES[0])
     water_temperature = models.DecimalField(
-        default=0, max_digits=5, decimal_places=2, null=True,
+        default=None, max_digits=5, decimal_places=2, null=True,
         verbose_name=_('water temperature')
     )
     water_temp_tool = models.CharField(
         max_length=255, choices=TOOL_CHOICES, default=NOT_ACCESSED, null=True,
     )
     air_temperature = models.DecimalField(
-        default=0, null=True, max_digits=5, decimal_places=2,
+        default=None, null=True, max_digits=5, decimal_places=2,
         verbose_name=_('air temperature')
     )
     air_temp_tool = models.CharField(
         max_length=255, choices=TOOL_CHOICES, default=NOT_ACCESSED, null=True,
     )
     dissolved_oxygen = models.DecimalField(
-        default=0, max_digits=5, decimal_places=2, null=True,
+        default=None, max_digits=5, decimal_places=2, null=True,
         verbose_name=_('dissolved oxygen (mg/L)')
     )
     oxygen_tool = models.CharField(
         max_length=255, choices=TOOL_CHOICES, default=NOT_ACCESSED, null=True,
     )
     pH = models.DecimalField(
-        validators=[validate_pH], default=0, null=True,
+        validators=[validate_pH], default=None, null=True,
         max_digits=5, decimal_places=2, verbose_name=_('pH')
     )
     pH_tool = models.CharField(
         max_length=255, choices=TOOL_CHOICES, default=NOT_ACCESSED, null=True
     )
     turbidity = models.DecimalField(
-        default=0, null=True, max_digits=5, decimal_places=2,
+        default=None, null=True, max_digits=5, decimal_places=2,
         verbose_name=_('turbidity (NTU)')
     )
     turbid_tool = models.CharField(
         max_length=255, choices=TOOL_CHOICES, default=NOT_ACCESSED, null=True,
     )
     salinity = models.DecimalField(
-        default=0, null=True, max_digits=5, decimal_places=2,
+        default=None, null=True, max_digits=5, decimal_places=2,
         verbose_name=_('salinity (PSU) PPT')
     )
     salt_tool = models.CharField(
@@ -804,9 +803,10 @@ class Macroinvertebrates(models.Model):
     def __str__(self):
         return self.site.site_name + ' sheet ' + str(self.id)
 
-    def save(self, **kwargs):
+    def calculate_scores(self):
         self.sensitive_total = 0
         self.somewhat_sensitive_total = 0
+        self.tolerant_total = 0
 
         # divvy up indiv count values into three arrays
         sensitive = [self.caddisfly, self.mayfly, self.riffle_beetle,
@@ -831,6 +831,9 @@ class Macroinvertebrates(models.Model):
         for count in tolerant:
             if count > 0:
                 self.tolerant_total += 1
+
+    def save(self, **kwargs):
+        self.calculate_scores()
 
         # the water quality rating is just the sum of the three scores
         self.wq_rating = (self.sensitive_total +
@@ -1094,14 +1097,18 @@ class Soil_Survey(models.Model):
     ]
 
     landscape_pos = models.CharField(max_length=11, default=None,
-                                     choices=landscape_pos_choices)
+                                     choices=landscape_pos_choices,
+                                     verbose_name='landscape position')
+
     cover_type = models.CharField(max_length=9, default=None,
                                   choices=cover_type_choices)
+
     land_use = models.CharField(max_length=12, default=None,
                                 choices=land_use_choices)
 
     distance = models.DecimalField(max_digits=5, decimal_places=2, null=True,
                                    verbose_name=_('distance from stream'))
+
     site_char = models.TextField(blank=True,
                                  verbose_name=_('distinguishing site \
                                  characteristics'))
@@ -1219,66 +1226,66 @@ class RipAquaticSurvey(models.Model):
         blank=True, null=True, verbose_name=_('number of pools')
     )
     silt = models.CharField(
-        max_length=250, choices=OPTIONS, null=True, default=OPTIONS[0][0],
+        max_length=250, choices=OPTIONS, null=True, blank=True,
         verbose_name=_('silt')
     )
     sand = models.CharField(
-        max_length=250, choices=OPTIONS, null=True, default=OPTIONS[0][0],
+        max_length=250, choices=OPTIONS, null=True, blank=True,
         verbose_name=_('sand')
     )
     gravel = models.CharField(
-        max_length=250, choices=OPTIONS, null=True, default=OPTIONS[0][0],
+        max_length=250, choices=OPTIONS, null=True, blank=True,
         verbose_name=_('gravel')
     )
     cobble = models.CharField(
-        max_length=250, choices=OPTIONS, null=True, default=OPTIONS[0][0],
+        max_length=250, choices=OPTIONS, null=True, blank=True,
         verbose_name=_('cobble')
     )
     boulders = models.CharField(
-        max_length=250, choices=OPTIONS, null=True, default=OPTIONS[0][0],
+        max_length=250, choices=OPTIONS, null=True, blank=True,
         verbose_name=_('boulders')
     )
     bedrock = models.CharField(
-        max_length=250, choices=OPTIONS, null=True, default=OPTIONS[0][0],
+        max_length=250, choices=OPTIONS, null=True, blank=True,
         verbose_name=_('bedrock')
     )
     small_debris = models.CharField(
-        max_length=250, choices=OPTIONS, null=True, default=OPTIONS[0][0],
+        max_length=250, choices=OPTIONS, null=True, blank=True,
         verbose_name=_('small_debris')
     )
     medium_debris = models.CharField(
-        max_length=250, choices=OPTIONS, null=True, default=OPTIONS[0][0],
+        max_length=250, choices=OPTIONS, null=True, blank=True,
         verbose_name=_('medium_debris')
     )
     large_debris = models.CharField(
-        max_length=250, choices=OPTIONS, null=True, default=OPTIONS[0][0],
+        max_length=250, choices=OPTIONS, null=True, blank=True,
         verbose_name=_('large_debris')
     )
     comments = models.CharField(
         max_length=250, null=True, verbose_name=_('comments'), blank=True
     )
     coniferous_trees = models.CharField(
-        max_length=250, choices=OPTIONS, null=True, default=OPTIONS[0][0],
+        max_length=250, choices=OPTIONS, null=True, blank=True,
         verbose_name=_('coniferous_trees')
     )
     deciduous_trees = models.CharField(
-        max_length=250, choices=OPTIONS, null=True, default=OPTIONS[0][0],
+        max_length=250, choices=OPTIONS, null=True, blank=True,
         verbose_name=_('deciduous_trees')
     )
     shrubs = models.CharField(
-        max_length=250, choices=OPTIONS, null=True, default=OPTIONS[0][0],
+        max_length=250, choices=OPTIONS, null=True, blank=True,
         verbose_name=_('shrubs')
     )
     small_plants = models.CharField(
-        max_length=250, choices=OPTIONS, null=True, default=OPTIONS[0][0],
+        max_length=250, choices=OPTIONS, null=True, blank=True,
         verbose_name=_('small_plants')
     )
     ferns = models.CharField(
-        max_length=250, choices=OPTIONS, null=True, default=OPTIONS[0][0],
+        max_length=250, choices=OPTIONS, null=True, blank=True,
         verbose_name=_('ferns')
     )
     grasses = models.CharField(
-        max_length=250, choices=OPTIONS, null=True, default=OPTIONS[0][0],
+        max_length=250, choices=OPTIONS, null=True, blank=True,
         verbose_name=_('grasses')
     )
     species1 = models.CharField(

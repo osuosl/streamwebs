@@ -21,14 +21,6 @@
     Back to <span>{{ site.site_name }}</span>
   </a>
   <div class="container">
-    {% if messages %}
-      <div class="center-content">
-        {% for message in messages %}
-          <strong>{{ message }}</strong>
-        {% endfor %}
-      </div>
-    {% endif %}
-
     <h3 align="center" class="teal-text">
       {{ site.site_name }}
     </h3>
@@ -267,7 +259,7 @@
             </tr>
             <tr>
               <td class="label">
-                {% trans "Water mite" %}
+                {% trans "Mite" %}
                 <br>
                 <img
                     src="{% static 'streamwebs/images/macroinvertebrates/macro_mite.png' %}">

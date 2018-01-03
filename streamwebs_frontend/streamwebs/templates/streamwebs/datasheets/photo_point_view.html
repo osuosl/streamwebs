@@ -2,22 +2,27 @@
 {% load staticfiles %}
 {% load i18n %}
 {% load filters %}
+{% load verbose_names %}
+
 {% block content %}
+  <style>
+    ul.errorlist ~ input {
+      border-bottom-color: red;
+    }
+    ul.errorlist ~ div {
+    border: 0.5px solid red;
+  }
+  </style>
+
   <a href="{% url 'streamwebs:camera_point' site.site_slug cp.id %}" id="back"
       class="wave-effects wave-light btn white-text teal darken-3">
     <i class="material-icons">chevron_left</i>
     Back to <span>{{ site.site_name }} {% trans "Camera Point" %}</span>
   </a>
+
   <br/>
   <br/>
   <div class="container">
-    {% if messages %}
-      <div class="center-content">
-        {% for message in messages %}
-          <strong>{{ message }}</strong>
-        {% endfor %}
-      </div>
-    {% endif %}
     <!-- PP info -->
     <div>
       <h4 class="center teal-text">
@@ -35,7 +40,7 @@
         <div class="col s6">
           <p>
             <b>{% trans "Compass bearing" %}:</b>
-            {{ pp.compass_bearing }} °
+            {{ pp.compass_bearing }} degree(s)
           </p>
         </div>
       </div>
@@ -71,12 +76,7 @@
       <!-- New photo upload -->
       <div class="row">
         <div class="col s6 offset-s3">
-          {% if user.is_authenticated %}
-            {% if messages %}
-              {% for msg in messages %}
-                {{ msg }}
-              {% endfor %}
-            {% endif %}
+          {% if user.is_authenticated and perms.streamwebs.is_org_author %}
             <h4 class="teal-text">{% trans "Add New Photo" %}</h4>
             <form id='ppi_form' , method='post' , enctype='multipart/form-data'>
               {% csrf_token %}
@@ -84,19 +84,16 @@
               {% for ppi_form in ppi_formset %}
                 <div class="row">
                   <div class="col s12">
+                    {{ ppi_form.image.errors }}
                     <div class="input-field">
-                      <b>{{ ppi_form.image.label }}</b>
-                      <br/>
-                      <br/>
                       {{ ppi_form.image }}
-                      {{ ppi_form.image.errors }}
                     </div>
                   </div>
                   <div class="col s12">
                     <div class="input-field">
-                      <b>{{ ppi_form.date.label }}</b>
-                      {{ ppi_form.date }}
+                      <label for="{{ ppi_form.date.id_for_label }}">{{ ppi_form.date.label }}</label>
                       {{ ppi_form.date.errors }}
+                      {{ ppi_form.date }}
                     </div>
                   </div>
                 </div>
@@ -137,15 +134,18 @@
 {% endblock %}
 
 {% block scripts %}
-  <script>
-    $(document).ready(function () {
-      $('.datepicker').pickadate({
-        today: '',
-        selectMonths: true, // Creates a dropdown to control month
-        selectYears: 100, // Creates a dropdown of 15 years to control year
-        max: true, // set max to today
-        format: 'yyyy-mm-dd',
-      });
-    });
-  </script>
+
+<script>
+  var ERROR_TOAST = ''; // printed by data-toasts.js
+  {% for field, errors in ppi_formset.errors.items %}
+    {% for error in errors %}
+      // get_field_label is from verbose_names.py
+      ERROR_TOAST += "{% get_field_label ppi_formset field %}: {{ error }}<br>";
+    {% endfor %}
+  {% endfor %}
+</script>
+
+<script src="{% static 'streamwebs/js/data.js' %}"></script>
+<script src="{% static 'streamwebs/js/data-toasts.js' %}"></script>
+
 {% endblock %}

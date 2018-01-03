@@ -1,5 +1,5 @@
 from django.conf.urls import include, url
-from . import views
+import views
 
 app_name = 'streamwebs'
 urlpatterns = [
@@ -7,6 +7,7 @@ urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^faq/$', views.faq, name='faq'),
     url(r'^about/$', views.about, name='about'),
+
 
     url(r'^sites/new/$', views.create_site, name='create_site'),
 
@@ -43,7 +44,7 @@ urlpatterns = [
         views.export_wq, name='export_wq'),
 
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/macro/(?P<data_id>\d+)/$',
-        views.macroinvertebrate, name='macroinvertebrate_view'),
+        views.macroinvertebrate_view, name='macroinvertebrate_view'),
 
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/macro/edit/$',
         views.macroinvertebrate_edit, name='macroinvertebrate_edit'),
@@ -103,9 +104,14 @@ urlpatterns = [
         views.export_soil, name='export_soil'),
 
     url(r'^statistics/$', views.admin_site_statistics, name='stats'),
-    url(r'^user-promotion/$', views.admin_user_promotion, name='user_promo'),
 
     url(r'^register/$', views.register, name='register'),
+
+    url(r'^new_org_request/(?P<school_id>[0-9]+)/$', views.new_org_request,
+        name='new_org_request'),
+
+    url(r'^register/confirm', views.confirm_registration,
+        name='confirm_registration'),
     url(r'^account/$', views.account, name='account'),
     url(r'^account/update_email/$', views.update_email, name='update_email'),
     url(r'^account/update_password/$', views.update_password,
@@ -125,6 +131,16 @@ urlpatterns = [
     url(r'^schools/$', views.schools, name='schools'),
     url(r'^schools/(?P<school_id>[0-9]+)/$',
         views.school_detail, name='school_detail'),
-    url(r'^schools/add', views.create_school, name='create_school')
+    url(r'^get_manage_accounts/(?P<user_id>[0-9]+)$',
+        views.get_manage_accounts, name='get_manage_accounts'),
+    url(r'^schools/(?P<school_id>[0-9]+)/manage_accounts/$',
+        views.manage_accounts, name='manage_accounts'),
+    url(r'^schools/(?P<school_id>[0-9]+)/add_account/$',
+        views.add_account, name='add_account'),
+    url(r'^schools/(?P<school_id>[0-9]+)/edit_account/(?P<user_id>[0-9]+)/$',
+        views.edit_account, name='edit_account'),
 
+    # This is used to view a backend variable
+    url(r'^var_debug/(?P<value>.*)/$',
+        views.var_debug, name='var_debug')
 ]

@@ -19,7 +19,7 @@ if [ -n "$STREAMWEBS_TEST" ] ; then
   /home/centos/streamwebs/runtests.sh
 else
   yes "yes" | python /home/centos/streamwebs/streamwebs_frontend/manage.py migrate
-  echo "from django.contrib.auth.models import User; User.objects.filter(email='streamwebs@osuosl.org').delete(); User.objects.create_superuser('admin', 'streamwebs@osuosl.org', 'admin')" | python streamwebs_frontend/manage.py shell
+  echo "from django.contrib.auth.models import User; User.objects.filter(username='admin').delete(); User.objects.create_superuser('admin', 'testing@streamwebs.org', 'admin')" | python streamwebs_frontend/manage.py shell
   if [ -n "$STREAMWEBS_IMPORT_DATA" -a -n "$STREAMWEBS_DROP" ] ; then
     echo "Importing data.."
     cd data_scripts/

@@ -1,3 +1,4 @@
+''' TODO
 from django.test import Client, TestCase
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
@@ -112,3 +113,4 @@ class LoginTestCase(TestCase):
         self.assertEqual(response_out_attempt.status_code, 302)
         self.assertTemplateNotUsed(
             response_out_attempt, 'streamwebs/index.html')
+'''

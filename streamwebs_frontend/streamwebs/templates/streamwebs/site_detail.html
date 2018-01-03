@@ -62,6 +62,7 @@
           {% endif %}
         </div>
         <div class="col s12 l6">
+          <!-- Gmaps -->
           <div id="detail_map" class="resp_box"></div>
         </div>
       </div>
@@ -101,7 +102,7 @@
           {% endif %}
         </div>
         <div class="col s6 offset-s1 center" >
-          {% if has_wq or has_macros or has_cc or has_transect or has_soil %}
+          {% if has_wq or has_macros or has_cc or has_transect or has_soil or has_camera or has_aqua %}
             <h4>{% trans "Datasheets" %}</h4>
             <ul class="collection" id="data-sheet-list">
             </ul>
@@ -175,52 +176,58 @@
               </li>
             {% endif %}
           </ul>
-          <a class="dropdown-button btn-large teal darken-3"
-             href="#" data-activates="new-data-dropdown">
-             <i class="material-icons right">arrow_drop_down</i>
-            {% trans "Add data to this site" %}
-          </a>
-          <ul id="new-data-dropdown" class="dropdown-content">
-            <li>
-              <a href="{% url 'streamwebs:water_quality_edit' site_slug=site.site_slug %}">
-                {% trans "Water quality" %}
-              </a>
-            </li>
-            <li>
-              <a href="{% url 'streamwebs:macroinvertebrate_edit' site.site_slug %}">
-                {% trans "Macroinvertebrates" %}
-              </a>
-            </li>
-            <li>
-              <a href="{% url 'streamwebs:riparian_transect_edit' site.site_slug %}">
-                {% trans "Riparian transect" %}
-              </a>
-            </li>
-            <li>
-              <a href="{% url 'streamwebs:canopy_cover_edit' site.site_slug %}">
-                {% trans "Canopy Cover Survey" %}
-              </a>
-            </li>
-            <li>
-              <a href="{% url 'streamwebs:camera_point_add' site_slug=site.site_slug %}">
-                {% trans "New Camera Point" %}
-              </a>
-            </li>
-            <li>
-              <a href="{% url 'streamwebs:soil_edit' site_slug=site.site_slug %}">
-                {% trans "Soil Survey" %}
-              </a>
-            </li>
-            <li>
-              <a href="{% url 'streamwebs:rip_aqua_edit' site_slug=site.site_slug %}">
-                {% trans "Riparian Aquatic Survey" %}
-              </a>
-            </li>
-          </ul>
-            <a href="{% url 'streamwebs:update_site' site_slug=site.site_slug %}"
-              class="btn-large teal darken-3">
-              <i class="material-icons right">mode_edit</i>
-              {% trans "Edit Site" %}</a>
+          {% if user.is_authenticated %}
+            {% if perms.streamwebs.is_org_author %}
+            <a class="dropdown-button btn-large teal darken-3"
+              href="#" data-activates="new-data-dropdown">
+              <i class="material-icons right">arrow_drop_down</i>
+              {% trans "Add data to this site" %}
+            </a>
+            <ul id="new-data-dropdown" class="dropdown-content">
+              <li>
+                <a href="{% url 'streamwebs:water_quality_edit' site_slug=site.site_slug %}">
+                  {% trans "Water quality" %}
+                </a>
+              </li>
+              <li>
+                <a href="{% url 'streamwebs:macroinvertebrate_edit' site.site_slug %}">
+                  {% trans "Macroinvertebrates" %}
+                </a>
+              </li>
+              <li>
+                <a href="{% url 'streamwebs:riparian_transect_edit' site.site_slug %}">
+                  {% trans "Riparian transect" %}
+                </a>
+              </li>
+              <li>
+                <a href="{% url 'streamwebs:canopy_cover_edit' site.site_slug %}">
+                  {% trans "Canopy Cover Survey" %}
+                </a>
+              </li>
+              <li>
+                <a href="{% url 'streamwebs:camera_point_add' site_slug=site.site_slug %}">
+                  {% trans "New Camera Point" %}
+                </a>
+              </li>
+              <li>
+                <a href="{% url 'streamwebs:soil_edit' site_slug=site.site_slug %}">
+                  {% trans "Soil Survey" %}
+                </a>
+              </li>
+              <li>
+                <a href="{% url 'streamwebs:rip_aqua_edit' site_slug=site.site_slug %}">
+                  {% trans "Riparian Aquatic Survey" %}
+                </a>
+              </li>
+            </ul>
+            {% endif %}
+            {% if perms.streamwebs.is_org_admin %}
+              <a href="{% url 'streamwebs:update_site' site_slug=site.site_slug %}"
+                class="btn-large teal darken-3">
+                <i class="material-icons right">mode_edit</i>
+                {% trans "Edit Site" %}</a>
+            {% endif %}
+          {% endif %}
         </div>
       </div>
     </div>
@@ -243,11 +250,35 @@
     var imgRatio = imgHeight/imgWidth;
 
     $(document).ready(function(){
-      {% if messages %}
-        {% for message in messages %}
-        Materialize.toast('{{ message }}', 4000, 'green');
-        {% endfor %}
-      {% endif %}
+      {% language "en-us" %}
+      var loc = {
+        lat: {{ site.location.y }},
+        lng: {{ site.location.x }},
+      };
+      {% endlanguage %}
+      var latlng = new google.maps.LatLng(loc.lat, loc.lng);
+      var mapOptions = {
+        zoom: 14,
+        center: latlng,
+        mapTypeControl: false,
+        navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL},
+        mapTypeId: 'roadmap'
+      };
+      map = new google.maps.Map($('#detail_map')[0], mapOptions);
+
+      marker = new google.maps.Marker({
+        position: loc,
+        map: map,
+        title: "Site Location"
+      });
+
+      // responsive function
+      google.maps.event.addDomListener(window, "resize", function () {
+        var center = map.getCenter();
+        google.maps.event.trigger(map, "resize");
+        map.setCenter(center);
+      });
+
     });
 
     window.onload = function() {

@@ -12,14 +12,6 @@
     Back to <span>{{ site.site_name }}</span>
   </a>
   <div class="container">
-    {% if messages %}
-      <div class="messages">
-        {% for message in messages %}
-          <strong>{{ message }}</strong>
-        {% endfor %}
-      </div>
-    {% endif %}
-
     <h3 align="center" class="teal-text">
       {{ site.site_name }}
     </h3>
@@ -64,7 +56,7 @@
         <p>{{ soil_data.get_soil_type_display }}</p>
       </div>
       <div class="col s4">
-        <b>{% trans "Distance from stream" %} (ft): </b>
+        <b>{% trans "Distance from stream" %} (m): </b>
         {{ soil_data.distance }}
       </div>
     </div>

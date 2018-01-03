@@ -1,0 +1,12 @@
+<p>Your new StreamWebs account and organization have been approved.</p>
+<p>Now you can log on as {{ user.get_username }} and begin using the site as a representative for {{ school.name }}.</p>
+<p>To view your organization's details and manage its accounts go here:</p>
+<br\>
+<a href="{{ protocol }}://{{ domain }}{% url 'streamwebs:school_detail' school_id=school.id %}">
+    {{ protocol }}://{{ domain }}{% url 'streamwebs:school_detail' school_id=school.id %}
+</a>
+<br/>
+<p>If clicking the link above doesn't work, please copy and paste the URL in a new browser window instead.</p>
+<br/>
+<p>Sincerely,</p>
+<p>StreamWebs</p>

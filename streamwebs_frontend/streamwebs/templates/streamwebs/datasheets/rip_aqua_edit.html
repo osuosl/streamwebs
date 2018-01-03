@@ -2,30 +2,34 @@
 {% load staticfiles %}
 {% load i18n %}
 {% load filters %}
+{% load verbose_names %}
 
 {% block title %}{% trans "Riparian Aquatic Survey" %}{% endblock %}
 
 {% block content %}
 
-<style>
-.flex-container{
-  display: flex;
-  flex-wrap: wrap;
-  flex:auto;
-}
+  <style>
+    .flex-container{
+      display: flex;
+      flex-wrap: wrap;
+      flex:auto;
+    }
 
-.input-field{
-  margin-bottom: 10px;
-}
+    .input-field{
+      margin-bottom: 10px;
+    }
 
-.box{
-  border-bottom: #bdbdbd 2px solid;
-  border-radius: 2px;
-  padding: 5px;
-  margin:10px;
-  flex-grow:1;
-}
-</style>
+    .box{
+      border-bottom: #bdbdbd 2px solid;
+      border-radius: 2px;
+      padding: 5px;
+      margin:10px;
+      flex-grow:1;
+    }
+    ul.errorlist ~ input {
+      border-bottom-color: red;
+    }
+  </style>
 
 <a href="{% url 'streamwebs:site' site.site_slug %}" id="back"
   class="wave-effects wave-light btn white-text teal darken-3">
@@ -37,64 +41,54 @@
       {{ site.site_name }}
   </h3>
   <h4 align="center">{% trans 'New Riparian and Aquatic Survey' %}</h4>
-  <form id="rip_aqua_form" method="post" action="{{ request.path }}">
+  <form id="rip_aqua_form" method="post" action="{{ request.path }}" novalidate>
     {% csrf_token %}
 
     <div class="row">
       <div class="col s12">
-        {{ rip_aqua_form.school.label }}
-        {{ rip_aqua_form.school.errors }}
-        {{ rip_aqua_form.school }}
-      </div>
-      <div class="col s12">
-        <a href="{% url 'streamwebs:create_school' %}?next={{ request.path|urlencode }}" class="btn waves-effect waves-light teal darken-3">{% trans "Add A School/Organization" %}</a>
+          <div>{% trans "School" %}</div>
+          <p id="school-name">{{ school }}</p>
       </div>
     </div>
+    <br/>
     <div class="row">
-      <div class="col s6">
-        {{ rip_aqua_form.date.label }} (YYYY-MM-DD)
+      <div class="input-field col s6">
+        <label for="{{ rip_aqua_form.date.id_for_label }}">{{ rip_aqua_form.date.label }} (YYYY-MM-DD)</label>
         {{ rip_aqua_form.date.errors }}
         {{ rip_aqua_form.date }}
       </div>
-      <div class="col s3">
-        {{ rip_aqua_form.time.label }} (HH:MM)
+      <div class="input-field col s3">
+        <label for="{{ rip_aqua_form.time.id_for_label }}">{{ rip_aqua_form.time.label }} (HH:MM)</label>
         {{ rip_aqua_form.time.errors }}
         {{ rip_aqua_form.time }}
       </div>
-      <div class="col s3">
-        {{ rip_aqua_form.ampm.label }}
+      <div class="input-field col s3">
         {{ rip_aqua_form.ampm.errors }}
         {{ rip_aqua_form.ampm }}
       </div>
     </div>
     <div class="row">
-      <div class="col s12">
-        {{ rip_aqua_form.weather.label }}
+      <div class="input-field col s12">
+        <label for="{{ rip_aqua_form.weather.id_for_label }}">{{ rip_aqua_form.weather.label }}</label>
         {{ rip_aqua_form.weather.errors }}
         {{ rip_aqua_form.weather }}
       </div>
     </div>
     <div class="row">
-      <div class="col s4">
-        <div class="input-field">
-          {{ rip_aqua_form.stream_length.label }} (in feet)
-          {{ rip_aqua_form.stream_length.errors}}
-          {{ rip_aqua_form.stream_length }}
-        </div>
+      <div class="input-field col s4">
+        <label for="{{ rip_aqua_form.stream_length.id_for_label }}">{{ rip_aqua_form.stream_length.label }} (in feet)</label>
+        {{ rip_aqua_form.stream_length.errors}}
+        {{ rip_aqua_form.stream_length }}
       </div>
-      <div class="col s4">
-        <div class="input-field">
-          {{ rip_aqua_form.riffle_count.label }}
-          {{ rip_aqua_form.riffle_count.errors }}
-          {{ rip_aqua_form.riffle_count }}
-        </div>
+      <div class="input-field col s4">
+        <label for="{{ rip_aqua_form.riffle_count.id_for_label }}">{{ rip_aqua_form.riffle_count.label }}</label>
+        {{ rip_aqua_form.riffle_count.errors }}
+        {{ rip_aqua_form.riffle_count }}
       </div>
-      <div class="col s4">
-        <div class="input-field">
-          {{ rip_aqua_form.pool_count.label }}
-          {{ rip_aqua_form.pool_count.errors }}
-          {{ rip_aqua_form.pool_count }}
-        </div>
+      <div class="input-field col s4">
+        <label for="{{ rip_aqua_form.pool_count.id_for_label }}">{{ rip_aqua_form.pool_count.label }}</label>
+        {{ rip_aqua_form.pool_count.errors }}
+        {{ rip_aqua_form.pool_count }}
       </div>
     </div>
     <h4 align="center">Substrates</h4>
@@ -417,7 +411,7 @@
 
     <div class="row">
       <div class="input-field">
-        {{ rip_aqua_form.notes.label }}
+        <h4 align="center">{{ rip_aqua_form.notes.label }}</h4>
         {{ rip_aqua_form.notes.errors }}
         {{ rip_aqua_form.notes }}
       </div>
@@ -425,33 +419,25 @@
 
     <button class="btn wave-effect waves-light teal darken-3" type="submit"
       name="submit" value="{% trans "Submit" %}">
-      {% trans "Submit" %}
+      {% trans "Submit" %}<i class="material-icons right">send</i>
     </button>
   </form>
 </div>
 {% endblock %}
 
 {% block scripts %}
-  <script type="application/javascript" src="{% static 'streamwebs/js/data.js' %}"></script>
 
-  <script type="text/javascript">
-  window.addEventListener('keydown',function(e){
-    if(e.keyIdentifier=='U+000A'||e.keyIdentifier=='Enter'||e.keyCode==13){
-      if(e.target.nodeName=='INPUT'&&e.target.type!=='textarea'){
-        e.preventDefault();
-        return false;
-      }
-    }
-    return true
-  });
-  </script>
-  <script>
-    $(document).ready(function(){
-      {% if messages %}
-        {% for message in messages %}
-          Materialize.toast('{{ message }}', 4000, 'green');
-        {% endfor %}
-      {% endif %}
-    });
-  </script>
+<script>
+  var ERROR_TOAST = ''; // printed by data-toasts.js
+  {% for field, errors in rip_aqua_form.errors.items %}
+    {% for error in errors %}
+      // get_field_label is from verbose_names.py
+      ERROR_TOAST += "{% get_field_label rip_aqua_form field %}: {{ error }}<br>";
+    {% endfor %}
+  {% endfor %}
+</script>
+
+<script src="{% static 'streamwebs/js/data.js' %}"></script>
+<script src="{% static 'streamwebs/js/data-toasts.js' %}"></script>
+
 {% endblock %}

@@ -1,16 +1,26 @@
 from django.test import Client, TestCase
 from django.core.urlresolvers import reverse
-from django.contrib.auth.models import User
-from streamwebs.models import Site, CameraPoint, School
+from django.contrib.auth.models import User, Group
+from streamwebs.models import Site, CameraPoint, School, UserProfile
 from streamwebs.util.create_dummy_files import get_temporary_image
 
 
 class AddCameraPointTestCase(TestCase):
     def setUp(self):
         self.client = Client()
-        self.user = User.objects.create_user('john', 'john@example.com',
-                                             'johnpassword')
+
+        self.school = School.test_objects.create_school('Test School')
+
+        self.user = User.objects.create_user(
+            'john', 'john@example.com', 'johnpassword'
+        )
+        self.user.groups.add(Group.objects.get(name='org_admin'))
         self.client.login(username='john', password='johnpassword')
+
+        self.profile = UserProfile()
+        self.profile.user = self.user
+        self.profile.school = self.school
+        self.profile.save()
 
     def test_view_with_bad_blank_data(self):
         """If user submits bad (blank) form, form errors displayed"""
@@ -40,7 +50,6 @@ class AddCameraPointTestCase(TestCase):
     def test_view_with_good_data(self):
         """If user submits form with good data, success message displayed"""
         site = Site.test_objects.create_site('site name')
-        school = School.test_objects.create_school('test school')
 
         img_1 = get_temporary_image()
         img_2 = get_temporary_image()
@@ -50,7 +59,6 @@ class AddCameraPointTestCase(TestCase):
             reverse('streamwebs:camera_point_add',
                     kwargs={'site_slug': site.site_slug}), {
                         # camera point form
-                        'school': school.id,
                         'site': site.id,
                         'cp_date': '2016-09-01',
                         'location': 'POINT(-121.3846841 44.0612385)',

@@ -1,34 +1,103 @@
 # coding=UTF-8
 from __future__ import print_function
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import (
+    HttpResponseRedirect, HttpResponse, HttpResponseForbidden)
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, permission_required
-from django.contrib.auth.models import User, Group, Permission
+from django.contrib.auth.models import User, Group
 from django.core.serializers.json import DjangoJSONEncoder
 from django.shortcuts import render, redirect
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from django.forms import inlineformset_factory, modelformset_factory
 from django.core.urlresolvers import reverse
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.conf import settings
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
 
 from streamwebs.forms import (
-    UserForm, UserProfileForm, RiparianTransectForm, MacroinvertebratesForm,
+    UserFormOptionalNameEmail, UserFormEmailAsUsername,
+    UserEditForm, UserProfileForm,
+    RiparianTransectForm, MacroinvertebratesForm,
     PhotoPointImageForm, PhotoPointForm, CameraPointForm, WQSampleForm,
     WQForm, SiteForm, Canopy_Cover_Form, SoilSurveyForm, StatisticsForm,
-    TransectZoneForm, BaseZoneInlineFormSet, ResourceForm, AdminPromotionForm,
-    UserEmailForm, UserPasswordForm, SchoolForm, RipAquaForm)
+    TransectZoneForm, BaseZoneInlineFormSet, ResourceForm, UserEmailForm,
+    UserPasswordForm, SchoolForm, RipAquaForm)
 
 from streamwebs.models import (
     Macroinvertebrates, Site, Water_Quality, WQ_Sample, RiparianTransect,
     TransectZone, Canopy_Cover, CameraPoint, PhotoPoint,
-    PhotoPointImage, Soil_Survey, Resource, School, RipAquaticSurvey)
+    PhotoPointImage, Soil_Survey, Resource, RipAquaticSurvey,
+    UserProfile, School)
 
 import json
 import copy
 import datetime
+
+
+# Decorator function that requires the user to be part of ANY school
+def any_organization_required(func):
+    def wrapper(request, *args, **kwargs):
+        if UserProfile.objects.filter(user=request.user).exists():
+            user_profile = UserProfile.objects.get(user=request.user)
+            if user_profile is None or user_profile.school is None:
+                return HttpResponseForbidden(
+                    'Your account is not associated with any school.')
+            return func(request, *args, **kwargs)
+        else:
+            return HttpResponseForbidden(
+                'Your account is not associated with any school.')
+    return wrapper
+
+
+# Decorator function that requires the user to be a part of the
+# same school as the page they are attempting to access.
+def organization_required(func):
+    def wrapper(request, *args, **kwargs):
+        school_data = School.objects.get(id=kwargs['school_id'])
+
+        if not request.user.has_perm('streamwebs.is_super_admin'):
+            user_profile = UserProfile.objects.get(user=request.user)
+            if user_profile is None:
+                return HttpResponseForbidden(
+                    'Your account is not associated with any school.')
+            if user_profile.school != school_data:
+                return HttpResponseForbidden(
+                    'Your account is not associated with this school.')
+        return func(request, *args, **kwargs)
+    return wrapper
+
+
+# Decorator function that requires the school to be active
+def organization_approved(func):
+    def wrapper(request, *args, **kwargs):
+        school_data = School.objects.get(id=kwargs['school_id'])
+
+        if not school_data.active:
+            return HttpResponseRedirect('/schools/%i/' % school_data.id)
+        return func(request, *args, **kwargs)
+    return wrapper
+
+
+# Send an email
+def send_email(request, subject, template, user, school, from_email,
+               recipients):
+    send_mail(
+        subject=subject,
+        message='',
+        html_message=render_to_string(
+            template,
+            {
+                'protocol': request.scheme,
+                'domain': request.get_host(),
+                'user': user,
+                'school': school
+            }),
+        from_email=from_email,
+        recipient_list=recipients,
+        fail_silently=False,
+    )
 
 
 def toDateTime(date, time, period):
@@ -53,29 +122,12 @@ def faq(request):
     return render(request, 'streamwebs/faq.html', {})
 
 
-def create_school(request):
-    if request.method == 'POST':
-        if not request.POST._mutable:
-            request.POST._mutable = True
-        school_form = SchoolForm(data=request.POST)
-
-        if school_form.is_valid():
-            school = school_form.save()
-            school.province = (school.province + ', United States')
-            school.save()
-            messages.success(request,
-                             _('You have successfully added a new school'))
-            next = request.POST.get('next', '/')
-            return HttpResponseRedirect(next)
-    else:
-        school_form = SchoolForm()
-
-    return render(request, 'streamwebs/add_school.html', {
-        'school_form': school_form
-    })
+def confirm_registration(request):
+    return render(request, 'streamwebs/confirm_register.html', {})
 
 
 @login_required
+@permission_required('streamwebs.is_org_admin', raise_exception=True)
 def create_site(request):
     created = False
     site_list = Site.objects.filter(active=True)
@@ -269,16 +321,17 @@ def add_school_name(data):
     if len(data) == 0:
         return
 
-    schools = School.objects.filter(active=True)
+    schools = School.objects.all()
     data_new = []
     curr_school_id = 0
     for x in data:
         if data.index(x) == 0 or x['school_id'] != curr_school_id:
             school = {'type': 'school', 'name': 'No School Associated'}
 
-            if x['school_id'] != -1:
-                school = schools.get(id=x['school_id'])
-                school = {'type': 'school', 'name': school.name}
+            if schools.filter(id=x['school_id']).exists():
+                if x['school_id'] != -1:
+                    school = schools.get(id=x['school_id'])
+                    school = {'type': 'school', 'name': school.name}
 
             data_new.append(school)
             curr_school_id = x['school_id']
@@ -288,6 +341,7 @@ def add_school_name(data):
 
 
 @login_required
+@permission_required('streamwebs.is_org_admin', raise_exception=True)
 def update_site(request, site_slug):
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     temp = copy.copy(site)
@@ -359,28 +413,98 @@ def deactivate_site(request, site_slug):
 
 
 def register(request):
-    registered = False
-
     if request.method == 'POST':
-        user_form = UserForm(data=request.POST)
+        user_form = UserFormEmailAsUsername(data=request.POST)
         profile_form = UserProfileForm(data=request.POST)
+        school_form = SchoolForm(data=request.POST)
 
-        if user_form.is_valid() and profile_form.is_valid():
-            user = user_form.save()
-            user.set_password(user.password)
-            user.save()
-            profile = profile_form.save(commit=False)
-            profile.user = user
-            profile.save()
-            registered = True
+        new_org_flag = len(request.POST.getlist('new_org_flag')) > 0
+
+        # User form must always be valid
+        if user_form.is_valid():
+            if not new_org_flag and profile_form.is_valid():
+                user = user_form.save()
+                user.username = user.email
+                user.set_password(user.password)
+                user.save()
+
+                profile = profile_form.save(commit=False)
+                profile.user = user
+                profile.save()
+
+                # Get current system users
+                current_users = UserProfile.objects.filter(
+                    school=profile.school, approved=True).all()
+
+                # Get editors for new user's school
+                editor_users = [up.user.email for up in current_users
+                                if up.user.groups.filter(
+                                    name='org_admin').exists()]
+
+                # Email to org admins for new user joining org
+                if (len(editor_users) > 0):
+                    send_email(
+                        request=request,
+                        subject='New User requested to join your organization',
+                        template='registration/new_user_request_email.html',
+                        user=user,
+                        school=profile.school,
+                        from_email=settings.DEFAULT_FROM_EMAIL,
+                        recipients=editor_users
+                    )
+
+                return HttpResponseRedirect('/register/confirm')
+            # Create a school
+            elif school_form.is_valid():
+                school = school_form.save()
+                school.province = (school.province + ', United States')
+                school.save()
+
+                user = user_form.save()
+                user.username = user.email
+                user.set_password(user.password)
+                user.save()
+
+                profile = UserProfile()
+                profile.user = user
+                profile.school_id = school.id
+                profile.save()
+
+                # Permissions
+                org_editor = Group.objects.get(name='org_admin')
+                user.groups.add(org_editor)
+                user.save()
+
+                # Super admins
+                super_admins = [usr.email for usr in User.objects.all()
+                                if usr.has_perm('streamwebs.is_super_admin')]
+
+                # Email to super admin for new organization + account
+                send_email(
+                    request=request,
+                    subject='New organization request: ' + str(school.name),
+                    template='registration/new_org_request_email.html',
+                    user=user,
+                    school=school,
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    recipients=super_admins
+                )
+
+                return HttpResponseRedirect('/register/confirm')
+
     else:
-        user_form = UserForm()
+        user_form = UserFormEmailAsUsername()
         profile_form = UserProfileForm()
+        school_form = SchoolForm()
+        new_org_flag = False
 
     return render(request, 'streamwebs/register.html', {
         'user_form': user_form,
         'profile_form': profile_form,
-        'registered': registered})
+        'school_form': school_form,
+        'schools': School.objects.filter(active=True).all().order_by('name'),
+        'new_org_flag': new_org_flag
+    })
 
 
 @login_required
@@ -451,15 +575,27 @@ def user_login(request):
     redirect_to = request.POST.get('next', '')
 
     if request.method == 'POST':
-        username = request.POST['username']
+        email = ''.join(request.POST['email'].split()).lower()
         password = request.POST['password']
-        user = authenticate(username=username, password=password)
+        user = authenticate(username=email, password=password)
 
         # if the user is valid, log them in and redirect to the page where they
         # clicked "Login", or to home if they accessed login directly from the
         # url
         if user:
-            login(request, user)
+            if user.has_perm('streamwebs.is_super_admin'):
+                login(request, user)
+            else:
+                user_profile = UserProfile.objects.filter(user=user).first()
+                if not user_profile.approved:
+                    messages.error(request,
+                                   _('Sorry, you have not' +
+                                     " been approved by an administrator"))
+                    return redirect(reverse(
+                                'streamwebs:login') + '?next=' + redirect_to)
+                else:
+                    login(request, user)
+
             if redirect_to != '':
                 return HttpResponseRedirect(redirect_to)
             else:
@@ -556,7 +692,7 @@ def graph_macros(request, site_slug):
     })
 
 
-def macroinvertebrate(request, site_slug, data_id):
+def macroinvertebrate_view(request, site_slug, data_id):
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     data = Macroinvertebrates.objects.get(id=data_id)
 
@@ -591,19 +727,24 @@ def macroinvertebrate(request, site_slug, data_id):
 
 
 @login_required
+@permission_required('streamwebs.is_org_author', raise_exception=True)
+@any_organization_required
 def macroinvertebrate_edit(request, site_slug):
     """
     The view for the submission of a new macroinvertebrate data sheet.
     """
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
+    profile = UserProfile.objects.filter(user=request.user).first()
+
+    school = profile.school
     added = False
     macro_form = MacroinvertebratesForm()
 
     # the following are the form's fields broken up into chunks to
     # facilitate CSS manipulation in the template
-    intolerant = list(macro_form)[8:14]
-    somewhat = list(macro_form)[14:23]
-    tolerant = list(macro_form)[23:29]
+    intolerant = list(macro_form)[7:13]
+    somewhat = list(macro_form)[13:22]
+    tolerant = list(macro_form)[22:28]
 
     if request.method == 'POST':
         macro_form = MacroinvertebratesForm(data=request.POST)
@@ -615,6 +756,7 @@ def macroinvertebrate_edit(request, site_slug):
                 macro_form.data['ampm']
             )
             macro.site = site
+            macro.school = school
             macro.save()
             added = True
             messages.success(
@@ -632,14 +774,20 @@ def macroinvertebrate_edit(request, site_slug):
             'somewhat': somewhat,
             'tolerant': tolerant,
             'added': added,
-            'site': site
+            'site': site,
+            'school': school
         }
     )
 
 
 @login_required
+@permission_required('streamwebs.is_org_author', raise_exception=True)
+@any_organization_required
 def riparian_aquatic_edit(request, site_slug):
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
+    profile = UserProfile.objects.filter(user=request.user).first()
+
+    school = profile.school
     rip_aqua_form = RipAquaForm()
 
     if request.method == 'POST':
@@ -652,6 +800,7 @@ def riparian_aquatic_edit(request, site_slug):
                 rip_aqua_form.data['ampm']
             )
             rip_aqua.site = site
+            rip_aqua.school = school
             rip_aqua.save()
             messages.success(
                 request,
@@ -663,8 +812,8 @@ def riparian_aquatic_edit(request, site_slug):
     return render(
         request, 'streamwebs/datasheets/rip_aqua_edit.html', {
             'rip_aqua_form': rip_aqua_form,
-            'site': site
-
+            'site': site,
+            'school': school
         }
     )
 
@@ -719,11 +868,16 @@ def riparian_transect_view(request, site_slug, data_id):
 
 
 @login_required
+@permission_required('streamwebs.is_org_author', raise_exception=True)
+@any_organization_required
 def riparian_transect_edit(request, site_slug):
     """
     The view for the submission of a new riparian transect data sheet.
     """
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
+    profile = UserProfile.objects.filter(user=request.user).first()
+
+    school = profile.school
     transect = RiparianTransect()
     TransectZoneInlineFormSet = inlineformset_factory(
         RiparianTransect, TransectZone, form=TransectZoneForm,
@@ -732,6 +886,7 @@ def riparian_transect_edit(request, site_slug):
     )
 
     if request.method == 'POST':
+
         # process the zone formset
         zone_formset = TransectZoneInlineFormSet(
             data=request.POST, instance=transect
@@ -749,6 +904,7 @@ def riparian_transect_edit(request, site_slug):
                 transect_form.data['ampm']
             )
             transect.site = site
+            transect.school = school
             transect.save()                             # save object
 
             for index, zone in enumerate(zones):        # for each zone,
@@ -773,7 +929,8 @@ def riparian_transect_edit(request, site_slug):
         request,
         'streamwebs/datasheets/riparian_transect_edit.html', {
             'transect_form': transect_form, 'zone_formset': zone_formset,
-            'site': site
+            'site': site,
+            'school': school
         }
     )
 
@@ -791,11 +948,16 @@ def canopy_cover_view(request, site_slug, data_id):
 
 
 @login_required
+@permission_required('streamwebs.is_org_author', raise_exception=True)
+@any_organization_required
 def canopy_cover_edit(request, site_slug):
     """
     The view for the submission of a new canopy cover data sheet.
     """
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
+    profile = UserProfile.objects.filter(user=request.user).first()
+
+    school = profile.school
     canopy_cover = Canopy_Cover()
     error = False
 
@@ -810,6 +972,7 @@ def canopy_cover_edit(request, site_slug):
                 canopy_cover_form.data['ampm']
             )
             canopy_cover.site = site
+            canopy_cover.school = school
             canopy_cover.save()
             messages.success(
                 request,
@@ -830,6 +993,7 @@ def canopy_cover_edit(request, site_slug):
         'streamwebs/datasheets/canopy_cover_edit.html', {
             'canopy_cover_form': canopy_cover_form,
             'site': site,
+            'school': school,
             'error': error
         }
     )
@@ -852,6 +1016,7 @@ def camera_point_view(request, site_slug, cp_id):
     """View a site's CP: includes all of its PPs/PPIs"""
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     cp = CameraPoint.objects.get(id=cp_id)
+
     pps = PhotoPoint.objects.filter(camera_point_id=cp)
     all_images = dict()
 
@@ -861,6 +1026,8 @@ def camera_point_view(request, site_slug, cp_id):
 
     return render(
         request, 'streamwebs/datasheets/camera_point_view.html', {
+            'maps_api': settings.GOOGLE_MAPS_API,
+            'map_type': settings.GOOGLE_MAPS_TYPE,
             'site': site,
             'cp': cp,
             'pps': pps,
@@ -870,9 +1037,14 @@ def camera_point_view(request, site_slug, cp_id):
 
 
 @login_required
+@permission_required('streamwebs.is_org_author', raise_exception=True)
+@any_organization_required
 def add_camera_point(request, site_slug):
     """Add new CP to site + 3 PPs and respective photos"""
     site = Site.objects.get(site_slug=site_slug)
+    profile = UserProfile.objects.filter(user=request.user).first()
+
+    school = profile.school
     camera = CameraPoint()
 
     PhotoPointInlineFormset = inlineformset_factory(  # photo point formset (3)
@@ -896,7 +1068,7 @@ def add_camera_point(request, site_slug):
 
         # convert lat and longs into a pointfield object
         point = ("SRID=4326;POINT(%s %s)" %
-                 (request.POST['lat'], request.POST['lng']))
+                 (request.POST['lng'], request.POST['lat']))
         # spoof the location and  request param with the point object
         # and proceed like normal.
         request.POST['location'] = point
@@ -914,6 +1086,7 @@ def add_camera_point(request, site_slug):
         if (camera_form.is_valid() and pp_formset.is_valid() and
                 ppi_formset.is_valid()):
             camera = camera_form.save()
+            camera.school = school
             camera.save()
 
             photo_points = pp_formset.save(commit=False)
@@ -950,7 +1123,8 @@ def add_camera_point(request, site_slug):
             'camera_form': camera_form,
             'pp_formset': pp_formset,
             'ppi_formset': ppi_formset,
-            'site': site
+            'site': site,
+            'school': school
         }
     )
 
@@ -986,9 +1160,9 @@ def view_pp_and_add_img(request, site_slug, cp_id, pp_id):
 
                 else:
                     messages.add_message(
-                        request, messages.INFO,
-                        _('A photo from that date already exists for this photo \
-                        point.'),
+                        request, messages.ERROR,
+                        _('A photo from that date already exists for this photo\
+                         point.'),
                     )
     else:
         ppi_formset = PPImageModelFormset(
@@ -1011,9 +1185,11 @@ def view_pp_and_add_img(request, site_slug, cp_id, pp_id):
 
 
 @login_required
+@permission_required('streamwebs.is_org_author', raise_exception=True)
 def add_photo_point(request, site_slug, cp_id):
     """Add new PP to existing CP + respective photo(s)"""
     site = Site.objects.get(site_slug=site_slug)
+    # school = UserProfile.objects.filter(user=request.user).first().school
     cp = CameraPoint.objects.get(id=cp_id)
     photo_point = PhotoPoint()
     photo_point.camera_point = cp
@@ -1072,20 +1248,127 @@ def water_quality(request, site_slug, data_id):
     wq_samples = WQ_Sample.objects.filter(water_quality=data_id)\
         .order_by('sample')
 
+    # initalize variables for calculating averages
+    water_temp_sample_count = 0
+    water_temp_avg = 0  # worker temp value
+    water_temp_avg_fah = None  # in Fahrenheit
+    water_temp_avg_cel = None  # in celcius
+
+    air_temp_sample_count = 0
+    air_temp_avg = 0  # worker temp value
+    air_temp_avg_fah = None  # in Fahrenheit
+    air_temp_avg_cel = None  # in celcius
+
+    dissolved_oxygen_sample_count = 0
+    dissolved_oxygen_avg = 0
+
+    pH_sample_count = 0
+    pH_avg = 0
+
+    turbidity_sample_count = 0
+    turbidity_avg = 0
+
+    salinity_sample_count = 0
+    salinity_avg = 0
+
+    # Addition for each sample type
+    for sample in wq_samples:
+        if sample.water_temperature is not None:
+            water_temp_sample_count += 1
+            water_temp_avg += sample.water_temperature
+        if sample.air_temperature is not None:
+            air_temp_sample_count += 1
+            air_temp_avg += sample.air_temperature
+        if sample.dissolved_oxygen:
+            dissolved_oxygen_sample_count += 1
+            dissolved_oxygen_avg += sample.dissolved_oxygen
+        if sample.pH:
+            pH_sample_count += 1
+            pH_avg += sample.pH
+        if sample.turbidity:
+            turbidity_sample_count += 1
+            turbidity_avg += sample.turbidity
+        if sample.salinity:
+            salinity_sample_count += 1
+            salinity_avg += sample.salinity
+
+    # Now divide by the count if there are any
+    if water_temp_sample_count > 0:
+        water_temp_avg /= water_temp_sample_count
+        water_temp_avg = round(water_temp_avg, 2)
+        # Calculate Other temperature unit (celcius or fahrenheit)
+        if wq_data.water_temp_unit == Water_Quality.FAHRENHEIT:
+            water_temp_avg_fah = water_temp_avg
+            water_temp_avg_cel = round((water_temp_avg - 32) * float(5) / 9, 2)
+        else:
+            water_temp_avg_fah = round((water_temp_avg * (float(9)/5)) + 32, 2)
+            water_temp_avg_cel = water_temp_avg
+
+    if air_temp_sample_count > 0:
+        air_temp_avg /= air_temp_sample_count
+        air_temp_avg = round(air_temp_avg, 2)
+        # Calculate Other temperature unit (celcius or fahrenheit)
+        if wq_data.air_temp_unit == Water_Quality.FAHRENHEIT:
+            air_temp_avg_fah = air_temp_avg
+            air_temp_avg_cel = round((air_temp_avg - 32) * float(5) / 9, 2)
+        else:
+            air_temp_avg_fah = round((air_temp_avg * (float(9) / 5)) + 32, 2)
+            air_temp_avg_cel = air_temp_avg
+
+    if dissolved_oxygen_sample_count > 0:
+        dissolved_oxygen_avg /= dissolved_oxygen_sample_count
+        dissolved_oxygen_avg = round(dissolved_oxygen_avg, 2)
+
+    if pH_sample_count > 0:
+        pH_avg /= pH_sample_count
+        pH_avg = round(pH_avg, 2)
+
+    if turbidity_sample_count > 0:
+        turbidity_avg /= turbidity_sample_count
+        turbidity_avg = round(turbidity_avg, 2)
+
+    if salinity_sample_count > 0:
+        salinity_avg /= salinity_sample_count
+        salinity_avg = round(salinity_avg, 2)
+
+    # Package up averages into a dictionary
+    data_averages = {}
+    data_averages["water_temp_sample_count"] = water_temp_sample_count
+    data_averages["water_temp_avg_fah"] = water_temp_avg_fah
+    data_averages["water_temp_avg_cel"] = water_temp_avg_cel
+    data_averages["air_temp_sample_count"] = air_temp_sample_count
+    data_averages["air_temp_avg_fah"] = air_temp_avg_fah
+    data_averages["air_temp_avg_cel"] = air_temp_avg_cel
+    data_averages[
+        "dissolved_oxygen_sample_count"] = dissolved_oxygen_sample_count
+    data_averages["dissolved_oxygen_avg"] = dissolved_oxygen_avg
+    data_averages["pH_sample_count"] = pH_sample_count
+    data_averages["pH_avg"] = pH_avg
+    data_averages["turbidity_sample_count"] = turbidity_sample_count
+    data_averages["turbidity_avg"] = turbidity_avg
+    data_averages["salinity_sample_count"] = salinity_sample_count
+    data_averages["salinity_avg"] = salinity_avg
+
     return render(
         request, 'streamwebs/datasheets/water_quality_view.html',
         {
             'site': site,
             'wq_data': wq_data,
             'wq_samples': wq_samples,
+            'data_averages': data_averages
         }
     )
 
 
 @login_required
+@permission_required('streamwebs.is_org_author', raise_exception=True)
+@any_organization_required
 def water_quality_edit(request, site_slug):
     """ Add a new water quality sample """
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
+    profile = UserProfile.objects.filter(user=request.user).first()
+
+    school = profile.school
     WQInlineFormSet = inlineformset_factory(
         Water_Quality, WQ_Sample,
         form=WQSampleForm,
@@ -1107,6 +1390,7 @@ def water_quality_edit(request, site_slug):
                 wq_form.data['ampm']
             )
             water_quality.site = site
+            water_quality.school = school
             water_quality.save()             # save object to db
             allSamples = sample_formset.save(commit=False)
             counter = 0
@@ -1133,6 +1417,7 @@ def water_quality_edit(request, site_slug):
             'site': site,
             'wq_form': wq_form,
             'sample_formset': sample_formset,
+            'school': school
         }
     )
 
@@ -1150,11 +1435,16 @@ def soil_survey(request, site_slug, data_id):
 
 
 @login_required
+@permission_required('streamwebs.is_org_author', raise_exception=True)
+@any_organization_required
 def soil_survey_edit(request, site_slug):
     """
     The view for the submistion of a new Soil Survey (data sheet)
     """
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
+    profile = UserProfile.objects.filter(user=request.user).first()
+
+    school = profile.school
     soil_form = SoilSurveyForm()
 
     if request.method == 'POST':
@@ -1168,6 +1458,7 @@ def soil_survey_edit(request, site_slug):
                 soil_form.data['ampm']
             )
             soil.site = site
+            soil.school = school
             soil.save()
             messages.success(
                 request,
@@ -1180,13 +1471,14 @@ def soil_survey_edit(request, site_slug):
     return render(
         request, 'streamwebs/datasheets/soil_edit.html', {
             'soil_form': soil_form,
-            'site': site
+            'site': site,
+            'school': school
         }
     )
 
 
 @login_required
-@permission_required('streamwebs.can_view_stats', raise_exception=True)
+@permission_required('streamwebs.is_super_admin', raise_exception=True)
 def admin_site_statistics(request):
     """
     The view for viewing site statistics (admin only)
@@ -1329,7 +1621,7 @@ def resources_tutorial_videos(request):
 
 
 @login_required
-@permission_required('streamwebs.can_upload_resources', raise_exception=True)
+@permission_required('streamwebs.is_super_admin', raise_exception=True)
 def resources_upload(request):
     """ View for uploading a new resource """
     res_form = ResourceForm()
@@ -1383,120 +1675,29 @@ def resources_upload(request):
     )
 
 
-@login_required
-@permission_required('streamwebs.can_promote_users', raise_exception=True)
-def admin_user_promotion(request):
-    admins = Group.objects.get(name='admin')
-    admin_perms = Permission.objects.filter(group=admins)
-    can_view_stats = Permission.objects.get(codename='can_view_stats')
-    can_upload_resources = Permission.objects.get(
-        codename='can_upload_resources')
-    msgs = []    # list to hold custom flash messages
-
-    promo_form = AdminPromotionForm()
-
-    if request.method == 'POST':
-        promo_form = AdminPromotionForm(request.POST)
-
-        if promo_form.is_valid():
-            action = promo_form.cleaned_data['perms']
-            selected_users = promo_form.cleaned_data['users']
-
-            for user in selected_users:
-                if action == 'add_admin':
-                    user.groups.add(admins)
-                    msgs.append(
-                        _('%s added to the Admin group.' % user.username))
-
-                elif action == 'del_admin':
-                    user.groups.remove(admins)
-                    msgs.append(
-                        _('%s removed from the Admin group.' % user.username))
-
-                elif action == 'add_stats':
-                    user.user_permissions.add(can_view_stats)
-                    msgs.append(
-                        _('%s granted permission to view Statistics.'
-                          % user.username))
-
-                elif action == 'del_stats':
-                    # if they're an admin,
-                    if user.groups.filter(name='admin').exists():
-                        # remove them from the admins group
-                        user.groups.remove(admins)
-                        # add back all perms admins enjoy, EXCLUDING stats
-                        admin_perms = Permission.objects.filter(group=admins)
-                        for perm in admin_perms:
-                            if perm.codename != 'can_view_stats':
-                                user.user_permissions.add(perm)
-                    # otherwise if they're a regular user,
-                    else:
-                        user.user_permissions.remove(can_view_stats)
-
-                    msgs.append(
-                        _('%s was revoked the permission to view Statistics.'
-                          % user.username))
-
-                elif action == 'add_upload':
-                    user.user_permissions.add(can_upload_resources)
-                    msgs.append(
-                        _('%s was granted permission to upload resources.'
-                          % user.username))
-
-                elif action == 'del_upload':
-                    if user.groups.filter(name='admin').exists():
-                        user.groups.remove(admins)
-                        for perm in admin_perms:
-                            if perm.codename != 'can_upload_resources':
-                                user.user_permissions.add(perm)
-                    else:
-                        user.user_permissions.remove(can_upload_resources)
-
-                    msgs.append(
-                        _('%s was revoked the permission to upload resources.'
-                          % user.username))
-
-    all_users = User.objects.all()
-    user_info = dict()
-    for u in all_users:
-        user_info[u] = {
-            'is staff': u.is_staff,
-            'is an admin': u.groups.filter(name='admin').exists(),
-            'can view stats': u.has_perm('streamwebs.can_view_stats'),
-            'can upload resources': u.has_perm(
-                'streamwebs.can_upload_resources'),
-            'can manage other users': u.has_perm(
-                'streamwebs.can_promote_users')}
-
-    paginator = Paginator(list(all_users), 10)  # Show 10 users per page
-    page = request.GET.get('page')
-
-    try:
-        page_of_users = paginator.page(page)
-    except PageNotAnInteger:
-        page_of_users = paginator.page(1)
-    except EmptyPage:
-        page_of_users = paginator.page(paginator.num_pages)
-
-    return render(
-        request, 'streamwebs/admin/user_promo.html', {
-            'promo_form': promo_form,
-            'page_of_users': page_of_users,
-            'msgs': msgs,
-            'all_users': all_users,
-            'user_info': user_info,
-        }
-    )
-
-
 def schools(request):
     return render(request, 'streamwebs/schools.html', {
-        'schools': School.objects.all().order_by('name')
+        'schools': School.objects.filter(active=True).all().order_by('name')
     })
 
 
 def school_detail(request, school_id):
     school_data = School.objects.get(id=school_id)
+    is_in_org = False
+    if request.user.is_authenticated():
+        if request.user.has_perm('streamwebs.is_super_admin'):
+            is_in_org = True
+
+        elif request.user.has_perm('streamwebs.is_org_admin'):
+            user_profile = UserProfile.objects.filter(
+                user=request.user).first()
+            if user_profile is not None:
+                is_in_org = (user_profile.school.id == school_data.id)
+            else:
+                is_in_org = False
+    else:
+        is_in_org = False
+
     wq_data = Water_Quality.objects.filter(school=school_id)
     mac_data = Macroinvertebrates.objects.filter(school=school_id)
     can_data = Canopy_Cover.objects.filter(school=school_id)
@@ -1506,7 +1707,7 @@ def school_detail(request, school_id):
 
     return render(request, 'streamwebs/school_detail.html', {
         'school_data': school_data,
-        'school_id': school_id,
+        'is_in_org': is_in_org,
         'wq_data': wq_data,
         'mac_data': mac_data,
         'can_data': can_data,
@@ -1514,3 +1715,289 @@ def school_detail(request, school_id):
         'rip_data': rip_data,
         'rip_aqua_data': rip_aqua_data,
     })
+
+
+@login_required
+@permission_required('streamwebs.is_org_admin', raise_exception=True)
+# Redirect to the manage accounts page, based on user's school
+@any_organization_required
+def get_manage_accounts(request, user_id):
+    profile = UserProfile.objects.get(user=request.user)
+    return HttpResponseRedirect(
+        '/schools/%i/manage_accounts/' % int(profile.school.id))
+
+
+@login_required
+@permission_required('streamwebs.is_org_admin', raise_exception=True)
+@organization_required
+@organization_approved
+def manage_accounts(request, school_id):
+    school = School.objects.get(id=school_id)
+
+    org_contributor = Group.objects.get(name='org_author')
+    org_editor = Group.objects.get(name='org_admin')
+
+    if request.method == 'POST':
+        # Check which submit button was clicked
+
+        # Apply new user settings
+        if 'btn_apply' in request.POST:
+            editors = request.POST.getlist('nu_editor')
+            contributors = request.POST.getlist('nu_contributor')
+            denyUsers = request.POST.getlist('nu_deny')
+
+            for i in editors:
+                user = User.objects.get(id=i)
+                profile = UserProfile.objects.get(user=user)
+                if profile is not None:
+                    user.groups.add(org_editor)
+                    user.save()
+
+                    profile.approved = True
+                    profile.save()
+
+                    # Email editors that they were approved
+                    send_email(
+                        request=request,
+                        subject='Your editor account was approved at ' +
+                                str(school.name),
+                        template='registration/' +
+                                 'approve_user_request_email.html',
+                        user=user,
+                        school=school,
+                        from_email=settings.DEFAULT_FROM_EMAIL,
+                        recipients=[user.email]
+                    )
+
+            for i in contributors:
+                user = User.objects.get(id=i)
+                profile = UserProfile.objects.get(user=user)
+                if profile is not None:
+                    user.groups.add(org_contributor)
+                    user.save()
+
+                    profile.approved = True
+                    profile.save()
+
+                    # Email contributors that they were approved
+                    send_email(
+                        request=request,
+                        subject='Your contributor account was approved at ' +
+                                str(school.name),
+                        template='registration/' +
+                                 'approve_user_request_email.html',
+                        user=user,
+                        school=school,
+                        from_email=settings.DEFAULT_FROM_EMAIL,
+                        recipients=[user.email]
+                    )
+
+            for i in denyUsers:
+                user = User.objects.get(id=i)
+                profile = UserProfile.objects.get(user=user)
+                if profile is not None:
+                    profile.delete()
+                    user.delete()
+
+        # Delete Selected Editors
+        elif 'btn_delete_editors' in request.POST:
+            editors = request.POST.getlist('editors')
+
+            for i in editors:
+                user = User.objects.get(id=i)
+                profile = UserProfile.objects.get(user=user)
+
+                if user.id != request.user.id:
+                    if profile is not None:
+                        profile.delete()
+                    if user is not None:
+                        user.delete()
+
+        # Demote Editor
+        elif 'btn_demote' in request.POST:
+            editors = request.POST.getlist('editors')
+
+            for i in editors:
+                user = User.objects.get(id=i)
+
+                if user.id != request.user.id:
+                    if user.groups.filter(name=org_editor).exists():
+                        user.groups.remove(org_editor)
+                    user.groups.add(org_contributor)
+                    user.save()
+
+        # Delete Selected Contributors
+        elif 'btn_delete_contributors' in request.POST:
+            contributors = request.POST.getlist('contributors')
+
+            for i in contributors:
+                user = User.objects.get(id=i)
+                profile = UserProfile.objects.get(user=user)
+
+                if user.id != request.user.id:
+                    if profile is not None:
+                        profile.delete()
+                    if user is not None:
+                        user.delete()
+
+        # Promote Contributor
+        elif 'btn_promote' in request.POST:
+            contributors = request.POST.getlist('contributors')
+
+            for i in contributors:
+                user = User.objects.get(id=i)
+                profile = UserProfile.objects.get(user=user)
+                if profile is not None:
+                    if user.groups.filter(name=org_contributor).exists():
+                        user.groups.remove(org_contributor)
+                    user.groups.add(org_editor)
+                    user.save()
+
+    # GET method
+    new_users = UserProfile.objects.filter(school=school,
+                                           approved=False).all()
+    current_users = UserProfile.objects.filter(school=school,
+                                               approved=True).all()
+
+    contributor_users = [up for up in current_users
+                         if up.user.groups.filter(name='org_author').exists()]
+    editor_users = [up for up in current_users
+                    if up.user.groups.filter(name='org_admin').exists()]
+
+    return render(request, 'streamwebs/manage_accounts.html', {
+        'school_data': school,
+        'school_id': school_id,
+        'new_users': new_users,
+        'contributor_users': contributor_users,
+        'editor_users': editor_users
+    })
+
+
+@login_required
+@permission_required('streamwebs.is_org_admin', raise_exception=True)
+@organization_required
+def add_account(request, school_id):
+    school_data = School.objects.get(id=school_id)
+
+    if request.method == 'POST':
+        user_form = UserFormOptionalNameEmail(data=request.POST)
+
+        if user_form.is_valid():
+            user = user_form.save()
+            user.set_password(user.password)
+
+            org_contributor = Group.objects.get(name='org_author')
+            user.groups.add(org_contributor)
+            user.save()
+
+            profile = UserProfile()
+            profile.school_id = school_id
+            profile.user = user
+            profile.approved = True
+            profile.save()
+
+            return HttpResponseRedirect('/schools/%i/manage_accounts/'
+                                        % school_data.id)
+    else:
+        user_form = UserFormOptionalNameEmail()
+
+    return render(request, 'streamwebs/add_account.html', {
+        'school_data': school_data,
+        'user_form': user_form
+    })
+
+
+@login_required
+@permission_required('streamwebs.is_org_admin', raise_exception=True)
+@organization_required
+def edit_account(request, school_id, user_id):
+    school_data = School.objects.get(id=school_id)
+    user = User.objects.get(id=user_id)
+
+    if request.method == 'POST':
+        user_form = UserEditForm(data=request.POST, instance=user)
+
+        if user_form.is_valid():
+            user = user_form.save()
+
+            return HttpResponseRedirect('/schools/%i/manage_accounts/'
+                                        % school_data.id)
+    else:
+        user_form = UserEditForm(instance=user)
+
+    return render(request, 'streamwebs/edit_account.html', {
+        'school_data': school_data,
+        'user': user,
+        'user_form': user_form
+    })
+
+
+@login_required
+@permission_required('streamwebs.is_org_admin', raise_exception=True)
+def var_debug(request, value):
+    return render(request, 'streamwebs/var_debug.html', {
+        'value': value
+    })
+
+
+@login_required
+@permission_required('streamwebs.is_super_admin', raise_exception=True)
+def new_org_request(request, school_id):
+    school = School.objects.get(id=school_id)
+    profiles = UserProfile.objects.filter(school=school)
+    profile = profiles.first()
+
+    if profile is None:
+        return HttpResponseForbidden(
+            'There is no user associated with this organization request.')
+
+    user = profile.user
+
+    if request.method == 'POST':
+        editor_permission = request.POST.getlist('editor_permission')
+        contributor_permission = request.POST.getlist('contributor_permission')
+
+        org_contributor = Group.objects.get(name='org_author')
+        org_editor = Group.objects.get(name='org_admin')
+
+        # Deny org and user
+        if 'btn_deny' in request.POST:
+            user.delete()
+            profile.delete()
+            school.delete()
+            # Redirect to home
+            return HttpResponseRedirect('/')
+        # Approve org
+        elif 'btn_approve' in request.POST:
+            school.active = True
+            profile.approved = True
+
+            # Approved for editor permission
+            if len(editor_permission) > 0:
+                user.groups.clear()
+                user.groups.add(org_editor)
+            # Approved for contributor permission
+            elif len(contributor_permission) > 0:
+                user.groups.clear()
+                user.groups.add(org_contributor)
+
+            school.save()
+            profile.save()
+
+            # Email
+            send_email(
+                request=request,
+                subject='Your organization was approved: ' + str(school.name),
+                template='registration/approve_org_request_email.html',
+                user=user,
+                school=school,
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipients=[user.email]
+            )
+
+            return HttpResponseRedirect('/schools/%i/' % school.id)
+
+    return render(request, 'streamwebs/new_org_request.html', {
+        'school_data': school,
+        'user': user
+        })

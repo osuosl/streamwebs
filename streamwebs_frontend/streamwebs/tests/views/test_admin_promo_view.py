@@ -1,3 +1,4 @@
+''' TODO
 from django.test import Client, TestCase
 from django.core.urlresolvers import reverse
 from django.core.exceptions import PermissionDenied
@@ -10,28 +11,20 @@ class AdminPromoTestCase(TestCase):
     def setUp(self):
         self.client = Client()
 
-        # grab 'admin' group, 'promo' perm, and 'stats' perm
-        self.admins = Group.objects.get(name='admin')
-        can_promo = Permission.objects.get(codename='can_promote_users')
-        self.can_stats = Permission.objects.get(codename='can_view_stats')
-        self.can_upload = Permission.objects.get(
-            codename='can_upload_resources')
-
         # two regular users loaded in from fixtures to test admin perms
         self.user1 = User.objects.get(pk=2)
         self.user2 = User.objects.get(pk=7)
 
         # super admin (level: Renee) to test promo perm
-        self.superAdmin = User.objects.create_user('superAdmin',
+        self.superAdmin = User.objects.create_superuser('superAdmin',
                                                    'super@example.com',
                                                    'superpassword')
-        self.superAdmin.groups.add(self.admins)
-        self.superAdmin.user_permissions.add(can_promo)
 
         # regular admin (level: Renee's colleague) to test promo perm
         self.regAdmin = User.objects.create_user('regAdmin', 'reg@example.com',
                                                  'regpassword')
-        self.regAdmin.groups.add(self.admins)
+
+        self.regAdmin.groups.add(Group.objects.get(id='org_admin'))
 
         # flash message strings
         self.add_admin_msg = ' added to the Admin group.'
@@ -250,3 +243,4 @@ class AdminPromoTestCase(TestCase):
         self.assertEquals(len(messages), 2)
         self.assertIn(self.user1.username + self.del_upload_msg, messages)
         self.assertIn(self.user2.username + self.del_upload_msg, messages)
+'''

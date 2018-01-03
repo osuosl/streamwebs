@@ -2,7 +2,7 @@
 {% load staticfiles %}
 {% load i18n %}
 
-{% block title %}Log In -{% endblock %}
+{% block title %}Log In - {% endblock %}
 
 {% block body_title %}{% trans "Log In" %}{% endblock %}
 
@@ -15,25 +15,76 @@
         {% endfor %}
       </div>
     {% endif %}
-    <div class="row">
-      <form class="col s4 offset-s4" id='login_form' method='post'
-            action="{% url 'streamwebs:login' %}?next={{ redirect_to }}">
-        {% csrf_token %}
-        <input type="hidden" name="next" value="{{ request.GET.next }}"/>
-        {% trans "Username:" %}<input type='text' name='username' value=''
-                                      size='50'/>
+    
+    
+    <!-- Login form -->
+    <form id='login_form' method='post'
+          action="{% url 'streamwebs:login' %}?next={{ redirect_to }}">
+      {% csrf_token %}
         <br/>
-        {% trans "Password:" %}<input type='password' name='password' value=''
-                                      size='50'/>
-        <br/>
-        <a href="{% url 'password_reset' %}">Forgot your password?</a>
-        <br/><br/>
-        <button class="btn wave-effect waves-light teal darken-3" type="submit"
-          name="submit" value="{% trans "Log in" %}">
-          {% trans "Log in" %}
-        </button>
 
-      </form>
-    </div>
+        <!-- next field -->
+        <input type="hidden" name="next" value="{{ request.GET.next }}"/>
+
+        
+        <!-- Email -->
+        <div class="row">
+          <div class="input-field col s6 offset-s3">
+              <input type='text' id='email' name="email" value='' size='50'/>
+              <label for="email">{% trans "Email address or Username" %}</label>
+          </div>
+        </div>
+
+        <!-- Username case sensitive notice -->
+        <div class="row">
+          <div class="valign-wrapper col s6 offset-s3">
+            <i class="material-icons left">error_outline</i>                
+            <p class="red-text">Usernames are case and space sensitive!</p>    
+          </div>
+        </div>
+        <br/>
+
+        <!-- Password -->
+        <div class="row">
+          <div class="input-field  col s6 offset-s3">
+              <input type='password' id='password' name="password" value='' size='50'/>
+              <label for="password">{% trans "Password:" %}</label>
+          </div>
+        </div>
+        <!-- Password reset -->
+        <div class="row">
+          <div class="col s6 offset-s3">
+            <a href="{% url 'password_reset' %}">Forgot your username or password?</a>
+          </div>
+        </div>
+
+        <br/><br/>
+        
+        <!-- Submit -->
+        <div class="row">
+          <div class="col s6 offset-s3">
+            <button class="btn wave-effect waves-light teal darken-3" type="submit"
+              name="submit" value="{% trans "Log in" %}">
+              {% trans "Log in" %}
+            </button>
+          </div>
+        </div>
+
+    </form>
+
   </div>
+{% endblock %}
+
+{% block scripts %}
+  <!--Import jQuery before materialize.js-->
+  <script type="text/javascript"
+      src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+      
+    });
+</script>
 {% endblock %}
