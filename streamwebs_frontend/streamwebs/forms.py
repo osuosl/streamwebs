@@ -17,6 +17,23 @@ TIME_PERIOD_CHOICES = (
 )
 
 
+def clean_unique_lower(form, field, exclude_initial=True,
+                       error_message="The %(field)s %(value)s\
+                                     must be unique."):
+    value = form.cleaned_data.get(field)
+    lower_value = ''.join(value.split()).lower()
+
+    if lower_value:
+        qset = form._meta.model._default_manager.filter(**{field: lower_value})
+        if exclude_initial and form.initial:
+            initial_value = form.initial.get(field)
+            qset = qset.exclude(**{field: initial_value})
+        if qset.count() > 0:
+            raise forms.ValidationError(
+                error_message % {'field': field, 'value': lower_value})
+    return lower_value
+
+
 class UserForm(forms.ModelForm):
     password = forms.CharField(
         widget=forms.PasswordInput(),
@@ -47,15 +64,8 @@ class UserForm(forms.ModelForm):
         return self.data['password']
 
     def clean_email(self):
-        email = self.cleaned_data.get('email')
-        lower_mail_nospace = ''.join(email.split()).lower()
-
-        if email:
-            if (User.objects.filter(email=lower_mail_nospace).exists() or
-                    User.objects.filter(username=lower_mail_nospace).exists()):
-                raise forms.ValidationError(
-                    u'A user with that email address already exists.')
-        return lower_mail_nospace
+        return clean_unique_lower(self, 'email', error_message=u'A user with\
+                                  that email address already exists.')
 
 
 class UserFormOptionalNameEmail(forms.ModelForm):
@@ -93,15 +103,8 @@ class UserFormOptionalNameEmail(forms.ModelForm):
         return self.data['password']
 
     def clean_email(self):
-        email = self.cleaned_data.get('email')
-        lower_mail_nospace = ''.join(email.split()).lower()
-
-        if email:
-            if (User.objects.filter(email=lower_mail_nospace).exists() or
-                    User.objects.filter(username=lower_mail_nospace).exists()):
-                raise forms.ValidationError(
-                    u'A user with that email address already exists.')
-        return lower_mail_nospace
+        return clean_unique_lower(self, 'email', error_message=u'A user with \
+                                  that email address already exists.')
 
 
 class UserFormEmailAsUsername(forms.ModelForm):
@@ -136,15 +139,8 @@ class UserFormEmailAsUsername(forms.ModelForm):
         return self.data['password']
 
     def clean_email(self):
-        email = self.cleaned_data.get('email')
-        lower_mail_nospace = ''.join(email.split()).lower()
-
-        if email:
-            if (User.objects.filter(email=lower_mail_nospace).exists() or
-                    User.objects.filter(username=lower_mail_nospace).exists()):
-                raise forms.ValidationError(
-                    u'A user with that email address already exists.')
-        return lower_mail_nospace
+        return clean_unique_lower(self, 'email', error_message=u'A user with \
+                                  that email address already exists.')
 
 
 class UserEditForm(forms.ModelForm):
@@ -164,15 +160,8 @@ class UserEditForm(forms.ModelForm):
         fields = ('first_name', 'last_name', 'username', 'email')
 
     def clean_email(self):
-        email = self.cleaned_data.get('email')
-        lower_mail_nospace = ''.join(email.split()).lower()
-
-        if email:
-            if (User.objects.filter(email=lower_mail_nospace).exists() or
-                    User.objects.filter(username=lower_mail_nospace).exists()):
-                raise forms.ValidationError(
-                    u'A user with that email address already exists.')
-        return lower_mail_nospace
+        return clean_unique_lower(self, 'email', error_message=u'A user with \
+                                  that email address already exists.')
 
 
 class UserEmailForm(forms.ModelForm):
@@ -183,15 +172,8 @@ class UserEmailForm(forms.ModelForm):
         fields = ('email',)
 
     def clean_email(self):
-        email = self.cleaned_data.get('email')
-        lower_mail_nospace = ''.join(email.split()).lower()
-
-        if email:
-            if (User.objects.filter(email=lower_mail_nospace).exists() or
-                    User.objects.filter(username=lower_mail_nospace).exists()):
-                raise forms.ValidationError(
-                    u'A user with that email address already exists.')
-        return lower_mail_nospace
+        return clean_unique_lower(self, 'email', error_message=u'A user with \
+                                  that email address already exists.')
 
 
 class UserPasswordForm(forms.ModelForm):

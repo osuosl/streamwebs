@@ -321,16 +321,17 @@ def add_school_name(data):
     if len(data) == 0:
         return
 
-    schools = School.objects.filter(active=True)
+    schools = School.objects.all()
     data_new = []
     curr_school_id = 0
     for x in data:
         if data.index(x) == 0 or x['school_id'] != curr_school_id:
             school = {'type': 'school', 'name': 'No School Associated'}
 
-            if x['school_id'] != -1:
-                school = schools.get(id=x['school_id'])
-                school = {'type': 'school', 'name': school.name}
+            if schools.filter(id=x['school_id']).exists():
+                if x['school_id'] != -1:
+                    school = schools.get(id=x['school_id'])
+                    school = {'type': 'school', 'name': school.name}
 
             data_new.append(school)
             curr_school_id = x['school_id']
@@ -417,48 +418,18 @@ def register(request):
         profile_form = UserProfileForm(data=request.POST)
         school_form = SchoolForm(data=request.POST)
 
+        new_org_flag = len(request.POST.getlist('new_org_flag')) > 0
+
         # User form must always be valid
-        if user_form.is_valid() and profile_form.is_valid():
-            user = user_form.save()
-            user.username = user.email
-            user.set_password(user.password)
-
-            profile = profile_form.save(commit=False)
-            profile.user = user
-
-            # If school form is valid, then the user is creating a new school
-            if school_form.is_valid():
-                school = school_form.save()
-                school.province = (school.province + ', United States')
-                school.save()
-
-                profile.school_id = school.id
-
-                # Save user
+        if user_form.is_valid():
+            if not new_org_flag and profile_form.is_valid():
+                user = user_form.save()
+                user.username = user.email
+                user.set_password(user.password)
                 user.save()
-                profile.save()
 
-                # Permissions
-                org_editor = Group.objects.get(name='org_admin')
-                user.groups.add(org_editor)
-
-                # Super admins
-                # super_admins = [usr.email for usr in User.objects.all()
-                #                if usr.has_perm('streamwebs.is_super_admin')]
-
-                # Email to super admin for new organization + account
-                send_email(
-                    request=request,
-                    subject='New organization request: ' + str(school.name),
-                    template='registration/new_org_request_email.html',
-                    user=user,
-                    school=school,
-                    from_email=settings.DEFAULT_FROM_EMAIL,
-                    recipients=['testing@streamwebs.org']  # super_admins
-                )
-            else:
-                # Save user
-                user.save()
+                profile = profile_form.save(commit=False)
+                profile.user = user
                 profile.save()
 
                 # Get current system users
@@ -482,18 +453,57 @@ def register(request):
                         recipients=editor_users
                     )
 
-            return HttpResponseRedirect('/register/confirm')
+                return HttpResponseRedirect('/register/confirm')
+            # Create a school
+            elif school_form.is_valid():
+                school = school_form.save()
+                school.province = (school.province + ', United States')
+                school.save()
+
+                user = user_form.save()
+                user.username = user.email
+                user.set_password(user.password)
+                user.save()
+
+                profile = UserProfile()
+                profile.user = user
+                profile.school_id = school.id
+                profile.save()
+
+                # Permissions
+                org_editor = Group.objects.get(name='org_admin')
+                user.groups.add(org_editor)
+                user.save()
+
+                # Super admins
+                super_admins = [usr.email for usr in User.objects.all()
+                                if usr.has_perm('streamwebs.is_super_admin')]
+
+                # Email to super admin for new organization + account
+                send_email(
+                    request=request,
+                    subject='New organization request: ' + str(school.name),
+                    template='registration/new_org_request_email.html',
+                    user=user,
+                    school=school,
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    recipients=super_admins
+                )
+
+                return HttpResponseRedirect('/register/confirm')
 
     else:
         user_form = UserFormEmailAsUsername()
         profile_form = UserProfileForm()
         school_form = SchoolForm()
+        new_org_flag = False
 
     return render(request, 'streamwebs/register.html', {
         'user_form': user_form,
         'profile_form': profile_form,
         'school_form': school_form,
-        'schools': School.objects.filter(active=True).all().order_by('name')
+        'schools': School.objects.filter(active=True).all().order_by('name'),
+        'new_org_flag': new_org_flag
     })
 
 
@@ -732,9 +742,9 @@ def macroinvertebrate_edit(request, site_slug):
 
     # the following are the form's fields broken up into chunks to
     # facilitate CSS manipulation in the template
-    intolerant = list(macro_form)[7:14]
-    somewhat = list(macro_form)[14:23]
-    tolerant = list(macro_form)[23:28]
+    intolerant = list(macro_form)[7:13]
+    somewhat = list(macro_form)[13:22]
+    tolerant = list(macro_form)[22:28]
 
     if request.method == 'POST':
         macro_form = MacroinvertebratesForm(data=request.POST)
@@ -1266,7 +1276,7 @@ def water_quality(request, site_slug, data_id):
         if sample.water_temperature is not None:
             water_temp_sample_count += 1
             water_temp_avg += sample.water_temperature
-        if sample.air_temperature:
+        if sample.air_temperature is not None:
             air_temp_sample_count += 1
             air_temp_avg += sample.air_temperature
         if sample.dissolved_oxygen:
@@ -1287,7 +1297,7 @@ def water_quality(request, site_slug, data_id):
         water_temp_avg /= water_temp_sample_count
         water_temp_avg = round(water_temp_avg, 2)
         # Calculate Other temperature unit (celcius or fahrenheit)
-        if wq_data.water_temp_unit is Water_Quality.FAHRENHEIT:
+        if wq_data.water_temp_unit == Water_Quality.FAHRENHEIT:
             water_temp_avg_fah = water_temp_avg
             water_temp_avg_cel = round((water_temp_avg - 32) * float(5) / 9, 2)
         else:
@@ -1298,7 +1308,7 @@ def water_quality(request, site_slug, data_id):
         air_temp_avg /= air_temp_sample_count
         air_temp_avg = round(air_temp_avg, 2)
         # Calculate Other temperature unit (celcius or fahrenheit)
-        if wq_data.air_temp_unit is Water_Quality.FAHRENHEIT:
+        if wq_data.air_temp_unit == Water_Quality.FAHRENHEIT:
             air_temp_avg_fah = air_temp_avg
             air_temp_avg_cel = round((air_temp_avg - 32) * float(5) / 9, 2)
         else:
