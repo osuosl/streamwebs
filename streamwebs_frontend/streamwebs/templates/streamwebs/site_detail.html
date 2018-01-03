@@ -81,6 +81,7 @@
         </div>
       </div>
       <div class="row">
+        <!-- Graphs -->
         <div class="col s2 m2 graphs left-align">
           {% if has_wq or has_macros or has_camera %}
             <h4>{% trans "Graphs" %}</h4>
@@ -101,6 +102,8 @@
             {% endif %}
           {% endif %}
         </div>
+
+        <!-- Datasheets -->
         <div class="col s6 offset-s1 center" >
           {% if has_wq or has_macros or has_cc or has_transect or has_soil or has_camera or has_aqua %}
             <h4>{% trans "Datasheets" %}</h4>
@@ -125,6 +128,8 @@
           {% endif %}
         </div>
       </div>
+
+      <!-- Export -->
       <div class="row">
         <div class="col s12 center">
           <a class="dropdown-button btn-large teal darken-3"
@@ -176,10 +181,14 @@
               </li>
             {% endif %}
           </ul>
+
+          <!-- Add data -->
           {% if user.is_authenticated %}
             {% if perms.streamwebs.is_org_author %}
             <a class="dropdown-button btn-large teal darken-3"
-              href="#" data-activates="new-data-dropdown">
+              href="#" data-activates="new-data-dropdown"
+              data-beloworigin="true" data-stopPropagation="true"
+              data-inDuration="100">
               <i class="material-icons right">arrow_drop_down</i>
               {% trans "Add data to this site" %}
             </a>
@@ -221,6 +230,8 @@
               </li>
             </ul>
             {% endif %}
+
+            <!-- Edit -->
             {% if perms.streamwebs.is_org_admin %}
               <a href="{% url 'streamwebs:update_site' site_slug=site.site_slug %}"
                 class="btn-large teal darken-3">
