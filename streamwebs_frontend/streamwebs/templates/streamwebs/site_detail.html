@@ -238,6 +238,14 @@
     </div>
   </div>
 
+  {% if user.is_authenticated %}
+    {% if perms.streamwebs.is_org_admin or perms.streamwebs.is_super_admin%}
+      <h4 id="can-delete" hidden="true">True</h4>
+    {% else %}
+      <h4 id="can-delete" hidden="true">False</h4>
+    {% endif %}  
+  {% endif %}  
+
 {% endblock %}
 
 {% block scripts %}

@@ -75,7 +75,8 @@ var listUpdate = function listUpdate() {
             var itemLink = $('<a></a>').attr('href', '/sites/'+site_slug+'/'+datum.uri+'/'+datum.id);
             itemLink.text(datum.type+' data: '+datum.date);
             listItem.append(itemLink);
-            listItem.append(" <a href='#'><i class='material-icons delete-icon'>delete</i></a>")
+            if($('#can-delete').text() === "True")
+                listItem.append(" <a href='#'><i class='material-icons delete-icon'>delete</i></a>")
         }
 
         list.append(listItem);
