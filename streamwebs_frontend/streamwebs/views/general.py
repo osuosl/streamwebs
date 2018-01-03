@@ -328,9 +328,10 @@ def add_school_name(data):
         if data.index(x) == 0 or x['school_id'] != curr_school_id:
             school = {'type': 'school', 'name': 'No School Associated'}
 
-            if x['school_id'] != -1:
-                school = schools.get(id=x['school_id'])
-                school = {'type': 'school', 'name': school.name}
+            if schools.filter(id=x['school_id']).exists():
+                if x['school_id'] != -1:
+                    school = schools.get(id=x['school_id'])
+                    school = {'type': 'school', 'name': school.name}
 
             data_new.append(school)
             curr_school_id = x['school_id']
