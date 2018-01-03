@@ -321,7 +321,7 @@ def add_school_name(data):
     if len(data) == 0:
         return
 
-    schools = School.objects.filter(active=True)
+    schools = School.objects.all()
     data_new = []
     curr_school_id = 0
     for x in data:
