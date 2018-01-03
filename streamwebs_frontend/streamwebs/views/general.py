@@ -742,9 +742,9 @@ def macroinvertebrate_edit(request, site_slug):
 
     # the following are the form's fields broken up into chunks to
     # facilitate CSS manipulation in the template
-    intolerant = list(macro_form)[7:14]
-    somewhat = list(macro_form)[14:23]
-    tolerant = list(macro_form)[23:28]
+    intolerant = list(macro_form)[7:13]
+    somewhat = list(macro_form)[13:22]
+    tolerant = list(macro_form)[22:28]
 
     if request.method == 'POST':
         macro_form = MacroinvertebratesForm(data=request.POST)
