@@ -79,7 +79,7 @@ def export_rip_aqua(request, site_slug):
 
 def export_wq(request, site_slug):
     site = Site.objects.get(site_slug=site_slug)
-    waterq = Water_Quality.objects.filter(site_id=site.id)
+    waterq = Water_Quality.objects.filter(site=site)
 
     # Store nid of each wq data sheet into a list
     sheets = []
@@ -87,7 +87,7 @@ def export_wq(request, site_slug):
         sheets.append(each.nid)
 
     # Query the first set of samples outside of the loop and pop nid from list
-    samples = WQ_Sample.objects.prefetch_related('water_quality')
+    samples = WQ_Sample.objects.prefetch_related('water_quality').all()
     samples = samples.filter(nid=sheets[0]).order_by('id').values(
         'water_quality__school__name', 'water_quality__date_time',
         'water_quality__site__site_name', 'water_quality__DEQ_dq_level',
@@ -105,7 +105,7 @@ def export_wq(request, site_slug):
 
     # Query for the remaining samples according to wq_nid
     for sheet in sheets:
-        n_samples = WQ_Sample.objects.prefetch_related('water_quality')
+        n_samples = WQ_Sample.objects.prefetch_related('water_quality').all()
         n_samples = n_samples.filter(nid=sheet).order_by('id').values(
             'water_quality__school__name', 'water_quality__date_time',
             'water_quality__site__site_name', 'water_quality__DEQ_dq_level',
