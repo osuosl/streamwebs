@@ -34,40 +34,6 @@ def clean_unique_lower(form, field, exclude_initial=True,
     return lower_value
 
 
-class UserForm(forms.ModelForm):
-    password = forms.CharField(
-        widget=forms.PasswordInput(),
-        label=_('Password'))
-
-    password_check = forms.CharField(
-        widget=forms.PasswordInput(),
-        label='Repeat your password')
-
-    email = forms.CharField(required=True)
-    first_name = forms.CharField(
-        widget=forms.TextInput()
-    )
-
-    class Meta:
-        model = User
-        fields = ('username', 'email', 'password', 'first_name', 'last_name')
-        labels = {
-            'username': _('Username'),
-            'email': _('Email'),
-            'password': _('Password:'),
-            'first_name': _('First Name'),
-        }
-
-    def clean_password(self):
-        if self.data['password'] != self.data['password_check']:
-            raise forms.ValidationError(_('Passwords did not match'))
-        return self.data['password']
-
-    def clean_email(self):
-        return clean_unique_lower(self, 'email', error_message=u'A user with\
-                                  that email address already exists.')
-
-
 class UserFormOptionalNameEmail(forms.ModelForm):
     first_name = forms.CharField(
         required=False,
@@ -101,6 +67,10 @@ class UserFormOptionalNameEmail(forms.ModelForm):
         if self.data['password'] != self.data['password_check']:
             raise forms.ValidationError(_('Passwords did not match'))
         return self.data['password']
+
+    def clean_username(self):
+        return clean_unique_lower(self, 'username', error_message=u'A user with\
+                                  that username already exists.')
 
     def clean_email(self):
         return clean_unique_lower(self, 'email', error_message=u'A user with \
@@ -158,6 +128,10 @@ class UserEditForm(forms.ModelForm):
         model = User
         # Add all the fields you want a user to change
         fields = ('first_name', 'last_name', 'username', 'email')
+
+    def clean_username(self):
+        return clean_unique_lower(self, 'username', error_message=u'A user with\
+                                  that username already exists.')
 
     def clean_email(self):
         return clean_unique_lower(self, 'email', error_message=u'A user with \
