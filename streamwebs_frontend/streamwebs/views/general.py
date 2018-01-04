@@ -177,6 +177,11 @@ def sites(request):
 # view-view for individual specified site
 def site(request, site_slug):
     """ View an individual site """
+
+    if request.method == 'POST':
+        return HttpResponseForbidden("GOt the post")
+
+
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     wq_sheets = Water_Quality.objects.filter(site_id=site.id)
     wq_sheets = list(wq_sheets.order_by('-date_time').values())
