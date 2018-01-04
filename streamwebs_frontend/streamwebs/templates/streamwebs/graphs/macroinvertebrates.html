@@ -7,6 +7,15 @@
 {% endblock %}
 
 {% block content %}
+<style>
+  #axis{
+    margin-left: 100px;
+    transform: rotate(90deg);
+    transform-origin: left top 0;
+    width: 300px;
+    font-size: 18px;
+  }
+</style>
   <a href="{% url 'streamwebs:site' site.site_slug %}" id="back"
       class="wave-effects wave-light btn white-text teal darken-3">
     <i class="material-icons">chevron_left</i>
@@ -38,18 +47,18 @@
     </form>
     <div class="row">
       <form action="">
-        <div id="type">
-          <div class="col s2 offset-s1">
+        <div id="type" style="display: none">
+          <div class="col s2 offset-s1" >
             <h7>{% trans "Graph type:" %}</h7>
           </div>
           <div class="col s4">
             <input type="radio" name="type" id="type-bar" value="bar" checked/>
             <label for="type-bar">{% trans "Summary" %}</label>
           </div>
-          <div class="col s4">
+          <!-- <div class="col s4">
             <input type="radio" name="type" id="type-line" value="line"/>
             <label for="type-line">{% trans "Time" %}</label>
-          </div>
+          </div> -->
         </div>
       </form>
     </div>  <!-- end date range/graph type row -->
@@ -65,20 +74,23 @@
           <h3 style="display:none"
               class="graph-header col s12">{% trans "Sensitive species" %}</h3>
         </div>
+        <div id="axis" class="col s1">Average Macroinvertebrates Found</div>
         <div id="graph-{{ site.site_slug }}-sensitive"
-             class="graph sensitive col s12"></div>
+             class="graph sensitive col s11 push-s1"></div>
         <div class="col s12">
           <h3 style="display:none"
               class="graph-header">{% trans "Somewhat sensitive species" %}</h3>
         </div>
+        <div id="axis" class="col s1">Average Macroinvertebrates Found</div>
         <div id="graph-{{ site.site_slug }}-somewhat"
-             class="graph somewhat col 12"></div>
+             class="graph somewhat col 11 push-s1"></div>
         <div class="col s12">
           <h3 style="display:none"
               class="graph-header">{% trans "Tolerant species" %}</h3>
         </div>
+        <div id="axis" class="col s1">Average Macroinvertebrates Found</div>
         <div id="graph-{{ site.site_slug }}-tolerant"
-             class="graph tolerant col s12"></div>
+             class="graph tolerant col s11 push-s1"></div>
 
         <h3 style="display:none"
             class="graph-header">{% trans "Species type breakdown" %}</h3>
