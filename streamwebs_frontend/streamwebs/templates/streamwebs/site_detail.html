@@ -134,7 +134,7 @@
           <!-- Export -->
           {% if has_wq or has_macros or has_cc or has_transects or has_soil or has_aqua %}
           <a class="dropdown-button btn-large teal darken-3"
-              data-activates="export_data">
+              data-activates="export_data" data-belowOrigin="true">
             <i class="material-icons right">arrow_drop_down</i>
             {% trans "Export" %}
           </a>
@@ -182,7 +182,7 @@
           <!-- Add data -->
           {% if user.is_authenticated and perms.streamwebs.is_org_author %}
           <a class="dropdown-button btn-large teal darken-3"
-             data-activates="add_data">
+             data-activates="add_data" data-belowOrigin="true">
             <i class="material-icons right">arrow_drop_down</i>
             {% trans "Add data to this site" %}
           </a>
