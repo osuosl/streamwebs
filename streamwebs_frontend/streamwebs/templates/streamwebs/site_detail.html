@@ -266,18 +266,18 @@
 
       $("#export_data_button").on("click", function(){
         if (export_menu_hidden){
-          $("#export_data").prop('hidden', false);
+          $("#export_data").slideDown(500);
         } else {
-          $("#export_data").prop('hidden', true);
+          $("#export_data").slideUp(500);
         }
         export_menu_hidden = !export_menu_hidden;
       });
 
       $("#add_data_button").on("click", function(){
         if (add_data_menu_hidden){
-          $("#add_data").prop('hidden', false);
+          $("#add_data").slideDown(500);
         } else {
-          $("#add_data").prop('hidden', true);
+          $("#add_data").slideUp(500);
         }
         add_data_menu_hidden = !add_data_menu_hidden;
       });
