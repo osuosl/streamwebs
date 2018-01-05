@@ -66,15 +66,15 @@ var listUpdate = function listUpdate() {
 
     list.html('');
     for (var datum of page_data) {
-        var listItem = $('<li></li>').addClass('collection-item');
         if (datum.type == 'school') {
+            var listItem = $('<li></li>').addClass('collection-item');
             var schoolName = $('<p></p>').attr('href', '#').text(datum.name);
             listItem.append(schoolName);
         }
         else {
-            var itemLink = $('<a></a>').attr('href', '/sites/' + site_slug + '/' + datum.uri + '/' + datum.id);
-            itemLink.text(datum.type + ' data: ' + datum.date);
-            listItem.append(itemLink);
+            var listItem = $('<a></a>').addClass('collection-item');
+            listItem.attr('href', '/sites/'+site_slug+'/'+datum.uri+'/'+datum.id);
+            listItem.text(datum.type + ' data: ' + datum.date);
         }
 
         list.append(listItem);
