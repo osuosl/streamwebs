@@ -3,10 +3,11 @@
 from __future__ import unicode_literals
 
 from django.db import migrations, models
-
+from django.core.validators import validate_email
 from django.conf import settings
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
+from django.core.exceptions import ValidationError
 
 def username_remove_whitespace(apps, schema_editor):
     Users = apps.get_model("auth", "User")
@@ -19,25 +20,33 @@ def username_remove_whitespace(apps, schema_editor):
         if user.email is not None and user.email != "":
             if not user.groups.filter(name='super_admin').exists():
                 if not user.is_superuser and not user.is_staff:
-                    # Email the user that their username has changed
+                    # Validate email address before replacing
+                    try:
+                        validate_email.__call__(user.email)
+                    except ValidationError as ex:
+                        # Do nothing
+                        pass
+                    else:
+                        # Email the user that their username has changed
+                        #send_mail(
+                        #    subject="Your streamwebs account has been updated",
+                        #    message='',
+                        #    html_message=render_to_string(
+                        #        'registration/username_update.html',
+                        #    {
+                        #        'user': user,
+                        #    })
+                        #    from_email=settings.DEFAULT_FROM_EMAIL,
+                        #    recipient_list=[user.email],
+                        #    fail_silently=False,
+                        #)
 
-                    #send_mail(
-                    #    subject="Your streamwebs account has been updated",
-                    #    message='',
-                    #    html_message=render_to_string(
-                    #        'registration/username_update.html',
-                    #    {
-                    #        'user': user,
-                    #    })
-                    #    from_email=settings.DEFAULT_FROM_EMAIL,
-                    #    recipient_list=[user.email],
-                    #    fail_silently=False,
-                    #)
+                        # Replace username with email address
+                        user.email = ''.join(user.email.split()).lower()
+                        user.username = user.email
+                        user.save()
 
-                    # Replace username with email address
-                    user.email = ''.join(user.email.split()).lower()
-                    user.username = user.email
-                    user.save()
+
 
 
 class Migration(migrations.Migration):
