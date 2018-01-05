@@ -10,6 +10,10 @@
 
 {% block content %}
   <style>
+    .btn-large {
+      width: 100%;
+    }
+
     div.resp_box {
       overflow: hidden;
       margin-bottom: 20px;
@@ -130,11 +134,10 @@
       </div>
 
       <div class="row">
-        <div class="col s12 center">
+        <div class="col s4 center">
           <!-- Export -->
           {% if has_wq or has_macros or has_cc or has_transects or has_soil or has_aqua %}
-          <a class="dropdown-button btn-large teal darken-3"
-              data-activates="export_data" data-belowOrigin="true">
+          <a class="btn-large teal darken-3" id="export_data_button">
             <i class="material-icons right">arrow_drop_down</i>
             {% trans "Export" %}
           </a>
@@ -178,11 +181,12 @@
             {% endif %}
           </div>
           {% endif %}
+        </div>
 
+        <div class="col s4 center">
           <!-- Add data -->
           {% if user.is_authenticated and perms.streamwebs.is_org_author %}
-          <a class="dropdown-button btn-large teal darken-3"
-             data-activates="add_data" data-belowOrigin="true">
+          <a class="btn-large teal darken-3" id="add_data_button">
             <i class="material-icons right">arrow_drop_down</i>
             {% trans "Add data to this site" %}
           </a>
@@ -218,7 +222,9 @@
             </a>
           </div>
           {% endif %}
+        </div>
 
+        <div class="col s4 center">
           <!-- Edit -->
           {% if user.is_authenticated and perms.streamwebs.is_org_admin %}
             <a href="{% url 'streamwebs:update_site' site_slug=site.site_slug %}"
@@ -228,6 +234,7 @@
             </a>
           {% endif %}
         </div>
+
       </div>
     </div>
   </div>
@@ -249,6 +256,28 @@
     var imgRatio = imgHeight/imgWidth;
 
     $(document).ready(function(){
+      var export_menu_hidden = true;
+      var add_data_menu_hidden = true;
+
+      $("#export_data_button").on("click", function(){
+        if (export_menu_hidden){
+          $("#export_data").prop('hidden', false);
+        } else {
+          $("#export_data").prop('hidden', true);
+        }
+        export_menu_hidden = !export_menu_hidden;
+      });
+
+      $("#add_data_button").on("click", function(){
+        if (add_data_menu_hidden){
+          $("#add_data").prop('hidden', false);
+        } else {
+          $("#add_data").prop('hidden', true);
+        }
+        add_data_menu_hidden = !add_data_menu_hidden;
+      });
+
+
       {% language "en-us" %}
       var loc = {
         lat: {{ site.location.y }},
