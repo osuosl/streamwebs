@@ -129,8 +129,6 @@ def confirm_registration(request):
 
 from django.db.models import Count, Sum
 from django.db.models.functions import Lower
-@login_required
-@permission_required('streamwebs.is_org_admin', raise_exception=True)
 def duplicate_users(request):
     Usernames = (User.objects.values(username_lower=Lower('username'))
                          #.annotate(username_lower=Lower('username'))
