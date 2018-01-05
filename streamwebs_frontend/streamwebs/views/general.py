@@ -126,6 +126,32 @@ def confirm_registration(request):
     return render(request, 'streamwebs/confirm_register.html', {})
 
 
+from django.db.models import Count, Sum
+from django.db.models.functions import Lower
+@login_required
+@permission_required('streamwebs.is_org_admin', raise_exception=True)
+def duplicate_users(request):
+    Usernames = (User.objects.values(username_lower=Lower('username'))
+                         #.annotate(username_lower=Lower('username'))
+                         .annotate(username_count=Count('username'))
+                         .filter(username_count__gt=1)
+                         .order_by('username_lower'))
+                         
+    Emails = (User.objects.values(email_lower=Lower('email'))
+                         #.annotate(username_lower=Lower('username'))
+                         .annotate(email_count=Count('email'))
+                         .filter(email_count__gt=1)
+                         .order_by('email_lower'))
+
+    return render(request, 'streamwebs/duplicate_users.html', {
+        "users": Usernames,
+        "emails": Emails,
+        "user_query": Usernames.query,
+        "email_query": Emails.query,
+    })
+
+
+
 @login_required
 @permission_required('streamwebs.is_org_admin', raise_exception=True)
 def create_site(request):
