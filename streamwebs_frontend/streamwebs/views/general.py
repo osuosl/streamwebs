@@ -178,10 +178,6 @@ def sites(request):
 def site(request, site_slug):
     """ View an individual site """
 
-    if request.method == 'POST':
-        return HttpResponseForbidden("GOt the post")
-
-
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     wq_sheets = Water_Quality.objects.filter(site_id=site.id)
     wq_sheets = list(wq_sheets.order_by('-date_time').values())
@@ -784,6 +780,11 @@ def macroinvertebrate_edit(request, site_slug):
         }
     )
 
+@login_required
+@permission_required('streamwebs.is_org_admin', raise_exception=True)
+def macroinvertebrate_delete(request, site_slug, data_id):
+    # TODO: Delete the datasheet here
+    return HttpResponseForbidden("ID for deletion: " + data_id)
 
 @login_required
 @permission_required('streamwebs.is_org_author', raise_exception=True)
@@ -1364,6 +1365,12 @@ def water_quality(request, site_slug, data_id):
         }
     )
 
+@login_required
+@permission_required('streamwebs.is_org_author', raise_exception=True)
+@any_organization_required
+def water_quality_delete(request, site_slug, data_id):
+    # TODO: Delete the datasheet here
+    return HttpResponseForbidden("deleteing: " + data_id)  
 
 @login_required
 @permission_required('streamwebs.is_org_author', raise_exception=True)
@@ -1393,7 +1400,7 @@ def water_quality_edit(request, site_slug):
                 wq_form.data['date'],
                 wq_form.data['time'],
                 wq_form.data['ampm']
-            )
+            )            
             water_quality.site = site
             water_quality.school = school
             water_quality.save()             # save object to db

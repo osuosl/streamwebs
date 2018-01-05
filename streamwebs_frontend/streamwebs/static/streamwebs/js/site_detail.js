@@ -75,8 +75,6 @@ var listUpdate = function listUpdate() {
             var itemLink = $('<a></a>').attr('href', '/sites/' + site_slug + '/' + datum.uri + '/' + datum.id);
             itemLink.text(datum.type + ' data: ' + datum.date);
             listItem.append(itemLink);
-            if ($('#can-delete').text() === "True")
-                listItem.append(" <a href='#'><i class='material-icons delete-icon'>delete</i></a>")
         }
 
         list.append(listItem);
@@ -96,20 +94,6 @@ var listUpdate = function listUpdate() {
 
     $('.page-select').removeClass('active').addClass('wave-effects');
     $('#page-' + page).addClass('active').removeClass('wave-effects');
-
-    //Event handler for delete buttons
-    $(".delete-icon").click(function () {
-        console.log("Delete button clicked")
-        $.ajax({
-            url: window.location.href,
-            data: {
-                "key": "value"
-            },
-            success: function (result) {
-                console.log("We have a success")
-            },
-        });
-    });
 }
 
 $(document).ready(function () {
