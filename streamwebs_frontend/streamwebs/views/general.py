@@ -83,21 +83,22 @@ def organization_approved(func):
 # Send an email
 def send_email(request, subject, template, user, school, from_email,
                recipients):
-    send_mail(
-        subject=subject,
-        message='',
-        html_message=render_to_string(
-            template,
-            {
-                'protocol': request.scheme,
-                'domain': request.get_host(),
-                'user': user,
-                'school': school
-            }),
-        from_email=from_email,
-        recipient_list=recipients,
-        fail_silently=False,
-    )
+    pass
+    #send_mail(
+    #    subject=subject,
+    #    message='',
+    #    html_message=render_to_string(
+    #        template,
+    #        {
+    #            'protocol': request.scheme,
+    #            'domain': request.get_host(),
+    #            'user': user,
+    #            'school': school
+    #        }),
+    #    from_email=from_email,
+    #    recipient_list=recipients,
+    #    fail_silently=False,
+    #)
 
 
 def toDateTime(date, time, period):
