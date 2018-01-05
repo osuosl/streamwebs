@@ -1,0 +1,18 @@
+{% if user.first_name or user.last_name %}
+<p>Dear {{ user.first_name }} {{ user.last_name }},</p>
+{% else %}
+<p>Dear streamwebs user,</p>
+{% endif %}
+
+<p>Your username has been updated on the streamwebs website.</p>
+<p>Your username used to be: {{ user.username }}</p>
+<p>You can now log in with your email address: {{ user.email }}</p>
+<br\>
+<a href="http://www.streamwebs.org/login">
+    http://www.streamwebs.org/login
+</a>
+<br/>
+<p>If clicking the link above doesn't work, please copy and paste the URL in a new browser window instead.</p>
+<br/>
+<p>Sincerely,</p>
+<p>StreamWebs</p>
