@@ -53,20 +53,6 @@
   <!-- site info -->
   <div class="row">
     <div class="col s12 l10 offset-l1">
-      <!-- Edit -->
-      <div class="row">
-        <div class="col s12 center">
-          {% if user.is_authenticated and perms.streamwebs.is_org_admin %}
-          <button href="{% url 'streamwebs:update_site' site_slug=site.site_slug %}"
-            class="btn-large teal darken-3">
-            <i class="material-icons right">mode_edit</i>
-            {% trans "Edit Site" %}
-          </button>
-          {% endif %}
-        </div>
-      </div>
-
-            
       <div class="row">
         <div class="col s12 l6">
           {% if site.image %}
@@ -85,8 +71,6 @@
           <div id="detail_map" class="resp_box"></div>
         </div>
       </div>
- 
-      <!-- Latitude and longitude -->
       <div class="row">
         <div class="center-content">
           <p class="location">
@@ -101,7 +85,6 @@
           <p>{{ site.description }}</p>
         </div>
       </div>
-
       <div class="row">
         <!-- Graphs -->
         <div class="col s2 m2 graphs left-align">
@@ -126,8 +109,8 @@
         </div>
 
         <!-- Datasheets -->
-        <div class="col s8 center" >
-          {% if has_wq or has_macros or has_cc or has_transects or has_soil or has_camera or has_aqua %}
+        <div class="col s6 offset-s1 center" >
+          {% if has_wq or has_macros or has_cc or has_transect or has_soil or has_camera or has_aqua %}
             <h4>{% trans "Datasheets" %}</h4>
             <ul class="collection" id="data-sheet-list">
             </ul>
@@ -151,78 +134,105 @@
         </div>
       </div>
 
-      <!-- Export -->
       <div class="row">
-        <div class="col s4 offset-s2">
+        <div class="col s12 center">
+          <!-- Export -->
           {% if has_wq or has_macros or has_cc or has_transects or has_soil or has_aqua %}
-          <select onchange="location = this.value;"
-                  id="export_data" class="dropdown-button btn-large teal darken-3">
-            <option value="" disabled selected hidden>{% trans "Export" %}</option>
+          <a class="dropdown-button btn-large teal darken-3"
+              data-activates="export_data" data-belowOrigin="true">
+            <i class="material-icons right">arrow_drop_down</i>
+            {% trans "Export" %}
+          </a>
+
+          <div id="export_data" class="collection" hidden>
             {% if has_wq %}
-            <option value="{% url 'streamwebs:export_wq' site_slug=site.site_slug %}">
+            <a href="{% url 'streamwebs:export_wq' site_slug=site.site_slug %}"
+                class="collection-item">
               {% trans "Water quality" %}
-            </option>
+            </a>
             {% endif %}
             {% if has_macros %}
-            <option value="{% url 'streamwebs:export_macros' site.site_slug %}">
+            <a href="{% url 'streamwebs:export_macros' site.site_slug %}"
+                class="collection-item">
               {% trans "Macroinvertebrates" %}
-            </option>
+            </a>
             {% endif %}
             {% if has_transects %}
-            <option value="{% url 'streamwebs:export_transects' site.site_slug %}">
+            <a href="{% url 'streamwebs:export_transects' site.site_slug %}"
+                class="collection-item">
               {% trans "Riparian transect" %}
-            </option>
+            </a>
             {% endif %}
             {% if has_cc %}
-            <option value="{% url 'streamwebs:export_cc' site.site_slug %}">
+            <a href="{% url 'streamwebs:export_cc' site.site_slug %}"
+                class="collection-item">
               {% trans "Canopy Cover Survey" %}
-            </option>
+            </a>
             {% endif %}
             {% if has_soil %}
-            <option value="{% url 'streamwebs:export_soil' site_slug=site.site_slug %}">
+            <a href="{% url 'streamwebs:export_soil' site_slug=site.site_slug %}"
+                class="collection-item">
               {% trans "Soil Survey" %}
-            </option>
+            </a>
             {% endif %}
             {% if has_aqua %}
-            <option value="{% url 'streamwebs:export_rip_aqua' site_slug=site.site_slug %}">
+            <a href="{% url 'streamwebs:export_rip_aqua' site_slug=site.site_slug %}"
+                class="collection-item">
               {% trans "Riparian Aquatic Survey" %}
-            </option>
+            </a>
             {% endif %}
-          </select>
+          </div>
           {% endif %}
-        </div>
 
-        <!-- Add data -->
-        <div class="col s4">
+          <!-- Add data -->
           {% if user.is_authenticated and perms.streamwebs.is_org_author %}
-          <select onchange="location = this.value;"
-                  id="add_data" class="dropdown-button btn-large teal darken-3">
-            <option value="" disabled selected hidden>{% trans "Add data to this site" %}</option>
-            <option value="{% url 'streamwebs:water_quality_edit' site_slug=site.site_slug %}">
+          <a class="dropdown-button btn-large teal darken-3"
+             data-activates="add_data" data-belowOrigin="true">
+            <i class="material-icons right">arrow_drop_down</i>
+            {% trans "Add data to this site" %}
+          </a>
+          
+          <div id="add_data" class="collection" hidden>
+            <a href="{% url 'streamwebs:water_quality_edit' site_slug=site.site_slug %}"
+                class="collection-item">
               {% trans "Water quality" %}
-            </option>
-            <option value="{% url 'streamwebs:macroinvertebrate_edit' site.site_slug %}">
+            </a>
+            <a href="{% url 'streamwebs:macroinvertebrate_edit' site.site_slug %}"
+                class="collection-item">
               {% trans "Macroinvertebrates" %}
-            </option>
-            <option value="{% url 'streamwebs:riparian_transect_edit' site.site_slug %}">
+            </a>
+            <a href="{% url 'streamwebs:riparian_transect_edit' site.site_slug %}"
+                class="collection-item">
               {% trans "Riparian transect" %}
-            </option>
-            <option value="{% url 'streamwebs:canopy_cover_edit' site.site_slug %}">
+            </a>
+            <a href="{% url 'streamwebs:canopy_cover_edit' site.site_slug %}"
+                class="collection-item">
               {% trans "Canopy Cover Survey" %}
-            </option>
-            <option value="{% url 'streamwebs:camera_point_add' site_slug=site.site_slug %}">
+            </a>
+            <a href="{% url 'streamwebs:camera_point_add' site_slug=site.site_slug %}"
+                class="collection-item">
               {% trans "New Camera Point" %}
-            </option>
-            <option value="{% url 'streamwebs:soil_edit' site_slug=site.site_slug %}">
+            </a>
+            <a href="{% url 'streamwebs:soil_edit' site_slug=site.site_slug %}"
+                class="collection-item">
               {% trans "Soil Survey" %}
-            </option>
-            <option value="{% url 'streamwebs:rip_aqua_edit' site_slug=site.site_slug %}">
+            </a>
+            <a href="{% url 'streamwebs:rip_aqua_edit' site_slug=site.site_slug %}"
+                class="collection-item">
               {% trans "Riparian Aquatic Survey" %}
-            </option>
-          </select>
+            </a>
+          </div>
+          {% endif %}
+
+          <!-- Edit -->
+          {% if user.is_authenticated and perms.streamwebs.is_org_admin %}
+            <a href="{% url 'streamwebs:update_site' site_slug=site.site_slug %}"
+              class="btn-large teal darken-3">
+              <i class="material-icons right">mode_edit</i>
+              {% trans "Edit Site" %}
+            </a>
           {% endif %}
         </div>
-
       </div>
     </div>
   </div>
@@ -244,10 +254,6 @@
     var imgRatio = imgHeight/imgWidth;
 
     $(document).ready(function(){
-      // Select first option in the selects when the page is hit.
-      $("#export_data").val($("#export_data option:first").val());
-      $("#add_data").val($("#add_data option:first").val());
-
       {% language "en-us" %}
       var loc = {
         lat: {{ site.location.y }},
