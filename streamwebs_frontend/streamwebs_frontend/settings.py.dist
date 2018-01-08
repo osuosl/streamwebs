@@ -47,6 +47,7 @@ GOOGLE_MAPS_TYPE = 'google.maps.MapTypeId.TERRAIN'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+SEND_EMAILS = False
 
 ALLOWED_HOSTS = []
 
@@ -58,7 +59,7 @@ EMAIL_USE_SSL = True
 EMAIL_HOST_USER = ''
 EMAIL_HOST_PASSWORD = ''
 DEFAULT_FROM_EMAIL = 'info@streamwebs.org'
-SEND_EMAILS = False
+
 
 # Application definition
 
