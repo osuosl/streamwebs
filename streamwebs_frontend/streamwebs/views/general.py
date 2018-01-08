@@ -541,11 +541,11 @@ def update_email(request):
 def update_password(request):
     old_password_incorrect = False
     if request.method == 'POST':
-        username = request.user
+        username = request.user.username
         old_password = request.POST['old_password']
         password = request.POST['password']
 
-        user_password_form = UserPasswordForm(request.POST, instance=username)
+        user_password_form = UserPasswordForm(request.POST, instance=request.user)
         user = authenticate(username=username, password=old_password)
 
         if user:
@@ -575,7 +575,7 @@ def user_login(request):
     redirect_to = request.POST.get('next', '')
 
     if request.method == 'POST':
-        email = ''.join(request.POST['email'].split()).lower()
+        email = request.POST['email']
         password = request.POST['password']
         user = authenticate(username=email, password=password)
 
