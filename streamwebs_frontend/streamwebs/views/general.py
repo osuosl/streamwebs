@@ -784,8 +784,12 @@ def macroinvertebrate_edit(request, site_slug):
 @permission_required('streamwebs.is_org_admin', raise_exception=True)
 def macroinvertebrate_delete(request, site_slug, data_id):
     # TODO: Delete the datasheet here
-    return HttpResponseForbidden("ID for deletion: " + data_id)
+    data = Macroinvertebrates.objects.get(id=data_id)
 
+    data.delete()
+
+    return HttpResponseRedirect(
+        '/sites/%s/' % str(site_slug, ))
 @login_required
 @permission_required('streamwebs.is_org_author', raise_exception=True)
 @any_organization_required
@@ -1370,7 +1374,7 @@ def water_quality(request, site_slug, data_id):
 @any_organization_required
 def water_quality_delete(request, site_slug, data_id):
     # TODO: Delete the datasheet here
-    return HttpResponseForbidden("deleteing: " + data_id)  
+    return HttpResponseForbidden("deleteing: " + data_id)   
 
 @login_required
 @permission_required('streamwebs.is_org_author', raise_exception=True)
