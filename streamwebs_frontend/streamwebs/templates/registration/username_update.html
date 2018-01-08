@@ -4,15 +4,24 @@
 <p>Dear streamwebs user,</p>
 {% endif %}
 
-<p>Your username has been updated on the streamwebs website.</p>
-<p>Your username used to be: {{ user.username }}</p>
-<p>You can now log in with your email address: {{ user.email }}</p>
-<br\>
-<a href="http://www.streamwebs.org/login">
-    http://www.streamwebs.org/login
-</a>
 <br/>
+<p>In order to streamline the login process for new and existing users,
+we have updated the streamwebs website to use
+email addresses for login purposes, instead of usernames.
+</p>
+<p>For reference, your old usernamew was: {{ user.username }}</p>
+<br/>
+
+<p> To login, go to
+    <a href="http://www.streamwebs.org/login">
+        http://www.streamwebs.org/login
+    </a>
+    and enter your email address: {{ user.email }} and your password.
+</p>
 <p>If clicking the link above doesn't work, please copy and paste the URL in a new browser window instead.</p>
+
 <br/>
+<br/>
+
 <p>Sincerely,</p>
 <p>StreamWebs</p>
