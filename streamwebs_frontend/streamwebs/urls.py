@@ -50,7 +50,7 @@ urlpatterns = [
         views.macroinvertebrate_view, name='macroinvertebrate_view'),
 
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/macro/(?P<data_id>\d+)/delete/$',
-    views.macroinvertebrate_delete, name='macroinvertebrate_delete'),
+        views.macroinvertebrate_delete, name='macroinvertebrate_delete'),
 
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/macro/edit/$',
         views.macroinvertebrate_edit, name='macroinvertebrate_edit'),
@@ -64,6 +64,9 @@ urlpatterns = [
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/rip_aqua/(?P<data_id>\d+)/$',
         views.riparian_aquatic_view, name='rip_aqua_view'),
 
+    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/rip_aqua/(?P<ra_id>\d+)/delete/$',
+        views.riparian_aquatic_delete, name='rip_aqua_delete'),
+
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/rip_aqua/export/$',
         views.export_rip_aqua, name='export_rip_aqua'),
 
@@ -76,8 +79,11 @@ urlpatterns = [
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/transect/export/$',
         views.export_ript, name='export_transects'),
 
-    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/canopy/(?P<data_id>\d+)/',
+    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/canopy/(?P<data_id>\d+)/$',
         views.canopy_cover_view, name='canopy_cover'),
+
+    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/canopy/(?P<data_id>\d+)/delete/$',
+        views.canopy_cover_delete, name='canopy_cover_delete'),
 
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/canopy/edit',
         views.canopy_cover_edit, name='canopy_cover_edit'),
@@ -93,8 +99,11 @@ urlpatterns = [
 
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/camera/(?P<cp_id>\d+)/$',
         views.camera_point_view, name='camera_point'),
+        
+    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/camera/(?P<cp_id>\d+)/delete/$',
+        views.camera_point_delete, name='camera_point_delete'),
 
-    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/camera/edit/',
+    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/camera/edit/$',
         views.add_camera_point, name='camera_point_add'),
 
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/camera/$',
@@ -102,6 +111,9 @@ urlpatterns = [
 
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/soil/(?P<data_id>\d+)/$',
         views.soil_survey, name='soil'),
+
+    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/soil/(?P<data_id>\d+)/delete/$',
+        views.soil_survey_delete, name='soil_delete'),
 
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/soil/edit',
         views.soil_survey_edit, name='soil_edit'),

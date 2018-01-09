@@ -790,6 +790,7 @@ def macroinvertebrate_delete(request, site_slug, data_id):
 
     return HttpResponseRedirect(
         '/sites/%s/' % str(site_slug, ))
+
 @login_required
 @permission_required('streamwebs.is_org_author', raise_exception=True)
 @any_organization_required
@@ -838,6 +839,13 @@ def riparian_aquatic_view(request, site_slug, data_id):
             'data': data, 'site': site
             }
         )
+
+@login_required
+@permission_required('streamwebs.is_org_admin', raise_exception=True)
+def riparian_aquatic_delete(request, site_slug, ra_id):
+    # TODO: Delete the datasheet here
+
+    return HttpResponseRedirect('/sites/%s/' % str(site_slug, ))
 
 
 def riparian_transect_view(request, site_slug, data_id):
@@ -958,6 +966,13 @@ def canopy_cover_view(request, site_slug, data_id):
 
 
 @login_required
+@permission_required('streamwebs.is_org_admin', raise_exception=True)
+def canopy_cover_delete(request, site_slug, data_id):
+    # TODO: Delete the datasheet here
+
+    return HttpResponseRedirect('/sites/%s/' % str(site_slug, ))
+
+@login_required
 @permission_required('streamwebs.is_org_author', raise_exception=True)
 @any_organization_required
 def canopy_cover_edit(request, site_slug):
@@ -1045,6 +1060,13 @@ def camera_point_view(request, site_slug, cp_id):
         }
     )
 
+
+@login_required
+@permission_required('streamwebs.is_org_admin', raise_exception=True)
+def camera_point_delete(request, site_slug, cp_id):
+    # TODO: Delete the datasheet here
+
+    return HttpResponseRedirect('/sites/%s/' % str(site_slug, ))
 
 @login_required
 @permission_required('streamwebs.is_org_author', raise_exception=True)
@@ -1449,6 +1471,12 @@ def soil_survey(request, site_slug, data_id):
         }
     )
 
+@login_required
+@permission_required('streamwebs.is_org_admin', raise_exception=True)
+def soil_survey_delete(request, site_slug, data_id):
+    # TODO: Delete the datasheet here
+
+    return HttpResponseRedirect('/sites/%s/' % str(site_slug, ))
 
 @login_required
 @permission_required('streamwebs.is_org_author', raise_exception=True)
