@@ -546,7 +546,8 @@ def update_password(request):
         old_password = request.POST['old_password']
         password = request.POST['password']
 
-        user_password_form = UserPasswordForm(request.POST, instance=request.user)
+        user_password_form = UserPasswordForm(request.POST,
+                                              instance=request.user)
         user = authenticate(username=username, password=old_password)
 
         if user:
