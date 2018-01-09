@@ -844,7 +844,7 @@ def riparian_aquatic_view(request, site_slug, data_id):
 def riparian_aquatic_delete(request, site_slug, ra_id):
     data = RipAquaticSurvey.objects.get(id=ra_id)
     data.delete()
-
+    
     return HttpResponseRedirect('/sites/%s/' % str(site_slug, ))
 
 
