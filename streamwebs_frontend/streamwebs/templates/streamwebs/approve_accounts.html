@@ -21,30 +21,11 @@
     return el;
   }
 
-
   function uncheck_newusers(checkbox) {
     var checkboxes = findAncestor(checkbox, "mutually_exclusive_checkboxes").getElementsByTagName('input')
     for (i = 0; i < checkboxes.length; i++) { 
       if (checkboxes[i].type == "checkbox" && checkboxes[i] != checkbox) {
         checkboxes[i].checked = false;
-      }
-    }
-  }
-
-  function check_all_editors(checkbox_all) {
-    var checkboxes = document.getElementById("editor_rows").getElementsByTagName("input")
-    for (i = 0; i < checkboxes.length; i++) {
-      if (checkboxes[i].name == "editors") {
-        checkboxes[i].checked = checkbox_all.checked;
-      }
-    }
-  }
-
-  function check_all_contributors(checkbox_all) {
-    var checkboxes = document.getElementById("contributor_rows").getElementsByTagName("input")
-    for (i = 0; i < checkboxes.length; i++) {
-      if (checkboxes[i].name == "contributors") {
-        checkboxes[i].checked = checkbox_all.checked;
       }
     }
   }
@@ -91,7 +72,7 @@
                       <td>{{ school.city }}, {{ school.province }}</td>
                       <td class="center-content-horizontal">
                         <a href="{% url 'streamwebs:new_org_request' school.id %}"
-                           name="btn_view_request"
+                           name="btn_view_request" target="_blank"
                            class="btn-flat wave-effect waves-light teal darken-3 white-text">
                           {% trans "View Request" %}
                         </a>

@@ -83,21 +83,22 @@ def organization_approved(func):
 # Send an email
 def send_email(request, subject, template, user, school, from_email,
                recipients):
-    send_mail(
-        subject=subject,
-        message='',
-        html_message=render_to_string(
-            template,
-            {
-                'protocol': request.scheme,
-                'domain': request.get_host(),
-                'user': user,
-                'school': school
-            }),
-        from_email=from_email,
-        recipient_list=recipients,
-        fail_silently=False,
-    )
+    if settings.SEND_EMAILS:
+        send_mail(
+            subject=subject,
+            message='',
+            html_message=render_to_string(
+                template,
+                {
+                    'protocol': request.scheme,
+                    'domain': request.get_host(),
+                    'user': user,
+                    'school': school
+                }),
+            from_email=from_email,
+            recipient_list=recipients,
+            fail_silently=False,
+        )
 
 
 def toDateTime(date, time, period):
@@ -2032,17 +2033,17 @@ def approve_accounts(request):
                     profile.save()
 
                     # Email editors that they were approved
-                    #send_email(
-                    #    request=request,
-                    #    subject='Your editor account was approved at ' +
-                    #            str(user.school.name),
-                    #    template='registration/' +
-                    #             'approve_user_request_email.html',
-                    #    user=user,
-                    #    school=school,
-                    #    from_email=settings.DEFAULT_FROM_EMAIL,
-                    #    recipients=[user.email]
-                    #)
+                    send_email(
+                        request=request,
+                        subject='Your editor account was approved at ' +
+                                str(profile.school.name),
+                        template='registration/' +
+                                 'approve_user_request_email.html',
+                        user=user,
+                        school=profile.school,
+                        from_email=settings.DEFAULT_FROM_EMAIL,
+                        recipients=[user.email]
+                    )
 
             for i in contributors:
                 user = User.objects.get(id=i)
@@ -2055,17 +2056,17 @@ def approve_accounts(request):
                     profile.save()
 
                     # Email contributors that they were approved
-                    #send_email(
-                    #    request=request,
-                    #    subject='Your contributor account was approved at ' +
-                    #            str(user.school.name),
-                    #    template='registration/' +
-                    #             'approve_user_request_email.html',
-                    #    user=user,
-                    #    school=school,
-                    #    from_email=settings.DEFAULT_FROM_EMAIL,
-                    #    recipients=[user.email]
-                    #)
+                    send_email(
+                        request=request,
+                        subject='Your contributor account was approved at ' +
+                                str(profile.school.name),
+                        template='registration/' +
+                                 'approve_user_request_email.html',
+                        user=user,
+                        school=profile.school,
+                        from_email=settings.DEFAULT_FROM_EMAIL,
+                        recipients=[user.email]
+                    )
 
             for i in denyUsers:
                 user = User.objects.get(id=i)
@@ -2074,8 +2075,9 @@ def approve_accounts(request):
                     profile.delete()
                     user.delete()
 
-    new_users = UserProfile.objects.filter(approved=False).all()
     schools = School.objects.filter(active=False).all().order_by('name')
+    new_users = UserProfile.objects.filter(approved=False)\
+        .exclude(school__in=schools)
 
     return render(request, 'streamwebs/approve_accounts.html', {
         'schools': schools,

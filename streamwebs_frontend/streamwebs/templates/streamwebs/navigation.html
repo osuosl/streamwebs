@@ -3,13 +3,6 @@
 
 <div class="white" style="font-weight: 700 !important;">
 
-  {% if user.is_authenticated and perms.streamwebs.is_super_admin %}
-  <a href="{% url 'streamwebs:approve_accounts' %}"
-    class="left orange-text text-darken-3" style="margin-left:50px;">
-    {% trans "Approve Accounts" %}
-  </a>
-  {% endif %}
-
   <div class="right">
     <ul>
       <li><a href="{% url 'streamwebs:sites' %}"
