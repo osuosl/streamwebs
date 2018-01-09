@@ -969,6 +969,11 @@ def canopy_cover_view(request, site_slug, data_id):
 @permission_required('streamwebs.is_org_admin', raise_exception=True)
 def canopy_cover_delete(request, site_slug, data_id):
     # TODO: Delete the datasheet here
+    site = Site.objects.filter(active=True).get(site_slug=site_slug)
+    
+    canopy_cover = Canopy_Cover.objects.filter(site_id=site.id).get(id=data_id)
+
+    canopy_cover.delete()
 
     return HttpResponseRedirect('/sites/%s/' % str(site_slug, ))
 
@@ -1393,10 +1398,16 @@ def water_quality(request, site_slug, data_id):
 
 @login_required
 @permission_required('streamwebs.is_org_author', raise_exception=True)
-@any_organization_required
 def water_quality_delete(request, site_slug, data_id):
-    # TODO: Delete the datasheet here
-    return HttpResponseForbidden("deleteing: " + data_id)   
+    # TODO: Test this deletion
+    wq_data = Water_Quality.objects.get(id=data_id)
+    wq_samples = WQ_Sample.objects.filter(water_quality=data_id)\
+        .order_by('sample')
+
+    wq_data.delete()
+
+    return HttpResponseRedirect(
+        '/sites/%s/' % str(site_slug, ))
 
 @login_required
 @permission_required('streamwebs.is_org_author', raise_exception=True)
