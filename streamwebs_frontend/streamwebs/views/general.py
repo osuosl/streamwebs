@@ -1988,14 +1988,15 @@ def new_org_request(request, school_id):
                 # Email
                 send_email(
                     request=request,
-                    subject='Your organization was approved: ' + str(school.name),
+                    subject='Your organization was approved: ' +
+                    str(school.name),
                     template='registration/approve_org_request_email.html',
                     user=user,
                     school=school,
                     from_email=settings.DEFAULT_FROM_EMAIL,
                     recipients=[user.email]
                 )
-            
+
             school.save()
 
             return HttpResponseRedirect('/schools/%i/' % school.id)
@@ -2036,9 +2037,9 @@ def approve_accounts(request):
                     send_email(
                         request=request,
                         subject='Your editor account was approved at ' +
-                                str(profile.school.name),
+                        str(profile.school.name),
                         template='registration/' +
-                                 'approve_user_request_email.html',
+                        'approve_user_request_email.html',
                         user=user,
                         school=profile.school,
                         from_email=settings.DEFAULT_FROM_EMAIL,
