@@ -545,7 +545,8 @@ def update_password(request):
         old_password = request.POST['old_password']
         password = request.POST['password']
 
-        user_password_form = UserPasswordForm(request.POST, instance=request.user)
+        user_password_form = UserPasswordForm(request.POST,
+                                              instance=request.user)
         user = authenticate(username=username, password=old_password)
 
         if user:
@@ -2000,4 +2001,4 @@ def new_org_request(request, school_id):
     return render(request, 'streamwebs/new_org_request.html', {
         'school_data': school,
         'user': user
-        })
+    })

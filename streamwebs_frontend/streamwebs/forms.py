@@ -10,7 +10,7 @@ from django.forms import BaseInlineFormSet
 from django.utils.translation import ugettext_lazy as _
 from captcha.fields import ReCaptchaField
 from django.core.validators import validate_email
-from django.contrib.auth.password_validation import validate_password 
+from django.contrib.auth.password_validation import validate_password
 
 TIME_PERIOD_CHOICES = (
     ('AM', _('AM')),
