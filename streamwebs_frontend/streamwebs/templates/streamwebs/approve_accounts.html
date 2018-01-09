@@ -67,7 +67,11 @@
                 <tbody id="new_org_rows">
                   {% for school in schools %}
                     <tr>
-                      <td>{{ school.name }}</td>
+                      <td>
+                        <a href="{% url 'streamwebs:school_detail' school.id %}">
+                          {{ school.name }}
+                        </a>
+                      </td>
                       <td>{{ school.school_type }}</td>
                       <td>{{ school.city }}, {{ school.province }}</td>
                       <td class="center-content-horizontal">
