@@ -103,8 +103,8 @@ class UserChangePasswordTestCase(TestCase):
             'streamwebs:update_password'),
             {
                 'old_password': 'wrong_password',
-                'password': 'newPW',
-                'password_check': 'newPW'
+                'password': 'arstarstarstnewPW',
+                'password_check': 'arstarstarstnewPW'
             }
         )
         self.assertTemplateUsed(response2, 'streamwebs/update_password.html')
@@ -118,8 +118,8 @@ class UserChangePasswordTestCase(TestCase):
             'streamwebs:update_password'),
             {
                 'old_password': 'BossBoss',
-                'password': 'pw1',
-                'password_check': 'pw2'
+                'password': 'arstarstarst1',
+                'password_check': 'arstarstarst2'
             }
         )
         self.assertTemplateUsed(response3, 'streamwebs/update_password.html')
@@ -151,8 +151,8 @@ class UserChangePasswordTestCase(TestCase):
             'streamwebs:update_password'),
             {
                 'old_password': 'BossBoss',
-                'password': 'newPW',
-                'password_check': 'newPW'
+                'password': 'arstarstarstnewPW1',
+                'password_check': 'arstarstarstnewPW1'
             }
         )
         self.assertRedirects(
@@ -162,7 +162,7 @@ class UserChangePasswordTestCase(TestCase):
             target_status_code=200
         )
         self.client.logout()
-        self.client.login(username='boss', password='newPW')
+        self.client.login(username='boss', password='arstarstarstnewPW1')
         response6 = self.client.get(reverse(
             'streamwebs:update_password'),
         )
