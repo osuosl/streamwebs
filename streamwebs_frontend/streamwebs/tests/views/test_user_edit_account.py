@@ -124,7 +124,7 @@ class UserChangePasswordTestCase(TestCase):
         )
         self.assertTemplateUsed(response3, 'streamwebs/update_password.html')
         self.assertFormError(response3, 'user_form', 'password',
-                             'New Passwords did not match.')
+                             'Passwords did not match')
         self.client.logout()
         self.client.login(username='boss', password='BossBoss')
         self.assertTrue(response3.context['user'].is_authenticated)
