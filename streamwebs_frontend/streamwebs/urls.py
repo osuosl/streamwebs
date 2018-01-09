@@ -34,7 +34,7 @@ urlpatterns = [
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/macros/$',
         views.graph_macros, name='graph_macros'),
 
-    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/water/(?P<data_id>\d+)/',
+    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/water/(?P<data_id>\d+)/$',
         views.water_quality, name='water_quality'),
 
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/water/(?P<data_id>\d+)/delete/$',
@@ -67,25 +67,31 @@ urlpatterns = [
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/rip_aqua/export/$',
         views.export_rip_aqua, name='export_rip_aqua'),
 
-    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/transect/(?P<data_id>\d+)/',
+    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/transect/(?P<data_id>\d+)/$',
         views.riparian_transect_view, name='riparian_transect'),
 
-    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/transect/edit/',
+    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/transect/(?P<data_id>\d+)/delete/$',
+        views.riparian_transect_delete, name='riparian_transect_delete'),
+
+    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/transect/edit/$',
         views.riparian_transect_edit, name='riparian_transect_edit'),
 
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/transect/export/$',
         views.export_ript, name='export_transects'),
 
-    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/canopy/(?P<data_id>\d+)/',
+    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/canopy/(?P<data_id>\d+)/$',
         views.canopy_cover_view, name='canopy_cover'),
 
-    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/canopy/edit',
+    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/canopy/(?P<data_id>\d+)/$',
+        views.canopy_cover_view, name='canopy_cover'),
+
+    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/canopy/edit/$',
         views.canopy_cover_edit, name='canopy_cover_edit'),
 
-    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/canopy/export/',
+    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/canopy/export/$',
         views.export_cc, name='export_cc'),
 
-    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/camera/(?P<cp_id>\d+)/photo/' +
+    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/camera/(?P<cp_id>\d+)/photo/$' +
         '(?P<pp_id>\d+)/?$', views.view_pp_and_add_img, name='photo_point'),
 
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/camera/(?P<cp_id>\d+)/photo/' +
