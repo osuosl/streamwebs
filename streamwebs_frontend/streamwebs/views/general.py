@@ -1070,6 +1070,11 @@ def camera_point_view(request, site_slug, cp_id):
 @permission_required('streamwebs.is_org_admin', raise_exception=True)
 def camera_point_delete(request, site_slug, cp_id):
     # TODO: Delete the datasheet here
+    # site = Site.objects.get(site_slug=site_slug)
+    # profile = UserProfile.objects.filter(user=request.user).first()
+
+    # camera = CameraPoint()
+    # camera.delete()
 
     return HttpResponseRedirect('/sites/%s/' % str(site_slug, ))
 
@@ -1485,7 +1490,8 @@ def soil_survey(request, site_slug, data_id):
 @login_required
 @permission_required('streamwebs.is_org_admin', raise_exception=True)
 def soil_survey_delete(request, site_slug, data_id):
-    # TODO: Delete the datasheet here
+    soil_data = Soil_Survey.objects.get(id=data_id)
+    soil_data.delete()
 
     return HttpResponseRedirect('/sites/%s/' % str(site_slug, ))
 
