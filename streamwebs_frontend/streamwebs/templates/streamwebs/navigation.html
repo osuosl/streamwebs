@@ -1,30 +1,40 @@
 {% load staticfiles %}
 {% load i18n %}
 
-<div class="right white" style="font-weight: 700 !important;">
-  <ul>
-    <li><a href="{% url 'streamwebs:sites' %}"
-           class="teal-text text-darken-3">{% trans "Search Sites" %}</a></li>
-    {% if user.is_authenticated and perms.streamwebs.is_org_admin %}
-    <li><a href="{% url 'streamwebs:create_site' %}"
-          class="teal-text text-darken-3">{% trans "Create Site" %}</a></li>
-    {% endif %}
-    <li><a href="{% url 'streamwebs:resources' %}"
-           class="teal-text text-darken-3">{% trans "Resources" %}</a></li>
-    <li><a href="{% url 'streamwebs:about' %}"
-           class="teal-text text-darken-3">{% trans "About" %}</a></li>
-    <li><a href="{% url 'streamwebs:faq' %}"
-           class="teal-text text-darken-3">{% trans "FAQ" %}</a></li>
+<div class="white" style="font-weight: 700 !important;">
 
-  {% if user.is_authenticated %}
-    {% if perms.streamwebs.is_org_admin%}
-    <li><a href="{% url 'streamwebs:get_manage_accounts' user.id %}" class="teal-text text-darken-3">{% trans "Manage Accounts" %}</a></li>
-    {% endif %}
-    <li><a href="{% url 'streamwebs:account' %}" class="teal-text text-darken-3">Account</a></li>
-    <li><a href="{% url 'streamwebs:logout' %}" class="teal-text text-darken-3">{% trans "Logout" %}</a></li>
-  {% else %}
-    <li><a href="{% url 'streamwebs:register' %}" class="teal-text text-darken-3">{% trans "Create Account" %}</a></li>
-    <li><a href="{% url 'streamwebs:login' %}?next=/" class="teal-text text-darken-3">{% trans "Login" %}</a></li>
+  {% if user.is_authenticated and perms.streamwebs.is_super_admin %}
+  <a href="{% url 'streamwebs:approve_accounts' %}"
+    class="left orange-text text-darken-3" style="margin-left:50px;">
+    {% trans "Approve Accounts" %}
+  </a>
   {% endif %}
-  </ul>
+
+  <div class="right">
+    <ul>
+      <li><a href="{% url 'streamwebs:sites' %}"
+            class="teal-text text-darken-3">{% trans "Search Sites" %}</a></li>
+      {% if user.is_authenticated and perms.streamwebs.is_org_admin %}
+      <li><a href="{% url 'streamwebs:create_site' %}"
+            class="teal-text text-darken-3">{% trans "Create Site" %}</a></li>
+      {% endif %}
+      <li><a href="{% url 'streamwebs:resources' %}"
+            class="teal-text text-darken-3">{% trans "Resources" %}</a></li>
+      <li><a href="{% url 'streamwebs:about' %}"
+            class="teal-text text-darken-3">{% trans "About" %}</a></li>
+      <li><a href="{% url 'streamwebs:faq' %}"
+            class="teal-text text-darken-3">{% trans "FAQ" %}</a></li>
+
+    {% if user.is_authenticated %}
+      {% if perms.streamwebs.is_org_admin%}
+      <li><a href="{% url 'streamwebs:get_manage_accounts' user.id %}" class="teal-text text-darken-3">{% trans "Manage Accounts" %}</a></li>
+      {% endif %}
+      <li><a href="{% url 'streamwebs:account' %}"class="teal-text text-darken-3">Account</a></li>
+      <li><a href="{% url 'streamwebs:logout' %}" class="teal-text text-darken-3">{% trans "Logout" %}</a></li>
+    {% else %}
+      <li><a href="{% url 'streamwebs:register' %}" class="teal-text text-darken-3">{% trans "Create Account" %}</a></li>
+      <li><a href="{% url 'streamwebs:login' %}?next=/" class="teal-text text-darken-3">{% trans "Login" %}</a></li>
+    {% endif %}
+    </ul>
+  </div>
 </div>

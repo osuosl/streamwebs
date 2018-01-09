@@ -1,0 +1,179 @@
+{% extends 'streamwebs/base.html' %}
+
+{% load staticfiles %}
+{% load filters %}
+{% load i18n %}
+
+{% block title %}{{ site.site_name  }} Approve Accounts - {% trans "Streamwebs" %}{% endblock %}
+
+{% block body_title %}{% endblock %}
+
+{% block content %}
+<style>
+  .center-content-horizontal{
+    text-align: center;
+  }
+</style>
+
+<script>
+  function findAncestor (el, cls) {
+    while ((el = el.parentElement) && !el.classList.contains(cls));
+    return el;
+  }
+
+
+  function uncheck_newusers(checkbox) {
+    var checkboxes = findAncestor(checkbox, "mutually_exclusive_checkboxes").getElementsByTagName('input')
+    for (i = 0; i < checkboxes.length; i++) { 
+      if (checkboxes[i].type == "checkbox" && checkboxes[i] != checkbox) {
+        checkboxes[i].checked = false;
+      }
+    }
+  }
+
+  function check_all_editors(checkbox_all) {
+    var checkboxes = document.getElementById("editor_rows").getElementsByTagName("input")
+    for (i = 0; i < checkboxes.length; i++) {
+      if (checkboxes[i].name == "editors") {
+        checkboxes[i].checked = checkbox_all.checked;
+      }
+    }
+  }
+
+  function check_all_contributors(checkbox_all) {
+    var checkboxes = document.getElementById("contributor_rows").getElementsByTagName("input")
+    for (i = 0; i < checkboxes.length; i++) {
+      if (checkboxes[i].name == "contributors") {
+        checkboxes[i].checked = checkbox_all.checked;
+      }
+    }
+  }
+</script>
+
+  <div class="container">
+    <h3 align="center" class="teal-text">
+      Approve Accounts
+    </h3>
+
+    <br/>
+
+    <form class="col s8 offset-s2" id='manage_accounts_form' method='post' action="{% url 'streamwebs:approve_accounts' %}"> 
+      {% csrf_token %}
+
+      <!-- New organizations -->
+      <div class="row">
+        <div class="col s12">
+          <div class="card">
+            <div class="card-content">
+              <h5 class="card-title">{% trans "New Organization Requests" %}</h5>
+    
+              <div class="row">
+                <div class="valign-wrapper col s12">
+                    <i class="left small material-icons">info_outline</i>
+                    <p class="right">Requests to create a new organization, and the users who have requested them.</p>
+                </div>
+              </div>
+
+              <table class="bordered striped">
+                <thead>
+                  <tr>
+                    <th>Organization</th>
+                    <th>Type</th>
+                    <th>City</th>
+                    <th class="center-content-horizontal">Request</th>
+                  </tr>
+                </thead>
+                <tbody id="new_org_rows">
+                  {% for school in schools %}
+                    <tr>
+                      <td>{{ school.name }}</td>
+                      <td>{{ school.school_type }}</td>
+                      <td>{{ school.city }}, {{ school.province }}</td>
+                      <td class="center-content-horizontal">
+                        <a href="{% url 'streamwebs:new_org_request' school.id %}"
+                           name="btn_view_request"
+                           class="btn-flat wave-effect waves-light teal darken-3 white-text">
+                          {% trans "View Request" %}
+                        </a>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Approve new users -->
+      <br/><br/>
+      <div class="row">
+        <div class="col s12">
+          <div class="card">
+            <div class="card-content">
+              <h5 class="card-title">Approve New Users</h5>
+              <button name="btn_apply" type="submit"
+                class="wave-effects wave-light btn white-text teal darken-3 right" style="margin-left:20px">
+                Apply
+              </button>
+
+              <div class="row">
+                <div class="valign-wrapper col s12">
+                    <i class="left small material-icons">info_outline</i>
+                    <p class="right">New users requesting to join an existing organization who have not yet been approved.</p>
+                </div>
+              </div>
+
+              <table class="bordered striped">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Organization</th>
+                    <th class="center-content-horizontal">Editor</th>
+                    <th class="center-content-horizontal">Contributor</th>
+                    <th class="center-content-horizontal">Deny</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for user_profile in new_users %}
+                    <tr class="mutually_exclusive_checkboxes">
+                      <td>{{ user_profile.user.first_name }} {{ user_profile.user.last_name }}</td>
+                      <td>{{ user_profile.user.email }}</td>
+                      <td>
+                        <a href="{% url 'streamwebs:manage_accounts' user_profile.school.id %}">
+                          {{ user_profile.school.name }}
+                        </a>
+                      </td>
+                      <td class="center-content-horizontal">
+                        <input type="checkbox" name="nu_editor" id="nu_editor_c_{{user_profile.user.id}}"
+                                value="{{user_profile.user.id}}" onchange="uncheck_newusers(this)"/>
+                        <label for="nu_editor_c_{{user_profile.user.id}}"></label>
+                      </td>
+                      <td class="center-content-horizontal">
+                        <input type="checkbox" name="nu_contributor" id="nu_contributor_c_{{user_profile.user.id}}"
+                                value="{{user_profile.user.id}}" onchange="uncheck_newusers(this)"/>
+                        <label for="nu_contributor_c_{{user_profile.user.id}}"></label>
+                      </td>
+                      <td class="center-content-horizontal">
+                        <input type="checkbox" name="nu_deny" id="nu_deny_c_{{user_profile.user.id}}"
+                                value="{{user_profile.user.id}}" onchange="uncheck_newusers(this)"/>
+                        <label for="nu_deny_c_{{user_profile.user.id}}"></label>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    
+    </form>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}
