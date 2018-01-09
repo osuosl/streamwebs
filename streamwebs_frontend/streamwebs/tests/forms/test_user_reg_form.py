@@ -6,7 +6,6 @@ class UserFormTestCase(TestCase):
 
     def setUp(self):
         self.expected_fields = (
-            'username',
             'email',
             'password',
             'first_name',

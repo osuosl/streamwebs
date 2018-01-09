@@ -107,6 +107,7 @@ class UserFormEmailAsUsername(forms.ModelForm):
             'email': _('Email Address'),
             'password': _('Password:'),
             'first_name': _('First Name'),
+            'last_name': _('Last Name'),
         }
 
     def clean_password(self):
