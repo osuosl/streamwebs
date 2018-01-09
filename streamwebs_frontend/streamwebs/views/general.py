@@ -780,6 +780,7 @@ def macroinvertebrate_edit(request, site_slug):
         }
     )
 
+
 @login_required
 @permission_required('streamwebs.is_org_admin', raise_exception=True)
 def macroinvertebrate_delete(request, site_slug, data_id):
@@ -789,7 +790,8 @@ def macroinvertebrate_delete(request, site_slug, data_id):
 
     return HttpResponseRedirect(
         '/sites/%s/' % str(site_slug, ))
-        
+
+
 @login_required
 @permission_required('streamwebs.is_org_author', raise_exception=True)
 @any_organization_required
@@ -839,12 +841,13 @@ def riparian_aquatic_view(request, site_slug, data_id):
             }
         )
 
+
 @login_required
 @permission_required('streamwebs.is_org_admin', raise_exception=True)
 def riparian_aquatic_delete(request, site_slug, ra_id):
     data = RipAquaticSurvey.objects.get(id=ra_id)
     data.delete()
-    
+
     return HttpResponseRedirect('/sites/%s/' % str(site_slug, ))
 
 
@@ -884,12 +887,13 @@ def riparian_transect_view(request, site_slug, data_id):
             }
         )
 
+
 @login_required
 @permission_required('streamwebs.is_org_admin', raise_exception=True)
 def riparian_transect_delete(request, site_slug, data_id):
     transect = RiparianTransect.objects.get(id=data_id)
     transect.delete()
-    
+
     return HttpResponseRedirect(
         '/sites/%s/' % str(site_slug, ))
 
@@ -978,12 +982,13 @@ def canopy_cover_view(request, site_slug, data_id):
 @permission_required('streamwebs.is_org_admin', raise_exception=True)
 def canopy_cover_delete(request, site_slug, data_id):
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
-    
+
     canopy_cover = Canopy_Cover.objects.filter(site_id=site.id).get(id=data_id)
 
     canopy_cover.delete()
 
     return HttpResponseRedirect('/sites/%s/' % str(site_slug, ))
+
 
 @login_required
 @permission_required('streamwebs.is_org_author', raise_exception=True)
@@ -1081,6 +1086,7 @@ def camera_point_delete(request, site_slug, cp_id):
     cp.delete()
 
     return HttpResponseRedirect('/sites/%s/' % str(site_slug, ))
+
 
 @login_required
 @permission_required('streamwebs.is_org_author', raise_exception=True)
@@ -1405,17 +1411,16 @@ def water_quality(request, site_slug, data_id):
         }
     )
 
+
 @login_required
 @permission_required('streamwebs.is_org_admin', raise_exception=True)
 def water_quality_delete(request, site_slug, data_id):
     wq_data = Water_Quality.objects.get(id=data_id)
-    wq_samples = WQ_Sample.objects.filter(water_quality=data_id)\
-        .order_by('sample')
-
     wq_data.delete()
 
     return HttpResponseRedirect(
         '/sites/%s/' % str(site_slug, ))
+
 
 @login_required
 @permission_required('streamwebs.is_org_author', raise_exception=True)
@@ -1445,7 +1450,7 @@ def water_quality_edit(request, site_slug):
                 wq_form.data['date'],
                 wq_form.data['time'],
                 wq_form.data['ampm']
-            )            
+            )
             water_quality.site = site
             water_quality.school = school
             water_quality.save()             # save object to db
@@ -1490,6 +1495,7 @@ def soil_survey(request, site_slug, data_id):
         }
     )
 
+
 @login_required
 @permission_required('streamwebs.is_org_admin', raise_exception=True)
 def soil_survey_delete(request, site_slug, data_id):
@@ -1497,6 +1503,7 @@ def soil_survey_delete(request, site_slug, data_id):
     soil_data.delete()
 
     return HttpResponseRedirect('/sites/%s/' % str(site_slug, ))
+
 
 @login_required
 @permission_required('streamwebs.is_org_author', raise_exception=True)

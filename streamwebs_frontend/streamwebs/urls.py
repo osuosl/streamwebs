@@ -38,7 +38,7 @@ urlpatterns = [
         views.water_quality, name='water_quality'),
 
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/water/(?P<data_id>\d+)/delete/$',
-    views.water_quality_delete, name='water_quality_delete'),
+        views.water_quality_delete, name='water_quality_delete'),
 
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/water/edit/',
         views.water_quality_edit, name='water_quality_edit'),
@@ -64,8 +64,8 @@ urlpatterns = [
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/rip_aqua/(?P<data_id>\d+)/$',
         views.riparian_aquatic_view, name='rip_aqua_view'),
 
-    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/rip_aqua/(?P<ra_id>\d+)/delete/$',
-        views.riparian_aquatic_delete, name='rip_aqua_delete'),
+    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/rip_aqua/(?P<ra_id>\d+)/' +
+        'delete/$', views.riparian_aquatic_delete, name='rip_aqua_delete'),
 
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/rip_aqua/export/$',
         views.export_rip_aqua, name='export_rip_aqua'),
@@ -73,7 +73,8 @@ urlpatterns = [
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/transect/(?P<data_id>\d+)/$',
         views.riparian_transect_view, name='riparian_transect'),
 
-    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/transect/(?P<data_id>\d+)/delete/$',
+    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/transect/(?P<data_id>\d+)/' +
+        'delete/$',
         views.riparian_transect_delete, name='riparian_transect_delete'),
 
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/transect/edit/$',
@@ -85,8 +86,8 @@ urlpatterns = [
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/canopy/(?P<data_id>\d+)/$',
         views.canopy_cover_view, name='canopy_cover'),
 
-    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/canopy/(?P<data_id>\d+)/delete/$',
-        views.canopy_cover_delete, name='canopy_cover_delete'),
+    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/canopy/(?P<data_id>\d+)/' +
+        'delete/$', views.canopy_cover_delete, name='canopy_cover_delete'),
 
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/canopy/edit',
         views.canopy_cover_edit, name='canopy_cover_edit'),
@@ -102,7 +103,7 @@ urlpatterns = [
 
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/camera/(?P<cp_id>\d+)/$',
         views.camera_point_view, name='camera_point'),
-        
+
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/camera/(?P<cp_id>\d+)/delete/$',
         views.camera_point_delete, name='camera_point_delete'),
 
