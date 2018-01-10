@@ -6,6 +6,8 @@ from streamwebs.models import (
     Macroinvertebrates, Site, Water_Quality, WQ_Sample, RiparianTransect,
     TransectZone, Canopy_Cover, Soil_Survey, RipAquaticSurvey)
 
+from django.contrib.auth.models import User
+
 from djqscsv import render_to_csv_response
 import csv
 
@@ -80,11 +82,18 @@ def export_rip_aqua(request, site_slug):
 def export_wq(request, site_slug):
     site = Site.objects.get(site_slug=site_slug)
     waterq = Water_Quality.objects.filter(site_id=site.id)
+    user = request.user
+
+    #If the user is not associated with a school
+    if str(user) == "AnonymousUser":
+        user = ""
+    else:
+        user = User.objects.get(username=user)
 
     # Store nid of each wq data sheet into a list
     sheets = []
     for each in waterq:
-        sheets.append(each.nid)
+            sheets.append(each.nid)
 
     # Query the first set of samples outside of the loop and pop nid from list
     samples = WQ_Sample.objects.prefetch_related('water_quality')
