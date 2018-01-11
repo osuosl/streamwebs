@@ -194,6 +194,18 @@ def export_wq(request, site_slug):
 
 def export_macros(request, site_slug):
     site = Site.objects.get(site_slug=site_slug)
+    user = request.user
+    school = None
+
+    # If the user is not associated with a school
+    if str(user) == "AnonymousUser":
+        user = None
+    else:
+        user = User.objects.get(username=user)
+        Profile = UserProfile.objects.filter(user=user).first()
+        if Profile is not None:
+            school = Profile.school
+
     macros = Macroinvertebrates.objects.filter(site_id=site.id).values(
         'school__name', 'date_time', 'site__site_name', 'weather',
         'time_spent', 'num_people', 'water_type', 'notes', 'caddisfly',
@@ -203,8 +215,8 @@ def export_macros(request, site_slug):
         'somewhat_sensitive_total', 'aquatic_worm', 'blackfly', 'leech',
         'midge', 'snail', 'mosquito_larva', 'tolerant_total', 'wq_rating'
     )
-    return render_to_csv_response(
-        macros, field_header_map={
+
+    field_header_map = {
             'school__name': 'School Name',
             'date_time': 'date/time', 'site__site_name': 'site',
             'time_spent': 'time spent sorting',
@@ -217,6 +229,14 @@ def export_macros(request, site_slug):
             'tolerant_total': 'tolerant total',
             'wq_rating': 'water quality rating'
         }
+
+    if user is None:
+        return render_to_csv_response(
+            macros, field_header_map=field_header_map
+        )
+    else:
+        return render_to_csv_response(
+        macros.filter(school__name=school), field_header_map=field_header_map
     )
 
 
