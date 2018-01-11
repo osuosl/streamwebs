@@ -85,7 +85,7 @@ def export_wq(request, site_slug):
     user = request.user
     school = None
 
-    #If the user is not associated with a school
+    # If the user is not associated with a school
     if str(user) == "AnonymousUser":
         user = None
     else:
@@ -135,9 +135,9 @@ def export_wq(request, site_slug):
         samples = samples | n_samples
 
     filename = 'water_quality_export'
-    
+
     # If the user doesn't have an account, give them all the school
-    if user == None:
+    if user is None:
         return render_to_csv_response(
             samples, filename=filename, field_header_map={
                 'water_quality__school__name': 'school',
@@ -159,12 +159,14 @@ def export_wq(request, site_slug):
                 'dissolved_oxygen': 'dissolved oxygen',
                 'oxygen_tool': 'oxygen tool', 'pH_tool': 'pH tool',
                 'turbid_tool': 'turbidity tool', 'salt_tool': 'salinity tool',
-                'total_solids': 'total solids', 'fecal_coliform': 'fecal coliform'
+                'total_solids': 'total solids',
+                'fecal_coliform': 'fecal coliform'
             }
         )
     else:
         return render_to_csv_response(
-            samples.filter(water_quality__school__name=school), filename=filename, field_header_map={
+            samples.filter(water_quality__school__name=school),
+            filename=filename, field_header_map={
                 'water_quality__school__name': 'school',
                 'water_quality__date_time': 'date_time',
                 'water_quality__site__site_name': 'site',
@@ -184,7 +186,8 @@ def export_wq(request, site_slug):
                 'dissolved_oxygen': 'dissolved oxygen',
                 'oxygen_tool': 'oxygen tool', 'pH_tool': 'pH tool',
                 'turbid_tool': 'turbidity tool', 'salt_tool': 'salinity tool',
-                'total_solids': 'total solids', 'fecal_coliform': 'fecal coliform'
+                'total_solids': 'total solids',
+                'fecal_coliform': 'fecal coliform'
             }
         )
 
