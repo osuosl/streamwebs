@@ -190,10 +190,10 @@ def site(request, site_slug):
     gallery_items = get_gallery_items(site.id)
     gallery_items = add_school_name(gallery_items)
 
-    page_count_ds = int(math.ceil(float(len(datasheets))\
-                    / float(num_elements_page)))
-    page_count_gl = int(math.ceil(float(len(gallery_items))\
-                    / float(num_elements_page)))
+    page_count_ds = int(math.ceil(float(len(datasheets))
+                                  / float(num_elements_page)))
+    page_count_gl = int(math.ceil(float(len(gallery_items))
+                                  / float(num_elements_page)))
 
     site_data = {
         'site': site,
@@ -201,8 +201,8 @@ def site(request, site_slug):
         'map_type': settings.GOOGLE_MAPS_TYPE,
         'datasheets': json.dumps(datasheets, cls=DjangoJSONEncoder),
         'gallery_items': json.dumps(gallery_items, cls=DjangoJSONEncoder),
-        'pages_ds': range(1,page_count_ds+1),
-        'pages_gl': range(1,page_count_gl+1),
+        'pages_ds': range(1, page_count_ds+1),
+        'pages_gl': range(1, page_count_gl+1),
         'page_count_ds': page_count_ds,
         'page_count_gl': page_count_gl,
         'num_elements_page': num_elements_page,
@@ -326,12 +326,14 @@ def get_datasheets(site_id):
 
     return datasheets, template_has
 
+
 def get_gallery_items(site_id):
     return []
 
 
 def sort_date(x, y):
     return y.year - x.year or y.month - x.month or y.day - x.day
+
 
 def count_schools(data):
     schools = []
@@ -441,6 +443,7 @@ def deactivate_site(request, site_slug):
 def new_gallery_item(request, site_slug):
     return HttpResponseForbidden("This page is not implemented!")
 
+
 def register(request):
     if request.method == 'POST':
         user_form = UserFormEmailAsUsername(data=request.POST)
@@ -471,7 +474,7 @@ def register(request):
                                     name='org_admin').exists()]
 
                 # Email to org admins for new user joining org
-                if (len(editor_users) > 0):
+                if len(editor_users) > 0:
                     send_email(
                         request=request,
                         subject='New User requested to join your organization',
