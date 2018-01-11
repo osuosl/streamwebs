@@ -34,6 +34,7 @@ from streamwebs.models import (
 import json
 import copy
 import datetime
+import math
 
 
 # Decorator function that requires the user to be part of ANY school
@@ -177,10 +178,42 @@ def sites(request):
 
 # view-view for individual specified site
 def site(request, site_slug):
+    num_elements_page = 10
+
     """ View an individual site """
 
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
-    wq_sheets = Water_Quality.objects.filter(site_id=site.id)
+
+    datasheets, template_has = get_datasheets(site.id)
+    datasheets = add_school_name(datasheets)
+
+    gallery_items = get_gallery_items(site.id)
+    gallery_items = add_school_name(gallery_items)
+
+    page_count_ds = int(math.ceil(float(len(datasheets))\
+                    / float(num_elements_page)))
+    page_count_gl = int(math.ceil(float(len(gallery_items))\
+                    / float(num_elements_page)))
+
+    site_data = {
+        'site': site,
+        'maps_api': settings.GOOGLE_MAPS_API,
+        'map_type': settings.GOOGLE_MAPS_TYPE,
+        'datasheets': json.dumps(datasheets, cls=DjangoJSONEncoder),
+        'gallery_items': json.dumps(gallery_items, cls=DjangoJSONEncoder),
+        'pages_ds': range(1,page_count_ds+1),
+        'pages_gl': range(1,page_count_gl+1),
+        'page_count_ds': page_count_ds,
+        'page_count_gl': page_count_gl,
+        'num_elements_page': num_elements_page,
+    }
+    site_data.update(template_has)
+
+    return render(request, 'streamwebs/site_detail.html', site_data)
+
+
+def get_datasheets(site_id):
+    wq_sheets = Water_Quality.objects.filter(site_id=site_id)
     wq_sheets = list(wq_sheets.order_by('-date_time').values())
     wq_sheets_new = []
     for x in wq_sheets:
@@ -193,7 +226,7 @@ def site(request, site_slug):
         wq_sheets_new.append(wq_data)
     wq_sheets = wq_sheets_new
 
-    macro_sheets = Macroinvertebrates.objects.filter(site_id=site.id)
+    macro_sheets = Macroinvertebrates.objects.filter(site_id=site_id)
     macro_sheets = list(macro_sheets.order_by('-date_time').values())
     macro_sheets_new = []
     for x in macro_sheets:
@@ -207,7 +240,7 @@ def site(request, site_slug):
         macro_sheets_new.append(macro_data)
     macro_sheets = macro_sheets_new
 
-    transect_sheets = RiparianTransect.objects.filter(site_id=site.id)
+    transect_sheets = RiparianTransect.objects.filter(site_id=site_id)
     transect_sheets = list(transect_sheets.order_by('-date_time').values())
     transect_sheets_new = []
     for x in transect_sheets:
@@ -221,7 +254,7 @@ def site(request, site_slug):
         transect_sheets_new.append(transect_data)
     transect_sheets = transect_sheets_new
 
-    canopy_sheets = Canopy_Cover.objects.filter(site_id=site.id)
+    canopy_sheets = Canopy_Cover.objects.filter(site_id=site_id)
     canopy_sheets = list(canopy_sheets.order_by('-date_time').values())
     canopy_sheets_new = []
     for x in canopy_sheets:
@@ -234,7 +267,7 @@ def site(request, site_slug):
         canopy_sheets_new.append(canopy_data)
     canopy_sheets = canopy_sheets_new
 
-    ppm_sheets = CameraPoint.objects.filter(site_id=site.id)
+    ppm_sheets = CameraPoint.objects.filter(site_id=site_id)
     ppm_sheets = list(ppm_sheets.order_by('letter').values())
     ppm_sheets_new = []
     for x in ppm_sheets:
@@ -247,7 +280,7 @@ def site(request, site_slug):
         ppm_sheets_new.append(ppm_data)
     ppm_sheets = ppm_sheets_new
 
-    soil_sheets = Soil_Survey.objects.filter(site_id=site.id)
+    soil_sheets = Soil_Survey.objects.filter(site_id=site_id)
     soil_sheets = list(soil_sheets.order_by('-date_time').values())
     soil_sheets_new = []
     for x in soil_sheets:
@@ -260,7 +293,7 @@ def site(request, site_slug):
         soil_sheets_new.append(soil_data)
     soil_sheets = soil_sheets_new
 
-    rip_aqua_sheets = RipAquaticSurvey.objects.filter(site_id=site.id)
+    rip_aqua_sheets = RipAquaticSurvey.objects.filter(site_id=site_id)
     rip_aqua_sheets = list(rip_aqua_sheets.order_by('-date_time').values())
     rip_aqua_sheets_new = []
     for x in rip_aqua_sheets:
@@ -273,32 +306,15 @@ def site(request, site_slug):
         rip_aqua_sheets_new.append(rip_data)
     rip_aqua_sheets = rip_aqua_sheets_new
 
-    data = wq_sheets + macro_sheets + transect_sheets + canopy_sheets +\
+    # Compile datasheets into one list
+    datasheets = []
+    datasheets += wq_sheets + macro_sheets + transect_sheets + canopy_sheets +\
         ppm_sheets + soil_sheets + rip_aqua_sheets
 
-    def sort_date(x, y):
-        return y.year - x.year or y.month - x.month or y.day - x.day
+    datasheets.sort(cmp=sort_date, key=lambda x: x['date'])
+    datasheets.sort(key=lambda x: -x['school_id'])
 
-    data.sort(cmp=sort_date, key=lambda x: x['date'])
-    data.sort(key=lambda x: -x['school_id'])
-
-    num_schools = count_schools(data)
-    number_item = len(data) + num_schools
-
-    pages = (number_item)/10
-    if number_item % 10 != 0:
-        pages += 1
-
-    data_len_range = range(2, pages + 1)
-    data = add_school_name(data)
-
-    return render(request, 'streamwebs/site_detail.html', {
-        'site': site,
-        'maps_api': settings.GOOGLE_MAPS_API,
-        'map_type': settings.GOOGLE_MAPS_TYPE,
-        'data': json.dumps(data, cls=DjangoJSONEncoder),
-        'data_len_range': data_len_range,
-        'pages': pages,
+    template_has = {
         'has_wq': len(wq_sheets) > 0,
         'has_macros': len(macro_sheets) > 0,
         'has_transects': len(transect_sheets) > 0,
@@ -306,8 +322,16 @@ def site(request, site_slug):
         'has_soil': len(soil_sheets) > 0,
         'has_camera': len(ppm_sheets) > 0,
         'has_aqua': len(rip_aqua_sheets) > 0
-    })
+    }
 
+    return datasheets, template_has
+
+def get_gallery_items(site_id):
+    return []
+
+
+def sort_date(x, y):
+    return y.year - x.year or y.month - x.month or y.day - x.day
 
 def count_schools(data):
     schools = []
@@ -321,7 +345,7 @@ def count_schools(data):
 
 def add_school_name(data):
     if len(data) == 0:
-        return
+        return data
 
     schools = School.objects.all()
     data_new = []
@@ -413,6 +437,9 @@ def deactivate_site(request, site_slug):
         'deactivated': deactivated
     })
 
+
+def new_gallery_item(request, site_slug):
+    return HttpResponseForbidden("This page is not implemented!")
 
 def register(request):
     if request.method == 'POST':
