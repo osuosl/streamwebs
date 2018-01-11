@@ -4,7 +4,7 @@ from django.http import HttpResponse
 
 from streamwebs.models import (
     Macroinvertebrates, Site, Water_Quality, WQ_Sample, RiparianTransect,
-    TransectZone, Canopy_Cover, Soil_Survey, RipAquaticSurvey)
+    TransectZone, Canopy_Cover, Soil_Survey, RipAquaticSurvey, UserProfile)
 
 from django.contrib.auth.models import User
 
@@ -83,12 +83,16 @@ def export_wq(request, site_slug):
     site = Site.objects.get(site_slug=site_slug)
     waterq = Water_Quality.objects.filter(site_id=site.id)
     user = request.user
+    school = None
 
     #If the user is not associated with a school
     if str(user) == "AnonymousUser":
-        user = ""
+        user = None
     else:
         user = User.objects.get(username=user)
+        Profile = UserProfile.objects.filter(user=user).first()
+        if Profile is not None:
+            school = Profile.school
 
     # Store nid of each wq data sheet into a list
     sheets = []
@@ -131,31 +135,58 @@ def export_wq(request, site_slug):
         samples = samples | n_samples
 
     filename = 'water_quality_export'
-
-    return render_to_csv_response(
-        samples, filename=filename, field_header_map={
-            'water_quality__school__name': 'school',
-            'water_quality__date_time': 'date_time',
-            'water_quality__site__site_name': 'site',
-            'water_quality__DEQ_dq_level': 'DEQ Data Quality level',
-            'water_quality__latitude': 'latitude',
-            'water_quality__longitude': 'longitude',
-            'water_quality__fish_present': 'Are fish present?',
-            'water_quality__live_fish': '# of live fish',
-            'water_quality__dead_fish': '# of dead fish',
-            'water_quality__water_temp_unit': 'water temperature unit',
-            'water_quality__air_temp_unit': 'air temperature unit',
-            'water_quality__notes': 'notes',
-            'water_temperature': 'water temperature',
-            'water_temp_tool': 'water temperature tool',
-            'air_temperature': 'air temperature',
-            'air_temp_tool': 'air temperature tool',
-            'dissolved_oxygen': 'dissolved oxygen',
-            'oxygen_tool': 'oxygen tool', 'pH_tool': 'pH tool',
-            'turbid_tool': 'turbidity tool', 'salt_tool': 'salinity tool',
-            'total_solids': 'total solids', 'fecal_coliform': 'fecal coliform'
-        }
-    )
+    
+    # If the user doesn't have an account, give them all the school
+    if user == None:
+        return render_to_csv_response(
+            samples, filename=filename, field_header_map={
+                'water_quality__school__name': 'school',
+                'water_quality__date_time': 'date_time',
+                'water_quality__site__site_name': 'site',
+                'water_quality__DEQ_dq_level': 'DEQ Data Quality level',
+                'water_quality__latitude': 'latitude',
+                'water_quality__longitude': 'longitude',
+                'water_quality__fish_present': 'Are fish present?',
+                'water_quality__live_fish': '# of live fish',
+                'water_quality__dead_fish': '# of dead fish',
+                'water_quality__water_temp_unit': 'water temperature unit',
+                'water_quality__air_temp_unit': 'air temperature unit',
+                'water_quality__notes': 'notes',
+                'water_temperature': 'water temperature',
+                'water_temp_tool': 'water temperature tool',
+                'air_temperature': 'air temperature',
+                'air_temp_tool': 'air temperature tool',
+                'dissolved_oxygen': 'dissolved oxygen',
+                'oxygen_tool': 'oxygen tool', 'pH_tool': 'pH tool',
+                'turbid_tool': 'turbidity tool', 'salt_tool': 'salinity tool',
+                'total_solids': 'total solids', 'fecal_coliform': 'fecal coliform'
+            }
+        )
+    else:
+        return render_to_csv_response(
+            samples.filter(water_quality__school__name=school), filename=filename, field_header_map={
+                'water_quality__school__name': 'school',
+                'water_quality__date_time': 'date_time',
+                'water_quality__site__site_name': 'site',
+                'water_quality__DEQ_dq_level': 'DEQ Data Quality level',
+                'water_quality__latitude': 'latitude',
+                'water_quality__longitude': 'longitude',
+                'water_quality__fish_present': 'Are fish present?',
+                'water_quality__live_fish': '# of live fish',
+                'water_quality__dead_fish': '# of dead fish',
+                'water_quality__water_temp_unit': 'water temperature unit',
+                'water_quality__air_temp_unit': 'air temperature unit',
+                'water_quality__notes': 'notes',
+                'water_temperature': 'water temperature',
+                'water_temp_tool': 'water temperature tool',
+                'air_temperature': 'air temperature',
+                'air_temp_tool': 'air temperature tool',
+                'dissolved_oxygen': 'dissolved oxygen',
+                'oxygen_tool': 'oxygen tool', 'pH_tool': 'pH tool',
+                'turbid_tool': 'turbidity tool', 'salt_tool': 'salinity tool',
+                'total_solids': 'total solids', 'fecal_coliform': 'fecal coliform'
+            }
+        )
 
 
 def export_macros(request, site_slug):
