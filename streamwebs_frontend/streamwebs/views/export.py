@@ -192,17 +192,7 @@ def export_wq(request, site_slug):
 
 def export_macros(request, site_slug):
     site = Site.objects.get(site_slug=site_slug)
-    user = request.user
-    school = None
-
-    # If the user is not associated with a school
-    if str(user) == "AnonymousUser":
-        user = None
-    else:
-        user = User.objects.get(username=user)
-        Profile = UserProfile.objects.filter(user=user).first()
-        if Profile is not None:
-            school = Profile.school
+    school = get_school(request)
 
     macros = Macroinvertebrates.objects.filter(site_id=site.id).values(
         'school__name', 'date_time', 'site__site_name', 'weather',
@@ -305,6 +295,12 @@ def export_cc(request, site_slug):
 
     for each in canopyc:
         cc = canopyc.get(id=each.id)
+
+        # Don't include the sheet if the associated school is different,
+        # but if there are no schools, give it all.
+        if str(cc.school) != str(school) and school is not None \
+                and school != "":
+            continue
 
         # Convert int to binary
         north = "{0:b}".format(cc.north_cc)
