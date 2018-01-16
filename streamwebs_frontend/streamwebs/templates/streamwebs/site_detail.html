@@ -209,14 +209,56 @@
       <br/><br/>
 
       <div class="row">
+
+        <!-- Add datasheet -->
+        <div class="col s4 center">
+          {% if user.is_authenticated and perms.streamwebs.is_org_author %}
+          <a class="btn-large teal darken-3" id="add_datasheet_button">
+            <i class="material-icons right">arrow_drop_down</i>
+            {% trans "Add data sheet" %}
+          </a>
+          
+          <div id="add_datasheet_types" class="collection" hidden>
+            <a href="{% url 'streamwebs:water_quality_edit' site_slug=site.site_slug %}"
+               class="collection-item">
+              {% trans "Water quality" %}
+            </a>
+            <a href="{% url 'streamwebs:macroinvertebrate_edit' site.site_slug %}"
+               class="collection-item">
+              {% trans "Macroinvertebrates" %}
+            </a>
+            <a href="{% url 'streamwebs:riparian_transect_edit' site.site_slug %}"
+               class="collection-item">
+              {% trans "Riparian transect" %}
+            </a>
+            <a href="{% url 'streamwebs:canopy_cover_edit' site.site_slug %}"
+               class="collection-item">
+              {% trans "Canopy Cover Survey" %}
+            </a>
+            <a href="{% url 'streamwebs:camera_point_add' site_slug=site.site_slug %}"
+               class="collection-item">
+              {% trans "New Camera Point" %}
+            </a>
+            <a href="{% url 'streamwebs:soil_edit' site_slug=site.site_slug %}"
+               class="collection-item">
+              {% trans "Soil Survey" %}
+            </a>
+            <a href="{% url 'streamwebs:rip_aqua_edit' site_slug=site.site_slug %}"
+               class="collection-item">
+              {% trans "Riparian Aquatic Survey" %}
+            </a>
+          </div>
+          {% endif %}
+        </div>
+
         <!-- Export -->
-        <div class="col s6 center">
+        <div class="col s4 center">
           <a id="export_data_button"
-             {% if has_wq or has_macros or has_cc or has_transects or has_soil or has_aqua %}
-             class="btn-large teal darken-3"
-             {% else %}
-             class="btn-large teal disabled"
-             {% endif %}
+              {% if has_wq or has_macros or has_cc or has_transects or has_soil or has_aqua %}
+              class="btn-large teal darken-3"
+              {% else %}
+              class="btn-large teal disabled"
+              {% endif %}
             >
             <i class="material-icons right">arrow_drop_down</i>
             {% trans "Export" %}
@@ -262,46 +304,26 @@
           </div>
         </div>
 
-        <!-- Add data -->
-        <div class="col s6 center">
+        <!-- Add gallery iem -->
+        <div class="col s4 center">
           {% if user.is_authenticated and perms.streamwebs.is_org_author %}
-          <a class="btn-large teal darken-3" id="add_data_button">
+          <a class="btn-large teal darken-3" id="add_gallery_item_button">
             <i class="material-icons right">arrow_drop_down</i>
-            {% trans "Add data to this site" %}
+            {% trans "Add gallery item" %}
           </a>
           
-          <div id="add_data" class="collection" hidden>
-            <a href="{% url 'streamwebs:water_quality_edit' site_slug=site.site_slug %}"
-               class="collection-item">
-              {% trans "Water quality" %}
+          <div id="add_gallery_item_types" class="collection" hidden>
+            <a href="{% url 'streamwebs:new_gallery_image' site_slug=site.site_slug %}"
+                class="collection-item">
+              {% trans "Image" %}
             </a>
-            <a href="{% url 'streamwebs:macroinvertebrate_edit' site.site_slug %}"
-               class="collection-item">
-              {% trans "Macroinvertebrates" %}
+            <a href="{% url 'streamwebs:new_gallery_album' site_slug=site.site_slug %}"
+              class="collection-item">
+              {% trans "Album" %}
             </a>
-            <a href="{% url 'streamwebs:riparian_transect_edit' site.site_slug %}"
-               class="collection-item">
-              {% trans "Riparian transect" %}
-            </a>
-            <a href="{% url 'streamwebs:canopy_cover_edit' site.site_slug %}"
-               class="collection-item">
-              {% trans "Canopy Cover Survey" %}
-            </a>
-            <a href="{% url 'streamwebs:camera_point_add' site_slug=site.site_slug %}"
-               class="collection-item">
-              {% trans "New Camera Point" %}
-            </a>
-            <a href="{% url 'streamwebs:soil_edit' site_slug=site.site_slug %}"
-               class="collection-item">
-              {% trans "Soil Survey" %}
-            </a>
-            <a href="{% url 'streamwebs:rip_aqua_edit' site_slug=site.site_slug %}"
-               class="collection-item">
-              {% trans "Riparian Aquatic Survey" %}
-            </a>
-            <a href="{% url 'streamwebs:new_gallery_item' site_slug=site.site_slug %}"
-               class="collection-item">
-              {% trans "New Gallery Item" %}
+            <a href="{% url 'streamwebs:new_gallery_file' site_slug=site.site_slug %}"
+              class="collection-item">
+              {% trans "File" %}
             </a>
           </div>
           {% endif %}
@@ -330,7 +352,8 @@
     var num_elements_page = {{ num_elements_page }}
 
     var export_menu_hidden = true;
-    var add_data_menu_hidden = true;
+    var add_datasheet_menu_hidden = true;
+    var add_gallery_menu_hidden = true;
 
     var map;
 
@@ -371,13 +394,22 @@
         export_menu_hidden = !export_menu_hidden;
       });
 
-      $("#add_data_button").on("click", function(){
-        if (add_data_menu_hidden){
-          $("#add_data").slideDown(500);
+      $("#add_datasheet_button").on("click", function(){
+        if (add_datasheet_menu_hidden){
+          $("#add_datasheet_types").slideDown(500);
         } else {
-          $("#add_data").slideUp(500);
+          $("#add_datasheet_types").slideUp(500);
         }
-        add_data_menu_hidden = !add_data_menu_hidden;
+        add_datasheet_menu_hidden = !add_datasheet_menu_hidden;
+      });
+
+      $("#add_gallery_item_button").on("click", function(){
+        if (add_gallery_menu_hidden){
+          $("#add_gallery_item_types").slideDown(500);
+        } else {
+          $("#add_gallery_item_types").slideUp(500);
+        }
+        add_gallery_menu_hidden = !add_gallery_menu_hidden;
       });
     });
 

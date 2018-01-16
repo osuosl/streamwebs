@@ -113,7 +113,7 @@ function filter_gallery(page) {
         else {
             var listItem = $('<a></a>').addClass('collection-item');
             listItem.attr('href', '/sites/'+site_slug+'/'+datum.uri+'/'+datum.id);
-            listItem.text(datum.type + ' data: ' + datum.date);
+            listItem.text(datum.type + ': ' + datum.date);
         }
 
         list.append(listItem);
