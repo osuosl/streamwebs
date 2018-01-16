@@ -15,8 +15,12 @@ urlpatterns = [
 
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/$', views.site, name='site'),
 
-    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/new_gallery_item/$',
-        views.new_gallery_item, name='new_gallery_item'),
+    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/new_gallery_image/$',
+        views.new_gallery_image, name='new_gallery_image'),
+    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/new_gallery_album/$',
+        views.new_gallery_album, name='new_gallery_album'),
+    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/new_gallery_file/$',
+        views.new_gallery_file, name='new_gallery_file'),
 
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/edit/', views.update_site,
         name='update_site'),

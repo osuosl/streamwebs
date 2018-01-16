@@ -2,19 +2,12 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import User
 
-from .models import Site
-from .models import Water_Quality
-from .models import WQ_Sample
-from .models import Macroinvertebrates
-from .models import TransectZone
-from .models import RiparianTransect
-from .models import Canopy_Cover
-from .models import School
-from .models import CameraPoint
-from .models import PhotoPoint, PhotoPointImage
-from .models import Soil_Survey
-from .models import Resource
-from .models import UserProfile
+from .models import (Site,
+    Water_Quality, WQ_Sample, Macroinvertebrates, TransectZone,
+    RiparianTransect, Canopy_Cover, School, CameraPoint,
+    PhotoPoint, PhotoPointImage, Soil_Survey, Resource, UserProfile,
+    GalleryImage, GalleryFile, GalleryAlbum
+)
 
 admin.site.register(Site)
 admin.site.register(Water_Quality)
@@ -29,6 +22,9 @@ admin.site.register(PhotoPoint)
 admin.site.register(PhotoPointImage)
 admin.site.register(Soil_Survey)
 admin.site.register(Resource)
+admin.site.register(GalleryImage)
+admin.site.register(GalleryFile)
+admin.site.register(GalleryAlbum)
 
 # The following will add a profile model's files to the user page in the
 # admin panel

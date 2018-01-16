@@ -186,6 +186,91 @@ def validate_UserProfile_birthdate(birthdate):
                 raise ValidationError(_('You must be at least 13'))
 
 
+class GalleryAlbum(models.Model):
+    name = models.CharField(max_length=250)
+
+    site = models.ForeignKey(
+        Site, null=True, on_delete=models.CASCADE,
+        verbose_name=_('Stream/Site name'), limit_choices_to={'active': True}
+    )
+    school = models.ForeignKey(
+        School, null=True, on_delete=models.CASCADE,
+        verbose_name=_('school'), limit_choices_to={'active': True}
+    )
+
+    def __str__(self):
+        if self.site is not None:
+            return self.site.site_name + ' album ' + str(self.id)
+        else:
+            return _('Unspecified site for album ') + str(self.id)
+
+    class Meta:
+        verbose_name = _('gallery album')
+        verbose_name_plural = _('gallery albums')
+
+
+class GalleryImage(models.Model):
+    site = models.ForeignKey(
+        Site, null=True, on_delete=models.CASCADE,
+        verbose_name=_('Stream/Site name'), limit_choices_to={'active': True}
+    )
+    school = models.ForeignKey(
+        School, null=True, on_delete=models.CASCADE,
+        verbose_name=_('school'), limit_choices_to={'active': True}
+    )
+    user = models.ForeignKey(User, null=True, verbose_name=_('user'))
+    album = models.ForeignKey(
+        GalleryAlbum, null=True, blank=True, on_delete=models.CASCADE,
+        verbose_name=_('album')
+    )
+    image = models.ImageField(null=True, upload_to='gallery_images/',
+                              verbose_name=_('image'))
+    date_time = models.DateTimeField(
+        default=timezone.now, verbose_name=_('date and time')
+    )
+
+    def __str__(self):
+        if self.site is not None:
+            if self.album is not None:
+                return self.site.site_name + ' gallery image ' + str(self.id)\
+                       + ' (Album ' + str(self.album.id) + ')'
+            else:
+                return self.site.site_name + ' gallery image ' + str(self.id)
+        else:
+            return _('Unspecified site for gallery image ') + str(self.id)
+
+    class Meta:
+        verbose_name = _('gallery image')
+        verbose_name_plural = _('gallery images')
+
+
+class GalleryFile(models.Model):
+    site = models.ForeignKey(
+        Site, null=True, on_delete=models.CASCADE,
+        verbose_name=_('Stream/Site name'), limit_choices_to={'active': True}
+    )
+    school = models.ForeignKey(
+        School, null=True, on_delete=models.CASCADE,
+        verbose_name=_('school'), limit_choices_to={'active': True}
+    )
+    user = models.ForeignKey(User, null=True, verbose_name=_('user'))
+    gallery_file = models.FileField(null=True, upload_to='gallery_files/',
+                                    verbose_name=_('file'))
+    date_time = models.DateTimeField(
+        default=timezone.now, verbose_name=_('date and time')
+    )
+
+    def __str__(self):
+        if self.site is not None:
+            return self.site.site_name + ' file ' + str(self.id)
+        else:
+            return _('Unspecified site for file ') + str(self.id)
+
+    class Meta:
+        verbose_name = _('gallery file')
+        verbose_name_plural = _('gallery files')
+
+
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     school = models.ForeignKey(School, on_delete=models.CASCADE)

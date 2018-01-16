@@ -29,7 +29,7 @@ from streamwebs.models import (
     Macroinvertebrates, Site, Water_Quality, WQ_Sample, RiparianTransect,
     TransectZone, Canopy_Cover, CameraPoint, PhotoPoint,
     PhotoPointImage, Soil_Survey, Resource, RipAquaticSurvey,
-    UserProfile, School)
+    UserProfile, School, GalleryImage, GalleryFile, GalleryAlbum)
 
 import json
 import copy
@@ -328,7 +328,60 @@ def get_datasheets(site_id):
 
 
 def get_gallery_items(site_id):
-    return []
+    # Individual images
+    gallery_images = GalleryImage.objects.filter(site_id=site_id, album=None)
+    gallery_images = list(gallery_images.order_by('-date_time').values())
+    gallery_images_new = []
+    for x in gallery_images:
+        image_data = {'id': x['id'], 'uri': 'image',
+                      'type': 'Image', 'date': x['date_time'].date()}
+        if 'school_id' in x and x['school_id']:
+            image_data['school_id'] = x['school_id']
+        else:
+            image_data['school_id'] = -1
+        gallery_images_new.append(image_data)
+    gallery_images = gallery_images_new
+
+    # Album images (takes date of soonest album image)
+    gallery_albums = GalleryAlbum.objects.filter(site_id=site_id)
+    gallery_albums = list(gallery_albums.order_by('-name').values())
+    gallery_albums_new = []
+    for x in gallery_albums:
+        album_images = GalleryImage.objects.filter(album_id=x['id'])
+        album_images = album_images.order_by('date_time').values()
+
+        album_data = {'id': x['id'], 'uri': 'album',
+                      'type': 'Album ('+x['name'][0:20]+')',
+                      'date': album_images.first()['date_time'].date()}
+        if 'school_id' in x and x['school_id']:
+            album_data['school_id'] = x['school_id']
+        else:
+            album_data['school_id'] = -1
+        gallery_albums_new.append(album_data)
+    gallery_albums = gallery_albums_new
+
+    # Files
+    gallery_files = GalleryFile.objects.filter(site_id=site_id)
+    gallery_files = list(gallery_files.order_by('-date_time').values())
+    gallery_files_new = []
+    for x in gallery_files:
+        file_data = {'id': x['id'], 'uri': 'file',
+                     'type': 'File', 'date': x['date_time'].date()}
+        if 'school_id' in x and x['school_id']:
+            file_data['school_id'] = x['school_id']
+        else:
+            file_data['school_id'] = -1
+        gallery_files_new.append(file_data)
+    gallery_files = gallery_files_new
+
+    # Compile gallery items into one list
+    gallery_items = []
+    gallery_items += gallery_images + gallery_albums + gallery_files
+
+    gallery_items.sort(cmp=sort_date, key=lambda x: x['date'])
+    gallery_items.sort(key=lambda x: -x['school_id'])
+
+    return gallery_items
 
 
 def sort_date(x, y):
@@ -440,7 +493,15 @@ def deactivate_site(request, site_slug):
     })
 
 
-def new_gallery_item(request, site_slug):
+def new_gallery_image(request, site_slug):
+    return HttpResponseForbidden("This page is not implemented!")
+
+
+def new_gallery_album(request, site_slug):
+    return HttpResponseForbidden("This page is not implemented!")
+
+
+def new_gallery_file(request, site_slug):
     return HttpResponseForbidden("This page is not implemented!")
 
 
