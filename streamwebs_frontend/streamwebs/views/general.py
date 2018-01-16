@@ -349,10 +349,15 @@ def get_gallery_items(site_id):
     for x in gallery_albums:
         album_images = GalleryImage.objects.filter(album_id=x['id'])
         album_images = album_images.order_by('date_time').values()
+        
+        if album_images.first() is not None:
+            album_date = album_images.first()['date_time'].date()
+        else:
+            album_date = datetime.date(1970, 1, 1)
 
         album_data = {'id': x['id'], 'uri': 'album',
                       'type': 'Album ('+x['name'][0:20]+')',
-                      'date': album_images.first()['date_time'].date()}
+                      'date': album_date}
         if 'school_id' in x and x['school_id']:
             album_data['school_id'] = x['school_id']
         else:
