@@ -1,0 +1,17 @@
+{% load staticfiles %}
+{% load i18n %}
+{% load filters %}
+
+{% block content %}
+{% if perms.streamwebs.is_org_admin%}
+  <a id="delete-datasheet" class="waves-effect waves-light btn red darken-3">Delete</a>
+{% endif %}
+<script>
+    var url = window.location.href
+    var delete_url = url + "delete/"
+    var button = document.getElementById("delete-datasheet")
+    button.href = delete_url
+    console.log(button.href)
+
+</script>
+{% endblock %}
