@@ -214,6 +214,10 @@ var formatData = function formatData(data, key) {
 
 var filterOutliers = function filterOutliers(entries) {
 
+    /* If there is only one entry, don't filter it out */
+    if(entries.length === 1)
+    return entries
+
     /*
      * Next we calculate the first and third quartile and the inter-quartile range
      */
