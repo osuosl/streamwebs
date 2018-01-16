@@ -216,7 +216,7 @@ var filterOutliers = function filterOutliers(entries) {
 
     /* If there is only one entry, don't filter it out */
     if(entries.length === 1)
-    return entries
+        return entries
 
     /*
      * Next we calculate the first and third quartile and the inter-quartile range
@@ -620,6 +620,10 @@ var graphTemperature = function graphTemperature(responsive=false) {
 
     var g2 = createGraphTemplate(containerName2, width, height, x, y, legendHeight);
 
+    if ((filtered1.water_temperature.length ||
+        filtered1.air_temperature.length) ||
+        (window.hasSiteTwo && (filtered2.water_temperature.length ||
+        filtered2.air_temperature.length))) {
         $('#temperature-control').prop({
             disabled: null,
             checked: true
