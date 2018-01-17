@@ -498,6 +498,18 @@ def deactivate_site(request, site_slug):
     })
 
 
+def add_gallery_image(request, site_slug):
+    return HttpResponseForbidden("This page is not implemented!")
+
+
+def add_gallery_album(request, site_slug):
+    return HttpResponseForbidden("This page is not implemented!")
+
+
+def add_gallery_file(request, site_slug):
+    return HttpResponseForbidden("This page is not implemented!")
+
+
 def gallery_image(request, site_slug, image_id):
     return HttpResponseForbidden("This page is not implemented!")
 
@@ -510,15 +522,15 @@ def gallery_file(request, site_slug, file_id):
     return HttpResponseForbidden("This page is not implemented!")
 
 
-def new_gallery_image(request, site_slug):
+def delete_gallery_image(request, site_slug):
     return HttpResponseForbidden("This page is not implemented!")
 
 
-def new_gallery_album(request, site_slug):
+def delete_gallery_album(request, site_slug):
     return HttpResponseForbidden("This page is not implemented!")
 
 
-def new_gallery_file(request, site_slug):
+def delete_gallery_file(request, site_slug):
     return HttpResponseForbidden("This page is not implemented!")
 
 

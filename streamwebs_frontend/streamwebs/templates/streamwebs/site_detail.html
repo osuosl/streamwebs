@@ -313,15 +313,15 @@
           </a>
           
           <div id="add_gallery_item_types" class="collection" hidden>
-            <a href="{% url 'streamwebs:new_gallery_image' site_slug=site.site_slug %}"
+            <a href="{% url 'streamwebs:add_gallery_image' site_slug=site.site_slug %}"
                 class="collection-item">
               {% trans "Image" %}
             </a>
-            <a href="{% url 'streamwebs:new_gallery_album' site_slug=site.site_slug %}"
+            <a href="{% url 'streamwebs:add_gallery_album' site_slug=site.site_slug %}"
               class="collection-item">
               {% trans "Album" %}
             </a>
-            <a href="{% url 'streamwebs:new_gallery_file' site_slug=site.site_slug %}"
+            <a href="{% url 'streamwebs:add_gallery_file' site_slug=site.site_slug %}"
               class="collection-item">
               {% trans "File" %}
             </a>
