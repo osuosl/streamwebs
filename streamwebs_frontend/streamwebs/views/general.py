@@ -23,7 +23,8 @@ from streamwebs.forms import (
     PhotoPointImageForm, PhotoPointForm, CameraPointForm, WQSampleForm,
     WQForm, SiteForm, Canopy_Cover_Form, SoilSurveyForm, StatisticsForm,
     TransectZoneForm, BaseZoneInlineFormSet, ResourceForm, UserEmailForm,
-    UserPasswordForm, SchoolForm, RipAquaForm)
+    UserPasswordForm, SchoolForm, RipAquaForm,
+    GalleryImageAddForm, GalleryAlbumAddForm, GalleryFileAddForm)
 
 from streamwebs.models import (
     Macroinvertebrates, Site, Water_Quality, WQ_Sample, RiparianTransect,
@@ -334,7 +335,7 @@ def get_gallery_items(site_id):
     gallery_images_new = []
     for x in gallery_images:
         image_data = {'id': x['id'], 'uri': 'image',
-                      'type': 'Image', 'date': x['date_time'].date()}
+                      'type': 'Image ' + str(x['id']), 'date': x['date_time'].date()}
         if 'school_id' in x and x['school_id']:
             image_data['school_id'] = x['school_id']
         else:
@@ -349,7 +350,7 @@ def get_gallery_items(site_id):
     for x in gallery_albums:
         album_images = GalleryImage.objects.filter(album_id=x['id'])
         album_images = album_images.order_by('date_time').values()
-        
+
         if album_images.first() is not None:
             album_date = album_images.first()['date_time'].date()
         else:
@@ -371,7 +372,7 @@ def get_gallery_items(site_id):
     gallery_files_new = []
     for x in gallery_files:
         file_data = {'id': x['id'], 'uri': 'file',
-                     'type': 'File', 'date': x['date_time'].date()}
+                     'type': 'File ' + str(x['id']), 'date': x['date_time'].date()}
         if 'school_id' in x and x['school_id']:
             file_data['school_id'] = x['school_id']
         else:
@@ -481,10 +482,10 @@ def deactivate_site(request, site_slug):
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
 
     if not(Water_Quality.objects.filter(site_id=site.id).exists() or
-            Macroinvertebrates.objects.filter(site_id=site.id).exists() or
-            RiparianTransect.objects.filter(site_id=site.id).exists() or
-            Canopy_Cover.objects.filter(site_id=site.id).exists() or
-            CameraPoint.objects.filter(site_id=site.id).exists()):
+           Macroinvertebrates.objects.filter(site_id=site.id).exists() or
+           RiparianTransect.objects.filter(site_id=site.id).exists() or
+           Canopy_Cover.objects.filter(site_id=site.id).exists() or
+           CameraPoint.objects.filter(site_id=site.id).exists()):
 
         site.active = False
         site.modified = timezone.now()
@@ -498,19 +499,61 @@ def deactivate_site(request, site_slug):
     })
 
 
+@login_required
+@permission_required('streamwebs.is_org_author', raise_exception=True)
+@any_organization_required
 def add_gallery_image(request, site_slug):
-    return HttpResponseForbidden("This page is not implemented!")
+    site = Site.objects.get(site_slug=site_slug)
+
+    if request.method == 'POST':
+        image_form = GalleryImageAddForm(request.POST, request.FILES)
+
+        if image_form.is_valid():
+            user = request.user
+            profile = UserProfile.objects.get(user=user)
+            if profile is not None:
+                image = image_form.save()
+                image.site = site
+                image.user = request.user
+                image.school = profile.school
+                image.save()
+
+                return HttpResponseRedirect(
+                    '/sites/%s/image/%i' % (site_slug, image.id))
+    else:
+        image_form = GalleryImageAddForm()
+
+    return render(request, 'streamwebs/gallery/gallery_image_add.html', {
+        'site': site,
+        'image_form': image_form
+    })
 
 
+@login_required
+@permission_required('streamwebs.is_org_author', raise_exception=True)
+@any_organization_required
 def add_gallery_album(request, site_slug):
     return HttpResponseForbidden("This page is not implemented!")
 
 
+
+@login_required
+@permission_required('streamwebs.is_org_author', raise_exception=True)
+@any_organization_required
 def add_gallery_file(request, site_slug):
-    return HttpResponseForbidden("This page is not implemented!")
+    site = Site.objects.get(site_slug=site_slug)
+    return render(request, 'streamwebs/gallery/gallery_file_add.html', {
+        'site': site,
+    })
 
 
 def gallery_image(request, site_slug, image_id):
+    site = Site.objects.get(site_slug=site_slug)
+    image = GalleryImage.objects.get(id=image_id)
+    return render(request, 'streamwebs/gallery/gallery_image_view.html', {
+        'site': site,
+        'gallery_image': image
+    })
     return HttpResponseForbidden("This page is not implemented!")
 
 
@@ -522,14 +565,23 @@ def gallery_file(request, site_slug, file_id):
     return HttpResponseForbidden("This page is not implemented!")
 
 
+@login_required
+@permission_required('streamwebs.is_org_author', raise_exception=True)
+@any_organization_required
 def delete_gallery_image(request, site_slug):
     return HttpResponseForbidden("This page is not implemented!")
 
 
+@login_required
+@permission_required('streamwebs.is_org_author', raise_exception=True)
+@any_organization_required
 def delete_gallery_album(request, site_slug):
     return HttpResponseForbidden("This page is not implemented!")
 
 
+@login_required
+@permission_required('streamwebs.is_org_author', raise_exception=True)
+@any_organization_required
 def delete_gallery_file(request, site_slug):
     return HttpResponseForbidden("This page is not implemented!")
 

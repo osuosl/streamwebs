@@ -1,0 +1,77 @@
+{% extends 'streamwebs/base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+{% load filters %}
+{% load verbose_names %}
+
+{% block title %}{% trans "View gallery image" %}{% endblock %}
+
+{% block content %}
+  <style>
+    ul.errorlist ~ input {
+      border-bottom-color: red;
+    }
+    ul.errorlist ~ div.input-field{
+      border-top: 1px solid red;
+    }
+  </style>
+
+  <!-- Back button -->
+  <a href="{% url 'streamwebs:site' site.site_slug %}" id="back"
+      class="waves-effect wave-light btn white-text teal darken-3">
+    <i class="material-icons">chevron_left</i>
+    Back to <span>{{ site.site_name }}</span>
+  </a>
+
+  <div class="row">
+    <!-- Site name -->
+    <div class="col s12">
+      <h3 align="center" class="teal-text">
+        {{ site.site_name }}
+      </h3>
+    </div>
+    <br/>
+  </div>
+
+    <!-- Image info -->
+    <div class="container">
+      <div class="row">
+        <b>{% trans "School" %}: </b>
+        {{ gallery_image.school }}
+      </div>
+      <div class="row">
+        <b>{% trans "Date and Time" %}: </b>
+        {{ gallery_image.date_time }}
+      </div>
+    </div>
+    <br/><br/>
+
+    <!-- Image -->
+    <div class="row">
+      <div class="col s12 center">
+        {% if gallery_image.image.url != None %}
+        <img src="{{ gallery_image.image.url }}">
+        {% else %}
+        <h3>Image does not exist!</h3>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+
+<script>
+  var ERROR_TOAST = ''; // printed by data-toasts.js
+  {% for field, errors in image_form.errors.items %}
+    {% for error in errors %}
+      // get_field_label is from verbose_names.py
+      ERROR_TOAST += "{% get_field_label image_form field %}: {{ error }}<br>";
+    {% endfor %}
+  {% endfor %}
+</script>
+
+<script src="{% static 'streamwebs/js/data.js' %}"></script>
+<script src="{% static 'streamwebs/js/data-toasts.js' %}"></script>
+
+{% endblock %}

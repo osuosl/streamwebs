@@ -197,6 +197,14 @@ class GalleryAlbum(models.Model):
         School, null=True, on_delete=models.CASCADE,
         verbose_name=_('school'), limit_choices_to={'active': True}
     )
+    images = models.ImageField(null=True,
+                               upload_to='gallery_images/',
+                               verbose_name=_('images')
+                              )
+    date_time = models.DateTimeField(
+        default=timezone.now, verbose_name=_('date and time')
+    )
+
 
     def __str__(self):
         if self.site is not None:
@@ -223,7 +231,8 @@ class GalleryImage(models.Model):
         GalleryAlbum, null=True, blank=True, on_delete=models.CASCADE,
         verbose_name=_('album')
     )
-    image = models.ImageField(null=True, upload_to='gallery_images/',
+    image = models.ImageField(null=True,
+                              upload_to='gallery_images/',
                               verbose_name=_('image'))
     date_time = models.DateTimeField(
         default=timezone.now, verbose_name=_('date and time')
