@@ -430,7 +430,6 @@ var useBarGraph = function useBarGraph() {
     for (var category in categories) {
         for (var entry of categories[category]) {
             entry.value /= numEntries; // Earlier summed, now divide to get average
-            entry.value = Math.trunc(entry.value);
         }
     }
 
