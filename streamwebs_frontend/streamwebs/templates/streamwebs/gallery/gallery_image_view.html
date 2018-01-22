@@ -43,20 +43,38 @@
         <b>{% trans "Date and Time" %}: </b>
         {{ gallery_image.date_time }}
       </div>
+      <div class="row">
+        <b>{% trans "Filename" %}: </b>
+        {{ gallery_image.filename }}
+      </div>
     </div>
     <br/><br/>
 
     <!-- Image -->
     <div class="row container">
       <div class="col s12 center">
+        {% if gallery_image.image.url != None %}
         <div class="card">
           <div class="card-image">
-            {% if gallery_image.image.url != None %}
             <img src="{{ gallery_image.image.url }}">
-            {% else %}
-            <h3>Image does not exist!</h3>
-            {% endif %}
           </div>
+          <div class="card">
+            <!-- View -->
+            <a class="btn teal darken-3 left"
+              href="{{ gallery_image.image.url }}">
+              <i class="medium material-icons">fullscreen</i>
+              View
+            </a>
+            <!-- Download -->
+            <a class="btn teal darken-3 right"
+              href="{{ gallery_image.image.url }}" download>
+              <i class="medium material-icons">file_download</i>
+              Download
+            </a>
+          </div>
+          {% else %}
+          <h3>Image does not exist!</h3>
+          {% endif %}
         </div>
       </div>
     </div>
@@ -64,18 +82,5 @@
 {% endblock %}
 
 {% block scripts %}
-
-<script>
-  var ERROR_TOAST = ''; // printed by data-toasts.js
-  {% for field, errors in image_form.errors.items %}
-    {% for error in errors %}
-      // get_field_label is from verbose_names.py
-      ERROR_TOAST += "{% get_field_label image_form field %}: {{ error }}<br>";
-    {% endfor %}
-  {% endfor %}
-</script>
-
-<script src="{% static 'streamwebs/js/data.js' %}"></script>
-<script src="{% static 'streamwebs/js/data-toasts.js' %}"></script>
 
 {% endblock %}

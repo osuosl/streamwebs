@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from numbers import Number
 
 from django.utils import timezone
-import datetime
+import datetime, os
 
 from django.contrib.gis.db import models
 from django.utils.encoding import python_2_unicode_compatible
@@ -235,6 +235,9 @@ class GalleryImage(models.Model):
         default=timezone.now, verbose_name=_('date and time')
     )
 
+    def filename(self):
+        return os.path.basename(self.image.name)
+
     def __str__(self):
         if self.site is not None:
             if self.album is not None:
@@ -266,9 +269,13 @@ class GalleryFile(models.Model):
         default=timezone.now, verbose_name=_('date and time')
     )
 
+    def filename(self):
+        return os.path.basename(self.gallery_file.name)
+
     def __str__(self):
         if self.site is not None:
-            return self.site.site_name + ' file ' + str(self.id)
+            return self.site.site_name + ' file ' + str(self.id) +\
+                    '(' + self.filename() + ')'
         else:
             return _('Unspecified site for file ') + str(self.id)
 

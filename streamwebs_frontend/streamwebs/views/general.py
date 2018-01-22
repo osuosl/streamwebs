@@ -331,13 +331,13 @@ def get_datasheets(site_id):
 def get_gallery_items(site_id):
     # Individual images
     gallery_images = GalleryImage.objects.filter(site_id=site_id, album=None)
-    gallery_images = list(gallery_images.order_by('-date_time').values())
+    gallery_images = list(gallery_images.order_by('-date_time'))
     gallery_images_new = []
     for x in gallery_images:
-        image_data = {'id': x['id'], 'uri': 'image',
-                      'type': 'Image ' + str(x['id']), 'date': x['date_time'].date()}
-        if 'school_id' in x and x['school_id']:
-            image_data['school_id'] = x['school_id']
+        image_data = {'id': x.id, 'uri': 'image',
+                      'type': 'Image ' + str(x.id), 'date': x.date_time.date()}
+        if x.school_id:
+            image_data['school_id'] = x.school_id
         else:
             image_data['school_id'] = -1
         gallery_images_new.append(image_data)
@@ -368,13 +368,14 @@ def get_gallery_items(site_id):
 
     # Files
     gallery_files = GalleryFile.objects.filter(site_id=site_id)
-    gallery_files = list(gallery_files.order_by('-date_time').values())
+    gallery_files = list(gallery_files.order_by('-date_time'))
     gallery_files_new = []
     for x in gallery_files:
-        file_data = {'id': x['id'], 'uri': 'file',
-                     'type': 'File ' + str(x['id']), 'date': x['date_time'].date()}
-        if 'school_id' in x and x['school_id']:
-            file_data['school_id'] = x['school_id']
+        file_data = {'id': str(x.id), 'uri': 'file',
+                     'type': 'File ' + str(x.id) + ' (' + str(x.filename()) + ')',
+                     'date': x.date_time.date()}
+        if x.school_id:
+            file_data['school_id'] = x.school_id
         else:
             file_data['school_id'] = -1
         gallery_files_new.append(file_data)
@@ -603,7 +604,7 @@ def add_gallery_file(request, site_slug):
 
 def gallery_image(request, site_slug, image_id):
     site = Site.objects.get(site_slug=site_slug)
-    image = GalleryImage.objects.get(id=image_id)
+    image = GalleryImage.objects.filter(site_id=site.id, id=image_id).first()
     return render(request, 'streamwebs/gallery/gallery_image_view.html', {
         'site': site,
         'gallery_image': image
@@ -629,7 +630,12 @@ def gallery_album(request, site_slug, album_id):
 
 
 def gallery_file(request, site_slug, file_id):
-    return HttpResponseForbidden("This page is not implemented!")
+    site = Site.objects.get(site_slug=site_slug)
+    gallery_file = GalleryFile.objects.get(id=file_id)
+    return render(request, 'streamwebs/gallery/gallery_file_view.html', {
+        'site': site,
+        'gallery_file': gallery_file
+    })
 
 
 @login_required
@@ -753,7 +759,7 @@ def account(request):
     user = request.user
     user = User.objects.get(username=user)
     return render(request, 'streamwebs/account.html', {
-                  'user': user})
+        'user': user})
 
 
 @login_required

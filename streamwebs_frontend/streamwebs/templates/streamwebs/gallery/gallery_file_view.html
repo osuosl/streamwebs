@@ -4,7 +4,7 @@
 {% load filters %}
 {% load verbose_names %}
 
-{% block title %}{% trans "View gallery image" %}{% endblock %}
+{% block title %}{% trans "View gallery file" %}{% endblock %}
 
 {% block content %}
   <style>
@@ -33,26 +33,34 @@
     <br/>
   </div>
 
-    <!-- Image info -->
+    <!-- File info -->
     <div class="container">
       <div class="row">
         <b>{% trans "School" %}: </b>
-        {{ gallery_image.school }}
+        {{ gallery_file.school }}
       </div>
       <div class="row">
         <b>{% trans "Date and Time" %}: </b>
-        {{ gallery_image.date_time }}
+        {{ gallery_file.date_time }}
+      </div>
+      <div class="row">
+        <b>{% trans "Filename" %}: </b>
+        {{ gallery_file.filename }}
       </div>
     </div>
     <br/><br/>
 
-    <!-- Image -->
+    <!-- File download -->
     <div class="row">
       <div class="col s12 center">
-        {% if gallery_image.image.url != None %}
-        <img src="{{ gallery_image.image.url }}">
+        {% if gallery_file.gallery_file.url != None %}
+        <a class="btn-large teal darken-3"
+           href="{{ gallery_file.gallery_file.url }}" download>
+          <i class="medium material-icons">file_download</i>
+          <span>Download {{ gallery_file.filename }}</span>
+        </a>
         {% else %}
-        <h3>Image does not exist!</h3>
+        <h3>File does not exist!</h3>
         {% endif %}
       </div>
     </div>
@@ -60,18 +68,5 @@
 {% endblock %}
 
 {% block scripts %}
-
-<script>
-  var ERROR_TOAST = ''; // printed by data-toasts.js
-  {% for field, errors in image_form.errors.items %}
-    {% for error in errors %}
-      // get_field_label is from verbose_names.py
-      ERROR_TOAST += "{% get_field_label image_form field %}: {{ error }}<br>";
-    {% endfor %}
-  {% endfor %}
-</script>
-
-<script src="{% static 'streamwebs/js/data.js' %}"></script>
-<script src="{% static 'streamwebs/js/data-toasts.js' %}"></script>
 
 {% endblock %}

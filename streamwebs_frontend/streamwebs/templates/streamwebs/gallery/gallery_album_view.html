@@ -64,7 +64,7 @@
             <div class="col s{{img_row_size}}">
               <div class="card">
                 <div class="card-image">
-                  <a href="{% url 'streamwebs:gallery_image' site.site_slug gallery_image.id %}">
+                  <a href="{% url 'streamwebs:gallery_image' gallery_image.site.site_slug gallery_image.id %}">
                     <img src="{{ gallery_image.image.url }}">
                   </a>
                 </div>
@@ -78,22 +78,5 @@
 {% endblock %}
 
 {% block scripts %}
-
-<script>
-  $(function(){
-    $('.carousel').carousel({fullWidth: true});
-  });
-
-  var ERROR_TOAST = ''; // printed by data-toasts.js
-  {% for field, errors in image_form.errors.items %}
-    {% for error in errors %}
-      // get_field_label is from verbose_names.py
-      ERROR_TOAST += "{% get_field_label image_form field %}: {{ error }}<br>";
-    {% endfor %}
-  {% endfor %}
-</script>
-
-<script src="{% static 'streamwebs/js/data.js' %}"></script>
-<script src="{% static 'streamwebs/js/data-toasts.js' %}"></script>
 
 {% endblock %}

@@ -416,7 +416,7 @@ class GalleryAlbumAddForm(forms.ModelForm):
 
 class GalleryFileAddForm(forms.ModelForm):
     date = forms.DateField(
-        label="Photo Date",
+        label="File Date",
         widget=forms.DateInput(attrs={'class': 'datepicker'}),
     )
 
