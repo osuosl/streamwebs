@@ -533,8 +533,42 @@ def add_gallery_image(request, site_slug):
 @permission_required('streamwebs.is_org_author', raise_exception=True)
 @any_organization_required
 def add_gallery_album(request, site_slug):
-    return HttpResponseForbidden("This page is not implemented!")
+    site = Site.objects.get(site_slug=site_slug)
 
+    if request.method == 'POST':
+        album_form = GalleryAlbumAddForm(request.POST)
+
+        if album_form.is_valid():
+            user = request.user
+            profile = UserProfile.objects.get(user=user)
+            if profile is not None:
+                album = album_form.save()
+                album.site = site
+                album.user = request.user
+                album.school = profile.school
+                album.save()
+
+                # Build GalleryImages from request
+                if request.FILES is not None:
+                    for image_file in request.FILES.getlist('image'):
+                        image = GalleryImage()
+                        image.site = site
+                        image.school = profile.school
+                        image.user = user
+                        image.date_time = album.date_time
+                        image.album = album
+                        image.image = image_file
+                        image.save()
+
+                return HttpResponseRedirect(
+                    '/sites/%s/album/%i' % (site_slug, album.id))
+    else:
+        album_form = GalleryAlbumAddForm()
+
+    return render(request, 'streamwebs/gallery/gallery_album_add.html', {
+        'site': site,
+        'album_form': album_form
+    })
 
 
 @login_required
@@ -574,11 +608,24 @@ def gallery_image(request, site_slug, image_id):
         'site': site,
         'gallery_image': image
     })
-    return HttpResponseForbidden("This page is not implemented!")
 
 
 def gallery_album(request, site_slug, album_id):
-    return HttpResponseForbidden("This page is not implemented!")
+    site = Site.objects.get(site_slug=site_slug)
+    album = GalleryAlbum.objects.get(id=album_id)
+    images = GalleryImage.objects.filter(album_id=album_id).all()
+
+    split_images = list(images)
+    img_per_row = 4 # Maximum of 12, divisible by 12 for symmetry on page
+    grid_images = [split_images[i:i + img_per_row] for i in xrange(0, len(split_images), img_per_row)]
+
+    return render(request, 'streamwebs/gallery/gallery_album_view.html', {
+        'site': site,
+        'gallery_album' : album,
+        'images': images,
+        'gallery_images': grid_images,
+        'img_row_size': 12/img_per_row,
+    })
 
 
 def gallery_file(request, site_slug, file_id):

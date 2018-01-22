@@ -14,6 +14,9 @@
     ul.errorlist ~ div.input-field{
       border-top: 1px solid red;
     }
+    .carousel-slider {
+      height: 400px !important;
+    }
   </style>
 
   <!-- Back button -->
@@ -29,36 +32,47 @@
       <h3 align="center" class="teal-text">
         {{ site.site_name }}
       </h3>
+      <h4 align="center">{{ gallery_album.name }}</h4>
     </div>
     <br/>
   </div>
 
-    <!-- Image info -->
+    <!-- Album info -->
     <div class="container">
       <div class="row">
         <b>{% trans "School" %}: </b>
-        {{ gallery_image.school }}
+        {{ gallery_album.school }}
       </div>
       <div class="row">
         <b>{% trans "Date and Time" %}: </b>
-        {{ gallery_image.date_time }}
+        {{ gallery_album.date_time }}
       </div>
+      <!--
+      <div class="row">
+        <b>{% trans "Published by" %}: </b>
+        <p>User's name here</p>
+      </div>
+      -->
     </div>
     <br/><br/>
 
-    <!-- Image -->
+    <!-- Images -->
     <div class="row container">
-      <div class="col s12 center">
-        <div class="card">
-          <div class="card-image">
-            {% if gallery_image.image.url != None %}
-            <img src="{{ gallery_image.image.url }}">
-            {% else %}
-            <h3>Image does not exist!</h3>
-            {% endif %}
-          </div>
+      {% for row_of_img in gallery_images %}
+        <div class="row">
+          {% for gallery_image in row_of_img %}
+            <div class="col s{{img_row_size}}">
+              <div class="card">
+                <div class="card-image">
+                  <a href="{% url 'streamwebs:gallery_image' site.site_slug gallery_image.id %}">
+                    <img src="{{ gallery_image.image.url }}">
+                  </a>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
         </div>
-      </div>
+      {% endfor %}
     </div>
   </div>
 {% endblock %}
@@ -66,6 +80,10 @@
 {% block scripts %}
 
 <script>
+  $(function(){
+    $('.carousel').carousel({fullWidth: true});
+  });
+
   var ERROR_TOAST = ''; // printed by data-toasts.js
   {% for field, errors in image_form.errors.items %}
     {% for error in errors %}

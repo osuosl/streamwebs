@@ -187,7 +187,8 @@ def validate_UserProfile_birthdate(birthdate):
 
 
 class GalleryAlbum(models.Model):
-    name = models.CharField(max_length=250)
+    name = models.CharField(max_length=250,
+                            verbose_name=_('title'))
 
     site = models.ForeignKey(
         Site, null=True, on_delete=models.CASCADE,
@@ -197,10 +198,6 @@ class GalleryAlbum(models.Model):
         School, null=True, on_delete=models.CASCADE,
         verbose_name=_('school'), limit_choices_to={'active': True}
     )
-    images = models.ImageField(null=True,
-                               upload_to='gallery_images/',
-                               verbose_name=_('images')
-                              )
     date_time = models.DateTimeField(
         default=timezone.now, verbose_name=_('date and time')
     )

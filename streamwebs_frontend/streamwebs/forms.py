@@ -411,7 +411,7 @@ class GalleryAlbumAddForm(forms.ModelForm):
 
     class Meta:
         model = GalleryAlbum
-        fields = ('images', 'date',)
+        fields = ('name', 'date',)
 
 
 class GalleryFileAddForm(forms.ModelForm):
