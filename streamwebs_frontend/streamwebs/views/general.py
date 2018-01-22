@@ -542,8 +542,28 @@ def add_gallery_album(request, site_slug):
 @any_organization_required
 def add_gallery_file(request, site_slug):
     site = Site.objects.get(site_slug=site_slug)
+
+    if request.method == 'POST':
+        file_form = GalleryFileAddForm(request.POST, request.FILES)
+
+        if file_form.is_valid():
+            user = request.user
+            profile = UserProfile.objects.get(user=user)
+            if profile is not None:
+                ffile = file_form.save()
+                ffile.site = site
+                ffile.user = request.user
+                ffile.school = profile.school
+                ffile.save()
+
+                return HttpResponseRedirect(
+                    '/sites/%s/file/%i' % (site_slug, ffile.id))
+    else:
+        file_form = GalleryFileAddForm()
+
     return render(request, 'streamwebs/gallery/gallery_file_add.html', {
         'site': site,
+        'file_form': file_form
     })
 
 

@@ -397,6 +397,7 @@ class GalleryImageAddForm(forms.ModelForm):
         widget=forms.DateInput(attrs={'class': 'datepicker'}),
     )
 
+
     class Meta:
         model = GalleryImage
         fields = ('image', 'date')
@@ -414,9 +415,14 @@ class GalleryAlbumAddForm(forms.ModelForm):
 
 
 class GalleryFileAddForm(forms.ModelForm):
+    date = forms.DateField(
+        label="Photo Date",
+        widget=forms.DateInput(attrs={'class': 'datepicker'}),
+    )
+
     class Meta:
-        model = GalleryImage
-        fields = ('image', 'date_time')
+        model = GalleryFile
+        fields = ('gallery_file', 'date')
 
 
 class SoilSurveyForm(forms.ModelForm):
