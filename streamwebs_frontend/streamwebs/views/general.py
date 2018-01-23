@@ -335,7 +335,8 @@ def get_gallery_items(site_id):
     gallery_images_new = []
     for x in gallery_images:
         image_data = {'id': x.id, 'uri': 'image',
-                      'type': 'Image ' + str(x.id), 'date': x.date_time.date()}
+                      'type': 'Image ' + str(x.id) + ' (' + str(x.filename()) + ')',
+                      'date': x.date_time.date()}
         if x.school_id:
             image_data['school_id'] = x.school_id
         else:
