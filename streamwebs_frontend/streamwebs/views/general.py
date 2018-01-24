@@ -641,22 +641,22 @@ def gallery_file(request, site_slug, file_id):
 
 @login_required
 @permission_required('streamwebs.is_org_author', raise_exception=True)
-@any_organization_required
-def delete_gallery_image(request, site_slug):
+def delete_gallery_image(request, site_slug, image_id):
+    image = GalleryImage.objects.get(id=image_id)
+    image.delete()
+
+    return HttpResponseRedirect('/sites/%s' % site_slug)
+
+
+@login_required
+@permission_required('streamwebs.is_org_author', raise_exception=True)
+def delete_gallery_album(request, site_slug, album_id):
     return HttpResponseForbidden("This page is not implemented!")
 
 
 @login_required
 @permission_required('streamwebs.is_org_author', raise_exception=True)
-@any_organization_required
-def delete_gallery_album(request, site_slug):
-    return HttpResponseForbidden("This page is not implemented!")
-
-
-@login_required
-@permission_required('streamwebs.is_org_author', raise_exception=True)
-@any_organization_required
-def delete_gallery_file(request, site_slug):
+def delete_gallery_file(request, site_slug, file_id):
     return HttpResponseForbidden("This page is not implemented!")
 
 
