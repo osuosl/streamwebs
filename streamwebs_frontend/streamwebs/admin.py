@@ -2,7 +2,8 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import User
 
-from .models import (Site,
+from .models import (
+    Site,
     Water_Quality, WQ_Sample, Macroinvertebrates, TransectZone,
     RiparianTransect, Canopy_Cover, School, CameraPoint,
     PhotoPoint, PhotoPointImage, Soil_Survey, Resource, UserProfile,

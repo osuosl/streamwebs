@@ -29,11 +29,14 @@ urlpatterns = [
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/file/(?P<file_id>[0-9]+)/$',
         views.gallery_file, name='gallery_file'),
 
-    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/image/(?P<image_id>[0-9]+)/delete/$',
+    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/image/(?P<image_id>[0-9]+)/' +
+        'delete/$',
         views.delete_gallery_image, name='delete_gallery_image'),
-    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/album/(?P<album_id>[0-9]+)/delete/$',
+    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/album/(?P<album_id>[0-9]+)/' +
+        'delete/$',
         views.delete_gallery_album, name='delete_gallery_album'),
-    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/file/(?P<file_id>[0-9]+)/delete/$',
+    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/file/(?P<file_id>[0-9]+)/' +
+        'delete/$',
         views.delete_gallery_file, name='delete_gallery_file'),
 
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/edit/', views.update_site,

@@ -4,7 +4,8 @@ from __future__ import unicode_literals
 from numbers import Number
 
 from django.utils import timezone
-import datetime, os
+import datetime
+import os
 
 from django.contrib.gis.db import models
 from django.utils.encoding import python_2_unicode_compatible
@@ -201,7 +202,6 @@ class GalleryAlbum(models.Model):
     date_time = models.DateTimeField(
         default=timezone.now, verbose_name=_('date and time')
     )
-
 
     def __str__(self):
         if self.site is not None:

@@ -1,6 +1,7 @@
 # -*- coding: UTF-8 -*-
 from __future__ import unicode_literals
-from streamwebs.models import (UserProfile, WQ_Sample, Water_Quality,
+from streamwebs.models import (
+    UserProfile, WQ_Sample, Water_Quality,
     Macroinvertebrates, Canopy_Cover, TransectZone,
     RiparianTransect, PhotoPointImage, PhotoPoint, CameraPoint, Site, School,
     Soil_Survey, Resource, RipAquaticSurvey,
@@ -396,7 +397,6 @@ class GalleryImageAddForm(forms.ModelForm):
         label="Photo Date",
         widget=forms.DateInput(attrs={'class': 'datepicker'}),
     )
-
 
     class Meta:
         model = GalleryImage

@@ -373,7 +373,8 @@ def get_gallery_items(site_id):
     gallery_files_new = []
     for x in gallery_files:
         file_data = {'id': str(x.id), 'uri': 'file',
-                     'type': 'File ' + str(x.id) + ' (' + str(x.filename()) + ')',
+                     'type': 'File ' + str(x.id) + ' (' + str(x.filename()) +
+                     ')',
                      'date': x.date_time.date()}
         if x.school_id:
             file_data['school_id'] = x.school_id
@@ -618,12 +619,13 @@ def gallery_album(request, site_slug, album_id):
     images = GalleryImage.objects.filter(album_id=album_id).all()
 
     split_images = list(images)
-    img_per_row = 4 # Maximum of 12, divisible by 12 for symmetry on page
-    grid_images = [split_images[i:i + img_per_row] for i in xrange(0, len(split_images), img_per_row)]
+    img_per_row = 4  # Maximum of 12, divisible by 12 for symmetry on page
+    grid_images = [split_images[i:i + img_per_row] for i in xrange(
+        0, len(split_images), img_per_row)]
 
     return render(request, 'streamwebs/gallery/gallery_album_view.html', {
         'site': site,
-        'gallery_album' : album,
+        'gallery_album': album,
         'images': images,
         'gallery_images': grid_images,
         'img_row_size': 12/img_per_row,
