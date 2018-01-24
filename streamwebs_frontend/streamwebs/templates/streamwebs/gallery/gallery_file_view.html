@@ -27,7 +27,7 @@
       Back to <span>{{ site.site_name }}</span>
     </a>
     <!-- Delete button -->
-    {% if perms.streamwebs.is_org_admin%}
+    {% if perms.streamwebs.is_org_admin and can_delete %}
       <a id="delete_button" 
          class="waves-effect waves-light btn red darken-3 right"
          href="{% url 'streamwebs:delete_gallery_file' site.site_slug gallery_file.id %}">
