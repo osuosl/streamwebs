@@ -608,18 +608,9 @@ def gallery_image(request, site_slug, image_id):
     site = Site.objects.get(site_slug=site_slug)
     image = GalleryImage.objects.filter(site_id=site.id, id=image_id).first()
 
-    can_delete = False
-    profile = UserProfile.objects.get(user=request.user)
-    if profile is not None and profile.school is not None:
-        if profile.school_id == image.school_id:
-            can_delete = True
-        if request.user.has_perm('streamwebs.is_super_admin'):
-            can_delete = True
-
     return render(request, 'streamwebs/gallery/gallery_image_view.html', {
         'site': site,
         'gallery_image': image,
-        'can_delete': can_delete,
     })
 
 
@@ -633,21 +624,12 @@ def gallery_album(request, site_slug, album_id):
     grid_images = [split_images[i:i + img_per_row] for i in xrange(
         0, len(split_images), img_per_row)]
 
-    can_delete = False
-    profile = UserProfile.objects.get(user=request.user)
-    if profile is not None and profile.school is not None:
-        if profile.school_id == album.school_id:
-            can_delete = True
-        if request.user.has_perm('streamwebs.is_super_admin'):
-            can_delete = True
-
     return render(request, 'streamwebs/gallery/gallery_album_view.html', {
         'site': site,
         'gallery_album': album,
         'images': images,
         'gallery_images': grid_images,
         'img_row_size': 12/img_per_row,
-        'can_delete': can_delete,
     })
 
 
@@ -655,18 +637,9 @@ def gallery_file(request, site_slug, file_id):
     site = Site.objects.get(site_slug=site_slug)
     gallery_file = GalleryFile.objects.get(id=file_id)
 
-    can_delete = False
-    profile = UserProfile.objects.get(user=request.user)
-    if profile is not None and profile.school is not None:
-        if profile.school_id == gallery_file.school_id:
-            can_delete = True
-        if request.user.has_perm('streamwebs.is_super_admin'):
-            can_delete = True
-
     return render(request, 'streamwebs/gallery/gallery_file_view.html', {
         'site': site,
         'gallery_file': gallery_file,
-        'can_delete': can_delete,
     })
 
 
@@ -674,12 +647,8 @@ def gallery_file(request, site_slug, file_id):
 @permission_required('streamwebs.is_org_author', raise_exception=True)
 def delete_gallery_image(request, site_slug, image_id):
     image = GalleryImage.objects.get(id=image_id)
-    profile = UserProfile.objects.get(user=request.user)
-    if profile is not None and profile.school is not None:
-        if profile.school_id == image.school_id or\
-            request.user.has_perm('streamwebs.is_super_admin'):
-            image.image.delete()
-            image.delete()
+    image.image.delete()
+    image.delete()
 
     return HttpResponseRedirect('/sites/%s' % site_slug)
 
@@ -688,13 +657,7 @@ def delete_gallery_image(request, site_slug, image_id):
 @permission_required('streamwebs.is_org_author', raise_exception=True)
 def delete_gallery_album(request, site_slug, album_id):
     album = GalleryAlbum.objects.get(id=album_id)
-    profile = UserProfile.objects.get(user=request.user)
-    if profile is not None and profile.school is not None:
-        if profile.school_id == album.school_id or\
-            request.user.has_perm('streamwebs.is_super_admin'):
-            for image in GalleryImage.objects.filter(album=album):
-                image.image.delete()
-            album.delete()
+    album.delete()
 
     return HttpResponseRedirect('/sites/%s' % site_slug)
 
@@ -703,12 +666,8 @@ def delete_gallery_album(request, site_slug, album_id):
 @permission_required('streamwebs.is_org_author', raise_exception=True)
 def delete_gallery_file(request, site_slug, file_id):
     gallery_file = GalleryFile.objects.get(id=file_id)
-    profile = UserProfile.objects.get(user=request.user)
-    if profile is not None and profile.school is not None:
-        if profile.school_id == gallery_file.school_id or\
-            request.user.has_perm('streamwebs.is_super_admin'):
-            gallery_file.gallery_file.delete()
-            gallery_file.delete()
+    gallery_file.gallery_file.delete()
+    gallery_file.delete()
 
     return HttpResponseRedirect('/sites/%s' % site_slug)
 
