@@ -38,6 +38,26 @@
       {% csrf_token %}
 
       <br/>
+      <!-- Title -->
+      <div class="row col s12">
+        <div class="input-field">
+          <label for="{{ file_form.title.id_for_label }}">{{ file_form.title.label }}</label>
+          {{ file_form.title.errors }}
+          {{ file_form.title }}
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div class="row col s12">
+        <div class="input-field">
+            <label for="file_form.description.id_for_label">
+              {{ file_form.description.label }}
+            </label>
+            {{ file_form.description.errors }}
+            {{ file_form.description }}
+          </div>
+      </div>
+
       <!-- File selector -->
       <div class="row col s12">
         <label>Gallery File</label>

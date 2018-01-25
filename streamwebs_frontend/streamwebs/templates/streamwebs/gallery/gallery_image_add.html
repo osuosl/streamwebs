@@ -38,6 +38,26 @@
       {% csrf_token %}
 
       <br/>
+      <!-- Title -->
+      <div class="row col s12">
+        <div class="input-field">
+          <label for="{{ image_form.title.id_for_label }}">{{ image_form.title.label }}</label>
+          {{ image_form.title.errors }}
+          {{ image_form.title }}
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div class="row col s12">
+        <div class="input-field">
+            <label for="image_form.description.id_for_label">
+              {{ image_form.description.label }}
+            </label>
+            {{ image_form.description.errors }}
+            {{ image_form.description }}
+          </div>
+      </div>
+
       <!-- Image selector -->
       <div class="row col s12">
         <label>Gallery Image</label>

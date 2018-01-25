@@ -346,7 +346,7 @@ def get_gallery_items(site_id):
 
     # Album images (takes date of soonest album image)
     gallery_albums = GalleryAlbum.objects.filter(site_id=site_id)
-    gallery_albums = list(gallery_albums.order_by('-name').values())
+    gallery_albums = list(gallery_albums.order_by('-title').values())
     gallery_albums_new = []
     for x in gallery_albums:
         album_images = GalleryImage.objects.filter(album_id=x['id'])
@@ -358,7 +358,7 @@ def get_gallery_items(site_id):
             album_date = datetime.date(1970, 1, 1)
 
         album_data = {'id': x['id'], 'uri': 'album',
-                      'type': 'Album ('+x['name'][0:20]+')',
+                      'type': 'Album ('+x['title'][0:20]+')',
                       'date': album_date}
         if 'school_id' in x and x['school_id']:
             album_data['school_id'] = x['school_id']

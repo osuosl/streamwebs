@@ -188,8 +188,9 @@ def validate_UserProfile_birthdate(birthdate):
 
 
 class GalleryAlbum(models.Model):
-    name = models.CharField(max_length=250,
-                            verbose_name=_('title'))
+    title = models.CharField(max_length=250,
+                             verbose_name=_('title'))
+    description = models.TextField(blank=True, verbose_name=_('description'))
 
     site = models.ForeignKey(
         Site, null=True, on_delete=models.CASCADE,
@@ -215,6 +216,9 @@ class GalleryAlbum(models.Model):
 
 
 class GalleryImage(models.Model):
+    title = models.CharField(max_length=250,
+                             verbose_name=_('title'))
+    description = models.TextField(blank=True, verbose_name=_('description'))
     site = models.ForeignKey(
         Site, null=True, on_delete=models.CASCADE,
         verbose_name=_('Stream/Site name'), limit_choices_to={'active': True}
@@ -254,6 +258,9 @@ class GalleryImage(models.Model):
 
 
 class GalleryFile(models.Model):
+    title = models.CharField(max_length=250,
+                             verbose_name=_('title'))
+    description = models.TextField(blank=True, verbose_name=_('description'))
     site = models.ForeignKey(
         Site, null=True, on_delete=models.CASCADE,
         verbose_name=_('Stream/Site name'), limit_choices_to={'active': True}

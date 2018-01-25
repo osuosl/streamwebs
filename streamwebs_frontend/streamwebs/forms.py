@@ -400,7 +400,11 @@ class GalleryImageAddForm(forms.ModelForm):
 
     class Meta:
         model = GalleryImage
-        fields = ('image', 'date')
+        widgets = {
+            'description':
+                forms.Textarea(attrs={'class': 'materialize-textarea'})
+        }
+        fields = ('title', 'description', 'date', 'image',)
 
 
 class GalleryAlbumAddForm(forms.ModelForm):
@@ -411,7 +415,11 @@ class GalleryAlbumAddForm(forms.ModelForm):
 
     class Meta:
         model = GalleryAlbum
-        fields = ('name', 'date',)
+        widgets = {
+            'description':
+                forms.Textarea(attrs={'class': 'materialize-textarea'})
+        }
+        fields = ('title', 'description', 'date',)
 
 
 class GalleryFileAddForm(forms.ModelForm):
@@ -422,7 +430,11 @@ class GalleryFileAddForm(forms.ModelForm):
 
     class Meta:
         model = GalleryFile
-        fields = ('gallery_file', 'date')
+        widgets = {
+            'description':
+                forms.Textarea(attrs={'class': 'materialize-textarea'})
+        }
+        fields = ('title', 'description', 'date', 'gallery_file',)
 
 
 class SoilSurveyForm(forms.ModelForm):

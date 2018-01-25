@@ -20,6 +20,11 @@
     #delete_button {
       margin-right: 3%;
     }
+    .wordwrap {
+      display:block;
+      width:100%;
+      word-wrap:break-word;
+    }
   </style>
 
   <div>
@@ -59,6 +64,12 @@
       <div class="row">
         <b>{% trans "Date and Time" %}: </b>
         {{ gallery_album.date_time }}
+      </div>
+      <div class="row">
+        <span class="wordwrap"><b>{% trans "Title" %}: </b>{{ gallery_album.title }}</span>
+      </div>
+      <div class="row">
+        <span class="wordwrap"><b>{% trans "Description" %}: </b>{{ gallery_album.description }}</span>
       </div>
       <!--
       <div class="row">

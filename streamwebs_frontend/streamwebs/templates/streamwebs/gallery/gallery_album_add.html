@@ -38,15 +38,24 @@
       {% csrf_token %}
 
       <br/>
-      <!-- Album name -->
-      <div class="row">
-        <div class="input-field col s12">
-          {{ album_form.name.errors }}
-          {{ album_form.name }}
-          <label for="{{ album_form.name.id_for_label }}">
-            {{ album_form.name.label }}
-          </label>
+      <!-- Title -->
+      <div class="row col s12">
+        <div class="input-field">
+          <label for="{{ album_form.title.id_for_label }}">{{ album_form.title.label }}</label>
+          {{ album_form.title.errors }}
+          {{ album_form.title }}
         </div>
+      </div>
+
+      <!-- Description -->
+      <div class="row col s12">
+        <div class="input-field">
+            <label for="album_form.description.id_for_label">
+              {{ album_form.description.label }}
+            </label>
+            {{ album_form.description.errors }}
+            {{ album_form.description }}
+          </div>
       </div>
       <!-- Image selector -->
       <div class="row col s12">
