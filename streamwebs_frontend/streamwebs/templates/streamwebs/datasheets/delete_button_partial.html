@@ -4,12 +4,29 @@
 
 {% block content %}
 {% if perms.streamwebs.is_org_admin%}
-  <a id="delete-datasheet" class="waves-effect waves-light btn red darken-3">Delete</a>
-{% endif %}
+  <a class="waves-effect waves-light btn red darken-3" href="#modal1">Delete</a>
+  <!-- Modal Structure -->
+  <div id="modal1" class="" hidden>
+    <div class="modal-content">
+      <h4>Modal Header</h4>
+      <p>A bunch of text</p>
+    </div>
+    <div class="modal-footer">
+      <a id="delete-datasheet" href="#!" class=" btn-flat">Agree</a>
+    </div>
+  </div>
+          
+  {% endif %}
+  
 <script>
     var url = window.location.href
     var delete_url = url + "delete/"
     var button = document.getElementById("delete-datasheet")
     button.href = delete_url
+    button.addEventListener("click", openModal())
+    function openModal() {
+      var modal = document.getElementById("modal1")
+      modal.removeAttribute("hidden")
+    }
 </script>
 {% endblock %}
