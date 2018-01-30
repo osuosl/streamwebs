@@ -4,17 +4,53 @@
 
 {% block content %}
 {% if perms.streamwebs.is_org_admin%}
-  <a class="waves-effect waves-light btn red darken-3" href="#modal1">Delete</a>
+<style>
+  #delete-modal {
+    background-color: rgb(228, 228, 228);
+    display: fixed;
+    position: fixed;
+    left: 20%;
+    top: 20%;
+    width: 60%;
+    height: 175px;
+    z-index: 12;
+    border-radius: 15px 15px;
+    padding: 20px;
+    padding-top: 0px;
+  }
+
+  #delete-modal-backdrop {
+    background-color: grey;
+    display: absolute;
+    position: fixed;
+    top:0;
+    left:0;
+    z-index: 11;
+    width: 10000px;
+    height: 100%;
+    opacity: 0.7;
+    filter: alpha(opacity=50); /* For IE8 and earlier */
+  }
+
+  .modal-footer {
+    position: absolute;
+    bottom: 10%;
+    right: 5%
+  }
+</style>
+  <a id="delete-button" class="waves-effect waves-light btn red darken-3" >Delete Datasheet</a>
   <!-- Modal Structure -->
-  <div id="modal1" class="" hidden>
+  <div id="delete-modal" class="" hidden>
     <div class="modal-content">
-      <h4>Modal Header</h4>
-      <p>A bunch of text</p>
+      <h4>Delete Datasheet?</h4>
+      <p>Click delete to perminately delete this datasheet</p>
     </div>
     <div class="modal-footer">
-      <a id="delete-datasheet" href="#!" class=" btn-flat">Agree</a>
+      <a id="keep-datasheet" class="waves-effect waves-light btn">Keep</a>
+      <a id="delete-datasheet" class="waves-effect waves-light btn red darken-3">Delete</a>
     </div>
   </div>
+  <div id="delete-modal-backdrop" hidden>&nbsp</div>
           
   {% endif %}
   
@@ -23,10 +59,16 @@
     var delete_url = url + "delete/"
     var button = document.getElementById("delete-datasheet")
     button.href = delete_url
-    button.addEventListener("click", openModal())
+    document.getElementById("delete-button").addEventListener("click", openModal)
+    document.getElementById("keep-datasheet").addEventListener("click", closeModal)
     function openModal() {
-      var modal = document.getElementById("modal1")
-      modal.removeAttribute("hidden")
+      document.getElementById("delete-modal-backdrop").removeAttribute("hidden")
+      document.getElementById("delete-modal").removeAttribute("hidden")
+    }
+
+    function closeModal() {
+      document.getElementById("delete-modal-backdrop").setAttribute("hidden", "")
+      document.getElementById("delete-modal").setAttribute("hidden", "")
     }
 </script>
 {% endblock %}
