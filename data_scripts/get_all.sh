@@ -24,4 +24,5 @@ set -e
 ./get_rip_aquatic_survey.py
 ./get_photo_point_images.py
 ./get_site_images.py
+./get_gallery_images.py
 rm -rf media/
