@@ -15,41 +15,41 @@ proj_path = "../streamwebs_frontend/"
 sys.path.append(proj_path)
 application = get_wsgi_application()
 
-from streamwebs.models import GalleryFile  # NOQA
+from streamwebs.models import GalleryImage  # NOQA
 from streamwebs.models import Site  # NOQA
 from streamwebs.models import UserProfile
 from django.contrib.auth.models import User
 
 
 if os.path.isdir("../sw_data/"):
-    datafile = '../sw_data/gallery_csvs/files.csv'
+    datafile = '../sw_data/gallery_csvs/images.csv'
 else:
-    datafile = '../csvs/gallery_csvs/files.csv'
+    datafile = '../csvs/gallery_csvs/images.csv'
  
 
-# "Title","Nid","Uid","Site Name","Description","File" (path)
-media_dir = "../media/gallery_files/"
+# "Title","Nid","Uid","Site Name","Description","Image" (path)
+media_dir = "../media/gallery_images/"
 with open(datafile, 'r') as csvfile:
     photoreader = csv.reader(csvfile)
     for row in photoreader:
         if 'Nid' not in row:  # Skip the header
 
-            gallery_file_title = row[0]
-            gallery_file_id = row[1]
+            gallery_image_title = row[0]
+            gallery_image_id = row[1]
             gallery_user_id = row[2]
-            gallery_file_site = row[3]
-            gallery_file_description = row[4]
-            file_path = row[5]
-            file_file = os.path.basename(file_path)
+            gallery_image_site = row[3]
+            gallery_image_description = row[4]
+            image_path = row[5]
+            image_file = os.path.basename(image_path)
 
             try:
                 # These files were pulled in via pull-files.sh
-                f = open(media_dir + file_file, 'r')
+                image = open(media_dir + image_file, 'r')
 
                 # Check for site
-                if gallery_file_site:
+                if gallery_image_site:
                     gallery_site = Site.objects.filter(
-                        site_name=gallery_file_site).first()
+                        site_name=gallery_image_site).first()
                 else:
                     gallery_site = None
 
@@ -69,17 +69,17 @@ with open(datafile, 'r') as csvfile:
                 else:
                     gallery_school = None
 
-                # Build gallery file
-                gf_file = GalleryFile.objects.update_or_create(
-                    id=gallery_file_id, title=gallery_file_title,
+                # Build gallery image
+                gi_image = GalleryImage.objects.update_or_create(
+                    id=gallery_image_id, title=gallery_image_title,
                     site=gallery_site, user=gallery_user,
                     school=gallery_school,
-                    description=gallery_file_description
+                    description=gallery_image_description
                 )
-                gf = GalleryFile.objects.get(id=gallery_file_id)
-                gf.gallery_file.save(file_file, File(f))
-                gf.save()
+                gi = GalleryImage.objects.get(id=gallery_image_id)
+                gi.image.save(image_file, File(image))
+                gi.save()
             except IOError:
-                print("File not found! " + media_dir + file_file)
+                print("Image File not found! " + media_dir + image_file)
 
-print("Gallery Files loaded.")
+print("Gallery Images loaded.")
