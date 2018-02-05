@@ -31,3 +31,11 @@ cd ${DIR}
 cd ../streamwebs_frontend/media/
 ln -sf ../../media/gallery_files/ .
 echo "Gallery Files pulled from drupal site."
+cd $DIR
+mkdir -p ../media/gallery_images
+cd ../media/gallery_images
+wget -q -O- http://drupal.streamwebs.org/album-urls.csv | wget -nc -q -i-
+cd ${DIR}
+cd ../streamwebs_frontend/media/
+ln -sf ../../media/gallery_images/ .
+echo "Gallery Album Images pulled from drupal site."
