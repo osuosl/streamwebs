@@ -32,8 +32,11 @@ with open(datafile, 'r') as csvfile:
             # These files were pulled in via pull-files.sh
             image = open("../media/site_photos/" + image_file, 'r')
 
-            site = Site.objects.get(site_name=row[0])
-            site.image.save(image_file, File(image))
-            site.save
+            try:
+                site = Site.objects.get(site_name=row[0])
+                site.image.save(image_file, File(image))
+                site.save
+            except IOError:
+                print("Site Image not found! " + image_file)
 
 print "Site Images loaded."

@@ -3,9 +3,11 @@ import os
 import sys
 import csv
 from datetime import datetime
+import requests
 
 from django.core.wsgi import get_wsgi_application
 from django.core.files import File
+from django.core.files.temp import NamedTemporaryFile
 # from django.contrib.gis.geos import GEOSGeometry
 
 
@@ -22,15 +24,18 @@ from streamwebs.models import UserProfile
 from django.contrib.auth.models import User
 
 
-if os.path.isdir("../sw_data/"):
-    datafile = '../sw_data/gallery_csvs/albums.csv'
+# Change into media directory
+os.chdir("../")
+
+
+if os.path.isdir("./sw_data/"):
+    datafile = './sw_data/gallery_csvs/albums.csv'
 else:
-    datafile = '../csvs/gallery_csvs/albums.csv'
+    datafile = './csvs/gallery_csvs/albums.csv'
  
 
 # "Title","Gallery Description","Post date","Gallery Id","Picture Description",
 #       "Nid","Uid","Filename","Site name","Gallery Image"
-media_dir = "../media/gallery_images/"
 with open(datafile, 'r') as csvfile:
     photoreader = csv.reader(csvfile)
     for row in photoreader:
@@ -47,54 +52,56 @@ with open(datafile, 'r') as csvfile:
             site_title = row[8]
             image_path = row[9]
 
-            try:
-                # These files were pulled in via pull-files.sh
-                image = open(media_dir + filename, 'r')
 
-                # Check for user and their profile
-                if user_id:
-                    album_user = User.objects.filter(
-                        id=user_id).first()
-                    album_user_profile = UserProfile.objects.filter(
-                        user=album_user).first()
-                else:
-                    album_user = None
-                    album_user_profile = None
+            # Download image
+            dl_file = NamedTemporaryFile(delete=True)
+            dl_file.write(requests.get(image_path).content)
+            dl_file.flush()
 
-                # Check for school from profile
-                if album_user_profile:
-                    album_school = album_user_profile.school
-                else:
-                    album_school = None
+            # Get filename
+            image_filename = image_path.split('/')[-1]
 
-                # Check for site
-                if site_title:
-                    album_site = Site.objects.filter(
-                        site_name=site_title).first()
-                else:
-                    album_site = None
 
-                # Build gallery album
-                ga, gac = GalleryAlbum.objects.update_or_create(id=album_id)
-                if gac:
-                    ga.title=album_title
-                    ga.description=album_description
-                    ga.date_time=album_date
-                    ga.site=album_site
-                    ga.school=album_school
-                    ga.save()
+            # Check for user and their profile
+            if user_id:
+                album_user = User.objects.filter(
+                    id=user_id).first()
+                album_user_profile = UserProfile.objects.filter(
+                    user=album_user).first()
+            else:
+                album_user = None
+                album_user_profile = None
 
-                # Build gallery image
-                gi, gic = GalleryImage.objects.update_or_create(
-                    id=image_id, title=filename,
-                    description=image_description,
-                    site=album_site, user=album_user,
-                    school=album_school, album=ga
-                )
-                gi.image.save(filename, File(image))
-                gi.save()
+            # Check for school from profile
+            if album_user_profile:
+                album_school = album_user_profile.school
+            else:
+                album_school = None
 
-            except IOError:
-                print("Image File not found! " + media_dir + filename)
+            # Check for site
+            if site_title:
+                album_site = Site.objects.filter(
+                    site_name=site_title).first()
+            else:
+                album_site = None
 
-print("Gallery Albums and Album Images loaded.")
+            # Build gallery album
+            ga, gac = GalleryAlbum.objects.update_or_create(id=album_id)
+            if gac:
+                ga.title=album_title
+                ga.description=album_description
+                ga.date_time=album_date
+                ga.site=album_site
+                ga.school=album_school
+                ga.save()
+
+            # Build gallery image
+            gi, gic = GalleryImage.objects.update_or_create(
+                id=image_id, title=filename,
+                description=image_description,
+                site=album_site, user=album_user,
+                school=album_school, album=ga
+            )
+            gi.image.save(image_filename, File(dl_file))
+
+print("Gallery Albums downloaded and loaded.")

@@ -3,9 +3,11 @@ import os
 import sys
 import csv
 from datetime import datetime
+import requests
 
 from django.core.wsgi import get_wsgi_application
 from django.core.files import File
+from django.core.files.temp import NamedTemporaryFile
 # from django.contrib.gis.geos import GEOSGeometry
 
 
@@ -21,14 +23,18 @@ from streamwebs.models import UserProfile
 from django.contrib.auth.models import User
 
 
-if os.path.isdir("../sw_data/"):
-    datafile = '../sw_data/gallery_csvs/images.csv'
+# Change into media directory
+os.chdir("../")
+
+
+if os.path.isdir("./sw_data/"):
+    datafile = './sw_data/gallery_csvs/images.csv'
 else:
-    datafile = '../csvs/gallery_csvs/images.csv'
+    datafile = './csvs/gallery_csvs/images.csv'
  
 
+
 # "Title","Nid","Uid","Site Name","Description","Image" (path)
-media_dir = "../media/gallery_images/"
 with open(datafile, 'r') as csvfile:
     photoreader = csv.reader(csvfile)
     for row in photoreader:
@@ -40,46 +46,49 @@ with open(datafile, 'r') as csvfile:
             gallery_image_site = row[3]
             gallery_image_description = row[4]
             image_path = row[5]
-            image_file = os.path.basename(image_path)
 
-            try:
-                # These files were pulled in via pull-files.sh
-                image = open(media_dir + image_file, 'r')
+            # Download image
+            dl_file = NamedTemporaryFile(delete=True)
+            dl_file.write(requests.get(image_path).content)
+            dl_file.flush()
 
-                # Check for site
-                if gallery_image_site:
-                    gallery_site = Site.objects.filter(
-                        site_name=gallery_image_site).first()
-                else:
-                    gallery_site = None
+            # Get filename
+            image_filename = image_path.split('/')[-1]
 
-                # Check for user and their profile
-                if gallery_user_id:
-                    gallery_user = User.objects.filter(
-                        id=gallery_user_id).first()
-                    gallery_user_profile = UserProfile.objects.filter(
-                        user=gallery_user).first()
-                else:
-                    gallery_user = None
-                    gallery_user_profile = None
+            # Check for site
+            if gallery_image_site:
+                gallery_site = Site.objects.filter(
+                    site_name=gallery_image_site).first()
+            else:
+                gallery_site = None
 
-                # Check for school from profile
-                if gallery_user_profile:
-                    gallery_school = gallery_user_profile.school
-                else:
-                    gallery_school = None
+            # Check for user and their profile
+            if gallery_user_id:
+                gallery_user = User.objects.filter(
+                    id=gallery_user_id).first()
+                gallery_user_profile = UserProfile.objects.filter(
+                    user=gallery_user).first()
+            else:
+                gallery_user = None
+                gallery_user_profile = None
 
-                # Build gallery image
-                gi_image = GalleryImage.objects.update_or_create(
-                    id=gallery_image_id, title=gallery_image_title,
-                    site=gallery_site, user=gallery_user,
-                    school=gallery_school,
-                    description=gallery_image_description
-                )
-                gi = GalleryImage.objects.get(id=gallery_image_id)
-                gi.image.save(image_file, File(image))
-                gi.save()
-            except IOError:
-                print("Image File not found! " + media_dir + image_file)
+            # Check for school from profile
+            if gallery_user_profile:
+                gallery_school = gallery_user_profile.school
+            else:
+                gallery_school = None
 
-print("Gallery Images loaded.")
+            # Build gallery image
+            gi_image = GalleryImage.objects.update_or_create(
+                id=gallery_image_id, title=gallery_image_title,
+                site=gallery_site, user=gallery_user,
+                school=gallery_school,
+                description=gallery_image_description
+            )
+            gi = GalleryImage.objects.get(id=gallery_image_id)
+            gi.image.save(image_filename, File(dl_file))
+
+            # Cleanup
+            dl_file.close()
+
+print("Gallery Images downloaded and loaded.")
