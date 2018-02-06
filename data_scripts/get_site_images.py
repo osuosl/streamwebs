@@ -29,10 +29,11 @@ with open(datafile, 'r') as csvfile:
         if row[0] != 'Site Name':  # Skip the header
 
             image_file = os.path.basename(row[1])
-            # These files were pulled in via pull-files.sh
-            image = open("../media/site_photos/" + image_file, 'r')
 
             try:
+                # These files were pulled in via pull-files.sh
+                image = open("../media/site_photos/" + image_file, 'r')
+
                 site = Site.objects.get(site_name=row[0])
                 site.image.save(image_file, File(image))
                 site.save
