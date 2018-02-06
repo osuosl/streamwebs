@@ -88,4 +88,4 @@ with open(datafile, 'r') as csvfile:
             gf.gallery_file.save(file_filename, File(dl_file))
 
 
-print("Gallery Files downloaded and loaded.")
+print("Gallery Files pulled from drupal site and loaded.")

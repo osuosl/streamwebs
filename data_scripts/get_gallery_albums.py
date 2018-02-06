@@ -104,4 +104,4 @@ with open(datafile, 'r') as csvfile:
             )
             gi.image.save(image_filename, File(dl_file))
 
-print("Gallery Albums downloaded and loaded.")
+print("Gallery Albums pulled from drupal site and loaded.")

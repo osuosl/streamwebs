@@ -91,4 +91,4 @@ with open(datafile, 'r') as csvfile:
             # Cleanup
             dl_file.close()
 
-print("Gallery Images downloaded and loaded.")
+print("Gallery Images pulled from drupal site and loaded.")
