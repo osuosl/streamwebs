@@ -54,7 +54,7 @@ with open(datafile, 'r') as csvfile:
 
 
             # Download image
-            dl_file = NamedTemporaryFile(delete=True)
+            dl_file = NamedTemporaryFile(delete=True, dir='.')
             dl_file.write(requests.get(image_path).content)
             dl_file.flush()
 
