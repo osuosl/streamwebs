@@ -25,5 +25,6 @@ set -e
 ./get_photo_point_images.py
 ./get_site_images.py
 ./get_gallery_images.py
+./get_gallery_files.py
 ./get_gallery_albums.py
 rm -rf media/
