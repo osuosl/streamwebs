@@ -17,12 +17,18 @@ TIME_PERIOD_CHOICES = (
 )
 
 
-def clean_unique_lower(form, field, exclude_initial=True,
-                       error_message="The %(field)s %(value)s\
-                                     must be unique."):
+def clean_unique_lower_nospace(form, field, exclude_initial=True):
     value = form.cleaned_data.get(field)
-    lower_value = ''.join(value.split()).lower()
+    nospace_value = ''.join(value.split())
+    lower_value = nospace_value.lower()
 
+    # Check for whitespace
+    if nospace_value != value:
+        raise forms.ValidationError(
+            "The %(field)s field cannot contain whitespace."
+            % {'field': field})
+
+    # Check for uniqueness
     if lower_value:
         qset = form._meta.model._default_manager.filter(**{field: lower_value})
         if exclude_initial and form.initial:
@@ -30,42 +36,9 @@ def clean_unique_lower(form, field, exclude_initial=True,
             qset = qset.exclude(**{field: initial_value})
         if qset.count() > 0:
             raise forms.ValidationError(
-                error_message % {'field': field, 'value': lower_value})
+                "A user already exists with the %(field)s '%(value)s'"
+                % {'field': field, 'value': lower_value})
     return lower_value
-
-
-class UserForm(forms.ModelForm):
-    password = forms.CharField(
-        widget=forms.PasswordInput(),
-        label=_('Password'))
-
-    password_check = forms.CharField(
-        widget=forms.PasswordInput(),
-        label='Repeat your password')
-
-    email = forms.CharField(required=True)
-    first_name = forms.CharField(
-        widget=forms.TextInput()
-    )
-
-    class Meta:
-        model = User
-        fields = ('username', 'email', 'password', 'first_name', 'last_name')
-        labels = {
-            'username': _('Username'),
-            'email': _('Email'),
-            'password': _('Password:'),
-            'first_name': _('First Name'),
-        }
-
-    def clean_password(self):
-        if self.data['password'] != self.data['password_check']:
-            raise forms.ValidationError(_('Passwords did not match'))
-        return self.data['password']
-
-    def clean_email(self):
-        return clean_unique_lower(self, 'email', error_message=u'A user with\
-                                  that email address already exists.')
 
 
 class UserFormOptionalNameEmail(forms.ModelForm):
@@ -102,9 +75,11 @@ class UserFormOptionalNameEmail(forms.ModelForm):
             raise forms.ValidationError(_('Passwords did not match'))
         return self.data['password']
 
+    def clean_username(self):
+        return clean_unique_lower_nospace(self, 'username')
+
     def clean_email(self):
-        return clean_unique_lower(self, 'email', error_message=u'A user with \
-                                  that email address already exists.')
+        return clean_unique_lower_nospace(self, 'email')
 
 
 class UserFormEmailAsUsername(forms.ModelForm):
@@ -139,8 +114,7 @@ class UserFormEmailAsUsername(forms.ModelForm):
         return self.data['password']
 
     def clean_email(self):
-        return clean_unique_lower(self, 'email', error_message=u'A user with \
-                                  that email address already exists.')
+        return clean_unique_lower_nospace(self, 'email')
 
 
 class UserEditForm(forms.ModelForm):
@@ -159,9 +133,11 @@ class UserEditForm(forms.ModelForm):
         # Add all the fields you want a user to change
         fields = ('first_name', 'last_name', 'username', 'email')
 
+    def clean_username(self):
+        return clean_unique_lower_nospace(self, 'username')
+
     def clean_email(self):
-        return clean_unique_lower(self, 'email', error_message=u'A user with \
-                                  that email address already exists.')
+        return clean_unique_lower_nospace(self, 'email')
 
 
 class UserEmailForm(forms.ModelForm):
@@ -172,8 +148,7 @@ class UserEmailForm(forms.ModelForm):
         fields = ('email',)
 
     def clean_email(self):
-        return clean_unique_lower(self, 'email', error_message=u'A user with \
-                                  that email address already exists.')
+        return clean_unique_lower_nospace(self, 'email')
 
 
 class UserPasswordForm(forms.ModelForm):

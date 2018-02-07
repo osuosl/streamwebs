@@ -8,7 +8,6 @@ urlpatterns = [
     url(r'^faq/$', views.faq, name='faq'),
     url(r'^about/$', views.about, name='about'),
 
-
     url(r'^sites/new/$', views.create_site, name='create_site'),
 
     url(r'^sites/$', views.sites, name='sites'),

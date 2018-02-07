@@ -58,7 +58,8 @@ EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
 EMAIL_HOST_USER = ''
 EMAIL_HOST_PASSWORD = ''
-DEFAULT_FROM_EMAIL = 'testing@streamwebs.org'
+DEFAULT_FROM_EMAIL = 'info@streamwebs.org'
+
 
 # Application definition
 
@@ -121,6 +122,10 @@ DATABASES = {
         'HOST': os.environ['PG_HOST'] if (os.environ.get('PG_HOST')) else 'postgres_host',
     }
 }
+
+
+# Authentication backend
+AUTHENTICATION_BACKENDS = ('streamwebs.backends.CaseInsensitiveAuthentication', )
 
 
 # Password validation
