@@ -10,6 +10,7 @@ from django.forms import BaseInlineFormSet
 from django.utils.translation import ugettext_lazy as _
 from captcha.fields import ReCaptchaField
 from django.core.validators import validate_email
+from django.contrib.auth.password_validation import validate_password
 
 TIME_PERIOD_CHOICES = (
     ('AM', _('AM')),
@@ -34,38 +35,15 @@ def clean_unique_lower(form, field, exclude_initial=True,
     return lower_value
 
 
-class UserForm(forms.ModelForm):
-    password = forms.CharField(
-        widget=forms.PasswordInput(),
-        label=_('Password'))
+def clean_password_validators(self):
+    password = self.data['password']
 
-    password_check = forms.CharField(
-        widget=forms.PasswordInput(),
-        label='Repeat your password')
+    # Call password validators
+    validate_password(password)
 
-    email = forms.CharField(required=True)
-    first_name = forms.CharField(
-        widget=forms.TextInput()
-    )
-
-    class Meta:
-        model = User
-        fields = ('username', 'email', 'password', 'first_name', 'last_name')
-        labels = {
-            'username': _('Username'),
-            'email': _('Email'),
-            'password': _('Password:'),
-            'first_name': _('First Name'),
-        }
-
-    def clean_password(self):
-        if self.data['password'] != self.data['password_check']:
-            raise forms.ValidationError(_('Passwords did not match'))
-        return self.data['password']
-
-    def clean_email(self):
-        return clean_unique_lower(self, 'email', error_message=u'A user with\
-                                  that email address already exists.')
+    if self.data['password'] != self.data['password_check']:
+        raise forms.ValidationError(_('Passwords did not match'))
+    return self.data['password']
 
 
 class UserFormOptionalNameEmail(forms.ModelForm):
@@ -98,9 +76,7 @@ class UserFormOptionalNameEmail(forms.ModelForm):
         }
 
     def clean_password(self):
-        if self.data['password'] != self.data['password_check']:
-            raise forms.ValidationError(_('Passwords did not match'))
-        return self.data['password']
+        return clean_password_validators(self)
 
     def clean_email(self):
         return clean_unique_lower(self, 'email', error_message=u'A user with \
@@ -131,12 +107,11 @@ class UserFormEmailAsUsername(forms.ModelForm):
             'email': _('Email Address'),
             'password': _('Password:'),
             'first_name': _('First Name'),
+            'last_name': _('Last Name'),
         }
 
     def clean_password(self):
-        if self.data['password'] != self.data['password_check']:
-            raise forms.ValidationError(_('Passwords did not match'))
-        return self.data['password']
+        return clean_password_validators(self)
 
     def clean_email(self):
         return clean_unique_lower(self, 'email', error_message=u'A user with \
@@ -192,12 +167,10 @@ class UserPasswordForm(forms.ModelForm):
         fields = ('password',)
 
     def clean_password(self):
-        if self.data['password'] != self.data['password_check']:
-            raise forms.ValidationError(_('New Passwords did not match.'))
         if self.data['old_password'] == self.data['password']:
             raise forms.ValidationError(_('Your old password and new ' +
                                           'password cannot be the same.'))
-        return self.data['password']
+        return clean_password_validators(self)
 
 
 class UserProfileForm(forms.ModelForm):
