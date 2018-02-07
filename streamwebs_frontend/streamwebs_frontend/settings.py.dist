@@ -47,6 +47,7 @@ GOOGLE_MAPS_TYPE = 'google.maps.MapTypeId.TERRAIN'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+SEND_EMAILS = False
 
 ALLOWED_HOSTS = []
 
