@@ -7,99 +7,104 @@
 {% endblock %}
 
 {% block content %}
-  <a href="{% url 'streamwebs:site' site.site_slug %}" id="back"
-      class="wave-effects wave-light btn white-text teal darken-3">
-    <i class="material-icons">chevron_left</i>
-    Back to <span>{{ site.site_name }}</span>
-  </a>
-  <div class="container">
-    <h3 align="center" class="teal-text">
-      {{ site.site_name }} {% trans "Macroinvertebrates" %}
-    </h3>
-    <br/>
-    <p class="date-range"></p>
-    <br/>
-    <form action="">
-      <div id="dates">
-        <p>{% trans "Set Date Range:" %}</p>
+<style>
+  #axis{
+    margin-left: 100px;
+    transform: rotate(90deg);
+    transform-origin: left top 0;
+    width: 300px;
+    font-size: 18px;
+  }
+</style>
+<a href="{% url 'streamwebs:site' site.site_slug %}" id="back"
+class="wave-effects wave-light btn white-text teal darken-3">
+<i class="material-icons">chevron_left</i>
+Back to <span>{{ site.site_name }}</span>
+</a>
+<div class="container">
+  <h3 align="center" class="teal-text">
+    {{ site.site_name }} {% trans "Macroinvertebrates" %}
+  </h3>
+  <br/>
+  <p class="date-range"></p>
+  <br/>
+  <form action="">
+    <div id="dates">
+      <p>{% trans "Set Date Range:" %}</p>
 
-        <div class="row">
-          <div class="col s6">
-            <label for="date-start">{% trans "Begin" %}</label>
-            <input type="date" name="date" class="datepicker" id="date-start"
-                   value=""/>
-          </div>
-          <div class="col s6">
-            <label for="date-end">{% trans "End" %}</label>
-            <input type="date" name="date" class="datepicker" id="date-end" value=""/>
-          </div>
+      <div class="row">
+        <div class="col s6">
+          <label for="date-start">{% trans "Begin" %}</label>
+          <input type="date" name="date" class="datepicker" id="date-start"
+          value=""/>
+        </div>
+        <div class="col s6">
+          <label for="date-end">{% trans "End" %}</label>
+          <input type="date" name="date" class="datepicker" id="date-end" value=""/>
         </div>
       </div>
-    </form>
-    <div class="row">
-      <form action="">
-        <div id="type">
-          <div class="col s2 offset-s1">
-            <h7>{% trans "Graph type:" %}</h7>
-          </div>
-          <div class="col s4">
-            <input type="radio" name="type" id="type-bar" value="bar" checked/>
-            <label for="type-bar">{% trans "Summary" %}</label>
-          </div>
-          <div class="col s4">
-            <input type="radio" name="type" id="type-line" value="line"/>
-            <label for="type-line">{% trans "Time" %}</label>
-          </div>
-        </div>
-      </form>
-    </div>  <!-- end date range/graph type row -->
-
-    <div class="row">
-      <div class="col s12" align="center">
-        <h3 style="display:none"
-            class="graph-header">{% trans "Macroinvertebrates Over Time" %}</h3>
-      </div>
-      <div id="graph-{{ site.site_slug }}" class="graph line col s12"
-           align="center">
-        <div class="col s12">
-          <h3 style="display:none"
-              class="graph-header col s12">{% trans "Sensitive species" %}</h3>
-        </div>
-        <div id="graph-{{ site.site_slug }}-sensitive"
-             class="graph sensitive col s12"></div>
-        <div class="col s12">
-          <h3 style="display:none"
-              class="graph-header">{% trans "Somewhat sensitive species" %}</h3>
-        </div>
-        <div id="graph-{{ site.site_slug }}-somewhat"
-             class="graph somewhat col 12"></div>
-        <div class="col s12">
-          <h3 style="display:none"
-              class="graph-header">{% trans "Tolerant species" %}</h3>
-        </div>
-        <div id="graph-{{ site.site_slug }}-tolerant"
-             class="graph tolerant col s12"></div>
-
-        <h3 style="display:none"
-            class="graph-header">{% trans "Species type breakdown" %}</h3>
-        <div id="graph-{{ site.site_slug }}-pie" class="graph pie"></div>
-      </div> <!-- end graphs row -->
     </div>
+  </form>
+  <div class="row">
+    <form action="">
+      <div id="type" style="display:none">
+        <div class="col s2 offset-s1" >
+          <h7>{% trans "Graph type:" %}</h7>
+        </div>
+        <div class="col s4">
+          <input type="radio" name="type" id="type-bar" value="bar" checked/>
+          <label for="type-bar">{% trans "Summary" %}</label>
+        </div>
+        <div class="col s4">
+        <input type="radio" name="type" id="type-line" value="line"/>
+        <label for="type-line">{% trans "Time" %}</label>
+      </div>
+    </div>
+  </form>
+</div>  <!-- end date range/graph type row -->
+
+  <div class="row">
+    <div class="col s12" align="center">
+      <h3 style="display:none" class="graph-header">{% trans "Macroinvertebrates Over Time" %}</h3>
+    </div>
+    <div id="graph-{{ site.site_slug }}" class="graph line col s12" align="center">
+      <div class="col s12">
+        <h3 style="display:none" class="graph-header col s12">{% trans "Sensitive species" %}</h3>
+      </div>
+      <div id="axis" class="col s1">Average Macroinvertebrates Found</div>
+      <div id="graph-{{ site.site_slug }}-sensitive" class="graph sensitive col s11 push-s1"></div>
+      <div class="col s12">
+        <h3 style="display:none" class="graph-header">{% trans "Somewhat sensitive species" %}</h3>
+      </div>
+      <div id="axis" class="col s1">Average Macroinvertebrates Found</div>
+      <div id="graph-{{ site.site_slug }}-somewhat" class="graph somewhat col 11 push-s1"></div>
+      <div class="col s12">
+        <h3 style="display:none" class="graph-header">{% trans "Tolerant species" %}</h3>
+      </div>
+      <div id="axis" class="col s1">Average Macroinvertebrates Found</div>
+      <div id="graph-{{ site.site_slug }}-tolerant" class="graph tolerant col s11 push-s1"></div>
+      <div class="col s12">
+        <h3 style="display:none" class="graph-header">{% trans "Species type breakdown" %}</h3>
+        <div id="graph-{{ site.site_slug }}-pie" class="graph pie"></div>
+      </div>
+    </div> <!-- end graphs row -->
   </div>
+</div>
+
 {% endblock %}
 
 {% block scripts %}
-  <script type="application/javascript">
-    window.data_time = {{data.time|safe}};
-    window.data_summ = {{data.summary|safe}};
-    var siteId = '{{site.site_slug}}';
+<script type="application/javascript">
+window.data_time = {{data.time|safe}};
+window.data_summ = {{data.summary|safe}};
+var siteId = '{{site.site_slug}}';
 
-    $('.datepicker').pickadate({
-      selectMonths: true,
-      selectYears: 20,
-    });
-  </script>
+$('.datepicker').pickadate({
+  selectMonths: true,
+  selectYears: 20,
+});
+</script>
 
-  <script type="application/javascript"
-          src="{% static 'streamwebs/js/graphs/macros.js' %}"></script>
+<script type="application/javascript"
+src="{% static 'streamwebs/js/graphs/macros.js' %}"></script>
 {% endblock %}
