@@ -2,13 +2,12 @@
 import os
 import sys
 import csv
-from datetime import datetime
 import requests
 
 from django.core.wsgi import get_wsgi_application
 from django.core.files import File
 from django.core.files.temp import NamedTemporaryFile
-# from django.contrib.gis.geos import GEOSGeometry
+from django.contrib.auth.models import User
 
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "streamwebs_frontend.settings")
@@ -20,18 +19,14 @@ application = get_wsgi_application()
 from streamwebs.models import GalleryFile  # NOQA
 from streamwebs.models import Site  # NOQA
 from streamwebs.models import UserProfile
-from django.contrib.auth.models import User
-
 
 # Change into media directory
 os.chdir("../")
-
 
 if os.path.isdir("./sw_data/"):
     datafile = './sw_data/gallery_csvs/files.csv'
 else:
     datafile = './csvs/gallery_csvs/files.csv'
- 
 
 # "Title","Nid","Uid","Site Name","Description","File" (path)
 with open(datafile, 'r') as csvfile:

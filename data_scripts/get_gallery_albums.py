@@ -8,8 +8,7 @@ import requests
 from django.core.wsgi import get_wsgi_application
 from django.core.files import File
 from django.core.files.temp import NamedTemporaryFile
-# from django.contrib.gis.geos import GEOSGeometry
-
+from django.contrib.auth.models import User
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "streamwebs_frontend.settings")
 # Set proj path to be relative to data_scripts directory
@@ -21,18 +20,14 @@ from streamwebs.models import GalleryImage  # NOQA
 from streamwebs.models import GalleryAlbum  # NOQA
 from streamwebs.models import Site  # NOQA
 from streamwebs.models import UserProfile
-from django.contrib.auth.models import User
-
 
 # Change into media directory
 os.chdir("../")
-
 
 if os.path.isdir("./sw_data/"):
     datafile = './sw_data/gallery_csvs/albums.csv'
 else:
     datafile = './csvs/gallery_csvs/albums.csv'
- 
 
 # "Title","Gallery Description","Post date","Gallery Id","Picture Description",
 #       "Nid","Uid","Filename","Site name","Gallery Image"
@@ -40,7 +35,6 @@ with open(datafile, 'r') as csvfile:
     photoreader = csv.reader(csvfile)
     for row in photoreader:
         if 'Title' not in row:  # Skip the header
-
             album_title = row[0]
             album_description = row[1]
             album_date = datetime.strptime(row[2], '%Y-%m-%d %H:%M')
@@ -52,7 +46,6 @@ with open(datafile, 'r') as csvfile:
             site_title = row[8]
             image_path = row[9]
 
-
             # Download image
             dl_file = NamedTemporaryFile(delete=True, dir='.')
             dl_file.write(requests.get(image_path).content)
@@ -60,7 +53,6 @@ with open(datafile, 'r') as csvfile:
 
             # Get filename
             image_filename = image_path.split('/')[-1]
-
 
             # Check for user and their profile
             if user_id:
@@ -88,11 +80,11 @@ with open(datafile, 'r') as csvfile:
             # Build gallery album
             ga, gac = GalleryAlbum.objects.update_or_create(id=album_id)
             if gac:
-                ga.title=album_title
-                ga.description=album_description
-                ga.date_time=album_date
-                ga.site=album_site
-                ga.school=album_school
+                ga.title = album_title
+                ga.description = album_description
+                ga.date_time = album_date
+                ga.site = album_site
+                ga.school = album_school
                 ga.save()
 
             # Build gallery image
