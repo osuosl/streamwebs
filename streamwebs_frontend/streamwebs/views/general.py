@@ -1492,6 +1492,7 @@ def admin_site_statistics(request):
     user_start = datetime.date(today.year - 3, today.month, today.day + 1)
     start = datetime.date(1970, 1, 1)
     end = today
+    sameday = True
 
     if request.method == 'POST':
         stats_form = StatisticsForm(data=request.POST)
