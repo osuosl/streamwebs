@@ -59,6 +59,7 @@ function uncheck_permission_level_box(checkbox) {
         <div class="col s6">
           <h4>Account</h4>
           <br/>
+          {% if user != None %}
           <div class="row">
             <div class="col s6">
               <h5>Name:</h5>
@@ -90,6 +91,10 @@ function uncheck_permission_level_box(checkbox) {
               <label for="contributor_perm">Contributor</label>
             </div>
           </div>
+          {% else %}
+          <h5>This organization request does not have an associated user</h5>
+          {% endif %}
+
         </div>
       </div>
       <br/><br/><br/>
