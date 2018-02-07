@@ -9,16 +9,15 @@ from django.core.files import File
 from django.core.files.temp import NamedTemporaryFile
 from django.contrib.auth.models import User
 
+from streamwebs.models import GalleryImage  # NOQA
+from streamwebs.models import Site  # NOQA
+from streamwebs.models import UserProfile
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "streamwebs_frontend.settings")
 # Set proj path to be relative to data_scripts directory
 proj_path = "../streamwebs_frontend/"
 sys.path.append(proj_path)
 application = get_wsgi_application()
-
-from streamwebs.models import GalleryImage  # NOQA
-from streamwebs.models import Site  # NOQA
-from streamwebs.models import UserProfile
 
 # Change into media directory
 os.chdir("../")
