@@ -1,12 +1,11 @@
 from django.test import TestCase
-from streamwebs.forms import UserForm, UserProfileForm
+from streamwebs.forms import UserProfileForm, UserFormEmailAsUsername
 
 
 class UserFormTestCase(TestCase):
 
     def setUp(self):
         self.expected_fields = (
-            'username',
             'email',
             'password',
             'first_name',
@@ -14,7 +13,7 @@ class UserFormTestCase(TestCase):
         )
 
     def test_UserForm_fields_exist(self):
-        user_form = UserForm()
+        user_form = UserFormEmailAsUsername()
         self.assertEqual(set(user_form.Meta.fields), set(self.expected_fields))
         self.assertEqual(
             user_form.base_fields['password_check'].label,
