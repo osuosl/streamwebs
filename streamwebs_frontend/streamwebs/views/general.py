@@ -178,6 +178,7 @@ def sites(request):
 # view-view for individual specified site
 def site(request, site_slug):
     """ View an individual site """
+
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     wq_sheets = Water_Quality.objects.filter(site_id=site.id)
     wq_sheets = list(wq_sheets.order_by('-date_time').values())
@@ -542,11 +543,12 @@ def update_email(request):
 def update_password(request):
     old_password_incorrect = False
     if request.method == 'POST':
-        username = request.user
+        username = request.user.username
         old_password = request.POST['old_password']
         password = request.POST['password']
 
-        user_password_form = UserPasswordForm(request.POST, instance=username)
+        user_password_form = UserPasswordForm(request.POST,
+                                              instance=request.user)
         user = authenticate(username=username, password=old_password)
 
         if user:
@@ -576,7 +578,7 @@ def user_login(request):
     redirect_to = request.POST.get('next', '')
 
     if request.method == 'POST':
-        email = ''.join(request.POST['email'].split())
+        email = request.POST['email']
         password = request.POST['password']
         user = authenticate(username=email, password=password)
 
@@ -782,6 +784,17 @@ def macroinvertebrate_edit(request, site_slug):
 
 
 @login_required
+@permission_required('streamwebs.is_org_admin', raise_exception=True)
+def macroinvertebrate_delete(request, site_slug, data_id):
+    data = Macroinvertebrates.objects.get(id=data_id)
+
+    data.delete()
+
+    return HttpResponseRedirect(
+        '/sites/%s/' % str(site_slug, ))
+
+
+@login_required
 @permission_required('streamwebs.is_org_author', raise_exception=True)
 @any_organization_required
 def riparian_aquatic_edit(request, site_slug):
@@ -831,6 +844,15 @@ def riparian_aquatic_view(request, site_slug, data_id):
         )
 
 
+@login_required
+@permission_required('streamwebs.is_org_admin', raise_exception=True)
+def riparian_aquatic_delete(request, site_slug, ra_id):
+    data = RipAquaticSurvey.objects.get(id=ra_id)
+    data.delete()
+
+    return HttpResponseRedirect('/sites/%s/' % str(site_slug, ))
+
+
 def riparian_transect_view(request, site_slug, data_id):
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
     transect = RiparianTransect.objects.get(id=data_id)
@@ -866,6 +888,16 @@ def riparian_transect_view(request, site_slug, data_id):
             'site': site
             }
         )
+
+
+@login_required
+@permission_required('streamwebs.is_org_admin', raise_exception=True)
+def riparian_transect_delete(request, site_slug, data_id):
+    transect = RiparianTransect.objects.get(id=data_id)
+    transect.delete()
+
+    return HttpResponseRedirect(
+        '/sites/%s/' % str(site_slug, ))
 
 
 @login_required
@@ -946,6 +978,18 @@ def canopy_cover_view(request, site_slug, data_id):
             'site': site
             }
         )
+
+
+@login_required
+@permission_required('streamwebs.is_org_admin', raise_exception=True)
+def canopy_cover_delete(request, site_slug, data_id):
+    site = Site.objects.filter(active=True).get(site_slug=site_slug)
+
+    canopy_cover = Canopy_Cover.objects.filter(site_id=site.id).get(id=data_id)
+
+    canopy_cover.delete()
+
+    return HttpResponseRedirect('/sites/%s/' % str(site_slug, ))
 
 
 @login_required
@@ -1035,6 +1079,15 @@ def camera_point_view(request, site_slug, cp_id):
             'pp_images': all_images
         }
     )
+
+
+@login_required
+@permission_required('streamwebs.is_org_admin', raise_exception=True)
+def camera_point_delete(request, site_slug, cp_id):
+    cp = CameraPoint.objects.get(id=cp_id)
+    cp.delete()
+
+    return HttpResponseRedirect('/sites/%s/' % str(site_slug, ))
 
 
 @login_required
@@ -1362,6 +1415,16 @@ def water_quality(request, site_slug, data_id):
 
 
 @login_required
+@permission_required('streamwebs.is_org_admin', raise_exception=True)
+def water_quality_delete(request, site_slug, data_id):
+    wq_data = Water_Quality.objects.get(id=data_id)
+    wq_data.delete()
+
+    return HttpResponseRedirect(
+        '/sites/%s/' % str(site_slug, ))
+
+
+@login_required
 @permission_required('streamwebs.is_org_author', raise_exception=True)
 @any_organization_required
 def water_quality_edit(request, site_slug):
@@ -1436,6 +1499,15 @@ def soil_survey(request, site_slug, data_id):
 
 
 @login_required
+@permission_required('streamwebs.is_org_admin', raise_exception=True)
+def soil_survey_delete(request, site_slug, data_id):
+    soil_data = Soil_Survey.objects.get(id=data_id)
+    soil_data.delete()
+
+    return HttpResponseRedirect('/sites/%s/' % str(site_slug, ))
+
+
+@login_required
 @permission_required('streamwebs.is_org_author', raise_exception=True)
 @any_organization_required
 def soil_survey_edit(request, site_slug):
@@ -1489,14 +1561,16 @@ def admin_site_statistics(request):
 
     # A user is defined as "active" if they have logged in w/in the last 3 yrs
     today = datetime.date.today()
-    user_start = datetime.date(today.year - 3, today.month, today.day)
+    user_start = datetime.date(today.year - 3, today.month, today.day + 1)
     start = datetime.date(1970, 1, 1)
     end = today
+    sameday = True
 
     if request.method == 'POST':
         stats_form = StatisticsForm(data=request.POST)
 
         if stats_form.is_valid():
+            print(stats_form)
             # At least one date provided:
             if (stats_form.cleaned_data['start'] is not None or
                     stats_form.cleaned_data['end'] is not None):
@@ -1507,7 +1581,13 @@ def admin_site_statistics(request):
                 # end date provided:
                 if stats_form.cleaned_data['end'] is not None:
                     end = stats_form.cleaned_data['end']
-
+                if end == today:
+                    sameday = True
+                    end += datetime.timedelta(days=1)
+                else:
+                    sameday = False
+                print(today)
+                print(end)
                 users = User.objects.filter(date_joined__range=(start, end))
             else:
                 users = User.objects.filter(
@@ -1575,6 +1655,8 @@ def admin_site_statistics(request):
         'schools': {'total': len(all_schools), 'schools': all_schools},
         'start': start,
         'end': end,
+        'sameday': sameday,
+        'today': today
         }
     )
 
@@ -2004,7 +2086,7 @@ def new_org_request(request, school_id):
     return render(request, 'streamwebs/new_org_request.html', {
         'school_data': school,
         'user': user
-        })
+    })
 
 
 @login_required

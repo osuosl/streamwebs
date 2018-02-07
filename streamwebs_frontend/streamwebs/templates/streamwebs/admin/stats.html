@@ -6,6 +6,11 @@
 {% block body_title %}{% trans "StreamWebs Statistics" %}{% endblock %}
 
 {% block content %}
+<style>
+  .container li{
+    margin-left: 50px;
+  }
+</style>
   <div class="container">
     <form id='stats_form' method='post'>
         {% csrf_token %}
@@ -32,30 +37,46 @@
 
     {% if all_time %}
         {% trans "Users who have logged in within the last 3 years" %}:
-        {{ users.count }}
+        {{ users.count }} </br>
     {% else %}
-        {% trans "Users who joined between" %} {{ start }} {% trans "and" %} {{ end }}:
+        {% if sameday %}
+          {% trans "Users who joined between" %} {{ start }} {% trans "and" %} {{ today }}:
+        {% else %}
+          {% trans "Users who joined between" %} {{ start }} {% trans "and" %} {{ end }}:
+        {% endif %}
         {{ users.count }}
     {% endif %}
 
     {% for user in users.users %}
         <li>{{ user.username }}</li>
     {% endfor %}
-
-    {% trans "Number of data sheets uploaded between" %} {{ start }} {% trans "and" %} {{ end }}:
+    </br>
+    {% if sameday %}
+      {% trans "Number of data sheets uploaded between" %} {{ start }} {% trans "and" %} {{ today }}:
+    {% else %}
+      {% trans "Number of data sheets uploaded between" %} {{ start }} {% trans "and" %} {{ end }}:
+    {% endif %}
 
     {% for type, num in sheets.items %}
         <li> {{ type }}: {{ num }}</li>
     {% endfor %}
 
-    {% trans "Schools that uploaded data between" %} {{ start }} {% trans "and" %} {{ end }}:
+    </br>
+    {% if sameday %}
+      {% trans "Schools that uploaded data between" %} {{ start }} {% trans "and" %} {{ today }}:
+    {% else %}
+      {% trans "Schools that uploaded data between" %} {{ start }} {% trans "and" %} {{ end }}:
+    {% endif %}
     {{ schools.total }}
-
     {% for school in schools.schools %}
         <li> {{ school.name }} </li>
     {% endfor %}
-
-    {% trans "Sites that uploaded data between" %} {{ start }} {% trans "and" %} {{ end }}:
+    </br>
+    {% if sameday %}
+      {% trans "Sites that uploaded data between" %} {{ start }} {% trans "and" %} {{ today }}:
+    {% else %}
+      {% trans "Sites that uploaded data between" %} {{ start }} {% trans "and" %} {{ end }}:
+    {% endif %}
     {{ sites.total }}
 
     {% for site in sites.sites %}
