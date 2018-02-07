@@ -29,7 +29,11 @@ class SiteTestCase(TestCase):
             'ripariantransect': models.ManyToOneRel,
             'canopy_cover': models.ManyToOneRel,
             'camerapoint': models.ManyToOneRel,  # "Photo Point Monitoring"
-            'soil_survey': models.ManyToOneRel
+            'soil_survey': models.ManyToOneRel,
+
+            'galleryalbum': models.ManyToOneRel,
+            'galleryfile': models.ManyToOneRel,
+            'galleryimage': models.ManyToOneRel
         }
 
         self.optional_fields = {
