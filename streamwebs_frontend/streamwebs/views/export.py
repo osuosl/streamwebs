@@ -4,9 +4,7 @@ from django.http import HttpResponse
 
 from streamwebs.models import (
     Macroinvertebrates, Site, Water_Quality, WQ_Sample, RiparianTransect,
-    TransectZone, Canopy_Cover, Soil_Survey, RipAquaticSurvey, UserProfile)
-
-from django.contrib.auth.models import User
+    TransectZone, Canopy_Cover, Soil_Survey, RipAquaticSurvey)
 
 from djqscsv import render_to_csv_response
 import csv
@@ -14,7 +12,7 @@ import csv
 
 def export_rip_aqua(request, site_slug):
     site = Site.objects.get(site_slug=site_slug)
-    
+
     ripaq = RipAquaticSurvey.objects.filter(site_id=site.id).values(
         'site__site_name', 'school__name', 'date_time', 'weather',
         'riffle_count', 'pool_count', 'silt', 'sand', 'gravel', 'cobble',
@@ -268,7 +266,7 @@ def export_cc(request, site_slug):
 
 def export_soil(request, site_slug):
     site = Site.objects.get(site_slug=site_slug)
-    
+
     soil = Soil_Survey.objects.filter(site_id=site.id).values(
         'school__name', 'date_time', 'site__site_name', 'weather',
         'landscape_pos', 'cover_type', 'land_use', 'soil_type', 'distance',
