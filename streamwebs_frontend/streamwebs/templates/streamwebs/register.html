@@ -10,6 +10,9 @@
 {% block content %}
 
 <style>
+  div.register-msg {
+    padding: 15px 30px 15px 30px;
+  }
   /* center captcha */
   div.g-recaptcha > div {
     margin: 0 auto;
@@ -29,9 +32,27 @@
     <form id='user_form' method='post'
       action="{% url 'streamwebs:register' %}" novalidate>
       {% csrf_token %}
-      
-      <br/>
 
+      <br/>
+      <div class="register-msg teal darken-2 white-text">
+        <p>
+        <b>Educators</b>, please register to fully access the Streamwebs site. Use this
+        form to create an account associated with your email address, and select
+        the school or organization with which you are associated. If your
+        school/organization is not already registered with Streamwebs,
+        you can create the new account along with a new organization/school.
+        </p>
+      </div>
+      <br/>
+      <div class="register-msg teal darken-2 white-text">
+        <p>
+        As an <b>Editor</b> of an organization/school, you will then be able to create
+        Contributor accounts that your students can use to input data they have
+        collected from sites in Oregon. Contributor accounts consist of a username
+        (example: HonorsBiology) and password that can be shared across many students.
+        </p>
+      </div>
+      <br/>
       <!-- New Organization flag -->
       <input type="checkbox" id="new_org_flag" name="new_org_flag" hidden>
 
@@ -69,12 +90,12 @@
           {{ user_form.password_check }}
         </div>
       </div>
-      
+
       <!-- Select school -->
       <div class="input-field col s6 offset-s2" id="school_select" hidden>
         {{ profile_form.school }}
       </div>
-      <!-- Hacky implementation where profile form drop down is still used, 
+      <!-- Hacky implementation where profile form drop down is still used,
         but client side filtering sets drop down value so django form
         still gets value on view side -->
       <div class="row" id="select_school_section">
@@ -98,7 +119,7 @@
           </h6>
         </div>
       </div>
-  
+
       <!-- New organization -->
       <div class="row" id="org_section" style="display:none;">
         <br/>
@@ -118,10 +139,10 @@
             {{ school_form.name.errors }}
             {{ school_form.name }}
           </div>
-          
+
           <!-- Type -->
           <div class="input-field col s12">
-            <label for="{{ school_form.school_type.id_for_label }}" id="school_type" 
+            <label for="{{ school_form.school_type.id_for_label }}" id="school_type"
               name="school_type">
               {% trans "Type:" %}
             </label>
@@ -137,7 +158,7 @@
               {% endfor %}
             </div>
           </div>
-          
+
           <!-- Address -->
           <div class="input-field col s12">
             <label for="{{ school_form.address.id_for_label }}">{% trans "Address" %}</label>
@@ -200,7 +221,7 @@
       src="https://cdnjs.cloudflare.com/ajax/libs/pickadate.js/3.5.6/compressed/picker.js"></script>
   <script
       src="https://cdnjs.cloudflare.com/ajax/libs/pickadate.js/3.5.6/compressed/picker.date.js"></script>
-  
+
   <script
       src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
 
@@ -243,7 +264,7 @@
       {% if new_org_flag %}
         add_school();
       {% endif %}
-      
+
 
       // New Org expander
       $('#org_create').click(function(){
@@ -282,11 +303,11 @@
           ERROR_TOAST += "{% get_field_label profile_form field %}: {{ error }}<br>";
         {% endfor %}
       {% endfor %}
-    
+
     {% endif %}
   </script>
-  
+
   <script src="{% static 'streamwebs/js/data.js' %}"></script>
   <script src="{% static 'streamwebs/js/data-toasts.js' %}"></script>
-  
+
 {% endblock %}
