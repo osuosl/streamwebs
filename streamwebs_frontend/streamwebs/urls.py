@@ -162,6 +162,9 @@ urlpatterns = [
     url(r'^schools/(?P<school_id>[0-9]+)/edit_account/(?P<user_id>[0-9]+)/$',
         views.edit_account, name='edit_account'),
 
+    url(r'^approve_accounts/$',
+        views.approve_accounts, name='approve_accounts'),
+
     # This is used to view a backend variable
     url(r'^var_debug/(?P<value>.*)/$',
         views.var_debug, name='var_debug')
