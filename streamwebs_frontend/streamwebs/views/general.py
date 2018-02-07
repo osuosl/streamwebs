@@ -83,21 +83,22 @@ def organization_approved(func):
 # Send an email
 def send_email(request, subject, template, user, school, from_email,
                recipients):
-    send_mail(
-        subject=subject,
-        message='',
-        html_message=render_to_string(
-            template,
-            {
-                'protocol': request.scheme,
-                'domain': request.get_host(),
-                'user': user,
-                'school': school
-            }),
-        from_email=from_email,
-        recipient_list=recipients,
-        fail_silently=False,
-    )
+    if settings.SEND_EMAILS:
+        send_mail(
+            subject=subject,
+            message='',
+            html_message=render_to_string(
+                template,
+                {
+                    'protocol': request.scheme,
+                    'domain': request.get_host(),
+                    'user': user,
+                    'school': school
+                }),
+            from_email=from_email,
+            recipient_list=recipients,
+            fail_silently=False,
+        )
 
 
 def toDateTime(date, time, period):
@@ -1948,11 +1949,10 @@ def new_org_request(request, school_id):
     profiles = UserProfile.objects.filter(school=school)
     profile = profiles.first()
 
-    if profile is None:
-        return HttpResponseForbidden(
-            'There is no user associated with this organization request.')
-
-    user = profile.user
+    if profile is not None:
+        user = profile.user
+    else:
+        user = None
 
     if request.method == 'POST':
         editor_permission = request.POST.getlist('editor_permission')
@@ -1963,42 +1963,125 @@ def new_org_request(request, school_id):
 
         # Deny org and user
         if 'btn_deny' in request.POST:
-            user.delete()
-            profile.delete()
+            if profile is not None:
+                user.delete()
+                profile.delete()
             school.delete()
             # Redirect to home
             return HttpResponseRedirect('/')
         # Approve org
         elif 'btn_approve' in request.POST:
             school.active = True
-            profile.approved = True
+            if profile is not None:
+                profile.approved = True
 
-            # Approved for editor permission
-            if len(editor_permission) > 0:
-                user.groups.clear()
-                user.groups.add(org_editor)
-            # Approved for contributor permission
-            elif len(contributor_permission) > 0:
-                user.groups.clear()
-                user.groups.add(org_contributor)
+                # Approved for editor permission
+                if len(editor_permission) > 0:
+                    user.groups.clear()
+                    user.groups.add(org_editor)
+                # Approved for contributor permission
+                elif len(contributor_permission) > 0:
+                    user.groups.clear()
+                    user.groups.add(org_contributor)
+
+                profile.save()
+
+                # Email
+                send_email(
+                    request=request,
+                    subject='Your organization was approved: ' +
+                    str(school.name),
+                    template='registration/approve_org_request_email.html',
+                    user=user,
+                    school=school,
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    recipients=[user.email]
+                )
 
             school.save()
-            profile.save()
-
-            # Email
-            send_email(
-                request=request,
-                subject='Your organization was approved: ' + str(school.name),
-                template='registration/approve_org_request_email.html',
-                user=user,
-                school=school,
-                from_email=settings.DEFAULT_FROM_EMAIL,
-                recipients=[user.email]
-            )
 
             return HttpResponseRedirect('/schools/%i/' % school.id)
 
     return render(request, 'streamwebs/new_org_request.html', {
         'school_data': school,
         'user': user
+    })
+
+
+@login_required
+@permission_required('streamwebs.is_super_admin', raise_exception=True)
+def approve_accounts(request):
+
+    org_contributor = Group.objects.get(name='org_author')
+    org_editor = Group.objects.get(name='org_admin')
+
+    if request.method == 'POST':
+        # Check which submit button was clicked
+
+        # Apply new user settings
+        if 'btn_apply' in request.POST:
+            editors = request.POST.getlist('nu_editor')
+            contributors = request.POST.getlist('nu_contributor')
+            denyUsers = request.POST.getlist('nu_deny')
+
+            for i in editors:
+                user = User.objects.get(id=i)
+                profile = UserProfile.objects.get(user=user)
+                if profile is not None:
+                    user.groups.add(org_editor)
+                    user.save()
+
+                    profile.approved = True
+                    profile.save()
+
+                    # Email editors that they were approved
+                    send_email(
+                        request=request,
+                        subject='Your editor account was approved at ' +
+                        str(profile.school.name),
+                        template='registration/' +
+                        'approve_user_request_email.html',
+                        user=user,
+                        school=profile.school,
+                        from_email=settings.DEFAULT_FROM_EMAIL,
+                        recipients=[user.email]
+                    )
+
+            for i in contributors:
+                user = User.objects.get(id=i)
+                profile = UserProfile.objects.get(user=user)
+                if profile is not None:
+                    user.groups.add(org_contributor)
+                    user.save()
+
+                    profile.approved = True
+                    profile.save()
+
+                    # Email contributors that they were approved
+                    send_email(
+                        request=request,
+                        subject='Your contributor account was approved at ' +
+                                str(profile.school.name),
+                        template='registration/' +
+                                 'approve_user_request_email.html',
+                        user=user,
+                        school=profile.school,
+                        from_email=settings.DEFAULT_FROM_EMAIL,
+                        recipients=[user.email]
+                    )
+
+            for i in denyUsers:
+                user = User.objects.get(id=i)
+                profile = UserProfile.objects.get(user=user)
+                if profile is not None:
+                    profile.delete()
+                    user.delete()
+
+    schools = School.objects.filter(active=False).all().order_by('name')
+    new_users = UserProfile.objects.filter(approved=False)\
+        .exclude(school__in=schools)
+
+    return render(request, 'streamwebs/approve_accounts.html', {
+        'schools': schools,
+        'new_users': new_users,
     })
