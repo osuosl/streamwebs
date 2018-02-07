@@ -1561,14 +1561,16 @@ def admin_site_statistics(request):
 
     # A user is defined as "active" if they have logged in w/in the last 3 yrs
     today = datetime.date.today()
-    user_start = datetime.date(today.year - 3, today.month, today.day)
+    user_start = datetime.date(today.year - 3, today.month, today.day + 1)
     start = datetime.date(1970, 1, 1)
     end = today
+    sameday = True
 
     if request.method == 'POST':
         stats_form = StatisticsForm(data=request.POST)
 
         if stats_form.is_valid():
+            print(stats_form)
             # At least one date provided:
             if (stats_form.cleaned_data['start'] is not None or
                     stats_form.cleaned_data['end'] is not None):
@@ -1579,7 +1581,13 @@ def admin_site_statistics(request):
                 # end date provided:
                 if stats_form.cleaned_data['end'] is not None:
                     end = stats_form.cleaned_data['end']
-
+                if end == today:
+                    sameday = True
+                    end += datetime.timedelta(days=1)
+                else:
+                    sameday = False
+                print(today)
+                print(end)
                 users = User.objects.filter(date_joined__range=(start, end))
             else:
                 users = User.objects.filter(
@@ -1647,6 +1655,8 @@ def admin_site_statistics(request):
         'schools': {'total': len(all_schools), 'schools': all_schools},
         'start': start,
         'end': end,
+        'sameday': sameday,
+        'today': today
         }
     )
 
