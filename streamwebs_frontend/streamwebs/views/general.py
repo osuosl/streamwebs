@@ -1496,6 +1496,17 @@ def view_pp_and_add_img(request, site_slug, cp_id, pp_id):
         }
     )
 
+@login_required
+@permission_required('streamwebs.is_org_admin', raise_exception=True)
+def delete_photo_point(request, site_slug, cp_id, pp_id):
+    site = Site.objects.get(site_slug=site_slug)
+    cp = CameraPoint.objects.get(id=cp_id)
+    pp = PhotoPoint.objects.get(id=pp_id)
+
+    pp.delete()
+
+    return HttpResponseRedirect('/sites/{0}/camera/{1}'.format(site_slug, cp_id))
+
 
 @login_required
 @permission_required('streamwebs.is_org_author', raise_exception=True)

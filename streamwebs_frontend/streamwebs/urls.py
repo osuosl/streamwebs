@@ -120,10 +120,14 @@ urlpatterns = [
         views.export_cc, name='export_cc'),
 
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/camera/(?P<cp_id>\d+)/photo/' +
-        '(?P<pp_id>\d+)/?$', views.view_pp_and_add_img, name='photo_point'),
+        '(?P<pp_id>\d+)/$', views.view_pp_and_add_img, name='photo_point'),
 
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/camera/(?P<cp_id>\d+)/photo/' +
         'edit/?$', views.add_photo_point, name='photo_point_add'),
+
+    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/camera/(?P<cp_id>\d+)/photo/' + 
+        '(?P<pp_id>\d+)/delete/$',
+        views.delete_photo_point, name='photo_point_delete'),
 
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/camera/(?P<cp_id>\d+)/$',
         views.camera_point_view, name='camera_point'),
