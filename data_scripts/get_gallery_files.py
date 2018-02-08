@@ -12,13 +12,13 @@ proj_path = "../streamwebs_frontend/"
 sys.path.append(proj_path)
 application = get_wsgi_application()
 
-from django.core.files import File
-from django.core.files.temp import NamedTemporaryFile
-from django.contrib.auth.models import User
+from django.core.files import File # NOQA
+from django.core.files.temp import NamedTemporaryFile # NOQA
+from django.contrib.auth.models import User # NOQA
 
 from streamwebs.models import GalleryFile  # NOQA
 from streamwebs.models import Site  # NOQA
-from streamwebs.models import UserProfile
+from streamwebs.models import UserProfile # NOQA
 
 
 # Change into media directory
