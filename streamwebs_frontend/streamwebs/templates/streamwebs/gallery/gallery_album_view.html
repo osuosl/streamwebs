@@ -35,13 +35,11 @@
       Back to <span>{{ site.site_name }}</span>
     </a>
     <!-- Delete button -->
-    {% if perms.streamwebs.is_org_admin %}
-      <a id="delete_button" 
-         class="waves-effect waves-light btn red darken-3 right"
-         href="{% url 'streamwebs:delete_gallery_album' site.site_slug gallery_album.id %}">
-        {% trans "Delete" %}
-      </a>
-    {% endif %}
+    <div id="delete-button" class="waves-effect waves-dark btn red darken-3 right"
+      href="{% url 'streamwebs:delete_gallery_album' site.site_slug gallery_album.id %}">
+      Delete Album
+    </div>
+    {% include 'streamwebs/datasheets/delete_button_partial.html' %}
   </div>
 
   <div class="row">

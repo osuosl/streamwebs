@@ -31,9 +31,11 @@
       <i class="material-icons">chevron_left</i>
       Back to <span>{{ site.site_name }}</span>
     </a>
-    <div class="delete-button">
-      {% include 'streamwebs/datasheets/delete_button_partial.html' %}
+    <div id="delete-button" class="waves-effect waves-dark btn red darken-3 right"
+      href="{% url 'streamwebs:water_quality_delete' site.site_slug wq_data.id %}">
+      Delete Datasheet
     </div>
+    {% include 'streamwebs/datasheets/delete_button_partial.html' %}
   </div>
   <div class="container">
     <h3 align="center" class="teal-text">
@@ -360,10 +362,14 @@
 {% endblock %}
 
 {% block scripts %}
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
   <script type="application/javascript"
           src="{% static 'streamwebs/js/data.js' %}"></script>
   <script>
     $(function() {
+      $('.modal').modal();
+
       var fishPresent = $('span#fish-present').text();
 
       if (fishPresent === "True") {

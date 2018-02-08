@@ -14,9 +14,6 @@
     ul.errorlist ~ div.input-field{
       border-top: 1px solid red;
     }
-    #delete_button {
-      margin-right: 3%;
-    }
   </style>
 
   <div>
@@ -27,13 +24,11 @@
       Back to <span>{{ site.site_name }}</span>
     </a>
     <!-- Delete button -->
-    {% if perms.streamwebs.is_org_admin %}
-      <a id="delete_button" 
-         class="waves-effect waves-light btn red darken-3 right"
-         href="{% url 'streamwebs:delete_gallery_image' site.site_slug gallery_image.id %}">
-        {% trans "Delete" %}
-      </a>
-    {% endif %}
+    <div id="delete-button" class="waves-effect waves-dark btn red darken-3 right"
+      href="{% url 'streamwebs:delete_gallery_image' site.site_slug gallery_image.id %}">
+      Delete Image
+    </div>
+    {% include 'streamwebs/datasheets/delete_button_partial.html' %}
   </div>
 
   <div class="row">
@@ -98,8 +93,4 @@
       </div>
     </div>
   </div>
-{% endblock %}
-
-{% block scripts %}
-
 {% endblock %}
