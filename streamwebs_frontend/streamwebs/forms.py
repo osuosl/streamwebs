@@ -1,9 +1,11 @@
 # -*- coding: UTF-8 -*-
 from __future__ import unicode_literals
-from streamwebs.models import UserProfile, WQ_Sample, Water_Quality, \
-    Macroinvertebrates, Canopy_Cover, TransectZone, \
-    RiparianTransect, PhotoPointImage, PhotoPoint, CameraPoint, Site, School, \
-    Soil_Survey, Resource, RipAquaticSurvey
+from streamwebs.models import (
+    UserProfile, WQ_Sample, Water_Quality,
+    Macroinvertebrates, Canopy_Cover, TransectZone,
+    RiparianTransect, PhotoPointImage, PhotoPoint, CameraPoint, Site, School,
+    Soil_Survey, Resource, RipAquaticSurvey,
+    GalleryImage, GalleryAlbum, GalleryFile)
 from django.contrib.auth.models import User
 from django import forms
 from django.forms import BaseInlineFormSet
@@ -388,6 +390,51 @@ class SiteForm(forms.ModelForm):
                 attrs={'class': 'materialize-textarea'})
         }
         fields = ('site_name', 'description', 'location', 'image')
+
+
+class GalleryImageAddForm(forms.ModelForm):
+    date = forms.DateField(
+        label="Photo Date",
+        widget=forms.DateInput(attrs={'class': 'datepicker'}),
+    )
+
+    class Meta:
+        model = GalleryImage
+        widgets = {
+            'description':
+                forms.Textarea(attrs={'class': 'materialize-textarea'})
+        }
+        fields = ('title', 'description', 'date', 'image',)
+
+
+class GalleryAlbumAddForm(forms.ModelForm):
+    date = forms.DateField(
+        label="Album Date",
+        widget=forms.DateInput(attrs={'class': 'datepicker'}),
+    )
+
+    class Meta:
+        model = GalleryAlbum
+        widgets = {
+            'description':
+                forms.Textarea(attrs={'class': 'materialize-textarea'})
+        }
+        fields = ('title', 'description', 'date',)
+
+
+class GalleryFileAddForm(forms.ModelForm):
+    date = forms.DateField(
+        label="File Date",
+        widget=forms.DateInput(attrs={'class': 'datepicker'}),
+    )
+
+    class Meta:
+        model = GalleryFile
+        widgets = {
+            'description':
+                forms.Textarea(attrs={'class': 'materialize-textarea'})
+        }
+        fields = ('title', 'description', 'date', 'gallery_file',)
 
 
 class SoilSurveyForm(forms.ModelForm):

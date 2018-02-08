@@ -6,8 +6,6 @@
 
 {% block title %}{{ site.site_name }} - {% trans "Streamwebs" %}{% endblock %}
 
-{% block body_title %}{{ site.site_name }}{% endblock %}
-
 {% block content %}
   <style>
     .btn-large {
@@ -34,6 +32,8 @@
       display: block;
       width: 100px;
       height: 60px;
+      margin-left: auto;
+      margin-right: auto;
       background: grey;
       color: white;
       font-size: 20px;
@@ -52,13 +52,35 @@
       bottom: 3px;
       color: black;
     }
+
+    i.icon-teal {
+      color: teal;
+    }
   </style>
 
   <!-- site info -->
-  <div class="row">
-    <div class="col s12 l10 offset-l1">
+  <div>
+    <!-- Title -->
+    <div class="row">
+      <div class="col s12" align="center">
+        <h3 class="teal-text text-darken-3">
+          {{ site.site_name }}
+        </h3>
+        <!-- Edit -->
+        {% if user.is_authenticated and perms.streamwebs.is_org_admin %}
+        <a href="{% url 'streamwebs:update_site' site_slug=site.site_slug %}"
+          class="btn teal darken-3 waves-effect">
+          <i class="material-icons large">mode_edit</i>
+          {% trans "Edit Site" %}
+        </a>
+        <br/>
+        {% endif %}
+      </div>
+    </div>
+    
+    <div class="col s12">
       <div class="row">
-        <div class="col s12 l6">
+        <div class="col s6">
           {% if site.image %}
             <div class="resp_box">
               <img src="{{ site.image.url }}" alt="site image" id="site_detail_image" />
@@ -70,11 +92,13 @@
             </div>
           {% endif %}
         </div>
-        <div class="col s12 l6">
-          <!-- Gmaps -->
+        <!-- Gmaps -->
+        <div class="col s6">
           <div id="detail_map" class="resp_box"></div>
         </div>
       </div>
+
+      <!-- Latitude and longitude -->
       <div class="row">
         <div class="center-content">
           <p class="location">
@@ -84,186 +108,296 @@
           <p>
         </div>
       </div>
+      <!-- Descripiton -->
       <div class="row">
         <div class="col s12 center-align">
           <p>{{ site.description }}</p>
         </div>
       </div>
+      <br/>
+
+      <!-- Graphs -->
       <div class="row">
-        <!-- Graphs -->
-        <div class="col s2 m2 graphs left-align">
-          {% if has_wq or has_macros or has_camera %}
-            <h4>{% trans "Graphs" %}</h4>
-            {% if has_wq %}
-              <p><a href="{% url 'streamwebs:graph_water' site.site_slug %}">
-                <img src="{% static 'streamwebs/images/graph-wq.png' %}"
-                alt="water quality graphs"/>
-              </a></p>
-            {% endif %}
-            {% if has_macros %}
-              <p><a href="{% url 'streamwebs:graph_macros' site.site_slug %}">
-                <img src="{% static 'streamwebs/images/graph-macros.png' %}"
-                alt="macroinvertebrate graphs"/>
-              </a></p>
-            {% endif %}
-            {% if has_camera %}
-              <a href="{% url 'streamwebs:site_camera' site.site_slug %}" id="camera-button">Camera Points</a>
-            {% endif %}
-          {% endif %}
-        </div>
-
-        <!-- Datasheets -->
-        <div class="col s6 offset-s1 center" >
-          {% if has_wq or has_macros or has_cc or has_transect or has_soil or has_camera or has_aqua %}
-            <h4>{% trans "Datasheets" %}</h4>
-            <ul class="collection" id="data-sheet-list">
-            </ul>
-            <ul class="pagination">
-              <li id="first-page" class="disabled"><a href="#1">
-                <i class="material-icons">fast_rewind</i>
-              </a></li>
-              <li id="page-1" class="page-select waves-effect"><a href="#1">1</a>
-              </li>
-              {% for i in data_len_range %}
-              <li id="page-{{ i }}" class="page-select waves-effect"><a
-                href="#{{ i }}">{{ i }}</a></li>
-                {% endfor %}
-              <li id="last-page" class="disabled"><a href="#{{ pages }}">
-                <i class="material-icons">fast_forward</i>
-              </a></li>
-            </ul>
-          {% else %}
-            <p>{% trans "No data for this site." %}</p>
-          {% endif %}
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col s4 center">
-          <!-- Export -->
-          {% if has_wq or has_macros or has_cc or has_transects or has_soil or has_aqua %}
-          <a class="btn-large teal darken-3" id="export_data_button">
-            <i class="material-icons right">arrow_drop_down</i>
-            {% trans "Export" %}
-          </a>
-
-          <div id="export_data" class="collection" hidden>
-            {% if has_wq %}
-            <a href="{% url 'streamwebs:export_wq' site_slug=site.site_slug %}"
-                class="collection-item">
-              {% trans "Water quality" %}
-            </a>
-            {% endif %}
-            {% if has_macros %}
-            <a href="{% url 'streamwebs:export_macros' site.site_slug %}"
-                class="collection-item">
-              {% trans "Macroinvertebrates" %}
-            </a>
-            {% endif %}
-            {% if has_transects %}
-            <a href="{% url 'streamwebs:export_transects' site.site_slug %}"
-                class="collection-item">
-              {% trans "Riparian transect" %}
-            </a>
-            {% endif %}
-            {% if has_cc %}
-            <a href="{% url 'streamwebs:export_cc' site.site_slug %}"
-                class="collection-item">
-              {% trans "Canopy Cover Survey" %}
-            </a>
-            {% endif %}
-            {% if has_soil %}
-            <a href="{% url 'streamwebs:export_soil' site_slug=site.site_slug %}"
-                class="collection-item">
-              {% trans "Soil Survey" %}
-            </a>
-            {% endif %}
-            {% if has_aqua %}
-            <a href="{% url 'streamwebs:export_rip_aqua' site_slug=site.site_slug %}"
-                class="collection-item">
-              {% trans "Riparian Aquatic Survey" %}
-            </a>
+        {% if has_wq or has_macros or has_camera %}
+        <div class="center">
+          <h4>{% trans "Graphs" %}</h4>
+          <div class="col s12 offset-s3 graphs">
+              <div class="row">
+                <div class="col s2">
+                  {% if has_wq %}
+                    <p><a href="{% url 'streamwebs:graph_water' site.site_slug %}">
+                      <img src="{% static 'streamwebs/images/graph-wq.png' %}"
+                      alt="water quality graphs"/>
+                    </a></p>
+                  {% endif %}
+                </div>
+                <div class="col s2">
+                  {% if has_macros %}
+                    <p><a href="{% url 'streamwebs:graph_macros' site.site_slug %}">
+                      <img src="{% static 'streamwebs/images/graph-macros.png' %}"
+                      alt="macroinvertebrate graphs"/>
+                    </a></p>
+                  {% endif %}
+                </div>
+                <div class="col s2">
+                  {% if has_camera %}
+                    <div>
+                      <a href="{% url 'streamwebs:site_camera' site.site_slug %}"
+                        id="camera-button">
+                        Camera Points
+                      </a>
+                    </div>
+                  {% endif %}
+                </div>
+              </div>
             {% endif %}
           </div>
-          {% endif %}
         </div>
-
-        <div class="col s4 center">
-          <!-- Add data -->
-          {% if user.is_authenticated and perms.streamwebs.is_org_author %}
-          <a class="btn-large teal darken-3" id="add_data_button">
-            <i class="material-icons right">arrow_drop_down</i>
-            {% trans "Add data to this site" %}
-          </a>
-          
-          <div id="add_data" class="collection" hidden>
-            <a href="{% url 'streamwebs:water_quality_edit' site_slug=site.site_slug %}"
-                class="collection-item">
-              {% trans "Water quality" %}
-            </a>
-            <a href="{% url 'streamwebs:macroinvertebrate_edit' site.site_slug %}"
-                class="collection-item">
-              {% trans "Macroinvertebrates" %}
-            </a>
-            <a href="{% url 'streamwebs:riparian_transect_edit' site.site_slug %}"
-                class="collection-item">
-              {% trans "Riparian transect" %}
-            </a>
-            <a href="{% url 'streamwebs:canopy_cover_edit' site.site_slug %}"
-                class="collection-item">
-              {% trans "Canopy Cover Survey" %}
-            </a>
-            <a href="{% url 'streamwebs:camera_point_add' site_slug=site.site_slug %}"
-                class="collection-item">
-              {% trans "New Camera Point" %}
-            </a>
-            <a href="{% url 'streamwebs:soil_edit' site_slug=site.site_slug %}"
-                class="collection-item">
-              {% trans "Soil Survey" %}
-            </a>
-            <a href="{% url 'streamwebs:rip_aqua_edit' site_slug=site.site_slug %}"
-                class="collection-item">
-              {% trans "Riparian Aquatic Survey" %}
-            </a>
-          </div>
-          {% endif %}
-        </div>
-
-        <div class="col s4 center">
-          <!-- Edit -->
-          {% if user.is_authenticated and perms.streamwebs.is_org_admin %}
-            <a href="{% url 'streamwebs:update_site' site_slug=site.site_slug %}"
-              class="btn-large teal darken-3">
-              <i class="material-icons right">mode_edit</i>
-              {% trans "Edit Site" %}
-            </a>
-          {% endif %}
-        </div>
-
       </div>
     </div>
+
+    <div class="row">
+      <!-- Datasheets -->
+      <div class="col s6 center" >
+        <h4>{% trans "Datasheets" %}</h4>
+        {% if page_count_ds > 0 %}
+          <ul class="collection" id="datasheets"></ul>
+          
+          <ul class="pagination">
+            <li>
+              <a id="first-page-datasheet"
+                  class="btn-flat wave-effects disabled"
+                  onclick="filter_datasheets(1)">
+                <i class="material-icons">fast_rewind</i>
+              </a>
+            </li>
+            {% for i in pages_ds %}
+            <li id="page-{{ i }}-datasheet" class="page-select-datasheet waves-effect"
+                onclick="filter_datasheets({{ i }})">
+              <a class="btn-flat wave-effects">{{ i }}</a>
+            </li>
+            {% endfor %}
+            <li>
+              <a id="last-page-datasheet"
+                  onclick="filter_datasheets({{ pages_ds|length }})"
+                  class="btn-flat wave-effects disabled">
+                <i class="material-icons">fast_forward</i>
+              </a>
+            </li>
+          </ul>
+        {% else %}
+          <p>{% trans "No data for this site." %}</p>
+        {% endif %}
+      </div>
+
+      <!-- Gallery -->
+      <div class="col s6 center" >
+        <h4>{% trans "Gallery" %}</h4>
+        {% if page_count_gl > 0 %}
+          <ul class="collection" id="gallery"></ul>
+          
+          <ul class="pagination">
+              <li>
+                <a id="first-page-gallery"
+                    class="btn-flat wave-effects disabled"
+                    onclick="filter_gallery(1)">
+                  <i class="material-icons">fast_rewind</i>
+                </a>
+              </li>
+            {% for i in pages_gl %}
+            <li id="page-{{ i }}-gallery" class="page-select-gallery waves-effect"
+                onclick="filter_gallery({{ i }})">
+              <a>{{ i }}</a>
+            </li>
+            {% endfor %}
+            <li>
+              <a id="last-page-gallery"
+                  onclick="filter_gallery({{ pages_gl|length }})"
+                  class="btn-flat wave-effects disabled">
+                <i class="material-icons">fast_forward</i>
+              </a>
+            </li>
+          </ul>
+        {% else %}
+          <p>{% trans "No data for this site." %}</p>
+        {% endif %}
+      </div>
+
+    </div>
+    <br/><br/>
+
+    <div class="row">
+
+      <!-- Add datasheet -->
+      <div class="col s4 center">
+        {% if user.is_authenticated and perms.streamwebs.is_org_author %}
+        <a class="btn-large teal darken-3 waves-effect" id="add_datasheet_button">
+          <i class="material-icons right">arrow_drop_down</i>
+          {% trans "Add data sheet" %}
+        </a>
+        
+        <div id="add_datasheet_types" class="collection" hidden>
+          <a href="{% url 'streamwebs:water_quality_edit' site_slug=site.site_slug %}"
+              class="collection-item waves-effect">
+            {% trans "Water quality" %}
+          </a>
+          <a href="{% url 'streamwebs:macroinvertebrate_edit' site.site_slug %}"
+              class="collection-item">
+            {% trans "Macroinvertebrates" %}
+          </a>
+          <a href="{% url 'streamwebs:riparian_transect_edit' site.site_slug %}"
+              class="collection-item">
+            {% trans "Riparian transect" %}
+          </a>
+          <a href="{% url 'streamwebs:canopy_cover_edit' site.site_slug %}"
+              class="collection-item">
+            {% trans "Canopy Cover Survey" %}
+          </a>
+          <a href="{% url 'streamwebs:camera_point_add' site_slug=site.site_slug %}"
+              class="collection-item">
+            {% trans "New Camera Point" %}
+          </a>
+          <a href="{% url 'streamwebs:soil_edit' site_slug=site.site_slug %}"
+              class="collection-item">
+            {% trans "Soil Survey" %}
+          </a>
+          <a href="{% url 'streamwebs:rip_aqua_edit' site_slug=site.site_slug %}"
+              class="collection-item">
+            {% trans "Riparian Aquatic Survey" %}
+          </a>
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- Export -->
+      <div class="col s4 center">
+        {% if has_wq or has_macros or has_cc or has_transects or has_soil or has_aqua %}
+        <a id="export_data_button" class="btn-large teal darken-3 waves-effect">
+          <i class="material-icons right">arrow_drop_down</i>
+          {% trans "Export" %}
+        </a>
+        {% endif %}
+        <div id="export_data" class="collection" hidden>
+          {% if has_wq %}
+          <a href="{% url 'streamwebs:export_wq' site_slug=site.site_slug %}"
+              class="collection-item">
+            {% trans "Water quality" %}
+          </a>
+          {% endif %}
+          {% if has_macros %}
+          <a href="{% url 'streamwebs:export_macros' site.site_slug %}"
+              class="collection-item">
+            {% trans "Macroinvertebrates" %}
+          </a>
+          {% endif %}
+          {% if has_transects %}
+          <a href="{% url 'streamwebs:export_transects' site.site_slug %}"
+              class="collection-item">
+            {% trans "Riparian transect" %}
+          </a>
+          {% endif %}
+          {% if has_cc %}
+          <a href="{% url 'streamwebs:export_cc' site.site_slug %}"
+              class="collection-item">
+            {% trans "Canopy Cover Survey" %}
+          </a>
+          {% endif %}
+          {% if has_soil %}
+          <a href="{% url 'streamwebs:export_soil' site_slug=site.site_slug %}"
+              class="collection-item">
+            {% trans "Soil Survey" %}
+          </a>
+          {% endif %}
+          {% if has_aqua %}
+          <a href="{% url 'streamwebs:export_rip_aqua' site_slug=site.site_slug %}"
+              class="collection-item">
+            {% trans "Riparian Aquatic Survey" %}
+          </a>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Add gallery item -->
+      <div class="col s4 center">
+        {% if user.is_authenticated and perms.streamwebs.is_org_author %}
+        <a class="btn-large teal darken-3 waves-effect" id="add_gallery_item_button">
+          <i class="material-icons right">arrow_drop_down</i>
+          {% trans "Add gallery item" %}
+        </a>
+        
+        <div id="add_gallery_item_types" class="collection" hidden>
+          <a href="{% url 'streamwebs:add_gallery_image' site_slug=site.site_slug %}"
+              class="collection-item">
+            {% trans "Image" %}
+          </a>
+          <a href="{% url 'streamwebs:add_gallery_album' site_slug=site.site_slug %}"
+            class="collection-item">
+            {% trans "Album" %}
+          </a>
+          <a href="{% url 'streamwebs:add_gallery_file' site_slug=site.site_slug %}"
+            class="collection-item">
+            {% trans "File" %}
+          </a>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
   </div>
 
 {% endblock %}
 
 {% block scripts %}
+  <script src="https://maps.googleapis.com/maps/api/js?key={{ maps_api }}"></script>
+  <script type="application/javascript" src="{% static 'streamwebs/js/site_detail.js' %}"></script>
+  <script type="application/javascript"
+          src="{% static 'streamwebs/js/site_detail.js' %}"></script>
+
   <script type="application/javascript">
+    var sheet_data = {{ datasheets|safe }};
+    var gallery_data = {{ gallery_items|safe }};
+
+    var datasheet_page = 1;
+    var gallery_page = 1;
+
+    var page_count_ds = {{ page_count_ds }}
+    var page_count_gl = {{ page_count_gl }}
+    var num_elements_page = {{ num_elements_page }}
+
+    var export_menu_hidden = true;
+    var add_datasheet_menu_hidden = true;
+    var add_gallery_menu_hidden = true;
+
+    var map;
+
     var site_name = '{{ site.site_name }}';
     var site_slug = '{{ site.site_slug }}';
     var site_location = {x: {{ site.location.x }}, y: {{ site.location.y }} };
 
-    var sheet_data = {{ data|safe }};
-    var page_count = {{ pages }};
     var boxRatio = 2/3;
     var boxRatioNarrow = 2/5;
     var imgWidth = $('img#site_detail_image')[0].naturalWidth;
     var imgHeight = $('img#site_detail_image')[0].naturalHeight;
     var imgRatio = imgHeight/imgWidth;
 
-    $(document).ready(function(){
-      var export_menu_hidden = true;
-      var add_data_menu_hidden = true;
+    var path = "m 0,0 c -7.08163,-14.59707 -5.50487,-20.97294 5.18667,-20.97294 " +
+               "10.69154,0 12.2683,6.37587 5.18667,20.97294 -2.4156,4.97919 " +
+               "-4.74961,9.05306 -5.18667,9.05306 -0.43706,0 -2.77107,-4.07387 " +
+               "-5.18667,-9.05306 z";
 
+    {% language "en-us" %}
+    var loc = {
+      lat: {{ site.location.y }},
+      lng: {{ site.location.x }},
+    };
+    {% endlanguage %}
+
+    $(document).ready(function(){
+      updateDimension();
+      initialize();
+      window.mapTypeId = {{ map_type }};
+
+      // Add and export buttons
       $("#export_data_button").on("click", function(){
         if (export_menu_hidden){
           $("#export_data").slideDown(500);
@@ -273,60 +407,27 @@
         export_menu_hidden = !export_menu_hidden;
       });
 
-      $("#add_data_button").on("click", function(){
-        if (add_data_menu_hidden){
-          $("#add_data").slideDown(500);
+      $("#add_datasheet_button").on("click", function(){
+        if (add_datasheet_menu_hidden){
+          $("#add_datasheet_types").slideDown(500);
         } else {
-          $("#add_data").slideUp(500);
+          $("#add_datasheet_types").slideUp(500);
         }
-        add_data_menu_hidden = !add_data_menu_hidden;
+        add_datasheet_menu_hidden = !add_datasheet_menu_hidden;
       });
 
-
-      {% language "en-us" %}
-      var loc = {
-        lat: {{ site.location.y }},
-        lng: {{ site.location.x }},
-      };
-      {% endlanguage %}
-      var latlng = new google.maps.LatLng(loc.lat, loc.lng);
-      var mapOptions = {
-        zoom: 14,
-        center: latlng,
-        mapTypeControl: false,
-        navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL},
-        mapTypeId: 'roadmap'
-      };
-      map = new google.maps.Map($('#detail_map')[0], mapOptions);
-
-      marker = new google.maps.Marker({
-        position: loc,
-        map: map,
-        title: "Site Location"
+      $("#add_gallery_item_button").on("click", function(){
+        if (add_gallery_menu_hidden){
+          $("#add_gallery_item_types").slideDown(500);
+        } else {
+          $("#add_gallery_item_types").slideUp(500);
+        }
+        add_gallery_menu_hidden = !add_gallery_menu_hidden;
       });
-
-      // responsive function
-      google.maps.event.addDomListener(window, "resize", function () {
-        var center = map.getCenter();
-        google.maps.event.trigger(map, "resize");
-        map.setCenter(center);
-      });
-
     });
-
-    window.onload = function() {
-        updateDimension();
-        initialize();
-        window.mapTypeId = {{ map_type }};
-    }
 
     $(window).resize(function() {
         updateDimension();
     })
   </script>
-
-  <script src="https://maps.googleapis.com/maps/api/js?key={{ maps_api }}"></script>
-  <script type="application/javascript" src="{% static 'streamwebs/js/site_detail.js' %}"></script>
-  <script type="application/javascript"
-          src="{% static 'streamwebs/js/site_detail.js' %}"></script>
 {% endblock %}

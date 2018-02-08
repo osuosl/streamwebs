@@ -39,4 +39,8 @@ curl http://drupal.streamwebs.org/ripa_plants_significance.csv > ripa_plants_sig
 curl http://drupal.streamwebs.org/ripa_wildlife_type.csv > ripa_wildlife_type.csv
 curl http://drupal.streamwebs.org/ripa_wildlife_comments.csv > ripa_wildlife_comments.csv
 
+curl http://drupal.streamwebs.org/gallery_csv/images.csv > gallery_csvs/images.csv
+curl http://drupal.streamwebs.org/gallery_csv/files.csv > gallery_csvs/files.csv
+curl http://drupal.streamwebs.org/albums.csv > gallery_csvs/albums.csv
+
 sed -i '2s;^;"0","Unknown School","Elementary","2009-02-03 14:16","2009-02-03 14:16","1234 Unknown Street","Corvallis","Oregon","97330","United States"\n;' schools_info.csv

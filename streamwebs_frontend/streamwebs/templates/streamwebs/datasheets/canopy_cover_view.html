@@ -60,9 +60,11 @@
         <i class="material-icons">chevron_left</i>
         Back to <span>{{ site.site_name }}</span>
       </a>
-      <div class="delete-button">
-        {% include 'streamwebs/datasheets/delete_button_partial.html' %}
+      <div id="delete-button" class="waves-effect waves-dark btn red darken-3 right"
+        href="{% url 'streamwebs:canopy_cover_delete' site.site_slug canopy_cover.id %}">
+        Delete Datasheet
       </div>
+      {% include 'streamwebs/datasheets/delete_button_partial.html' %}
     </div>
   <div class="container">
 

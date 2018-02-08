@@ -5,6 +5,10 @@
 {% block content %}
 {% if perms.streamwebs.is_org_admin%}
 <style>
+  #delete-button {
+    margin-right: 3%;
+  }
+
   #delete-modal {
     background-color: rgb(228, 228, 228);
     display: fixed;
@@ -38,16 +42,15 @@
     right: 5%
   }
 </style>
-  <a id="delete-button" class="waves-effect waves-light btn red darken-3" >Delete Datasheet</a>
   <!-- Modal Structure -->
   <div id="delete-modal" class="" hidden>
     <div class="modal-content">
-      <h4>Delete Datasheet?</h4>
-      <p>Click delete to perminately delete this datasheet</p>
+      <h4>Delete?</h4>
+      <p>Click delete to perminately delete this</p>
     </div>
     <div class="modal-footer">
-      <a id="keep-datasheet" class="waves-effect waves-light btn">Keep</a>
-      <a id="delete-datasheet" class="waves-effect waves-light btn red darken-3">Delete</a>
+      <a id="keep" class="waves-effect waves-light btn">Keep</a>
+      <a id="delete" class="waves-effect waves-light btn red darken-3">Delete</a>
     </div>
   </div>
   <div id="delete-modal-backdrop" hidden>&nbsp</div>
@@ -55,12 +58,13 @@
   {% endif %}
   
 <script>
-    var url = window.location.href
-    var delete_url = url + "delete/"
-    var button = document.getElementById("delete-datasheet")
-    button.href = delete_url
-    document.getElementById("delete-button").addEventListener("click", openModal)
-    document.getElementById("keep-datasheet").addEventListener("click", closeModal)
+    var button = document.getElementById("delete-button");
+    var delete_button = document.getElementById("delete");
+    delete_button.href = button.getAttribute("href");
+
+    button.addEventListener("click", openModal)
+    document.getElementById("keep").addEventListener("click", closeModal)
+    
     function openModal() {
       document.getElementById("delete-modal-backdrop").removeAttribute("hidden")
       document.getElementById("delete-modal").removeAttribute("hidden")
