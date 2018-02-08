@@ -20,11 +20,11 @@ def give_editor_access(apps, schema_editor):
         user.save()
 
 class Migration(migrations.Migration):
-
+    '''This migration was temporary for the Jan 6th workshop'''
     dependencies = [
         ('streamwebs', '0034_macro_totals'),
     ]
 
     operations = [
-        migrations.RunPython(give_editor_access)
+        #migrations.RunPython(give_editor_access)
     ]

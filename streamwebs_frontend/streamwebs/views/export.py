@@ -4,32 +4,15 @@ from django.http import HttpResponse
 
 from streamwebs.models import (
     Macroinvertebrates, Site, Water_Quality, WQ_Sample, RiparianTransect,
-    TransectZone, Canopy_Cover, Soil_Survey, RipAquaticSurvey, UserProfile)
-
-from django.contrib.auth.models import User
+    TransectZone, Canopy_Cover, Soil_Survey, RipAquaticSurvey)
 
 from djqscsv import render_to_csv_response
 import csv
 
 
-# Helper function to get a user from a request
-def get_school(request):
-    user = request.user
-    # If the user is not associated with a school
-    if str(user) == "AnonymousUser":
-        return None
-    else:
-        user = User.objects.get(username=user)
-        Profile = UserProfile.objects.filter(user=user).first()
-        if Profile is not None:
-            return Profile.school
-        else:
-            return ""  # Account is not associated with any schools
-
-
 def export_rip_aqua(request, site_slug):
     site = Site.objects.get(site_slug=site_slug)
-    school = get_school(request)
+
     ripaq = RipAquaticSurvey.objects.filter(site_id=site.id).values(
         'site__site_name', 'school__name', 'date_time', 'weather',
         'riffle_count', 'pool_count', 'silt', 'sand', 'gravel', 'cobble',
@@ -94,23 +77,14 @@ def export_rip_aqua(request, site_slug):
                 'wildlife_comments6': 'wildlife comments 6',
                 }
 
-    # If the user doesn't have an associated school, give them all the schools
-    if school is None or school is "":
-        return render_to_csv_response(
-            ripaq, field_header_map=field_header_map
-        )
-
-    else:
-        return render_to_csv_response(
-            ripaq.filter(school__name=school),
-            field_header_map=field_header_map
-        )
+    return render_to_csv_response(
+        ripaq, field_header_map=field_header_map
+    )
 
 
 def export_wq(request, site_slug):
     site = Site.objects.get(site_slug=site_slug)
     waterq = Water_Quality.objects.filter(site_id=site.id)
-    school = get_school(request)
 
     # Store nid of each wq data sheet into a list
     sheets = []
@@ -178,21 +152,13 @@ def export_wq(request, site_slug):
                 'fecal_coliform': 'fecal coliform'
             }
 
-    # If the user doesn't have an associated school, give them all the schools
-    if school is None or school is "":
-        return render_to_csv_response(
-            samples, filename=filename, field_header_map=field_header_map
-        )
-    else:
-        return render_to_csv_response(
-            samples.filter(water_quality__school__name=school),
-            filename=filename, field_header_map=field_header_map
-        )
+    return render_to_csv_response(
+        samples, filename=filename, field_header_map=field_header_map
+    )
 
 
 def export_macros(request, site_slug):
     site = Site.objects.get(site_slug=site_slug)
-    school = get_school(request)
 
     macros = Macroinvertebrates.objects.filter(site_id=site.id).values(
         'school__name', 'date_time', 'site__site_name', 'weather',
@@ -218,23 +184,15 @@ def export_macros(request, site_slug):
             'wq_rating': 'water quality rating'
         }
 
-    # If the user doesn't have an associated school, give them all the schools
-    if school is None or school is "":
-        return render_to_csv_response(
-            macros, field_header_map=field_header_map
-        )
-    else:
-        return render_to_csv_response(
-            macros.filter(school__name=school),
-            field_header_map=field_header_map
-        )
+    return render_to_csv_response(
+        macros, field_header_map=field_header_map
+    )
 
 
 # Come back to this to fix schools and foreign key calls
 def export_ript(request, site_slug):
     site = Site.objects.get(site_slug=site_slug)
     rip_transect = RiparianTransect.objects.filter(site_id=site.id)
-    school = get_school(request)
 
     sheets = []
     for each in rip_transect:
@@ -269,22 +227,14 @@ def export_ript(request, site_slug):
             'transect__notes': 'notes', 'zone_num': 'zone number'
         }
 
-    # If the user doesn't have an associated school, give them all the schools
-    if school is None or school is "":
-        return render_to_csv_response(
-            zones, filename=filename, field_header_map=field_header_map
-        )
-    else:
-        return render_to_csv_response(
-            zones.filter(transect__school__name=school), filename=filename,
-            field_header_map=field_header_map
-        )
+    return render_to_csv_response(
+        zones, filename=filename, field_header_map=field_header_map
+    )
 
 
 def export_cc(request, site_slug):
     site = Site.objects.get(site_slug=site_slug)
     canopyc = Canopy_Cover.objects.filter(site_id=site.id)
-    school = get_school(request)
 
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; \
@@ -295,12 +245,6 @@ def export_cc(request, site_slug):
 
     for each in canopyc:
         cc = canopyc.get(id=each.id)
-
-        # Don't include the sheet if the associated school is different,
-        # but if there are no schools, give it all.
-        if str(cc.school) != str(school) and school is not None \
-                and school != "":
-            continue
 
         # Convert int to binary
         north = "{0:b}".format(cc.north_cc)
@@ -322,7 +266,7 @@ def export_cc(request, site_slug):
 
 def export_soil(request, site_slug):
     site = Site.objects.get(site_slug=site_slug)
-    school = get_school(request)
+
     soil = Soil_Survey.objects.filter(site_id=site.id).values(
         'school__name', 'date_time', 'site__site_name', 'weather',
         'landscape_pos', 'cover_type', 'land_use', 'soil_type', 'distance',
@@ -337,13 +281,6 @@ def export_soil(request, site_slug):
             'notes': 'field notes'
         }
 
-    # If the user doesn't have an associated school, give them all the schools
-    if school is None or school is "":
-        return render_to_csv_response(
-            soil, field_header_map=field_header_map
-        )
-
-    else:
-        return render_to_csv_response(
-            soil.filter(school__name=school), field_header_map=field_header_map
-        )
+    return render_to_csv_response(
+        soil, field_header_map=field_header_map
+    )
