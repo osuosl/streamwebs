@@ -271,17 +271,12 @@
 
       <!-- Export -->
       <div class="col s4 center">
-        <a id="export_data_button"
-            {% if has_wq or has_macros or has_cc or has_transects or has_soil or has_aqua %}
-            class="btn-large teal darken-3 waves-effect"
-            {% else %}
-            class="btn-large teal disabled waves-effect"
-            {% endif %}
-          >
+        {% if has_wq or has_macros or has_cc or has_transects or has_soil or has_aqua %}
+        <a id="export_data_button" class="btn-large teal darken-3 waves-effect">
           <i class="material-icons right">arrow_drop_down</i>
           {% trans "Export" %}
         </a>
-
+        {% endif %}
         <div id="export_data" class="collection" hidden>
           {% if has_wq %}
           <a href="{% url 'streamwebs:export_wq' site_slug=site.site_slug %}"
