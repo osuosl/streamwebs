@@ -166,7 +166,7 @@ var types1 = {}, types2 = {}, filtered1 = {}, filtered2 = {};
 var formatData = function formatData(data, key) {
     /*
      * So we currently have a list of data points, each one containing a date
-     * and a list of 4 samples, each sample having one each of every data type
+     * and a list of 4 samples, each sample having one of each every data type
      * we need. Instead, we want to pull out just one type per data point, pair
      * it with the date, and average each day into one point.
      */
@@ -213,6 +213,10 @@ var formatData = function formatData(data, key) {
 };
 
 var filterOutliers = function filterOutliers(entries) {
+
+    /* If there is only one entry, don't filter it out */
+    if(entries.length === 1)
+        return entries
 
     /*
      * Next we calculate the first and third quartile and the inter-quartile range
@@ -355,7 +359,7 @@ var filterZeroData = function filterZeroData(filtered, key) {
     }
     else if (key === "water_temperature") {
         filtered = filtered.filter(function(dataPoint) {
-            return dataPoint.value >= 32 && dataPoint.value <= 140 ;
+            return dataPoint.value >= 0 && dataPoint.value <= 140 ;
         });
     }
     else if (key === "air_temperature") {
@@ -617,9 +621,9 @@ var graphTemperature = function graphTemperature(responsive=false) {
     var g2 = createGraphTemplate(containerName2, width, height, x, y, legendHeight);
 
     if ((filtered1.water_temperature.length ||
-    filtered1.air_temperature.length) ||
-    (window.hasSiteTwo && (filtered2.water_temperature.length ||
-    filtered2.air_temperature.length))) {
+        filtered1.air_temperature.length) ||
+        (window.hasSiteTwo && (filtered2.water_temperature.length ||
+        filtered2.air_temperature.length))) {
         $('#temperature-control').prop({
             disabled: null,
             checked: true
