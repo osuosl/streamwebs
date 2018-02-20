@@ -1,15 +1,18 @@
 # -*- coding: UTF-8 -*-
 from __future__ import unicode_literals
-from streamwebs.models import UserProfile, WQ_Sample, Water_Quality, \
-    Macroinvertebrates, Canopy_Cover, TransectZone, \
-    RiparianTransect, PhotoPointImage, PhotoPoint, CameraPoint, Site, School, \
-    Soil_Survey, Resource, RipAquaticSurvey
+from streamwebs.models import (
+    UserProfile, WQ_Sample, Water_Quality,
+    Macroinvertebrates, Canopy_Cover, TransectZone,
+    RiparianTransect, PhotoPointImage, PhotoPoint, CameraPoint, Site, School,
+    Soil_Survey, Resource, RipAquaticSurvey,
+    GalleryImage, GalleryAlbum, GalleryFile)
 from django.contrib.auth.models import User
 from django import forms
 from django.forms import BaseInlineFormSet
 from django.utils.translation import ugettext_lazy as _
 from captcha.fields import ReCaptchaField
 from django.core.validators import validate_email
+from django.contrib.auth.password_validation import validate_password
 
 TIME_PERIOD_CHOICES = (
     ('AM', _('AM')),
@@ -34,38 +37,15 @@ def clean_unique_lower(form, field, exclude_initial=True,
     return lower_value
 
 
-class UserForm(forms.ModelForm):
-    password = forms.CharField(
-        widget=forms.PasswordInput(),
-        label=_('Password'))
+def clean_password_validators(self):
+    password = self.data['password']
 
-    password_check = forms.CharField(
-        widget=forms.PasswordInput(),
-        label='Repeat your password')
+    # Call password validators
+    validate_password(password)
 
-    email = forms.CharField(required=True)
-    first_name = forms.CharField(
-        widget=forms.TextInput()
-    )
-
-    class Meta:
-        model = User
-        fields = ('username', 'email', 'password', 'first_name', 'last_name')
-        labels = {
-            'username': _('Username'),
-            'email': _('Email'),
-            'password': _('Password:'),
-            'first_name': _('First Name'),
-        }
-
-    def clean_password(self):
-        if self.data['password'] != self.data['password_check']:
-            raise forms.ValidationError(_('Passwords did not match'))
-        return self.data['password']
-
-    def clean_email(self):
-        return clean_unique_lower(self, 'email', error_message=u'A user with\
-                                  that email address already exists.')
+    if self.data['password'] != self.data['password_check']:
+        raise forms.ValidationError(_('Passwords did not match'))
+    return self.data['password']
 
 
 class UserFormOptionalNameEmail(forms.ModelForm):
@@ -98,9 +78,7 @@ class UserFormOptionalNameEmail(forms.ModelForm):
         }
 
     def clean_password(self):
-        if self.data['password'] != self.data['password_check']:
-            raise forms.ValidationError(_('Passwords did not match'))
-        return self.data['password']
+        return clean_password_validators(self)
 
     def clean_email(self):
         return clean_unique_lower(self, 'email', error_message=u'A user with \
@@ -131,12 +109,11 @@ class UserFormEmailAsUsername(forms.ModelForm):
             'email': _('Email Address'),
             'password': _('Password:'),
             'first_name': _('First Name'),
+            'last_name': _('Last Name'),
         }
 
     def clean_password(self):
-        if self.data['password'] != self.data['password_check']:
-            raise forms.ValidationError(_('Passwords did not match'))
-        return self.data['password']
+        return clean_password_validators(self)
 
     def clean_email(self):
         return clean_unique_lower(self, 'email', error_message=u'A user with \
@@ -192,12 +169,10 @@ class UserPasswordForm(forms.ModelForm):
         fields = ('password',)
 
     def clean_password(self):
-        if self.data['password'] != self.data['password_check']:
-            raise forms.ValidationError(_('New Passwords did not match.'))
         if self.data['old_password'] == self.data['password']:
             raise forms.ValidationError(_('Your old password and new ' +
                                           'password cannot be the same.'))
-        return self.data['password']
+        return clean_password_validators(self)
 
 
 class UserProfileForm(forms.ModelForm):
@@ -415,6 +390,51 @@ class SiteForm(forms.ModelForm):
                 attrs={'class': 'materialize-textarea'})
         }
         fields = ('site_name', 'description', 'location', 'image')
+
+
+class GalleryImageAddForm(forms.ModelForm):
+    date = forms.DateField(
+        label="Photo Date",
+        widget=forms.DateInput(attrs={'class': 'datepicker'}),
+    )
+
+    class Meta:
+        model = GalleryImage
+        widgets = {
+            'description':
+                forms.Textarea(attrs={'class': 'materialize-textarea'})
+        }
+        fields = ('title', 'description', 'date', 'image',)
+
+
+class GalleryAlbumAddForm(forms.ModelForm):
+    date = forms.DateField(
+        label="Album Date",
+        widget=forms.DateInput(attrs={'class': 'datepicker'}),
+    )
+
+    class Meta:
+        model = GalleryAlbum
+        widgets = {
+            'description':
+                forms.Textarea(attrs={'class': 'materialize-textarea'})
+        }
+        fields = ('title', 'description', 'date',)
+
+
+class GalleryFileAddForm(forms.ModelForm):
+    date = forms.DateField(
+        label="File Date",
+        widget=forms.DateInput(attrs={'class': 'datepicker'}),
+    )
+
+    class Meta:
+        model = GalleryFile
+        widgets = {
+            'description':
+                forms.Textarea(attrs={'class': 'materialize-textarea'})
+        }
+        fields = ('title', 'description', 'date', 'gallery_file',)
 
 
 class SoilSurveyForm(forms.ModelForm):

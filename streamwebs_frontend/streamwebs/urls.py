@@ -15,6 +15,30 @@ urlpatterns = [
 
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/$', views.site, name='site'),
 
+    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/image/add/$',
+        views.add_gallery_image, name='add_gallery_image'),
+    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/album/add/$',
+        views.add_gallery_album, name='add_gallery_album'),
+    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/file/add/$',
+        views.add_gallery_file, name='add_gallery_file'),
+
+    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/image/(?P<image_id>[0-9]+)/$',
+        views.gallery_image, name='gallery_image'),
+    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/album/(?P<album_id>[0-9]+)/$',
+        views.gallery_album, name='gallery_album'),
+    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/file/(?P<file_id>[0-9]+)/$',
+        views.gallery_file, name='gallery_file'),
+
+    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/image/(?P<image_id>[0-9]+)/' +
+        'delete/$',
+        views.delete_gallery_image, name='delete_gallery_image'),
+    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/album/(?P<album_id>[0-9]+)/' +
+        'delete/$',
+        views.delete_gallery_album, name='delete_gallery_album'),
+    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/file/(?P<file_id>[0-9]+)/' +
+        'delete/$',
+        views.delete_gallery_file, name='delete_gallery_file'),
+
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/edit/', views.update_site,
         name='update_site'),
 
@@ -96,10 +120,14 @@ urlpatterns = [
         views.export_cc, name='export_cc'),
 
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/camera/(?P<cp_id>\d+)/photo/' +
-        '(?P<pp_id>\d+)/?$', views.view_pp_and_add_img, name='photo_point'),
+        '(?P<pp_id>\d+)/$', views.view_pp_and_add_img, name='photo_point'),
 
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/camera/(?P<cp_id>\d+)/photo/' +
         'edit/?$', views.add_photo_point, name='photo_point_add'),
+
+    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/camera/(?P<cp_id>\d+)/photo/' +
+        '(?P<pp_id>\d+)/delete/$',
+        views.delete_photo_point, name='photo_point_delete'),
 
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/camera/(?P<cp_id>\d+)/$',
         views.camera_point_view, name='camera_point'),
@@ -161,6 +189,9 @@ urlpatterns = [
         views.add_account, name='add_account'),
     url(r'^schools/(?P<school_id>[0-9]+)/edit_account/(?P<user_id>[0-9]+)/$',
         views.edit_account, name='edit_account'),
+
+    url(r'^approve_accounts/$',
+        views.approve_accounts, name='approve_accounts'),
 
     # This is used to view a backend variable
     url(r'^var_debug/(?P<value>.*)/$',

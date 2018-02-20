@@ -29,7 +29,11 @@ class SchoolTestCase(TestCase):
             'ripariantransect': models.ManyToOneRel,
             'canopy_cover': models.ManyToOneRel,
             'soil_survey': models.ManyToOneRel,
-            'schoolrelations': models.ManyToOneRel
+            'schoolrelations': models.ManyToOneRel,
+
+            'galleryalbum': models.ManyToOneRel,
+            'galleryfile': models.ManyToOneRel,
+            'galleryimage': models.ManyToOneRel
         }
 
     def test_fields_exist(self):

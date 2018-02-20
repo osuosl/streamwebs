@@ -23,17 +23,19 @@ from streamwebs.forms import (
     PhotoPointImageForm, PhotoPointForm, CameraPointForm, WQSampleForm,
     WQForm, SiteForm, Canopy_Cover_Form, SoilSurveyForm, StatisticsForm,
     TransectZoneForm, BaseZoneInlineFormSet, ResourceForm, UserEmailForm,
-    UserPasswordForm, SchoolForm, RipAquaForm)
+    UserPasswordForm, SchoolForm, RipAquaForm,
+    GalleryImageAddForm, GalleryAlbumAddForm, GalleryFileAddForm)
 
 from streamwebs.models import (
     Macroinvertebrates, Site, Water_Quality, WQ_Sample, RiparianTransect,
     TransectZone, Canopy_Cover, CameraPoint, PhotoPoint,
     PhotoPointImage, Soil_Survey, Resource, RipAquaticSurvey,
-    UserProfile, School)
+    UserProfile, School, GalleryImage, GalleryFile, GalleryAlbum)
 
 import json
 import copy
 import datetime
+import math
 
 
 # Decorator function that requires the user to be part of ANY school
@@ -83,21 +85,22 @@ def organization_approved(func):
 # Send an email
 def send_email(request, subject, template, user, school, from_email,
                recipients):
-    send_mail(
-        subject=subject,
-        message='',
-        html_message=render_to_string(
-            template,
-            {
-                'protocol': request.scheme,
-                'domain': request.get_host(),
-                'user': user,
-                'school': school
-            }),
-        from_email=from_email,
-        recipient_list=recipients,
-        fail_silently=False,
-    )
+    if settings.SEND_EMAILS:
+        send_mail(
+            subject=subject,
+            message='',
+            html_message=render_to_string(
+                template,
+                {
+                    'protocol': request.scheme,
+                    'domain': request.get_host(),
+                    'user': user,
+                    'school': school
+                }),
+            from_email=from_email,
+            recipient_list=recipients,
+            fail_silently=False,
+        )
 
 
 def toDateTime(date, time, period):
@@ -176,10 +179,42 @@ def sites(request):
 
 # view-view for individual specified site
 def site(request, site_slug):
+    num_elements_page = 10
+
     """ View an individual site """
 
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
-    wq_sheets = Water_Quality.objects.filter(site_id=site.id)
+
+    datasheets, template_has = get_datasheets(site.id)
+    datasheets = add_school_name(datasheets)
+
+    gallery_items = get_gallery_items(site.id)
+    gallery_items = add_school_name(gallery_items)
+
+    page_count_ds = int(math.ceil(float(len(datasheets))
+                                  / float(num_elements_page)))
+    page_count_gl = int(math.ceil(float(len(gallery_items))
+                                  / float(num_elements_page)))
+
+    site_data = {
+        'site': site,
+        'maps_api': settings.GOOGLE_MAPS_API,
+        'map_type': settings.GOOGLE_MAPS_TYPE,
+        'datasheets': json.dumps(datasheets, cls=DjangoJSONEncoder),
+        'gallery_items': json.dumps(gallery_items, cls=DjangoJSONEncoder),
+        'pages_ds': range(1, page_count_ds+1),
+        'pages_gl': range(1, page_count_gl+1),
+        'page_count_ds': page_count_ds,
+        'page_count_gl': page_count_gl,
+        'num_elements_page': num_elements_page,
+    }
+    site_data.update(template_has)
+
+    return render(request, 'streamwebs/site_detail.html', site_data)
+
+
+def get_datasheets(site_id):
+    wq_sheets = Water_Quality.objects.filter(site_id=site_id)
     wq_sheets = list(wq_sheets.order_by('-date_time').values())
     wq_sheets_new = []
     for x in wq_sheets:
@@ -192,7 +227,7 @@ def site(request, site_slug):
         wq_sheets_new.append(wq_data)
     wq_sheets = wq_sheets_new
 
-    macro_sheets = Macroinvertebrates.objects.filter(site_id=site.id)
+    macro_sheets = Macroinvertebrates.objects.filter(site_id=site_id)
     macro_sheets = list(macro_sheets.order_by('-date_time').values())
     macro_sheets_new = []
     for x in macro_sheets:
@@ -206,7 +241,7 @@ def site(request, site_slug):
         macro_sheets_new.append(macro_data)
     macro_sheets = macro_sheets_new
 
-    transect_sheets = RiparianTransect.objects.filter(site_id=site.id)
+    transect_sheets = RiparianTransect.objects.filter(site_id=site_id)
     transect_sheets = list(transect_sheets.order_by('-date_time').values())
     transect_sheets_new = []
     for x in transect_sheets:
@@ -220,7 +255,7 @@ def site(request, site_slug):
         transect_sheets_new.append(transect_data)
     transect_sheets = transect_sheets_new
 
-    canopy_sheets = Canopy_Cover.objects.filter(site_id=site.id)
+    canopy_sheets = Canopy_Cover.objects.filter(site_id=site_id)
     canopy_sheets = list(canopy_sheets.order_by('-date_time').values())
     canopy_sheets_new = []
     for x in canopy_sheets:
@@ -233,7 +268,7 @@ def site(request, site_slug):
         canopy_sheets_new.append(canopy_data)
     canopy_sheets = canopy_sheets_new
 
-    ppm_sheets = CameraPoint.objects.filter(site_id=site.id)
+    ppm_sheets = CameraPoint.objects.filter(site_id=site_id)
     ppm_sheets = list(ppm_sheets.order_by('letter').values())
     ppm_sheets_new = []
     for x in ppm_sheets:
@@ -246,7 +281,7 @@ def site(request, site_slug):
         ppm_sheets_new.append(ppm_data)
     ppm_sheets = ppm_sheets_new
 
-    soil_sheets = Soil_Survey.objects.filter(site_id=site.id)
+    soil_sheets = Soil_Survey.objects.filter(site_id=site_id)
     soil_sheets = list(soil_sheets.order_by('-date_time').values())
     soil_sheets_new = []
     for x in soil_sheets:
@@ -259,7 +294,7 @@ def site(request, site_slug):
         soil_sheets_new.append(soil_data)
     soil_sheets = soil_sheets_new
 
-    rip_aqua_sheets = RipAquaticSurvey.objects.filter(site_id=site.id)
+    rip_aqua_sheets = RipAquaticSurvey.objects.filter(site_id=site_id)
     rip_aqua_sheets = list(rip_aqua_sheets.order_by('-date_time').values())
     rip_aqua_sheets_new = []
     for x in rip_aqua_sheets:
@@ -272,32 +307,15 @@ def site(request, site_slug):
         rip_aqua_sheets_new.append(rip_data)
     rip_aqua_sheets = rip_aqua_sheets_new
 
-    data = wq_sheets + macro_sheets + transect_sheets + canopy_sheets +\
+    # Compile datasheets into one list
+    datasheets = []
+    datasheets += wq_sheets + macro_sheets + transect_sheets + canopy_sheets +\
         ppm_sheets + soil_sheets + rip_aqua_sheets
 
-    def sort_date(x, y):
-        return y.year - x.year or y.month - x.month or y.day - x.day
+    datasheets.sort(cmp=sort_date, key=lambda x: x['date'])
+    datasheets.sort(key=lambda x: -x['school_id'])
 
-    data.sort(cmp=sort_date, key=lambda x: x['date'])
-    data.sort(key=lambda x: -x['school_id'])
-
-    num_schools = count_schools(data)
-    number_item = len(data) + num_schools
-
-    pages = (number_item)/10
-    if number_item % 10 != 0:
-        pages += 1
-
-    data_len_range = range(2, pages + 1)
-    data = add_school_name(data)
-
-    return render(request, 'streamwebs/site_detail.html', {
-        'site': site,
-        'maps_api': settings.GOOGLE_MAPS_API,
-        'map_type': settings.GOOGLE_MAPS_TYPE,
-        'data': json.dumps(data, cls=DjangoJSONEncoder),
-        'data_len_range': data_len_range,
-        'pages': pages,
+    template_has = {
         'has_wq': len(wq_sheets) > 0,
         'has_macros': len(macro_sheets) > 0,
         'has_transects': len(transect_sheets) > 0,
@@ -305,7 +323,79 @@ def site(request, site_slug):
         'has_soil': len(soil_sheets) > 0,
         'has_camera': len(ppm_sheets) > 0,
         'has_aqua': len(rip_aqua_sheets) > 0
-    })
+    }
+
+    return datasheets, template_has
+
+
+def get_gallery_items(site_id):
+    # Individual images
+    gallery_images = GalleryImage.objects.filter(site_id=site_id, album=None)
+    gallery_images = list(gallery_images.order_by('-date_time'))
+    gallery_images_new = []
+    for x in gallery_images:
+        image_data = {'id': x.id, 'uri': 'image',
+                      'type': 'Image ' + str(x.id) +
+                      ' (' + str(x.filename()) + ')',
+                      'date': x.date_time.date()}
+        if x.school_id:
+            image_data['school_id'] = x.school_id
+        else:
+            image_data['school_id'] = -1
+        gallery_images_new.append(image_data)
+    gallery_images = gallery_images_new
+
+    # Album images (takes date of soonest album image)
+    gallery_albums = GalleryAlbum.objects.filter(site_id=site_id)
+    gallery_albums = list(gallery_albums.order_by('-title').values())
+    gallery_albums_new = []
+    for x in gallery_albums:
+        album_images = GalleryImage.objects.filter(album_id=x['id'])
+        album_images = album_images.order_by('date_time').values()
+
+        if album_images.first() is not None:
+            album_date = album_images.first()['date_time'].date()
+        else:
+            album_date = datetime.date(1970, 1, 1)
+
+        album_data = {'id': x['id'], 'uri': 'album',
+                      'type': 'Album ('+x['title'][0:20]+')',
+                      'date': album_date}
+        if 'school_id' in x and x['school_id']:
+            album_data['school_id'] = x['school_id']
+        else:
+            album_data['school_id'] = -1
+        gallery_albums_new.append(album_data)
+    gallery_albums = gallery_albums_new
+
+    # Files
+    gallery_files = GalleryFile.objects.filter(site_id=site_id)
+    gallery_files = list(gallery_files.order_by('-date_time'))
+    gallery_files_new = []
+    for x in gallery_files:
+        file_data = {'id': str(x.id), 'uri': 'file',
+                     'type': 'File ' + str(x.id) + ' (' + str(x.filename()) +
+                     ')',
+                     'date': x.date_time.date()}
+        if x.school_id:
+            file_data['school_id'] = x.school_id
+        else:
+            file_data['school_id'] = -1
+        gallery_files_new.append(file_data)
+    gallery_files = gallery_files_new
+
+    # Compile gallery items into one list
+    gallery_items = []
+    gallery_items += gallery_images + gallery_albums + gallery_files
+
+    gallery_items.sort(cmp=sort_date, key=lambda x: x['date'])
+    gallery_items.sort(key=lambda x: -x['school_id'])
+
+    return gallery_items
+
+
+def sort_date(x, y):
+    return y.year - x.year or y.month - x.month or y.day - x.day
 
 
 def count_schools(data):
@@ -320,7 +410,7 @@ def count_schools(data):
 
 def add_school_name(data):
     if len(data) == 0:
-        return
+        return data
 
     schools = School.objects.all()
     data_new = []
@@ -396,10 +486,10 @@ def deactivate_site(request, site_slug):
     site = Site.objects.filter(active=True).get(site_slug=site_slug)
 
     if not(Water_Quality.objects.filter(site_id=site.id).exists() or
-            Macroinvertebrates.objects.filter(site_id=site.id).exists() or
-            RiparianTransect.objects.filter(site_id=site.id).exists() or
-            Canopy_Cover.objects.filter(site_id=site.id).exists() or
-            CameraPoint.objects.filter(site_id=site.id).exists()):
+           Macroinvertebrates.objects.filter(site_id=site.id).exists() or
+           RiparianTransect.objects.filter(site_id=site.id).exists() or
+           Canopy_Cover.objects.filter(site_id=site.id).exists() or
+           CameraPoint.objects.filter(site_id=site.id).exists()):
 
         site.active = False
         site.modified = timezone.now()
@@ -411,6 +501,176 @@ def deactivate_site(request, site_slug):
         'modified_time': site.modified,
         'deactivated': deactivated
     })
+
+
+@login_required
+@permission_required('streamwebs.is_org_author', raise_exception=True)
+@any_organization_required
+def add_gallery_image(request, site_slug):
+    site = Site.objects.get(site_slug=site_slug)
+
+    if request.method == 'POST':
+        image_form = GalleryImageAddForm(request.POST, request.FILES)
+
+        if image_form.is_valid():
+            user = request.user
+            profile = UserProfile.objects.get(user=user)
+            if profile is not None:
+                image = image_form.save()
+                image.site = site
+                image.user = request.user
+                image.school = profile.school
+                image.save()
+
+                return HttpResponseRedirect(
+                    '/sites/%s/image/%i' % (site_slug, image.id))
+    else:
+        image_form = GalleryImageAddForm()
+
+    return render(request, 'streamwebs/gallery/gallery_image_add.html', {
+        'site': site,
+        'image_form': image_form
+    })
+
+
+@login_required
+@permission_required('streamwebs.is_org_author', raise_exception=True)
+@any_organization_required
+def add_gallery_album(request, site_slug):
+    site = Site.objects.get(site_slug=site_slug)
+
+    if request.method == 'POST':
+        album_form = GalleryAlbumAddForm(request.POST)
+
+        if album_form.is_valid():
+            user = request.user
+            profile = UserProfile.objects.get(user=user)
+            if profile is not None:
+                album = album_form.save()
+                album.site = site
+                album.user = request.user
+                album.school = profile.school
+                album.save()
+
+                # Build GalleryImages from request
+                if request.FILES is not None:
+                    for image_file in request.FILES.getlist('image'):
+                        image = GalleryImage()
+                        image.site = site
+                        image.school = profile.school
+                        image.user = user
+                        image.date_time = album.date_time
+                        image.album = album
+                        image.image = image_file
+                        image.save()
+
+                return HttpResponseRedirect(
+                    '/sites/%s/album/%i' % (site_slug, album.id))
+    else:
+        album_form = GalleryAlbumAddForm()
+
+    return render(request, 'streamwebs/gallery/gallery_album_add.html', {
+        'site': site,
+        'album_form': album_form
+    })
+
+
+@login_required
+@permission_required('streamwebs.is_org_author', raise_exception=True)
+@any_organization_required
+def add_gallery_file(request, site_slug):
+    site = Site.objects.get(site_slug=site_slug)
+
+    if request.method == 'POST':
+        file_form = GalleryFileAddForm(request.POST, request.FILES)
+
+        if file_form.is_valid():
+            user = request.user
+            profile = UserProfile.objects.get(user=user)
+            if profile is not None:
+                ffile = file_form.save()
+                ffile.site = site
+                ffile.user = request.user
+                ffile.school = profile.school
+                ffile.save()
+
+                return HttpResponseRedirect(
+                    '/sites/%s/file/%i' % (site_slug, ffile.id))
+    else:
+        file_form = GalleryFileAddForm()
+
+    return render(request, 'streamwebs/gallery/gallery_file_add.html', {
+        'site': site,
+        'file_form': file_form
+    })
+
+
+def gallery_image(request, site_slug, image_id):
+    site = Site.objects.get(site_slug=site_slug)
+    image = GalleryImage.objects.filter(site_id=site.id, id=image_id).first()
+
+    return render(request, 'streamwebs/gallery/gallery_image_view.html', {
+        'site': site,
+        'gallery_image': image,
+    })
+
+
+def gallery_album(request, site_slug, album_id):
+    site = Site.objects.get(site_slug=site_slug)
+    album = GalleryAlbum.objects.get(id=album_id)
+    images = GalleryImage.objects.filter(album_id=album_id).all()
+
+    split_images = list(images)
+    img_per_row = 4  # Maximum of 12, divisible by 12 for symmetry on page
+    grid_images = [split_images[i:i + img_per_row] for i in xrange(
+        0, len(split_images), img_per_row)]
+
+    return render(request, 'streamwebs/gallery/gallery_album_view.html', {
+        'site': site,
+        'gallery_album': album,
+        'images': images,
+        'gallery_images': grid_images,
+        'img_row_size': 12/img_per_row,
+    })
+
+
+def gallery_file(request, site_slug, file_id):
+    site = Site.objects.get(site_slug=site_slug)
+    gallery_file = GalleryFile.objects.get(id=file_id)
+
+    return render(request, 'streamwebs/gallery/gallery_file_view.html', {
+        'site': site,
+        'gallery_file': gallery_file,
+    })
+
+
+@login_required
+@permission_required('streamwebs.is_org_author', raise_exception=True)
+def delete_gallery_image(request, site_slug, image_id):
+    image = GalleryImage.objects.get(id=image_id)
+    image.image.delete()
+    image.delete()
+
+    return HttpResponseRedirect('/sites/%s' % site_slug)
+
+
+@login_required
+@permission_required('streamwebs.is_org_author', raise_exception=True)
+def delete_gallery_album(request, site_slug, album_id):
+    album = GalleryAlbum.objects.get(id=album_id)
+    album.delete()
+
+    return HttpResponseRedirect('/sites/%s' % site_slug)
+
+
+@login_required
+@permission_required('streamwebs.is_org_author', raise_exception=True)
+def delete_gallery_file(request, site_slug, file_id):
+    gallery_file = GalleryFile.objects.get(id=file_id)
+    gallery_file.gallery_file.delete()
+    gallery_file.delete()
+
+    return HttpResponseRedirect('/sites/%s' % site_slug)
 
 
 def register(request):
@@ -443,7 +703,7 @@ def register(request):
                                     name='org_admin').exists()]
 
                 # Email to org admins for new user joining org
-                if (len(editor_users) > 0):
+                if len(editor_users) > 0:
                     send_email(
                         request=request,
                         subject='New User requested to join your organization',
@@ -513,7 +773,7 @@ def account(request):
     user = request.user
     user = User.objects.get(username=user)
     return render(request, 'streamwebs/account.html', {
-                  'user': user})
+        'user': user})
 
 
 @login_required
@@ -542,11 +802,12 @@ def update_email(request):
 def update_password(request):
     old_password_incorrect = False
     if request.method == 'POST':
-        username = request.user
+        username = request.user.username
         old_password = request.POST['old_password']
         password = request.POST['password']
 
-        user_password_form = UserPasswordForm(request.POST, instance=username)
+        user_password_form = UserPasswordForm(request.POST,
+                                              instance=request.user)
         user = authenticate(username=username, password=old_password)
 
         if user:
@@ -576,7 +837,7 @@ def user_login(request):
     redirect_to = request.POST.get('next', '')
 
     if request.method == 'POST':
-        email = ''.join(request.POST['email'].split()).lower()
+        email = request.POST['email']
         password = request.POST['password']
         user = authenticate(username=email, password=password)
 
@@ -1237,6 +1498,16 @@ def view_pp_and_add_img(request, site_slug, cp_id, pp_id):
 
 
 @login_required
+@permission_required('streamwebs.is_org_admin', raise_exception=True)
+def delete_photo_point(request, site_slug, cp_id, pp_id):
+    pp = PhotoPoint.objects.get(id=pp_id)
+    pp.delete()
+
+    return HttpResponseRedirect(
+        '/sites/{0}/camera/{1}'.format(site_slug, cp_id))
+
+
+@login_required
 @permission_required('streamwebs.is_org_author', raise_exception=True)
 def add_photo_point(request, site_slug, cp_id):
     """Add new PP to existing CP + respective photo(s)"""
@@ -1559,14 +1830,16 @@ def admin_site_statistics(request):
 
     # A user is defined as "active" if they have logged in w/in the last 3 yrs
     today = datetime.date.today()
-    user_start = datetime.date(today.year - 3, today.month, today.day)
+    user_start = datetime.date(today.year - 3, today.month, today.day + 1)
     start = datetime.date(1970, 1, 1)
     end = today
+    sameday = True
 
     if request.method == 'POST':
         stats_form = StatisticsForm(data=request.POST)
 
         if stats_form.is_valid():
+            print(stats_form)
             # At least one date provided:
             if (stats_form.cleaned_data['start'] is not None or
                     stats_form.cleaned_data['end'] is not None):
@@ -1577,7 +1850,13 @@ def admin_site_statistics(request):
                 # end date provided:
                 if stats_form.cleaned_data['end'] is not None:
                     end = stats_form.cleaned_data['end']
-
+                if end == today:
+                    sameday = True
+                    end += datetime.timedelta(days=1)
+                else:
+                    sameday = False
+                print(today)
+                print(end)
                 users = User.objects.filter(date_joined__range=(start, end))
             else:
                 users = User.objects.filter(
@@ -1645,6 +1924,8 @@ def admin_site_statistics(request):
         'schools': {'total': len(all_schools), 'schools': all_schools},
         'start': start,
         'end': end,
+        'sameday': sameday,
+        'today': today
         }
     )
 
@@ -2018,11 +2299,10 @@ def new_org_request(request, school_id):
     profiles = UserProfile.objects.filter(school=school)
     profile = profiles.first()
 
-    if profile is None:
-        return HttpResponseForbidden(
-            'There is no user associated with this organization request.')
-
-    user = profile.user
+    if profile is not None:
+        user = profile.user
+    else:
+        user = None
 
     if request.method == 'POST':
         editor_permission = request.POST.getlist('editor_permission')
@@ -2033,42 +2313,125 @@ def new_org_request(request, school_id):
 
         # Deny org and user
         if 'btn_deny' in request.POST:
-            user.delete()
-            profile.delete()
+            if profile is not None:
+                user.delete()
+                profile.delete()
             school.delete()
             # Redirect to home
             return HttpResponseRedirect('/')
         # Approve org
         elif 'btn_approve' in request.POST:
             school.active = True
-            profile.approved = True
+            if profile is not None:
+                profile.approved = True
 
-            # Approved for editor permission
-            if len(editor_permission) > 0:
-                user.groups.clear()
-                user.groups.add(org_editor)
-            # Approved for contributor permission
-            elif len(contributor_permission) > 0:
-                user.groups.clear()
-                user.groups.add(org_contributor)
+                # Approved for editor permission
+                if len(editor_permission) > 0:
+                    user.groups.clear()
+                    user.groups.add(org_editor)
+                # Approved for contributor permission
+                elif len(contributor_permission) > 0:
+                    user.groups.clear()
+                    user.groups.add(org_contributor)
+
+                profile.save()
+
+                # Email
+                send_email(
+                    request=request,
+                    subject='Your organization was approved: ' +
+                    str(school.name),
+                    template='registration/approve_org_request_email.html',
+                    user=user,
+                    school=school,
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    recipients=[user.email]
+                )
 
             school.save()
-            profile.save()
-
-            # Email
-            send_email(
-                request=request,
-                subject='Your organization was approved: ' + str(school.name),
-                template='registration/approve_org_request_email.html',
-                user=user,
-                school=school,
-                from_email=settings.DEFAULT_FROM_EMAIL,
-                recipients=[user.email]
-            )
 
             return HttpResponseRedirect('/schools/%i/' % school.id)
 
     return render(request, 'streamwebs/new_org_request.html', {
         'school_data': school,
         'user': user
-        })
+    })
+
+
+@login_required
+@permission_required('streamwebs.is_super_admin', raise_exception=True)
+def approve_accounts(request):
+
+    org_contributor = Group.objects.get(name='org_author')
+    org_editor = Group.objects.get(name='org_admin')
+
+    if request.method == 'POST':
+        # Check which submit button was clicked
+
+        # Apply new user settings
+        if 'btn_apply' in request.POST:
+            editors = request.POST.getlist('nu_editor')
+            contributors = request.POST.getlist('nu_contributor')
+            denyUsers = request.POST.getlist('nu_deny')
+
+            for i in editors:
+                user = User.objects.get(id=i)
+                profile = UserProfile.objects.get(user=user)
+                if profile is not None:
+                    user.groups.add(org_editor)
+                    user.save()
+
+                    profile.approved = True
+                    profile.save()
+
+                    # Email editors that they were approved
+                    send_email(
+                        request=request,
+                        subject='Your editor account was approved at ' +
+                        str(profile.school.name),
+                        template='registration/' +
+                        'approve_user_request_email.html',
+                        user=user,
+                        school=profile.school,
+                        from_email=settings.DEFAULT_FROM_EMAIL,
+                        recipients=[user.email]
+                    )
+
+            for i in contributors:
+                user = User.objects.get(id=i)
+                profile = UserProfile.objects.get(user=user)
+                if profile is not None:
+                    user.groups.add(org_contributor)
+                    user.save()
+
+                    profile.approved = True
+                    profile.save()
+
+                    # Email contributors that they were approved
+                    send_email(
+                        request=request,
+                        subject='Your contributor account was approved at ' +
+                                str(profile.school.name),
+                        template='registration/' +
+                                 'approve_user_request_email.html',
+                        user=user,
+                        school=profile.school,
+                        from_email=settings.DEFAULT_FROM_EMAIL,
+                        recipients=[user.email]
+                    )
+
+            for i in denyUsers:
+                user = User.objects.get(id=i)
+                profile = UserProfile.objects.get(user=user)
+                if profile is not None:
+                    profile.delete()
+                    user.delete()
+
+    schools = School.objects.filter(active=False).all().order_by('name')
+    new_users = UserProfile.objects.filter(approved=False)\
+        .exclude(school__in=schools)
+
+    return render(request, 'streamwebs/approve_accounts.html', {
+        'schools': schools,
+        'new_users': new_users,
+    })

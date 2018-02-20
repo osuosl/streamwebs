@@ -1,0 +1,104 @@
+{% extends 'streamwebs/base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+{% load filters %}
+{% load verbose_names %}
+
+{% block title %}{% trans "View gallery image" %}{% endblock %}
+
+{% block content %}
+  <style>
+    ul.errorlist ~ input {
+      border-bottom-color: red;
+    }
+    ul.errorlist ~ div.input-field{
+      border-top: 1px solid red;
+    }
+    .carousel-slider {
+      height: 400px !important;
+    }
+    #delete_button {
+      margin-right: 3%;
+    }
+    .wordwrap {
+      display:block;
+      width:100%;
+      word-wrap:break-word;
+    }
+  </style>
+
+  <div>
+    <!-- Back button -->
+    <a href="{% url 'streamwebs:site' site.site_slug %}" id="back"
+        class="waves-effect wave-light btn white-text teal darken-3">
+      <i class="material-icons">chevron_left</i>
+      Back to <span>{{ site.site_name }}</span>
+    </a>
+    <!-- Delete button -->
+    <div id="delete-button" class="waves-effect waves-dark btn red darken-3 right"
+      href="{% url 'streamwebs:delete_gallery_album' site.site_slug gallery_album.id %}">
+      Delete Album
+    </div>
+    {% include 'streamwebs/datasheets/delete_button_partial.html' %}
+  </div>
+
+  <div class="row">
+    <!-- Site name -->
+    <div class="col s12">
+      <h3 align="center" class="teal-text">
+        {{ site.site_name }}
+      </h3>
+      <h4 align="center">{{ gallery_album.name }}</h4>
+    </div>
+    <br/>
+  </div>
+
+    <!-- Album info -->
+    <div class="container">
+      <div class="row">
+        <b>{% trans "School" %}: </b>
+        {{ gallery_album.school }}
+      </div>
+      <div class="row">
+        <b>{% trans "Date and Time" %}: </b>
+        {{ gallery_album.date_time }}
+      </div>
+      <div class="row">
+        <span class="wordwrap"><b>{% trans "Title" %}: </b>{{ gallery_album.title }}</span>
+      </div>
+      <div class="row">
+        <span class="wordwrap"><b>{% trans "Description" %}: </b>{{ gallery_album.description }}</span>
+      </div>
+      <!--
+      <div class="row">
+        <b>{% trans "Published by" %}: </b>
+        <p>User's name here</p>
+      </div>
+      -->
+    </div>
+    <br/><br/>
+
+    <!-- Images -->
+    <div class="row container">
+      {% for row_of_img in gallery_images %}
+        <div class="row">
+          {% for gallery_image in row_of_img %}
+            <div class="col s{{img_row_size}}">
+              <div class="card">
+                <div class="card-image">
+                  <a href="{% url 'streamwebs:gallery_image' gallery_image.site.site_slug gallery_image.id %}">
+                    <img src="{{ gallery_image.image.url }}">
+                  </a>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+
+{% endblock %}

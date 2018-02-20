@@ -1,0 +1,96 @@
+{% extends 'streamwebs/base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+{% load filters %}
+{% load verbose_names %}
+
+{% block title %}{% trans "View gallery image" %}{% endblock %}
+
+{% block content %}
+  <style>
+    ul.errorlist ~ input {
+      border-bottom-color: red;
+    }
+    ul.errorlist ~ div.input-field{
+      border-top: 1px solid red;
+    }
+  </style>
+
+  <div>
+    <!-- Back button -->
+    <a href="{% url 'streamwebs:site' site.site_slug %}" id="back"
+        class="waves-effect wave-light btn white-text teal darken-3">
+      <i class="material-icons">chevron_left</i>
+      Back to <span>{{ site.site_name }}</span>
+    </a>
+    <!-- Delete button -->
+    <div id="delete-button" class="waves-effect waves-dark btn red darken-3 right"
+      href="{% url 'streamwebs:delete_gallery_image' site.site_slug gallery_image.id %}">
+      Delete Image
+    </div>
+    {% include 'streamwebs/datasheets/delete_button_partial.html' %}
+  </div>
+
+  <div class="row">
+    <!-- Site name -->
+    <div class="col s12">
+      <h3 align="center" class="teal-text">
+        {{ site.site_name }}
+      </h3>
+    </div>
+    <br/>
+  </div>
+
+    <!-- Image info -->
+    <div class="container">
+      <div class="row">
+        <b>{% trans "School" %}: </b>
+        {{ gallery_image.school }}
+      </div>
+      <div class="row">
+        <b>{% trans "Date and Time" %}: </b>
+        {{ gallery_image.date_time }}
+      </div>
+      <div class="row">
+        <b>{% trans "Filename" %}: </b>
+        {{ gallery_image.filename }}
+      </div>
+    </div>
+    <br/><br/>
+
+    <!-- Image -->
+    <div class="row container">
+      <div class="col s12 center">
+        {% if gallery_image.image.url != None %}
+        <div class="card">
+          <div class="card-title">
+            {{ gallery_image.title }}
+          </div>
+          <div class="card-image">
+            <img src="{{ gallery_image.image.url }}">
+          </div>
+          <div class="card-content">
+            {{ gallery_image.description }}
+          </div>
+          <div class="card">
+            <!-- View -->
+            <a class="btn teal darken-3 left"
+              href="{{ gallery_image.image.url }}">
+              <i class="medium material-icons">fullscreen</i>
+              View
+            </a>
+            <!-- Download -->
+            <a class="btn teal darken-3 right"
+              href="{{ gallery_image.image.url }}" download>
+              <i class="medium material-icons">file_download</i>
+              Download
+            </a>
+          </div>
+          {% else %}
+          <h3>Image does not exist!</h3>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

@@ -36,14 +36,18 @@ with open(datafile, 'r') as csvfile:
             photo_point = PhotoPoint.objects.get(id=row[1])
             date = datetime.strptime(row[2], "%a, %Y-%m-%d")
             image_file = os.path.basename(row[3])
-            # These files were pulled in via pull-files.sh
-            image = open("../media/pp_photos/" + image_file, 'r')
 
-            pp_image = PhotoPointImage.objects.update_or_create(
-                id=pp_image_id, photo_point=photo_point, date=date
-            )
-            ppi = PhotoPointImage.objects.get(id=pp_image_id)
-            ppi.image.save(image_file, File(image))
-            ppi.save
+            try:
+                # These files were pulled in via pull-files.sh
+                image = open("../media/pp_photos/" + image_file, 'r')
+
+                pp_image = PhotoPointImage.objects.update_or_create(
+                    id=pp_image_id, photo_point=photo_point, date=date
+                )
+                ppi = PhotoPointImage.objects.get(id=pp_image_id)
+                ppi.image.save(image_file, File(image))
+                ppi.save
+            except IOError:
+                print("Photo Point Image not found! " + image_file)
 
 print "Photo Point Images loaded."

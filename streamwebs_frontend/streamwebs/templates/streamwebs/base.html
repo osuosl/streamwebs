@@ -75,6 +75,11 @@
           <div id="admin-links">
             <a href="{% url 'streamwebs:stats' %}"
                    class="footer-link">{% trans "View Site Statistics" %}</a>
+
+            <a href="{% url 'streamwebs:approve_accounts' %}"
+                   class="footer-link">
+                   {% trans "Approve Accounts" %}
+            </a>
           </div>
           {% endif %}
           <div id="footer-branding">
