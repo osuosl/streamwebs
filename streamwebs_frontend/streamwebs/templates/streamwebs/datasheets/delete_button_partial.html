@@ -46,7 +46,7 @@
   <div id="delete-modal" class="" hidden>
     <div class="modal-content">
       <h4>Delete?</h4>
-      <p>Click delete to perminately delete this</p>
+      <p>Click delete to permanently delete this</p>
     </div>
     <div class="modal-footer">
       <a id="keep" class="waves-effect waves-light btn">Keep</a>
@@ -54,9 +54,9 @@
     </div>
   </div>
   <div id="delete-modal-backdrop" hidden>&nbsp</div>
-          
+
   {% endif %}
-  
+
 <script>
     var button = document.getElementById("delete-button");
     var delete_button = document.getElementById("delete");
@@ -64,7 +64,7 @@
 
     button.addEventListener("click", openModal)
     document.getElementById("keep").addEventListener("click", closeModal)
-    
+
     function openModal() {
       document.getElementById("delete-modal-backdrop").removeAttribute("hidden")
       document.getElementById("delete-modal").removeAttribute("hidden")
