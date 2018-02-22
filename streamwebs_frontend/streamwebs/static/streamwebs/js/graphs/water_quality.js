@@ -489,9 +489,7 @@ var createGraph = function createGraph() {
     'total_solids', 'ammonia', 'nitrite', 'nitrate', 'phosphates']) {
         types1[key] = formatData(formatted1, key);
         filtered1[key] = filterZeroData(types1[key], key);
-        console.log(filtered1[key]);
         filtered1[key] = filterOutliers(filtered1[key]);
-        console.log(filtered1[key]);
     }
 
     var formatted2 = [];
