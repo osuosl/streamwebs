@@ -46,7 +46,7 @@
     }
     a#camera-button:hover {
       background: #454545;
-    }    
+    }
     .delete-icon {
       position: relative;
       bottom: 3px;
@@ -56,10 +56,14 @@
     i.icon-teal {
       color: teal;
     }
+    html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
   </style>
 
   <!-- site info -->
-  <div>
+  <div class="container">
     <!-- Title -->
     <div class="row">
       <div class="col s12" align="center">
@@ -77,7 +81,7 @@
         {% endif %}
       </div>
     </div>
-    
+
     <div class="col s12">
       <div class="row">
         <div class="col s6">
@@ -162,7 +166,7 @@
         <h4>{% trans "Datasheets" %}</h4>
         {% if page_count_ds > 0 %}
           <ul class="collection" id="datasheets"></ul>
-          
+
           <ul class="pagination">
             <li>
               <a id="first-page-datasheet"
@@ -195,7 +199,7 @@
         <h4>{% trans "Gallery" %}</h4>
         {% if page_count_gl > 0 %}
           <ul class="collection" id="gallery"></ul>
-          
+
           <ul class="pagination">
               <li>
                 <a id="first-page-gallery"
@@ -235,7 +239,7 @@
           <i class="material-icons right">arrow_drop_down</i>
           {% trans "Add data sheet" %}
         </a>
-        
+
         <div id="add_datasheet_types" class="collection" hidden>
           <a href="{% url 'streamwebs:water_quality_edit' site_slug=site.site_slug %}"
               class="collection-item waves-effect">
@@ -324,7 +328,7 @@
           <i class="material-icons right">arrow_drop_down</i>
           {% trans "Add gallery item" %}
         </a>
-        
+
         <div id="add_gallery_item_types" class="collection" hidden>
           <a href="{% url 'streamwebs:add_gallery_image' site_slug=site.site_slug %}"
               class="collection-item">
