@@ -166,7 +166,7 @@ var types1 = {}, types2 = {}, filtered1 = {}, filtered2 = {};
 var formatData = function formatData(data, key) {
     /*
      * So we currently have a list of data points, each one containing a date
-     * and a list of 4 samples, each sample having one each of every data type
+     * and a list of 4 samples, each sample having one of each every data type
      * we need. Instead, we want to pull out just one type per data point, pair
      * it with the date, and average each day into one point.
      */
@@ -194,7 +194,7 @@ var formatData = function formatData(data, key) {
             var value = d.samples[i][key];
             if (value !== "None") {
                 if (!sampleAvg) {
-                    sampleAvg = value;
+                    sampleAvg = parseFloat(value);
                 } else {
                     sampleAvg = (sampleAvg * counter + parseFloat(value)) / (counter + 1);
                     counter++;
@@ -226,6 +226,10 @@ var filterOutliers = function filterOutliers(entries) {
         return a-b;
     });
     var n = points.length;
+
+    if (n === 1) {
+        return entries;
+    }
 
     /*
      * Split the array into a top and bottom half.
@@ -484,7 +488,6 @@ var createGraph = function createGraph() {
     'pH', 'turbidity', 'salinity', 'conductivity', 'fecal_coliform', 'bod',
     'total_solids', 'ammonia', 'nitrite', 'nitrate', 'phosphates']) {
         types1[key] = formatData(formatted1, key);
-        console.log(types1[key]);
         filtered1[key] = filterZeroData(types1[key], key);
         console.log(filtered1[key]);
         filtered1[key] = filterOutliers(filtered1[key]);
@@ -621,9 +624,9 @@ var graphTemperature = function graphTemperature(responsive=false) {
     var g2 = createGraphTemplate(containerName2, width, height, x, y, legendHeight);
 
     if ((filtered1.water_temperature.length ||
-    filtered1.air_temperature.length) ||
-    (window.hasSiteTwo && (filtered2.water_temperature.length ||
-    filtered2.air_temperature.length))) {
+        filtered1.air_temperature.length) ||
+        (window.hasSiteTwo && (filtered2.water_temperature.length ||
+        filtered2.air_temperature.length))) {
         $('#temperature-control').prop({
             disabled: null,
             checked: true
