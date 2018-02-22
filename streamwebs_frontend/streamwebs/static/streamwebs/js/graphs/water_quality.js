@@ -188,27 +188,29 @@ var formatData = function formatData(data, key) {
          *
          * into just a date-value pair.
          */
+        var counter = 1;
+        var sampleAvg = null;
+        for (var i = 0; i < d.samples.length; i++) {
+            var value = d.samples[i][key];
+            if (value !== "None") {
+                if (!sampleAvg) {
+                    sampleAvg = value;
+                } else {
+                    sampleAvg = (sampleAvg * counter + parseFloat(value)) / (counter + 1);
+                    counter++;
+                }
+            }
+        }
+
         return {
             date: d.date,
             /*
              * Take our samples, and reduce it into a single average for a value.
              */
-            value: d.samples.reduce(function (prev, curr, idx) {
-                /*
-                 * This is more straightforward than it looks. Prev is the average
-                 * of samples[0] through samples[idx-1]. We multiply it by the
-                 * of points we've calculated so far (since idx is 0-indexed, it's
-                 * just that), which is the total. Add the new value, then divide
-                 * again.
-                 *
-                 * Thus we can calculate an average on the fly without explicitly
-                 * summing and dividing.
-                 */
-                return ((prev * idx) + parseFloat(curr[key])) / (idx + 1);
-            }, 0),
+            value: sampleAvg,
         };
     }).filter(function (d) {
-        return !isNaN(d.value);
+        return d.value !== null;
     });
 };
 
@@ -342,7 +344,6 @@ var createGraphTemplate = function createGraphTemplate(container, width, height,
 };
 
 var filterZeroData = function filterZeroData(filtered, key) {
-    console.log(filtered);
     if (key === "dissolved_oxygen") {
         filtered = filtered.filter(function(dataPoint) {
             return dataPoint.value >= 0 && dataPoint.value <= 13 ;
@@ -483,10 +484,13 @@ var createGraph = function createGraph() {
     'pH', 'turbidity', 'salinity', 'conductivity', 'fecal_coliform', 'bod',
     'total_solids', 'ammonia', 'nitrite', 'nitrate', 'phosphates']) {
         types1[key] = formatData(formatted1, key);
+        console.log(types1[key]);
         filtered1[key] = filterZeroData(types1[key], key);
+        console.log(filtered1[key]);
         filtered1[key] = filterOutliers(filtered1[key]);
+        console.log(filtered1[key]);
     }
-    console.log(types1);
+
     var formatted2 = [];
 
     if (window.hasSiteTwo) {
