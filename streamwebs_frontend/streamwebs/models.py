@@ -172,7 +172,7 @@ class SchoolRelations(models.Model):
     objects = models.Manager()
 
     def __str__(self):
-        return self.name
+        return self.school.name
 
 
 def validate_UserProfile_birthdate(birthdate):
