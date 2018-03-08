@@ -137,10 +137,29 @@ function filter_gallery(page) {
 
 
 function get_url_params() {
-    var url = new URL(window.location.href);
-    datasheet_param = url.searchParams.get('datasheet');
-    gallery_param = url.searchParams.get('gallery');
+    // Microsoft edge refuses to support modern web standards.
+    // So URL.searchParams is reimplemented here.
 
+    datasheet_param = gallery_param = null;
+    var url = window.location.href;
+    queryString = url.split("?")[1];
+    if(queryString != null)
+    {
+      parameters = queryString.split("&");
+      searchParams = {};
+      for (var i = 0; i < parameters.length; i ++)
+      {
+        param = parameters[i];
+
+        key = param.split("=")[0];
+        value = param.split("=")[1];
+
+        searchParams[key] = value;
+      }
+      
+      datasheet_param = searchParams['datasheet'];
+      gallery_param = searchParams['gallery'];
+    }
     datasheet_page = (datasheet_param != null ? datasheet_param : datasheet_page);
     gallery_page = (gallery_param != null ? gallery_param : gallery_page);
 
