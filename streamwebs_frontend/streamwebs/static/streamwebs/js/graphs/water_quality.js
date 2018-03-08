@@ -166,7 +166,7 @@ var types1 = {}, types2 = {}, filtered1 = {}, filtered2 = {};
 var formatData = function formatData(data, key) {
     /*
      * So we currently have a list of data points, each one containing a date
-     * and a list of 4 samples, each sample having one each of every data type
+     * and a list of 4 samples, each sample having one of each every data type
      * we need. Instead, we want to pull out just one type per data point, pair
      * it with the date, and average each day into one point.
      */
@@ -188,27 +188,29 @@ var formatData = function formatData(data, key) {
          *
          * into just a date-value pair.
          */
+        var counter = 1;
+        var sampleAvg = null;
+        for (var i = 0; i < d.samples.length; i++) {
+            var value = d.samples[i][key];
+            if (value !== "None") {
+                if (!sampleAvg) {
+                    sampleAvg = parseFloat(value);
+                } else {
+                    sampleAvg = (sampleAvg * counter + parseFloat(value)) / (counter + 1);
+                    counter++;
+                }
+            }
+        }
+
         return {
             date: d.date,
             /*
              * Take our samples, and reduce it into a single average for a value.
              */
-            value: d.samples.reduce(function (prev, curr, idx) {
-                /*
-                 * This is more straightforward than it looks. Prev is the average
-                 * of samples[0] through samples[idx-1]. We multiply it by the
-                 * of points we've calculated so far (since idx is 0-indexed, it's
-                 * just that), which is the total. Add the new value, then divide
-                 * again.
-                 *
-                 * Thus we can calculate an average on the fly without explicitly
-                 * summing and dividing.
-                 */
-                return ((prev * idx) + parseFloat(curr[key])) / (idx + 1);
-            }, 0),
+            value: sampleAvg,
         };
     }).filter(function (d) {
-        return !isNaN(d.value);
+        return d.value !== null;
     });
 };
 
@@ -224,6 +226,10 @@ var filterOutliers = function filterOutliers(entries) {
         return a-b;
     });
     var n = points.length;
+
+    if (n === 1) {
+        return entries;
+    }
 
     /*
      * Split the array into a top and bottom half.
@@ -342,7 +348,6 @@ var createGraphTemplate = function createGraphTemplate(container, width, height,
 };
 
 var filterZeroData = function filterZeroData(filtered, key) {
-    console.log(filtered);
     if (key === "dissolved_oxygen") {
         filtered = filtered.filter(function(dataPoint) {
             return dataPoint.value >= 0 && dataPoint.value <= 13 ;
@@ -486,7 +491,7 @@ var createGraph = function createGraph() {
         filtered1[key] = filterZeroData(types1[key], key);
         filtered1[key] = filterOutliers(filtered1[key]);
     }
-    console.log(types1);
+
     var formatted2 = [];
 
     if (window.hasSiteTwo) {
@@ -617,9 +622,9 @@ var graphTemperature = function graphTemperature(responsive=false) {
     var g2 = createGraphTemplate(containerName2, width, height, x, y, legendHeight);
 
     if ((filtered1.water_temperature.length ||
-    filtered1.air_temperature.length) ||
-    (window.hasSiteTwo && (filtered2.water_temperature.length ||
-    filtered2.air_temperature.length))) {
+        filtered1.air_temperature.length) ||
+        (window.hasSiteTwo && (filtered2.water_temperature.length ||
+        filtered2.air_temperature.length))) {
         $('#temperature-control').prop({
             disabled: null,
             checked: true
