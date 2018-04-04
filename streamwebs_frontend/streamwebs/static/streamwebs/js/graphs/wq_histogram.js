@@ -11,19 +11,20 @@ var createGraph = function createGraph() {
     var data = JSON.parse(JSON.stringify(window.data));
 
     var formatted = data.map(function (d) {
-        return d.samples.reduce(function (prev, curr, idx) {
-            /*
-             * This is more straightforward than it looks. Prev is the average
-             * of samples[0] through samples[idx-1]. We multiply it by the
-             * of points we've calculated so far (since idx is 0-indexed, it's
-             * just that), which is the total. Add the new value, then divide
-             * again.
-             *
-             * Thus we can calculate an average on the fly without explicitly
-             * summing and dividing.
-             */
-            return ((prev * idx) + parseFloat(curr[key])) / (idx + 1);
-        }, 0);
+        var counter = 1;
+        var sampleAvg = null;
+        for (var i = 0; i < d.samples.length; i++) {
+            var value = d.samples[i][key];
+            if (value !== "None") {
+                if (!sampleAvg) {
+                    sampleAvg = parseFloat(value);
+                } else {
+                    sampleAvg = (sampleAvg * counter + parseFloat(value)) / (counter + 1);
+                    counter++;
+                }
+            }
+        }
+        return sampleAvg;
     });
 
     var margin = {top: 50, right: 0, bottom: 50, left: 50};
