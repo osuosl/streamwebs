@@ -169,8 +169,10 @@ function get_url_params() {
     datasheet_page = (datasheet_param != null ? datasheet_param : 1);
     gallery_page = (gallery_param != null ? gallery_param : 1);
 
-    if (datasheet_page > page_count_ds || datasheet_page < 1 || gallery_page > page_count_gl || gallery_page < 1) {
+    if (datasheet_page > page_count_ds || datasheet_page < 1) {
         datasheet_page = 1;
+    }
+    if (gallery_page > page_count_gl || gallery_page < 1) {
         gallery_page = 1;
     }
 }
