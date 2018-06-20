@@ -17,6 +17,13 @@ function initializeMap() {
         position: loc,
         map: map,
         title: site_name,
+        icon: {
+            path: path,
+            fillColor: "#FF0000",
+            fillOpacity: 1,
+            strokeColor: "#000000",
+            strokeWeight: 2
+        }
     });
 
     // responsive function
