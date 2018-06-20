@@ -87,13 +87,13 @@ def export_wq(request, site_slug):
     waterq = Water_Quality.objects.filter(site_id=site.id)
 
     # Store nid of each wq data sheet into a list
-    sheets = []
+    wq_ids = []
     for each in waterq:
-            sheets.append(each.nid)
+            wq_ids.append(each.id)
 
     # Query the first set of samples outside of the loop and pop nid from list
     samples = WQ_Sample.objects.prefetch_related('water_quality')
-    samples = samples.filter(nid=sheets[0]).order_by('id').values(
+    samples = samples.filter(water_quality_id__in=wq_ids).order_by('id').values(
         'water_quality__school__name', 'water_quality__date_time',
         'water_quality__site__site_name', 'water_quality__DEQ_dq_level',
         'water_quality__latitude', 'water_quality__longitude',
@@ -106,25 +106,6 @@ def export_wq(request, site_slug):
         'total_solids', 'bod', 'ammonia', 'nitrite', 'nitrate', 'phosphates',
         'fecal_coliform'
     )
-    sheets.pop(0)
-
-    # Query for the remaining samples according to wq_nid
-    for sheet in sheets:
-        n_samples = WQ_Sample.objects.prefetch_related('water_quality')
-        n_samples = n_samples.filter(nid=sheet).order_by('id').values(
-            'water_quality__school__name', 'water_quality__date_time',
-            'water_quality__site__site_name', 'water_quality__DEQ_dq_level',
-            'water_quality__latitude', 'water_quality__longitude',
-            'water_quality__fish_present', 'water_quality__live_fish',
-            'water_quality__dead_fish', 'water_quality__water_temp_unit',
-            'water_quality__air_temp_unit', 'water_quality__notes', 'sample',
-            'water_temperature', 'water_temp_tool', 'air_temperature',
-            'air_temp_tool', 'dissolved_oxygen', 'oxygen_tool', 'pH',
-            'pH_tool', 'turbidity', 'turbid_tool', 'salinity', 'salt_tool',
-            'conductivity', 'total_solids', 'bod', 'ammonia', 'nitrite',
-            'nitrate', 'phosphates', 'fecal_coliform'
-        )
-        samples = samples | n_samples
 
     filename = 'water_quality_export'
 
