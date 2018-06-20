@@ -87,13 +87,13 @@ def export_wq(request, site_slug):
     waterq = Water_Quality.objects.filter(site_id=site.id)
 
     # Store nid of each wq data sheet into a list
-    wq_ids = []
+    ids = []
     for each in waterq:
-            wq_ids.append(each.id)
+            ids.append(each.id)
 
     # Query the first set of samples outside of the loop and pop nid from list
     samples = WQ_Sample.objects.prefetch_related('water_quality')
-    samples = samples.filter(water_quality_id__in=wq_ids).order_by('id').values(
+    samples = samples.filter(water_quality_id__in=ids).order_by('id').values(
         'water_quality__school__name', 'water_quality__date_time',
         'water_quality__site__site_name', 'water_quality__DEQ_dq_level',
         'water_quality__latitude', 'water_quality__longitude',
