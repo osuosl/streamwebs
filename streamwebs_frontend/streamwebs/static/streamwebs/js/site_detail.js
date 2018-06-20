@@ -1,19 +1,21 @@
 
-function initialize() {
-    map = new google.maps.Map(document.getElementById("detail_map"), {
-        zoom: 15,
-        maxZoom: 20,
-        minZoom: 1,
-        center: new google.maps.LatLng(site_location.y, site_location.x),
-        mapTypeId: window.mapTypeId,
-        disableDefaultUI: true,
-        draggable: true,
-        clickableIcons: false
-    });
+function initializeMap() {
+    // Iniitalize Google Map
+    var latlng = new google.maps.LatLng(loc.lat, loc.lng);
 
-    new google.maps.Marker({
+    var mapOptions = {
+        zoom: 14,
+        center: latlng,
+        mapTypeControl: false,
+        navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL},
+        mapTypeId: 'roadmap'
+    };
+
+    var map = new google.maps.Map($('#detail_map')[0], mapOptions);
+
+    var marker = new google.maps.Marker({
+        position: loc,
         map: map,
-        position: new google.maps.LatLng(site_location.y, site_location.x),
         title: site_name,
         icon: {
             path: path,
@@ -23,20 +25,32 @@ function initialize() {
             strokeWeight: 2
         }
     });
+
+    // responsive function
+    google.maps.event.addDomListener(window, "resize", function () {
+        var center = map.getCenter();
+        google.maps.event.trigger(map, "resize");
+        map.setCenter(center);
+    });
 }
 
+
 function updateDimension() {
+    // Update dimension of grid for page image and Google Map
     if ($(document).width() > 993) {
         var ratio = boxRatio;
     } else {
         var ratio = boxRatioNarrow;
     }
+
     var height = $('div.resp_box').width() * ratio;
     $('div.resp_box').height(height);
     centerImage(ratio);
 }
 
+
 function centerImage(ratio) {
+    // Center image based on ratio
     if (imgRatio > ratio) {
         $('img#site_detail_image').width('100%');
         var marginTop = ($('div.resp_box').height()
@@ -52,10 +66,7 @@ function centerImage(ratio) {
 
 
 function filter_datasheets(page) {
-    if (datasheet_page != page) {
-        datasheet_page = page;
-        update_url_params();
-    }
+    // Filter datasheets shown
 
     var list = $('#datasheets');
     var new_page = (page-1)*num_elements_page;
@@ -72,6 +83,7 @@ function filter_datasheets(page) {
             var listItem = $('<a></a>').addClass('collection-item');
             listItem.attr('href', '/sites/'+site_slug+'/'+datum.uri+'/'+datum.id);
             listItem.text(datum.type + ' data: ' + datum.date);
+
         }
 
         list.append(listItem);
@@ -93,11 +105,9 @@ function filter_datasheets(page) {
     $('#page-'+page+'-datasheet').addClass('active').removeClass('wave-effects');
 }
 
+
 function filter_gallery(page) {
-    if (gallery_page != page) {
-        gallery_page = page;
-        update_url_params();
-    }
+    // Filter gallery shown
 
     var list = $('#gallery');
     var new_page = (page-1)*num_elements_page;
@@ -140,80 +150,129 @@ function get_url_params() {
     // Microsoft edge refuses to support modern web standards.
     // So URL.searchParams is reimplemented here.
 
-    datasheet_param = gallery_param = null;
+    var datasheet_param = null;
+    var gallery_param = null;
     var url = window.location.href;
+
     queryString = url.split("?")[1];
-    if(queryString != null)
-    {
-      parameters = queryString.split("&");
-      searchParams = {};
-      for (var i = 0; i < parameters.length; i ++)
-      {
-        param = parameters[i];
 
-        key = param.split("=")[0];
-        value = param.split("=")[1];
+    if(queryString != null) {
+        parameters = queryString.split("&");
+        searchParams = {};
 
-        searchParams[key] = value;
-      }
-      
-      datasheet_param = searchParams['datasheet'];
-      gallery_param = searchParams['gallery'];
+        for (var i = 0; i < parameters.length; i ++) {
+            param = parameters[i];
+
+            key = param.split("=")[0];
+            value = param.split("=")[1];
+
+            searchParams[key] = value;
+        }
+
+        datasheet_param = searchParams['datasheet'];
+        gallery_param = searchParams['gallery'];
     }
-    datasheet_page = (datasheet_param != null ? datasheet_param : datasheet_page);
-    gallery_page = (gallery_param != null ? gallery_param : gallery_page);
 
-    if (datasheet_page > page_count_ds || datasheet_page < 1 || gallery_page > page_count_gl || gallery_page < 1) {
-        datasheet_page = Math.max(1, Math.min(datasheet_page, page_count_ds));
-        gallery_page = Math.max(1, Math.min(gallery_page, page_count_gl));
-        update_url_params();
+    datasheet_page = (datasheet_param != null ? datasheet_param : 1);
+    gallery_page = (gallery_param != null ? gallery_param : 1);
+
+    if (datasheet_page > page_count_ds || datasheet_page < 1) {
+        datasheet_page = 1;
+    }
+    if (gallery_page > page_count_gl || gallery_page < 1) {
+        gallery_page = 1;
     }
 }
 
+
 function update_url_params() {
-    if (history.pushState) {
+    // Update the url query parameters
+    if (typeof window.history.pushState === "function") {
+
         var newurl = window.location.href.split('?')[0];
 
-        if (datasheet_page != 1) {
-            newurl += '?datasheet=' + datasheet_page;
+        if (datasheet_page != 1 || gallery_page != 1) {
+            newurl += '?'
+            if (datasheet_page != 1) {
+                newurl += 'datasheet=' + datasheet_page;
+            }
             if (gallery_page != 1) {
                 newurl += '&gallery=' + gallery_page;
             }
-        } else if (gallery_page != 1) {
-            newurl += '?gallery=' + gallery_page;
         }
-
-        window.history.pushState({path:newurl},'',newurl);
     }
+    window.history.pushState({path:newurl},'',newurl);
 }
 
 
+function addButtonClickEvents() {
+    // Add and export buttons
+    $("#export_data_button").on("click", function(e){
+        if (export_menu_hidden){
+            $("#export_data").slideDown(500);
+        } else {
+            $("#export_data").slideUp(500);
+        }
+        export_menu_hidden = !export_menu_hidden;
+    });
+
+    $("#add_datasheet_button").on("click", function(){
+        if (add_datasheet_menu_hidden){
+            $("#add_datasheet_types").slideDown(500);
+        } else {
+            $("#add_datasheet_types").slideUp(500);
+        }
+        add_datasheet_menu_hidden = !add_datasheet_menu_hidden;
+    });
+
+    $("#add_gallery_item_button").on("click", function(){
+        if (add_gallery_menu_hidden){
+            $("#add_gallery_item_types").slideDown(500);
+        } else {
+            $("#add_gallery_item_types").slideUp(500);
+        }
+        add_gallery_menu_hidden = !add_gallery_menu_hidden;
+    });
+}
+
+
+function addPageClickEvents() {
+    $('li.page-select-datasheet').on("click", function(e) {
+        datasheet_page = e.target.innerHTML;
+        update_url_params(datasheet_page, gallery_page);
+    });
+    $('li.page-select-gallery').on("click", function(e) {
+        gallery_page = e.target.innerHTML;
+        update_url_params(datasheet_page, gallery_page);
+    });
+}
+
+
+/* Main functions below */
+
 $(document).ready(function () {
-    // Initially sort
+    // update dimension of grid (images & Google Map)
+    updateDimension();
+    // initialize Google Map
+    initializeMap();
+    // add click events for Add datasheets, export, & add gallery
+    addButtonClickEvents();
+    // add click events for pagination page number buttons
+    addPageClickEvents();
+    // Get the datasheets and gallery page number
+    get_url_params();
+    // Create datasheet and gallery table based on page number
+    filter_datasheets(datasheet_page);
+    filter_gallery(gallery_page);
+});
+
+$(window).on("resize", function() {
+    updateDimension();
+})
+
+$(window).on("popstate", function(e) {
+    // Whenever click "back" button on browser, reload page number
     get_url_params();
     filter_datasheets(datasheet_page);
     filter_gallery(gallery_page);
-
-    var latlng = new google.maps.LatLng(loc.lat, loc.lng);
-    var mapOptions = {
-      zoom: 14,
-      center: latlng,
-      mapTypeControl: false,
-      navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL},
-      mapTypeId: 'roadmap'
-    };
-    map = new google.maps.Map($('#detail_map')[0], mapOptions);
-
-    marker = new google.maps.Marker({
-      position: loc,
-      map: map,
-      title: "Site Location"
-    });
-
-    // responsive function
-    google.maps.event.addDomListener(window, "resize", function () {
-      var center = map.getCenter();
-      google.maps.event.trigger(map, "resize");
-      map.setCenter(center);
-    });
-});
+})

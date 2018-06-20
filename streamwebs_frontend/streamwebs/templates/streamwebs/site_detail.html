@@ -354,25 +354,23 @@
 {% block scripts %}
   <script src="https://maps.googleapis.com/maps/api/js?key={{ maps_api }}"></script>
   <script type="application/javascript" src="{% static 'streamwebs/js/site_detail.js' %}"></script>
-  <script type="application/javascript"
-          src="{% static 'streamwebs/js/site_detail.js' %}"></script>
 
   <script type="application/javascript">
     var sheet_data = {{ datasheets|safe }};
     var gallery_data = {{ gallery_items|safe }};
-
-    var datasheet_page = 1;
-    var gallery_page = 1;
-
     var page_count_ds = {{ page_count_ds }}
     var page_count_gl = {{ page_count_gl }}
     var num_elements_page = {{ num_elements_page }}
+
+    var datasheet_page = 1;
+    var gallery_page = 1;
 
     var export_menu_hidden = true;
     var add_datasheet_menu_hidden = true;
     var add_gallery_menu_hidden = true;
 
     var map;
+    window.mapTypeId = {{ map_type }};
 
     var site_name = '{{ site.site_name }}';
     var site_slug = '{{ site.site_slug }}';
@@ -391,47 +389,10 @@
 
     {% language "en-us" %}
     var loc = {
-      lat: {{ site.location.y }},
-      lng: {{ site.location.x }},
+        lat: {{ site.location.y }},
+        lng: {{ site.location.x }},
     };
     {% endlanguage %}
 
-    $(document).ready(function(){
-      updateDimension();
-      initialize();
-      window.mapTypeId = {{ map_type }};
-
-      // Add and export buttons
-      $("#export_data_button").on("click", function(){
-        if (export_menu_hidden){
-          $("#export_data").slideDown(500);
-        } else {
-          $("#export_data").slideUp(500);
-        }
-        export_menu_hidden = !export_menu_hidden;
-      });
-
-      $("#add_datasheet_button").on("click", function(){
-        if (add_datasheet_menu_hidden){
-          $("#add_datasheet_types").slideDown(500);
-        } else {
-          $("#add_datasheet_types").slideUp(500);
-        }
-        add_datasheet_menu_hidden = !add_datasheet_menu_hidden;
-      });
-
-      $("#add_gallery_item_button").on("click", function(){
-        if (add_gallery_menu_hidden){
-          $("#add_gallery_item_types").slideDown(500);
-        } else {
-          $("#add_gallery_item_types").slideUp(500);
-        }
-        add_gallery_menu_hidden = !add_gallery_menu_hidden;
-      });
-    });
-
-    $(window).resize(function() {
-        updateDimension();
-    })
   </script>
 {% endblock %}
