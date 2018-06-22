@@ -669,6 +669,36 @@ def add_gallery_journal(request, site_slug):
     })
 
 
+@login_required
+@permission_required('streamwebs.is_org_author', raise_exception=True)
+@any_organization_required
+def add_gallery_video(request, site_slug):
+    site = Site.objects.get(site_slug=site_slug)
+
+    if request.method == 'POST':
+        video_form = GalleryVideoAddForm(request.POST, request.FILES)
+
+        if video_form.is_valid():
+            user = request.user
+            profile = UserProfile.objects.get(user=user)
+            if profile is not None:
+                gv= video_form.save()
+                gv.site = site
+                gv.user = request.user
+                gvsz.school = profile.school
+                gvsz.save()
+
+                return HttpResponseRedirect(
+                    '/sites/%s/video/%i' % (site_slug, gv.id))
+    else:
+        video_form = GalleryVideoAddForm()
+
+    return render(request, 'streamwebs/gallery/gallery_video_add.html', {
+        'site': site,
+        'video_form': video_form
+    })
+
+
 def gallery_image(request, site_slug, image_id):
     site = Site.objects.get(site_slug=site_slug)
     image = GalleryImage.objects.filter(site_id=site.id, id=image_id).first()

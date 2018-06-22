@@ -23,8 +23,8 @@ urlpatterns = [
         views.add_gallery_file, name='add_gallery_file'),
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/journal/add/$',
         views.add_gallery_journal, name='add_gallery_journal'),
-    #url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/video/add/$',
-    #    views.add_gallery_video, name='add_gallery_video'),
+    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/video/add/$',
+        views.add_gallery_video, name='add_gallery_video'),
 
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/image/(?P<image_id>[0-9]+)/$',
         views.gallery_image, name='gallery_image'),

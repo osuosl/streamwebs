@@ -346,6 +346,10 @@
             class="collection-item">
             {% trans "Field Journal" %}
           </a>
+          <a href="{% url 'streamwebs:add_gallery_video' site_slug=site.site_slug %}"
+            class="collection-item">
+            {% trans "Video" %}
+          </a>
         </div>
         {% endif %}
       </div>
