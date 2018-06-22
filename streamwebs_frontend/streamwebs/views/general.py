@@ -30,7 +30,8 @@ from streamwebs.models import (
     Macroinvertebrates, Site, Water_Quality, WQ_Sample, RiparianTransect,
     TransectZone, Canopy_Cover, CameraPoint, PhotoPoint,
     PhotoPointImage, Soil_Survey, Resource, RipAquaticSurvey,
-    UserProfile, School, GalleryImage, GalleryFile, GalleryAlbum)
+    UserProfile, School, GalleryImage, GalleryFile, GalleryAlbum,
+    GalleryJournal, GalleryVideo)
 
 import json
 import copy
@@ -642,6 +643,20 @@ def gallery_file(request, site_slug, file_id):
         'site': site,
         'gallery_file': gallery_file,
     })
+
+
+def gallery_journal(request, site_slug, journal_id):
+    site = Site.objects.get(site_slug=site_slug)
+    gallery_journal = GalleryJournal.objects.get(id=journal_id)
+
+    return render(request, 'streamwebs/gallery/gallery_journal_view.html', {
+        'site': site,
+        'gallery_journal': gallery_journal,
+    })
+
+
+#def gallery_video(request, site_slug, video_id):
+
 
 
 @login_required

@@ -21,6 +21,10 @@ urlpatterns = [
         views.add_gallery_album, name='add_gallery_album'),
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/file/add/$',
         views.add_gallery_file, name='add_gallery_file'),
+    #url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/journal/add/$',
+        #views.add_gallery_journal, name='add_gallery_journal'),
+    #url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/video/add/$',
+    #    views.add_gallery_video, name='add_gallery_video'),
 
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/image/(?P<image_id>[0-9]+)/$',
         views.gallery_image, name='gallery_image'),
@@ -28,6 +32,11 @@ urlpatterns = [
         views.gallery_album, name='gallery_album'),
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/file/(?P<file_id>[0-9]+)/$',
         views.gallery_file, name='gallery_file'),
+    url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/journal/' +
+        '(?P<journal_id>[0-9]+)/$',
+        views.gallery_journal, name='gallery_journal'),
+    #url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/video/(?P<video_id>[0-9]+)/$',
+    #    views.gallery_video, name='gallery_video'),
 
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/image/(?P<image_id>[0-9]+)/' +
         'delete/$',
@@ -38,6 +47,12 @@ urlpatterns = [
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/file/(?P<file_id>[0-9]+)/' +
         'delete/$',
         views.delete_gallery_file, name='delete_gallery_file'),
+    #url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/journal/' +
+    #    '(?P<journal_id>[0-9]+)/delete/$',
+    #    views.delete_gallery_journal, name='delete_gallery_journal'),
+    #url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/video/(?P<video_id>[0-9]+)/' +
+    #    'delete/$',
+    #    views.delete_gallery_video, name='delete_gallery_video'),
 
     url(r'^sites/(?P<site_slug>[0-9a-zA-Z-]+)/edit/', views.update_site,
         name='update_site'),
