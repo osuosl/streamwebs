@@ -5,7 +5,7 @@ from streamwebs.models import (
     Macroinvertebrates, Canopy_Cover, TransectZone,
     RiparianTransect, PhotoPointImage, PhotoPoint, CameraPoint, Site, School,
     Soil_Survey, Resource, RipAquaticSurvey,
-    GalleryImage, GalleryAlbum, GalleryFile)
+    GalleryImage, GalleryAlbum, GalleryFile, GalleryJournal, GalleryVideo)
 from django.contrib.auth.models import User
 from django import forms
 from django.forms import BaseInlineFormSet
@@ -435,6 +435,34 @@ class GalleryFileAddForm(forms.ModelForm):
                 forms.Textarea(attrs={'class': 'materialize-textarea'})
         }
         fields = ('title', 'description', 'date', 'gallery_file',)
+
+
+class GalleryJournalAddForm(forms.ModelForm):
+    date = forms.DateField(
+        label="Field Journal Date",
+        widget=forms.DateInput(attrs={'class': 'datepicker'}),
+    )
+    class Meta:
+        model = GalleryJournal
+        widgets = {
+            'entry_field':
+                forms.Textarea(attrs={'class': 'materialize-textarea'})
+        }
+        fields = ('title', 'entry_field', 'date',)
+
+
+class GalleryVideoAddForm(forms.ModelForm):
+    date = forms.DateField(
+        label="Video Date",
+        widget=forms.DateInput(attrs={'class': 'datepicker'})
+    )
+    class Meta:
+        model = GalleryVideo
+        widgets = {
+            'description':
+                forms.Textarea(attrs={'class': 'materialize-textarea'})
+        }
+        fields = ('title', 'description', 'date', 'video', 'thumbnail')
 
 
 class SoilSurveyForm(forms.ModelForm):

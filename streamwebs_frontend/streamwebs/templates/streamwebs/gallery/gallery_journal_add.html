@@ -1,0 +1,94 @@
+{% extends 'streamwebs/base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+{% load filters %}
+{% load verbose_names %}
+
+{% block title %}{% trans "Add field journal entry" %}{% endblock %}
+
+{% block content %}
+  <style>
+    ul.errorlist ~ input {
+      border-bottom-color: red;
+    }
+    ul.errorlist ~ div.input-field{
+      border-top: 1px solid red;
+    }
+  </style>
+
+  <!-- Back button -->
+  <a href="{% url 'streamwebs:site' site.site_slug %}" id="back"
+      class="waves-effect wave-light btn white-text teal darken-3">
+    <i class="material-icons">chevron_left</i>
+    Back to <span>{{ site.site_name }}</span>
+  </a>
+
+  <div class="container">
+    <h3 align="center" class="teal-text">
+      {{ site.site_name }}
+    </h3>
+    <!-- Title -->
+    <h4 align="center">{% trans 'New Field Journal Entry' %}</h4>
+
+    <form enctype="multipart/form-data"
+          action="" method="POST" novalidate>
+      {% csrf_token %}
+
+      <br/>
+      <!-- Title -->
+      <div class="row col s12">
+        <div class="input-field">
+          <label for="{{ journal_form.title.id_for_label }}">{{ journal_form.title.label }}</label>
+          {{ journal_form.title.errors }}
+          {{ journal_form.title }}
+        </div>
+      </div>
+
+      <!-- Journal Entry Field -->
+      <div class="row col s12">
+        <div class="input-field">
+            <label for="journal_form.entry_field.id_for_label">
+              {{ journal_form.entry_field.label }}
+            </label>
+            {{ journal_form.entry_field.errors }}
+            {{ journal_form.entry_field }}
+          </div>
+      </div>
+
+      <!-- Date -->
+      <div class="row col s12">
+        <div class="input-field">
+          <label for="{{ journal_form.date.id_for_label }}">{{ Journal_form.date.label }} (YYYY-MM-DD)</label>
+          {{ journal_form.date.errors }}
+          {{ journal_form.date }}
+        </div>
+      </div>
+      <br/><br/>
+
+      <!-- Submit button -->
+      <div class="row">
+        <button class="btn waves-effect waves-light teal darken-3" type="submit"
+          name="submit" value="{% trans "Submit" %}">
+          {% trans "Submit" %}<i class="material-icons right">send</i>
+        </button>
+      </div>
+    </form>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+
+<script>
+  var ERROR_TOAST = ''; // printed by data-toasts.js
+  {% for field, errors in journal_form.errors.items %}
+    {% for error in errors %}
+      // get_field_label is from verbose_names.py
+      ERROR_TOAST += "{% get_field_label journal_form field %}: {{ error }}<br>";
+    {% endfor %}
+  {% endfor %}
+</script>
+
+<script src="{% static 'streamwebs/js/data.js' %}"></script>
+<script src="{% static 'streamwebs/js/data-toasts.js' %}"></script>
+
+{% endblock %}

@@ -24,7 +24,8 @@ from streamwebs.forms import (
     WQForm, SiteForm, Canopy_Cover_Form, SoilSurveyForm, StatisticsForm,
     TransectZoneForm, BaseZoneInlineFormSet, ResourceForm, UserEmailForm,
     UserPasswordForm, SchoolForm, RipAquaForm,
-    GalleryImageAddForm, GalleryAlbumAddForm, GalleryFileAddForm)
+    GalleryImageAddForm, GalleryAlbumAddForm, GalleryFileAddForm,
+    GalleryJournalAddForm, GalleryVideoAddForm)
 
 from streamwebs.models import (
     Macroinvertebrates, Site, Water_Quality, WQ_Sample, RiparianTransect,
@@ -636,6 +637,35 @@ def add_gallery_file(request, site_slug):
     return render(request, 'streamwebs/gallery/gallery_file_add.html', {
         'site': site,
         'file_form': file_form
+    })
+
+
+@login_required
+@permission_required('streamwebs.is_org_author', raise_exception=True)
+@any_organization_required
+def add_gallery_journal(request, site_slug):
+    site = Site.objects.get(site_slug=site_slug)
+
+    if request.method == 'POST':
+        journal_form = GalleryJournalAddForm(request.POST)
+
+        if journal_form.is_valid():
+            user = request.user
+            profile = UserProfile.objects.get(user=user)
+            if profile is not None:
+                journal = journal_form.save()
+                journal.site = site
+                journal.user = request.user
+                journal.school = profile.school
+                journal.save()
+                return HttpResponseRedirect(
+                    '/sites/%s/journal/%i' % (site_slug, journal.id))
+    else:
+        journal_form = GalleryJournalAddForm()
+
+    return render(request, 'streamwebs/gallery/gallery_journal_add.html', {
+        'site': site,
+        'journal_form': journal_form
     })
 
 
