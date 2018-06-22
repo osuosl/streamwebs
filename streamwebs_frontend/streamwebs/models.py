@@ -343,7 +343,7 @@ class GalleryVideo(models.Model):
                                   verbose_name=_('thumbnail'))
 
     def filename(self):
-        return os.path.basename(self.gallery_file.name)
+        return os.path.basename(self.video.name)
 
     def __str__(self):
         if self.site is not None:

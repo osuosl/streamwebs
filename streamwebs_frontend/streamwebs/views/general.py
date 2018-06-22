@@ -385,9 +385,42 @@ def get_gallery_items(site_id):
         gallery_files_new.append(file_data)
     gallery_files = gallery_files_new
 
+    # Journals
+    gallery_journals = GalleryJournal.objects.filter(site_id=site_id)
+    gallery_journals = list(gallery_journals.order_by('-date_time'))
+    gallery_journals_new = []
+    for x in gallery_journals:
+        file_data = {'id': str(x.id), 'uri': 'journal',
+                     'type': 'Field Journal Entry ' + str(x.id) + " (" +
+                     str(x.title) + ")", 'date':x.date_time.date()}
+        if x.school_id:
+            file_data['school_id'] = x.school_id
+        else:
+            file_data['school_id'] = -1
+        gallery_journals_new.append(file_data)
+    gallery_journals = gallery_journals_new
+
+    # Videos
+    gallery_videos = GalleryVideo.objects.filter(site_id=site_id)
+    gallery_videos = list(gallery_videos.order_by('-date_time'))
+    gallery_videos_new = []
+    for x in gallery_videos:
+        file_data = {
+            'id': str(x.id), 'uri': 'video',
+            'type': 'Video ' + str(x.id) + '(' + str(x.filename()) + ')',
+            'date': x.date_time.date()
+        }
+        if x.school_id:
+            file_data['school_id'] = x.school_id
+        else:
+            file_data['school_id'] = -1
+        gallery_videos_new.append(file_data)
+    gallery_videos = gallery_videos_new
+
     # Compile gallery items into one list
     gallery_items = []
-    gallery_items += gallery_images + gallery_albums + gallery_files
+    gallery_items += (gallery_images + gallery_albums + gallery_files +
+                      gallery_journals + gallery_videos)
 
     gallery_items.sort(cmp=sort_date, key=lambda x: x['date'])
     gallery_items.sort(key=lambda x: -x['school_id'])
