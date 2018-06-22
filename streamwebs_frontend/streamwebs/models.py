@@ -291,6 +291,71 @@ class GalleryFile(models.Model):
         verbose_name_plural = _('gallery files')
 
 
+class GalleryJournal(models.Model):
+    title = models.CharField(max_length=250,
+                             verbose_name=_('title'))
+    entry_field = models.TextField(verbose_name=_('journal entry field'))
+    site = models.ForeignKey(
+        Site, null=True, on_delete=models.CASCADE,
+        verbose_name=_('Stream/Site name'), limit_choices_to={'active': True}
+    )
+    school = models.ForeignKey(
+        School, null=True, on_delete=models.CASCADE,
+        verbose_name=_('school'), limit_choices_to={'active': True}
+    )
+    user = models.ForeignKey(User, null=True, verbose_name=_('user'))
+    date_time = models.DateTimeField(
+        default=timezone.now, verbose_name=_('date and time')
+    )
+
+    def __str__(self):
+        if self.site is not None:
+            return self.site.site_name + ' Journal Entry ' + str(self.id)
+        else:
+            return _('Unspecified site for journal entry ') + str(self.id)
+
+    class Meta:
+        verbose_name = _('gallery journal entry')
+        verbose_name_plural = _('gallery journal entries')
+
+
+class GalleryVideo(models.Model):
+    title = models.CharField(max_length=250,
+                             verbose_name=_('title'))
+    description = models.TextField(null=True,
+                                   verbose_name=_('video description'))
+    site = models.ForeignKey(
+        Site, null=True, on_delete=models.CASCADE,
+        verbose_name=_('Stream/Site name'), limit_choices_to={'active': True}
+    )
+    school = models.ForeignKey(
+        School, null=True, on_delete=models.CASCADE,
+        verbose_name=_('school'), limit_choices_to={'active': True}
+    )
+    user = models.ForeignKey(User, null=True, verbose_name=_('user'))
+    date_time = models.DateTimeField(
+        default=timezone.now, verbose_name=_('date and time')
+    )
+    video = models.FileField(null=True, upload_to='gallery_videos/',
+                             verbose_name=_('video'))
+    thumbnail = models.ImageField(null=True,
+                                  upload_to='gallery_thumbnails/',
+                                  verbose_name=_('thumbnail'))
+
+    def filename(self):
+        return os.path.basename(self.gallery_file.name)
+
+    def __str__(self):
+        if self.site is not None:
+            return self.site.site_name + ' Video ' + str(self.id)
+        else:
+            return _('Unspecified site for video ') + str(self.id)
+
+    class Meta:
+        verbose_name = _('gallery video')
+        verbose_name_plural = _('gallery videos')
+
+
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     school = models.ForeignKey(School, on_delete=models.CASCADE)

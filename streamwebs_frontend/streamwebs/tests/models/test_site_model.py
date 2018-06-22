@@ -33,7 +33,9 @@ class SiteTestCase(TestCase):
 
             'galleryalbum': models.ManyToOneRel,
             'galleryfile': models.ManyToOneRel,
-            'galleryimage': models.ManyToOneRel
+            'galleryimage': models.ManyToOneRel,
+            'galleryjournal': models.ManyToOneRel,
+            'galleryvideo': models.ManyToOneRel,
         }
 
         self.optional_fields = {
