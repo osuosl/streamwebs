@@ -655,8 +655,14 @@ def gallery_journal(request, site_slug, journal_id):
     })
 
 
-#def gallery_video(request, site_slug, video_id):
+def gallery_video(request, site_slug, video_id):
+    site = Site.objects.get(site_slug=site_slug)
+    gallery_video = GalleryVideo.objects.get(id=video_id)
 
+    return render(request, 'streamwebs/gallery/gallery_video_view.html', {
+        'site': site,
+        'gallery_video': gallery_video,
+    })
 
 
 @login_required
@@ -684,6 +690,26 @@ def delete_gallery_file(request, site_slug, file_id):
     gallery_file = GalleryFile.objects.get(id=file_id)
     gallery_file.gallery_file.delete()
     gallery_file.delete()
+
+    return HttpResponseRedirect('/sites/%s' % site_slug)
+
+
+@login_required
+@permission_required('streamwebs.is_org_author', raise_exception=True)
+def delete_gallery_journal(request, site_slug, journal_id):
+    gallery_journal = GalleryJournal.objects.get(id=journal_id)
+    gallery_journal.delete()
+
+    return HttpResponseRedirect('/sites/%s' % site_slug)
+
+
+@login_required
+@permission_required('streamwebs.is_org_author', raise_exception=True)
+def delete_gallery_video(request, site_slug, video_id):
+    gallery_video = GalleryVideo.objects.get(id=video_id)
+    gallery_video.video.delete()
+    gallery_video.thumbnail.delete()
+    gallery_video.delete()
 
     return HttpResponseRedirect('/sites/%s' % site_slug)
 

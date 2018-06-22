@@ -1,0 +1,96 @@
+{% extends 'streamwebs/base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+{% load filters %}
+{% load verbose_names %}
+
+{% block title %}{% trans "View gallery Video" %}{% endblock %}
+
+{% block content %}
+  <style>
+    ul.errorlist ~ input {
+      border-bottom-color: red;
+    }
+    ul.errorlist ~ div.input-field{
+      border-top: 1px solid red;
+    }
+    #delete_button {
+      margin-right: 3%;
+    }
+    .wordwrap {
+      display:block;
+      width:100%;
+      word-wrap:break-word;
+    }
+  </style>
+
+  <div>
+    <!-- Back button -->
+    <a href="{% url 'streamwebs:site' site.site_slug %}" id="back"
+        class="waves-effect wave-light btn white-text teal darken-3">
+      <i class="material-icons">chevron_left</i>
+      Back to <span>{{ site.site_name }}</span>
+    </a>
+    <!-- Delete button -->
+    <div id="delete-button" class="waves-effect waves-dark btn red darken-3 right"
+      href="{% url 'streamwebs:delete_gallery_video' site.site_slug gallery_video.id %}">
+      Delete Video
+    </div>
+    {% include 'streamwebs/datasheets/delete_button_partial.html' %}
+  </div>
+
+  <div class="row">
+    <!-- Site name -->
+    <div class="col s12">
+      <h3 align="center" class="teal-text">
+        {{ site.site_name }}
+      </h3>
+    </div>
+    <br/>
+  </div>
+
+    <!-- File info -->
+    <div class="container">
+      <div class="row">
+        <h4 id="journal_title">
+            <b>{% trans "Title: " %} </b>
+            {{ gallery_video.title }}
+        </h4>
+        <b>{% trans "Submitted on: " %}: </b>
+        {{ gallery_video.date_time }}
+      </div>
+
+      <div class="row">
+        {{ gallery_video.description }}
+      </div>
+
+      <div class="row">
+        <b>{% trans "Author" %}: </b>
+        {{ gallery_video.user }}
+        <br/>
+        <b>{% trans "School" %}: </b>
+        {{ gallery_video.school }}
+        </p>
+      </div>
+
+      {% if gallery_video.thumbnail.url != None %}
+      <div class="row">
+        {{ gallery_video.thumbnail.url }}
+        <img src="{{ gallery_video.thumbnail.url }}"/>
+      </div>
+      {% endif %}
+
+      <div class="row">
+        {{ gallery_video.video.url }}
+      </div>
+      <video width="320" height="240"
+        {% if gallery_video.thumbnail.url != None %}
+        poster="{{ gallery_video.thumbnail.url }}"
+        {% endif %}
+        controls>
+
+        <source src="{{ gallery_video.video.url }}">
+      </video>
+    </div>
+  </div>
+{% endblock %}

@@ -34,6 +34,12 @@
       <i class="material-icons">chevron_left</i>
       Back to <span>{{ site.site_name }}</span>
     </a>
+    <!-- Delete button -->
+    <div id="delete-button" class="waves-effect waves-dark btn red darken-3 right"
+      href="{% url 'streamwebs:delete_gallery_journal' site.site_slug gallery_journal.id %}">
+      Delete Journal
+    </div>
+    {% include 'streamwebs/datasheets/delete_button_partial.html' %}
   </div>
 
   <div class="row">
