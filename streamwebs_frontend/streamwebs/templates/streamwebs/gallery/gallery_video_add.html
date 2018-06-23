@@ -55,20 +55,36 @@
           </div>
       </div>
 
-      <!-- Image selector -->
+      <!-- Video -->
+      <div class="row col s12">
+        <label>Video (supported format: mp4)</label>
+        <div class="file-field input-field">
+          <input id="id_video" type="file" accept='video/*' name="video">
+          <a class="btn waves-effect teal darken-3"
+             onclick="document.getElementById('id_video').click();">
+            <i class="material-icons">file_upload</i>
+            <span>Browse Video</span>
+          </a>
+          <div class="file-path-wrapper input-field">
+            {{ video_form.video.errors }}
+            <input class="file-path validate" type="text" placeholder="Upload video"/>
+          </div>
+        </div>
+      </div>
+
+      <!-- Thumbnail -->
       <div class="row col s12">
         <label>Video Thumbnail</label>
         <div class="file-field input-field">
-          <input id="id_image" type="file" multiple accept='image/*' name="image">
+          <input id="id_thumb" type="file" accept='image/*' name="thumbnail">
           <a class="btn waves-effect teal darken-3"
-             onclick="document.getElementById('id_image').click();">
-          <i class="material-icons">file_upload</i>
-          <span>Browse</span>
+             onclick="document.getElementById('id_thumb').click();">
+            <i class="material-icons">file_upload</i>
+            <span>Browse Thumbnail</span>
           </a>
           <div class="file-path-wrapper input-field">
-            {{ video_form.image.errors }}
-            <input class="file-path validate" type="text"
-            placeholder="Upload file"/>
+            {{ video_form.thumbnail.errors }}
+            <input class="file-path validate" type="text" placeholder="Upload thumbnail"/>
           </div>
         </div>
       </div>

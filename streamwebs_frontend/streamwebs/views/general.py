@@ -685,8 +685,8 @@ def add_gallery_video(request, site_slug):
                 gv= video_form.save()
                 gv.site = site
                 gv.user = request.user
-                gvsz.school = profile.school
-                gvsz.save()
+                gv.school = profile.school
+                gv.save()
 
                 return HttpResponseRedirect(
                     '/sites/%s/video/%i' % (site_slug, gv.id))
