@@ -58,13 +58,14 @@
         <h4 id="journal_title">
             {{ gallery_journal.title }}
         </h4>
-        <b>{% trans "Submitted on: " %}: </b>
-        {{ gallery_journal.date_time }}
       </div>
       <div class="row">
         {{ gallery_journal.entry_field }}
       </div>
       <div class="row">
+        <b>{% trans "Submitted on: " %}: </b>
+        {{ gallery_journal.date_time }}
+        <br/>
         <b>{% trans "Author" %}: </b>
         {{ gallery_journal.user }}
         <br/>

@@ -456,6 +456,8 @@ class GalleryVideoAddForm(forms.ModelForm):
         label="Video Date",
         widget=forms.DateInput(attrs={'class': 'datepicker'})
     )
+    description = forms.CharField(required=False)
+    thumbnail = forms.ImageField(required=False)
     class Meta:
         model = GalleryVideo
         widgets = {
