@@ -3,6 +3,7 @@ import os
 import sys
 import csv
 from datetime import datetime
+from django.contrib.auth.models import User
 
 from django.core.wsgi import get_wsgi_application
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "streamwebs_frontend.settings")
@@ -10,7 +11,6 @@ proj_path = "../streamwebs_frontend/"
 sys.path.append(proj_path)
 application = get_wsgi_application()
 
-from django.contrib.auth.models import User
 from streamwebs.models import (GalleryJournal, UserProfile, Site) # NOQA
 
 # Change into media directory
@@ -38,7 +38,7 @@ with open(datafile, 'r') as csvfile:
             user_profile = UserProfile.objects.filter(user=user).first()
         else:
             user = None
-            user_profile=None
+            user_profile = None
 
         # Get school from user profile
         if user_profile:

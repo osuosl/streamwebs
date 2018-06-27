@@ -393,7 +393,7 @@ def get_gallery_items(site_id):
     for x in gallery_journals:
         file_data = {'id': str(x.id), 'uri': 'journal',
                      'type': 'Field Journal Entry ' + str(x.id) + " (" +
-                     str(x.title) + ")", 'date':x.date_time.date()}
+                     str(x.title) + ")", 'date': x.date_time.date()}
         if x.school_id:
             file_data['school_id'] = x.school_id
         else:
@@ -682,7 +682,7 @@ def add_gallery_video(request, site_slug):
             user = request.user
             profile = UserProfile.objects.get(user=user)
             if profile is not None:
-                gv= video_form.save()
+                gv = video_form.save()
                 gv.site = site
                 gv.user = request.user
                 gv.school = profile.school

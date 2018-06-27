@@ -442,6 +442,7 @@ class GalleryJournalAddForm(forms.ModelForm):
         label="Field Journal Date",
         widget=forms.DateInput(attrs={'class': 'datepicker'}),
     )
+
     class Meta:
         model = GalleryJournal
         widgets = {
@@ -458,6 +459,7 @@ class GalleryVideoAddForm(forms.ModelForm):
     )
     description = forms.CharField(required=False)
     thumbnail = forms.ImageField(required=False)
+
     class Meta:
         model = GalleryVideo
         widgets = {

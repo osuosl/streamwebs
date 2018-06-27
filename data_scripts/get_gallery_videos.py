@@ -4,6 +4,7 @@ import sys
 import csv
 from datetime import datetime
 import requests
+from streamwebs.models import (GalleryVideo, Site, UserProfile)
 
 from django.core.wsgi import get_wsgi_application
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "streamwebs_frontend.settings")
@@ -15,7 +16,6 @@ from django.core.files import File # NOQA
 from django.core.files.temp import NamedTemporaryFile # NOQA
 from django.contrib.auth.models import User # NOQA
 
-from streamwebs.models import GalleryVideo, Site, UserProfile
 
 # Change into media directory
 os.chdir("../")
