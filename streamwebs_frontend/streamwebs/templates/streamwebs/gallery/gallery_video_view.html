@@ -22,6 +22,9 @@
       width:100%;
       word-wrap:break-word;
     }
+    video {
+      width: 100%;
+    }
   </style>
 
   <div>
@@ -76,24 +79,28 @@
         </p>
       </div>
 
-      {% if gallery_video.thumbnail.url != None %}
       <div class="row">
-        {{ gallery_video.thumbnail.url }}
-        <img src="{{ gallery_video.thumbnail.url }}"/>
+        <video controls control="true" preload = "none"
+          {% if gallery_video.thumbnail.url != None %}
+          poster="{{ gallery_video.thumbnail.url }}"
+          {% endif %}>
+          <source src="{{ gallery_video.video.url }}">
+        </video>
       </div>
-      {% endif %}
-
+      <!-- Video download -->
       <div class="row">
-        {{ gallery_video.video.url }}
+        <div class="col s12 center">
+          {% if gallery_video.video.url != None %}
+          <a class="btn-large teal darken-3"
+             href="{{ gallery_video.video.url }}" download>
+            <i class="medium material-icons">file_download</i>
+            <span>Download {{ gallery_video.filename }}</span>
+          </a>
+          {% else %}
+          <h3>File does not exist!</h3>
+          {% endif %}
+        </div>
       </div>
-      <video width="320" height="240" contorl="true"
-        {% if gallery_video.thumbnail.url != None %}
-        poster="{{ gallery_video.thumbnail.url }}"
-        {% endif %}
-        controls>
-
-        <source src="{{ gallery_video.video.url }}">
-      </video>
     </div>
   </div>
 {% endblock %}
