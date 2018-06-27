@@ -32,7 +32,7 @@ with open(datafile, 'r') as csvfile:
     for row in video_reader:
         title = row['Title']
         description = row['Description']
-        date_time = datetime.strptime(row['Post date'], '%Y-%m-%d %H:%M')
+        date_time = datetime.strptime(row['Post date'], '%Y/%m/%d %H:%M:%S')
         user_id = int(row['Uid'])
         site_name = row['Stream/Site name']
         filename = row['Filename']
