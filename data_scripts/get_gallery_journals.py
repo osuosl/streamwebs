@@ -3,7 +3,6 @@ import os
 import sys
 import csv
 from datetime import datetime
-from django.contrib.auth.models import User
 
 from django.core.wsgi import get_wsgi_application
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "streamwebs_frontend.settings")
@@ -11,6 +10,7 @@ proj_path = "../streamwebs_frontend/"
 sys.path.append(proj_path)
 application = get_wsgi_application()
 
+from django.contrib.auth.models import User # NOQA
 from streamwebs.models import (GalleryJournal, UserProfile, Site) # NOQA
 
 # Change into media directory
