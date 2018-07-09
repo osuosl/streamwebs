@@ -33,7 +33,9 @@ class SchoolTestCase(TestCase):
 
             'galleryalbum': models.ManyToOneRel,
             'galleryfile': models.ManyToOneRel,
-            'galleryimage': models.ManyToOneRel
+            'galleryimage': models.ManyToOneRel,
+            'galleryjournal': models.ManyToOneRel,
+            'galleryvideo': models.ManyToOneRel,
         }
 
     def test_fields_exist(self):

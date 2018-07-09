@@ -27,4 +27,6 @@ set -e
 ./get_gallery_images.py
 ./get_gallery_files.py
 ./get_gallery_albums.py
+./get_gallery_journals.py
+./get_gallery_videos.py
 rm -rf media/

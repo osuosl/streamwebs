@@ -1,0 +1,78 @@
+{% extends 'streamwebs/base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+{% load filters %}
+{% load verbose_names %}
+
+{% block title %}{% trans "View gallery Journal" %}{% endblock %}
+
+{% block content %}
+  <style>
+    ul.errorlist ~ input {
+      border-bottom-color: red;
+    }
+    ul.errorlist ~ div.input-field{
+      border-top: 1px solid red;
+    }
+    #delete_button {
+      margin-right: 3%;
+    }
+    .wordwrap {
+      display:block;
+      width:100%;
+      word-wrap:break-word;
+    }
+    h4#journal_title {
+        font-family: 'Lato', sans-serif;
+    }
+  </style>
+
+  <div>
+    <!-- Back button -->
+    <a href="{% url 'streamwebs:site' site.site_slug %}" id="back"
+        class="waves-effect wave-light btn white-text teal darken-3">
+      <i class="material-icons">chevron_left</i>
+      Back to <span>{{ site.site_name }}</span>
+    </a>
+    <!-- Delete button -->
+    <div id="delete-button" class="waves-effect waves-dark btn red darken-3 right"
+      href="{% url 'streamwebs:delete_gallery_journal' site.site_slug gallery_journal.id %}">
+      Delete Journal
+    </div>
+    {% include 'streamwebs/datasheets/delete_button_partial.html' %}
+  </div>
+
+  <div class="row">
+    <!-- Site name -->
+    <div class="col s12">
+      <h3 align="center" class="teal-text">
+        {{ site.site_name }}
+      </h3>
+    </div>
+    <br/>
+  </div>
+
+    <!-- File info -->
+    <div class="container">
+      <div class="row">
+        <h4 id="journal_title">
+            {{ gallery_journal.title }}
+        </h4>
+      </div>
+      <div class="row">
+        {{ gallery_journal.entry_field }}
+      </div>
+      <div class="row">
+        <b>{% trans "Submitted on: " %}: </b>
+        {{ gallery_journal.date_time }}
+        <br/>
+        <b>{% trans "Author" %}: </b>
+        {{ gallery_journal.user }}
+        <br/>
+        <b>{% trans "School" %}: </b>
+        {{ gallery_journal.school }}
+        </p>
+      </div>
+    </div>
+  </div>
+{% endblock %}

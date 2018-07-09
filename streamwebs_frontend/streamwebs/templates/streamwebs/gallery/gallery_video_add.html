@@ -4,7 +4,7 @@
 {% load filters %}
 {% load verbose_names %}
 
-{% block title %}{% trans "Add gallery image" %}{% endblock %}
+{% block title %}{% trans "Add gallery video" %}{% endblock %}
 
 {% block content %}
   <style>
@@ -13,9 +13,6 @@
     }
     ul.errorlist ~ div.input-field{
       border-top: 1px solid red;
-    }
-    #id_image {
-      opacity: 0;
     }
   </style>
 
@@ -31,7 +28,7 @@
       {{ site.site_name }}
     </h3>
     <!-- Title -->
-    <h4 align="center">{% trans 'New Gallery Image' %}</h4>
+    <h4 align="center">{% trans 'New Gallery Video' %}</h4>
 
     <form enctype="multipart/form-data"
           action="" method="POST" novalidate>
@@ -41,47 +38,63 @@
       <!-- Title -->
       <div class="row col s12">
         <div class="input-field">
-          <label for="{{ image_form.title.id_for_label }}">{{ image_form.title.label }}</label>
-          {{ image_form.title.errors }}
-          {{ image_form.title }}
+          <label for="{{ video_form.title.id_for_label }}">{{ video_form.title.label }}</label>
+          {{ video_form.title.errors }}
+          {{ video_form.title }}
         </div>
       </div>
 
       <!-- Description -->
       <div class="row col s12">
         <div class="input-field">
-            <label for="image_form.description.id_for_label">
-              {{ image_form.description.label }}
+            <label for="video_form.description.id_for_label">
+              {{ video_form.description.label }}
             </label>
-            {{ image_form.description.errors }}
-            {{ image_form.description }}
+            {{ video_form.description.errors }}
+            {{ video_form.description }}
           </div>
       </div>
 
-      <!-- Image selector -->
+      <!-- Video -->
       <div class="row col s12">
-        <label>Gallery Image</label>
+        <label>Video (supported format: mp4)</label>
         <div class="file-field input-field">
-          <input id="id_image" type="file" multiple accept='image/*' name="image">
+          <input id="id_video" type="file" accept='video/mp4' name="video">
           <a class="btn waves-effect teal darken-3"
-             onclick="document.getElementById('id_image').click();">
-          <i class="material-icons">file_upload</i>
-          <span>Browse</span>
+             onclick="document.getElementById('id_video').click();">
+            <i class="material-icons">file_upload</i>
+            <span>Browse Video</span>
           </a>
           <div class="file-path-wrapper input-field">
-            {{ image_form.image.errors }}
-            <input class="file-path validate" type="text"
-            placeholder="Upload file"/>
+            {{ video_form.video.errors }}
+            <input class="file-path validate" type="text" placeholder="Upload video"/>
           </div>
         </div>
+      </div>
 
-        <!-- Date -->
-        <div class="row col s12">
-          <div class="input-field">
-            <label for="{{ image_form.date.id_for_label }}">{{ image_form.date.label }} (YYYY-MM-DD)</label>
-            {{ image_form.date.errors }}
-            {{ image_form.date }}
+      <!-- Thumbnail -->
+      <div class="row col s12">
+        <label>Video Thumbnail</label>
+        <div class="file-field input-field">
+          <input id="id_thumb" type="file" accept='image/*' name="thumbnail">
+          <a class="btn waves-effect teal darken-3"
+             onclick="document.getElementById('id_thumb').click();">
+            <i class="material-icons">file_upload</i>
+            <span>Browse Thumbnail</span>
+          </a>
+          <div class="file-path-wrapper input-field">
+            {{ video_form.thumbnail.errors }}
+            <input class="file-path validate" type="text" placeholder="Upload thumbnail"/>
           </div>
+        </div>
+      </div>
+
+      <!-- Date -->
+      <div class="row col s12">
+        <div class="input-field">
+          <label for="{{ video_form.date.id_for_label }}">{{ video_form.date.label }} (YYYY-MM-DD)</label>
+          {{ video_form.date.errors }}
+          {{ video_form.date }}
         </div>
       </div>
       <br/><br/>
@@ -101,10 +114,10 @@
 
 <script>
   var ERROR_TOAST = ''; // printed by data-toasts.js
-  {% for field, errors in image_form.errors.items %}
+  {% for field, errors in video_form.errors.items %}
     {% for error in errors %}
       // get_field_label is from verbose_names.py
-      ERROR_TOAST += "{% get_field_label image_form field %}: {{ error }}<br>";
+      ERROR_TOAST += "{% get_field_label video_form field %}: {{ error }}<br>";
     {% endfor %}
   {% endfor %}
 </script>

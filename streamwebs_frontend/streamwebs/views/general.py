@@ -24,13 +24,15 @@ from streamwebs.forms import (
     WQForm, SiteForm, Canopy_Cover_Form, SoilSurveyForm, StatisticsForm,
     TransectZoneForm, BaseZoneInlineFormSet, ResourceForm, UserEmailForm,
     UserPasswordForm, SchoolForm, RipAquaForm,
-    GalleryImageAddForm, GalleryAlbumAddForm, GalleryFileAddForm)
+    GalleryImageAddForm, GalleryAlbumAddForm, GalleryFileAddForm,
+    GalleryJournalAddForm, GalleryVideoAddForm)
 
 from streamwebs.models import (
     Macroinvertebrates, Site, Water_Quality, WQ_Sample, RiparianTransect,
     TransectZone, Canopy_Cover, CameraPoint, PhotoPoint,
     PhotoPointImage, Soil_Survey, Resource, RipAquaticSurvey,
-    UserProfile, School, GalleryImage, GalleryFile, GalleryAlbum)
+    UserProfile, School, GalleryImage, GalleryFile, GalleryAlbum,
+    GalleryJournal, GalleryVideo)
 
 import json
 import copy
@@ -384,9 +386,42 @@ def get_gallery_items(site_id):
         gallery_files_new.append(file_data)
     gallery_files = gallery_files_new
 
+    # Journals
+    gallery_journals = GalleryJournal.objects.filter(site_id=site_id)
+    gallery_journals = list(gallery_journals.order_by('-date_time'))
+    gallery_journals_new = []
+    for x in gallery_journals:
+        file_data = {'id': str(x.id), 'uri': 'journal',
+                     'type': 'Field Journal Entry ' + str(x.id) + " (" +
+                     str(x.title) + ")", 'date': x.date_time.date()}
+        if x.school_id:
+            file_data['school_id'] = x.school_id
+        else:
+            file_data['school_id'] = -1
+        gallery_journals_new.append(file_data)
+    gallery_journals = gallery_journals_new
+
+    # Videos
+    gallery_videos = GalleryVideo.objects.filter(site_id=site_id)
+    gallery_videos = list(gallery_videos.order_by('-date_time'))
+    gallery_videos_new = []
+    for x in gallery_videos:
+        file_data = {
+            'id': str(x.id), 'uri': 'video',
+            'type': 'Video ' + str(x.id) + '(' + str(x.filename()) + ')',
+            'date': x.date_time.date()
+        }
+        if x.school_id:
+            file_data['school_id'] = x.school_id
+        else:
+            file_data['school_id'] = -1
+        gallery_videos_new.append(file_data)
+    gallery_videos = gallery_videos_new
+
     # Compile gallery items into one list
     gallery_items = []
-    gallery_items += gallery_images + gallery_albums + gallery_files
+    gallery_items += (gallery_images + gallery_albums + gallery_files +
+                      gallery_journals + gallery_videos)
 
     gallery_items.sort(cmp=sort_date, key=lambda x: x['date'])
     gallery_items.sort(key=lambda x: -x['school_id'])
@@ -605,6 +640,65 @@ def add_gallery_file(request, site_slug):
     })
 
 
+@login_required
+@permission_required('streamwebs.is_org_author', raise_exception=True)
+@any_organization_required
+def add_gallery_journal(request, site_slug):
+    site = Site.objects.get(site_slug=site_slug)
+
+    if request.method == 'POST':
+        journal_form = GalleryJournalAddForm(request.POST)
+
+        if journal_form.is_valid():
+            user = request.user
+            profile = UserProfile.objects.get(user=user)
+            if profile is not None:
+                journal = journal_form.save()
+                journal.site = site
+                journal.user = request.user
+                journal.school = profile.school
+                journal.save()
+                return HttpResponseRedirect(
+                    '/sites/%s/journal/%i' % (site_slug, journal.id))
+    else:
+        journal_form = GalleryJournalAddForm()
+
+    return render(request, 'streamwebs/gallery/gallery_journal_add.html', {
+        'site': site,
+        'journal_form': journal_form
+    })
+
+
+@login_required
+@permission_required('streamwebs.is_org_author', raise_exception=True)
+@any_organization_required
+def add_gallery_video(request, site_slug):
+    site = Site.objects.get(site_slug=site_slug)
+
+    if request.method == 'POST':
+        video_form = GalleryVideoAddForm(request.POST, request.FILES)
+
+        if video_form.is_valid():
+            user = request.user
+            profile = UserProfile.objects.get(user=user)
+            if profile is not None:
+                gv = video_form.save()
+                gv.site = site
+                gv.user = request.user
+                gv.school = profile.school
+                gv.save()
+
+                return HttpResponseRedirect(
+                    '/sites/%s/video/%i' % (site_slug, gv.id))
+    else:
+        video_form = GalleryVideoAddForm()
+
+    return render(request, 'streamwebs/gallery/gallery_video_add.html', {
+        'site': site,
+        'video_form': video_form
+    })
+
+
 def gallery_image(request, site_slug, image_id):
     site = Site.objects.get(site_slug=site_slug)
     image = GalleryImage.objects.filter(site_id=site.id, id=image_id).first()
@@ -644,6 +738,26 @@ def gallery_file(request, site_slug, file_id):
     })
 
 
+def gallery_journal(request, site_slug, journal_id):
+    site = Site.objects.get(site_slug=site_slug)
+    gallery_journal = GalleryJournal.objects.get(id=journal_id)
+
+    return render(request, 'streamwebs/gallery/gallery_journal_view.html', {
+        'site': site,
+        'gallery_journal': gallery_journal,
+    })
+
+
+def gallery_video(request, site_slug, video_id):
+    site = Site.objects.get(site_slug=site_slug)
+    gallery_video = GalleryVideo.objects.get(id=video_id)
+
+    return render(request, 'streamwebs/gallery/gallery_video_view.html', {
+        'site': site,
+        'gallery_video': gallery_video,
+    })
+
+
 @login_required
 @permission_required('streamwebs.is_org_author', raise_exception=True)
 def delete_gallery_image(request, site_slug, image_id):
@@ -669,6 +783,26 @@ def delete_gallery_file(request, site_slug, file_id):
     gallery_file = GalleryFile.objects.get(id=file_id)
     gallery_file.gallery_file.delete()
     gallery_file.delete()
+
+    return HttpResponseRedirect('/sites/%s' % site_slug)
+
+
+@login_required
+@permission_required('streamwebs.is_org_author', raise_exception=True)
+def delete_gallery_journal(request, site_slug, journal_id):
+    gallery_journal = GalleryJournal.objects.get(id=journal_id)
+    gallery_journal.delete()
+
+    return HttpResponseRedirect('/sites/%s' % site_slug)
+
+
+@login_required
+@permission_required('streamwebs.is_org_author', raise_exception=True)
+def delete_gallery_video(request, site_slug, video_id):
+    gallery_video = GalleryVideo.objects.get(id=video_id)
+    gallery_video.video.delete()
+    gallery_video.thumbnail.delete()
+    gallery_video.delete()
 
     return HttpResponseRedirect('/sites/%s' % site_slug)
 
