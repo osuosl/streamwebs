@@ -86,6 +86,7 @@ class UserFormOptionalNameEmail(forms.ModelForm):
 
 
 class UserFormEmailAsUsername(forms.ModelForm):
+    captcha = ReCaptchaField()
     password = forms.CharField(
         widget=forms.PasswordInput(),
         label=_('Password'))
@@ -176,7 +177,6 @@ class UserPasswordForm(forms.ModelForm):
 
 
 class UserProfileForm(forms.ModelForm):
-    captcha = ReCaptchaField()
     school = forms.ModelChoiceField(
         widget=forms.TextInput(),
         queryset=School.objects.all().order_by('name'), empty_label=None)
