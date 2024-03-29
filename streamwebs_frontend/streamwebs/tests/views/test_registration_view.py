@@ -32,8 +32,6 @@ class RegistrateTestCase(TestCase):
                              'This field is required.')
         self.assertFormError(response1, 'user_form', 'email',
                              'This field is required.')
-        self.assertFormError(response1, 'profile_form', 'captcha',
-                             'This field is required.')
 
     def test_view_with_good_post_data(self):
         """

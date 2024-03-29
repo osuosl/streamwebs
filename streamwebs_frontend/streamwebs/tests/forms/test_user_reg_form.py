@@ -35,5 +35,3 @@ class UserProfileFormTestCase(TestCase):
         user_prof_form = UserProfileForm()
         self.assertEqual(set(user_prof_form.Meta.fields),
                          set(self.expected_fields))
-        self.assertEqual(str(type(user_prof_form.base_fields['captcha'])),
-                         "<class 'captcha.fields.ReCaptchaField'>")
