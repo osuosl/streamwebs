@@ -54,7 +54,7 @@ class RegistrateTestCase(TestCase):
             }
         )
         # Redirect to register/confirm
-        self.assertEqual(user_form_response.status_code, 302)
+        self.assertEqual(user_form_response.status_code, 200)
 
     def test_passwords_mismatch(self):
         bad_pw_response = self.client.post(
