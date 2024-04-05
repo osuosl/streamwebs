@@ -1,0 +1,21 @@
+---
+name: Build and run tests
+on: [push]
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build container
+        run: |
+          mkdir media
+          cp env.dist .env
+          echo STREAMWEBS_TEST=1 >> .env
+          cp streamwebs_frontend/streamwebs_frontend/settings.py.dist streamwebs_frontend/streamwebs_frontend/settings.py
+          docker compose build
+      - name: Start Postgresql
+        run: |
+          docker compose up -d postgres_host
+      - name: Run tests
+        run: |
+          docker compose up web

@@ -80,7 +80,7 @@ with open(datafile, 'r') as csvfile:
                 try:
                     site = Site.objects.get(site_name=row[0])
                     site_id = site.id
-                except:  # for the one site_name exception...
+                except ObjectDoesNotExist:  # for the one site_name exception
                     if date_time >= agate1_date:
                         site = Site.objects.get(
                             site_name=row[0], site_slug='agate-beach1')

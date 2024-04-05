@@ -95,7 +95,7 @@ if action == 'create':
                 oadmin_account.save()
                 print('\'' + org_admin_name + '\' user created' +
                       'linked to school \'' + school.name + '\'')
-            except:
+            except Exception:
                 oadmin_account.delete()
                 print('\'' + org_admin_name + '\' user not created,' +
                       'failed to create profile')
@@ -137,7 +137,7 @@ if action == 'create':
                 author_profile.save()
                 print('\'' + org_author_name + '\' user created,' +
                       'linked to school \'' + school.name + '\'')
-            except:
+            except Exception:
                 author_account.delete()
                 print('\'' + org_author_name + '\' user not created,' +
                       'failed to create profile')

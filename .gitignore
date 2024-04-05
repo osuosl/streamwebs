@@ -14,9 +14,10 @@ streamwebs_frontend/media/
 streamwebs_frontend/staticfiles/
 # NFS write temps
 .nfs*
-Dockerfile.env
+.env
 docs/build
 *.swp
+*.sql
 csvs/test_users.csv
 sw_data/
 streamwebs_frontend/streamwebs_frontend/settings.py

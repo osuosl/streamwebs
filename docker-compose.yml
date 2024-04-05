@@ -1,19 +1,15 @@
-version: '2'
 services:
   postgres_host:
-    image: mdillon/postgis
-    env_file: dockerfiles/Dockerfile.env
+    image: postgis/postgis
+    env_file: .env
   web:
     build:
       context: .
-      dockerfile: dockerfiles/Dockerfile
+    command: /usr/src/app/startup.sh
     volumes:
-      - .:/home/centos/streamwebs
-    working_dir: /home/centos/streamwebs
-    command: /home/centos/streamwebs/dockerfiles/startup.sh
+      - ${MEDIA_PATH}:/usr/src/app/media
+    env_file: .env
     ports:
       - "8000:8000"
     links:
       - postgres_host
-    env_file:
-      - dockerfiles/Dockerfile.env

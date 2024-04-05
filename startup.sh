@@ -1,7 +1,5 @@
 #!/bin/bash
-
-trap /home/centos/streamwebs/dockerfiles/cleanup.sh EXIT
-bower install --allow-root
+trap /usr/src/app/cleanup.sh EXIT
 export PGPASSWORD=$POSTGRES_PASSWORD
 echo "Waiting for postgres to start.."
 until $(psql -h postgres_host -U $POSTGRES_USER streamwebs \
@@ -16,15 +14,18 @@ if [ -n "$STREAMWEBS_DROP" ] ; then
   createdb -h postgres_host -U $POSTGRES_USER streamwebs
 fi
 if [ -n "$STREAMWEBS_TEST" ] ; then
-  /home/centos/streamwebs/runtests.sh
+  /usr/src/app/runtests.sh
+elif [ -n "$STREAMWEBS_IMPORT_DB" ] ; then
+  pg_restore -x -h postgres_host -U $POSTGRES_USER -d streamwebs streamwebs.sql
+  ./entrypoint.sh
 else
-  yes "yes" | python /home/centos/streamwebs/streamwebs_frontend/manage.py migrate
-  echo "from django.contrib.auth.models import User; User.objects.filter(username='admin').delete(); User.objects.create_superuser('admin', 'testing@streamwebs.org', 'admin')" | python streamwebs_frontend/manage.py shell
+  yes "yes" | python2 /usr/src/app/streamwebs_frontend/manage.py migrate
+  echo "from django.contrib.auth.models import User; User.objects.filter(username='admin').delete(); User.objects.create_superuser('admin', 'testing@streamwebs.org', 'admin')" | python2 streamwebs_frontend/manage.py shell
   if [ -n "$STREAMWEBS_IMPORT_DATA" -a -n "$STREAMWEBS_DROP" ] ; then
     echo "Importing data.."
     cd data_scripts/
     ./get_all.sh
     cd ../
   fi
-  python /home/centos/streamwebs/streamwebs_frontend/manage.py runserver 0.0.0.0:8000
+  ./entrypoint.sh
 fi
