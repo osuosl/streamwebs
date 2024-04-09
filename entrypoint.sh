@@ -3,7 +3,11 @@ echo "Setting permissions to media..."
 chown -R nobody:nobody /usr/src/app/media
 echo "Running db migrations..."
 yes "yes" | python2 /usr/src/app/streamwebs_frontend/manage.py migrate
+echo "Building static files..."
+cd /usr/src/app/streamwebs_frontend
+python2 ./manage.py collectstatic --clear --no-input
 echo "Starting gunicorn.."
+cd /usr/src/app
 exec gunicorn \
   -u nobody \
   -g nobody \
