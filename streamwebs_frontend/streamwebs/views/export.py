@@ -245,7 +245,8 @@ def export_cc(request, site_slug):
         w = west.count('1')
 
         writer.writerow([cc.school, cc.date_time, cc.site.site_name,
-                         cc.weather, n, e, s, w, cc.est_canopy_cover])
+                         cc.weather, n, e, s, w,
+                         cc.est_canopy_cover.encode('utf-8')])
 
     return response
 
